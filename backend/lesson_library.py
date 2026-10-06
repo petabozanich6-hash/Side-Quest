@@ -1,4 +1,4 @@
-LESSON_LIBRARY_VERSION = 4
+LESSON_LIBRARY_VERSION = 5
 
 LESSON_LIBRARY = [
     {
@@ -33,11 +33,7 @@ LESSON_LIBRARY = [
                     {"front": "Character", "back": "The person or creature in the story."},
                     {"front": "Setting", "back": "Where and when the story happens."},
                     {"front": "Problem", "back": "What goes wrong or what the character wants."},
-                    {"front": "Solution", "back": "How the problem is fixed."},
-                    {"front": "1/2", "back": "One half."},
-                    {"front": "2/4", "back": "Two quarters. This is equivalent to one half."},
-                    {"front": "4/8", "back": "Four eighths. This is also equivalent to one half."},
-                    {"front": "Whole", "back": "The complete amount before it is divided."}
+                    {"front": "Solution", "back": "How the problem is fixed."}
                 ]
             }
         ],
@@ -50,16 +46,7 @@ LESSON_LIBRARY = [
             {"title": "Solve the Story Mystery", "detail": "Complete the independent task using your story plan.", "duration_minutes": 10},
             {"title": "Quick check and reflect", "detail": "Complete the quiz, answer the reflection question and upload your evidence.", "duration_minutes": 5}
         ],
-        "resources": [
-            {
-                "type": "video",
-                "title": "What is a story?",
-                "url": "https://www.youtube.com/watch?v=VIDEO_ID_HERE",
-                "embed_url": "https://www.youtube.com/embed/VIDEO_ID_HERE",
-                "duration_minutes": 4,
-                "prompt": "Watch this short video about story elements. Pause when it asks you to think of a character."
-            }
-        ],
+        "resources": [],
         "quiz": [
             {
                 "question": "Which of these is NOT a main part of a story?",
@@ -104,7 +91,7 @@ LESSON_LIBRARY = [
             },
             {
                 "title": "Mystery Maker",
-                "description": "Create your own Story Mystery using 8 objects. Write the fractions for each group and include at least one pair of equivalent fractions.",
+                "description": "Create your own Story Mystery. Invent a character, a setting and a problem, then hide a clue that helps solve it. Ask a family member to guess the solution.",
                 "type": "create",
                 "difficulty": "stretch",
                 "evidence_type": "photo"
