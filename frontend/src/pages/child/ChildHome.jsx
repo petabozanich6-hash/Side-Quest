@@ -20,6 +20,20 @@ export default function ChildHome() {
         <p className="text-sm opacity-75 mt-1">Here's what to learn today.</p>
       </section>
 
+      {unseen.length > 0 && (
+        <section className="paper-card p-5" style={{backgroundColor:"#FEF3C7", borderColor:"#D4A574"}} data-testid="cheers-banner">
+          <div className="flex items-center gap-2 mb-2"><Heart size={18} style={{color:"#C77B5B"}}/><h2 className="font-display text-lg font-bold" style={{color:"#1F3B2D"}}>From your parent</h2></div>
+          <div className="space-y-2">
+            {unseen.slice(0,3).map(c => (
+              <div key={c.id} className="rounded-xl bg-white p-3 flex items-start gap-3" data-testid={`cheer-${c.id}`}>
+                <span className="text-2xl">{c.emoji}</span>
+                <div className="flex-1 text-sm">{c.message}<div className="text-xs text-stone-500 mt-0.5">— {c.from_name}</div></div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {data.today.length === 0 ? (
         <div className="rounded-3xl border-2 border-dashed border-slate-300 bg-white/70 p-10 text-center" data-testid="no-work">
           <Sparkles className="mx-auto text-slate-400 mb-3" size={32} />

@@ -22,6 +22,7 @@ import SideQuestPage from "./pages/parent/SideQuest";
 import LifeLearningPage from "./pages/parent/LifeLearning";
 import LearningPlansPage from "./pages/parent/LearningPlans";
 import ReadingLogPage from "./pages/parent/ReadingLog";
+import ChildOverviewPage from "./pages/parent/ChildOverview";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
 import ChildLesson from "./pages/child/ChildLesson";
@@ -49,6 +50,7 @@ function Router() {
       <Route path="/parent" element={<Guard role="parent"><ParentLayout /></Guard>}>
         <Route index element={<ParentDashboard />} />
         <Route path="children" element={<ChildrenPage />} />
+        <Route path="children/:sid" element={<ChildOverviewPage />} />
         <Route path="curriculum" element={<CurriculumPage />} />
         <Route path="lessons" element={<LessonsPage />} />
         <Route path="ai-planner" element={<AIPlannerPage />} />
