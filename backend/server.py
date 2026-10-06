@@ -702,7 +702,7 @@ What they said: "{data.situation or '(nothing yet)'}"
         client = genai.Client(api_key=GOOGLE_AI_API_KEY)
 
         response = await client.aio.models.generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-3.8-flash",
             contents=prompt,
             config={
                 "system_instruction": (
@@ -1615,7 +1615,7 @@ async def call_claude(prompt: str) -> str:
     client = genai.Client(api_key=GOOGLE_AI_API_KEY)
 
     response = await client.aio.models.generate_content(
-        model="gemini-2.0-flash",
+        model="gemini-3.8-flash",
         contents=prompt,
         config={
             "system_instruction": (
