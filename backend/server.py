@@ -2173,7 +2173,7 @@ async def startup():
         await db.users.insert_one({"id": user_id, "email": OWNER_EMAIL, "password": hash_pw("SideQuest2026!"),
                                    "name": "Peta", "family_id": family_id, "is_owner": True, "created_at": now_iso()})
         logger.info(f"Seeded owner account {OWNER_EMAIL}")
-            for lesson in CORE_LESSONS:
+    for lesson in CORE_LESSONS:
         existing = await db.lessons.find_one({"seed_key": lesson["seed_key"]})
         if not existing:
             await db.lessons.insert_one({
