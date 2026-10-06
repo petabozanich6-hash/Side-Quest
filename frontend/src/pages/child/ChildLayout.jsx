@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, Home, FolderOpen, LogOut } from "lucide-react";
+import { Compass, Home, FolderOpen, LogOut, Heart } from "lucide-react";
 import { api } from "../../lib/api";
 import PetPicker from "./PetPicker";
 import PetCompanion from "../../components/shared/PetCompanion";
@@ -43,6 +43,7 @@ export default function ChildLayout() {
           <nav className="flex items-center gap-1 text-sm">
             <Link to="/child" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-home"><Home size={14} className="inline mr-1"/> Home</Link>
             <Link to="/child/portfolio" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/portfolio" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/portfolio" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-portfolio"><FolderOpen size={14} className="inline mr-1"/> Portfolio</Link>
+            <Link to="/child/room" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/room" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/room" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-room"><Heart size={14} className="inline mr-1"/> Pet room</Link>
             <button onClick={doLogout} className="rounded-full px-3 py-1.5 font-bold hover:bg-white" style={{color:"#2A2822"}} data-testid="child-logout"><LogOut size={14} className="inline mr-1"/> Sign out</button>
           </nav>
         </div>
@@ -50,8 +51,8 @@ export default function ChildLayout() {
       <main className="mx-auto max-w-6xl p-6 pb-28">
         <Outlet />
       </main>
-      {/* Pet companion appears on every child page except lesson page (which embeds it itself) */}
-      {!loc.pathname.includes("/lesson/") && <PetCompanion/>}
+      {/* Pet companion appears on every child page except lesson + room pages */}
+      {!loc.pathname.includes("/lesson/") && !loc.pathname.includes("/room") && <PetCompanion/>}
     </div>
   );
 }

@@ -26,6 +26,7 @@ import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
 import ChildLesson from "./pages/child/ChildLesson";
 import ChildPortfolio from "./pages/child/ChildPortfolio";
+import PetRoom from "./pages/child/PetRoom";
 
 function Guard({ role, children }) {
   const { user, loading } = useAuth();
@@ -64,6 +65,7 @@ function Router() {
         <Route index element={<ChildHome />} />
         <Route path="lesson/:aid" element={<ChildLesson />} />
         <Route path="portfolio" element={<ChildPortfolio />} />
+        <Route path="room" element={<PetRoom />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

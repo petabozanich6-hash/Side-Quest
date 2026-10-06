@@ -435,20 +435,10 @@ NSW_LEARNING_AREAS = {
 
 # Sample curriculum outcomes - these are plain-language representations, parent must verify against NESA
 NSW_OUTCOMES_SEED = [
-    {"code": "ENe-RECOM-01", "stage": "ES1", "learning_area": "English", "description": "Comprehends independently read texts using background knowledge, word knowledge and understanding of how language works", "source": "NSW English K-10 Syllabus (NESA 2022)"},
-    {"code": "MAe-RWN-01", "stage": "ES1", "learning_area": "Mathematics", "description": "Reads numerals and represents whole numbers to at least 20", "source": "NSW Mathematics K-10 Syllabus (NESA 2022)"},
-    {"code": "EN2-RECOM-01", "stage": "S2", "learning_area": "English", "description": "Reads and comprehends texts for wide purposes using knowledge of text structures and language, and by monitoring comprehension", "source": "NSW English K-10 Syllabus (NESA 2022)"},
-    {"code": "MA2-RWN-01", "stage": "S2", "learning_area": "Mathematics", "description": "Applies an understanding of place value and the role of zero to represent numbers to at least tens of thousands", "source": "NSW Mathematics K-10 Syllabus (NESA 2022)"},
-    {"code": "ST2-1WS-S", "stage": "S2", "learning_area": "Science and Technology", "description": "Questions, plans and conducts scientific investigations, collects and summarises data and communicates using scientific representations, text and language", "source": "NSW Science and Technology K-6 Syllabus"},
-    {"code": "GE2-1", "stage": "S2", "learning_area": "HSIE", "description": "Examines features and characteristics of places and environments", "source": "NSW Geography K-10 Syllabus"},
-    {"code": "EN4-RVL-01", "stage": "S4", "learning_area": "English", "description": "Uses a range of personal, creative and critical strategies to interpret complex texts", "source": "NSW English 7-10 Syllabus (NESA 2022)"},
-    {"code": "MA4-ARI-C-01", "stage": "S4", "learning_area": "Mathematics", "description": "Applies arithmetic operations to positive and negative integers to solve problems", "source": "NSW Mathematics 7-10 Syllabus (NESA 2022)"},
-    {"code": "SC4-WS-01", "stage": "S4", "learning_area": "Science", "description": "Identifies questions and problems that can be tested or researched and makes predictions based on scientific knowledge", "source": "NSW Science 7-10 Syllabus"},
-    {"code": "HT4-1", "stage": "S4", "learning_area": "HSIE", "description": "Describes the nature of history and archaeology and explains their contribution to an understanding of the past", "source": "NSW History 7-10 Syllabus"},
-    {"code": "EN11-1", "stage": "S6", "learning_area": "English", "description": "Responds to and composes increasingly complex texts for understanding, interpretation, analysis, imaginative expression and pleasure", "source": "NSW English Standard Stage 6 Syllabus"},
-    {"code": "MA11-1", "stage": "S6", "learning_area": "Mathematics", "description": "Uses algebraic and graphical techniques to solve, and where appropriate, compare alternative solutions to problems", "source": "NSW Mathematics Advanced Stage 6 Syllabus"},
-    {"code": "CH11-1", "stage": "S6", "learning_area": "Science", "description": "Develops and evaluates questions and hypotheses for scientific investigation", "source": "NSW Chemistry Stage 6 Syllabus"},
+    # NSW outcome seed is maintained in /app/backend/nsw_outcomes.py
 ]
+from nsw_outcomes import NSW_OUTCOMES_SEED as _NSW_OUTCOMES_SEED_FULL, SEED_VERSION
+NSW_OUTCOMES_SEED = _NSW_OUTCOMES_SEED_FULL
 
 async def ensure_pet(student_id: str, family_id: str):
     return await db.pets.find_one({"student_id": student_id}, {"_id": 0})
@@ -1596,10 +1586,12 @@ async def curriculum_audit(student_id: Optional[str] = None, user=Depends(requir
 @app.on_event("startup")
 async def startup():
     init_storage()
-    count = await db.outcomes.count_documents({})
-    if count == 0:
+    cfg = await db.app_config.find_one({"id": "seed"}) or {}
+    if cfg.get("outcomes_version", 0) < SEED_VERSION:
+        await db.outcomes.delete_many({})
         await db.outcomes.insert_many([{**o, "id": new_id()} for o in NSW_OUTCOMES_SEED])
-        logger.info("Seeded NSW outcomes")
+        await db.app_config.update_one({"id": "seed"}, {"$set": {"outcomes_version": SEED_VERSION, "updated_at": now_iso()}}, upsert=True)
+        logger.info(f"Reseeded NSW outcomes to version {SEED_VERSION} ({len(NSW_OUTCOMES_SEED)} entries)")
     # Owner account seed
     owner = await db.users.find_one({"email": OWNER_EMAIL})
     if not owner:
