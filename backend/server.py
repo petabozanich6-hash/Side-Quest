@@ -1199,33 +1199,31 @@ async def create_unit(data: UnitIn, user=Depends(require_parent)):
 
 # ----- Lessons -----
 @api.get("/lessons")
-async def list_lessons(unit_id: Optional[str] = None, stage: Optional[str] = None, user=Depends(require_parent)):
-    q = {"family_id": user["family_id"]}
-    if unit_id: q["unit_id"] = unit_id
-    if stage: q["stage"] = stage
-    return await db.lessons.find(q, {"_id": 0}).sort("created_at", -1).to_list(500)
+async def list_lessons(
+    unit_id: Optional[str] = None,
+    stage: Optional[str] = None,
+    user=Depends(require_parent)
+):
+    q = {
+        "$or": [
+            {"family_id": user["family_id"]},
+            {"library": True}
+        ]
+    }
 
-@api.post("/lessons")
-async def create_lesson(data: LessonIn, user=Depends(require_parent)):
-    lesson = {**data.model_dump(), "id": new_id(), "family_id": user["family_id"], "created_at": now_iso()}
-    await db.lessons.insert_one(lesson)
-    return strip_mongo(lesson)
+    filters = []
+    if unit_id:
+        filters.append({"unit_id": unit_id})
+    if stage:
+        filters.append({"stage": stage})
 
-@api.get("/lessons/{lid}")
-async def get_lesson(lid: str, user=Depends(current_user)):
-    l = await db.lessons.find_one({"id": lid, "family_id": user["family_id"]}, {"_id": 0})
-    if not l: raise HTTPException(404)
-    return l
+    if filters:
+        q = {"$and": [q, *filters]}
 
-@api.put("/lessons/{lid}")
-async def update_lesson(lid: str, data: dict, user=Depends(require_parent)):
-    await db.lessons.update_one({"id": lid, "family_id": user["family_id"]}, {"$set": data})
-    return await db.lessons.find_one({"id": lid}, {"_id": 0})
-
-@api.delete("/lessons/{lid}")
-async def delete_lesson(lid: str, user=Depends(require_parent)):
-    await db.lessons.delete_one({"id": lid, "family_id": user["family_id"]})
-    return {"ok": True}
+    return await db.lessons.find(
+        q,
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(500)
 
 # ----- Assignments -----
 @api.get("/assignments")
