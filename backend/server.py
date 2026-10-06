@@ -2231,6 +2231,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@api.get("/lessons/{lesson_id}")
+async def get_lesson(lesson_id: str):
+    lesson = await db.lessons.find_one({"id": lesson_id})
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+    lesson.pop("_id", None)
+    return lesson
+
 
 @api.post("/lessons/{lesson_id}/quiz")
 async def submit_quiz(lesson_id: str, request: Request, user=Depends(current_user)):
