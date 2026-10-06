@@ -1,75 +1,76 @@
 # Side Quest Learning — PRD
 
 ## Original Problem Statement
-Build a comprehensive K-12 homeschool platform called "Side Quest Learning" with Parent Hub + Child Hub, NSW initial curriculum (K through Year 12 = Early Stage 1 to Stage 6), AI lesson generation, evidence portfolio with photo/audio/video, resource library with licence badges, calendar, curriculum audit, and seasonal "Side Quest" lesson generation. Must be a genuine one-stop-shop for homeschool families — not wishy-washy, not a thin wrapper around YouTube videos.
+Build a comprehensive K-12 homeschool platform called "Side Quest Learning" with Parent Hub + Child Hub, NSW initial curriculum (K-12), AI lesson generation, evidence portfolio, resource library, calendar, curriculum audit, and seasonal "Side Quest" lesson generation. A genuine one-stop-shop for homeschool families.
 
 ## User Choices
 - AI: Claude Sonnet 5.5 via Emergent Universal Key
-- Auth: JWT parent + child username/PIN + Emergent-managed Google OAuth for parents
-- MVP scope: Foundation + Parent Hub + Child Hub + AI lesson gen + Evidence + Basic calendar
+- Auth: Emergent-managed Google OAuth + JWT email/password for parents; username/PIN for children
 - File storage: Emergent Object Storage
-- Design: Nature-inspired, earthy, cosy — Fraunces + Nunito + Caveat typography, forest/moss/clay/cream palette, botanical SVG decorations
-- Pet companion: Yes, nature-themed (fox, owl, turtle, hedgehog, fawn, squirrel, rabbit, dragon)
-- Free platform (no "start free" marketing); paid resources are opt-in later
-
-## User Personas
-1. **Homeschool Parent (Owner)** — plans, generates lessons, reviews evidence, approves resources, runs audits, prepares AP inspection documents.
-2. **Student (Child)** — logs in with username/PIN, completes assigned lessons, submits typed/photo/audio/video work, tends to a learning companion pet.
-3. **Future: Support Adult / Tutor** — scaffolded only.
+- Design: Nature-inspired, Fraunces + Nunito + Caveat typography, forest/moss/clay/cream palette
+- Pet companion: 8 species (fox, owl, turtle, hedgehog, fawn, squirrel, rabbit, dragon)
 
 ## Architecture
-- **Backend**: FastAPI + MongoDB (motor), JWT + Emergent Google OAuth with session cookies, bcrypt PINs, Claude Sonnet 5.5 via emergentintegrations, Emergent Object Storage for files.
-- **Frontend**: React 19 + React Router 7 + Tailwind + Shadcn/UI + Sonner + Lucide + custom SVG botanicals and pet characters. Nature-inspired dual persona (Parent Hub, age-adaptive Child Hub).
+- **Backend**: FastAPI + MongoDB (motor async), JWT + Emergent Google OAuth session cookies, bcrypt PINs, Claude Sonnet 5.5 via emergentintegrations, Emergent Object Storage.
+- **Frontend**: React 19 + React Router 7 + Tailwind + Shadcn/UI + Sonner + Lucide. Dual persona: Parent Hub, age-adaptive Child Hub.
 
 ## What's Been Implemented (Feb 2026)
 ### Backend
-- Auth: register/login (JWT), Google OAuth session exchange (`/auth/session`), child PIN login, cookie-first resolution
-- Family data isolation across every endpoint
-- Students, Programs, Units, Lessons CRUD
-- Assignments with status workflow
-- Submissions + Parent Feedback (incl. outcome mappings, XP awards to pet)
-- File upload/download via Emergent Object Storage with query-param auth
+- Auth: email/password + Google OAuth + child PIN login, cookie-first resolution
+- Family data isolation across all endpoints
+- Students, Programs, Units, Lessons CRUD + lesson delete
+- Assignments + status workflow
+- Submissions + Parent Feedback (outcome mappings, XP to pet)
+- File upload/download via Emergent Object Storage
 - Resources with licence badges + parent approval
-- Calendar events, full CRUD
-- NSW curriculum: 7 stages, learning areas by band, seeded sample outcomes
-- AI Lesson Generator (Claude Sonnet 5.5) — now includes `suggested_resources` (library/ABC Education/Scootle hints, no fake URLs) and `follow_up_challenges` (apply/teach/create/measure/quiz/project)
+- Calendar events full CRUD **+ GET /api/calendar/ics ICS export** (route ordered before `/calendar/{eid}` to avoid shadowing)
+- NSW curriculum: 7 stages, 137 outcomes seeded, NESA deep links, secondary/senior compulsory + elective patterns
+- AI Lesson Generator (Claude Sonnet 5.5): outcome codes **constrained to seeded set**, `outcome_alignment`, real URLs from approved providers (ABC/BBC/Khan/Scootle/CSIRO/NSW DoE), `suggested_resources`, `follow_up_challenges`
 - AI Side Quest Generator (seasonal/interest-themed)
-- AI Evidence Analysis + Life Learning AI mapping (baking → math/science/English etc.)
-- Life Evidence CRUD + AI outcome mapping + parent accept/reject per mapping
-- Learning Plans: AP-inspection-ready documents, AI-drafted, interest-woven
-- Reading Log: comprehensive NESA-friendly record with stats (unique books, minutes, pages, by type/mode)
-- Curriculum Audit (issue scanner + coverage matrix with life-learning folded in)
-- Pet Companion: species, levels (Egg→Legend), XP from submissions + feedback, AI-powered help in pet's voice
-- Owner account seeded with user's email `petabozanich6@gmail.com`
+- AI Evidence Analysis + Life Learning AI outcome mapping
+- Life Evidence CRUD + parent accept/reject per mapping
+- Learning Plans: AP-inspection-ready; **generate endpoint hardened** (tolerates minor AI JSON variance, synthesises defaults instead of 500)
+- Reading Log + stats (NESA-friendly: unique books, minutes, pages, by type/mode)
+- Curriculum Audit (coverage matrix + life-learning folded in)
+- **Pet Companion**: species, levels (Egg→Legend), XP from submissions + feedback, feed/**play**/**customize**/help AI, happiness tracking
+- **Cheers (parent-to-child high-fives)**: POST/GET/{cid}/seen; unseen cheers surface on `GET /api/dashboard/child.cheers`
+- **Student Overview**: `GET /api/students/{sid}/overview` returns student, pet, assignments, recent_submissions, cheers, reading_count, life_evidence
+- Owner account seeded (`petabozanich6@gmail.com`)
 
 ### Frontend
-- Nature-inspired aesthetic throughout: Fraunces serif + Nunito body + Caveat script, forest/moss/clay/cream palette, SVG botanical decorations (ferns, branches, leaves, flowers), paper textures, hand-drawn pet SVGs
-- Landing with hero, feature grid, pet showcase, botanical decor — removed "Start free" CTA (free platform)
-- Login + Register with Google button + email/password + nature art
-- Child login with warm welcome + pet illustration
-- Parent Hub navigation (12 pages): Dashboard, Children, Curriculum, Lessons, AI Planner, Side Quests, Learning Plans, Reading Log, Evidence, Life Learning, Resources, Calendar, Audit
-- Child Hub: age-adaptive theming (Early/Primary/Secondary/Senior)
-- Child Lesson experience: 12-step explicit teaching sequence + external resource suggestions + 3 follow-up challenges that unlock after submission
-- Pet Companion component: visible on every child page, speech bubble, XP + happiness tracking, AI "ask my pet for a nudge" using Claude
-- Pet Picker on first child login
-- Portfolio with status + parent feedback
+- Nature-inspired aesthetic, Fraunces + Nunito + Caveat, forest/moss/clay/cream, SVG botanicals, paper textures, hand-drawn pet SVGs
+- Landing, Login/Register (Google + email), Child login
+- Parent Hub (12 pages): Dashboard, Children + per-child Overview, Curriculum, Lessons, AI Planner, Side Quests, Learning Plans, Reading Log, Evidence, Life Learning, Resources, Calendar (with ICS export), Audit
+- Child Hub age-adaptive theming (Early/Primary/Secondary/Senior)
+- Child Lesson 12-step explicit teaching flow + external resources + 3 follow-up challenges
+- Pet Companion component + Pet Room (feed/play/customize/decorate)
+- Cheers banner on child dashboard; parent cheer-sending UI on Child Overview
+
+## Latest Session Changes (Oct 2026)
+- Added `POST/GET /api/cheers` + `POST /api/cheers/{cid}/seen`; child-side auto-mark-seen
+- `GET /api/dashboard/child` now returns unseen `cheers` array
+- Added `POST /api/pet/play` (+2 XP, +8 happiness) and `PUT /api/pet/customize` (name/background/accessories)
+- Added `GET /api/students/{sid}/overview` for the parent per-child view
+- Added `GET /api/calendar/ics` returning `text/calendar` with valid VCALENDAR body
+- Hardened `POST /api/learning-plans/{pid}/generate` with key-variant normalisation + default fallbacks (no more 500 on minor AI shape drift)
+- Fixed ChildHome lint: imported `Heart`, derived `unseen = data.cheers || []`
 
 ## Backlog
-### P0
-- PDF export for reports (print HTML works today)
-- Programs/Units builder UI (backend ready; parent builds via lessons today)
-
 ### P1
-- Google Calendar / ICS export integration
-- Senior Secondary course plan UI depth
-- Admin content review workflow
-- Learning games / interactives catalog
+- Reward cheer with +5 XP (optional spec extension)
+- Server-side validation: drop AI-returned `outcome_codes` not in the seeded set before persisting
+- Fallback for `/ai/generate-lesson` on transient AI JSON issues (mirror learning-plan hardening)
+- Programs/Units builder UI depth (backend ready)
+- Reading Challenge certificate (goal + shareable certificate)
+- Google Calendar one-click subscribe link
 
 ### P2
+- `server.py` → modularise (auth, curriculum, lessons, pet, cheers, life_evidence, learning_plans, calendar)
+- PDF export for Learning Plans & Portfolio
+- Senior Secondary HSC course plan UI depth
+- Multi-jurisdiction curriculum (QLD, VIC)
+- Pet accessories/unlockables per level
 - Support adult / tutor roles
-- Multi-jurisdiction curriculum expansion (QLD, VIC, etc.)
-- Contributor resource moderation queue UI
-- Pet accessories/unlockable looks per level
 
 ## Credentials
 See `/app/memory/test_credentials.md`.
