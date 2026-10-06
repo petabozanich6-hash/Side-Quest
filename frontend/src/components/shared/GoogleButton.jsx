@@ -11,10 +11,7 @@ export default function GoogleButton({
     <GoogleLogin
       text={label === "Continue with Google" ? "continue_with" : "signin_with"}
       useOneTap={false}
-      auto_select={false}
       onSuccess={async (credentialResponse) => {
-        console.log("Google credential received");
-
         try {
           const credential = credentialResponse?.credential;
 
@@ -22,12 +19,10 @@ export default function GoogleButton({
             throw new Error("Google did not return an ID credential");
           }
 
-          const response = await api.post(
-            "/auth/google",
-            { credential },
-          );
+          const response = await api.post("/auth/google", {
+            credential,
+          });
 
-          console.log("Side Quest Google login succeeded");
           onSuccess?.(response.data);
         } catch (error) {
           console.error(
