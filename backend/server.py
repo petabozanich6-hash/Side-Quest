@@ -2,8 +2,8 @@
 import os
 import uuid
 import json
-from seed_lessons import CORE_LESSONS
 import logging
+from seed_lessons import CORE_LESSONS
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional, Dict, Any
@@ -2175,6 +2175,18 @@ async def startup():
         await db.users.insert_one({"id": user_id, "email": OWNER_EMAIL, "password": hash_pw("SideQuest2026!"),
                                    "name": "Peta", "family_id": family_id, "is_owner": True, "created_at": now_iso()})
         logger.info(f"Seeded owner account {OWNER_EMAIL}")
+            for lesson in CORE_LESSONS:
+        existing = await db.lessons.find_one({"seed_key": lesson["seed_key"]})
+        if not existing:
+            await db.lessons.insert_one({
+                **lesson,
+                "id": new_id(),
+                "family_id": None,
+                "created_at": now_iso(),
+                "updated_at": now_iso(),
+                "status": "approved"
+            })
+    logger.info(f"Ensured {len(CORE_LESSONS)} starter lessons are available")
 
 @app.on_event("shutdown")
 async def shutdown():
