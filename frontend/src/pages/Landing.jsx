@@ -99,7 +99,7 @@ export default function Landing() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           <Feature icon={Users} title="One family, every stage" desc="Add children from Kindergarten to Year 12. Different subject levels per child. Private by family." tint="#4A5D3A"/>
-          <Feature icon={Sparkles} title="AI lesson maker" desc="Claude Sonnet 5.5 drafts stage-appropriate lessons with explicit teaching, success criteria, and offline alternatives." tint="#C77B5B"/>
+          <Feature icon={Sparkles} title="Ready-made lessons" desc="Stage-appropriate lessons with explicit teaching, success criteria, NESA outcome tags, and offline alternatives." tint="#C77B5B"/>
           <Feature icon={Camera} title="Evidence portfolio" desc="Typed answers, photos of paper work, scans, audio, video — stored privately for parent review." tint="#6B8A5B"/>
           <Feature icon={CalendarDays} title="Family calendar" desc="Month, week and day planning. Catch-up days, excursions, and co-ops." tint="#C8893B"/>
           <Feature icon={BookOpen} title="Curriculum audit" desc="Spot lessons without outcomes, missing evidence, unapproved resources and coverage gaps." tint="#4A5D3A"/>
