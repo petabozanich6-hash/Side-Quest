@@ -4,6 +4,7 @@ import uuid
 import json
 import logging
 from seed_lessons import CORE_LESSONS
+from lesson_library import LESSON_LIBRARY, LESSON_LIBRARY_VERSION
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional, Dict, Any
@@ -2173,6 +2174,32 @@ async def startup():
         await db.users.insert_one({"id": user_id, "email": OWNER_EMAIL, "password": hash_pw("SideQuest2026!"),
                                    "name": "Peta", "family_id": family_id, "is_owner": True, "created_at": now_iso()})
         logger.info(f"Seeded owner account {OWNER_EMAIL}")
+        lesson_cfg = await db.app_config.find_one({"id": "lesson_library"}) or {}
+    if lesson_cfg.get("version", 0) < LESSON_LIBRARY_VERSION:
+        for lesson in LESSON_LIBRARY:
+            await db.lessons.update_one(
+                {"seed_key": lesson["seed_key"]},
+                {
+                    "$set": {
+                        **lesson,
+                        "family_id": None,
+                        "status": "approved",
+                        "updated_at": now_iso()
+                    },
+                    "$setOnInsert": {
+                        "id": new_id(),
+                        "created_at": now_iso()
+                    }
+                },
+                upsert=True
+            )
+        await db.app_config.update_one(
+            {"id": "lesson_library"},
+            {"$set": {"version": LESSON_LIBRARY_VERSION, "updated_at": now_iso()}},
+            upsert=True
+        )
+        logger.info(f"Seeded {len(LESSON_LIBRARY)} comprehensive lessons")
+
     for lesson in CORE_LESSONS:
         existing = await db.lessons.find_one({"seed_key": lesson["seed_key"]})
         if not existing:
@@ -2200,3 +2227,75 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@api.post("/lessons/{lesson_id}/quiz")
+async def submit_quiz(lesson_id: str, request: Request, user=Depends(get_current_user)):
+    data = await request.json()
+    answers = data.get("answers", [])
+
+    lesson = await db.lessons.find_one({"id": lesson_id})
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+
+    quiz = lesson.get("quiz", [])
+    results = []
+    correct_count = 0
+
+    for index, answer in enumerate(answers):
+        if index >= len(quiz):
+            continue
+
+        question = quiz[index]
+        is_correct = answer == question.get("correct_index")
+        if is_correct:
+            correct_count += 1
+
+        results.append({
+            "question_index": index,
+            "selected": answer,
+            "correct_index": question.get("correct_index"),
+            "is_correct": is_correct,
+            "explanation": question.get("explanation", "")
+        })
+
+    result = {
+        "id": new_id(),
+        "lesson_id": lesson_id,
+        "child_id": user["id"],
+        "score": correct_count,
+        "total": len(quiz),
+        "results": results,
+        "completed_at": now_iso()
+    }
+
+    await db.quiz_results.insert_one(result)
+    return result
+
+    @api.post("/lessons/{lesson_id}/evidence")
+async def upload_evidence(lesson_id: str, request: Request, user=Depends(get_current_user)):
+    data = await request.json()
+
+    lesson = await db.lessons.find_one({"id": lesson_id})
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+
+    evidence = {
+        "id": new_id(),
+        "lesson_id": lesson_id,
+        "child_id": user["id"],
+        "type": data.get("type", "text"),
+        "text": data.get("text", ""),
+        "file_name": data.get("file_name", ""),
+        "file_data": data.get("file_data", ""),
+        "submitted_at": now_iso()
+    }
+
+    await db.lesson_evidence.insert_one(evidence)
+    return {"id": evidence["id"], "message": "Evidence saved"}
+
+    @api.get("/lessons/{lesson_id}/evidence")
+async def get_evidence(lesson_id: str, user=Depends(get_current_user)):
+    evidence = await db.lesson_evidence.find({"lesson_id": lesson_id}).to_list(100)
+    for item in evidence:
+        item.pop("_id", None)
+    return evidence
