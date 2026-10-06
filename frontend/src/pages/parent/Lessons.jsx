@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
-import { Printer, Eye, X, Send, Trash2 } from "lucide-react";
+import { Printer, Eye, X, Send, Trash2, ArrowLeft, BookOpen } from "lucide-react";
+
+const YEARS = ["Kindergarten", "Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6", "Year 7", "Year 8", "Year 9", "Year 10"];
+const yearOf = (l) => l.year_level || (l.stage ? `Stage ${l.stage}` : "Other");
 
 export default function LessonsPage() {
   const [lessons, setLessons] = useState([]);
   const [students, setStudents] = useState([]);
   const [view, setView] = useState(null);
   const [assignOpen, setAssignOpen] = useState(null);
+  const [params, setParams] = useSearchParams();
+  const year = params.get("year");
 
   const load = () => api.get("/lessons").then(r => setLessons(r.data));
   useEffect(() => {
@@ -19,7 +24,7 @@ export default function LessonsPage() {
   const del = async (id) => {
     if (!window.confirm("Delete this lesson? Submissions remain for your records.")) return;
     try { await api.delete(`/lessons/${id}`); toast.success("Deleted"); load(); }
-    catch { toast.error("Failed"); }
+    catch (err) { toast.error(err.response?.data?.detail || "Failed"); }
   };
 
   const assign = async (studentId, lessonId) => {
@@ -36,38 +41,61 @@ export default function LessonsPage() {
     w.document.close(); w.print();
   };
 
+  const counts = {};
+  lessons.forEach(l => { const y = yearOf(l); counts[y] = (counts[y] || 0) + 1; });
+  const extraGroups = Object.keys(counts).filter(y => !YEARS.includes(y));
+  const groups = [...YEARS, ...extraGroups];
+  const yearLessons = year ? lessons.filter(l => yearOf(l) === year) : [];
+
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="lessons-page">
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="font-display text-3xl font-bold text-slate-900">Lessons</h1>
-          <p className="text-sm text-slate-600 mt-1">Hand-created and library lessons for your family.</p>
+          {year && (
+            <button onClick={() => setParams({})} className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900" data-testid="back-to-years"><ArrowLeft size={14}/> All year groups</button>
+          )}
+          <h1 className="font-display text-3xl font-bold text-slate-900">{year ? `${year} lessons` : "Lessons"}</h1>
+          <p className="text-sm text-slate-600 mt-1">{year ? "Premade lessons aligned to the curriculum outcomes for this year." : "Choose a year group to see its premade lessons."}</p>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {lessons.map(l => (
-          <div key={l.id} className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col" data-testid={`lesson-${l.id}`}>
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <div className="font-mono text-[10px] uppercase tracking-wider text-slate-500">{l.stage} · {l.learning_area}{l.is_side_quest ? " · Side Quest" : ""}</div>
-                <h3 className="font-display text-lg font-semibold text-slate-900 mt-1 leading-tight">{l.title}</h3>
+      {!year && (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" data-testid="year-groups">
+          {groups.map(y => (
+            <button key={y} onClick={() => setParams({ year: y })} className="text-left rounded-2xl border border-slate-200 bg-white p-5 hover:border-slate-400 transition" data-testid={`year-${y}`}>
+              <BookOpen size={18} className="text-slate-500"/>
+              <div className="font-display text-lg font-semibold text-slate-900 mt-3">{y}</div>
+              <div className="text-xs text-slate-500 mt-1">{counts[y] ? `${counts[y]} lesson${counts[y] === 1 ? "" : "s"}` : "No lessons yet"}</div>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {year && (
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {yearLessons.map(l => (
+            <div key={l.id} className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col" data-testid={`lesson-${l.id}`}>
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-wider text-slate-500">{l.stage} · {l.learning_area}{l.is_side_quest ? " · Side Quest" : ""}</div>
+                  <h3 className="font-display text-lg font-semibold text-slate-900 mt-1 leading-tight">{l.title}</h3>
+                </div>
+              </div>
+              <p className="mt-3 text-sm text-slate-600 line-clamp-3">{l.learning_intention}</p>
+              <div className="mt-3 flex flex-wrap gap-1">
+                {(l.outcome_codes||[]).map(c => <span key={c} className="font-mono text-[10px] px-2 py-0.5 bg-slate-100 rounded border border-slate-200">{c}</span>)}
+              </div>
+              <div className="mt-auto pt-4 flex items-center gap-2 flex-wrap">
+                <Link to={`/parent/lessons/${l.id}`} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`view-${l.id}`}><Eye size={12}/> View</Link>
+                <button onClick={()=>printLesson(l)} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`print-${l.id}`}><Printer size={12}/> Print</button>
+                <button onClick={()=>del(l.id)} className="rounded-lg border border-rose-300 text-rose-700 px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`del-lesson-${l.id}`}><Trash2 size={12}/> Delete</button>
+                <button onClick={()=>setAssignOpen(l)} className="ml-auto rounded-lg bg-slate-900 text-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`assign-${l.id}`}><Send size={12}/> Assign</button>
               </div>
             </div>
-            <p className="mt-3 text-sm text-slate-600 line-clamp-3">{l.learning_intention}</p>
-            <div className="mt-3 flex flex-wrap gap-1">
-              {(l.outcome_codes||[]).slice(0,3).map(c => <span key={c} className="font-mono text-[10px] px-2 py-0.5 bg-slate-100 rounded border border-slate-200">{c}</span>)}
-            </div>
-            <div className="mt-auto pt-4 flex items-center gap-2 flex-wrap">
-              <Link to={`/parent/lessons/${l.id}`} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`view-${l.id}`}><Eye size={12}/> View</Link>
-              <button onClick={()=>printLesson(l)} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`print-${l.id}`}><Printer size={12}/> Print</button>
-              <button onClick={()=>del(l.id)} className="rounded-lg border border-rose-300 text-rose-700 px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`del-lesson-${l.id}`}><Trash2 size={12}/> Delete</button>
-              <button onClick={()=>setAssignOpen(l)} className="ml-auto rounded-lg bg-slate-900 text-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`assign-${l.id}`}><Send size={12}/> Assign</button>
-            </div>
-          </div>
-        ))}
-        {lessons.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500">No lessons yet. Lessons from the library will appear here.</div>}
-      </div>
+          ))}
+          {yearLessons.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500">No premade lessons for {year} yet.</div>}
+        </div>
+      )}
 
       {view && <LessonView lesson={view} onClose={()=>setView(null)} />}
       {assignOpen && (
