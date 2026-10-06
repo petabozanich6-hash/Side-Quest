@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
-import { Sparkles, Printer, Eye, X, Send, Trash2 } from "lucide-react";
+import { Printer, Eye, X, Send, Trash2 } from "lucide-react";
 
 export default function LessonsPage() {
   const [lessons, setLessons] = useState([]);
@@ -32,7 +32,7 @@ export default function LessonsPage() {
 
   const printLesson = (l) => {
     const w = window.open("", "_blank");
-    w.document.write(`<html><head><title>${l.title}</title><style>body{font-family:Georgia,serif;max-width:720px;margin:40px auto;padding:0 20px;color:#111;}h1{font-size:24px;}h2{font-size:16px;margin-top:24px;border-bottom:1px solid #ccc;padding-bottom:4px;}p,li{line-height:1.6;font-size:14px;}</style></head><body><h1>${l.title}</h1><p><strong>Stage:</strong> ${l.stage} · <strong>Learning area:</strong> ${l.learning_area} · <strong>Duration:</strong> ${l.duration_minutes} min</p><h2>Learning intention</h2><p>${l.learning_intention||""}</p><h2>Success criteria</h2><ul>${(l.success_criteria||[]).map(c=>`<li>${c}</li>`).join("")}</ul><h2>Materials</h2><ul>${(l.materials||[]).map(m=>`<li>${m}</li>`).join("")}</ul><h2>Key vocabulary</h2><ul>${(l.key_vocabulary||[]).map(k=>`<li>${k}</li>`).join("")}</ul><h2>Explicit teaching</h2><p>${(l.explicit_teaching||"").replace(/\n/g,"<br/>")}</p><h2>Worked example</h2><p>${l.worked_example||""}</p><h2>Guided practice</h2><p>${l.guided_practice||""}</p><h2>Independent task</h2><p>${l.independent_task||""}</p><h2>Response</h2><p>${l.response_prompt||""}</p><h2>Evidence</h2><p>${l.evidence_requirement||""}</p><h2>Offline alternative</h2><p>${l.offline_alternative||""}</p><h2>Reflection</h2><p>${l.reflection_prompt||""}</p><p style="margin-top:40px;font-size:11px;color:#666;">Source note: ${l.source_note||"AI-suggested; parent verifies curriculum alignment."}</p></body></html>`);
+    w.document.write(`<html><head><title>${l.title}</title><style>body{font-family:Georgia,serif;max-width:720px;margin:40px auto;padding:0 20px;color:#111;}h1{font-size:24px;}h2{font-size:16px;margin-top:24px;border-bottom:1px solid #ccc;padding-bottom:4px;}p,li{line-height:1.6;font-size:14px;}</style></head><body><h1>${l.title}</h1><p><strong>Stage:</strong> ${l.stage} · <strong>Learning area:</strong> ${l.learning_area} · <strong>Duration:</strong> ${l.duration_minutes} min</p><h2>Learning intention</h2><p>${l.learning_intention||""}</p><h2>Success criteria</h2><ul>${(l.success_criteria||[]).map(c=>`<li>${c}</li>`).join("")}</ul><h2>Materials</h2><ul>${(l.materials||[]).map(m=>`<li>${m}</li>`).join("")}</ul><h2>Key vocabulary</h2><ul>${(l.key_vocabulary||[]).map(k=>`<li>${k}</li>`).join("")}</ul><h2>Explicit teaching</h2><p>${(l.explicit_teaching||"").replace(/\n/g,"<br/>")}</p><h2>Worked example</h2><p>${l.worked_example||""}</p><h2>Guided practice</h2><p>${l.guided_practice||""}</p><h2>Independent task</h2><p>${l.independent_task||""}</p><h2>Response</h2><p>${l.response_prompt||""}</p><h2>Evidence</h2><p>${l.evidence_requirement||""}</p><h2>Offline alternative</h2><p>${l.offline_alternative||""}</p><h2>Reflection</h2><p>${l.reflection_prompt||""}</p><p style="margin-top:40px;font-size:11px;color:#666;">Source note: ${l.source_note||"Parent verifies curriculum alignment."}</p></body></html>`);
     w.document.close(); w.print();
   };
 
@@ -41,9 +41,8 @@ export default function LessonsPage() {
       <div className="flex items-end justify-between">
         <div>
           <h1 className="font-display text-3xl font-bold text-slate-900">Lessons</h1>
-          <p className="text-sm text-slate-600 mt-1">AI-generated and hand-created lessons for your family.</p>
+          <p className="text-sm text-slate-600 mt-1">Hand-created and library lessons for your family.</p>
         </div>
-        <a href="/parent/ai-planner" className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5"><Sparkles size={14}/> Generate</a>
       </div>
 
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -54,7 +53,6 @@ export default function LessonsPage() {
                 <div className="font-mono text-[10px] uppercase tracking-wider text-slate-500">{l.stage} · {l.learning_area}{l.is_side_quest ? " · Side Quest" : ""}</div>
                 <h3 className="font-display text-lg font-semibold text-slate-900 mt-1 leading-tight">{l.title}</h3>
               </div>
-              {l.ai_generated && <span className="pill pill-submitted"><Sparkles size={10}/> AI</span>}
             </div>
             <p className="mt-3 text-sm text-slate-600 line-clamp-3">{l.learning_intention}</p>
             <div className="mt-3 flex flex-wrap gap-1">
@@ -68,7 +66,7 @@ export default function LessonsPage() {
             </div>
           </div>
         ))}
-        {lessons.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500">No lessons yet. Use the AI planner to generate one.</div>}
+        {lessons.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500">No lessons yet. Lessons from the library will appear here.</div>}
       </div>
 
       {view && <LessonView lesson={view} onClose={()=>setView(null)} />}
@@ -122,7 +120,7 @@ function LessonView({ lesson, onClose }) {
         <Section title="Linked outcome codes">
           <div className="flex flex-wrap gap-1">{(lesson.outcome_codes||[]).map(c=><span key={c} className="font-mono text-xs px-2 py-0.5 bg-slate-100 rounded border border-slate-200">{c}</span>)}</div>
         </Section>
-        <div className="mt-6 rounded-lg bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900">{lesson.source_note || "AI-suggested outcome mappings must be verified by the parent against NESA."}</div>
+        <div className="mt-6 rounded-lg bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900">{lesson.source_note || "Outcome mappings must be verified by the parent against NESA."}</div>
       </div>
     </div>
   );
