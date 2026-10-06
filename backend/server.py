@@ -779,12 +779,23 @@ async def register(data: RegisterIn):
 @api.post("/auth/login")
 async def login(data: LoginIn):
     user = await db.users.find_one({"email": data.email.lower()})
+
     if not user or not verify_pw(data.password, user["password"]):
         raise HTTPException(401, "Invalid credentials")
-    token = make_token({"sub": user["id"], "role": "parent", "family_id": user["family_id"]})
-    user.pop("password", None); user.pop("_id", None)
+
+    token = make_token({
+        "sub": user["id"],
+        "role": "parent",
+        "family_id": user["family_id"],
+    })
+
+    user.pop("password", None)
+    user.pop("_id", None)
+
     return {"token": token, "user": user}
-    @api.post("/auth/google")
+
+
+@api.post("/auth/google")
 async def google_login(data: GoogleLoginIn):
     client_id = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "")
 
@@ -816,7 +827,10 @@ async def google_login(data: GoogleLoginIn):
             "oauth_provider": "google",
             "updated_at": now_iso(),
         }
-        await db.users.update_one({"id": user["id"]}, {"$set": updates})
+        await db.users.update_one(
+            {"id": user["id"]},
+            {"$set": updates},
+        )
         user.update(updates)
     else:
         family_id = new_id()
@@ -860,6 +874,8 @@ async def google_login(data: GoogleLoginIn):
         "token": token,
         "user": user_safe,
     }
+
+
 
 @api.post("/auth/child-login")
 async def child_login(data: ChildLoginIn):
