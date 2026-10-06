@@ -11,6 +11,8 @@ import jwt
 import bcrypt
 import requests
 from google import genai
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Header, UploadFile, File, Form, Query, Cookie, Request
 from fastapi.responses import Response, StreamingResponse, JSONResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -176,6 +178,10 @@ class RegisterIn(BaseModel):
 class LoginIn(BaseModel):
     email: EmailStr
     password: str
+
+
+class GoogleLoginIn(BaseModel):
+    credential: str
 
 class ChildLoginIn(BaseModel):
     username: str
@@ -778,6 +784,82 @@ async def login(data: LoginIn):
     token = make_token({"sub": user["id"], "role": "parent", "family_id": user["family_id"]})
     user.pop("password", None); user.pop("_id", None)
     return {"token": token, "user": user}
+    @api.post("/auth/google")
+async def google_login(data: GoogleLoginIn):
+    client_id = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "")
+
+    if not client_id:
+        raise HTTPException(500, "Google sign-in is not configured")
+
+    try:
+        google_user = id_token.verify_oauth2_token(
+            data.credential,
+            google_requests.Request(),
+            client_id,
+        )
+    except Exception:
+        raise HTTPException(401, "Invalid Google sign-in token")
+
+    email = (google_user.get("email") or "").lower().strip()
+    name = google_user.get("name") or email.split("@")[0]
+    picture = google_user.get("picture")
+
+    if not email or not google_user.get("email_verified"):
+        raise HTTPException(401, "Google account email is not verified")
+
+    user = await db.users.find_one({"email": email})
+
+    if user:
+        updates = {
+            "name": name,
+            "picture": picture,
+            "oauth_provider": "google",
+            "updated_at": now_iso(),
+        }
+        await db.users.update_one({"id": user["id"]}, {"$set": updates})
+        user.update(updates)
+    else:
+        family_id = new_id()
+        user_id = new_id()
+
+        family = {
+            "id": family_id,
+            "name": f"{name}'s Family",
+            "owner_id": user_id,
+            "created_at": now_iso(),
+        }
+
+        user = {
+            "id": user_id,
+            "email": email,
+            "name": name,
+            "picture": picture,
+            "family_id": family_id,
+            "is_owner": True,
+            "oauth_provider": "google",
+            "created_at": now_iso(),
+        }
+
+        await db.families.insert_one(family)
+        await db.users.insert_one(user)
+
+    token = make_token({
+        "sub": user["id"],
+        "role": "parent",
+        "family_id": user["family_id"],
+    })
+
+    user_safe = {
+        key: value
+        for key, value in user.items()
+        if key not in ("password", "_id")
+    }
+    user_safe["role"] = "parent"
+
+    return {
+        "token": token,
+        "user": user_safe,
+    }
 
 @api.post("/auth/child-login")
 async def child_login(data: ChildLoginIn):
