@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../lib/api";
-import { Users, BookOpen, Camera, AlertTriangle, Sparkles, Plus, GraduationCap, Trees, FileCheck, Wand2 } from "lucide-react";
+import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2 } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
 
 const Stat = ({ icon: Icon, label, value, testid, accent="#4A5D3A" }) => (
@@ -55,10 +55,9 @@ export default function ParentDashboard() {
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Jump in</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           <Quick to="/parent/children" icon={Plus} label="Add a student" desc="Set up a child with username and PIN" tint="#4A5D3A" testid="quick-add-student"/>
-          <Quick to="/parent/ai-planner" icon={Sparkles} label="Generate a lesson" desc="Claude drafts a complete stage-appropriate lesson" tint="#C77B5B" testid="quick-ai-lesson"/>
           <Quick to="/parent/side-quest" icon={Wand2} label="Create a Side Quest" desc="Seasonal or interest-themed lessons mapped to outcomes" tint="#D4A574" testid="quick-sidequest"/>
-          <Quick to="/parent/life-learning" icon={Trees} label="Log life learning" desc="Baking, bushwalks, projects — AI maps them to outcomes" tint="#6B8A5B" testid="quick-life"/>
-          <Quick to="/parent/learning-plans" icon={FileCheck} label="Build a learning plan" desc="AP-ready learning plan drafted from your child's interests" tint="#1F3B2D" testid="quick-plan"/>
+          <Quick to="/parent/life-learning" icon={Trees} label="Log life learning" desc="Baking, bushwalks, projects — map them to outcomes" tint="#6B8A5B" testid="quick-life"/>
+          <Quick to="/parent/learning-plans" icon={FileCheck} label="Build a learning plan" desc="AP-ready learning plan built around your child's interests" tint="#1F3B2D" testid="quick-plan"/>
           <Quick to="/parent/reading-log" icon={BookOpen} label="Add to reading log" desc="Track every book, chapter and audiobook for records" tint="#C8893B" testid="quick-reading"/>
         </div>
       </section>
