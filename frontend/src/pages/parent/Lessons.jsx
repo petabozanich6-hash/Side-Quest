@@ -5,7 +5,22 @@ import { toast } from "sonner";
 import { Printer, Eye, X, Send, Trash2, ArrowLeft, BookOpen } from "lucide-react";
 
 const YEARS = ["Kindergarten", "Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6", "Year 7", "Year 8", "Year 9", "Year 10"];
-const yearOf = (l) => l.year_level || (l.stage ? `Stage ${l.stage}` : "Other");
+
+// A lesson can cover several years (e.g. "Year 3-4"); it is listed under each one.
+const yearsOf = (l) => {
+  const yl = String(l.year_level || "");
+  const out = [];
+  if (/kinder|foundation/i.test(yl)) out.push("Kindergarten");
+  const nums = (yl.match(/\d+/g) || []).map(Number);
+  let list = nums;
+  if (nums.length === 2 && /[-\u2013\u2014]|\bto\b/i.test(yl) && nums[0] < nums[1]) {
+    list = [];
+    for (let n = nums[0]; n <= nums[1]; n++) list.push(n);
+  }
+  list.forEach(n => { if (n >= 1 && n <= 10) out.push(`Year ${n}`); });
+  if (out.length === 0) out.push(l.stage ? `Stage ${l.stage}` : "Other");
+  return out;
+};
 
 export default function LessonsPage() {
   const [lessons, setLessons] = useState([]);
@@ -42,10 +57,10 @@ export default function LessonsPage() {
   };
 
   const counts = {};
-  lessons.forEach(l => { const y = yearOf(l); counts[y] = (counts[y] || 0) + 1; });
+  lessons.forEach(l => yearsOf(l).forEach(y => { counts[y] = (counts[y] || 0) + 1; }));
   const extraGroups = Object.keys(counts).filter(y => !YEARS.includes(y));
   const groups = [...YEARS, ...extraGroups];
-  const yearLessons = year ? lessons.filter(l => yearOf(l) === year) : [];
+  const yearLessons = year ? lessons.filter(l => yearsOf(l).includes(year)) : [];
 
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="lessons-page">
