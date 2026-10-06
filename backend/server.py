@@ -13,7 +13,7 @@ import requests
 from google import genai
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, Header, UploadFile, File, Form, Query, Cookie, Request
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Header, UploadFile, File, Form, Query, Cookie
 from fastapi.responses import Response, StreamingResponse, JSONResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, Field, EmailStr
@@ -91,7 +91,7 @@ async def get_object(path: str):
         logger.error(f"GridFS download failed: {e}")
         raise HTTPException(404, "File not found")
 
-# ===== Auth helpers =====
+# =====  helpers =====
 def hash_pw(pw: str) -> str:
     return bcrypt.hashpw(pw.encode(), bcrypt.gensalt()).decode()
 
@@ -105,22 +105,44 @@ def make_token(data: dict) -> str:
     payload = {**data, "exp": datetime.now(timezone.utc) + timedelta(days=JWT_DAYS)}
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALG)
 
-async def resolve_session_token(token: str):
-    """Resolve an Emergent Google OAuth session_token cookie to a user."""
-    sess = await db.user_sessions.find_one({"session_token": token}, {"_id": 0})
-    if not sess:
-        return None
-    exp = sess.get("expires_at")
-    if isinstance(exp, str):
-        exp = datetime.fromisoformat(exp)
-    if exp and exp.tzinfo is None:
-        exp = exp.replace(tzinfo=timezone.utc)
-    if exp and exp < datetime.now(timezone.utc):
-        return None
-    user = await db.users.find_one({"id": sess["user_id"]}, {"_id": 0, "password": 0})
+async def current_user(
+    creds: Optional[HTTPAuthorizationCredentials] = Depends(security),
+):
+    if not creds:
+        raise HTTPException(401, "Not authenticated")
+
+    try:
+        payload = jwt.decode(
+            creds.credentials,
+            JWT_SECRET,
+            algorithms=[JWT_ALG],
+        )
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(401, "Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(401, "Invalid token")
+
+    user_id = payload.get("sub")
+    role = payload.get("role")
+
+    if not user_id or role not in ("parent", "child"):
+        raise HTTPException(401, "Invalid authentication token")
+
+    if role == "parent":
+        user = await db.users.find_one(
+            {"id": user_id},
+            {"_id": 0, "password": 0},
+        )
+    else:
+        user = await db.students.find_one(
+            {"id": user_id},
+            {"_id": 0, "pin": 0},
+        )
+
     if not user:
-        return None
-    user["role"] = "parent"
+        raise HTTPException(401, "User not found")
+
+    user["role"] = role
     return user
 
 
@@ -753,35 +775,52 @@ async def register(data: RegisterIn):
     existing = await db.users.find_one({"email": data.email.lower()})
     if existing:
         raise HTTPException(400, "Email already registered")
+
     family_id = new_id()
     user_id = new_id()
+
     family = {
         "id": family_id,
         "name": data.family_name or f"{data.name}'s Family",
         "owner_id": user_id,
         "created_at": now_iso(),
     }
+
     user = {
         "id": user_id,
         "email": data.email.lower(),
         "password": hash_pw(data.password),
-        "name": data.name,
+        "name": data.name.strip(),
         "family_id": family_id,
         "is_owner": True,
         "created_at": now_iso(),
     }
+
     await db.families.insert_one(family)
     await db.users.insert_one(user)
-    token = make_token({"sub": user_id, "role": "parent", "family_id": family_id})
-    user.pop("password", None); user.pop("_id", None)
-    return {"token": token, "user": user, "family": strip_mongo(family)}
+
+    token = make_token({
+        "sub": user_id,
+        "role": "parent",
+        "family_id": family_id,
+    })
+
+    user.pop("password", None)
+    user.pop("_id", None)
+
+    return {
+        "token": token,
+        "user": user,
+        "family": strip_mongo(family),
+    }
+
 
 @api.post("/auth/login")
 async def login(data: LoginIn):
     user = await db.users.find_one({"email": data.email.lower()})
 
     if not user or not verify_pw(data.password, user["password"]):
-        raise HTTPException(401, "Invalid credentials")
+        raise HTTPException(401, "Invalid email or password")
 
     token = make_token({
         "sub": user["id"],
@@ -791,170 +830,46 @@ async def login(data: LoginIn):
 
     user.pop("password", None)
     user.pop("_id", None)
-
-    return {"token": token, "user": user}
-
-
-@api.post("/auth/google")
-async def google_login(data: GoogleLoginIn):
-    client_id = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "")
-
-    if not client_id:
-        raise HTTPException(500, "Google sign-in is not configured")
-
-    try:
-        google_user = id_token.verify_oauth2_token(
-            data.credential,
-            google_requests.Request(),
-            client_id,
-        )
-    except Exception:
-        raise HTTPException(401, "Invalid Google sign-in token")
-
-    email = (google_user.get("email") or "").lower().strip()
-    name = google_user.get("name") or email.split("@")[0]
-    picture = google_user.get("picture")
-
-    if not email or not google_user.get("email_verified"):
-        raise HTTPException(401, "Google account email is not verified")
-
-    user = await db.users.find_one({"email": email})
-
-    if user:
-        updates = {
-            "name": name,
-            "picture": picture,
-            "oauth_provider": "google",
-            "updated_at": now_iso(),
-        }
-        await db.users.update_one(
-            {"id": user["id"]},
-            {"$set": updates},
-        )
-        user.update(updates)
-    else:
-        family_id = new_id()
-        user_id = new_id()
-
-        family = {
-            "id": family_id,
-            "name": f"{name}'s Family",
-            "owner_id": user_id,
-            "created_at": now_iso(),
-        }
-
-        user = {
-            "id": user_id,
-            "email": email,
-            "name": name,
-            "picture": picture,
-            "family_id": family_id,
-            "is_owner": True,
-            "oauth_provider": "google",
-            "created_at": now_iso(),
-        }
-
-        await db.families.insert_one(family)
-        await db.users.insert_one(user)
-
-    token = make_token({
-        "sub": user["id"],
-        "role": "parent",
-        "family_id": user["family_id"],
-    })
-
-    user_safe = {
-        key: value
-        for key, value in user.items()
-        if key not in ("password", "_id")
-    }
-    user_safe["role"] = "parent"
+    user["role"] = "parent"
 
     return {
         "token": token,
-        "user": user_safe,
+        "user": user,
     }
-
 
 
 @api.post("/auth/child-login")
 async def child_login(data: ChildLoginIn):
-    student = await db.students.find_one({"username": data.username.lower()})
+    student = await db.students.find_one({
+        "username": data.username.lower(),
+    })
+
     if not student or not verify_pw(data.pin, student["pin"]):
         raise HTTPException(401, "Invalid username or PIN")
-    token = make_token({"sub": student["id"], "role": "child", "family_id": student["family_id"]})
-    student.pop("pin", None); student.pop("_id", None)
-    return {"token": token, "student": student}
+
+    token = make_token({
+        "sub": student["id"],
+        "role": "child",
+        "family_id": student["family_id"],
+    })
+
+    student.pop("pin", None)
+    student.pop("_id", None)
+    student["role"] = "child"
+
+    return {
+        "token": token,
+        "student": student,
+    }
+
 
 @api.get("/auth/me")
 async def me(user=Depends(current_user)):
     return user
 
-@api.post("/auth/session")
-async def auth_session(request: Request, response: Response):
-    """Exchange Emergent OAuth session_id for an app session.
-    Called by frontend AuthCallback with JSON body {"session_id": "..."}
-    """
-    body = await request.json()
-    session_id = body.get("session_id")
-    if not session_id:
-        raise HTTPException(400, "session_id required")
-    try:
-        resp = requests.get(
-            "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data",
-            headers={"X-Session-ID": session_id}, timeout=15,
-        )
-        resp.raise_for_status()
-        data = resp.json()
-    except Exception as e:
-        logger.error(f"Google session fetch failed: {e}")
-        raise HTTPException(401, "Could not verify Google session")
-
-    email = (data.get("email") or "").lower().strip()
-    name = data.get("name") or email.split("@")[0]
-    picture = data.get("picture")
-    session_token = data.get("session_token")
-    if not email or not session_token:
-        raise HTTPException(400, "Invalid Google session response")
-
-    # Find or create user+family
-    existing = await db.users.find_one({"email": email})
-    if existing:
-        user = existing
-        await db.users.update_one({"id": user["id"]}, {"$set": {"name": name, "picture": picture}})
-    else:
-        family_id = new_id(); user_id = new_id()
-        family = {"id": family_id, "name": f"{name}'s Family", "owner_id": user_id, "created_at": now_iso()}
-        user = {"id": user_id, "email": email, "name": name, "picture": picture,
-                "family_id": family_id, "is_owner": True, "oauth_provider": "google",
-                "created_at": now_iso()}
-        await db.families.insert_one(family)
-        await db.users.insert_one(user)
-
-    # Store session with 7-day expiry
-    expires_at = datetime.now(timezone.utc) + timedelta(days=7)
-    await db.user_sessions.insert_one({
-        "id": new_id(),
-        "user_id": user["id"],
-        "session_token": session_token,
-        "expires_at": expires_at.isoformat(),
-        "created_at": now_iso(),
-    })
-
-    response.set_cookie(
-        "session_token", session_token,
-        max_age=7 * 24 * 60 * 60,
-        httponly=True, secure=True, samesite="none", path="/"
-    )
-    user_safe = {k: v for k, v in user.items() if k not in ("password", "_id")}
-    user_safe["role"] = "parent"
-    return {"user": user_safe}
 
 @api.post("/auth/logout")
-async def logout(response: Response, session_token: Optional[str] = Cookie(None)):
-    if session_token:
-        await db.user_sessions.delete_one({"session_token": session_token})
-    response.delete_cookie("session_token", path="/", samesite="none", secure=True)
+async def logout():
     return {"ok": True}
 
 # ----- Students -----
