@@ -34,7 +34,7 @@ export default function Register() {
           <h2 className="font-display text-4xl font-bold leading-tight">Begin your family's learning journey.</h2>
           <ul className="mt-6 space-y-2.5 text-sm" style={{color:"#E8E2D1"}}>
             <li className="flex gap-2"><span>·</span>Multiple children, Kindergarten through Year 12</li>
-            <li className="flex gap-2"><span>·</span>AI lesson generator aligned to NSW stages</li>
+            <li className="flex gap-2"><span>·</span>Lessons aligned to NSW stages and NESA outcomes</li>
             <li className="flex gap-2"><span>·</span>Evidence portfolio with photo, audio, video, PDF</li>
             <li className="flex gap-2"><span>·</span>Printable + offline alternatives for every lesson</li>
             <li className="flex gap-2"><span>·</span>Each child gets a pocket pet that grows with them</li>
