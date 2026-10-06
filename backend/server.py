@@ -3,8 +3,6 @@ import os
 import uuid
 import json
 import logging
-from seed_lessons import CORE_LESSONS
-from lesson_library import LESSON_LIBRARY, LESSON_LIBRARY_VERSION
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional, Dict, Any
@@ -369,7 +367,7 @@ def strip_mongo(doc):
     return doc
 
 def can_view_lesson(lesson: dict, user: dict) -> bool:
-    """Library/starter lessons (no family) are visible to everyone; family lessons only to that family."""
+    """Library lessons (no family) are visible to everyone; family lessons only to that family."""
     owner_family = lesson.get("family_id")
     return owner_family is None or owner_family == user.get("family_id")
 
@@ -1150,13 +1148,23 @@ async def list_lessons(
     ).sort("created_at", -1).to_list(500)
 
 @api.post("/lessons")
-async def create_lesson(data: LessonIn, user=Depends(require_parent)):
+async def create_lesson(
+    data: LessonIn,
+    library: bool = Query(False),
+    user=Depends(require_parent),
+):
+    """Create a lesson. With ?library=true (owner only) it becomes a shared prebuilt lesson."""
     lesson = {
         **data.model_dump(),
         "id": new_id(),
         "family_id": user["family_id"],
         "created_at": now_iso(),
     }
+    if library:
+        if not user.get("is_owner"):
+            raise HTTPException(403, "Only the owner can create library lessons")
+        lesson["family_id"] = None
+        lesson["library"] = True
     await db.lessons.insert_one(lesson)
     return strip_mongo(lesson)
 
@@ -1173,9 +1181,14 @@ async def delete_lesson(lesson_id: str, user=Depends(require_parent)):
     lesson = await db.lessons.find_one({"id": lesson_id})
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
-    if lesson.get("family_id") != user["family_id"]:
+    owner_family = lesson.get("family_id")
+    is_library = owner_family is None
+    if is_library:
+        if not user.get("is_owner"):
+            raise HTTPException(status_code=403, detail="Only the owner can delete library lessons")
+    elif owner_family != user["family_id"]:
         raise HTTPException(status_code=403, detail="You can only delete your own lessons")
-    await db.lessons.delete_one({"id": lesson_id, "family_id": user["family_id"]})
+    await db.lessons.delete_one({"id": lesson_id})
     return {"ok": True}
 
 @api.post("/lessons/{lesson_id}/quiz")
@@ -1791,7 +1804,7 @@ async def curriculum_audit(student_id: Optional[str] = None, user=Depends(requir
             if le.get("status") == "demonstrated": coverage[key]["demonstrated"] += 1
     return {"issues": issues, "coverage": list(coverage.values()), "notice": "This audit identifies planning and evidence gaps. It does not determine registration eligibility or replace official advice."}
 
-# ----- Seed curriculum + demo -----
+# ----- Startup -----
 @app.on_event("startup")
 async def startup():
     cfg = await db.app_config.find_one({"id": "seed"}) or {}
@@ -1811,46 +1824,20 @@ async def startup():
                                    "name": "Peta", "family_id": family_id, "is_owner": True, "created_at": now_iso()})
         logger.info(f"Seeded owner account {OWNER_EMAIL}")
 
-    # Comprehensive lesson library seed
-    lesson_cfg = await db.app_config.find_one({"id": "lesson_library"}) or {}
-    if lesson_cfg.get("version", 0) < LESSON_LIBRARY_VERSION:
-        for lesson in LESSON_LIBRARY:
-            await db.lessons.update_one(
-                {"seed_key": lesson["seed_key"]},
-                {
-                    "$set": {
-                        **lesson,
-                        "family_id": None,
-                        "status": "approved",
-                        "updated_at": now_iso()
-                    },
-                    "$setOnInsert": {
-                        "id": new_id(),
-                        "created_at": now_iso()
-                    }
-                },
-                upsert=True
-            )
+    # One-time purge of the old prebuilt lessons (they are no longer seeded on startup).
+    purge_cfg = await db.app_config.find_one({"id": "old_library_purge"})
+    if not purge_cfg:
+        old = await db.lessons.find({"family_id": None}, {"id": 1}).to_list(5000)
+        old_ids = [l["id"] for l in old if l.get("id")]
+        if old_ids:
+            await db.lessons.delete_many({"id": {"$in": old_ids}})
+            await db.assignments.delete_many({"lesson_id": {"$in": old_ids}})
         await db.app_config.update_one(
-            {"id": "lesson_library"},
-            {"$set": {"version": LESSON_LIBRARY_VERSION, "updated_at": now_iso()}},
-            upsert=True
+            {"id": "old_library_purge"},
+            {"$set": {"purged": len(old_ids), "at": now_iso()}},
+            upsert=True,
         )
-        logger.info(f"Seeded {len(LESSON_LIBRARY)} comprehensive lessons")
-
-    # Original starter lessons
-    for lesson in CORE_LESSONS:
-        existing = await db.lessons.find_one({"seed_key": lesson["seed_key"]})
-        if not existing:
-            await db.lessons.insert_one({
-                **lesson,
-                "id": new_id(),
-                "family_id": None,
-                "created_at": now_iso(),
-                "updated_at": now_iso(),
-                "status": "approved"
-            })
-    logger.info(f"Ensured {len(CORE_LESSONS)} starter lessons are available")
+        logger.info(f"Purged {len(old_ids)} old prebuilt lessons")
 
 @app.on_event("shutdown")
 async def shutdown():
