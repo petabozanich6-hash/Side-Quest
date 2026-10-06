@@ -2,6 +2,7 @@
 import os
 import uuid
 import json
+from seed_lessons import CORE_LESSONS
 import logging
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
