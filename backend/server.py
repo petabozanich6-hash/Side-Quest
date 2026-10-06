@@ -2271,7 +2271,7 @@ async def submit_quiz(lesson_id: str, request: Request, user=Depends(get_current
     await db.quiz_results.insert_one(result)
     return result
 
-    @api.post("/lessons/{lesson_id}/evidence")
+   @api.post("/lessons/{lesson_id}/evidence")
 async def upload_evidence(lesson_id: str, request: Request, user=Depends(get_current_user)):
     data = await request.json()
 
@@ -2293,7 +2293,8 @@ async def upload_evidence(lesson_id: str, request: Request, user=Depends(get_cur
     await db.lesson_evidence.insert_one(evidence)
     return {"id": evidence["id"], "message": "Evidence saved"}
 
-    @api.get("/lessons/{lesson_id}/evidence")
+@api.get("/lessons/{lesson_id}/evidence")
+async def get_evidence(lesson_id: str, user=Depends(get_current_user)):
 async def get_evidence(lesson_id: str, user=Depends(get_current_user)):
     evidence = await db.lesson_evidence.find({"lesson_id": lesson_id}).to_list(100)
     for item in evidence:
