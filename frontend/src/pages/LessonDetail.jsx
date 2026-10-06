@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { api } from "../lib/api";
 
-const API = import.meta.env.VITE_API_URL || "";
+
 
 export default function LessonDetail() {
   const { id } = useParams();
@@ -10,20 +11,13 @@ export default function LessonDetail() {
 
   useEffect(() => {
     const loadLesson = async () => {
-      try {
-        const res = await fetch(`${API}/api/lessons/${id}`);
-        const data = await res.json();
-
-        if (!res.ok) {
-          setError(data.detail || "Could not load lesson");
-          return;
-        }
-
-        setLesson(data);
-      } catch {
-        setError("Could not load lesson");
-      }
-    };
+  try {
+    const response = await api.get(`/lessons/${id}`);
+    setLesson(response.data);
+  } catch (err) {
+    setError(err.response?.data?.detail || "Could not load lesson");
+  }
+};
 
     loadLesson();
   }, [id]);
