@@ -1,0 +1,207 @@
+{
+  "unit": {
+    "id": "S4-EN-U1",
+    "title": "Reading Complex Texts: Inference, Evidence and Language",
+    "stage": "S4",
+    "year_level": "Year 7",
+    "learning_area": "English",
+    "syllabus": "English K-10 Syllabus (NESA 2022)",
+    "outcome_codes": ["EN4-RVL-01", "EN4-URA-01"],
+    "text_note": "Designed around the student's independent novel (Dungeon Crawler Carl by Matt Dinniman). Every task tells the student to choose passages from where they are currently up to, so no book text is reproduced here and the parent can steer away from the most graphic scenes. Works with any novel.",
+    "progression": {
+      "step_order": ["video", "flip_cards", "teaching", "worked_example", "practice", "quiz", "task", "parent_approval"],
+      "quiz_pass_percent": 80,
+      "quiz_retry_shuffles_questions": true,
+      "explanations_shown_after_pass": true,
+      "next_lesson_unlocks_after": "quiz_passed_and_task_approved"
+    }
+  },
+  "lessons": [
+    {
+      "lesson_number": 1,
+      "title": "Reading Between the Lines: Inference and Evidence",
+      "duration_minutes": 60,
+      "primary_outcome": "EN4-RVL-01",
+      "supporting_outcomes": ["EN4-URA-01"],
+      "learning_intention": "We are learning to use a range of strategies to read a long, complex text, to make inferences from clues, and to back every idea with evidence from the text.",
+      "success_criteria": [
+        "I can explain what makes a text complex (ideas, structure, language).",
+        "I can use at least four reading strategies and say when to use each.",
+        "I can make an inference and support it with specific evidence.",
+        "I can write a short analytical paragraph using Point, Evidence, Explanation, Link."
+      ],
+      "prior_knowledge": "The student is reading a novel independently and can retell what has happened so far.",
+      "materials": ["The student's current novel", "Notebook or typed document", "Sticky notes or bookmarks", "Three coloured highlighters (optional)"],
+      "steps": [
+        {
+          "type": "video",
+          "title": "Watch: How a writer's words affect the reader",
+          "instruction": "Watch the video on the page and listen for how word choices produce feelings in the reader. Write down two things you learn before you move on.",
+          "resources": [
+            {"title": "BBC Bitesize KS3 English: Exploring effect on the reader (video and guide)", "provider": "BBC Bitesize", "url": "https://www.bbc.co.uk/bitesize/articles/z4vq7yc", "status": "page_verified"},
+            {"title": "Khan Academy: Supporting an inference with logical reasoning and evidence", "provider": "Khan Academy", "url": "", "status": "needs_link_check"}
+          ],
+          "unlock_rule": "Student ticks that they have watched and entered two notes."
+        },
+        {
+          "type": "flip_cards",
+          "title": "Flip to reveal: Key ideas",
+          "instruction": "Say what you think each card means before you flip it. You must flip every card to continue.",
+          "cards": [
+            {"front": "Complex text", "back": "A text that is demanding because of its ideas, its structure (for example, jumps in time, several storylines, or unusual layout) or its language."},
+            {"front": "Inference", "back": "A conclusion you reach by combining clues in the text with what you already know. It is more than a guess and more than a plain fact."},
+            {"front": "Evidence", "back": "A specific word, phrase or detail from the text that proves your idea."},
+            {"front": "Monitoring understanding", "back": "Checking as you read that things make sense, and stopping to fix it when they do not."},
+            {"front": "Strategy: Summarise", "back": "Stop at the end of a chapter and say what happened in 2 or 3 sentences, in your own words."},
+            {"front": "Strategy: Question", "back": "Ask 'Why did the character do that?' or 'What might happen next?' and read on to test your idea."},
+            {"front": "Strategy: Visualise", "back": "Picture the scene, character or setting in your head, then check your picture against the details."},
+            {"front": "Strategy: Connect", "back": "Link what you read to your own experience, to another text, or to something happening in the world."},
+            {"front": "Point of view", "back": "The position the story is told from. First person uses 'I'. Third person uses 'he', 'she' or 'they'."},
+            {"front": "PEEL paragraph", "back": "Point (your idea), Evidence (a quote or detail), Explanation (how the evidence proves it), Link (back to the question)."}
+          ],
+          "unlock_rule": "All cards flipped."
+        },
+        {
+          "type": "teaching",
+          "title": "Read and discuss: Strategies for complex texts",
+          "body": "A text can be complex in three ways. Its IDEAS may be big or abstract. Its STRUCTURE may jump around or follow several storylines. Its LANGUAGE may use humour, irony, invented words or technical terms. Many modern novels mix all three, and a novel written as a story inside a game or competition is a good example, because the reader has to follow the plot, notice the way the game messages are written, and work out what the writer thinks about the world being described.\n\nGood readers do four things while they read. They summarise at the end of a chapter. They ask questions and look for answers. They picture the scene. They connect to other things they know. They also monitor, which means noticing when they have lost track and going back to fix it.\n\nInference is the strategy that matters most in this unit. Writers rarely say everything outright. They show a character's feelings through actions, speech and what other characters notice. To make an inference, notice a clue, ask what it suggests, and check the rest of the text for more support. A strong inference always has evidence: a word, a phrase or a detail you can point to.\n\nTo explain your thinking in writing, use a PEEL paragraph. State your point, give a short quotation or detail, explain how it shows your point, and link back to the question."
+        },
+        {
+          "type": "worked_example",
+          "title": "Worked example: From clue to inference to PEEL",
+          "body": "Invented sentence (not from any novel): 'Jordan slammed the laptop shut, shoved his chair back and stared out of the window without a word.'\n\nStep 1, spot the clues: slammed, shoved, stared, without a word.\nStep 2, ask what they suggest: Jordan is upset or angry, but he is holding it in rather than shouting.\nStep 3, check what else you know: if the earlier paragraph mentioned bad news, that adds support.\nStep 4, write it as PEEL.\n\nPoint: The writer shows that Jordan is angry but keeping his feelings inside. Evidence: He 'slammed the laptop shut' and 'stared out of the window without a word'. Explanation: The violent verbs 'slammed' and 'shoved' show his anger, while the silence shows he is not letting it out in words. Link: This helps the reader understand that Jordan is under strain, even though the narrator never names his feeling."
+        },
+        {
+          "type": "practice",
+          "title": "Guided practice (with a parent)",
+          "body": "Open your novel at a page you have already read where a character reacts to something. Choose a short passage of about 8 to 10 lines. Together: (1) underline three clues about what the character feels or wants, (2) say aloud one inference that the clues support, (3) say aloud what other detail in the book supports it, (4) say the Point and Evidence sentences before writing anything down. Parent checks the passage first and can choose a different one."
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz: Inference, evidence and reading strategies",
+          "pass_percent": 80,
+          "questions": [
+            {"id": "S4EN-U1-L1-Q1", "outcome_codes": ["EN4-RVL-01"], "type": "multiple_choice", "question": "Which statement best describes an inference?", "options": ["A random guess", "A conclusion based on clues in the text plus what you already know", "A summary of the whole plot", "A word-for-word quotation"], "correct_index": 1, "explanation": "An inference combines clues from the text with your own knowledge. It is not a guess, and it is not simply stated in the text."},
+            {"id": "S4EN-U1-L1-Q2", "outcome_codes": ["EN4-RVL-01"], "type": "multiple_choice", "question": "Text: 'Sam's hands shook as he opened the envelope.' Which of these is an inference?", "options": ["Sam opened an envelope.", "Sam is nervous about what is inside.", "Sam's hands were shaking.", "There was an envelope."], "correct_index": 1, "explanation": "The other three are stated directly. Nervousness is worked out from the clue that his hands shook."},
+            {"id": "S4EN-U1-L1-Q3", "outcome_codes": ["EN4-RVL-01"], "type": "multiple_choice", "question": "Text: 'Maya slammed the door, stared at the floor and said nothing at dinner.' Which inference has the strongest support?", "options": ["Maya is upset or angry.", "Maya loves dinner.", "Maya is cold.", "Maya is hungry."], "correct_index": 0, "explanation": "Slamming the door and refusing to speak are clues to anger or upset. The other options have no support in the text."},
+            {"id": "S4EN-U1-L1-Q4", "outcome_codes": ["EN4-RVL-01"], "type": "true_false", "question": "True or false: A text can be complex because of its ideas, its structure or its language.", "options": ["True", "False"], "correct_index": 0, "explanation": "All three can make a text complex, and many texts have more than one."},
+            {"id": "S4EN-U1-L1-Q5", "outcome_codes": ["EN4-RVL-01"], "type": "multiple_choice", "question": "You have lost track of the plot in a long novel. What is the best strategy?", "options": ["Skip ahead and hope it makes sense", "Stop and summarise what has happened so far in your own words", "Read faster", "Give up on the book"], "correct_index": 1, "explanation": "Summarising is a monitoring strategy. It shows you where understanding broke down."},
+            {"id": "S4EN-U1-L1-Q6", "outcome_codes": ["EN4-RVL-01", "EN4-URA-01"], "type": "multiple_choice", "question": "What makes evidence strong when you support an inference?", "options": ["It sounds confident", "It points to specific words or details in the text", "It repeats the question", "It is as long as possible"], "correct_index": 1, "explanation": "Strong evidence is specific and can be found in the text."},
+            {"id": "S4EN-U1-L1-Q7", "outcome_codes": ["EN4-RVL-01"], "type": "multiple_choice", "question": "Which statement about point of view is correct?", "options": ["First-person narration uses 'I' or 'we'.", "Third-person narration uses 'I'.", "Point of view does not change what the reader learns.", "Only non-fiction has a point of view."], "correct_index": 0, "explanation": "First person uses 'I' or 'we'. Third person uses 'he', 'she' or 'they'. Point of view controls what the reader knows and how they feel about characters."},
+            {"id": "S4EN-U1-L1-Q8", "outcome_codes": ["EN4-RVL-01"], "type": "multiple_choice", "question": "Which question best helps you monitor your understanding?", "options": ["How many pages are left?", "Do I understand why the character just made that choice?", "What colour is the cover?", "Is this the longest chapter?"], "correct_index": 1, "explanation": "Monitoring means checking that the text makes sense as you go."},
+            {"id": "S4EN-U1-L1-Q9", "outcome_codes": ["EN4-RVL-01"], "type": "multiple_choice", "question": "In a PEEL paragraph, what does the second 'E' stand for?", "options": ["Example", "Explanation", "Ending", "Emotion"], "correct_index": 1, "explanation": "PEEL is Point, Evidence, Explanation, Link. The explanation shows how the evidence proves your point."},
+            {"id": "S4EN-U1-L1-Q10", "outcome_codes": ["EN4-RVL-01", "EN4-URA-01"], "type": "multiple_choice", "question": "Which PEEL sentence is the best 'Explanation'?", "options": ["This is a good quote.", "The verb 'slammed' shows his anger because it suggests force and loss of control.", "I like this part of the book.", "The character is in a room."], "correct_index": 1, "explanation": "A good explanation names the word, says what it suggests, and ties it back to the point."}
+          ]
+        },
+        {
+          "type": "task",
+          "title": "Task: Inference journal and PEEL paragraph",
+          "body": "Part A: Choose three short passages (6 to 10 lines each) from where you have read in your novel. Choose passages that show a character thinking, deciding or reacting. Make a three-row table with columns: Clue (quote), Inference, Why the clue supports it.\n\nPart B: Pick your best inference and write a PEEL paragraph of 120 to 180 words. Include one short quotation, and explain at least one word in it.\n\nPart C: Write two sentences about which reading strategy helped you most today and where in the book you used it.",
+          "evidence_requirement": "A photo or typed copy of the table and paragraph.",
+          "parent_checklist": ["Three clues are real, specific quotations or details.", "Each inference is supported, not a guess.", "The paragraph has all four PEEL parts.", "At least one word in the quotation is explained."]
+        },
+        {
+          "type": "parent_approval",
+          "title": "Parent approval",
+          "body": "Approve the task to unlock Lesson 2, or return it with a note on what to fix."
+        }
+      ],
+      "offline_alternative": "Entirely paper-based. The student reads from a printed copy of the novel and writes on paper.",
+      "accessibility_notes": "Student may dictate the paragraph. Reduce the table to two rows. Provide PEEL sentence starters.",
+      "source_note": "Written for Side Quest. Aligned to English K-10 Syllabus (NESA 2022) Stage 4 outcomes EN4-RVL-01 and EN4-URA-01. Parent to verify alignment against the NESA syllabus."
+    },
+    {
+      "lesson_number": 2,
+      "title": "How Language Creates Meaning: Tone, Humour and Technique",
+      "duration_minutes": 60,
+      "primary_outcome": "EN4-URA-01",
+      "supporting_outcomes": ["EN4-RVL-01"],
+      "learning_intention": "We are learning to identify language techniques and explain how they create meaning and affect the reader.",
+      "success_criteria": [
+        "I can identify simile, metaphor, personification, hyperbole, onomatopoeia and alliteration.",
+        "I can describe tone and explain how an author creates it.",
+        "I can explain the effect of a word or technique on the reader, not just name it.",
+        "I can write an analytical paragraph that names a technique, quotes it and explains its effect."
+      ],
+      "prior_knowledge": "Lesson 1 is complete and the student can write a PEEL paragraph.",
+      "materials": ["The student's current novel", "Notebook or typed document", "Highlighters"],
+      "steps": [
+        {
+          "type": "video",
+          "title": "Watch and read: Language for effect",
+          "instruction": "Work through the BBC Bitesize guide on language for effect. Write down the definitions of mood, atmosphere and tone in your own words.",
+          "resources": [
+            {"title": "BBC Bitesize KS3 English: How to use language for effect", "provider": "BBC Bitesize", "url": "https://www.bbc.co.uk/bitesize/articles/zfnsn9q", "status": "page_verified"},
+            {"title": "BBC Bitesize KS3 English: How to use literary devices in your writing", "provider": "BBC Bitesize", "url": "https://www.bbc.co.uk/bitesize/articles/z697382", "status": "page_verified"}
+          ],
+          "unlock_rule": "Student enters definitions of mood, atmosphere and tone."
+        },
+        {
+          "type": "flip_cards",
+          "title": "Flip to reveal: Language techniques",
+          "instruction": "Guess the definition before you flip. Every card must be flipped to continue.",
+          "cards": [
+            {"front": "Tone", "back": "The attitude a writer or narrator shows towards a subject, such as humorous, sarcastic, angry or serious."},
+            {"front": "Mood", "back": "The feeling the writer wants the reader to have."},
+            {"front": "Simile", "back": "A comparison using 'like' or 'as'. Example: 'The room was as cold as a freezer.'"},
+            {"front": "Metaphor", "back": "A direct comparison saying one thing IS another. Example: 'The room was a freezer.'"},
+            {"front": "Personification", "back": "Giving human qualities to something that is not human. Example: 'The wind whispered at the window.'"},
+            {"front": "Hyperbole", "back": "Deliberate exaggeration for effect. Example: 'I have told you a million times.'"},
+            {"front": "Onomatopoeia", "back": "A word that sounds like what it describes. Example: crash, buzz, whistling."},
+            {"front": "Alliteration", "back": "Repeating the same starting sound in nearby words. Example: 'slimy, sneaky snake'."},
+            {"front": "Irony and sarcasm", "back": "Saying one thing while meaning another, often to be funny or critical."},
+            {"front": "Effect", "back": "What a technique makes the reader think or feel. Naming a technique is not enough: always explain the effect."}
+          ],
+          "unlock_rule": "All cards flipped."
+        },
+        {
+          "type": "teaching",
+          "title": "Read and discuss: Naming is not enough",
+          "body": "Many students lose marks by only naming a technique, for example 'the author uses a simile'. The skill is to say what the technique does. A reliable three-part pattern is: TECHNIQUE (name it), QUOTATION (show it), EFFECT (explain what it makes the reader think or feel).\n\nTone is how the narrator or author feels about what is being described. A narrator can use a humorous or sarcastic tone to describe something serious, and that contrast makes the reader laugh and also notice how strange or unfair the situation is. Some novels use game messages, notifications or lists as part of the text. These change the pace and voice of a story, and writers use them to make a world feel mechanical, comic or threatening.\n\nWhen you analyse language, choose short quotations and then zoom in on one or two key words. Ask: What does this word suggest? What feeling comes with it? Why this word and not a plainer one?"
+        },
+        {
+          "type": "worked_example",
+          "title": "Worked example: Technique, quotation, effect",
+          "body": "Invented sentence (not from any novel): 'The lift groaned its way up to the fortieth floor, as if the building itself resented every passenger.'\n\nTechnique: personification. Quotation: 'groaned its way up'. Effect: giving the lift a human voice makes the building seem tired and unwilling, which creates a gloomy, slightly comic mood. The word 'resented' adds a bitter tone and makes the reader see the building almost like a character.\n\nNotice that the explanation focuses on the words 'groaned' and 'resented' and says what they suggest."
+        },
+        {
+          "type": "practice",
+          "title": "Guided practice (with a parent)",
+          "body": "Open your novel to a page you have read that has humour or a strong description. Choose 4 to 6 lines. Together: (1) highlight any technique you can name, (2) pick one and say the Technique, Quotation, Effect aloud, (3) decide the tone of the passage and give two words that show it, (4) swap: the parent picks a sentence and the student explains its effect. Parent chooses a different passage if needed."
+        },
+        {
+          "type": "quiz",
+          "title": "Quiz: Language techniques and effect",
+          "pass_percent": 80,
+          "questions": [
+            {"id": "S4EN-U1-L2-Q1", "outcome_codes": ["EN4-URA-01"], "type": "multiple_choice", "question": "Which sentence contains a simile?", "options": ["Her anger was a wildfire.", "Her anger burned like a wildfire.", "Her anger was very big.", "Her anger burned."], "correct_index": 1, "explanation": "A simile uses 'like' or 'as' to compare. Option A is a metaphor."},
+            {"id": "S4EN-U1-L2-Q2", "outcome_codes": ["EN4-URA-01"], "type": "multiple_choice", "question": "Which sentence contains a metaphor?", "options": ["The classroom was as quiet as a library.", "The classroom was a zoo at lunchtime.", "The classroom was quiet.", "The classroom had thirty students."], "correct_index": 1, "explanation": "A metaphor says one thing is another. Option A is a simile."},
+            {"id": "S4EN-U1-L2-Q3", "outcome_codes": ["EN4-URA-01"], "type": "multiple_choice", "question": "Which is an example of hyperbole?", "options": ["I have told you a million times.", "I told you twice.", "I told you quietly.", "I told you yesterday."], "correct_index": 0, "explanation": "Hyperbole is deliberate exaggeration. 'A million times' is not literal."},
+            {"id": "S4EN-U1-L2-Q4", "outcome_codes": ["EN4-URA-01"], "type": "multiple_choice", "question": "What does 'tone' mean in a text?", "options": ["The volume of the author's voice", "The attitude or feeling shown towards the subject", "The number of characters", "The length of the sentences"], "correct_index": 1, "explanation": "Tone is the attitude shown towards the subject, for example humorous, angry or sarcastic."},
+            {"id": "S4EN-U1-L2-Q5", "outcome_codes": ["EN4-URA-01"], "type": "multiple_choice", "question": "Which word is an example of onomatopoeia?", "options": ["Crash", "Quiet", "Table", "Large"], "correct_index": 0, "explanation": "'Crash' sounds like the noise it describes."},
+            {"id": "S4EN-U1-L2-Q6", "outcome_codes": ["EN4-URA-01"], "type": "multiple_choice", "question": "Which phrase uses alliteration?", "options": ["A slimy, sneaky snake", "A large grey rock", "The old red house", "An angry loud noise"], "correct_index": 0, "explanation": "Alliteration repeats the starting sound, here the 's' sound."},
+            {"id": "S4EN-U1-L2-Q7", "outcome_codes": ["EN4-URA-01", "EN4-RVL-01"], "type": "multiple_choice", "question": "Why might an author describe a dark or dangerous situation in a humorous tone?", "options": ["Because the author made a mistake", "To create contrast that shapes how the reader responds, and may highlight how absurd the situation is", "To make the book shorter", "Humour is never used in serious stories"], "correct_index": 1, "explanation": "Contrast between subject and tone is a deliberate choice that affects the reader's response."},
+            {"id": "S4EN-U1-L2-Q8", "outcome_codes": ["EN4-URA-01"], "type": "multiple_choice", "question": "Which sentence best explains the effect of a language choice?", "options": ["The writer uses the word 'shattered'.", "'Shattered' is a verb.", "I like the word 'shattered'.", "The word 'shattered' suggests the hope was suddenly and completely destroyed, so the reader feels the loss."], "correct_index": 3, "explanation": "A good explanation says what the word suggests and what the reader feels."},
+            {"id": "S4EN-U1-L2-Q9", "outcome_codes": ["EN4-URA-01"], "type": "true_false", "question": "True or false: Naming a technique is enough to get full marks when analysing language.", "options": ["True", "False"], "correct_index": 1, "explanation": "You must also quote the example and explain its effect."},
+            {"id": "S4EN-U1-L2-Q10", "outcome_codes": ["EN4-URA-01"], "type": "multiple_choice", "question": "Which is personification?", "options": ["The wind whispered at the window.", "The wind was cold.", "The wind was like a ghost.", "The wind blew hard."], "correct_index": 0, "explanation": "Personification gives human actions to something non-human. Whispering is a human action."}
+          ]
+        },
+        {
+          "type": "task",
+          "title": "Task: Language analysis",
+          "body": "Part A: From your novel, choose four short quotations that each show a different technique (for example humour or sarcasm, hyperbole, a simile or metaphor, and the style of a game message or list). Make a four-row table with columns: Quotation, Technique, Effect on the reader.\n\nPart B: Choose the most interesting row and write one analytical paragraph of 150 to 200 words explaining how the author uses language to create tone or mood in that passage. Use Technique, Quotation, Effect, and explain at least two key words.\n\nPart C: Write three sentences describing the overall tone of the book so far, with two pieces of evidence.",
+          "evidence_requirement": "A photo or typed copy of the table and paragraph.",
+          "parent_checklist": ["Four different techniques are identified accurately.", "Each effect is explained, not just stated.", "The paragraph analyses specific words.", "The tone description is supported by evidence."]
+        },
+        {
+          "type": "parent_approval",
+          "title": "Parent approval",
+          "body": "Approve the task to complete Unit 1 and unlock Unit 2, or return it with a note on what to fix."
+        }
+      ],
+      "offline_alternative": "Entirely paper-based, using a printed copy of the novel.",
+      "accessibility_notes": "Student may dictate the paragraph. Reduce the table to three rows. Provide technique-effect sentence starters.",
+      "source_note": "Written for Side Quest. Aligned to English K-10 Syllabus (NESA 2022) Stage 4 outcomes EN4-URA-01 and EN4-RVL-01. Technique definitions follow the BBC Bitesize KS3 guides listed in the video step. Parent to verify alignment against the NESA syllabus."
+    }
+  ]
+}
