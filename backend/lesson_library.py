@@ -20,9 +20,17 @@ LESSON_LIBRARY = [
             {"title": "Compare", "detail": "Make three large numbers and order them from smallest to largest."},
             {"title": "Apply", "detail": "Write a short detective story using three large numbers."}
         ],
-        "resources": [
-            {"type": "video", "title": "Place value video", "url": "https://www.youtube.com/results?search_query=place+value+for+kids"},
-            {"type": "game", "title": "Place value game", "url": "https://www.abcya.com/games/place_value_hockey"}
+                "resources": [
+            {
+                "type": "video",
+                "title": "Place value: tens and ones",
+                "url": "https://www.khanacademy.org/math/cc-third-grade-math/imp-addition-and-subtraction/imp-place-value/a/understanding-place-value"
+            },
+            {
+                "type": "game",
+                "title": "Place Value Hockey",
+                "url": "https://www.abcya.com/games/place_value_hockey"
+            }
         ],
         "quiz": [
             {
@@ -57,9 +65,17 @@ LESSON_LIBRARY = [
             {"title": "Draft", "detail": "Write your persuasive text."},
             {"title": "Edit", "detail": "Check spelling, punctuation and persuasive language."}
         ],
-        "resources": [
-            {"type": "video", "title": "Persuasive writing video", "url": "https://www.youtube.com/results?search_query=persuasive+writing+for+kids"},
-            {"type": "game", "title": "Spelling and grammar game", "url": "https://www.topmarks.co.uk/english-games/7-11-years/spelling-and-grammar"}
+                    "resources": [
+            {
+                "type": "video",
+                "title": "How to write persuasively",
+                "url": "https://www.bbc.co.uk/bitesize/topics/zv7fqp3/articles/zr8cmfr"
+            },
+            {
+                "type": "game",
+                "title": "Spelling and grammar practice",
+                "url": "https://www.topmarks.co.uk/english-games/7-11-years/spelling-and-grammar"
+            }
         ],
         "quiz": [
             {
