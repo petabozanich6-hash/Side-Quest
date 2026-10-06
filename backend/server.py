@@ -15,7 +15,7 @@ from fastapi import FastAPI, APIRouter, HTTPException, Depends, Header, UploadFi
 from fastapi.responses import Response, StreamingResponse, JSONResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, Field, EmailStr
-from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorGridFSBucket
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 
@@ -28,7 +28,7 @@ logging.basicConfig(level=logging.INFO)
 # ===== Config =====
 MONGO_URL = os.environ['MONGO_URL']
 DB_NAME = os.environ['DB_NAME']
-EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY', '')
+
 GOOGLE_AI_API_KEY = os.environ.get('GOOGLE_AI_API_KEY', '')
 JWT_SECRET = os.environ.get('JWT_SECRET', 'side-quest-dev-secret-change-me')
 JWT_ALG = "HS256"
@@ -36,96 +36,58 @@ JWT_DAYS = 30
 APP_NAME = "sidequest"
 OWNER_EMAIL = "petabozanich6@gmail.com"
 
-STORAGE_BASE = (os.environ.get("INTEGRATION_PROXY_URL") or "").strip() or "https://integrations.emergentagent.com"
-STORAGE_URL = STORAGE_BASE.rstrip("/") + "/objstore/api/v1/storage"
+
 
 client = AsyncIOMotorClient(MONGO_URL)
 db = client[DB_NAME]
+gridfs_bucket = AsyncIOMotorGridFSBucket(db)
 
 app = FastAPI(title="Side Quest Learning API")
 api = APIRouter(prefix="/api")
 security = HTTPBearer(auto_error=False)
 
-# ===== Object Storage =====
-storage_key: Optional[str] = None
+# ===== MongoDB GridFS File Storage =====
 
-
-def init_storage(force: bool = False):
-    global storage_key
-
-    if storage_key and not force:
-        return storage_key
-
-    if not EMERGENT_LLM_KEY:
-        return None
-
+async def put_object(path: str, data: bytes, content_type: str):
     try:
-        resp = requests.post(
-            f"{STORAGE_URL}/init",
-            json={"emergent_key": EMERGENT_LLM_KEY},
-            timeout=30,
-        )
-        resp.raise_for_status()
-        storage_key = resp.json()["storage_key"]
-        logger.info("Storage initialized")
-        return storage_key
-    except Exception as e:
-        logger.error(f"Storage init failed: {e}")
-        return None
+        existing = await db.fs.files.find_one({"filename": path})
 
+        if existing:
+            await gridfs_bucket.delete(existing["_id"])
 
-def put_object(path: str, data: bytes, content_type: str):
-    key = init_storage()
-
-    if not key:
-        raise HTTPException(500, "Storage unavailable")
-
-    resp = requests.put(
-        f"{STORAGE_URL}/objects/{path}",
-        headers={
-            "X-Storage-Key": key,
-            "Content-Type": content_type,
-        },
-        data=data,
-        timeout=120,
-    )
-
-    if resp.status_code == 404:
-        init_storage(force=True)
-        resp = requests.put(
-            f"{STORAGE_URL}/objects/{path}",
-            headers={
-                "X-Storage-Key": storage_key,
-                "Content-Type": content_type,
+        file_id = await gridfs_bucket.upload_from_stream(
+            path,
+            data,
+            metadata={
+                "content_type": content_type,
+                "storage_path": path,
             },
-            data=data,
-            timeout=120,
         )
 
-    resp.raise_for_status()
-    return resp.json()
+        return {
+            "path": path,
+            "gridfs_id": str(file_id),
+            "size": len(data),
+        }
+    except Exception as e:
+        logger.error(f"GridFS upload failed: {e}")
+        raise HTTPException(500, "File upload failed")
 
 
-def get_object(path: str):
-    key = init_storage()
+async def get_object(path: str):
+    try:
+        grid_out = await gridfs_bucket.open_download_stream_by_name(path)
+        data = await grid_out.read()
 
-    if not key:
-        raise HTTPException(500, "Storage unavailable")
+        content_type = (
+            (grid_out.metadata or {}).get("content_type")
+            or "application/octet-stream"
+        )
 
-    resp = requests.get(
-        f"{STORAGE_URL}/objects/{path}",
-        headers={"X-Storage-Key": key},
-        timeout=60,
-    )
-
-    if resp.status_code == 404:
+        return data, content_type
+    except Exception as e:
+        logger.error(f"GridFS download failed: {e}")
         raise HTTPException(404, "File not found")
-
-    resp.raise_for_status()
-    return resp.content, resp.headers.get(
-        "Content-Type",
-        "application/octet-stream",
-    )
 
 # ===== Auth helpers =====
 def hash_pw(pw: str) -> str:
@@ -1177,7 +1139,7 @@ async def upload_file(file: UploadFile = File(...), context: Optional[str] = For
     if len(data) > 50 * 1024 * 1024:
         raise HTTPException(413, "File too large (max 50MB)")
     content_type = file.content_type or "application/octet-stream"
-    result = put_object(path, data, content_type)
+    result = await put_object(path, data, content_type)
     rec = {
         "id": file_id,
         "family_id": user["family_id"],
@@ -1212,7 +1174,7 @@ async def download_file(fid: str, auth: Optional[str] = Query(None),
     family_id = payload.get("family_id")
     rec = await db.files.find_one({"id": fid, "family_id": family_id, "is_deleted": False})
     if not rec: raise HTTPException(404)
-    data, ct = get_object(rec["storage_path"])
+    data, ct = await get_object(rec["storage_path"])
     return Response(content=data, media_type=rec.get("content_type", ct))
 
 # ----- Resources -----
@@ -1978,7 +1940,7 @@ async def curriculum_audit(student_id: Optional[str] = None, user=Depends(requir
 # ----- Seed curriculum + demo -----
 @app.on_event("startup")
 async def startup():
-    init_storage()
+   
     cfg = await db.app_config.find_one({"id": "seed"}) or {}
     if cfg.get("outcomes_version", 0) < SEED_VERSION:
         await db.outcomes.delete_many({})
