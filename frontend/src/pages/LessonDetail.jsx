@@ -69,7 +69,9 @@ export default function LessonDetail() {
 
         <section className="bg-white rounded-xl shadow p-6 mt-6">
           <h2 className="text-xl font-semibold">Your mission</h2>
-          <p className="mt-2">{lesson.child_mission}</p>
+          <p className="mt-2">
+  {lesson.child_mission || lesson.learning_intention || "Work through the lesson steps and show what you have learned."}
+</p>
 
           {lesson.materials?.length > 0 && (
             <>
