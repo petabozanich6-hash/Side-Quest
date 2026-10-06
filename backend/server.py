@@ -10,6 +10,7 @@ from typing import List, Optional, Dict, Any
 import jwt
 import bcrypt
 import requests
+from google import genai
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Header, UploadFile, File, Form, Query, Cookie, Request
 from fastapi.responses import Response, StreamingResponse, JSONResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -665,12 +666,21 @@ What they said: "{data.situation or '(nothing yet)'}"
 
 Reply as the pet in FIRST PERSON. Give 3 short, kind, concrete nudges to help them move forward. Do NOT give the answer. Encourage them to try the first step, re-read the key words, look at the example, or ask a grown-up when ready. Keep it under 90 words. End with a cheer. No markdown, no lists, just a warm paragraph."""
 
-    try:
-        from emergentintegrations.llm.chat import LlmChat, UserMessage
-        chat = LlmChat(api_key=GOOGLE_AI_API_KEY, session_id=f"pet-{new_id()}",
-                       system_message=f"You are a kind homeschool pet companion. You never give answers, only encouragement.").with_model("google", "gemini-2.0-flash")
-        resp = await chat.send_message(UserMessage(text=prompt))
-        message = resp if isinstance(resp, str) else str(resp)
+        try:
+        client = genai.Client(api_key=GOOGLE_AI_API_KEY)
+
+        response = await client.aio.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt,
+            config={
+                "system_instruction": (
+                    "You are a kind homeschool pet companion. "
+                    "You never give answers, only encouragement."
+                )
+            },
+        )
+
+        message = response.text or ""
     except Exception as e:
         message = f"Hey {student_name}! I'm {pet['name']}. Let's take this one tiny step. Read the first question slowly, then try just the beginning. If a word feels tricky, check the key words. You've got this — I'll be right here. 💛"
     return {"message": message.strip()[:600], "pet": {"name": pet["name"], "species": pet["species"]}}
@@ -1385,14 +1395,21 @@ CRITICAL RULES:
 """
 
 async def call_claude(prompt: str) -> str:
-    from emergentintegrations.llm.chat import LlmChat, UserMessage
-    chat = LlmChat(
-        api_key=GOOGLE_AI_API_KEY,
-        session_id=f"sq-{new_id()}",
-        system_message="You are an expert NSW Australia K-12 curriculum designer. You return strict JSON only when asked. You never invent syllabus outcome codes."
-    ).with_model("google", "gemini-2.0-flash")
-    resp = await chat.send_message(UserMessage(text=prompt))
-    return resp if isinstance(resp, str) else str(resp)
+    client = genai.Client(api_key=GOOGLE_AI_API_KEY)
+
+    response = await client.aio.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=prompt,
+        config={
+            "system_instruction": (
+                "You are an expert NSW Australia K-12 curriculum designer. "
+                "You return strict JSON only when asked. "
+                "You never invent syllabus outcome codes."
+            )
+        },
+    )
+
+    return response.text or ""
 
 def extract_json(text: str) -> dict:
     text = text.strip()
