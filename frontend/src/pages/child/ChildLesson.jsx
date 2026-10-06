@@ -191,13 +191,36 @@ export default function ChildLesson() {
 
       {l.resources?.length > 0 && (
         <Step n="5b" title="Watch and play">
-          <div className="space-y-2">
-            {l.resources.map((r, i) => (
-              <a key={i} href={r.url} target="_blank" rel="noreferrer" className="block rounded-xl p-3 border bg-white hover:bg-stone-50" style={{ borderColor: "#D4C8A8" }}>
-                <div className="font-semibold text-sm">{r.type === "video" ? "🎬" : "🎮"} {r.title}</div>
-                <div className="text-xs text-stone-600 mt-0.5">Tap to open</div>
-              </a>
-            ))}
+          <div className="space-y-4">
+            {l.resources.map((r, i) => {
+              if (r.type === "video" && r.embed_url) {
+                return (
+                  <div key={i} className="rounded-xl border p-3 bg-white" style={{ borderColor: "#D4C8A8" }}>
+                    <div className="font-semibold text-sm mb-2">🎬 {r.title}</div>
+                    <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
+                      <iframe
+                        src={r.embed_url}
+                        title={r.title}
+                        className="w-full h-full"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                    {r.prompt && (
+                      <p className="text-xs text-stone-700 mt-2">{r.prompt}</p>
+                    )}
+                  </div>
+                );
+              }
+              // Fallback for games / non-embedded resources
+              return (
+                <a key={i} href={r.url} target="_blank" rel="noreferrer" className="block rounded-xl p-3 border bg-white hover:bg-stone-50" style={{ borderColor: "#D4C8A8" }}>
+                  <div className="font-semibold text-sm">{r.type === "video" ? "🎬" : "🎮"} {r.title}</div>
+                  <div className="text-xs text-stone-600 mt-0.5">Tap to open</div>
+                </a>
+              );
+            })}
           </div>
         </Step>
       )}
@@ -403,32 +426,39 @@ export default function ChildLesson() {
 const FlipCards = ({ cards }) => {
   const [flipped, setFlipped] = useState({});
 
+  const toggle = (i) => {
+    setFlipped(prev => ({ ...prev, [i]: !prev[i] }));
+  };
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-      {cards.map((card, i) => (
-        <button
-          key={i}
-          type="button"
-          onClick={() => setFlipped(current => ({ ...current, [i]: !current[i] }))}
-          className="h-28 rounded-xl border p-3 text-left transition hover:translate-y-[-2px]"
-          style={{
-            borderColor: "#D4C8A8",
-            backgroundColor: flipped[i] ? "#F0F4E8" : "#FFFFFF"
-          }}
-        >
-          {flipped[i] ? (
-            <div>
-              <div className="text-[10px] font-mono uppercase text-stone-500">Meaning</div>
-              <p className="text-sm mt-1">{card.back}</p>
-            </div>
-          ) : (
-            <div>
-              <div className="text-[10px] font-mono uppercase text-stone-500">Tap to reveal</div>
-              <p className="font-display font-bold text-lg mt-1" style={{ color: "#1F3B2D" }}>{card.front}</p>
-            </div>
-          )}
-        </button>
-      ))}
+      {cards.map((card, i) => {
+        const isFlipped = !!flipped[i];
+        return (
+          <button
+            key={i}
+            type="button"
+            onClick={() => toggle(i)}
+            className="h-32 rounded-xl border p-3 text-left transition hover:translate-y-[-2px] focus:outline-none focus:ring-2 focus:ring-[#4A5D3A]"
+            style={{
+              borderColor: "#D4C8A8",
+              backgroundColor: isFlipped ? "#F0F4E8" : "#FFFFFF"
+            }}
+          >
+            {!isFlipped ? (
+              <div>
+                <div className="text-[10px] font-mono uppercase text-stone-500">Tap to reveal</div>
+                <p className="font-display font-bold text-lg mt-1" style={{ color: "#1F3B2D" }}>{card.front}</p>
+              </div>
+            ) : (
+              <div>
+                <div className="text-[10px] font-mono uppercase text-stone-500">Meaning</div>
+                <p className="text-sm mt-1">{card.back}</p>
+              </div>
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 };
