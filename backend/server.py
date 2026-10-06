@@ -9,6 +9,7 @@ from typing import List, Optional, Dict, Any
 
 import jwt
 import bcrypt
+from urllib.parse import urlencode
 import requests
 from google import genai
 from google.oauth2 import id_token
@@ -204,6 +205,11 @@ class LoginIn(BaseModel):
 
 class GoogleLoginIn(BaseModel):
     credential: str
+
+class GoogleCodeIn(BaseModel):
+    code: str
+    redirect_uri: str
+    
 
 class ChildLoginIn(BaseModel):
     username: str
@@ -931,7 +937,112 @@ async def google_login(data: GoogleLoginIn):
         "token": token,
         "user": user_safe,
     }
+@api.post("/auth/google/callback")
+async def google_callback(data: GoogleCodeIn):
+    client_id = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "").strip()
+    client_secret = os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET", "").strip()
 
+    if not client_id or not client_secret:
+        raise HTTPException(500, "Google sign-in is not configured")
+
+    expected_redirect_uri = "https://side-quest-nqg2.onrender.com/oauth/callback"
+
+    if data.redirect_uri != expected_redirect_uri:
+        raise HTTPException(400, "Invalid Google redirect URI")
+
+    try:
+        token_response = requests.post(
+            "https://oauth2.googleapis.com/token",
+            data={
+                "code": data.code,
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "redirect_uri": expected_redirect_uri,
+                "grant_type": "authorization_code",
+            },
+            timeout=15,
+        )
+        token_response.raise_for_status()
+        tokens = token_response.json()
+        credential = tokens.get("id_token")
+
+        if not credential:
+            raise ValueError("Google did not return an ID token")
+
+        google_user = id_token.verify_oauth2_token(
+            credential,
+            google_requests.Request(),
+            client_id,
+        )
+    except Exception:
+        raise HTTPException(401, "Could not verify Google sign-in")
+
+    if not google_user.get("email_verified"):
+        raise HTTPException(401, "Google email is not verified")
+
+    email = (google_user.get("email") or "").strip().lower()
+    if not email:
+        raise HTTPException(401, "Google account email missing")
+
+    name = (google_user.get("name") or email.split("@")[0]).strip()
+    picture = google_user.get("picture")
+
+    user = await db.users.find_one({"email": email})
+
+    if user:
+        updates = {
+            "name": name,
+            "picture": picture,
+            "oauth_provider": "google",
+            "updated_at": now_iso(),
+        }
+        await db.users.update_one(
+            {"id": user["id"]},
+            {"$set": updates},
+        )
+        user.update(updates)
+    else:
+        family_id = new_id()
+        user_id = new_id()
+
+        family = {
+            "id": family_id,
+            "name": f"{name}'s Family",
+            "owner_id": user_id,
+            "created_at": now_iso(),
+        }
+
+        user = {
+            "id": user_id,
+            "email": email,
+            "name": name,
+            "picture": picture,
+            "family_id": family_id,
+            "is_owner": True,
+            "oauth_provider": "google",
+            "created_at": now_iso(),
+        }
+
+        await db.families.insert_one(family)
+        await db.users.insert_one(user)
+
+    token = make_token({
+        "sub": user["id"],
+        "role": "parent",
+        "family_id": user["family_id"],
+    })
+
+    user_safe = {
+        key: value
+        for key, value in user.items()
+        if key not in ("password", "_id")
+    }
+    user_safe["role"] = "parent"
+
+    return {
+        "token": token,
+        "user": user_safe,
+    }
 
 @api.post("/auth/child-login")
 async def child_login(data: ChildLoginIn):
