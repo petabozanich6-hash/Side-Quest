@@ -28,6 +28,7 @@ logging.basicConfig(level=logging.INFO)
 MONGO_URL = os.environ['MONGO_URL']
 DB_NAME = os.environ['DB_NAME']
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY', '')
+GOOGLE_AI_API_KEY = os.environ.get('GOOGLE_AI_API_KEY', '')
 JWT_SECRET = os.environ.get('JWT_SECRET', 'side-quest-dev-secret-change-me')
 JWT_ALG = "HS256"
 JWT_DAYS = 30
@@ -666,8 +667,8 @@ Reply as the pet in FIRST PERSON. Give 3 short, kind, concrete nudges to help th
 
     try:
         from emergentintegrations.llm.chat import LlmChat, UserMessage
-        chat = LlmChat(api_key=EMERGENT_LLM_KEY, session_id=f"pet-{new_id()}",
-                       system_message=f"You are a kind homeschool pet companion. You never give answers, only encouragement.").with_model("anthropic", "claude-sonnet-5-5")
+        chat = LlmChat(api_key=GOOGLE_AI_API_KEY, session_id=f"pet-{new_id()}",
+                       system_message=f"You are a kind homeschool pet companion. You never give answers, only encouragement.").with_model("google", "gemini-2.0-flash")
         resp = await chat.send_message(UserMessage(text=prompt))
         message = resp if isinstance(resp, str) else str(resp)
     except Exception as e:
@@ -1386,10 +1387,10 @@ CRITICAL RULES:
 async def call_claude(prompt: str) -> str:
     from emergentintegrations.llm.chat import LlmChat, UserMessage
     chat = LlmChat(
-        api_key=EMERGENT_LLM_KEY,
+        api_key=GOOGLE_AI_API_KEY,
         session_id=f"sq-{new_id()}",
         system_message="You are an expert NSW Australia K-12 curriculum designer. You return strict JSON only when asked. You never invent syllabus outcome codes."
-    ).with_model("anthropic", "claude-sonnet-5-5")
+    ).with_model("google", "gemini-2.0-flash")
     resp = await chat.send_message(UserMessage(text=prompt))
     return resp if isinstance(resp, str) else str(resp)
 
