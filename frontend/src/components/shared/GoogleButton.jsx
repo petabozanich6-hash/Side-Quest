@@ -1,42 +1,23 @@
 import React from "react";
-import { GoogleLogin } from "@react-oauth/google";
-import { api } from "@/lib/api";
+import { useGoogleLogin } from "@react-oauth/google";
 
 export default function GoogleButton({
-  onSuccess,
-  onError,
   label = "Continue with Google",
 }) {
+  const login = useGoogleLogin({
+    flow: "auth-code",
+    ux_mode: "redirect",
+    redirect_uri: `${window.location.origin}/oauth/callback`,
+  });
+
   return (
-    <GoogleLogin
-      text={label === "Continue with Google" ? "continue_with" : "signin_with"}
-      useOneTap={false}
-      onSuccess={async (credentialResponse) => {
-        try {
-          const credential = credentialResponse?.credential;
-
-          if (!credential) {
-            throw new Error("Google did not return an ID credential");
-          }
-
-          const response = await api.post("/auth/google", {
-            credential,
-          });
-
-          onSuccess?.(response.data);
-        } catch (error) {
-          console.error(
-            "Side Quest Google login failed:",
-            error?.response?.data || error,
-          );
-          onError?.(error);
-        }
-      }}
-      onError={() => {
-        const error = new Error("Google sign-in was cancelled or blocked");
-        console.error("Google sign-in failed:", error);
-        onError?.(error);
-      }}
-    />
+    <button
+      type="button"
+      className="google-login-button"
+      onClick={() => login()}
+    >
+      <span aria-hidden="true">G</span>
+      {label}
+    </button>
   );
 }
