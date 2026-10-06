@@ -8,7 +8,8 @@ export default function LessonDetail() {
   const { id } = useParams();
   const [lesson, setLesson] = useState(null);
   const [error, setError] = useState("");
-
+  const [quizAnswers, setQuizAnswers] = useState({});
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
   useEffect(() => {
     const loadLesson = async () => {
   try {
@@ -123,12 +124,98 @@ export default function LessonDetail() {
           </section>
         )}
 
-        {lesson.quiz?.length > 0 && (
+                {lesson.quiz?.length > 0 && (
           <section className="bg-white rounded-xl shadow p-6 mt-6">
             <h2 className="text-xl font-semibold">Check your learning</h2>
-            <p className="text-slate-600 mt-2">
-              Quiz questions will appear here once the quiz feature is connected.
-            </p>
+
+            <div className="mt-4 space-y-6">
+              {lesson.quiz.map((question, questionIndex) => {
+                const selected = quizAnswers[questionIndex];
+
+                return (
+                  <div key={questionIndex} className="border rounded-lg p-4">
+                    <p className="font-medium">
+                      {questionIndex + 1}. {question.question}
+                    </p>
+
+                    <div className="mt-3 space-y-2">
+                      {question.options.map((option, optionIndex) => {
+                        const isSelected = selected === optionIndex;
+                        const isCorrect =
+                          optionIndex === question.correct_index;
+                        const showResult = quizSubmitted;
+
+                        let buttonClass =
+                          "w-full text-left px-4 py-2 rounded-lg border transition";
+
+                        if (showResult && isCorrect) {
+                          buttonClass +=
+                            " border-green-500 bg-green-50 text-green-800";
+                        } else if (showResult && isSelected && !isCorrect) {
+                          buttonClass +=
+                            " border-red-500 bg-red-50 text-red-800";
+                        } else if (isSelected) {
+                          buttonClass +=
+                            " border-blue-500 bg-blue-50 text-blue-800";
+                        } else {
+                          buttonClass +=
+                            " border-gray-200 hover:border-blue-300";
+                        }
+
+                        return (
+                          <button
+                            key={optionIndex}
+                            type="button"
+                            disabled={quizSubmitted}
+                            onClick={() =>
+                              setQuizAnswers((current) => ({
+                                ...current,
+                                [questionIndex]: optionIndex
+                              }))
+                            }
+                            className={buttonClass}
+                          >
+                            {option}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {quizSubmitted && (
+                      <p className="mt-3 text-sm text-gray-700">
+                        {question.explanation}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {!quizSubmitted ? (
+              <button
+                type="button"
+                onClick={() => setQuizSubmitted(true)}
+                disabled={
+                  Object.keys(quizAnswers).length !== lesson.quiz.length
+                }
+                className="mt-6 bg-blue-600 text-white px-5 py-2 rounded-lg font-medium disabled:opacity-50"
+              >
+                Check my answers
+              </button>
+            ) : (
+              <div className="mt-6 p-4 rounded-lg bg-blue-50 text-blue-900">
+                <p className="font-semibold">
+                  You answered{" "}
+                  {
+                    lesson.quiz.filter(
+                      (question, index) =>
+                        quizAnswers[index] === question.correct_index
+                    ).length
+                  }{" "}
+                  of {lesson.quiz.length} correctly.
+                </p>
+              </div>
+            )}
           </section>
         )}
 
