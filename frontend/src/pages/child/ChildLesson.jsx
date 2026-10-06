@@ -37,8 +37,6 @@ export default function ChildLesson() {
   const [completedCards, setCompletedCards] = useState({});
   const [completedQuestSteps, setCompletedQuestSteps] = useState({});
   const [flippedCards, setFlippedCards] = useState({});
-  const cardRefs = useRef([]);
-
   const [quizAnswers, setQuizAnswers] = useState({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
 
@@ -46,6 +44,7 @@ export default function ChildLesson() {
   const [challengeResponse, setChallengeResponse] = useState("");
   const [challengeFiles, setChallengeFiles] = useState([]);
 
+  const cardRefs = useRef([]);
   const fileRef = useRef();
   const chFileRef = useRef();
 
@@ -235,6 +234,9 @@ export default function ChildLesson() {
   }
 
   const lesson = assignment.lesson || {};
+  const activities = lesson.interactive_activities || [];
+  const resources = lesson.resources || [];
+  const quiz = lesson.quiz || [];
 
   const supportBanner =
     assignment.support_level === "red"
@@ -252,33 +254,31 @@ export default function ChildLesson() {
             text: "Green — have a go on your own"
           };
 
-  const activities = lesson.interactive_activities || [];
-  const resources = lesson.resources || [];
-  const hasQuiz = lesson.quiz?.length > 0;
+  const flipActivities = activities.filter(
+    (activity) => activity.type === "flip_cards"
+  );
+
+  const allFlipCards = flipActivities.flatMap((activity, activityIndex) =>
+    (activity.cards || []).map((card, cardIndex) => ({
+      ...card,
+      activityIndex,
+      cardIndex
+    }))
+  );
 
   const questStepsFinished =
     lesson.steps?.length > 0 &&
     lesson.steps.every((_, index) => completedQuestSteps[index]);
 
-  const flipCards = activities.flatMap((activity, activityIndex) =>
-    activity.type === "flip_cards"
-      ? (activity.cards || []).map((card, cardIndex) => ({
-          ...card,
-          activityIndex,
-          cardIndex
-        }))
-      : []
-  );
-
   const allFlipCardsViewed =
-    flipCards.length === 0 ||
-    flipCards.every(
+    allFlipCards.length === 0 ||
+    allFlipCards.every(
       (card) => flippedCards[`${card.activityIndex}-${card.cardIndex}`]
     );
 
   const quizComplete =
-    lesson.quiz?.length > 0 &&
-    lesson.quiz.every((question, index) => {
+    quiz.length > 0 &&
+    quiz.every((question, index) => {
       const answer = quizAnswers[index];
 
       if (question.type === "short_answer") {
@@ -288,130 +288,64 @@ export default function ChildLesson() {
       return typeof answer === "number";
     });
 
-  const multipleChoiceQuestions = (lesson.quiz || []).filter(
+  const multipleChoiceQuestions = quiz.filter(
     (question) => question.type !== "short_answer"
   );
 
   const correctMultipleChoiceAnswers = multipleChoiceQuestions.filter(
     (question) => {
-      const originalIndex = lesson.quiz.indexOf(question);
+      const originalIndex = quiz.indexOf(question);
       return quizAnswers[originalIndex] === question.correct_index;
     }
   ).length;
 
-  return (
-    <div className="space-y-5 animate-in relative" data-testid="child-lesson">
-      <Leaf
-        className="absolute right-0 top-0 opacity-40"
-        size={60}
-        color="#6B8A5B"
-      />
-
-      <button
-        type="button"
-        onClick={() => nav("/child")}
-        className="text-sm font-bold flex items-center gap-1"
-        style={{ color: "#4A5D3A" }}
-        data-testid="back-home"
-      >
-        <ArrowLeft size={14} />
-        Back
-      </button>
-
-      <header className="paper-card p-6 relative overflow-hidden">
-        <div className="text-xs font-mono text-stone-500">
-          {lesson.stage} · {lesson.learning_area}
-        </div>
-
-        <h1
-          className="font-display text-3xl font-bold mt-1"
-          style={{ color: "#1F3B2D" }}
-        >
-          {lesson.title}
-        </h1>
-
-        <div
-          className={`mt-4 rounded-xl border px-4 py-2 text-sm ${supportBanner.cls}`}
-          data-testid="support-banner"
-        >
-          {supportBanner.text}
-        </div>
-      </header>
-
-      {lesson.child_mission && (
-        <div className="paper-card p-6">
-          <div className="text-xs font-mono text-stone-500 uppercase tracking-wider">
-            Your mission
-          </div>
-
-          <p
-            className="font-display text-xl font-bold mt-2"
-            style={{ color: "#1F3B2D" }}
-          >
-            {lesson.child_mission}
-          </p>
-        </div>
-      )}
-
-      <RevealStep
-        cardIndex={0}
-        unlockedCard={unlockedCard}
-        completed={completedCards[0]}
-        onComplete={completeCard}
-        n="1"
-        title="What am I learning?"
-        completeLabel="I understand my mission"
-        cardRefs={cardRefs}
-      >
+  const lessonCards = [
+    {
+      key: "mission",
+      n: "1",
+      title: "What am I learning?",
+      completeLabel: "I understand my mission",
+      content: (
         <p className="text-base">
           {lesson.child_mission || lesson.learning_intention}
         </p>
-      </RevealStep>
+      )
+    },
 
-      <RevealStep
-        cardIndex={1}
-        unlockedCard={unlockedCard}
-        completed={completedCards[1]}
-        onComplete={completeCard}
-        n="2"
-        title="How I’ll know I’ve got it"
-        completeLabel="I know what success looks like"
-        cardRefs={cardRefs}
-      >
+    lesson.success_criteria?.length > 0 && {
+      key: "success",
+      n: "2",
+      title: "How I’ll know I’ve got it",
+      completeLabel: "I know what success looks like",
+      content: (
         <ul className="list-disc pl-5 space-y-1">
-          {(lesson.success_criteria || []).map((criterion, index) => (
+          {lesson.success_criteria.map((criterion, index) => (
             <li key={index}>{criterion}</li>
           ))}
         </ul>
-      </RevealStep>
+      )
+    },
 
-      <RevealStep
-        cardIndex={2}
-        unlockedCard={unlockedCard}
-        completed={completedCards[2]}
-        onComplete={completeCard}
-        n="3"
-        title="What I need"
-        completeLabel="I’m ready"
-        cardRefs={cardRefs}
-      >
+    {
+      key: "materials",
+      n: "3",
+      title: "What I need",
+      completeLabel: "I’m ready",
+      content: (
         <p className="text-sm">
           {(lesson.materials || []).join(", ") || "Nothing special"}
         </p>
-      </RevealStep>
+      )
+    },
 
-      {lesson.steps?.length > 0 && (
-        <RevealStep
-          cardIndex={3}
-          unlockedCard={unlockedCard}
-          completed={completedCards[3]}
-          onComplete={completeCard}
-          n="4"
-          title="Your quest steps"
-          completeLabel="I finished my quest steps"
-          cardRefs={cardRefs}
-          showCompleteButton={questStepsFinished}
-        >
+    lesson.steps?.length > 0 && {
+      key: "quest-steps",
+      n: "4",
+      title: "Your quest steps",
+      completeLabel: "I finished my quest steps",
+      canComplete: questStepsFinished,
+      content: (
+        <>
           <ol className="space-y-3">
             {lesson.steps.map((step, index) => {
               const available =
@@ -465,79 +399,64 @@ export default function ChildLesson() {
               Complete each quest step in order to continue.
             </p>
           )}
-        </RevealStep>
-      )}
+        </>
+      )
+    },
 
-      {lesson.key_vocabulary?.length > 0 && (
-        <RevealStep
-          cardIndex={4}
-          unlockedCard={unlockedCard}
-          completed={completedCards[4]}
-          onComplete={completeCard}
-          n="5"
-          title="Key words"
-          completeLabel="I know these key words"
-          cardRefs={cardRefs}
-        >
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-            {lesson.key_vocabulary.map((word, index) => (
-              <li
-                key={index}
-                className="rounded-lg bg-white border border-stone-200 p-2"
-              >
-                {word}
-              </li>
-            ))}
-          </ul>
-        </RevealStep>
-      )}
+    lesson.key_vocabulary?.length > 0 && {
+      key: "key-words",
+      n: "5",
+      title: "Key words",
+      completeLabel: "I know these key words",
+      content: (
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+          {lesson.key_vocabulary.map((word, index) => (
+            <li
+              key={index}
+              className="rounded-lg bg-white border border-stone-200 p-2"
+            >
+              {word}
+            </li>
+          ))}
+        </ul>
+      )
+    },
 
-      <RevealStep
-        cardIndex={5}
-        unlockedCard={unlockedCard}
-        completed={completedCards[5]}
-        onComplete={completeCard}
-        n="6"
-        title="Let’s learn"
-        completeLabel="I’ve read this"
-        cardRefs={cardRefs}
-      >
+    lesson.explicit_teaching && {
+      key: "learn",
+      n: "6",
+      title: "Let’s learn",
+      completeLabel: "I’ve read this",
+      content: (
         <div className="prose prose-sm max-w-none whitespace-pre-wrap">
           {lesson.explicit_teaching}
         </div>
-      </RevealStep>
+      )
+    },
 
-      {activities.some((activity) => activity.type === "flip_cards") && (
-        <RevealStep
-          cardIndex={6}
-          unlockedCard={unlockedCard}
-          completed={completedCards[6]}
-          onComplete={completeCard}
-          n="7"
-          title="Try the learning cards"
-          completeLabel="I’ve checked every card"
-          cardRefs={cardRefs}
-          showCompleteButton={allFlipCardsViewed}
-        >
+    flipActivities.length > 0 && {
+      key: "flip-cards",
+      n: "7",
+      title: "Try the learning cards",
+      completeLabel: "I’ve checked every card",
+      canComplete: allFlipCardsViewed,
+      content: (
+        <>
           <div className="space-y-5">
-            {activities.map((activity, activityIndex) => {
-              if (activity.type !== "flip_cards") return null;
+            {flipActivities.map((activity, activityIndex) => (
+              <div key={activityIndex}>
+                {activity.title && (
+                  <h3 className="font-bold mb-3">{activity.title}</h3>
+                )}
 
-              return (
-                <div key={activityIndex}>
-                  {activity.title && (
-                    <h3 className="font-bold mb-3">{activity.title}</h3>
-                  )}
-
-                  <FlipCards
-                    cards={activity.cards || []}
-                    activityIndex={activityIndex}
-                    flippedCards={flippedCards}
-                    setFlippedCards={setFlippedCards}
-                  />
-                </div>
-              );
-            })}
+                <FlipCards
+                  cards={activity.cards || []}
+                  activityIndex={activityIndex}
+                  flippedCards={flippedCards}
+                  setFlippedCards={setFlippedCards}
+                />
+              </div>
+            ))}
           </div>
 
           {!allFlipCardsViewed && (
@@ -545,161 +464,142 @@ export default function ChildLesson() {
               Tap each card to reveal its meaning before you continue.
             </p>
           )}
-        </RevealStep>
-      )}
+        </>
+      )
+    },
 
-      {resources.length > 0 && (
-        <RevealStep
-          cardIndex={7}
-          unlockedCard={unlockedCard}
-          completed={completedCards[7]}
-          onComplete={completeCard}
-          n="8"
-          title="Watch and play"
-          completeLabel="I’m ready to continue"
-          cardRefs={cardRefs}
-        >
-          <div className="space-y-4">
-            {resources.map((resource, index) => {
-              if (resource.type === "video" && resource.embed_url) {
-                return (
-                  <div
-                    key={index}
-                    className="rounded-xl border p-3 bg-white"
-                    style={{ borderColor: "#D4C8A8" }}
-                  >
-                    <div className="font-semibold text-sm mb-2">
-                      🎬 {resource.title}
-                    </div>
-
-                    <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
-                      <iframe
-                        src={resource.embed_url}
-                        title={resource.title}
-                        className="w-full h-full"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    </div>
-
-                    {resource.url && (
-                      <a
-                        href={resource.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-2 inline-flex items-center gap-1 text-xs font-semibold"
-                        style={{ color: "#4A5D3A" }}
-                      >
-                        <ExternalLink size={12} />
-                        Video not playing? Open it with a grown-up
-                      </a>
-                    )}
-
-                    {resource.prompt && (
-                      <p className="text-xs text-stone-700 mt-2">
-                        {resource.prompt}
-                      </p>
-                    )}
-
-                    {resource.offline_alternative && (
-                      <p className="text-xs text-stone-500 mt-2">
-                        <strong>No internet?</strong>{" "}
-                        {resource.offline_alternative}
-                      </p>
-                    )}
-                  </div>
-                );
-              }
-
+    resources.length > 0 && {
+      key: "resources",
+      n: "8",
+      title: "Watch and play",
+      completeLabel: "I’m ready to continue",
+      content: (
+        <div className="space-y-4">
+          {resources.map((resource, index) => {
+            if (resource.type === "video" && resource.embed_url) {
               return (
-                <a
+                <div
                   key={index}
-                  href={resource.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block rounded-xl p-3 border bg-white hover:bg-stone-50"
+                  className="rounded-xl border p-3 bg-white"
                   style={{ borderColor: "#D4C8A8" }}
                 >
-                  <div className="font-semibold text-sm">
-                    {resource.type === "video" ? "🎬" : "🎮"} {resource.title}
+                  <div className="font-semibold text-sm mb-2">
+                    🎬 {resource.title}
                   </div>
 
-                  <div className="text-xs text-stone-600 mt-0.5">
-                    Tap to open
+                  <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
+                    <iframe
+                      src={resource.embed_url}
+                      title={resource.title}
+                      className="w-full h-full"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
                   </div>
-                </a>
+
+                  {resource.url && (
+                    <a
+                      href={resource.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-2 inline-flex items-center gap-1 text-xs font-semibold"
+                      style={{ color: "#4A5D3A" }}
+                    >
+                      <ExternalLink size={12} />
+                      Video not playing? Open it with a grown-up
+                    </a>
+                  )}
+
+                  {resource.prompt && (
+                    <p className="text-xs text-stone-700 mt-2">
+                      {resource.prompt}
+                    </p>
+                  )}
+
+                  {resource.offline_alternative && (
+                    <p className="text-xs text-stone-500 mt-2">
+                      <strong>No internet?</strong>{" "}
+                      {resource.offline_alternative}
+                    </p>
+                  )}
+                </div>
               );
-            })}
-          </div>
-        </RevealStep>
-      )}
+            }
 
-      {lesson.worked_example && (
-        <RevealStep
-          cardIndex={8}
-          unlockedCard={unlockedCard}
-          completed={completedCards[8]}
-          onComplete={completeCard}
-          n="9"
-          title="Example"
-          completeLabel="I understand the example"
-          cardRefs={cardRefs}
-        >
-          <div className="rounded-lg bg-indigo-50 border border-indigo-200 p-4 text-sm">
-            {lesson.worked_example}
-          </div>
-        </RevealStep>
-      )}
+            return (
+              <a
+                key={index}
+                href={resource.url}
+                target="_blank"
+                rel="noreferrer"
+                className="block rounded-xl p-3 border bg-white hover:bg-stone-50"
+                style={{ borderColor: "#D4C8A8" }}
+              >
+                <div className="font-semibold text-sm">
+                  {resource.type === "video" ? "🎬" : "🎮"} {resource.title}
+                </div>
 
-      {lesson.guided_practice && (
-        <RevealStep
-          cardIndex={9}
-          unlockedCard={unlockedCard}
-          completed={completedCards[9]}
-          onComplete={completeCard}
-          n="10"
-          title="Try with me"
-          completeLabel="I’m ready for my task"
-          cardRefs={cardRefs}
-        >
-          <p className="text-sm">{lesson.guided_practice}</p>
-        </RevealStep>
-      )}
+                <div className="text-xs text-stone-600 mt-0.5">
+                  Tap to open
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      )
+    },
 
-      <RevealStep
-        cardIndex={10}
-        unlockedCard={unlockedCard}
-        completed={completedCards[10]}
-        onComplete={completeCard}
-        n="11"
-        title="My task"
-        completeLabel="I’m ready for the quick check"
-        cardRefs={cardRefs}
-      >
-        <p className="text-base">{lesson.independent_task}</p>
+    lesson.worked_example && {
+      key: "example",
+      n: "9",
+      title: "Example",
+      completeLabel: "I understand the example",
+      content: (
+        <div className="rounded-lg bg-indigo-50 border border-indigo-200 p-4 text-sm">
+          {lesson.worked_example}
+        </div>
+      )
+    },
 
-        {lesson.response_prompt && (
-          <div className="mt-3 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm">
-            <strong>Respond to:</strong> {lesson.response_prompt}
-          </div>
-        )}
-      </RevealStep>
+    lesson.guided_practice && {
+      key: "guided-practice",
+      n: "10",
+      title: "Try with me",
+      completeLabel: "I’m ready for my task",
+      content: <p className="text-sm">{lesson.guided_practice}</p>
+    },
 
-      {hasQuiz && (
-        <RevealStep
-          cardIndex={11}
-          unlockedCard={unlockedCard}
-          completed={completedCards[11]}
-          onComplete={completeCard}
-          n="12"
-          title="Quick check"
-          completeLabel="I’ve finished the quick check"
-          cardRefs={cardRefs}
-          showCompleteButton={quizSubmitted}
-        >
+    {
+      key: "task",
+      n: "11",
+      title: "My task",
+      completeLabel: quiz.length > 0
+        ? "I’m ready for the quick check"
+        : "I’m ready to show what I know",
+      content: (
+        <>
+          <p className="text-base">{lesson.independent_task}</p>
+
+          {lesson.response_prompt && (
+            <div className="mt-3 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm">
+              <strong>Respond to:</strong> {lesson.response_prompt}
+            </div>
+          )}
+        </>
+      )
+    },
+
+    quiz.length > 0 && {
+      key: "quiz",
+      n: "12",
+      title: "Quick check",
+      completeLabel: "I’ve finished the quick check",
+      canComplete: quizSubmitted,
+      content: (
+        <>
           <div className="space-y-4">
-            {lesson.quiz.map((question, questionIndex) => {
+            {quiz.map((question, questionIndex) => {
               const selected = quizAnswers[questionIndex];
 
               if (question.type === "short_answer") {
@@ -839,20 +739,16 @@ export default function ChildLesson() {
               </p>
             </div>
           )}
-        </RevealStep>
-      )}
+        </>
+      )
+    },
 
-      <RevealStep
-        cardIndex={12}
-        unlockedCard={unlockedCard}
-        completed={completedCards[12]}
-        onComplete={completeCard}
-        n="13"
-        title="Show what you know"
-        completeLabel="I’ve finished my response"
-        cardRefs={cardRefs}
-        showCompleteButton={false}
-      >
+    {
+      key: "response",
+      n: "13",
+      title: "Show what you know",
+      showCompleteButton: false,
+      content: (
         <div className="space-y-5">
           <div>
             <label className="font-bold text-sm">My response</label>
@@ -891,7 +787,11 @@ export default function ChildLesson() {
               style={{ borderColor: "#D4C8A8" }}
               data-testid="upload-btn"
             >
-              {uploading ? <Loader2 className="animate-spin" /> : <Upload size={20} />}
+              {uploading ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                <Upload size={20} />
+              )}
 
               <span className="text-sm font-bold">
                 {uploading
@@ -984,7 +884,88 @@ export default function ChildLesson() {
             </button>
           </div>
         </div>
-      </RevealStep>
+      )
+    }
+  ].filter(Boolean);
+
+  return (
+    <div className="space-y-5 animate-in relative" data-testid="child-lesson">
+      <Leaf
+        className="absolute right-0 top-0 opacity-40"
+        size={60}
+        color="#6B8A5B"
+      />
+
+      <button
+        type="button"
+        onClick={() => nav("/child")}
+        className="text-sm font-bold flex items-center gap-1"
+        style={{ color: "#4A5D3A" }}
+        data-testid="back-home"
+      >
+        <ArrowLeft size={14} />
+        Back
+      </button>
+
+      <header className="paper-card p-6 relative overflow-hidden">
+        <div className="text-xs font-mono text-stone-500">
+          {lesson.stage} · {lesson.learning_area}
+        </div>
+
+        <h1
+          className="font-display text-3xl font-bold mt-1"
+          style={{ color: "#1F3B2D" }}
+        >
+          {lesson.title}
+        </h1>
+
+        <div
+          className={`mt-4 rounded-xl border px-4 py-2 text-sm ${supportBanner.cls}`}
+          data-testid="support-banner"
+        >
+          {supportBanner.text}
+        </div>
+      </header>
+
+      {lesson.child_mission && (
+        <div className="paper-card p-6">
+          <div className="text-xs font-mono text-stone-500 uppercase tracking-wider">
+            Your mission
+          </div>
+
+          <p
+            className="font-display text-xl font-bold mt-2"
+            style={{ color: "#1F3B2D" }}
+          >
+            {lesson.child_mission}
+          </p>
+        </div>
+      )}
+
+      {lessonCards.map((card, index) => (
+        <RevealStep
+          key={card.key}
+          cardIndex={index}
+          unlockedCard={unlockedCard}
+          completed={completedCards[index]}
+          onComplete={completeCard}
+          n={card.n}
+          title={card.title}
+          completeLabel={card.completeLabel}
+          cardRefs={cardRefs}
+          showCompleteButton={
+            card.showCompleteButton !== false && card.canComplete !== false
+          }
+        >
+          {card.content}
+
+          {card.canComplete === false && (
+            <p className="mt-4 text-sm text-stone-600">
+              Complete this activity to continue.
+            </p>
+          )}
+        </RevealStep>
+      ))}
 
       {lesson.follow_up_challenges?.length > 0 && (
         <div
