@@ -664,9 +664,7 @@ Key vocabulary: {lesson.get('key_vocabulary',[]) if lesson else []}
 
 What they said: "{data.situation or '(nothing yet)'}"
 
-Reply as the pet in FIRST PERSON. Give 3 short, kind, concrete nudges to help them move forward. Do NOT give the answer. Encourage them to try the first step, re-read the key words, look at the example, or ask a grown-up when ready. Keep it under 90 words. End with a cheer. No markdown, no lists, just a warm paragraph."""
-
-        try:
+    try:
         client = genai.Client(api_key=GOOGLE_AI_API_KEY)
 
         response = await client.aio.models.generate_content(
