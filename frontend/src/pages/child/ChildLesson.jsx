@@ -36,6 +36,7 @@ export default function ChildLesson() {
   const [unlockedCard, setUnlockedCard] = useState(0);
   const [completedCards, setCompletedCards] = useState({});
   const [completedQuestSteps, setCompletedQuestSteps] = useState({});
+  const [questStepResponses, setQuestStepResponses] = useState({});
   const [flippedCards, setFlippedCards] = useState({});
   const [quizAnswers, setQuizAnswers] = useState({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
@@ -76,6 +77,20 @@ export default function ChildLesson() {
         block: "start"
       });
     }, 120);
+  };
+
+  const completeQuestStep = (index) => {
+    const responseText = (questStepResponses[index] || "").trim();
+
+    if (!responseText) {
+      toast.error("Write something about what you did before continuing");
+      return;
+    }
+
+    setCompletedQuestSteps((current) => ({
+      ...current,
+      [index]: true
+    }));
   };
 
   const uploadFile = async (file, setter) => {
@@ -346,57 +361,104 @@ export default function ChildLesson() {
       canComplete: questStepsFinished,
       content: (
         <>
-          <ol className="space-y-3">
+          <p className="text-sm text-stone-600 mb-4">
+            Work through one mini-quest at a time. Write a short note about
+            what you did before moving on.
+          </p>
+
+          <div className="space-y-4">
             {lesson.steps.map((step, index) => {
               const available =
                 index === 0 || completedQuestSteps[index - 1];
 
+              const complete = !!completedQuestSteps[index];
+
               return (
-                <li
+                <div
                   key={index}
                   className={`rounded-xl border p-4 transition ${
                     available ? "bg-white" : "bg-stone-100 opacity-60"
                   }`}
                   style={{ borderColor: "#D4C8A8" }}
                 >
-                  <label className="flex items-start gap-3">
-                    <input
-                      type="checkbox"
-                      checked={!!completedQuestSteps[index]}
-                      disabled={!available}
-                      onChange={(event) =>
-                        setCompletedQuestSteps((current) => ({
-                          ...current,
-                          [index]: event.target.checked
-                        }))
-                      }
-                      className="mt-1 h-5 w-5 shrink-0"
-                    />
-
-                    <span>
-                      <span className="block font-bold">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="font-bold">
                         {index + 1}. {step.title}
-                      </span>
+                      </div>
 
-                      <span className="block text-sm text-stone-700 mt-1">
+                      <p className="text-sm text-stone-700 mt-1">
                         {step.detail}
-                      </span>
+                      </p>
 
                       {step.duration_minutes && (
-                        <span className="block text-xs font-mono text-stone-500 mt-1">
+                        <div className="text-xs font-mono text-stone-500 mt-1">
                           {step.duration_minutes} minutes
-                        </span>
+                        </div>
                       )}
-                    </span>
-                  </label>
-                </li>
+                    </div>
+
+                    {complete && (
+                      <div className="flex items-center gap-1 text-xs font-bold text-emerald-700 whitespace-nowrap">
+                        <CheckCircle2 size={15} />
+                        Done
+                      </div>
+                    )}
+                  </div>
+
+                  {available && !complete && (
+                    <>
+                      <textarea
+                        rows={3}
+                        value={questStepResponses[index] || ""}
+                        onChange={(event) =>
+                          setQuestStepResponses((current) => ({
+                            ...current,
+                            [index]: event.target.value
+                          }))
+                        }
+                        placeholder={
+                          step.response_prompt ||
+                          "Write what you did, noticed, found, or learned in this step…"
+                        }
+                        className="mt-3 w-full rounded-lg border px-3 py-2 text-sm bg-white"
+                        style={{ borderColor: "#D4C8A8" }}
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => completeQuestStep(index)}
+                        disabled={!(questStepResponses[index] || "").trim()}
+                        className="mt-3 rounded-full px-4 py-2 text-sm font-bold disabled:opacity-50"
+                        style={{
+                          backgroundColor: "#1F3B2D",
+                          color: "#F5EFE0"
+                        }}
+                      >
+                        I’ve completed this step →
+                      </button>
+                    </>
+                  )}
+
+                  {!available && (
+                    <p className="mt-3 text-xs text-stone-500">
+                      Finish the previous mini-quest to unlock this one.
+                    </p>
+                  )}
+
+                  {complete && (
+                    <p className="mt-3 text-xs text-stone-600">
+                      Your note: {questStepResponses[index]}
+                    </p>
+                  )}
+                </div>
               );
             })}
-          </ol>
+          </div>
 
           {!questStepsFinished && (
             <p className="mt-4 text-sm text-stone-600">
-              Complete each quest step in order to continue.
+              Finish each mini-quest in order to continue.
             </p>
           )}
         </>
@@ -574,9 +636,10 @@ export default function ChildLesson() {
       key: "task",
       n: "11",
       title: "My task",
-      completeLabel: quiz.length > 0
-        ? "I’m ready for the quick check"
-        : "I’m ready to show what I know",
+      completeLabel:
+        quiz.length > 0
+          ? "I’m ready for the quick check"
+          : "I’m ready to show what I know",
       content: (
         <>
           <p className="text-base">{lesson.independent_task}</p>
@@ -1277,23 +1340,4 @@ const FilePreview = ({ file }) => {
   return (
     <div
       className="rounded-lg border overflow-hidden"
-      style={{ borderColor: "#D4C8A8" }}
-    >
-      {file.content_type?.startsWith("image/") ? (
-        <img
-          src={fileUrl(file.id)}
-          alt={file.original_filename}
-          className="w-full h-20 object-cover"
-        />
-      ) : (
-        <div className="h-20 bg-stone-50 grid place-items-center text-stone-500">
-          <Icon size={20} />
-        </div>
-      )}
-
-      <div className="p-1 text-[10px] truncate">
-        {file.original_filename}
-      </div>
-    </div>
-  );
-};
+      style={{ borderColor: "#D4C8A8"
