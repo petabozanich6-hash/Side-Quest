@@ -49,14 +49,22 @@ security = HTTPBearer(auto_error=False)
 # ===== Object Storage =====
 storage_key: Optional[str] = None
 
+
 def init_storage(force: bool = False):
     global storage_key
+
     if storage_key and not force:
         return storage_key
+
     if not EMERGENT_LLM_KEY:
         return None
+
     try:
-        resp = requests.post(f"{STORAGE_URL}/init", json={"emergent_key": EMERGENT_LLM_KEY}, timeout=30)
+        resp = requests.post(
+            f"{STORAGE_URL}/init",
+            json={"emergent_key": EMERGENT_LLM_KEY},
+            timeout=30,
+        )
         resp.raise_for_status()
         storage_key = resp.json()["storage_key"]
         logger.info("Storage initialized")
@@ -65,30 +73,59 @@ def init_storage(force: bool = False):
         logger.error(f"Storage init failed: {e}")
         return None
 
+
 def put_object(path: str, data: bytes, content_type: str):
     key = init_storage()
+
     if not key:
         raise HTTPException(500, "Storage unavailable")
-    resp = requests.put(f"{STORAGE_URL}/objects/{path}",
-                        headers={"X-Storage-Key": key, "Content-Type": content_type},
-                        data=data, timeout=120)
+
+    resp = requests.put(
+        f"{STORAGE_URL}/objects/{path}",
+        headers={
+            "X-Storage-Key": key,
+            "Content-Type": content_type,
+        },
+        data=data,
+        timeout=120,
+    )
+
     if resp.status_code == 404:
         init_storage(force=True)
-        resp = requests.put(f"{STORAGE_URL}/objects/{path}",
-                            headers={"X-Storage-Key": storage_key, "Content-Type": content_type},
-                            data=data, timeout=120)
+        resp = requests.put(
+            f"{STORAGE_URL}/objects/{path}",
+            headers={
+                "X-Storage-Key": storage_key,
+                "Content-Type": content_type,
+            },
+            data=data,
+            timeout=120,
+        )
+
     resp.raise_for_status()
     return resp.json()
 
+
 def get_object(path: str):
     key = init_storage()
+
     if not key:
         raise HTTPException(500, "Storage unavailable")
-    resp = requests.get(f"{STORAGE_URL}/objects/{path}", headers={"X-Storage-Key": key}, timeout=60)
+
+    resp = requests.get(
+        f"{STORAGE_URL}/objects/{path}",
+        headers={"X-Storage-Key": key},
+        timeout=60,
+    )
+
     if resp.status_code == 404:
         raise HTTPException(404, "File not found")
+
     resp.raise_for_status()
-    return resp.content, resp.headers.get("Content-Type", "application/octet-stream")
+    return resp.content, resp.headers.get(
+        "Content-Type",
+        "application/octet-stream",
+    )
 
 # ===== Auth helpers =====
 def hash_pw(pw: str) -> str:
@@ -663,6 +700,7 @@ Success criteria: {lesson.get('success_criteria',[]) if lesson else []}
 Key vocabulary: {lesson.get('key_vocabulary',[]) if lesson else []}
 
 What they said: "{data.situation or '(nothing yet)'}"
+    """
 
     try:
         client = genai.Client(api_key=GOOGLE_AI_API_KEY)
@@ -1432,7 +1470,7 @@ def extract_json(text: str) -> dict:
 
 @api.post("/ai/generate-lesson")
 async def ai_generate_lesson(req: AILessonRequest, user=Depends(require_parent)):
-    if not EMERGENT_LLM_KEY:
+    if not GOOGLE_AI_API_KEY:
         raise HTTPException(500, "AI not configured")
     outcomes_text = await get_stage_outcomes_text(req.stage, req.learning_area)
     prompt = build_lesson_prompt(req, outcomes_text)
@@ -1476,7 +1514,7 @@ async def ai_generate_lesson(req: AILessonRequest, user=Depends(require_parent))
 
 @api.post("/ai/analyse-submission")
 async def ai_analyse_submission(req: AIAnalyseRequest, user=Depends(require_parent)):
-    if not EMERGENT_LLM_KEY:
+    if not GOOGLE_AI_API_KEY:
         raise HTTPException(500, "AI not configured")
     sub = await db.submissions.find_one({"id": req.submission_id, "family_id": user["family_id"]}, {"_id": 0})
     if not sub: raise HTTPException(404)
@@ -1583,7 +1621,7 @@ async def get_life_evidence(eid: str, user=Depends(require_parent)):
 
 @api.post("/life-evidence/analyse")
 async def analyse_life_evidence(data: LifeAnalyseIn, user=Depends(require_parent)):
-    if not EMERGENT_LLM_KEY: raise HTTPException(500, "AI not configured")
+    if not GOOGLE_AI_API_KEY: raise HTTPException(500, "AI not configured")
     rec = await db.life_evidence.find_one({"id": data.evidence_id, "family_id": user["family_id"]}, {"_id": 0})
     if not rec: raise HTTPException(404)
     student = await db.students.find_one({"id": rec["student_id"]}, {"_id": 0, "pin": 0})
@@ -1716,7 +1754,7 @@ async def delete_learning_plan(pid: str, user=Depends(require_parent)):
 
 @api.post("/learning-plans/{pid}/generate")
 async def generate_learning_plan(pid: str, user=Depends(require_parent)):
-    if not EMERGENT_LLM_KEY: raise HTTPException(500, "AI not configured")
+    if not GOOGLE_AI_API_KEY: raise HTTPException(500, "AI not configured")
     plan = await db.learning_plans.find_one({"id": pid, "family_id": user["family_id"]}, {"_id": 0})
     if not plan: raise HTTPException(404)
     student = await db.students.find_one({"id": plan["student_id"]}, {"_id": 0, "pin": 0})
