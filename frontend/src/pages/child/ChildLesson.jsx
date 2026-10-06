@@ -272,61 +272,147 @@ export default function ChildLesson() {
       </Step>
 
       {l.quiz?.length > 0 && (
-        <Step n="9b" title="Quick check">
-          <div className="space-y-4">
-            {l.quiz.map((question, qi) => {
-              const selected = quizAnswers[qi];
-              return (
-                <div key={qi} className="rounded-xl border p-4 bg-white" style={{ borderColor: "#D4C8A8" }}>
-                  <p className="font-semibold">{qi + 1}. {question.question}</p>
-                  <div className="mt-3 space-y-2">
-                    {question.options.map((option, oi) => {
-                      const isSelected = selected === oi;
-                      const isCorrect = oi === question.correct_index;
-                      const showResult = quizSubmitted;
-                      let className = "w-full text-left px-3 py-2 rounded-lg border transition";
-                      if (showResult && isCorrect) className += " border-green-500 bg-green-50 text-green-800";
-                      else if (showResult && isSelected && !isCorrect) className += " border-red-500 bg-red-50 text-red-800";
-                      else if (isSelected) className += " border-blue-500 bg-blue-50 text-blue-800";
-                      else className += " border-stone-200 hover:border-blue-300";
-                      return (
-                        <button
-                          key={oi}
-                          type="button"
-                          disabled={quizSubmitted}
-                          onClick={() => setQuizAnswers(current => ({ ...current, [qi]: oi }))}
-                          className={className}
-                        >
-                          {option}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {quizSubmitted && <p className="mt-2 text-sm text-stone-700">{question.explanation}</p>}
-                </div>
-              );
-            })}
-          </div>
+  <Step n="9b" title="Quick check">
+    <div className="space-y-4">
+      {l.quiz.map((question, qi) => {
+        const selected = quizAnswers[qi];
 
-          {!quizSubmitted ? (
-            <button
-              type="button"
-              onClick={() => setQuizSubmitted(true)}
-              disabled={Object.keys(quizAnswers).length !== l.quiz.length}
-              className="mt-4 rounded-full px-5 py-2 text-sm font-bold disabled:opacity-50"
-              style={{ backgroundColor: "#1F3B2D", color: "#F5EFE0" }}
+        if (question.type === "short_answer") {
+          return (
+            <div
+              key={qi}
+              className="rounded-xl border p-4 bg-white"
+              style={{ borderColor: "#D4C8A8" }}
             >
-              Check my answers
-            </button>
-          ) : (
-            <div className="mt-4 rounded-xl bg-green-50 border border-green-200 p-3 text-green-900">
-              <p className="font-bold">
-                You got {l.quiz.filter((question, index) => quizAnswers[index] === question.correct_index).length} of {l.quiz.length} correct.
+              <p className="font-semibold">
+                {qi + 1}. {question.question}
               </p>
+
+              <textarea
+                rows={4}
+                value={quizAnswers[qi] || ""}
+                onChange={(event) =>
+                  setQuizAnswers((current) => ({
+                    ...current,
+                    [qi]: event.target.value
+                  }))
+                }
+                disabled={quizSubmitted}
+                placeholder="Type your answer here…"
+                className="mt-3 w-full rounded-lg border px-3 py-2 text-sm bg-white"
+                style={{ borderColor: "#D4C8A8" }}
+              />
+
+              {quizSubmitted && (
+                <div className="mt-3 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm text-stone-700">
+                  <p>
+                    <strong>Suggested answer:</strong>{" "}
+                    {question.sample_answer ||
+                      "Use the marking guide to review your answer."}
+                  </p>
+
+                  {question.marking_guide && (
+                    <p className="mt-2">
+                      <strong>Check:</strong> {question.marking_guide}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
-          )}
-        </Step>
-      )}
+          );
+        }
+
+        const options = question.options || [];
+
+        return (
+          <div
+            key={qi}
+            className="rounded-xl border p-4 bg-white"
+            style={{ borderColor: "#D4C8A8" }}
+          >
+            <p className="font-semibold">
+              {qi + 1}. {question.question}
+            </p>
+
+            <div className="mt-3 space-y-2">
+              {options.map((option, oi) => {
+                const isSelected = selected === oi;
+                const isCorrect = oi === question.correct_index;
+                let className =
+                  "w-full text-left px-3 py-2 rounded-lg border transition";
+
+                if (quizSubmitted && isCorrect) {
+                  className += " border-green-500 bg-green-50 text-green-800";
+                } else if (quizSubmitted && isSelected && !isCorrect) {
+                  className += " border-red-500 bg-red-50 text-red-800";
+                } else if (isSelected) {
+                  className += " border-blue-500 bg-blue-50 text-blue-800";
+                } else {
+                  className += " border-stone-200 hover:border-blue-300";
+                }
+
+                return (
+                  <button
+                    key={oi}
+                    type="button"
+                    disabled={quizSubmitted}
+                    onClick={() =>
+                      setQuizAnswers((current) => ({
+                        ...current,
+                        [qi]: oi
+                      }))
+                    }
+                    className={className}
+                  >
+                    {option}
+                  </button>
+                );
+              })}
+            </div>
+
+            {quizSubmitted && question.explanation && (
+              <p className="mt-2 text-sm text-stone-700">
+                {question.explanation}
+              </p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+
+    {!quizSubmitted ? (
+      <button
+        type="button"
+        onClick={() => setQuizSubmitted(true)}
+        disabled={Object.keys(quizAnswers).length !== l.quiz.length}
+        className="mt-4 rounded-full px-5 py-2 text-sm font-bold disabled:opacity-50"
+        style={{ backgroundColor: "#1F3B2D", color: "#F5EFE0" }}
+      >
+        Check my answers
+      </button>
+    ) : (
+      <div className="mt-4 rounded-xl bg-green-50 border border-green-200 p-3 text-green-900">
+        <p className="font-bold">
+          You got{" "}
+          {l.quiz.filter(
+            (question, index) =>
+              question.type === "multiple_choice" &&
+              quizAnswers[index] === question.correct_index
+          ).length}{" "}
+          of{" "}
+          {l.quiz.filter(
+            (question) => question.type === "multiple_choice"
+          ).length}{" "}
+          multiple-choice questions correct.
+        </p>
+        <p className="text-sm mt-2">
+          Check the suggested answer for the written question, then talk about
+          your answer with a grown-up.
+        </p>
+      </div>
+    )}
+  </Step>
+)}
 
       <Step n="10" title="My response">
         <textarea rows={5} value={response} onChange={e => setResponse(e.target.value)} placeholder="Type your answer here… (or upload a photo of your paper work below)" className="w-full rounded-lg border px-3 py-2 text-base bg-white" style={{ borderColor: "#D4C8A8" }} data-testid="response-text" />
