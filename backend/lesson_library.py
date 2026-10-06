@@ -41,6 +41,22 @@ LESSON_LIBRARY = [
         "guided_practice": "Fold one paper strip into 2 equal parts and colour 1 part. Fold a second strip into 4 equal parts and colour 2 parts. Fold a third strip into 8 equal parts and colour 4 parts. Place the strips underneath each other. Check that the coloured sections line up. Say each fraction aloud: one half, two quarters, four eighths. Then explain to a grown-up why these fractions are equivalent.",
         "independent_task": "Build a Fraction Fair wall using your paper strips. Show halves, quarters and eighths. Then solve the Fair Mystery: The fair has 8 prize tickets. Four tickets are red, two are blue and two are yellow. Write the fraction of red, blue and yellow tickets. Which colour has the largest fraction? Which colours have equivalent fractions? Write your answers and explain your thinking.",
         "response_prompt": "Which fractions in the Fair Mystery were equivalent? How do you know?",
+                        "interactive_activities": [
+            {
+                "type": "flip_cards",
+                "title": "Fraction Fair word cards",
+                "cards": [
+                    {"front": "Fraction", "back": "Equal parts of a whole."},
+                    {"front": "Numerator", "back": "The top number. It shows how many parts we have."},
+                    {"front": "Denominator", "back": "The bottom number. It shows how many equal parts the whole has."},
+                    {"front": "Equivalent", "back": "Different fractions that show the same amount."},
+                    {"front": "1/2", "back": "One half."},
+                    {"front": "2/4", "back": "Two quarters. This is equivalent to one half."},
+                    {"front": "4/8", "back": "Four eighths. This is also equivalent to one half."},
+                    {"front": "Whole", "back": "The complete amount before it is divided."}
+                ]
+            }
+        ],
         "steps": [
             {"title": "Mission launch", "detail": "Read your mission and collect your materials. The Fraction Fair needs fair shares for every visitor!", "duration_minutes": 5},
             {"title": "Learn the secret of fractions", "detail": "Read the explicit teaching and say each key word aloud.", "duration_minutes": 10},
