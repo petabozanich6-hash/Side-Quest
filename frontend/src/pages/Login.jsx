@@ -5,7 +5,6 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 import { Compass } from "lucide-react";
 import { Fern, Flower, Pet } from "../components/shared/Botanical";
-import GoogleButton from "../components/shared/GoogleButton";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -50,8 +49,7 @@ export default function Login() {
           <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Parent sign in</h1>
           <p className="text-sm text-stone-500 mt-1">Children sign in separately with username + PIN.</p>
 
-          <div className="mt-6"><GoogleButton/></div>
-          <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-stone-400"><div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/>or email<div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/></div>
+          <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-stone-400"><div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/>email<div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/></div>
 
           <div className="space-y-4">
             <div>
