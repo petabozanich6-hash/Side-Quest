@@ -2296,7 +2296,6 @@ async def upload_evidence(lesson_id: str, request: Request, user=Depends(get_cur
 
 @api.get("/lessons/{lesson_id}/evidence")
 async def get_evidence(lesson_id: str, user=Depends(get_current_user)):
-async def get_evidence(lesson_id: str, user=Depends(get_current_user)):
     evidence = await db.lesson_evidence.find({"lesson_id": lesson_id}).to_list(100)
     for item in evidence:
         item.pop("_id", None)
