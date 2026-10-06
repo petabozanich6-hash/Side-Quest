@@ -2220,6 +2220,14 @@ async def startup():
 @app.on_event("shutdown")
 async def shutdown():
     client.close()
+@api.get("/lessons/{lesson_id}")
+async def get_lesson(lesson_id: str, user=Depends(current_user)):
+    lesson = await db.lessons.find_one({"id": lesson_id})
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+    lesson.pop("_id", None)
+    return lesson
+
 
 app.include_router(api)
 _cors = os.environ.get('CORS_ORIGINS', '*').split(',')
@@ -2231,13 +2239,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-@api.get("/lessons/{lesson_id}")
-async def get_lesson(lesson_id: str):
-    lesson = await db.lessons.find_one({"id": lesson_id})
-    if not lesson:
-        raise HTTPException(status_code=404, detail="Lesson not found")
-    lesson.pop("_id", None)
-    return lesson
+
 
 
 @api.post("/lessons/{lesson_id}/quiz")
