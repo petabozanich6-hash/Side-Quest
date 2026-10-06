@@ -1,7 +1,117 @@
-LESSON_LIBRARY_VERSION = 3
+LESSON_LIBRARY_VERSION = 4
 
 LESSON_LIBRARY = [
-        {
+    {
+        "seed_key": "stg2-eng-narrative-l1",
+        "library": True,
+        "stage": "S2",
+        "year_level": "Year 3-4",
+        "learning_area": "English",
+        "subject": "Narrative",
+        "title": "What makes a story?",
+        "child_mission": "Explore what every story needs: character, setting and problem/solution.",
+        "duration_minutes": 60,
+        "outcome_codes": ["EN2-1A", "EN2-2A"],
+        "learning_intention": "I can identify the main parts of a story: character, setting and problem/solution.",
+        "success_criteria": [
+            "I can name the character(s) in a story.",
+            "I can describe where and when the story happens.",
+            "I can explain the problem and how it is solved."
+        ],
+        "key_vocabulary": ["character", "setting", "problem", "solution", "story", "narrative"],
+        "materials": ["Short picture book or story extract", "Story map template (printable)", "Writing paper or device"],
+        "explicit_teaching": "Introduce the idea that all stories have characters, a setting, and a problem that gets solved. Show a simple story map (Character → Setting → Problem → Solution). Model with a familiar story (e.g., The Three Little Pigs): characters = pigs and wolf; setting = countryside; problem = wolf trying to blow houses down.",
+        "worked_example": "In 'The Three Little Pigs', the characters are the pigs and wolf. The setting is the countryside. The problem is the wolf trying to blow the houses down.",
+        "guided_practice": "Read or listen to a short story. Complete a story map: character(s), setting (where/when), problem, solution. An adult can read aloud if needed.",
+        "independent_task": "Plan a short story of your own. Draw or write: who is in it, where it happens, what goes wrong, and how it is fixed. Use a story map template if helpful.",
+        "response_prompt": "How do you know your story has a clear character, setting and problem?",
+        "interactive_activities": [
+            {
+                "type": "flip_cards",
+                "title": "Story elements cards",
+                "cards": [
+                    {"front": "Character", "back": "The person or creature in the story."},
+                    {"front": "Setting", "back": "Where and when the story happens."},
+                    {"front": "Problem", "back": "What goes wrong or what the character wants."},
+                    {"front": "Solution", "back": "How the problem is fixed."},
+                    {"front": "1/2", "back": "One half."},
+                    {"front": "2/4", "back": "Two quarters. This is equivalent to one half."},
+                    {"front": "4/8", "back": "Four eighths. This is also equivalent to one half."},
+                    {"front": "Whole", "back": "The complete amount before it is divided."}
+                ]
+            }
+        ],
+        "steps": [
+            {"title": "Mission launch", "detail": "Read your mission and collect your materials.", "duration_minutes": 5},
+            {"title": "Learn the secret of stories", "detail": "Read the explicit teaching and say each key word aloud.", "duration_minutes": 10},
+            {"title": "Watch the worked example", "detail": "Follow the Three Little Pigs example and think about character, setting and problem.", "duration_minutes": 5},
+            {"title": "Guided practice", "detail": "Read or listen to a short story. Complete a story map: character(s), setting, problem, solution.", "duration_minutes": 10},
+            {"title": "Build your story plan", "detail": "Plan your own short story with character, setting, problem and solution.", "duration_minutes": 15},
+            {"title": "Solve the Story Mystery", "detail": "Complete the independent task using your story plan.", "duration_minutes": 10},
+            {"title": "Quick check and reflect", "detail": "Complete the quiz, answer the reflection question and upload your evidence.", "duration_minutes": 5}
+        ],
+        "resources": [
+            {
+                "type": "video",
+                "title": "What is a story?",
+                "url": "https://www.youtube.com/watch?v=VIDEO_ID_HERE",
+                "embed_url": "https://www.youtube.com/embed/VIDEO_ID_HERE",
+                "duration_minutes": 4,
+                "prompt": "Watch this short video about story elements. Pause when it asks you to think of a character."
+            }
+        ],
+        "quiz": [
+            {
+                "question": "Which of these is NOT a main part of a story?",
+                "type": "multiple_choice",
+                "options": ["Character", "Setting", "Colour", "Problem"],
+                "correct_index": 2,
+                "explanation": "Stories need character, setting and problem. Colour is not a main part of a story."
+            },
+            {
+                "question": "The 'setting' of a story tells us:",
+                "type": "multiple_choice",
+                "options": ["Who the story is about", "Where and when the story happens", "What goes wrong", "How the story ends"],
+                "correct_index": 1,
+                "explanation": "Setting means where and when the story happens."
+            },
+            {
+                "question": "In your own words, what is the 'problem' in a story?",
+                "type": "short_answer",
+                "sample_answer": "The problem is what goes wrong or what the character wants to fix.",
+                "marking_guide": "Accept any answer that describes a difficulty, challenge or goal the character faces."
+            }
+        ],
+        "reflection_prompts": ["How do you know your story has a clear character, setting and problem?"],
+        "evidence_instructions": "Upload a photo or scan of your story plan (story map or written/drawn plan) showing character, setting, problem and solution.",
+        "parent_notes": "Students explore the basic elements of narrative: character, setting and problem/solution. Ask your child to identify character, setting and problem in a short text, and to plan a simple narrative with these elements. Support: provide sentence starters and a visual story map; allow oral responses. Extension: add a twist or unexpected solution; encourage more detailed setting description.",
+        "offline_alternative": "Draw the story plan on paper instead of using a device.",
+        "extension": "Add a twist or unexpected solution to your story, or describe the setting using sensory details (what can be seen, heard, felt).",
+        "follow_up_challenges": [
+            {
+                "title": "Storyteller",
+                "description": "Tell your story to a family member using your story map. Ask them if the character, setting and problem are clear.",
+                "type": "speak",
+                "difficulty": "medium",
+                "evidence_type": "audio"
+            },
+            {
+                "title": "Story Detective",
+                "description": "Find a story in a book or online. Identify the character, setting, problem and solution.",
+                "type": "investigation",
+                "difficulty": "medium",
+                "evidence_type": "photo"
+            },
+            {
+                "title": "Mystery Maker",
+                "description": "Create your own Story Mystery using 8 objects. Write the fractions for each group and include at least one pair of equivalent fractions.",
+                "type": "create",
+                "difficulty": "stretch",
+                "evidence_type": "photo"
+            }
+        ]
+    },
+    {
         "seed_key": "s2-maths-equivalent-fractions-01",
         "library": True,
         "stage": "S2",
@@ -41,7 +151,7 @@ LESSON_LIBRARY = [
         "guided_practice": "Fold one paper strip into 2 equal parts and colour 1 part. Fold a second strip into 4 equal parts and colour 2 parts. Fold a third strip into 8 equal parts and colour 4 parts. Place the strips underneath each other. Check that the coloured sections line up. Say each fraction aloud: one half, two quarters, four eighths. Then explain to a grown-up why these fractions are equivalent.",
         "independent_task": "Build a Fraction Fair wall using your paper strips. Show halves, quarters and eighths. Then solve the Fair Mystery: The fair has 8 prize tickets. Four tickets are red, two are blue and two are yellow. Write the fraction of red, blue and yellow tickets. Which colour has the largest fraction? Which colours have equivalent fractions? Write your answers and explain your thinking.",
         "response_prompt": "Which fractions in the Fair Mystery were equivalent? How do you know?",
-                        "interactive_activities": [
+        "interactive_activities": [
             {
                 "type": "flip_cards",
                 "title": "Fraction Fair word cards",
@@ -165,7 +275,7 @@ LESSON_LIBRARY = [
             {"title": "Draft", "detail": "Write your persuasive text."},
             {"title": "Edit", "detail": "Check spelling, punctuation and persuasive language."}
         ],
-                    "resources": [
+        "resources": [
             {
                 "type": "video",
                 "title": "How to write persuasively",
