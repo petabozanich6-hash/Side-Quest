@@ -1,3 +1,4 @@
+import LessonDetail from "./pages/LessonDetail";
 import React from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
@@ -53,6 +54,7 @@ function Router() {
         <Route path="children/:sid" element={<ChildOverviewPage />} />
         <Route path="curriculum" element={<CurriculumPage />} />
         <Route path="lessons" element={<LessonsPage />} />
+        <Route path="lessons/:id" element={<LessonDetail />} />
         <Route path="ai-planner" element={<AIPlannerPage />} />
         <Route path="resources" element={<ResourcesPage />} />
         <Route path="evidence" element={<EvidencePage />} />
