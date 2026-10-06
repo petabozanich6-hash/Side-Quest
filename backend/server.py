@@ -838,6 +838,101 @@ async def login(data: LoginIn):
     }
 
 
+@api.post("/auth/google")
+async def google_login(data: GoogleLoginIn):
+    client_id = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "").strip()
+
+    if not client_id:
+        raise HTTPException(500, "Google sign-in is not configured")
+
+    try:
+        google_user = id_token.verify_oauth2_token(
+            data.credential,
+            google_requests.Request(),
+            client_id,
+        )
+    except Exception:
+        raise HTTPException(401, "Invalid Google sign-in credential")
+
+    if google_user.get("aud") != client_id:
+        raise HTTPException(401, "Google token audience mismatch")
+
+    if google_user.get("iss") not in (
+        "accounts.google.com",
+        "https://accounts.google.com",
+    ):
+        raise HTTPException(401, "Invalid Google token issuer")
+
+    if not google_user.get("email_verified"):
+        raise HTTPException(401, "Google email is not verified")
+
+    email = (google_user.get("email") or "").lower().strip()
+    if not email:
+        raise HTTPException(401, "Google account email missing")
+
+    name = (google_user.get("name") or email.split("@")[0]).strip()
+    picture = google_user.get("picture")
+
+    user = await db.users.find_one({"email": email})
+
+    if user:
+        updates = {
+            "name": name,
+            "picture": picture,
+            "oauth_provider": "google",
+            "updated_at": now_iso(),
+        }
+
+        await db.users.update_one(
+            {"id": user["id"]},
+            {"$set": updates},
+        )
+        user.update(updates)
+
+    else:
+        family_id = new_id()
+        user_id = new_id()
+
+        family = {
+            "id": family_id,
+            "name": f"{name}'s Family",
+            "owner_id": user_id,
+            "created_at": now_iso(),
+        }
+
+        user = {
+            "id": user_id,
+            "email": email,
+            "name": name,
+            "picture": picture,
+            "family_id": family_id,
+            "is_owner": True,
+            "oauth_provider": "google",
+            "created_at": now_iso(),
+        }
+
+        await db.families.insert_one(family)
+        await db.users.insert_one(user)
+
+    token = make_token({
+        "sub": user["id"],
+        "role": "parent",
+        "family_id": user["family_id"],
+    })
+
+    user_safe = {
+        key: value
+        for key, value in user.items()
+        if key not in ("password", "_id")
+    }
+    user_safe["role"] = "parent"
+
+    return {
+        "token": token,
+        "user": user_safe,
+    }
+
+
 @api.post("/auth/child-login")
 async def child_login(data: ChildLoginIn):
     student = await db.students.find_one({
