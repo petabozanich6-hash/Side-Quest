@@ -1,7 +1,6 @@
 """Side Quest Learning - K-12 Homeschool Platform Backend."""
 import os
 import uuid
-import json
 import logging
 from seed_lessons import CORE_LESSONS
 from lesson_library import LESSON_LIBRARY, LESSON_LIBRARY_VERSION
@@ -11,15 +10,13 @@ from typing import List, Optional, Dict, Any
 
 import jwt
 import bcrypt
-from urllib.parse import urlencode
 import requests
-from google import genai
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, Header, UploadFile, File, Form, Query, Cookie, Request
-from fastapi.responses import Response, StreamingResponse, JSONResponse
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Header, UploadFile, File, Form, Query, Request
+from fastapi.responses import Response
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, EmailStr
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorGridFSBucket
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -34,14 +31,12 @@ logging.basicConfig(level=logging.INFO)
 MONGO_URL = os.environ['MONGO_URL']
 DB_NAME = os.environ['DB_NAME']
 
-GOOGLE_AI_API_KEY = os.environ.get('GOOGLE_AI_API_KEY', '')
 JWT_SECRET = os.environ.get('JWT_SECRET', 'side-quest-dev-secret-change-me')
 JWT_ALG = "HS256"
 JWT_DAYS = 30
 APP_NAME = "sidequest"
 OWNER_EMAIL = "petabozanich6@gmail.com"
-
-
+OWNER_PASSWORD = os.environ.get('OWNER_PASSWORD', '')
 
 client = AsyncIOMotorClient(MONGO_URL)
 db = client[DB_NAME]
@@ -148,35 +143,6 @@ async def current_user(
     user["role"] = role
     return user
 
-
-async def current_user(
-    creds: Optional[HTTPAuthorizationCredentials] = Depends(security),
-    session_token: Optional[str] = Cookie(None),
-):
-    # 1. Try Google OAuth session cookie
-    if session_token:
-        user = await resolve_session_token(session_token)
-        if user:
-            return user
-    # 2. Fall back to JWT bearer
-    if not creds:
-        raise HTTPException(401, "Not authenticated")
-    try:
-        payload = jwt.decode(creds.credentials, JWT_SECRET, algorithms=[JWT_ALG])
-    except Exception:
-        raise HTTPException(401, "Invalid token")
-    uid = payload.get("sub")
-    role = payload.get("role")
-    user = None
-    if role == "parent":
-        user = await db.users.find_one({"id": uid}, {"_id": 0, "password": 0})
-    elif role == "child":
-        user = await db.students.find_one({"id": uid}, {"_id": 0, "pin": 0})
-    if not user:
-        raise HTTPException(401, "User not found")
-    user["role"] = role
-    return user
-
 def require_parent(user=Depends(current_user)):
     if user.get("role") != "parent":
         raise HTTPException(403, "Parent access required")
@@ -211,7 +177,7 @@ class GoogleLoginIn(BaseModel):
 class GoogleCodeIn(BaseModel):
     code: str
     redirect_uri: str
-    
+
 
 class ChildLoginIn(BaseModel):
     username: str
@@ -333,21 +299,6 @@ class CalendarEventIn(BaseModel):
     linked_assignment_id: Optional[str] = None
     notes: Optional[str] = None
 
-class AILessonRequest(BaseModel):
-    stage: str
-    year_level: Optional[str] = None
-    learning_area: str
-    subject: Optional[str] = None
-    topic: str
-    duration_minutes: int = 45
-    learner_notes: Optional[str] = None
-    support_level: str = "green"
-    is_side_quest: bool = False
-    theme: Optional[str] = None
-
-class AIAnalyseRequest(BaseModel):
-    submission_id: str
-
 class PetCreateIn(BaseModel):
     name: str
     species: str  # fox, owl, turtle, hedgehog, fawn, squirrel, rabbit, dragon
@@ -365,9 +316,6 @@ class LifeEvidenceIn(BaseModel):
     location: Optional[str] = None
     file_ids: List[str] = []
     parent_note: Optional[str] = None
-
-class LifeAnalyseIn(BaseModel):
-    evidence_id: str
 
 class LifeFeedbackIn(BaseModel):
     outcome_mappings: List[Dict[str, Any]]
@@ -408,9 +356,7 @@ class ReadingLogIn(BaseModel):
 
 # ===== Family data isolation helper =====
 async def get_family_id(user):
-    if user.get("role") == "parent":
-        return user.get("family_id")
-    elif user.get("role") == "child":
+    if user.get("role") in ("parent", "child"):
         return user.get("family_id")
     raise HTTPException(403, "No family")
 
@@ -418,6 +364,17 @@ def strip_mongo(doc):
     if doc and "_id" in doc:
         doc.pop("_id", None)
     return doc
+
+def lesson_access_query(lesson_id: str, user) -> dict:
+    """Lesson is visible if it belongs to the user's family or is a shared library lesson."""
+    return {
+        "id": lesson_id,
+        "$or": [
+            {"family_id": user.get("family_id")},
+            {"family_id": None},
+            {"library": True},
+        ],
+    }
 
 # ===== Pet companion helpers (defined early so route handlers can call them) =====
 PET_SPECIES = {
@@ -476,10 +433,7 @@ NSW_LEARNING_AREAS = {
     "senior": ["English", "Mathematics", "Science", "HSIE", "PDHPE", "Creative Arts", "Languages", "TAS", "VET"],
 }
 
-# Sample curriculum outcomes - these are plain-language representations, parent must verify against NESA
-NSW_OUTCOMES_SEED = [
-    # NSW outcome seed is maintained in /app/backend/nsw_outcomes.py
-]
+# NSW outcome seed is maintained in /app/backend/nsw_outcomes.py
 from nsw_outcomes import NSW_OUTCOMES_SEED as _NSW_OUTCOMES_SEED_FULL, SEED_VERSION
 NSW_OUTCOMES_SEED = _NSW_OUTCOMES_SEED_FULL
 
@@ -677,47 +631,14 @@ async def customize_pet(data: dict, user=Depends(require_child)):
 
 @api.post("/pet/help")
 async def pet_help_route(data: PetHelpIn, user=Depends(require_child)):
-    """AI-powered contextual help message in pet's voice."""
+    """Fixed encouragement message in the pet's name (no AI)."""
     pet = await db.pets.find_one({"student_id": user["id"]})
     if not pet: raise HTTPException(404, "No pet yet")
-    lesson = None
-    if data.lesson_id:
-        lesson = await db.lessons.find_one({"id": data.lesson_id, "family_id": user["family_id"]}, {"_id": 0})
-    species = PET_SPECIES.get(pet["species"], {"voice": "warm and encouraging"})
     student_name = user.get("name", "friend")
-    stage = user.get("stage", "primary")
-    age_tone = "very short, simple words, warm" if stage in ("ES1","S1","S2") else "friendly, clear" if stage in ("S3","S4") else "mature, respectful"
-
-    prompt = f"""You are {pet['name']}, a {pet['species']} pet companion for a homeschool student.
-Voice: {species['voice']}. Tone: {age_tone}.
-
-The student {student_name} says they're stuck on this lesson:
-Title: {lesson.get('title') if lesson else 'their current task'}
-Learning intention: {lesson.get('learning_intention','') if lesson else ''}
-Success criteria: {lesson.get('success_criteria',[]) if lesson else []}
-Key vocabulary: {lesson.get('key_vocabulary',[]) if lesson else []}
-
-What they said: "{data.situation or '(nothing yet)'}"
-    """
-
-    try:
-        client = genai.Client(api_key=GOOGLE_AI_API_KEY)
-
-        response = await client.aio.models.generate_content(
-            model="gemini-3.8-flash",
-            contents=prompt,
-            config={
-                "system_instruction": (
-                    "You are a kind homeschool pet companion. "
-                    "You never give answers, only encouragement."
-                )
-            },
-        )
-
-        message = response.text or ""
-    except Exception as e:
-        message = f"Hey {student_name}! I'm {pet['name']}. Let's take this one tiny step. Read the first question slowly, then try just the beginning. If a word feels tricky, check the key words. You've got this — I'll be right here. 💛"
-    return {"message": message.strip()[:600], "pet": {"name": pet["name"], "species": pet["species"]}}
+    message = (f"Hey {student_name}! I'm {pet['name']}. Let's take this one tiny step. "
+               "Read the first question slowly, then try just the beginning. "
+               "If a word feels tricky, check the key words. You've got this - I'll be right here. 💛")
+    return {"message": message, "pet": {"name": pet["name"], "species": pet["species"]}}
 
 # ----- Cheers (parent-to-child high-fives) -----
 @api.post("/cheers")
@@ -746,7 +667,6 @@ async def list_cheers(student_id: Optional[str] = None, user=Depends(current_use
     elif student_id:
         q["student_id"] = student_id
     cheers = await db.cheers.find(q, {"_id": 0}).sort("created_at", -1).to_list(100)
-    # Auto-mark as seen when the child views them
     if user.get("role") == "child":
         await db.cheers.update_many({"student_id": user["id"], "seen": {"$ne": True}}, {"$set": {"seen": True, "seen_at": now_iso()}})
     return cheers
@@ -827,7 +747,7 @@ async def register(data: RegisterIn):
 async def login(data: LoginIn):
     user = await db.users.find_one({"email": data.email.lower()})
 
-    if not user or not verify_pw(data.password, user["password"]):
+    if not user or not verify_pw(data.password, user.get("password", "")):
         raise HTTPException(401, "Invalid email or password")
 
     token = make_token({
@@ -844,6 +764,55 @@ async def login(data: LoginIn):
         "token": token,
         "user": user,
     }
+
+
+async def _google_user_login(email: str, name: str, picture: Optional[str]):
+    user = await db.users.find_one({"email": email})
+
+    if user:
+        updates = {
+            "name": name,
+            "picture": picture,
+            "oauth_provider": "google",
+            "updated_at": now_iso(),
+        }
+        await db.users.update_one({"id": user["id"]}, {"$set": updates})
+        user.update(updates)
+    else:
+        family_id = new_id()
+        user_id = new_id()
+
+        family = {
+            "id": family_id,
+            "name": f"{name}'s Family",
+            "owner_id": user_id,
+            "created_at": now_iso(),
+        }
+
+        user = {
+            "id": user_id,
+            "email": email,
+            "name": name,
+            "picture": picture,
+            "family_id": family_id,
+            "is_owner": True,
+            "oauth_provider": "google",
+            "created_at": now_iso(),
+        }
+
+        await db.families.insert_one(family)
+        await db.users.insert_one(user)
+
+    token = make_token({
+        "sub": user["id"],
+        "role": "parent",
+        "family_id": user["family_id"],
+    })
+
+    user_safe = {k: v for k, v in user.items() if k not in ("password", "_id")}
+    user_safe["role"] = "parent"
+
+    return {"token": token, "user": user_safe}
 
 
 @api.post("/auth/google")
@@ -879,66 +848,9 @@ async def google_login(data: GoogleLoginIn):
         raise HTTPException(401, "Google account email missing")
 
     name = (google_user.get("name") or email.split("@")[0]).strip()
-    picture = google_user.get("picture")
+    return await _google_user_login(email, name, google_user.get("picture"))
 
-    user = await db.users.find_one({"email": email})
 
-    if user:
-        updates = {
-            "name": name,
-            "picture": picture,
-            "oauth_provider": "google",
-            "updated_at": now_iso(),
-        }
-
-        await db.users.update_one(
-            {"id": user["id"]},
-            {"$set": updates},
-        )
-        user.update(updates)
-
-    else:
-        family_id = new_id()
-        user_id = new_id()
-
-        family = {
-            "id": family_id,
-            "name": f"{name}'s Family",
-            "owner_id": user_id,
-            "created_at": now_iso(),
-        }
-
-        user = {
-            "id": user_id,
-            "email": email,
-            "name": name,
-            "picture": picture,
-            "family_id": family_id,
-            "is_owner": True,
-            "oauth_provider": "google",
-            "created_at": now_iso(),
-        }
-
-        await db.families.insert_one(family)
-        await db.users.insert_one(user)
-
-    token = make_token({
-        "sub": user["id"],
-        "role": "parent",
-        "family_id": user["family_id"],
-    })
-
-    user_safe = {
-        key: value
-        for key, value in user.items()
-        if key not in ("password", "_id")
-    }
-    user_safe["role"] = "parent"
-
-    return {
-        "token": token,
-        "user": user_safe,
-    }
 @api.post("/auth/google/callback")
 async def google_callback(data: GoogleCodeIn):
     client_id = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "").strip()
@@ -987,64 +899,7 @@ async def google_callback(data: GoogleCodeIn):
         raise HTTPException(401, "Google account email missing")
 
     name = (google_user.get("name") or email.split("@")[0]).strip()
-    picture = google_user.get("picture")
-
-    user = await db.users.find_one({"email": email})
-
-    if user:
-        updates = {
-            "name": name,
-            "picture": picture,
-            "oauth_provider": "google",
-            "updated_at": now_iso(),
-        }
-        await db.users.update_one(
-            {"id": user["id"]},
-            {"$set": updates},
-        )
-        user.update(updates)
-    else:
-        family_id = new_id()
-        user_id = new_id()
-
-        family = {
-            "id": family_id,
-            "name": f"{name}'s Family",
-            "owner_id": user_id,
-            "created_at": now_iso(),
-        }
-
-        user = {
-            "id": user_id,
-            "email": email,
-            "name": name,
-            "picture": picture,
-            "family_id": family_id,
-            "is_owner": True,
-            "oauth_provider": "google",
-            "created_at": now_iso(),
-        }
-
-        await db.families.insert_one(family)
-        await db.users.insert_one(user)
-
-    token = make_token({
-        "sub": user["id"],
-        "role": "parent",
-        "family_id": user["family_id"],
-    })
-
-    user_safe = {
-        key: value
-        for key, value in user.items()
-        if key not in ("password", "_id")
-    }
-    user_safe["role"] = "parent"
-
-    return {
-        "token": token,
-        "user": user_safe,
-    }
+    return await _google_user_login(email, name, google_user.get("picture"))
 
 @api.post("/auth/child-login")
 async def child_login(data: ChildLoginIn):
@@ -1158,7 +1013,7 @@ async def update_student(sid: str, data: StudentIn, user=Depends(require_parent)
     if "username" in update:
         update["username"] = update["username"].lower()
     await db.students.update_one({"id": sid, "family_id": user["family_id"]}, {"$set": update})
-    s = await db.students.find_one({"id": sid}, {"_id": 0, "pin": 0})
+    s = await db.students.find_one({"id": sid, "family_id": user["family_id"]}, {"_id": 0, "pin": 0})
     return s
 
 @api.delete("/students/{sid}")
@@ -1208,7 +1063,8 @@ async def list_lessons(
     q = {
         "$or": [
             {"family_id": user["family_id"]},
-            {"library": True}
+            {"family_id": None},
+            {"library": True},
         ]
     }
 
@@ -1221,10 +1077,107 @@ async def list_lessons(
     if filters:
         q = {"$and": [q, *filters]}
 
-    return await db.lessons.find(
-        q,
-        {"_id": 0}
-    ).sort("created_at", -1).to_list(500)
+    return await db.lessons.find(q, {"_id": 0}).sort("created_at", -1).to_list(500)
+
+@api.post("/lessons")
+async def create_lesson(data: LessonIn, user=Depends(require_parent)):
+    lesson = {**data.model_dump(), "id": new_id(), "family_id": user["family_id"],
+              "created_at": now_iso(), "updated_at": now_iso()}
+    await db.lessons.insert_one(lesson)
+    return strip_mongo(lesson)
+
+@api.get("/lessons/{lesson_id}")
+async def get_lesson(lesson_id: str, user=Depends(current_user)):
+    lesson = await db.lessons.find_one(lesson_access_query(lesson_id, user), {"_id": 0})
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+    return lesson
+
+@api.delete("/lessons/{lesson_id}")
+async def delete_lesson(lesson_id: str, user=Depends(require_parent)):
+    """Parents can delete lessons owned by their own family. Shared library lessons are protected."""
+    res = await db.lessons.delete_one({"id": lesson_id, "family_id": user["family_id"]})
+    if res.deleted_count == 0:
+        raise HTTPException(404, "Lesson not found or cannot be deleted")
+    return {"ok": True}
+
+@api.post("/lessons/{lesson_id}/quiz")
+async def submit_quiz(lesson_id: str, request: Request, user=Depends(current_user)):
+    data = await request.json()
+    answers = data.get("answers", [])
+
+    lesson = await db.lessons.find_one(lesson_access_query(lesson_id, user))
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+
+    quiz = lesson.get("quiz", [])
+    results = []
+    correct_count = 0
+
+    for index, answer in enumerate(answers):
+        if index >= len(quiz):
+            continue
+
+        question = quiz[index]
+        is_correct = answer == question.get("correct_index")
+        if is_correct:
+            correct_count += 1
+
+        results.append({
+            "question_index": index,
+            "selected": answer,
+            "correct_index": question.get("correct_index"),
+            "is_correct": is_correct,
+            "explanation": question.get("explanation", "")
+        })
+
+    result = {
+        "id": new_id(),
+        "family_id": user.get("family_id"),
+        "lesson_id": lesson_id,
+        "child_id": user["id"],
+        "score": correct_count,
+        "total": len(quiz),
+        "results": results,
+        "completed_at": now_iso()
+    }
+
+    await db.quiz_results.insert_one(result)
+    result.pop("_id", None)
+    return result
+
+@api.post("/lessons/{lesson_id}/evidence")
+async def upload_evidence(lesson_id: str, request: Request, user=Depends(current_user)):
+    data = await request.json()
+
+    lesson = await db.lessons.find_one(lesson_access_query(lesson_id, user))
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+
+    evidence = {
+        "id": new_id(),
+        "family_id": user.get("family_id"),
+        "lesson_id": lesson_id,
+        "child_id": user["id"],
+        "type": data.get("type", "text"),
+        "text": data.get("text", ""),
+        "file_name": data.get("file_name", ""),
+        "file_data": data.get("file_data", ""),
+        "submitted_at": now_iso()
+    }
+
+    await db.lesson_evidence.insert_one(evidence)
+    return {"id": evidence["id"], "message": "Evidence saved"}
+
+@api.get("/lessons/{lesson_id}/evidence")
+async def get_evidence(lesson_id: str, user=Depends(current_user)):
+    q = {"lesson_id": lesson_id, "family_id": user.get("family_id")}
+    if user.get("role") == "child":
+        q["child_id"] = user["id"]
+    evidence = await db.lesson_evidence.find(q).to_list(100)
+    for item in evidence:
+        item.pop("_id", None)
+    return evidence
 
 # ----- Assignments -----
 @api.get("/assignments")
@@ -1236,7 +1189,6 @@ async def list_assignments(student_id: Optional[str] = None, status: Optional[st
         q["student_id"] = student_id
     if status: q["status"] = status
     assignments = await db.assignments.find(q, {"_id": 0}).sort("created_at", -1).to_list(500)
-    # Attach lesson info
     for a in assignments:
         lesson = await db.lessons.find_one({"id": a["lesson_id"]}, {"_id": 0})
         a["lesson"] = lesson
@@ -1313,13 +1265,16 @@ async def list_submissions(student_id: Optional[str] = None, status: Optional[st
 
 @api.get("/submissions/{sid}")
 async def get_submission(sid: str, user=Depends(current_user)):
-    s = await db.submissions.find_one({"id": sid, "family_id": user["family_id"]}, {"_id": 0})
+    q = {"id": sid, "family_id": user["family_id"]}
+    if user.get("role") == "child":
+        q["student_id"] = user["id"]
+    s = await db.submissions.find_one(q, {"_id": 0})
     if not s: raise HTTPException(404)
     s["lesson"] = await db.lessons.find_one({"id": s["lesson_id"]}, {"_id": 0})
     s["student"] = await db.students.find_one({"id": s["student_id"]}, {"_id": 0, "pin": 0})
     files = []
     for fid in s.get("file_ids", []):
-        f = await db.files.find_one({"id": fid}, {"_id": 0})
+        f = await db.files.find_one({"id": fid, "family_id": user["family_id"]}, {"_id": 0})
         if f: files.append(f)
     s["files"] = files
     return s
@@ -1335,13 +1290,12 @@ async def give_feedback(sid: str, data: FeedbackIn, user=Depends(require_parent)
         "reviewed_by": user["id"],
     }
     await db.submissions.update_one({"id": sid, "family_id": user["family_id"]}, {"$set": update})
-    sub = await db.submissions.find_one({"id": sid})
+    sub = await db.submissions.find_one({"id": sid, "family_id": user["family_id"]})
     if sub:
         new_status_map = {"accepted": "accepted", "demonstrated": "demonstrated",
                           "needs_revision": "needs_revision", "needs_more_practice": "needs_more_practice"}
         await db.assignments.update_one({"id": sub["assignment_id"]},
                                         {"$set": {"status": new_status_map.get(data.status, "accepted")}})
-        # Award pet XP for feedback statuses
         xp_map = {"accepted": 25, "demonstrated": 50, "needs_revision": 5, "needs_more_practice": 10}
         bonus = xp_map.get(data.status, 0)
         if bonus:
@@ -1378,7 +1332,6 @@ async def upload_file(file: UploadFile = File(...), context: Optional[str] = For
 @api.get("/files/{fid}")
 async def download_file(fid: str, auth: Optional[str] = Query(None),
                        authorization: Optional[str] = Header(None)):
-    # token flexibility for <img src>
     token = None
     if authorization and authorization.startswith("Bearer "):
         token = authorization[7:]
@@ -1460,7 +1413,7 @@ async def export_calendar_ics(student_id: Optional[str] = None, user=Depends(req
         "PRODID:-//Side Quest Learning//EN",
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
-        f"X-WR-CALNAME:Side Quest Learning",
+        "X-WR-CALNAME:Side Quest Learning",
     ]
     now = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     for e in events:
@@ -1471,7 +1424,6 @@ async def export_calendar_ics(student_id: Optional[str] = None, user=Depends(req
         has_time = bool(e.get("start_time"))
         if has_time:
             start = to_dt(e["date"], e["start_time"])
-            # add duration
             try:
                 dt = datetime.strptime(start, "%Y%m%dT%H%M%S")
                 end_dt = dt + timedelta(minutes=dur)
@@ -1506,255 +1458,17 @@ async def export_calendar_ics(student_id: Optional[str] = None, user=Depends(req
 
 @api.put("/calendar/{eid}")
 async def update_event(eid: str, data: dict, user=Depends(require_parent)):
+    data.pop("id", None)
+    data.pop("family_id", None)
     await db.calendar_events.update_one({"id": eid, "family_id": user["family_id"]}, {"$set": data})
-    return await db.calendar_events.find_one({"id": eid}, {"_id": 0})
+    return await db.calendar_events.find_one({"id": eid, "family_id": user["family_id"]}, {"_id": 0})
 
 @api.delete("/calendar/{eid}")
 async def delete_event(eid: str, user=Depends(require_parent)):
     await db.calendar_events.delete_one({"id": eid, "family_id": user["family_id"]})
     return {"ok": True}
 
-# ----- AI Lesson Generator -----
-async def get_stage_outcomes_text(stage: str, learning_area: str) -> str:
-    docs = await db.outcomes.find({"stage": stage, "learning_area": learning_area}, {"_id": 0}).to_list(50)
-    if not docs: return "(no seeded outcomes for this stage/area; LEAVE outcome_codes EMPTY)"
-    return "\n".join([f"- {o['code']}: {o['description']}" for o in docs])
-
-def build_lesson_prompt(req: AILessonRequest, outcomes_text: str = "") -> str:
-    band = "primary" if req.stage in ["ES1", "S1", "S2", "S3"] else "secondary" if req.stage in ["S4", "S5"] else "senior"
-    tone = {
-        "primary": "friendly, clear, encouraging for a primary-age child",
-        "secondary": "modern, focused, age-appropriate for secondary students; include research and source analysis as suitable",
-        "senior": "mature, course-oriented, academically rigorous for senior-secondary students"
-    }[band]
-    side_quest_block = ""
-    if req.is_side_quest and req.theme:
-        side_quest_block = f"\nTHIS IS A SIDE QUEST themed around: '{req.theme}'. Use the theme as a context for genuine curriculum learning — do not make commercial consumption the goal."
-    return f"""You are a NSW Australia homeschool curriculum lesson designer. Create ONE complete lesson in strict JSON. Tone: {tone}.
-
-AVAILABLE NSW OUTCOME CODES for {req.stage} / {req.learning_area} — you MUST ONLY use codes from this list in outcome_codes. If no code genuinely fits, LEAVE outcome_codes EMPTY. NEVER invent codes:
-{outcomes_text}
-
-APPROVED FREE/LEGAL RESOURCE PLATFORMS — only link to these when suggesting resources. Use real root URLs; never fabricate deep links:
-- ABC Education (abc.net.au/education)
-- ABC Kids / ABC iview (abc.net.au/kids, iview.abc.net.au)
-- BBC Bitesize (bbc.co.uk/bitesize)
-- BBC Teach (bbc.co.uk/teach)
-- Khan Academy (khanacademy.org)
-- Khan Academy Kids app (khankids.org)
-- CSIRO Science by Email / Double Helix (csiro.au)
-- Scootle (scootle.edu.au)
-- National Geographic Kids (kids.nationalgeographic.com)
-- CrashCourse Kids / CrashCourse (youtube.com/@crashcoursekids, youtube.com/@crashcourse)
-- SciShow Kids (youtube.com/@scishowkids)
-- Numberphile (numberphile.com)
-- NASA for Students (nasa.gov/learning-resources)
-- Australian Museum (australian.museum)
-- Reading Eggs free samples (readingeggs.com.au)
-- Project Gutenberg (gutenberg.org) for public-domain texts
-- Storyline Online (storylineonline.net)
-- TED-Ed (ed.ted.com)
-- NSW State Library (sl.nsw.gov.au)
-- National Library of Australia Trove (trove.nla.gov.au)
-- Open Library (openlibrary.org)
-- Youtube EDU channels you can confidently cite by channel name
-
-INPUT:
-- Stage: {req.stage} ({req.year_level or ''})
-- Learning Area: {req.learning_area}
-- Subject: {req.subject or req.learning_area}
-- Topic: {req.topic}
-- Duration: {req.duration_minutes} minutes
-- Learner notes: {req.learner_notes or 'none'}
-- Support level: {req.support_level}
-{side_quest_block}
-
-Return ONLY valid JSON (no markdown, no commentary) with exact keys:
-{{
-  "title": "...",
-  "learning_intention": "plain-language 'I am learning to...' statement",
-  "success_criteria": ["I can...", "I can...", "I can..."],
-  "duration_minutes": {req.duration_minutes},
-  "materials": ["..."],
-  "key_vocabulary": ["term: definition", "..."],
-  "prior_knowledge": "What the student should already know",
-  "explicit_teaching": "A clear teaching explanation (3-6 short paragraphs) that teaches the concept directly - do not just link to a video",
-  "worked_example": "A specific step-by-step worked example appropriate for the stage",
-  "guided_practice": "A guided practice task",
-  "independent_task": "A specific independent task the student must do",
-  "response_prompt": "What the student must write/record/produce",
-  "evidence_requirement": "What evidence (typed answer, photo, audio, video, project artifact) proves learning",
-  "self_check": "How the student checks their own work",
-  "reflection_prompt": "A reflection question",
-  "printable_version": "Instructions for completing on paper if no device available",
-  "offline_alternative": "A no-device alternative pathway",
-  "accessibility_notes": "Accessibility adaptations (audio support, visuals, etc)",
-  "suggested_resources": [
-    {{"title": "resource name", "type": "video|article|book|interactive|podcast|dataset", "provider": "ABC Education | BBC Bitesize | Khan Academy | CrashCourse Kids | SciShow Kids | ABC Kids | TED-Ed | Scootle | CSIRO | etc", "url": "REAL root or channel URL from the approved list above - never invent a deep link; use the channel/section URL where the resource can be found", "where_to_find": "search phrase or section name to find it on the provider site", "purpose": "specifically how this reinforces the learning intention", "offline_alternative": "equivalent offline option", "stage_appropriate": true, "legally_free": true}}
-  ],
-  "follow_up_challenges": [
-    {{"title": "challenge name", "type": "apply_in_life|teach_someone|create_something|measure_change|quiz|project", "description": "specific challenge instruction", "evidence_type": "photo|video|audio|written|measurement|parent_observation", "difficulty": "easy|medium|stretch"}}
-  ],
-  "outcome_codes": ["codes from the AVAILABLE list above only - empty array if none genuinely fit"],
-  "outcome_alignment": [{{"code": "code used", "evidence": "specifically how this lesson addresses this outcome"}}],
-  "source_note": "AI-suggested outcome mappings; parent must verify against NESA before marking demonstrated"
-}}
-
-CRITICAL RULES:
-- outcome_codes MUST come ONLY from the AVAILABLE list above. Zero tolerance for invented codes.
-- For every code in outcome_codes, provide an entry in outcome_alignment explaining HOW the lesson addresses it.
-- Provide 3-5 external resources. Each MUST have a REAL root URL from the approved platform list (e.g. "https://www.bbc.co.uk/bitesize", not a fabricated deep link).
-- Resources must genuinely teach or reinforce the learning intention - not filler.
-- Provide 3 follow-up challenges; at least one real-world application.
-- Match complexity to Stage {req.stage}; no primary worksheet style for secondary/senior.
-- Include substantial explicit teaching content - never "just watch a video".
-- Provide a genuine offline alternative.
-"""
-
-async def call_claude(prompt: str) -> str:
-    client = genai.Client(api_key=GOOGLE_AI_API_KEY)
-
-    response = await client.aio.models.generate_content(
-        model="gemini-3.8-flash",
-        contents=prompt,
-        config={
-            "system_instruction": (
-                "You are an expert NSW Australia K-12 curriculum designer. "
-                "You return strict JSON only when asked. "
-                "You never invent syllabus outcome codes."
-            )
-        },
-    )
-
-    return response.text or ""
-
-def extract_json(text: str) -> dict:
-    text = text.strip()
-    if text.startswith("```"):
-        text = text.split("```", 2)[1]
-        if text.startswith("json"):
-            text = text[4:]
-        text = text.strip("`\n ")
-    # try direct parse
-    try:
-        return json.loads(text)
-    except Exception:
-        pass
-    # try finding first { to last }
-    start = text.find("{"); end = text.rfind("}")
-    if start >= 0 and end > start:
-        try:
-            return json.loads(text[start:end+1])
-        except Exception:
-            pass
-    return {}
-
-@api.post("/ai/generate-lesson")
-async def ai_generate_lesson(req: AILessonRequest, user=Depends(require_parent)):
-    if not GOOGLE_AI_API_KEY:
-        raise HTTPException(500, "AI not configured")
-    outcomes_text = await get_stage_outcomes_text(req.stage, req.learning_area)
-    prompt = build_lesson_prompt(req, outcomes_text)
-    try:
-        raw = await call_claude(prompt)
-    except Exception as e:
-        logger.error(f"AI error: {e}")
-        raise HTTPException(500, f"AI generation failed: {str(e)[:200]}")
-    data = extract_json(raw)
-    if not data or "title" not in data:
-        raise HTTPException(500, "AI returned invalid lesson format")
-    stage_obj = next((s for s in NSW_STAGES if s["code"] == req.stage), None)
-    lesson = {
-        "id": new_id(),
-        "family_id": user["family_id"],
-        "stage": req.stage,
-        "year_level": req.year_level,
-        "learning_area": req.learning_area,
-        "subject": req.subject,
-        "band": stage_obj["band"] if stage_obj else "primary",
-        "status": "needs_review",
-        "ai_generated": True,
-        "is_side_quest": req.is_side_quest,
-        "theme": req.theme,
-        "created_at": now_iso(),
-        **{k: data.get(k) for k in [
-            "title", "learning_intention", "success_criteria", "duration_minutes",
-            "materials", "key_vocabulary", "prior_knowledge", "explicit_teaching",
-            "worked_example", "guided_practice", "independent_task", "response_prompt",
-            "evidence_requirement", "self_check", "reflection_prompt",
-            "printable_version", "offline_alternative", "accessibility_notes",
-            "outcome_codes", "source_note", "suggested_resources", "follow_up_challenges", "outcome_alignment"
-        ]},
-    }
-    # Defaults
-    for k, dv in [("success_criteria", []), ("materials", []), ("key_vocabulary", []),
-                  ("outcome_codes", []), ("duration_minutes", req.duration_minutes)]:
-        if lesson.get(k) is None: lesson[k] = dv
-    await db.lessons.insert_one(lesson)
-    return strip_mongo(lesson)
-
-@api.post("/ai/analyse-submission")
-async def ai_analyse_submission(req: AIAnalyseRequest, user=Depends(require_parent)):
-    if not GOOGLE_AI_API_KEY:
-        raise HTTPException(500, "AI not configured")
-    sub = await db.submissions.find_one({"id": req.submission_id, "family_id": user["family_id"]}, {"_id": 0})
-    if not sub: raise HTTPException(404)
-    lesson = await db.lessons.find_one({"id": sub["lesson_id"]}, {"_id": 0})
-    files = [await db.files.find_one({"id": fid}, {"_id": 0}) for fid in sub.get("file_ids", [])]
-    file_summary = ", ".join([f["original_filename"] + f" ({f['content_type']})" for f in files if f]) or "none"
-    prompt = f"""Analyse this student work submission and return STRICT JSON.
-
-LESSON TITLE: {lesson.get('title') if lesson else 'Unknown'}
-STAGE: {lesson.get('stage') if lesson else '?'}
-LEARNING AREA: {lesson.get('learning_area') if lesson else '?'}
-LEARNING INTENTION: {lesson.get('learning_intention') if lesson else ''}
-SUCCESS CRITERIA: {lesson.get('success_criteria') if lesson else []}
-EVIDENCE REQUIREMENT: {lesson.get('evidence_requirement') if lesson else ''}
-
-STUDENT TYPED RESPONSE:
-{sub.get('response_text') or '[none - evidence may be in files]'}
-
-STUDENT REFLECTION:
-{sub.get('reflection') or '[none]'}
-
-UPLOADED FILES: {file_summary}
-
-Return ONLY JSON with keys:
-{{
-  "summary": "1-2 sentence summary of what was submitted",
-  "demonstrated": ["skills/knowledge that appear demonstrated"],
-  "possible_outcomes": [{{"code": "code or empty", "description": "...", "confidence": "high|medium|low"}}],
-  "misconceptions": ["any possible misconceptions - may be empty"],
-  "suggested_feedback": "Draft constructive feedback for the parent to review and edit",
-  "suggested_next_step": "One concrete next step",
-  "additional_evidence_needed": "What additional evidence would strengthen the mapping, or 'none'",
-  "overall_confidence": "high|medium|low|unable_to_determine",
-  "parent_review_note": "Reminder that this is AI suggestion only"
-}}
-
-RULES:
-- Never mark anything as 'demonstrated' definitively
-- Do not infer sensitive characteristics
-- Be concrete and specific
-"""
-    try:
-        raw = await call_claude(prompt)
-    except Exception as e:
-        raise HTTPException(500, f"AI analysis failed: {str(e)[:200]}")
-    data = extract_json(raw)
-    if not data: raise HTTPException(500, "AI returned invalid format")
-    analysis = {
-        "id": new_id(),
-        "submission_id": req.submission_id,
-        "family_id": user["family_id"],
-        "generated_at": now_iso(),
-        **data,
-    }
-    await db.submission_analyses.insert_one(analysis)
-    await db.submissions.update_one({"id": req.submission_id}, {"$set": {"ai_analysis_id": analysis["id"]}})
-    return strip_mongo(analysis)
-
-# ----- Life Learning Evidence (everyday activities mapped to outcomes) -----
+# ----- Life Learning Evidence (everyday activities, parent-mapped to outcomes) -----
 @api.post("/life-evidence")
 async def create_life_evidence(data: LifeEvidenceIn, user=Depends(require_parent)):
     student = await db.students.find_one({"id": data.student_id, "family_id": user["family_id"]})
@@ -1795,83 +1509,10 @@ async def get_life_evidence(eid: str, user=Depends(require_parent)):
     r["student"] = await db.students.find_one({"id": r["student_id"]}, {"_id": 0, "pin": 0})
     files = []
     for fid in r.get("file_ids", []):
-        f = await db.files.find_one({"id": fid}, {"_id": 0})
+        f = await db.files.find_one({"id": fid, "family_id": user["family_id"]}, {"_id": 0})
         if f: files.append(f)
     r["files"] = files
     return r
-
-@api.post("/life-evidence/analyse")
-async def analyse_life_evidence(data: LifeAnalyseIn, user=Depends(require_parent)):
-    if not GOOGLE_AI_API_KEY: raise HTTPException(500, "AI not configured")
-    rec = await db.life_evidence.find_one({"id": data.evidence_id, "family_id": user["family_id"]}, {"_id": 0})
-    if not rec: raise HTTPException(404)
-    student = await db.students.find_one({"id": rec["student_id"]}, {"_id": 0, "pin": 0})
-    stage = student.get("stage", "S2") if student else "S2"
-    band = next((s["band"] for s in NSW_STAGES if s["code"] == stage), "primary")
-    areas = NSW_LEARNING_AREAS.get(band, NSW_LEARNING_AREAS["primary"])
-    seed_outcomes = NSW_OUTCOMES_SEED
-
-    prompt = f"""You are an expert NSW homeschool curriculum assessor. Parents in NSW may use everyday life activities (baking, gardening, bushwalking, building, music, caring for animals, budgeting, cooking) as legitimate evidence toward curriculum outcomes.
-
-ACTIVITY SUBMITTED BY PARENT:
-Title: {rec['title']}
-Description: {rec['description']}
-Duration: {rec.get('duration_minutes','n/a')} minutes
-Location: {rec.get('location','n/a')}
-Parent note: {rec.get('parent_note','')}
-Date: {rec.get('date')}
-
-STUDENT CONTEXT:
-Name: {student['name'] if student else ''}
-Stage: {stage}
-Learning areas available at this band: {', '.join(areas)}
-
-SAMPLE REFERENCE OUTCOMES (not exhaustive; add others if you know them, but mark confidence as 'medium' or 'low' when unsure):
-{json.dumps([o for o in seed_outcomes if o.get('stage') == stage], indent=1)}
-
-Return STRICT JSON only with keys:
-{{
-  "summary": "1-2 sentences describing what was learnt",
-  "activity_type": "e.g. baking, bushwalking, animal care",
-  "mappings": [
-    {{
-      "learning_area": "English | Mathematics | Science and Technology | HSIE | PDHPE | Creative Arts | Languages | TAS",
-      "code": "exact NSW outcome code if you know it, else empty string",
-      "description": "plain-language skill demonstrated",
-      "evidence_statement": "how the activity shows this skill",
-      "confidence": "high | medium | low"
-    }}
-  ],
-  "additional_evidence_suggested": "what extra documentation (photo, quote, measurement, etc) would strengthen the mapping",
-  "parent_review_note": "Reminder that these are AI suggestions for parent review, not official"
-}}
-
-RULES:
-- Spread across multiple learning areas when the activity genuinely touches them
-- Do NOT invent codes - leave code empty if unsure, keep description specific
-- Match complexity to stage {stage}
-- For baking: likely Mathematics (measurement, ratio), Science and Technology (chemical change, materials), English (reading recipes, procedural text), PDHPE (nutrition)
-- For bushwalking: HSIE (geography, place), Science (ecosystems), PDHPE (physical activity), English (observation writing)
-- Return 3-6 strong mappings, not a token one per area"""
-
-    try:
-        raw = await call_claude(prompt)
-    except Exception as e:
-        raise HTTPException(500, f"AI mapping failed: {str(e)[:200]}")
-    parsed = extract_json(raw)
-    if not parsed or "mappings" not in parsed:
-        raise HTTPException(500, "AI returned invalid mapping format")
-    for m in parsed.get("mappings", []):
-        m["id"] = new_id()
-        m["accepted"] = None
-    await db.life_evidence.update_one({"id": data.evidence_id},
-        {"$set": {"ai_mappings": parsed.get("mappings", []),
-                  "ai_summary": parsed.get("summary"),
-                  "ai_activity_type": parsed.get("activity_type"),
-                  "ai_additional": parsed.get("additional_evidence_suggested"),
-                  "status": "mapping_ready",
-                  "analysed_at": now_iso()}})
-    return parsed
 
 @api.post("/life-evidence/{eid}/review")
 async def review_life_evidence(eid: str, data: LifeFeedbackIn, user=Depends(require_parent)):
@@ -1882,14 +1523,13 @@ async def review_life_evidence(eid: str, data: LifeFeedbackIn, user=Depends(requ
                   "parent_note": data.parent_note,
                   "reviewed_at": now_iso(),
                   "reviewed_by": user["id"]}})
-    # Award pet XP for life-learning evidence too
-    rec = await db.life_evidence.find_one({"id": eid}, {"_id": 0})
+    rec = await db.life_evidence.find_one({"id": eid, "family_id": user["family_id"]}, {"_id": 0})
     if rec:
         xp = {"accepted": 20, "demonstrated": 45, "needs_more_evidence": 5}.get(data.status, 10)
         await award_xp(rec["student_id"], xp, f"Life learning: {rec.get('title')}")
     return {"ok": True, "accepted_count": len(accepted)}
 
-# ----- Learning Plans (for AP inspection) -----
+# ----- Learning Plans (for AP inspection; written by the parent) -----
 @api.get("/learning-plans")
 async def list_learning_plans(student_id: Optional[str] = None, user=Depends(require_parent)):
     q = {"family_id": user["family_id"]}
@@ -1932,93 +1572,6 @@ async def create_learning_plan(data: LearningPlanIn, user=Depends(require_parent
 async def delete_learning_plan(pid: str, user=Depends(require_parent)):
     await db.learning_plans.delete_one({"id": pid, "family_id": user["family_id"]})
     return {"ok": True}
-
-@api.post("/learning-plans/{pid}/generate")
-async def generate_learning_plan(pid: str, user=Depends(require_parent)):
-    if not GOOGLE_AI_API_KEY: raise HTTPException(500, "AI not configured")
-    plan = await db.learning_plans.find_one({"id": pid, "family_id": user["family_id"]}, {"_id": 0})
-    if not plan: raise HTTPException(404)
-    student = await db.students.find_one({"id": plan["student_id"]}, {"_id": 0, "pin": 0})
-    stage = student.get("stage", "S2") if student else "S2"
-    band = next((s["band"] for s in NSW_STAGES if s["code"] == stage), "primary")
-    areas = plan.get("subject_focus") or NSW_LEARNING_AREAS.get(band, NSW_LEARNING_AREAS["primary"])
-    interests = ", ".join(plan.get("interests", []) or ["general curiosity"])
-
-    prompt = f"""You are an experienced NSW homeschool educator preparing an educational program document that will be presented to an Authorised Person (AP) during a NESA home-schooling registration inspection.
-
-STUDENT:
-Name: {student['name'] if student else 'Student'}
-Stage: {stage} ({next((s['name'] for s in NSW_STAGES if s['code'] == stage), '')})
-Interests: {interests}
-
-PLAN DETAILS:
-Title: {plan['title']}
-Period: {plan['period_start']} to {plan['period_end']}
-Learning areas in focus: {', '.join(areas)}
-Teaching approach: {plan.get('teaching_approach') or 'balanced, interest-led where possible'}
-Parent notes: {plan.get('notes') or 'none'}
-
-Produce a professional, respectful, AP-ready learning plan in STRICT JSON only. Match the structure NESA inspectors expect: syllabus-referenced goals, teaching methods, resources, assessment approach, and a review schedule. Weave the child's interests into learning objectives where it is genuinely educational — not forced.
-
-Return JSON with EXACT keys:
-{{
-  "overview": "2-3 paragraph introduction describing the student, approach, and overall intent for the period",
-  "educational_philosophy": "Brief paragraph on this family's educational philosophy and how it meets the home-schooling expectations",
-  "learning_areas": [
-    {{
-      "area": "learning area name",
-      "goals": ["3-5 specific, measurable goals written as learning outcomes"],
-      "indicative_outcome_codes": ["NSW outcome codes if known, else empty strings"],
-      "teaching_methods": ["concrete methods: explicit teaching, guided practice, project work, excursions, etc"],
-      "interest_hooks": ["specific ways the child's interests connect to this area"],
-      "sample_activities": ["3-5 example learning activities for the period"],
-      "evidence_approach": "How evidence of learning will be collected and documented"
-    }}
-  ],
-  "weekly_rhythm": "Plain-language description of the typical teaching week",
-  "assessment_approach": "How the parent will assess progress - formative, summative, work samples, observations, discussion",
-  "resources_overview": "Types of resources used - texts, online, library, community, excursions, co-ops",
-  "review_schedule": "How and when the plan will be reviewed and adjusted",
-  "assessor_notes": "Short section that proactively addresses typical AP questions: how outcomes are covered, how progress is tracked, accommodations, parent qualifications and supervision"
-}}
-
-RULES:
-- Write respectfully in the parent's voice ('I will', 'we plan to')
-- Keep tone professional and specific, not marketing-fluffy
-- Produce ONE JSON object only
-- At least 3 learning areas; use the ones listed in focus
-- NEVER invent outcome codes - leave them empty if unsure"""
-
-    try:
-        raw = await call_claude(prompt)
-    except Exception as e:
-        raise HTTPException(500, f"AI generation failed: {str(e)[:200]}")
-    parsed = extract_json(raw)
-    # Harden: tolerate missing/renamed keys from AI; synthesize minimal structure if needed
-    if not parsed or not isinstance(parsed, dict):
-        logger.error(f"Learning plan AI returned no JSON. Raw: {raw[:400]}")
-        parsed = {}
-    # Normalise common AI key variants
-    if "overview" not in parsed:
-        for alt in ("summary", "introduction", "intro", "program_overview"):
-            if alt in parsed and isinstance(parsed[alt], str):
-                parsed["overview"] = parsed[alt]; break
-    if "learning_areas" not in parsed:
-        for alt in ("subjects", "areas", "learningAreas"):
-            if alt in parsed and isinstance(parsed[alt], list):
-                parsed["learning_areas"] = parsed[alt]; break
-    # Guarantee required fields exist so UI can always render something
-    parsed.setdefault("overview", f"A {plan.get('teaching_approach') or 'balanced'} learning program for {student['name'] if student else 'the student'} covering {', '.join(areas)} from {plan['period_start']} to {plan['period_end']}.")
-    parsed.setdefault("educational_philosophy", plan.get("teaching_approach") or "A balanced, interest-led home education programme that meets NSW home-schooling expectations.")
-    parsed.setdefault("learning_areas", [{"area": a, "goals": [], "indicative_outcome_codes": [], "teaching_methods": [], "interest_hooks": [], "sample_activities": [], "evidence_approach": ""} for a in areas])
-    parsed.setdefault("weekly_rhythm", "")
-    parsed.setdefault("assessment_approach", "")
-    parsed.setdefault("resources_overview", "")
-    parsed.setdefault("review_schedule", "")
-    parsed.setdefault("assessor_notes", "")
-    await db.learning_plans.update_one({"id": pid},
-        {"$set": {"ai_content": parsed, "status": "generated", "generated_at": now_iso()}})
-    return parsed
 
 # ----- Reading Log -----
 @api.get("/reading-log")
@@ -2065,7 +1618,6 @@ async def add_reading(data: ReadingLogIn, user=Depends(current_user)):
     entry = {**data.model_dump(), "id": new_id(), "family_id": user["family_id"],
              "logged_by": user["id"], "logged_role": user.get("role"), "created_at": now_iso()}
     await db.reading_log.insert_one(entry)
-    # Award a tiny XP to pet
     if user.get("role") == "child":
         await award_xp(user["id"], 3, f"Read: {data.title}")
     return strip_mongo(entry)
@@ -2074,12 +1626,6 @@ async def add_reading(data: ReadingLogIn, user=Depends(current_user)):
 async def del_reading(eid: str, user=Depends(require_parent)):
     await db.reading_log.delete_one({"id": eid, "family_id": user["family_id"]})
     return {"ok": True}
-
-@api.get("/submissions/{sid}/analysis")
-async def get_analysis(sid: str, user=Depends(require_parent)):
-    a = await db.submission_analyses.find_one({"submission_id": sid, "family_id": user["family_id"]}, {"_id": 0}, sort=[("generated_at", -1)])
-    if not a: raise HTTPException(404, "No analysis yet")
-    return a
 
 # ----- Dashboard -----
 @api.get("/dashboard/parent")
@@ -2106,7 +1652,6 @@ async def child_dashboard(user=Depends(require_child)):
     recent_feedback = await db.submissions.find({"student_id": user["id"], "parent_feedback": {"$exists": True}}, {"_id": 0}).sort("reviewed_at", -1).to_list(5)
     for f in recent_feedback:
         f["lesson"] = await db.lessons.find_one({"id": f["lesson_id"]}, {"_id": 0, "explicit_teaching": 0})
-    # Fetch unseen cheers (parent-to-child high-fives)
     cheers = await db.cheers.find({"student_id": user["id"], "seen": {"$ne": True}}, {"_id": 0}).sort("created_at", -1).to_list(20)
     return {"student": user, "today": today_assignments[:5], "all_pending": today_assignments, "feedback": recent_feedback, "cheers": cheers}
 
@@ -2117,11 +1662,11 @@ async def curriculum_audit(student_id: Optional[str] = None, user=Depends(requir
     if student_id: q["student_id"] = student_id
     assignments = await db.assignments.find(q, {"_id": 0}).to_list(2000)
     issues = []
-    # include life-learning accepted mappings in coverage
     life = await db.life_evidence.find({"family_id": user["family_id"], "status": {"$in": ["accepted", "demonstrated"]}}, {"_id": 0}).to_list(500)
-    # lessons without outcome codes
-    lessons = await db.lessons.find({"family_id": user["family_id"]}, {"_id": 0}).to_list(1000)
+    lessons = await db.lessons.find({"$or": [{"family_id": user["family_id"]}, {"family_id": None}]}, {"_id": 0}).to_list(2000)
     for l in lessons:
+        if l.get("family_id") is None:
+            continue
         if not l.get("outcome_codes"):
             issues.append({"type": "lesson_no_outcome", "severity": "medium", "lesson_id": l["id"], "title": l["title"], "message": "Lesson has no linked curriculum outcome"})
         if not l.get("evidence_requirement"):
@@ -2134,7 +1679,6 @@ async def curriculum_audit(student_id: Optional[str] = None, user=Depends(requir
             issues.append({"type": "resource_unapproved", "severity": "high", "resource_id": r["id"], "title": r["title"], "message": "Resource not parent-approved"})
         if r.get("licence") == "unknown":
             issues.append({"type": "resource_licence_unclear", "severity": "medium", "resource_id": r["id"], "title": r["title"], "message": "Licence unclear - treat as link-only"})
-    # coverage by stage/learning area
     coverage = {}
     for a in assignments:
         l = next((x for x in lessons if x["id"] == a["lesson_id"]), None)
@@ -2143,9 +1687,8 @@ async def curriculum_audit(student_id: Optional[str] = None, user=Depends(requir
         coverage.setdefault(key, {"stage": l.get("stage"), "learning_area": l.get("learning_area"), "count": 0, "demonstrated": 0})
         coverage[key]["count"] += 1
         if a.get("status") == "demonstrated": coverage[key]["demonstrated"] += 1
-    # Fold in life-learning
     for le in life:
-        student = next((s for s in [await db.students.find_one({"id": le["student_id"]}, {"_id": 0, "pin": 0})] if s), None)
+        student = await db.students.find_one({"id": le["student_id"]}, {"_id": 0, "pin": 0})
         stage = student["stage"] if student else "S2"
         for m in le.get("accepted_mappings", []):
             la = m.get("learning_area")
@@ -2166,17 +1709,17 @@ async def startup():
         await db.app_config.update_one({"id": "seed"}, {"$set": {"outcomes_version": SEED_VERSION, "updated_at": now_iso()}}, upsert=True)
         logger.info(f"Reseeded NSW outcomes to version {SEED_VERSION} ({len(NSW_OUTCOMES_SEED)} entries)")
 
-    # Owner account seed
     owner = await db.users.find_one({"email": OWNER_EMAIL})
-    if not owner:
+    if not owner and OWNER_PASSWORD:
         family_id = new_id()
         user_id = new_id()
         await db.families.insert_one({"id": family_id, "name": "Bozanich Family", "owner_id": user_id, "created_at": now_iso()})
-        await db.users.insert_one({"id": user_id, "email": OWNER_EMAIL, "password": hash_pw("SideQuest2026!"),
+        await db.users.insert_one({"id": user_id, "email": OWNER_EMAIL, "password": hash_pw(OWNER_PASSWORD),
                                    "name": "Peta", "family_id": family_id, "is_owner": True, "created_at": now_iso()})
         logger.info(f"Seeded owner account {OWNER_EMAIL}")
+    elif not owner:
+        logger.warning("OWNER_PASSWORD not set; owner account not seeded")
 
-    # Comprehensive lesson library seed
     lesson_cfg = await db.app_config.find_one({"id": "lesson_library"}) or {}
     if lesson_cfg.get("version", 0) < LESSON_LIBRARY_VERSION:
         for lesson in LESSON_LIBRARY:
@@ -2203,7 +1746,6 @@ async def startup():
         )
         logger.info(f"Seeded {len(LESSON_LIBRARY)} comprehensive lessons")
 
-    # Original starter lessons
     for lesson in CORE_LESSONS:
         existing = await db.lessons.find_one({"seed_key": lesson["seed_key"]})
         if not existing:
@@ -2220,15 +1762,8 @@ async def startup():
 @app.on_event("shutdown")
 async def shutdown():
     client.close()
-@api.get("/lessons/{lesson_id}")
-async def get_lesson(lesson_id: str, user=Depends(current_user)):
-    lesson = await db.lessons.find_one({"id": lesson_id})
-    if not lesson:
-        raise HTTPException(status_code=404, detail="Lesson not found")
-    lesson.pop("_id", None)
-    return lesson
 
-
+# Router is included AFTER every route is defined so no endpoint is dropped.
 app.include_router(api)
 _cors = os.environ.get('CORS_ORIGINS', '*').split(',')
 app.add_middleware(
@@ -2239,78 +1774,3 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-
-@api.post("/lessons/{lesson_id}/quiz")
-async def submit_quiz(lesson_id: str, request: Request, user=Depends(current_user)):
-    data = await request.json()
-    answers = data.get("answers", [])
-
-    lesson = await db.lessons.find_one({"id": lesson_id})
-    if not lesson:
-        raise HTTPException(status_code=404, detail="Lesson not found")
-
-    quiz = lesson.get("quiz", [])
-    results = []
-    correct_count = 0
-
-    for index, answer in enumerate(answers):
-        if index >= len(quiz):
-            continue
-
-        question = quiz[index]
-        is_correct = answer == question.get("correct_index")
-        if is_correct:
-            correct_count += 1
-
-        results.append({
-            "question_index": index,
-            "selected": answer,
-            "correct_index": question.get("correct_index"),
-            "is_correct": is_correct,
-            "explanation": question.get("explanation", "")
-        })
-
-    result = {
-        "id": new_id(),
-        "lesson_id": lesson_id,
-        "child_id": user["id"],
-        "score": correct_count,
-        "total": len(quiz),
-        "results": results,
-        "completed_at": now_iso()
-    }
-
-    await db.quiz_results.insert_one(result)
-    return result
-
-
-@api.post("/lessons/{lesson_id}/evidence")
-async def upload_evidence(lesson_id: str, request: Request, user=Depends(current_user)):
-    data = await request.json()
-
-    lesson = await db.lessons.find_one({"id": lesson_id})
-    if not lesson:
-        raise HTTPException(status_code=404, detail="Lesson not found")
-
-    evidence = {
-        "id": new_id(),
-        "lesson_id": lesson_id,
-        "child_id": user["id"],
-        "type": data.get("type", "text"),
-        "text": data.get("text", ""),
-        "file_name": data.get("file_name", ""),
-        "file_data": data.get("file_data", ""),
-        "submitted_at": now_iso()
-    }
-
-    await db.lesson_evidence.insert_one(evidence)
-    return {"id": evidence["id"], "message": "Evidence saved"}
-
-@api.get("/lessons/{lesson_id}/evidence")
-async def get_evidence(lesson_id: str, user=Depends(current_user)):
-    evidence = await db.lesson_evidence.find({"lesson_id": lesson_id}).to_list(100)
-    for item in evidence:
-        item.pop("_id", None)
-    return evidence
