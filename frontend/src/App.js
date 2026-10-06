@@ -14,7 +14,6 @@ import ParentDashboard from "./pages/parent/Dashboard";
 import ChildrenPage from "./pages/parent/Children";
 import CurriculumPage from "./pages/parent/Curriculum";
 import LessonsPage from "./pages/parent/Lessons";
-import AIPlannerPage from "./pages/parent/AIPlanner";
 import ResourcesPage from "./pages/parent/Resources";
 import EvidencePage from "./pages/parent/Evidence";
 import CalendarPage from "./pages/parent/CalendarPage";
@@ -55,7 +54,6 @@ function Router() {
         <Route path="curriculum" element={<CurriculumPage />} />
         <Route path="lessons" element={<LessonsPage />} />
         <Route path="lessons/:id" element={<LessonDetail />} />
-        <Route path="ai-planner" element={<AIPlannerPage />} />
         <Route path="resources" element={<ResourcesPage />} />
         <Route path="evidence" element={<EvidencePage />} />
         <Route path="calendar" element={<CalendarPage />} />
