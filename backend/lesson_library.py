@@ -1,8 +1,9 @@
-LESSON_LIBRARY_VERSION = 1
+LESSON_LIBRARY_VERSION = 2
 
 LESSON_LIBRARY = [
     {
         "seed_key": "s2-maths-place-value-01",
+        "library": True,
         "stage": "S2",
         "year_level": "Year 3",
         "learning_area": "Mathematics",
@@ -39,6 +40,7 @@ LESSON_LIBRARY = [
     },
     {
         "seed_key": "s2-english-persuasive-writing-01",
+        "library": True,
         "stage": "S2",
         "year_level": "Year 3",
         "learning_area": "English",
