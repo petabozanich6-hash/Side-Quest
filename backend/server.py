@@ -2159,22 +2159,25 @@ async def curriculum_audit(student_id: Optional[str] = None, user=Depends(requir
 # ----- Seed curriculum + demo -----
 @app.on_event("startup")
 async def startup():
-   
     cfg = await db.app_config.find_one({"id": "seed"}) or {}
     if cfg.get("outcomes_version", 0) < SEED_VERSION:
         await db.outcomes.delete_many({})
         await db.outcomes.insert_many([{**o, "id": new_id()} for o in NSW_OUTCOMES_SEED])
         await db.app_config.update_one({"id": "seed"}, {"$set": {"outcomes_version": SEED_VERSION, "updated_at": now_iso()}}, upsert=True)
         logger.info(f"Reseeded NSW outcomes to version {SEED_VERSION} ({len(NSW_OUTCOMES_SEED)} entries)")
+
     # Owner account seed
     owner = await db.users.find_one({"email": OWNER_EMAIL})
     if not owner:
-        family_id = new_id(); user_id = new_id()
+        family_id = new_id()
+        user_id = new_id()
         await db.families.insert_one({"id": family_id, "name": "Bozanich Family", "owner_id": user_id, "created_at": now_iso()})
         await db.users.insert_one({"id": user_id, "email": OWNER_EMAIL, "password": hash_pw("SideQuest2026!"),
                                    "name": "Peta", "family_id": family_id, "is_owner": True, "created_at": now_iso()})
         logger.info(f"Seeded owner account {OWNER_EMAIL}")
-        lesson_cfg = await db.app_config.find_one({"id": "lesson_library"}) or {}
+
+    # Comprehensive lesson library seed
+    lesson_cfg = await db.app_config.find_one({"id": "lesson_library"}) or {}
     if lesson_cfg.get("version", 0) < LESSON_LIBRARY_VERSION:
         for lesson in LESSON_LIBRARY:
             await db.lessons.update_one(
@@ -2200,6 +2203,7 @@ async def startup():
         )
         logger.info(f"Seeded {len(LESSON_LIBRARY)} comprehensive lessons")
 
+    # Original starter lessons
     for lesson in CORE_LESSONS:
         existing = await db.lessons.find_one({"seed_key": lesson["seed_key"]})
         if not existing:
@@ -2229,7 +2233,7 @@ app.add_middleware(
 )
 
 @api.post("/lessons/{lesson_id}/quiz")
-async def submit_quiz(lesson_id: str, request: Request, user=Depends(get_current_user)):
+async def submit_quiz(lesson_id: str, request: Request, user=Depends(current_user)):
     data = await request.json()
     answers = data.get("answers", [])
 
@@ -2273,7 +2277,7 @@ async def submit_quiz(lesson_id: str, request: Request, user=Depends(get_current
 
 
 @api.post("/lessons/{lesson_id}/evidence")
-async def upload_evidence(lesson_id: str, request: Request, user=Depends(get_current_user)):
+async def upload_evidence(lesson_id: str, request: Request, user=Depends(current_user)):
     data = await request.json()
 
     lesson = await db.lessons.find_one({"id": lesson_id})
@@ -2295,7 +2299,7 @@ async def upload_evidence(lesson_id: str, request: Request, user=Depends(get_cur
     return {"id": evidence["id"], "message": "Evidence saved"}
 
 @api.get("/lessons/{lesson_id}/evidence")
-async def get_evidence(lesson_id: str, user=Depends(get_current_user)):
+async def get_evidence(lesson_id: str, user=Depends(current_user)):
     evidence = await db.lesson_evidence.find({"lesson_id": lesson_id}).to_list(100)
     for item in evidence:
         item.pop("_id", None)
