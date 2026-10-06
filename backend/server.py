@@ -2268,10 +2268,11 @@ async def submit_quiz(lesson_id: str, request: Request, user=Depends(get_current
         "completed_at": now_iso()
     }
 
-    await db.quiz_results.insert_one(result)
+     await db.quiz_results.insert_one(result)
     return result
 
-   @api.post("/lessons/{lesson_id}/evidence")
+
+@api.post("/lessons/{lesson_id}/evidence")
 async def upload_evidence(lesson_id: str, request: Request, user=Depends(get_current_user)):
     data = await request.json()
 
