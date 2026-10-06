@@ -2,7 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { api, fileUrl } from "../../lib/api";
 import { toast } from "sonner";
-import { Upload, Send, HelpCircle, Loader2, Image as ImgIcon, Mic, Film, FileText, ArrowLeft, Printer } from "lucide-react";
+import { Upload, Send, Loader2, Image as ImgIcon, Mic, Film, FileText, ArrowLeft, Printer, Target, ExternalLink, CheckCircle2, Lock } from "lucide-react";
+import PetCompanion from "../../components/shared/PetCompanion";
+import { Leaf } from "../../components/shared/Botanical";
 
 export default function ChildLesson() {
   const { aid } = useParams();
@@ -14,62 +16,75 @@ export default function ChildLesson() {
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [needsHelp, setNeedsHelp] = useState(false);
-  const [stuckOpen, setStuckOpen] = useState(false);
-  const fileRef = useRef();
+  const [submitted, setSubmitted] = useState(false);
+  const [activeChallenge, setActiveChallenge] = useState(null);
+  const [challengeResponse, setChallengeResponse] = useState("");
+  const [challengeFiles, setChallengeFiles] = useState([]);
+  const fileRef = useRef(); const chFileRef = useRef();
 
   useEffect(() => {
     api.get(`/assignments/${aid}`).then(r => {
       setA(r.data);
       if (r.data.status === "not_started") api.put(`/assignments/${aid}/status?status=opened`).catch(()=>{});
+      if (r.data.submissions?.length > 0) setSubmitted(true);
     });
   }, [aid]);
 
-  const uploadFile = async (file) => {
+  const uploadFile = async (file, setter) => {
     setUploading(true);
     const fd = new FormData(); fd.append("file", file); fd.append("context", "submission");
     try {
       const { data } = await api.post("/files/upload", fd, { headers: { "Content-Type": "multipart/form-data" } });
-      setFiles(prev => [...prev, data]);
-      toast.success("Uploaded");
-    } catch (err) { toast.error("Upload failed"); }
+      setter(prev => [...prev, data]); toast.success("Uploaded");
+    } catch { toast.error("Upload failed"); }
     finally { setUploading(false); }
   };
 
   const submit = async () => {
-    if (!response.trim() && files.length === 0) {
-      toast.error("Add a written response or upload your work");
-      return;
-    }
+    if (!response.trim() && files.length === 0) { toast.error("Add a written response or upload your work"); return; }
     setSubmitting(true);
     try {
       await api.post("/submissions", { assignment_id: aid, response_text: response, reflection, file_ids: files.map(f=>f.id), needs_help: needsHelp });
-      toast.success(needsHelp ? "Sent for help" : "Submitted for review");
-      nav("/child");
-    } catch (err) { toast.error("Submit failed"); }
+      toast.success(needsHelp ? "Sent for help" : "Submitted! Try a follow-up challenge 🌱");
+      setSubmitted(true);
+    } catch { toast.error("Submit failed"); }
     finally { setSubmitting(false); }
+  };
+
+  const submitChallenge = async () => {
+    if (!challengeResponse.trim() && challengeFiles.length === 0) { toast.error("Show your work"); return; }
+    try {
+      await api.post("/submissions", {
+        assignment_id: aid,
+        response_text: `[Challenge: ${activeChallenge.title}] ${challengeResponse}`,
+        file_ids: challengeFiles.map(f=>f.id),
+        needs_help: false
+      });
+      toast.success(`Challenge complete! ${activeChallenge.title} ✨`);
+      setActiveChallenge(null); setChallengeResponse(""); setChallengeFiles([]);
+    } catch { toast.error("Failed"); }
   };
 
   const printLesson = () => {
     const l = a.lesson; const w = window.open("", "_blank");
-    w.document.write(`<html><head><title>${l.title}</title><style>body{font-family:Georgia,serif;max-width:720px;margin:40px auto;padding:0 20px;}h1{font-size:22px;}h2{font-size:14px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:20px;}p,li{line-height:1.6;}</style></head><body><h1>${l.title}</h1><p>Stage ${l.stage} · ${l.learning_area}</p><h2>Learning intention</h2><p>${l.learning_intention}</p><h2>Success criteria</h2><ul>${(l.success_criteria||[]).map(c=>`<li>${c}</li>`).join("")}</ul><h2>Explicit teaching</h2><p>${(l.explicit_teaching||"").replace(/\n/g,"<br/>")}</p><h2>Worked example</h2><p>${l.worked_example||""}</p><h2>Independent task</h2><p>${l.independent_task||""}</p><h2>Offline alternative</h2><p>${l.offline_alternative||""}</p><br/><br/><div style="border-top:1px dashed #333;padding-top:10px;">My response:<br/><br/><br/><br/></div></body></html>`);
+    w.document.write(`<html><head><title>${l.title}</title><style>body{font-family:Georgia,serif;max-width:720px;margin:40px auto;padding:0 20px}h1{font-size:22px}h2{font-size:14px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:20px}p,li{line-height:1.6}</style></head><body><h1>${l.title}</h1><p>Stage ${l.stage} · ${l.learning_area}</p><h2>Learning intention</h2><p>${l.learning_intention}</p><h2>Success criteria</h2><ul>${(l.success_criteria||[]).map(c=>`<li>${c}</li>`).join("")}</ul><h2>Explicit teaching</h2><p>${(l.explicit_teaching||"").replace(/\n/g,"<br/>")}</p><h2>Worked example</h2><p>${l.worked_example||""}</p><h2>Independent task</h2><p>${l.independent_task||""}</p><h2>Offline alternative</h2><p>${l.offline_alternative||""}</p><br/><br/><div style="border-top:1px dashed #333;padding-top:10px">My response:<br/><br/><br/><br/></div></body></html>`);
     w.document.close(); w.print();
   };
 
-  if (!a) return <div className="text-slate-500">Loading…</div>;
+  if (!a) return <div className="text-stone-500">Loading…</div>;
   const l = a.lesson || {};
-  const supportBanner = a.support_level === "red"
-    ? { cls: "bg-rose-50 border-rose-200 text-rose-900", text: "Red zone — wait for a grown-up before starting" }
-    : a.support_level === "yellow"
-    ? { cls: "bg-amber-50 border-amber-200 text-amber-900", text: "Yellow — try it, then ask for help if you get stuck" }
-    : { cls: "bg-emerald-50 border-emerald-200 text-emerald-900", text: "Green — have a go on your own" };
+  const supportBanner = a.support_level === "red" ? { cls:"bg-rose-50 border-rose-200 text-rose-900", text:"Red zone — wait for a grown-up before starting" }
+    : a.support_level === "yellow" ? { cls:"bg-amber-50 border-amber-200 text-amber-900", text:"Yellow — try it, then ask for help if you get stuck" }
+    : { cls:"bg-emerald-50 border-emerald-200 text-emerald-900", text:"Green — have a go on your own" };
 
   return (
-    <div className="space-y-5 animate-in" data-testid="child-lesson">
-      <button onClick={()=>nav("/child")} className="text-sm font-semibold opacity-75 hover:opacity-100 flex items-center gap-1" data-testid="back-home"><ArrowLeft size={14}/> Back</button>
+    <div className="space-y-5 animate-in relative" data-testid="child-lesson">
+      <Leaf className="absolute right-0 top-0 opacity-40" size={60} color="#6B8A5B"/>
+      <button onClick={()=>nav("/child")} className="text-sm font-bold flex items-center gap-1" style={{color:"#4A5D3A"}} data-testid="back-home"><ArrowLeft size={14}/> Back</button>
 
-      <header className="rounded-3xl bg-white border border-slate-200 p-6">
-        <div className="text-xs font-mono opacity-60">{l.stage} · {l.learning_area}</div>
-        <h1 className="font-display text-3xl font-bold mt-1">{l.title}</h1>
+      <header className="paper-card p-6 relative overflow-hidden">
+        <div className="text-xs font-mono text-stone-500">{l.stage} · {l.learning_area}</div>
+        <h1 className="font-display text-3xl font-bold mt-1" style={{color:"#1F3B2D"}}>{l.title}</h1>
         <div className={`mt-4 rounded-xl border px-4 py-2 text-sm ${supportBanner.cls}`} data-testid="support-banner">{supportBanner.text}</div>
       </header>
 
@@ -77,90 +92,142 @@ export default function ChildLesson() {
       <Step n="2" title="How I'll know I've got it">
         <ul className="list-disc pl-5 space-y-1">{(l.success_criteria||[]).map((c,i)=><li key={i}>{c}</li>)}</ul>
       </Step>
-      <Step n="3" title="What I need">
-        <p className="text-sm">{(l.materials||[]).join(", ") || "Nothing special"}</p>
-      </Step>
+      <Step n="3" title="What I need"><p className="text-sm">{(l.materials||[]).join(", ") || "Nothing special"}</p></Step>
       {l.key_vocabulary?.length > 0 && <Step n="4" title="Key words">
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">{l.key_vocabulary.map((v,i)=><li key={i} className="rounded-lg bg-slate-50 border border-slate-200 p-2">{v}</li>)}</ul>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">{l.key_vocabulary.map((v,i)=><li key={i} className="rounded-lg bg-white border border-stone-200 p-2">{v}</li>)}</ul>
       </Step>}
-      <Step n="5" title="Let's learn">
-        <div className="prose prose-sm max-w-none whitespace-pre-wrap">{l.explicit_teaching}</div>
-      </Step>
-      {l.worked_example && <Step n="6" title="Example"><div className="rounded-lg bg-indigo-50 border border-indigo-200 p-4 text-sm">{l.worked_example}</div></Step>}
-      {l.guided_practice && <Step n="7" title="Try with me"><p className="text-sm">{l.guided_practice}</p></Step>}
-      <Step n="8" title="My task">
+      <Step n="5" title="Let's learn"><div className="prose prose-sm max-w-none whitespace-pre-wrap">{l.explicit_teaching}</div></Step>
+
+      {l.suggested_resources?.length > 0 && (
+        <Step n="6" title="Explore further (optional)">
+          <p className="text-sm text-stone-600 mb-3">These are places your parent can help you find. Ask them first before opening anything online.</p>
+          <div className="space-y-2">
+            {l.suggested_resources.map((r,i) => (
+              <div key={i} className="rounded-xl p-3 border bg-white" style={{borderColor:"#D4C8A8"}} data-testid={`res-${i}`}>
+                <div className="flex items-start gap-2">
+                  <div className="h-8 w-8 rounded-lg grid place-items-center shrink-0" style={{backgroundColor:"#F5EFE0", color:"#4A5D3A"}}><ExternalLink size={14}/></div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-sm">{r.title} <span className="text-[10px] font-mono text-stone-500 uppercase tracking-wider ml-1">{r.type}</span></div>
+                    <div className="text-xs text-stone-600 mt-0.5">{r.purpose}</div>
+                    <div className="text-xs italic mt-1" style={{color:"#4A5D3A"}}>Find at: {r.where_to_find}</div>
+                    {r.offline_alternative && <div className="text-xs mt-1 text-stone-500"><strong>No internet?</strong> {r.offline_alternative}</div>}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Step>
+      )}
+
+      {l.worked_example && <Step n="7" title="Example"><div className="rounded-lg bg-indigo-50 border border-indigo-200 p-4 text-sm">{l.worked_example}</div></Step>}
+      {l.guided_practice && <Step n="8" title="Try with me"><p className="text-sm">{l.guided_practice}</p></Step>}
+      <Step n="9" title="My task">
         <p className="text-base">{l.independent_task}</p>
         {l.response_prompt && <div className="mt-3 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm"><strong>Respond to:</strong> {l.response_prompt}</div>}
       </Step>
-
-      <Step n="9" title="My response">
-        <textarea rows={5} value={response} onChange={e=>setResponse(e.target.value)} placeholder="Type your answer here… (or upload a photo of your paper work below)" className="w-full rounded-lg border border-slate-300 px-3 py-2 text-base" data-testid="response-text"/>
+      <Step n="10" title="My response">
+        <textarea rows={5} value={response} onChange={e=>setResponse(e.target.value)} placeholder="Type your answer here… (or upload a photo of your paper work below)" className="w-full rounded-lg border px-3 py-2 text-base bg-white" style={{borderColor:"#D4C8A8"}} data-testid="response-text"/>
       </Step>
 
-      <Step n="10" title="Upload my work">
-        <input ref={fileRef} type="file" accept="image/*,audio/*,video/*,application/pdf" onChange={e=>e.target.files[0] && uploadFile(e.target.files[0])} className="hidden" data-testid="file-input"/>
-        <button onClick={()=>fileRef.current.click()} disabled={uploading} className="rounded-lg border-2 border-dashed border-slate-300 w-full p-6 flex flex-col items-center gap-2 hover:border-slate-500" data-testid="upload-btn">
+      <Step n="11" title="Upload my work">
+        <input ref={fileRef} type="file" accept="image/*,audio/*,video/*,application/pdf" onChange={e=>e.target.files[0] && uploadFile(e.target.files[0], setFiles)} className="hidden" data-testid="file-input"/>
+        <button onClick={()=>fileRef.current.click()} disabled={uploading} className="rounded-xl border-2 border-dashed w-full p-6 flex flex-col items-center gap-2 hover:bg-stone-50" style={{borderColor:"#D4C8A8"}} data-testid="upload-btn">
           {uploading ? <Loader2 className="animate-spin"/> : <Upload size={20}/>}
-          <span className="text-sm font-semibold">{uploading ? "Uploading…" : "Tap to add photo, audio, video or PDF"}</span>
-          <span className="text-xs opacity-60">Great for paper work, drawings, recordings</span>
+          <span className="text-sm font-bold">{uploading ? "Uploading…" : "Tap to add photo, audio, video or PDF"}</span>
+          <span className="text-xs text-stone-500">Great for paper work, drawings, recordings</span>
         </button>
         {files.length > 0 && (
           <div className="mt-3 grid grid-cols-3 md:grid-cols-5 gap-2">
-            {files.map(f => (
-              <div key={f.id} className="rounded-lg border border-slate-200 overflow-hidden">
-                {f.content_type?.startsWith("image/")
-                  ? <img src={fileUrl(f.id)} alt={f.original_filename} className="w-full h-20 object-cover"/>
-                  : <div className="h-20 bg-slate-50 grid place-items-center text-slate-500">{f.content_type?.startsWith("audio/") ? <Mic size={20}/> : f.content_type?.startsWith("video/") ? <Film size={20}/> : <FileText size={20}/>}</div>}
-                <div className="p-1 text-[10px] truncate">{f.original_filename}</div>
-              </div>
-            ))}
+            {files.map(f => <FilePreview key={f.id} file={f}/>)}
           </div>
         )}
       </Step>
 
-      <Step n="11" title="Reflect">
-        <textarea rows={3} value={reflection} onChange={e=>setReflection(e.target.value)} placeholder={l.reflection_prompt || "What did you learn? What was tricky?"} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" data-testid="reflection-text"/>
+      <Step n="12" title="Reflect">
+        <textarea rows={3} value={reflection} onChange={e=>setReflection(e.target.value)} placeholder={l.reflection_prompt || "What did you learn? What was tricky?"} className="w-full rounded-lg border px-3 py-2 text-sm bg-white" style={{borderColor:"#D4C8A8"}} data-testid="reflection-text"/>
       </Step>
 
-      <div className="rounded-2xl bg-white border border-slate-200 p-6 space-y-3">
+      <div className="paper-card p-6 space-y-3">
         <label className="flex items-start gap-3 cursor-pointer">
           <input type="checkbox" checked={needsHelp} onChange={e=>setNeedsHelp(e.target.checked)} className="mt-1 h-5 w-5" data-testid="needs-help"/>
           <span className="text-sm">I need help from a grown-up before I finish this.</span>
         </label>
-        <div className="flex items-center gap-3">
-          <button onClick={submit} disabled={submitting} className="rounded-full bg-slate-900 text-white px-6 py-3 text-sm font-semibold hover:bg-slate-800 disabled:opacity-50 flex items-center gap-2" data-testid="submit-work">
-            {submitting ? <><Loader2 size={16} className="animate-spin"/> Sending…</> : <><Send size={14}/> {needsHelp ? "Send for help" : "Submit for review"}</>}
+        <div className="flex items-center gap-3 flex-wrap">
+          <button onClick={submit} disabled={submitting || submitted} className="rounded-full px-6 py-3 text-sm font-bold hover:translate-y-[-1px] transition disabled:opacity-50 flex items-center gap-2" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="submit-work">
+            {submitting ? <><Loader2 size={16} className="animate-spin"/> Sending…</> : submitted ? <><CheckCircle2 size={14}/> Submitted</> : <><Send size={14}/> {needsHelp ? "Send for help" : "Submit for review"}</>}
           </button>
-          <button onClick={()=>setStuckOpen(true)} className="rounded-full border border-slate-300 bg-white px-4 py-3 text-sm font-semibold flex items-center gap-2" data-testid="stuck-btn"><HelpCircle size={14}/> I'm stuck</button>
-          <button onClick={printLesson} className="rounded-full border border-slate-300 bg-white px-4 py-3 text-sm font-semibold flex items-center gap-2" data-testid="print-btn"><Printer size={14}/> Print</button>
+          <button onClick={printLesson} className="rounded-full border px-4 py-3 text-sm font-bold flex items-center gap-2" style={{borderColor:"#D4C8A8"}} data-testid="print-btn"><Printer size={14}/> Print</button>
         </div>
       </div>
 
-      {stuckOpen && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={()=>setStuckOpen(false)}>
-          <div onClick={e=>e.stopPropagation()} className="w-full max-w-sm rounded-3xl bg-white p-6" data-testid="stuck-modal">
-            <h3 className="font-display text-xl font-bold mb-3">When you feel stuck</h3>
-            <ol className="list-decimal pl-5 space-y-2 text-sm">
-              <li>Read the instructions again, slowly.</li>
-              <li>Look at the example.</li>
-              <li>Check the key words.</li>
-              <li>Try just the first step.</li>
-              <li>Tick "I need help" and submit.</li>
-              <li>Skip to the next part if you can.</li>
-              <li>Ask a grown-up when they're free.</li>
-            </ol>
-            <button onClick={()=>setStuckOpen(false)} className="mt-4 w-full rounded-full bg-slate-900 text-white py-2 text-sm font-semibold">Got it</button>
+      {l.follow_up_challenges?.length > 0 && (
+        <div className="paper-card p-6" style={{backgroundColor:"#F0F4E8", borderColor:"#94A47F"}}>
+          <div className="flex items-center gap-2 mb-3">
+            <Target size={18} style={{color:"#4A5D3A"}}/>
+            <h2 className="font-display text-xl font-bold" style={{color:"#1F3B2D"}}>Prove it! Follow-up challenges</h2>
+          </div>
+          <p className="text-sm text-stone-700 mb-4">{submitted ? "Pick a challenge to really show you've got it. Submit any and earn bonus pet XP." : "Submit your main task first — then these unlock."}</p>
+          <div className="grid md:grid-cols-3 gap-3">
+            {l.follow_up_challenges.map((c, i) => (
+              <button key={i} onClick={()=>submitted && setActiveChallenge(c)} disabled={!submitted}
+                className={`rounded-xl p-4 text-left border bg-white transition ${submitted ? "hover:border-moss hover:translate-y-[-2px] cursor-pointer" : "opacity-60 cursor-not-allowed"}`}
+                style={{borderColor: submitted ? "#4A5D3A" : "#D4C8A8"}}
+                data-testid={`challenge-${i}`}>
+                <div className="flex items-center gap-2 mb-1">
+                  {!submitted && <Lock size={10} className="text-stone-400"/>}
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-stone-500">{c.type?.replace(/_/g,' ')}</span>
+                  <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded-full font-bold ${c.difficulty === "stretch" ? "bg-rose-100 text-rose-900" : c.difficulty === "medium" ? "bg-amber-100 text-amber-900" : "bg-emerald-100 text-emerald-900"}`}>{c.difficulty}</span>
+                </div>
+                <div className="font-display font-bold text-sm" style={{color:"#1F3B2D"}}>{c.title}</div>
+                <div className="text-xs text-stone-600 mt-1">{c.description}</div>
+                <div className="text-[10px] mt-2 font-mono text-stone-500">Show: {c.evidence_type}</div>
+              </button>
+            ))}
           </div>
         </div>
       )}
+
+      {activeChallenge && (
+        <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={()=>setActiveChallenge(null)}>
+          <div onClick={e=>e.stopPropagation()} className="w-full max-w-lg paper-card p-6" data-testid="challenge-modal">
+            <div className="flex items-center justify-between mb-2">
+              <div className="font-script text-xl" style={{color:"#C77B5B"}}>Follow-up challenge</div>
+              <button onClick={()=>setActiveChallenge(null)}><ArrowLeft size={18}/></button>
+            </div>
+            <h3 className="font-display text-2xl font-bold" style={{color:"#1F3B2D"}}>{activeChallenge.title}</h3>
+            <p className="mt-2 text-sm">{activeChallenge.description}</p>
+            <div className="mt-4">
+              <label className="text-xs font-bold uppercase tracking-widest text-stone-500">What you did</label>
+              <textarea rows={4} value={challengeResponse} onChange={e=>setChallengeResponse(e.target.value)} className="mt-1 w-full rounded-lg border px-3 py-2 text-sm bg-white" style={{borderColor:"#D4C8A8"}} data-testid="challenge-response"/>
+            </div>
+            <input ref={chFileRef} type="file" accept="image/*,audio/*,video/*,application/pdf" onChange={e=>e.target.files[0] && uploadFile(e.target.files[0], setChallengeFiles)} className="hidden"/>
+            <button type="button" onClick={()=>chFileRef.current.click()} className="mt-3 w-full rounded-xl border-2 border-dashed p-3 text-sm font-bold flex items-center justify-center gap-2" style={{borderColor:"#D4C8A8"}} data-testid="challenge-upload"><Upload size={14}/> Add evidence ({activeChallenge.evidence_type})</button>
+            {challengeFiles.length > 0 && <div className="mt-2 grid grid-cols-4 gap-2">{challengeFiles.map(f => <FilePreview key={f.id} file={f}/>)}</div>}
+            <button onClick={submitChallenge} className="mt-4 w-full rounded-full py-3 text-sm font-bold" style={{backgroundColor:"#C77B5B", color:"#F5EFE0"}} data-testid="submit-challenge">Submit challenge</button>
+          </div>
+        </div>
+      )}
+
+      <PetCompanion lessonId={l.id}/>
     </div>
   );
 }
 
 const Step = ({ n, title, children }) => (
-  <section className="rounded-2xl bg-white border border-slate-200 p-5" data-testid={`step-${n}`}>
-    <div className="text-xs font-mono opacity-60">Step {n}</div>
-    <h2 className="font-display text-lg font-semibold mt-0.5 mb-3">{title}</h2>
-    <div className="text-slate-800">{children}</div>
+  <section className="paper-card p-5" data-testid={`step-${n}`}>
+    <div className="text-xs font-mono text-stone-500">Step {n}</div>
+    <h2 className="font-display text-lg font-semibold mt-0.5 mb-3" style={{color:"#1F3B2D"}}>{title}</h2>
+    <div className="text-stone-800">{children}</div>
   </section>
 );
+const FilePreview = ({ file }) => {
+  const Icon = file.content_type?.startsWith("image/") ? ImgIcon : file.content_type?.startsWith("audio/") ? Mic : file.content_type?.startsWith("video/") ? Film : FileText;
+  return (
+    <div className="rounded-lg border overflow-hidden" style={{borderColor:"#D4C8A8"}}>
+      {file.content_type?.startsWith("image/")
+        ? <img src={fileUrl(file.id)} alt={file.original_filename} className="w-full h-20 object-cover"/>
+        : <div className="h-20 bg-stone-50 grid place-items-center text-stone-500"><Icon size={20}/></div>}
+      <div className="p-1 text-[10px] truncate">{file.original_filename}</div>
+    </div>
+  );
+};
