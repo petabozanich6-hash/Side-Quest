@@ -17,6 +17,8 @@ export default function ChildLesson() {
   const [submitting, setSubmitting] = useState(false);
   const [needsHelp, setNeedsHelp] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [quizAnswers, setQuizAnswers] = useState({});
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [activeChallenge, setActiveChallenge] = useState(null);
   const [challengeResponse, setChallengeResponse] = useState("");
   const [challengeFiles, setChallengeFiles] = useState([]);
@@ -67,7 +69,7 @@ export default function ChildLesson() {
 
   const printLesson = () => {
     const l = a.lesson; const w = window.open("", "_blank");
-    w.document.write(`<html><head><title>${l.title}</title><style>body{font-family:Georgia,serif;max-width:720px;margin:40px auto;padding:0 20px}h1{font-size:22px}h2{font-size:14px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:20px}p,li{line-height:1.6}</style></head><body><h1>${l.title}</h1><p>Stage ${l.stage} · ${l.learning_area}</p><h2>Learning intention</h2><p>${l.learning_intention}</p><h2>Success criteria</h2><ul>${(l.success_criteria||[]).map(c=>`<li>${c}</li>`).join("")}</ul><h2>Explicit teaching</h2><p>${(l.explicit_teaching||"").replace(/\n/g,"<br/>")}</p><h2>Worked example</h2><p>${l.worked_example||""}</p><h2>Independent task</h2><p>${l.independent_task||""}</p><h2>Offline alternative</h2><p>${l.offline_alternative||""}</p><br/><br/><div style="border-top:1px dashed #333;padding-top:10px">My response:<br/><br/><br/><br/></div></body></html>`);
+    w.document.write(`<html><head><title>${l.title}</title><style>body{font-family:Georgia,serif;max-width:720px;margin:40px auto;padding:0 20px}h1{font-size:22px}h2{font-size:14px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:20px}p,li{line-height:1.6}</style></head><body><h1>${l.title}</h1><p>Stage ${l.stage} · ${l.learning_area}</p><h2>Your mission</h2><p>${l.child_mission || l.learning_intention || ""}</p><h2>Success criteria</h2><ul>${(l.success_criteria||[]).map(c=>`<li>${c}</li>`).join("")}</ul><h2>Lesson steps</h2><ol>${(l.steps||[]).map(s=>`<li><strong>${s.title}</strong><br/>${s.detail}</li>`).join("")}</ol><h2>Independent task</h2><p>${l.independent_task||""}</p><h2>Offline alternative</h2><p>${l.offline_alternative||""}</p><br/><br/><div style="border-top:1px dashed #333;padding-top:10px">My response:<br/><br/><br/><br/></div></body></html>`);
     w.document.close(); w.print();
   };
 
@@ -88,15 +90,52 @@ export default function ChildLesson() {
         <div className={`mt-4 rounded-xl border px-4 py-2 text-sm ${supportBanner.cls}`} data-testid="support-banner">{supportBanner.text}</div>
       </header>
 
-      <Step n="1" title="What am I learning?"><p className="text-base">{l.learning_intention}</p></Step>
+      {l.child_mission && (
+        <div className="paper-card p-6">
+          <div className="text-xs font-mono text-stone-500 uppercase tracking-wider">Your mission</div>
+          <p className="font-display text-xl font-bold mt-2" style={{color:"#1F3B2D"}}>{l.child_mission}</p>
+        </div>
+      )}
+
+      <Step n="1" title="What am I learning?"><p className="text-base">{l.child_mission || l.learning_intention}</p></Step>
+
       <Step n="2" title="How I'll know I've got it">
         <ul className="list-disc pl-5 space-y-1">{(l.success_criteria||[]).map((c,i)=><li key={i}>{c}</li>)}</ul>
       </Step>
+
       <Step n="3" title="What I need"><p className="text-sm">{(l.materials||[]).join(", ") || "Nothing special"}</p></Step>
+
+      {l.steps?.length > 0 && (
+        <Step n="3b" title="Your quest steps">
+          <ol className="space-y-3">
+            {l.steps.map((step, i) => (
+              <li key={i} className="rounded-xl border p-4 bg-white" style={{borderColor:"#D4C8A8"}}>
+                <div className="font-bold">{i + 1}. {step.title}</div>
+                <p className="text-sm text-stone-700 mt-1">{step.detail}</p>
+              </li>
+            ))}
+          </ol>
+        </Step>
+      )}
+
       {l.key_vocabulary?.length > 0 && <Step n="4" title="Key words">
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">{l.key_vocabulary.map((v,i)=><li key={i} className="rounded-lg bg-white border border-stone-200 p-2">{v}</li>)}</ul>
       </Step>}
+
       <Step n="5" title="Let's learn"><div className="prose prose-sm max-w-none whitespace-pre-wrap">{l.explicit_teaching}</div></Step>
+
+      {l.resources?.length > 0 && (
+        <Step n="5b" title="Watch and play">
+          <div className="space-y-2">
+            {l.resources.map((r, i) => (
+              <a key={i} href={r.url} target="_blank" rel="noreferrer" className="block rounded-xl p-3 border bg-white hover:bg-stone-50" style={{borderColor:"#D4C8A8"}}>
+                <div className="font-semibold text-sm">{r.type === "video" ? "🎬" : "🎮"} {r.title}</div>
+                <div className="text-xs text-stone-600 mt-0.5">Tap to open</div>
+              </a>
+            ))}
+          </div>
+        </Step>
+      )}
 
       {l.suggested_resources?.length > 0 && (
         <Step n="6" title="Explore further (optional)">
@@ -123,10 +162,84 @@ export default function ChildLesson() {
 
       {l.worked_example && <Step n="7" title="Example"><div className="rounded-lg bg-indigo-50 border border-indigo-200 p-4 text-sm">{l.worked_example}</div></Step>}
       {l.guided_practice && <Step n="8" title="Try with me"><p className="text-sm">{l.guided_practice}</p></Step>}
+
       <Step n="9" title="My task">
         <p className="text-base">{l.independent_task}</p>
         {l.response_prompt && <div className="mt-3 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm"><strong>Respond to:</strong> {l.response_prompt}</div>}
       </Step>
+
+      {l.quiz?.length > 0 && (
+        <Step n="9b" title="Quick check">
+          <div className="space-y-4">
+            {l.quiz.map((question, qi) => {
+              const selected = quizAnswers[qi];
+
+              return (
+                <div key={qi} className="rounded-xl border p-4 bg-white" style={{borderColor:"#D4C8A8"}}>
+                  <p className="font-semibold">{qi + 1}. {question.question}</p>
+
+                  <div className="mt-3 space-y-2">
+                    {question.options.map((option, oi) => {
+                      const isSelected = selected === oi;
+                      const isCorrect = oi === question.correct_index;
+                      const showResult = quizSubmitted;
+
+                      let className = "w-full text-left px-3 py-2 rounded-lg border transition";
+
+                      if (showResult && isCorrect) {
+                        className += " border-green-500 bg-green-50 text-green-800";
+                      } else if (showResult && isSelected && !isCorrect) {
+                        className += " border-red-500 bg-red-50 text-red-800";
+                      } else if (isSelected) {
+                        className += " border-blue-500 bg-blue-50 text-blue-800";
+                      } else {
+                        className += " border-stone-200 hover:border-blue-300";
+                      }
+
+                      return (
+                        <button
+                          key={oi}
+                          type="button"
+                          disabled={quizSubmitted}
+                          onClick={() => setQuizAnswers(current => ({ ...current, [qi]: oi }))}
+                          className={className}
+                        >
+                          {option}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {quizSubmitted && (
+                    <p className="mt-2 text-sm text-stone-700">{question.explanation}</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {!quizSubmitted ? (
+            <button
+              type="button"
+              onClick={() => setQuizSubmitted(true)}
+              disabled={Object.keys(quizAnswers).length !== l.quiz.length}
+              className="mt-4 rounded-full px-5 py-2 text-sm font-bold disabled:opacity-50"
+              style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}}
+            >
+              Check my answers
+            </button>
+          ) : (
+            <div className="mt-4 rounded-xl bg-green-50 border border-green-200 p-3 text-green-900">
+              <p className="font-bold">
+                You got{" "}
+                {l.quiz.filter((question, index) => quizAnswers[index] === question.correct_index).length}{" "}
+                of {l.quiz.length} correct.
+              </p>
+            </div>
+          )}
+        </Step>
+      )}
+
       <Step n="10" title="My response">
         <textarea rows={5} value={response} onChange={e=>setResponse(e.target.value)} placeholder="Type your answer here… (or upload a photo of your paper work below)" className="w-full rounded-lg border px-3 py-2 text-base bg-white" style={{borderColor:"#D4C8A8"}} data-testid="response-text"/>
       </Step>
@@ -146,7 +259,7 @@ export default function ChildLesson() {
       </Step>
 
       <Step n="12" title="Reflect">
-        <textarea rows={3} value={reflection} onChange={e=>setReflection(e.target.value)} placeholder={l.reflection_prompt || "What did you learn? What was tricky?"} className="w-full rounded-lg border px-3 py-2 text-sm bg-white" style={{borderColor:"#D4C8A8"}} data-testid="reflection-text"/>
+        <textarea rows={3} value={reflection} onChange={e=>setReflection(e.target.value)} placeholder={l.reflection_prompts?.[0] || l.reflection_prompt || "What did you learn? What was tricky?"} className="w-full rounded-lg border px-3 py-2 text-sm bg-white" style={{borderColor:"#D4C8A8"}} data-testid="reflection-text"/>
       </Step>
 
       <div className="paper-card p-6 space-y-3">
@@ -222,6 +335,7 @@ const Step = ({ n, title, children }) => (
     <div className="text-stone-800">{children}</div>
   </section>
 );
+
 const FilePreview = ({ file }) => {
   const Icon = file.content_type?.startsWith("image/") ? ImgIcon : file.content_type?.startsWith("audio/") ? Mic : file.content_type?.startsWith("video/") ? Film : FileText;
   return (
