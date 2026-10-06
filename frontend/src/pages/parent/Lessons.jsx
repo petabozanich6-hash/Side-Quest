@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
-import { Sparkles, Printer, Eye, X, Send } from "lucide-react";
+import { Sparkles, Printer, Eye, X, Send, Trash2 } from "lucide-react";
 
 export default function LessonsPage() {
   const [lessons, setLessons] = useState([]);
@@ -14,6 +14,12 @@ export default function LessonsPage() {
     load();
     api.get("/students").then(r => setStudents(r.data));
   }, []);
+
+  const del = async (id) => {
+    if (!window.confirm("Delete this lesson? Submissions remain for your records.")) return;
+    try { await api.delete(`/lessons/${id}`); toast.success("Deleted"); load(); }
+    catch { toast.error("Failed"); }
+  };
 
   const assign = async (studentId, lessonId) => {
     try {
@@ -53,9 +59,10 @@ export default function LessonsPage() {
             <div className="mt-3 flex flex-wrap gap-1">
               {(l.outcome_codes||[]).slice(0,3).map(c => <span key={c} className="font-mono text-[10px] px-2 py-0.5 bg-slate-100 rounded border border-slate-200">{c}</span>)}
             </div>
-            <div className="mt-auto pt-4 flex items-center gap-2">
+            <div className="mt-auto pt-4 flex items-center gap-2 flex-wrap">
               <button onClick={()=>setView(l)} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`view-${l.id}`}><Eye size={12}/> View</button>
               <button onClick={()=>printLesson(l)} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`print-${l.id}`}><Printer size={12}/> Print</button>
+              <button onClick={()=>del(l.id)} className="rounded-lg border border-rose-300 text-rose-700 px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`del-lesson-${l.id}`}><Trash2 size={12}/> Delete</button>
               <button onClick={()=>setAssignOpen(l)} className="ml-auto rounded-lg bg-slate-900 text-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`assign-${l.id}`}><Send size={12}/> Assign</button>
             </div>
           </div>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="8" skipped="0" tests="27" time="98.647" timestamp="2026-10-06T02:01:13.580118+00:00" hostname="agent-env-923d714f-1bc0-4b70-b59d-675e397f6e5c"><testcase classname="tests.test_new_features" name="test_login_owner" time="0.468" /><testcase classname="tests.test_new_features" name="test_create_student_s2" time="0.304" /><testcase classname="tests.test_new_features" name="test_child_login_token" time="0.293" /><testcase classname="tests.test_new_features" name="test_stage_source_links" time="0.075" /><testcase classname="tests.test_new_features" name="test_outcomes_total_count" time="0.232" /><testcase classname="tests.test_new_features" name="test_curriculum_pattern_s5" time="0.072" /><testcase classname="tests.test_new_features" name="test_curriculum_pattern_s6" time="0.030" /><testcase classname="tests.test_new_features" name="test_ai_lesson_has_resources_and_challenges" time="46.438" /><testcase classname="tests.test_new_features" name="test_pet_species_list" time="0.074" /><testcase classname="tests.test_new_features" name="test_pet_needs_pet_initially" time="0.072" /><testcase classname="tests.test_new_features" name="test_pet_create" time="0.073"><failure message="AssertionError: assert 'fox' == 'cat'&#10;  &#10;  - cat&#10;  + fox">backend/tests/test_new_features.py:114: in test_pet_create
+    assert r.json()["species"] == "cat"
+E   AssertionError: assert 'fox' == 'cat'
+E     
+E     - cat
+E     + fox</failure></testcase><testcase classname="tests.test_new_features" name="test_pet_feed" time="0.034" /><testcase classname="tests.test_new_features" name="test_pet_play" time="0.070"><failure message="AssertionError: /pet/play missing: 404 {&quot;detail&quot;:&quot;Not Found&quot;}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404]&gt;.status_code">backend/tests/test_new_features.py:125: in test_pet_play
+    assert r.status_code == 200, f"/pet/play missing: {r.status_code} {r.text}"
+E   AssertionError: /pet/play missing: 404 {"detail":"Not Found"}
+E   assert 404 == 200
+E    +  where 404 = &lt;Response [404]&gt;.status_code</failure></testcase><testcase classname="tests.test_new_features" name="test_pet_customize" time="0.070"><failure message="AssertionError: /pet/customize missing: 404 {&quot;detail&quot;:&quot;Not Found&quot;}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404]&gt;.status_code">backend/tests/test_new_features.py:131: in test_pet_customize
+    assert r.status_code == 200, f"/pet/customize missing: {r.status_code} {r.text}"
+E   AssertionError: /pet/customize missing: 404 {"detail":"Not Found"}
+E   assert 404 == 200
+E    +  where 404 = &lt;Response [404]&gt;.status_code</failure></testcase><testcase classname="tests.test_new_features" name="test_cheer_send" time="0.070"><failure message="AssertionError: /cheers endpoint missing: 404 {&quot;detail&quot;:&quot;Not Found&quot;}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404]&gt;.status_code">backend/tests/test_new_features.py:139: in test_cheer_send
+    assert r.status_code == 200, f"/cheers endpoint missing: {r.status_code} {r.text}"
+E   AssertionError: /cheers endpoint missing: 404 {"detail":"Not Found"}
+E   assert 404 == 200
+E    +  where 404 = &lt;Response [404]&gt;.status_code</failure></testcase><testcase classname="tests.test_new_features" name="test_cheer_in_child_dashboard_and_xp" time="0.154"><failure message="AssertionError: child dashboard missing 'cheers' key&#10;assert 'cheers' in {'student': {'id': '639b52db-333a-4ea9-839e-36661b061357', 'family_id': '2263da03-9aa3-44a2-9e1d-1aad73bd684b', 'name': 'Testy', 'username': 'newf_84b5ae', ...}, 'today': [], 'all_pending': [], 'feedback': []}">backend/tests/test_new_features.py:152: in test_cheer_in_child_dashboard_and_xp
+    assert "cheers" in j, "child dashboard missing 'cheers' key"
+E   AssertionError: child dashboard missing 'cheers' key
+E   assert 'cheers' in {'student': {'id': '639b52db-333a-4ea9-839e-36661b061357', 'family_id': '2263da03-9aa3-44a2-9e1d-1aad73bd684b', 'name': 'Testy', 'username': 'newf_84b5ae', ...}, 'today': [], 'all_pending': [], 'feedback': []}</failure></testcase><testcase classname="tests.test_new_features" name="test_student_overview_endpoint" time="0.072"><failure message="AssertionError: students/overview missing: 404&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404]&gt;.status_code">backend/tests/test_new_features.py:163: in test_student_overview_endpoint
+    assert r.status_code == 200, f"students/overview missing: {r.status_code}"
+E   AssertionError: students/overview missing: 404
+E   assert 404 == 200
+E    +  where 404 = &lt;Response [404]&gt;.status_code</failure></testcase><testcase classname="tests.test_new_features" name="test_reading_log_create" time="0.072" /><testcase classname="tests.test_new_features" name="test_reading_log_list" time="0.072" /><testcase classname="tests.test_new_features" name="test_reading_log_stats" time="0.072" /><testcase classname="tests.test_new_features" name="test_reading_log_delete" time="0.072" /><testcase classname="tests.test_new_features" name="test_life_evidence_create" time="0.071" /><testcase classname="tests.test_new_features" name="test_life_evidence_analyse" time="16.433" /><testcase classname="tests.test_new_features" name="test_life_evidence_review" time="0.077" /><testcase classname="tests.test_new_features" name="test_learning_plan_create" time="0.073" /><testcase classname="tests.test_new_features" name="test_learning_plan_generate" time="32.860"><failure message="AssertionError: {&quot;detail&quot;:&quot;AI returned invalid plan format&quot;}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500]&gt;.status_code">backend/tests/test_new_features.py:240: in test_learning_plan_generate
+    assert r.status_code == 200, r.text
+E   AssertionError: {"detail":"AI returned invalid plan format"}
+E   assert 500 == 200
+E    +  where 500 = &lt;Response [500]&gt;.status_code</failure></testcase><testcase classname="tests.test_new_features" name="test_ics_calendar" time="0.116"><failure message="AssertionError: ICS endpoint missing: 405&#10;assert 405 == 200&#10; +  where 405 = &lt;Response [405]&gt;.status_code">backend/tests/test_new_features.py:251: in test_ics_calendar
+    assert r.status_code == 200, f"ICS endpoint missing: {r.status_code}"
+E   AssertionError: ICS endpoint missing: 405
+E   assert 405 == 200
+E    +  where 405 = &lt;Response [405]&gt;.status_code</failure></testcase></testsuite></testsuites>

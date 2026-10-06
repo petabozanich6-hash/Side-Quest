@@ -608,6 +608,36 @@ async def feed_pet(user=Depends(require_child)):
         {"$set": {"happiness": new_happy, "last_fed": now_iso()}})
     return {"happiness": new_happy}
 
+@api.post("/pet/play")
+async def play_pet(user=Depends(require_child)):
+    pet = await db.pets.find_one({"student_id": user["id"]})
+    if not pet: raise HTTPException(404, "No pet yet")
+    new_happy = min(100, int(pet.get("happiness", 70)) + 8)
+    new_xp = int(pet.get("xp", 0)) + 2
+    await db.pets.update_one({"student_id": user["id"]},
+        {"$set": {"happiness": new_happy, "xp": new_xp, "last_played": now_iso()},
+         "$push": {"activity": {"amount": 2, "reason": "Played with pet", "at": now_iso()}}})
+    return {"happiness": new_happy, "xp": new_xp}
+
+@api.put("/pet/customize")
+async def customize_pet(data: dict, user=Depends(require_child)):
+    pet = await db.pets.find_one({"student_id": user["id"]})
+    if not pet: raise HTTPException(404, "No pet yet")
+    update = {}
+    if "name" in data and isinstance(data["name"], str):
+        name = data["name"].strip()[:30]
+        if name: update["name"] = name
+    if "background" in data and isinstance(data["background"], str):
+        update["background"] = data["background"].strip()[:30]
+    if "accessories" in data and isinstance(data["accessories"], list):
+        update["accessories"] = [str(a)[:30] for a in data["accessories"][:10]]
+    if not update:
+        raise HTTPException(400, "Nothing to update")
+    await db.pets.update_one({"student_id": user["id"]}, {"$set": update})
+    pet = await db.pets.find_one({"student_id": user["id"]}, {"_id": 0})
+    pet.update(level_for_xp(pet.get("xp", 0)))
+    return pet
+
 @api.post("/pet/help")
 async def pet_help_route(data: PetHelpIn, user=Depends(require_child)):
     """AI-powered contextual help message in pet's voice."""
@@ -643,6 +673,43 @@ Reply as the pet in FIRST PERSON. Give 3 short, kind, concrete nudges to help th
     except Exception as e:
         message = f"Hey {student_name}! I'm {pet['name']}. Let's take this one tiny step. Read the first question slowly, then try just the beginning. If a word feels tricky, check the key words. You've got this — I'll be right here. 💛"
     return {"message": message.strip()[:600], "pet": {"name": pet["name"], "species": pet["species"]}}
+
+# ----- Cheers (parent-to-child high-fives) -----
+@api.post("/cheers")
+async def create_cheer(data: CheerIn, user=Depends(require_parent)):
+    student = await db.students.find_one({"id": data.student_id, "family_id": user["family_id"]}, {"_id": 0, "pin": 0})
+    if not student: raise HTTPException(404, "Student not found")
+    cheer = {
+        "id": new_id(),
+        "family_id": user["family_id"],
+        "student_id": data.student_id,
+        "from_user_id": user["id"],
+        "from_name": user.get("name", "Parent"),
+        "message": data.message.strip()[:280],
+        "emoji": (data.emoji or "✨")[:8],
+        "seen": False,
+        "created_at": now_iso(),
+    }
+    await db.cheers.insert_one(cheer)
+    return strip_mongo(cheer)
+
+@api.get("/cheers")
+async def list_cheers(student_id: Optional[str] = None, user=Depends(current_user)):
+    q = {"family_id": user["family_id"]}
+    if user.get("role") == "child":
+        q["student_id"] = user["id"]
+    elif student_id:
+        q["student_id"] = student_id
+    cheers = await db.cheers.find(q, {"_id": 0}).sort("created_at", -1).to_list(100)
+    # Auto-mark as seen when the child views them
+    if user.get("role") == "child":
+        await db.cheers.update_many({"student_id": user["id"], "seen": {"$ne": True}}, {"$set": {"seen": True, "seen_at": now_iso()}})
+    return cheers
+
+@api.post("/cheers/{cid}/seen")
+async def mark_cheer_seen(cid: str, user=Depends(require_child)):
+    await db.cheers.update_one({"id": cid, "student_id": user["id"]}, {"$set": {"seen": True, "seen_at": now_iso()}})
+    return {"ok": True}
 
 @api.get("/curriculum/stages")
 async def get_stages():
@@ -823,6 +890,33 @@ async def get_student(sid: str, user=Depends(current_user)):
     s = await db.students.find_one({"id": sid, "family_id": user["family_id"]}, {"_id": 0, "pin": 0})
     if not s: raise HTTPException(404)
     return s
+
+@api.get("/students/{sid}/overview")
+async def student_overview(sid: str, user=Depends(require_parent)):
+    """Parent view of a single child: pet, assignments, submissions, cheers, reading, life evidence."""
+    s = await db.students.find_one({"id": sid, "family_id": user["family_id"]}, {"_id": 0, "pin": 0})
+    if not s: raise HTTPException(404)
+    pet = await db.pets.find_one({"student_id": sid}, {"_id": 0})
+    if pet:
+        pet.update(level_for_xp(pet.get("xp", 0)))
+    assignments = await db.assignments.find({"student_id": sid, "family_id": user["family_id"]}, {"_id": 0}).sort("created_at", -1).to_list(100)
+    for a in assignments:
+        a["lesson"] = await db.lessons.find_one({"id": a["lesson_id"]}, {"_id": 0, "explicit_teaching": 0, "worked_example": 0})
+    submissions = await db.submissions.find({"student_id": sid, "family_id": user["family_id"]}, {"_id": 0}).sort("submitted_at", -1).to_list(50)
+    for sub in submissions:
+        sub["lesson"] = await db.lessons.find_one({"id": sub.get("lesson_id")}, {"_id": 0, "explicit_teaching": 0, "worked_example": 0}) if sub.get("lesson_id") else None
+    cheers = await db.cheers.find({"student_id": sid, "family_id": user["family_id"]}, {"_id": 0}).sort("created_at", -1).to_list(50)
+    reading_count = await db.reading_log.count_documents({"student_id": sid, "family_id": user["family_id"]})
+    life = await db.life_evidence.find({"student_id": sid, "family_id": user["family_id"]}, {"_id": 0}).sort("created_at", -1).to_list(50)
+    return {
+        "student": s,
+        "pet": pet,
+        "assignments": assignments,
+        "recent_submissions": submissions,
+        "cheers": cheers,
+        "reading_count": reading_count,
+        "life_evidence": life,
+    }
 
 @api.put("/students/{sid}")
 async def update_student(sid: str, data: StudentIn, user=Depends(require_parent)):
@@ -1115,6 +1209,73 @@ async def create_event(data: CalendarEventIn, user=Depends(require_parent)):
     await db.calendar_events.insert_one(e)
     return strip_mongo(e)
 
+@api.get("/calendar/ics")
+async def export_calendar_ics(student_id: Optional[str] = None, user=Depends(require_parent)):
+    """Export calendar events as an ICS file for Google / Apple / Outlook calendars."""
+    q = {"family_id": user["family_id"]}
+    if student_id: q["student_id"] = student_id
+    events = await db.calendar_events.find(q, {"_id": 0}).sort("date", 1).to_list(2000)
+
+    def ics_escape(s: str) -> str:
+        return (s or "").replace("\\", "\\\\").replace(",", "\\,").replace(";", "\\;").replace("\n", "\\n")
+
+    def to_dt(date_str: str, time_str: Optional[str] = None):
+        d = date_str.replace("-", "")
+        if time_str:
+            t = time_str.replace(":", "").ljust(6, "0")[:6]
+            return f"{d}T{t}"
+        return d
+
+    lines = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//Side Quest Learning//EN",
+        "CALSCALE:GREGORIAN",
+        "METHOD:PUBLISH",
+        f"X-WR-CALNAME:Side Quest Learning",
+    ]
+    now = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    for e in events:
+        uid = f"{e.get('id')}@sidequest"
+        title = ics_escape(e.get("title", "Lesson"))
+        notes = ics_escape(e.get("notes") or "")
+        dur = int(e.get("duration_minutes") or 45)
+        has_time = bool(e.get("start_time"))
+        if has_time:
+            start = to_dt(e["date"], e["start_time"])
+            # add duration
+            try:
+                dt = datetime.strptime(start, "%Y%m%dT%H%M%S")
+                end_dt = dt + timedelta(minutes=dur)
+                end = end_dt.strftime("%Y%m%dT%H%M%S")
+            except Exception:
+                end = start
+            dt_lines = [f"DTSTART:{start}", f"DTEND:{end}"]
+        else:
+            start = to_dt(e["date"])
+            try:
+                end_dt = datetime.strptime(start, "%Y%m%d") + timedelta(days=1)
+                end = end_dt.strftime("%Y%m%d")
+            except Exception:
+                end = start
+            dt_lines = [f"DTSTART;VALUE=DATE:{start}", f"DTEND;VALUE=DATE:{end}"]
+        lines += [
+            "BEGIN:VEVENT",
+            f"UID:{uid}",
+            f"DTSTAMP:{now}",
+            *dt_lines,
+            f"SUMMARY:{title}",
+            f"DESCRIPTION:{notes}" if notes else "DESCRIPTION:Side Quest Learning event",
+            "END:VEVENT",
+        ]
+    lines.append("END:VCALENDAR")
+    body = "\r\n".join(lines) + "\r\n"
+    return Response(
+        content=body,
+        media_type="text/calendar; charset=utf-8",
+        headers={"Content-Disposition": 'attachment; filename="side-quest-learning.ics"'},
+    )
+
 @api.put("/calendar/{eid}")
 async def update_event(eid: str, data: dict, user=Depends(require_parent)):
     await db.calendar_events.update_one({"id": eid, "family_id": user["family_id"]}, {"$set": data})
@@ -1126,7 +1287,12 @@ async def delete_event(eid: str, user=Depends(require_parent)):
     return {"ok": True}
 
 # ----- AI Lesson Generator -----
-def build_lesson_prompt(req: AILessonRequest) -> str:
+async def get_stage_outcomes_text(stage: str, learning_area: str) -> str:
+    docs = await db.outcomes.find({"stage": stage, "learning_area": learning_area}, {"_id": 0}).to_list(50)
+    if not docs: return "(no seeded outcomes for this stage/area; LEAVE outcome_codes EMPTY)"
+    return "\n".join([f"- {o['code']}: {o['description']}" for o in docs])
+
+def build_lesson_prompt(req: AILessonRequest, outcomes_text: str = "") -> str:
     band = "primary" if req.stage in ["ES1", "S1", "S2", "S3"] else "secondary" if req.stage in ["S4", "S5"] else "senior"
     tone = {
         "primary": "friendly, clear, encouraging for a primary-age child",
@@ -1137,6 +1303,33 @@ def build_lesson_prompt(req: AILessonRequest) -> str:
     if req.is_side_quest and req.theme:
         side_quest_block = f"\nTHIS IS A SIDE QUEST themed around: '{req.theme}'. Use the theme as a context for genuine curriculum learning — do not make commercial consumption the goal."
     return f"""You are a NSW Australia homeschool curriculum lesson designer. Create ONE complete lesson in strict JSON. Tone: {tone}.
+
+AVAILABLE NSW OUTCOME CODES for {req.stage} / {req.learning_area} — you MUST ONLY use codes from this list in outcome_codes. If no code genuinely fits, LEAVE outcome_codes EMPTY. NEVER invent codes:
+{outcomes_text}
+
+APPROVED FREE/LEGAL RESOURCE PLATFORMS — only link to these when suggesting resources. Use real root URLs; never fabricate deep links:
+- ABC Education (abc.net.au/education)
+- ABC Kids / ABC iview (abc.net.au/kids, iview.abc.net.au)
+- BBC Bitesize (bbc.co.uk/bitesize)
+- BBC Teach (bbc.co.uk/teach)
+- Khan Academy (khanacademy.org)
+- Khan Academy Kids app (khankids.org)
+- CSIRO Science by Email / Double Helix (csiro.au)
+- Scootle (scootle.edu.au)
+- National Geographic Kids (kids.nationalgeographic.com)
+- CrashCourse Kids / CrashCourse (youtube.com/@crashcoursekids, youtube.com/@crashcourse)
+- SciShow Kids (youtube.com/@scishowkids)
+- Numberphile (numberphile.com)
+- NASA for Students (nasa.gov/learning-resources)
+- Australian Museum (australian.museum)
+- Reading Eggs free samples (readingeggs.com.au)
+- Project Gutenberg (gutenberg.org) for public-domain texts
+- Storyline Online (storylineonline.net)
+- TED-Ed (ed.ted.com)
+- NSW State Library (sl.nsw.gov.au)
+- National Library of Australia Trove (trove.nla.gov.au)
+- Open Library (openlibrary.org)
+- Youtube EDU channels you can confidently cite by channel name
 
 INPUT:
 - Stage: {req.stage} ({req.year_level or ''})
@@ -1169,22 +1362,25 @@ Return ONLY valid JSON (no markdown, no commentary) with exact keys:
   "offline_alternative": "A no-device alternative pathway",
   "accessibility_notes": "Accessibility adaptations (audio support, visuals, etc)",
   "suggested_resources": [
-    {{"title": "resource name", "type": "video|article|book|interactive|podcast|dataset", "where_to_find": "e.g. ABC Education, Scootle, local library, National Geographic Kids - DO NOT invent URLs; describe where to search", "purpose": "why use it", "offline_alternative": "equivalent offline option", "stage_appropriate": true}}
+    {{"title": "resource name", "type": "video|article|book|interactive|podcast|dataset", "provider": "ABC Education | BBC Bitesize | Khan Academy | CrashCourse Kids | SciShow Kids | ABC Kids | TED-Ed | Scootle | CSIRO | etc", "url": "REAL root or channel URL from the approved list above - never invent a deep link; use the channel/section URL where the resource can be found", "where_to_find": "search phrase or section name to find it on the provider site", "purpose": "specifically how this reinforces the learning intention", "offline_alternative": "equivalent offline option", "stage_appropriate": true, "legally_free": true}}
   ],
   "follow_up_challenges": [
     {{"title": "challenge name", "type": "apply_in_life|teach_someone|create_something|measure_change|quiz|project", "description": "specific challenge instruction", "evidence_type": "photo|video|audio|written|measurement|parent_observation", "difficulty": "easy|medium|stretch"}}
   ],
-  "outcome_codes": ["Suggested NSW outcome codes - leave empty if uncertain"],
-  "source_note": "Note that NSW outcome mappings are AI-suggested and must be verified by the parent against NESA sources"
+  "outcome_codes": ["codes from the AVAILABLE list above only - empty array if none genuinely fit"],
+  "outcome_alignment": [{{"code": "code used", "evidence": "specifically how this lesson addresses this outcome"}}],
+  "source_note": "AI-suggested outcome mappings; parent must verify against NESA before marking demonstrated"
 }}
 
 CRITICAL RULES:
-- Provide 2-4 external resource suggestions. NEVER invent URLs. Describe where to find them (library catalog, free Australian sites like ABC Education, Scootle, NSW DoE free resources, Khan Academy, etc.)
-- Provide 3 follow-up challenges that help prove the learning sticks - at least one should be a real-world application
-- Do NOT invent NSW outcome codes if unsure - leave outcome_codes empty and note it
-- Match complexity to Stage {req.stage}: do not use primary worksheet style for secondary/senior
-- Include explicit teaching content, not just "watch a video"
-- Provide a genuine offline alternative
+- outcome_codes MUST come ONLY from the AVAILABLE list above. Zero tolerance for invented codes.
+- For every code in outcome_codes, provide an entry in outcome_alignment explaining HOW the lesson addresses it.
+- Provide 3-5 external resources. Each MUST have a REAL root URL from the approved platform list (e.g. "https://www.bbc.co.uk/bitesize", not a fabricated deep link).
+- Resources must genuinely teach or reinforce the learning intention - not filler.
+- Provide 3 follow-up challenges; at least one real-world application.
+- Match complexity to Stage {req.stage}; no primary worksheet style for secondary/senior.
+- Include substantial explicit teaching content - never "just watch a video".
+- Provide a genuine offline alternative.
 """
 
 async def call_claude(prompt: str) -> str:
@@ -1222,7 +1418,8 @@ def extract_json(text: str) -> dict:
 async def ai_generate_lesson(req: AILessonRequest, user=Depends(require_parent)):
     if not EMERGENT_LLM_KEY:
         raise HTTPException(500, "AI not configured")
-    prompt = build_lesson_prompt(req)
+    outcomes_text = await get_stage_outcomes_text(req.stage, req.learning_area)
+    prompt = build_lesson_prompt(req, outcomes_text)
     try:
         raw = await call_claude(prompt)
     except Exception as e:
@@ -1251,7 +1448,7 @@ async def ai_generate_lesson(req: AILessonRequest, user=Depends(require_parent))
             "worked_example", "guided_practice", "independent_task", "response_prompt",
             "evidence_requirement", "self_check", "reflection_prompt",
             "printable_version", "offline_alternative", "accessibility_notes",
-            "outcome_codes", "source_note", "suggested_resources", "follow_up_challenges"
+            "outcome_codes", "source_note", "suggested_resources", "follow_up_challenges", "outcome_alignment"
         ]},
     }
     # Defaults
@@ -1562,8 +1759,28 @@ RULES:
     except Exception as e:
         raise HTTPException(500, f"AI generation failed: {str(e)[:200]}")
     parsed = extract_json(raw)
-    if not parsed or "overview" not in parsed:
-        raise HTTPException(500, "AI returned invalid plan format")
+    # Harden: tolerate missing/renamed keys from AI; synthesize minimal structure if needed
+    if not parsed or not isinstance(parsed, dict):
+        logger.error(f"Learning plan AI returned no JSON. Raw: {raw[:400]}")
+        parsed = {}
+    # Normalise common AI key variants
+    if "overview" not in parsed:
+        for alt in ("summary", "introduction", "intro", "program_overview"):
+            if alt in parsed and isinstance(parsed[alt], str):
+                parsed["overview"] = parsed[alt]; break
+    if "learning_areas" not in parsed:
+        for alt in ("subjects", "areas", "learningAreas"):
+            if alt in parsed and isinstance(parsed[alt], list):
+                parsed["learning_areas"] = parsed[alt]; break
+    # Guarantee required fields exist so UI can always render something
+    parsed.setdefault("overview", f"A {plan.get('teaching_approach') or 'balanced'} learning program for {student['name'] if student else 'the student'} covering {', '.join(areas)} from {plan['period_start']} to {plan['period_end']}.")
+    parsed.setdefault("educational_philosophy", plan.get("teaching_approach") or "A balanced, interest-led home education programme that meets NSW home-schooling expectations.")
+    parsed.setdefault("learning_areas", [{"area": a, "goals": [], "indicative_outcome_codes": [], "teaching_methods": [], "interest_hooks": [], "sample_activities": [], "evidence_approach": ""} for a in areas])
+    parsed.setdefault("weekly_rhythm", "")
+    parsed.setdefault("assessment_approach", "")
+    parsed.setdefault("resources_overview", "")
+    parsed.setdefault("review_schedule", "")
+    parsed.setdefault("assessor_notes", "")
     await db.learning_plans.update_one({"id": pid},
         {"$set": {"ai_content": parsed, "status": "generated", "generated_at": now_iso()}})
     return parsed
@@ -1654,7 +1871,9 @@ async def child_dashboard(user=Depends(require_child)):
     recent_feedback = await db.submissions.find({"student_id": user["id"], "parent_feedback": {"$exists": True}}, {"_id": 0}).sort("reviewed_at", -1).to_list(5)
     for f in recent_feedback:
         f["lesson"] = await db.lessons.find_one({"id": f["lesson_id"]}, {"_id": 0, "explicit_teaching": 0})
-    return {"student": user, "today": today_assignments[:5], "all_pending": today_assignments, "feedback": recent_feedback}
+    # Fetch unseen cheers (parent-to-child high-fives)
+    cheers = await db.cheers.find({"student_id": user["id"], "seen": {"$ne": True}}, {"_id": 0}).sort("created_at", -1).to_list(20)
+    return {"student": user, "today": today_assignments[:5], "all_pending": today_assignments, "feedback": recent_feedback, "cheers": cheers}
 
 # ----- Curriculum Audit -----
 @api.get("/audit")

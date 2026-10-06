@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="27" skipped="0" tests="51" time="122.612" timestamp="2026-10-06T01:58:26.537175+00:00" hostname="agent-env-923d714f-1bc0-4b70-b59d-675e397f6e5c"><testcase classname="tests.test_sidequest" name="test_root" time="0.003" /><testcase classname="tests.test_new_features" name="test_login_owner" time="0.001"><failure message="requests.exceptions.MissingSchema: Invalid URL '/api/auth/login': No scheme supplied. Perhaps you meant https:///api/auth/login?">backend/tests/test_new_features.py:26: in test_login_owner
+    r = S.post(f"{API}/auth/login", json={"email": OWNER_EMAIL, "password": OWNER_PW})
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:712: in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:635: in request
+    prep = self.prepare_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:541: in prepare_request
+    p.prepare(
+/root/.venv/lib/python3.11/site-packages/requests/models.py:439: in prepare
+    self.prepare_url(url, params)
+/root/.venv/lib/python3.11/site-packages/requests/models.py:514: in prepare_url
+    raise MissingSchema(
+E   requests.exceptions.MissingSchema: Invalid URL '/api/auth/login': No scheme supplied. Perhaps you meant https:///api/auth/login?</failure></testcase><testcase classname="tests.test_sidequest" name="test_stages" time="0.042" /><testcase classname="tests.test_sidequest" name="test_outcomes_s2" time="0.044" /><testcase classname="tests.test_new_features" name="test_create_student_s2" time="0.000"><failure message="KeyError: 't'">backend/tests/test_new_features.py:35: in test_create_student_s2
+    }, headers=auth(STATE["t"]))
+                    ^^^^^^^^^^
+E   KeyError: 't'</failure></testcase><testcase classname="tests.test_new_features" name="test_child_login_token" time="0.000"><failure message="KeyError: 'suser'">backend/tests/test_new_features.py:42: in test_child_login_token
+    r = S.post(f"{API}/auth/child-login", json={"username": STATE["suser"], "pin": "1234"})
+                                                            ^^^^^^^^^^^^^^
+E   KeyError: 'suser'</failure></testcase><testcase classname="tests.test_new_features" name="test_stage_source_links" time="0.000"><failure message="requests.exceptions.MissingSchema: Invalid URL '/api/curriculum/stages': No scheme supplied. Perhaps you meant https:///api/curriculum/stages?">backend/tests/test_new_features.py:49: in test_stage_source_links
+    r = S.get(f"{API}/curriculum/stages")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:671: in get
+    return self.request("GET", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:635: in request
+    prep = self.prepare_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:541: in prepare_request
+    p.prepare(
+/root/.venv/lib/python3.11/site-packages/requests/models.py:439: in prepare
+    self.prepare_url(url, params)
+/root/.venv/lib/python3.11/site-packages/requests/models.py:514: in prepare_url
+    raise MissingSchema(
+E   requests.exceptions.MissingSchema: Invalid URL '/api/curriculum/stages': No scheme supplied. Perhaps you meant https:///api/curriculum/stages?</failure></testcase><testcase classname="tests.test_new_features" name="test_outcomes_total_count" time="0.000"><failure message="requests.exceptions.MissingSchema: Invalid URL '/api/curriculum/outcomes': No scheme supplied. Perhaps you meant https:///api/curriculum/outcomes?">backend/tests/test_new_features.py:58: in test_outcomes_total_count
+    r = S.get(f"{API}/curriculum/outcomes", params={"stage": code})
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:671: in get
+    return self.request("GET", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:635: in request
+    prep = self.prepare_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:541: in prepare_request
+    p.prepare(
+/root/.venv/lib/python3.11/site-packages/requests/models.py:439: in prepare
+    self.prepare_url(url, params)
+/root/.venv/lib/python3.11/site-packages/requests/models.py:514: in prepare_url
+    raise MissingSchema(
+E   requests.exceptions.MissingSchema: Invalid URL '/api/curriculum/outcomes': No scheme supplied. Perhaps you meant https:///api/curriculum/outcomes?</failure></testcase><testcase classname="tests.test_sidequest" name="test_owner_login" time="0.457" /><testcase classname="tests.test_new_features" name="test_curriculum_pattern_s5" time="0.000"><failure message="requests.exceptions.MissingSchema: Invalid URL '/api/curriculum/pattern/S5': No scheme supplied. Perhaps you meant https:///api/curriculum/pattern/S5?">backend/tests/test_new_features.py:66: in test_curriculum_pattern_s5
+    r = S.get(f"{API}/curriculum/pattern/S5")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:671: in get
+    return self.request("GET", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:635: in request
+    prep = self.prepare_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:541: in prepare_request
+    p.prepare(
+/root/.venv/lib/python3.11/site-packages/requests/models.py:439: in prepare
+    self.prepare_url(url, params)
+/root/.venv/lib/python3.11/site-packages/requests/models.py:514: in prepare_url
+    raise MissingSchema(
+E   requests.exceptions.MissingSchema: Invalid URL '/api/curriculum/pattern/S5': No scheme supplied. Perhaps you meant https:///api/curriculum/pattern/S5?</failure></testcase><testcase classname="tests.test_new_features" name="test_curriculum_pattern_s6" time="0.001"><failure message="requests.exceptions.MissingSchema: Invalid URL '/api/curriculum/pattern/S6': No scheme supplied. Perhaps you meant https:///api/curriculum/pattern/S6?">backend/tests/test_new_features.py:76: in test_curriculum_pattern_s6
+    r = S.get(f"{API}/curriculum/pattern/S6")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:671: in get
+    return self.request("GET", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:635: in request
+    prep = self.prepare_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:541: in prepare_request
+    p.prepare(
+/root/.venv/lib/python3.11/site-packages/requests/models.py:439: in prepare
+    self.prepare_url(url, params)
+/root/.venv/lib/python3.11/site-packages/requests/models.py:514: in prepare_url
+    raise MissingSchema(
+E   requests.exceptions.MissingSchema: Invalid URL '/api/curriculum/pattern/S6': No scheme supplied. Perhaps you meant https:///api/curriculum/pattern/S6?</failure></testcase><testcase classname="tests.test_new_features" name="test_ai_lesson_has_resources_and_challenges" time="0.000"><failure message="KeyError: 't'">backend/tests/test_new_features.py:85: in test_ai_lesson_has_resources_and_challenges
+    }, headers=auth(STATE["t"]), timeout=180)
+                    ^^^^^^^^^^
+E   KeyError: 't'</failure></testcase><testcase classname="tests.test_new_features" name="test_pet_species_list" time="0.000"><failure message="requests.exceptions.MissingSchema: Invalid URL '/api/pet/species': No scheme supplied. Perhaps you meant https:///api/pet/species?">backend/tests/test_new_features.py:97: in test_pet_species_list
+    r = S.get(f"{API}/pet/species")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:671: in get
+    return self.request("GET", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:635: in request
+    prep = self.prepare_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/requests/sessions.py:541: in prepare_request
+    p.prepare(
+/root/.venv/lib/python3.11/site-packages/requests/models.py:439: in prepare
+    self.prepare_url(url, params)
+/root/.venv/lib/python3.11/site-packages/requests/models.py:514: in prepare_url
+    raise MissingSchema(
+E   requests.exceptions.MissingSchema: Invalid URL '/api/pet/species': No scheme supplied. Perhaps you meant https:///api/pet/species?</failure></testcase><testcase classname="tests.test_new_features" name="test_pet_needs_pet_initially" time="0.000"><failure message="KeyError: 'ct'">backend/tests/test_new_features.py:103: in test_pet_needs_pet_initially
+    r = S.get(f"{API}/pet", headers=auth(STATE["ct"]))
+                                         ^^^^^^^^^^^
+E   KeyError: 'ct'</failure></testcase><testcase classname="tests.test_new_features" name="test_pet_create" time="0.000"><failure message="KeyError: 'ct'">backend/tests/test_new_features.py:110: in test_pet_create
+    headers=auth(STATE["ct"]))
+                 ^^^^^^^^^^^
+E   KeyError: 'ct'</failure></testcase><testcase classname="tests.test_new_features" name="test_pet_feed" time="0.000"><failure message="KeyError: 'ct'">backend/tests/test_new_features.py:116: in test_pet_feed
+    r = S.post(f"{API}/pet/feed", headers=auth(STATE["ct"]))
+                                               ^^^^^^^^^^^
+E   KeyError: 'ct'</failure></testcase><testcase classname="tests.test_new_features" name="test_pet_play" time="0.000"><failure message="KeyError: 'ct'">backend/tests/test_new_features.py:122: in test_pet_play
+    r = S.post(f"{API}/pet/play", headers=auth(STATE["ct"]))
+                                               ^^^^^^^^^^^
+E   KeyError: 'ct'</failure></testcase><testcase classname="tests.test_new_features" name="test_pet_customize" time="0.000"><failure message="KeyError: 'ct'">backend/tests/test_new_features.py:128: in test_pet_customize
+    headers=auth(STATE["ct"]))
+                 ^^^^^^^^^^^
+E   KeyError: 'ct'</failure></testcase><testcase classname="tests.test_new_features" name="test_cheer_send" time="0.000"><failure message="KeyError: 'sid'">backend/tests/test_new_features.py:135: in test_cheer_send
+    "student_id": STATE["sid"], "message": "Great work today!", "emoji": "⭐"
+                  ^^^^^^^^^^^^
+E   KeyError: 'sid'</failure></testcase><testcase classname="tests.test_new_features" name="test_cheer_in_child_dashboard_and_xp" time="0.000"><failure message="KeyError: 'ct'">backend/tests/test_new_features.py:143: in test_cheer_in_child_dashboard_and_xp
+    pet_before = S.get(f"{API}/pet", headers=auth(STATE["ct"])).json()
+                                                  ^^^^^^^^^^^
+E   KeyError: 'ct'</failure></testcase><testcase classname="tests.test_new_features" name="test_student_overview_endpoint" time="0.000"><failure message="KeyError: 'sid'">backend/tests/test_new_features.py:160: in test_student_overview_endpoint
+    r = S.get(f"{API}/students/{STATE['sid']}/overview", headers=auth(STATE["t"]))
+                                ^^^^^^^^^^^^
+E   KeyError: 'sid'</failure></testcase><testcase classname="tests.test_new_features" name="test_reading_log_create" time="0.000"><failure message="KeyError: 'sid'">backend/tests/test_new_features.py:169: in test_reading_log_create
+    "student_id": STATE["sid"], "title": "Book A",
+                  ^^^^^^^^^^^^
+E   KeyError: 'sid'</failure></testcase><testcase classname="tests.test_new_features" name="test_reading_log_list" time="0.000"><failure message="KeyError: 'sid'">backend/tests/test_new_features.py:177: in test_reading_log_list
+    r = S.get(f"{API}/reading-log", params={"student_id": STATE["sid"]},
+                                                          ^^^^^^^^^^^^
+E   KeyError: 'sid'</failure></testcase><testcase classname="tests.test_new_features" name="test_reading_log_stats" time="0.000"><failure message="KeyError: 'sid'">backend/tests/test_new_features.py:184: in test_reading_log_stats
+    r = S.get(f"{API}/reading-log/stats", params={"student_id": STATE["sid"]},
+                                                                ^^^^^^^^^^^^
+E   KeyError: 'sid'</failure></testcase><testcase classname="tests.test_new_features" name="test_reading_log_delete" time="0.000"><failure message="KeyError: 'read_id'">backend/tests/test_new_features.py:190: in test_reading_log_delete
+    r = S.delete(f"{API}/reading-log/{STATE['read_id']}", headers=auth(STATE["t"]))
+                                      ^^^^^^^^^^^^^^^^
+E   KeyError: 'read_id'</failure></testcase><testcase classname="tests.test_new_features" name="test_life_evidence_create" time="0.000"><failure message="KeyError: 'sid'">backend/tests/test_new_features.py:197: in test_life_evidence_create
+    "student_id": STATE["sid"],
+                  ^^^^^^^^^^^^
+E   KeyError: 'sid'</failure></testcase><testcase classname="tests.test_new_features" name="test_life_evidence_analyse" time="0.000"><failure message="KeyError: 'evi_id'">backend/tests/test_new_features.py:208: in test_life_evidence_analyse
+    json={"evidence_id": STATE["evi_id"]},
+                         ^^^^^^^^^^^^^^^
+E   KeyError: 'evi_id'</failure></testcase><testcase classname="tests.test_new_features" name="test_life_evidence_review" time="0.000"><failure message="KeyError: 'evi_id'">backend/tests/test_new_features.py:216: in test_life_evidence_review
+    r = S.post(f"{API}/life-evidence/{STATE['evi_id']}/review",
+                                      ^^^^^^^^^^^^^^^
+E   KeyError: 'evi_id'</failure></testcase><testcase classname="tests.test_new_features" name="test_learning_plan_create" time="0.000"><failure message="KeyError: 'sid'">backend/tests/test_new_features.py:225: in test_learning_plan_create
+    "student_id": STATE["sid"],
+                  ^^^^^^^^^^^^
+E   KeyError: 'sid'</failure></testcase><testcase classname="tests.test_new_features" name="test_learning_plan_generate" time="0.000"><failure message="KeyError: 'plan_id'">backend/tests/test_new_features.py:236: in test_learning_plan_generate
+    r = S.post(f"{API}/learning-plans/{STATE['plan_id']}/generate",
+                                       ^^^^^^^^^^^^^^^^
+E   KeyError: 'plan_id'</failure></testcase><testcase classname="tests.test_new_features" name="test_ics_calendar" time="0.000"><failure message="KeyError: 'sid'">backend/tests/test_new_features.py:246: in test_ics_calendar
+    "student_id": STATE["sid"], "event_type": "lesson"
+                  ^^^^^^^^^^^^
+E   KeyError: 'sid'</failure></testcase><testcase classname="tests.test_sidequest" name="test_register_family_a" time="0.265" /><testcase classname="tests.test_sidequest" name="test_register_family_b" time="0.265" /><testcase classname="tests.test_sidequest" name="test_create_student_a" time="0.266" /><testcase classname="tests.test_sidequest" name="test_create_student_b" time="0.267" /><testcase classname="tests.test_sidequest" name="test_child_login" time="0.264" /><testcase classname="tests.test_sidequest" name="test_family_isolation_students" time="0.043" /><testcase classname="tests.test_sidequest" name="test_family_isolation_get_other_student" time="0.043" /><testcase classname="tests.test_sidequest" name="test_ai_generate_lesson" time="51.483" /><testcase classname="tests.test_sidequest" name="test_ai_generate_side_quest" time="49.146" /><testcase classname="tests.test_sidequest" name="test_create_assignment" time="0.044" /><testcase classname="tests.test_sidequest" name="test_child_only_sees_own_assignments" time="0.045" /><testcase classname="tests.test_sidequest" name="test_file_upload_and_download" time="0.522" /><testcase classname="tests.test_sidequest" name="test_submit_work" time="0.048" /><testcase classname="tests.test_sidequest" name="test_ai_analyse_submission" time="18.366" /><testcase classname="tests.test_sidequest" name="test_parent_feedback" time="0.090" /><testcase classname="tests.test_sidequest" name="test_create_and_approve_resource" time="0.132" /><testcase classname="tests.test_sidequest" name="test_calendar" time="0.090" /><testcase classname="tests.test_sidequest" name="test_parent_dashboard" time="0.047" /><testcase classname="tests.test_sidequest" name="test_child_dashboard" time="0.045" /><testcase classname="tests.test_sidequest" name="test_audit" time="0.047" /></testsuite></testsuites>

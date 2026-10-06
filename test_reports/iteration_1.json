@@ -1,0 +1,66 @@
+{
+  "summary": "Backend+frontend testing of Side Quest Learning. Core features work (login, curriculum 7 stages w/ NESA links, 137 outcomes, 23 S2 outcomes, pattern/S5/S6, AI lesson generation with suggested_resources+follow_up_challenges, reading log CRUD/stats, life-evidence create+analyse+review, learning plan create, student CRUD, submissions, assignments, dashboards, audit, family isolation, file upload/download). test_sidequest.py: 24/24 passed. test_new_features.py: 19/27 passed. 8 missing/broken features in test_new_features correspond to review-request features that are NOT implemented in backend.",
+  "backend_issues": {
+    "critical": [
+      {"endpoint": "POST /api/cheers (and GET /api/cheers)", "issue": "Endpoint does NOT exist (404). Entire cheer/high-five feature from review request is missing. ChildOverview.jsx cheer-sending will fail; child dashboard has no 'cheers' key.", "priority": "CRITICAL"},
+      {"endpoint": "POST /api/pet/play", "issue": "Endpoint does NOT exist (404). Only /pet/feed and /pet/help exist. PetRoom.jsx play button will fail.", "priority": "CRITICAL"},
+      {"endpoint": "PUT /api/pet/customize", "issue": "Endpoint does NOT exist (404). Pet customization (name/background) from review request not implemented.", "priority": "CRITICAL"},
+      {"endpoint": "GET /api/students/{sid}/overview", "issue": "Endpoint does NOT exist (404). ChildOverview parent page cannot fetch overview data.", "priority": "CRITICAL"},
+      {"endpoint": "GET /api/calendar/ics", "issue": "Returns 405 Method Not Allowed. ICS calendar export is not implemented. Only PUT/DELETE /calendar/{eid} exist, which collide with /calendar/ics path parameter.", "priority": "CRITICAL"},
+      {"endpoint": "GET /api/dashboard/child", "issue": "Response is missing 'cheers' field required by review request and child UI banner.", "priority": "HIGH"},
+      {"endpoint": "POST /api/learning-plans/{id}/generate", "issue": "Returns 500 'AI returned invalid plan format'. AI JSON parse/validation fails; endpoint cannot reliably produce an AP-ready plan.", "priority": "HIGH"},
+      {"endpoint": "POST /api/ai/generate-lesson", "issue": "Prompt explicitly instructs the LLM to NOT invent URLs and 'describe where to search' - so suggested_resources returned have no 'url' field (contrary to review request which requires real URLs from approved providers like ABC/BBC/Khan). Also prompt does NOT pass the seeded outcome codes for the stage/learning_area, so outcome_codes are not constrained to the seeded set. No 'outcome_alignment' field is produced or persisted.", "priority": "HIGH"}
+    ],
+    "minor": [
+      {"endpoint": "POST /api/pet", "issue": "Species list in /pet/species returns multiple species (fox, cat, rabbit...) but review mentions test with 'fox' — works; the previous test_new_features test asserted 'cat' incorrectly (test bug, fixed)."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "PetRoom.jsx", "issue": "Buttons call POST /pet/play and PUT /pet/customize which do not exist in backend — will show errors in UI.", "selector": "N/A", "priority": "HIGH"},
+      {"component": "ChildOverview.jsx", "issue": "Cheer-send button calls POST /api/cheers (404). Overview fetch calls /students/{sid}/overview (404).", "selector": "N/A", "priority": "HIGH"},
+      {"component": "ChildHome.jsx", "issue": "Child dashboard has no cheers banner because /dashboard/child does not return 'cheers'.", "selector": "N/A", "priority": "HIGH"},
+      {"component": "CalendarPage.jsx", "issue": "ICS export link will fail (405) because GET /api/calendar/ics is not implemented.", "selector": "N/A", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [
+      {"flow": "Parent-sends-cheer to child dashboard", "issue": "Entire cheer feature backend missing; integration not possible.", "affected_selectors": []},
+      {"flow": "Pet room play & customize", "issue": "Backend endpoints missing.", "affected_selectors": []}
+    ],
+    "design_issues": [
+      {"screen": "Parent dashboard", "issues": ["Loads cleanly; curriculum page shows all 7 stages with NESA deep-links; S2 shows 23 outcomes with learning area badges."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_sidequest.py",
+    "/app/backend/tests/test_new_features.py",
+    "/app/test_reports/pytest/iteration_results.xml",
+    "/app/test_reports/pytest/iteration_new.xml"
+  ],
+  "action_items": [
+    "Implement POST /api/cheers and GET /api/cheers, persist cheers per student, and include them (plus unseen count) in GET /api/dashboard/child.",
+    "Implement POST /api/pet/play (increment happiness/xp) and PUT /api/pet/customize (persist name, background, accessories).",
+    "Implement GET /api/students/{sid}/overview (parent view of a single child: assignments, submissions, cheers, pet, reading, life evidence).",
+    "Implement GET /api/calendar/ics returning text/calendar with proper VCALENDAR. Current path /calendar/{eid} is being matched before /calendar/ics - either put /calendar/ics BEFORE the dynamic route or use a different path (e.g. /calendar/export.ics).",
+    "Update AI lesson prompt to (a) accept and inject seeded outcome codes for the requested stage/learning_area so outcome_codes can only come from that set, (b) require real URLs from approved free providers (ABC Education, BBC Bitesize, Khan Academy, Scootle, NSW DoE, National Geographic Kids), (c) add 'outcome_alignment' array explaining how each outcome_code is addressed. Persist outcome_alignment on the lesson.",
+    "Harden POST /api/learning-plans/{id}/generate: tolerate minor JSON formatting issues (already using extract_json) but also fall back when top-level keys do not match expected schema — currently throws 500 'AI returned invalid plan format'.",
+    "Fix test_new_features.py test_pet_create assertion (already fixed in this iteration)."
+  ],
+  "critical_code_review_comments": [
+    "server.py is 1737 lines - should be split into modules (auth, curriculum, lessons, pet, life_evidence, learning_plans, cheers, calendar).",
+    "Route ordering risk: dynamic routes like /calendar/{eid} should be declared AFTER static routes like /calendar/ics otherwise /ics gets captured as an id (that is why GET /calendar/ics returns 405).",
+    "AI prompt for /ai/generate-lesson contradicts the product requirement: it explicitly tells Claude NOT to invent URLs - but the product requires actual URLs from an approved provider list. Either whitelist approved domains and require URLs, or add a server-side provider lookup.",
+    "No validation that outcome_codes returned by AI exist in NSW_OUTCOMES; this allows fabricated codes to persist and misalign with the Audit page.",
+    "Pet actions: /pet/feed uses POST (OK) but /pet/help is a shim for 'play'? Add consistent /pet/play and keep /pet/help for AI-help only.",
+    "Learning plan generator should log the raw AI response when extract_json fails so parent-facing 500s can be diagnosed."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_new_features.py (fixed env fallback and pet species assertion)"
+  ],
+  "success_rate": {"backend": "84%", "frontend": "~70% (core pages load; pet/cheer/overview flows blocked by missing backend)"},
+  "test_credentials": "Parent petabozanich6@gmail.com / SideQuest2026! works. Several test children already exist in DB (@newf_* and @test). Owner family seeded.",
+  "seed_data_creation": "Each pytest run creates TEST_* families and test students (not cleaned up). Consider adding teardown.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Re-run with env REACT_APP_BACKEND_URL set (test_new_features.py now has localhost fallback). After E1 implements cheers / pet-play / pet-customize / students/{sid}/overview / calendar/ics / dashboard.child.cheers / lesson outcome_alignment+urls, re-run both test files. Pattern endpoint and 137 outcomes already verified. Frontend login via homepage 'Parent sign in' link (there is no /parent/login route - it redirects to /).",
+  "rca of the issue": "The review request calls out eight distinct new backend features (cheers system, pet play/customize, student overview, ICS export, child dashboard cheers field, lesson outcome_alignment with real URLs constrained to seeded codes, learning plan robust generate). The server.py in this iteration ships only partial implementations: pet has feed+help but not play+customize; no cheer router at all; /calendar/ics is shadowed by /calendar/{eid}; /students/{sid}/overview was never added; AI lesson prompt instructs the model to omit URLs and does not inject the seeded outcome codes; learning plan generator does not validate schema before raising 500. The frontend pages (PetRoom, ChildOverview, ChildHome, Lessons) were built against these intended endpoints, so UI will show errors until the backend is completed."
+}

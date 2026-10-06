@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
-import { Clock, ChevronRight, MessageCircle, Sparkles } from "lucide-react";
+import { Clock, ChevronRight, MessageCircle, Sparkles, Heart } from "lucide-react";
 
 export default function ChildHome() {
   const { user } = useAuth();
@@ -12,6 +12,7 @@ export default function ChildHome() {
 
   const greeting = user?.theme === "early" ? "Hi" : user?.theme === "senior" ? "Welcome back" : "Hey";
   const headingSize = user?.theme === "early" ? "text-4xl" : "text-3xl";
+  const unseen = data.cheers || [];
 
   return (
     <div className="space-y-6 animate-in" data-testid="child-home">

@@ -108,8 +108,10 @@ export default function ChildLesson() {
                   <div className="h-8 w-8 rounded-lg grid place-items-center shrink-0" style={{backgroundColor:"#F5EFE0", color:"#4A5D3A"}}><ExternalLink size={14}/></div>
                   <div className="flex-1 min-w-0">
                     <div className="font-semibold text-sm">{r.title} <span className="text-[10px] font-mono text-stone-500 uppercase tracking-wider ml-1">{r.type}</span></div>
+                    {r.provider && <div className="text-[11px] font-mono text-stone-500">{r.provider}{r.legally_free ? " · free" : ""}</div>}
                     <div className="text-xs text-stone-600 mt-0.5">{r.purpose}</div>
-                    <div className="text-xs italic mt-1" style={{color:"#4A5D3A"}}>Find at: {r.where_to_find}</div>
+                    {r.url && <a href={r.url} target="_blank" rel="noreferrer" className="text-xs mt-1 inline-flex items-center gap-1 font-semibold" style={{color:"#4A5D3A"}}><ExternalLink size={10}/> Open {r.provider || "resource"}</a>}
+                    {r.where_to_find && <div className="text-xs italic mt-1 text-stone-500">Search: "{r.where_to_find}"</div>}
                     {r.offline_alternative && <div className="text-xs mt-1 text-stone-500"><strong>No internet?</strong> {r.offline_alternative}</div>}
                   </div>
                 </div>

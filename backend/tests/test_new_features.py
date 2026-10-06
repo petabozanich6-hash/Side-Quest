@@ -8,6 +8,8 @@ import uuid
 import requests
 
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
+if not BASE_URL:
+    BASE_URL = "http://localhost:8001"
 API = BASE_URL + "/api"
 OWNER_EMAIL = "petabozanich6@gmail.com"
 OWNER_PW = "SideQuest2026!"
@@ -109,7 +111,7 @@ def test_pet_create():
     r = S.post(f"{API}/pet", json={"species": "fox", "name": "Mittens"},
                headers=auth(STATE["ct"]))
     assert r.status_code == 200, r.text
-    assert r.json()["species"] == "cat"
+    assert r.json()["species"] == "fox"
 
 
 def test_pet_feed():
