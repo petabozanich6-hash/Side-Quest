@@ -40,21 +40,23 @@ export default function ChildCalendar() {
 
   return (
     <div className="space-y-5" data-testid="child-calendar">
+      <Link to="/child" className="inline-flex items-center gap-1 text-sm font-semibold opacity-75 hover:opacity-100" data-testid="back-today"><ChevronLeft size={14}/> Back to today</Link>
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-3xl font-bold">My week</h1>
+        <h1 className="font-display text-3xl font-bold">Calendar</h1>
         <div className="flex items-center gap-2">
           <button onClick={() => shift(-1)} className="rounded-lg border border-slate-300 bg-white p-1.5"><ChevronLeft size={16}/></button>
           <button onClick={() => setWeek(mondayOf(new Date()))} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold">This week</button>
           <button onClick={() => shift(1)} className="rounded-lg border border-slate-300 bg-white p-1.5"><ChevronRight size={16}/></button>
         </div>
       </div>
-      <p className="text-sm opacity-75">{label}</p>
+      <p className="text-sm opacity-75">{label}. You can start any lesson early, even if it is planned for another day.</p>
 
       <div className="space-y-3">
         {days.map(d => {
           const key = iso(d);
           const list = events.filter(e => e.date === key);
           const isToday = key === todayIso;
+          const future = key > todayIso;
           return (
             <section key={key} className={`rounded-2xl border bg-white p-4 ${isToday ? "border-teal-500" : "border-slate-200"}`} data-testid={`day-${key}`}>
               <div className="flex items-baseline justify-between mb-2">
@@ -71,7 +73,7 @@ export default function ChildCalendar() {
                           <div className="font-medium text-sm">{e.title}</div>
                           <div className="text-xs opacity-60 flex items-center gap-1 mt-0.5"><Clock size={11}/> {e.duration_minutes || 30} min</div>
                         </div>
-                        {e.linked_lesson_id && (t ? <span className="text-xs font-bold text-teal-700">Start</span> : <span className="text-xs font-bold text-emerald-700 flex items-center gap-1"><CheckCircle2 size={14}/> Done</span>)}
+                        {e.linked_lesson_id && (t ? <span className="text-xs font-bold text-teal-700">{future ? "Start early" : "Start"}</span> : <span className="text-xs font-bold text-emerald-700 flex items-center gap-1"><CheckCircle2 size={14}/> Done</span>)}
                       </div>
                     );
                     return t
