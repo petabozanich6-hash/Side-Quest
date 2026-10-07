@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 11
+LESSON_LIBRARY_VERSION = 12
 
 LESSON_LIBRARY = [
     {
@@ -331,6 +331,10 @@ LESSON_LIBRARY = [
         ]
     }
 ]
+
+from lesson_library_s2_english_w1_w2 import WEEK_1  # noqa: E402
+
+LESSON_LIBRARY.extend(WEEK_1)
 
 
 def _purge_all_lessons_once():
