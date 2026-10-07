@@ -154,3 +154,8 @@ def register(api, db, current_user, require_child, new_id, now_iso):
             "chosen_box": data.box,
             "lesson_title": doc.get("lesson_title"),
         }
+
+    # The Word Hoard (spelling word bank) is registered here so server.py
+    # does not need to change.
+    import word_bank
+    word_bank.register(api, db, current_user, require_child, new_id, now_iso)
