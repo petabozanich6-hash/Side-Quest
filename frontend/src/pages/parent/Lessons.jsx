@@ -2,25 +2,61 @@ import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
-import { Printer, Eye, X, Send, Trash2, ArrowLeft, BookOpen } from "lucide-react";
+import { Printer, Eye, X, Send, Trash2, ArrowLeft, BookOpen, Layers } from "lucide-react";
 import ScheduleModal from "../../components/parent/ScheduleModal";
 
-const YEARS = ["Kindergarten", "Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6", "Year 7", "Year 8", "Year 9", "Year 10"];
+// NESA stages and the school years they cover.
+const STAGES = [
+  { name: "Early Stage 1", years: "Kindergarten" },
+  { name: "Stage 1", years: "Years 1-2" },
+  { name: "Stage 2", years: "Years 3-4" },
+  { name: "Stage 3", years: "Years 5-6" },
+  { name: "Stage 4", years: "Years 7-8" },
+  { name: "Stage 5", years: "Years 9-10" },
+];
 
-// A lesson can cover several years (e.g. "Year 3-4"); it is listed under each one.
-const yearsOf = (l) => {
+// Subject cards shown inside every stage. Lessons with another learning area get their own extra card.
+const SUBJECTS = ["English", "Mathematics", "Science and Technology", "HSIE", "Creative Arts", "PDHPE"];
+
+const stageForYear = (n) => {
+  if (n === 0) return "Early Stage 1";
+  if (n <= 2) return "Stage 1";
+  if (n <= 4) return "Stage 2";
+  if (n <= 6) return "Stage 3";
+  if (n <= 8) return "Stage 4";
+  if (n <= 10) return "Stage 5";
+  return null;
+};
+
+// Work out which NESA stage(s) a lesson belongs to. The stage field wins; the year level is the fallback.
+const stagesOf = (l) => {
+  const s = String(l.stage || "");
+  if (/early/i.test(s)) return ["Early Stage 1"];
+  const m = s.match(/[1-6]/);
+  if (m) return [`Stage ${m[0]}`];
   const yl = String(l.year_level || "");
-  const out = [];
-  if (/kinder|foundation/i.test(yl)) out.push("Kindergarten");
+  const out = new Set();
+  if (/kinder|foundation/i.test(yl)) out.add("Early Stage 1");
   const nums = (yl.match(/\d+/g) || []).map(Number);
   let list = nums;
   if (nums.length === 2 && /[-\u2013\u2014]|\bto\b/i.test(yl) && nums[0] < nums[1]) {
     list = [];
     for (let n = nums[0]; n <= nums[1]; n++) list.push(n);
   }
-  list.forEach(n => { if (n >= 1 && n <= 10) out.push(`Year ${n}`); });
-  if (out.length === 0) out.push(l.stage ? `Stage ${l.stage}` : "Other");
-  return out;
+  list.forEach(n => { const st = stageForYear(n); if (st) out.add(st); });
+  return out.size ? [...out] : ["Other"];
+};
+
+// Group free-text learning areas under the standard subject names.
+const subjectOf = (l) => {
+  const a = String(l.learning_area || "").trim();
+  if (/english/i.test(a)) return "English";
+  if (/math/i.test(a)) return "Mathematics";
+  if (/science|technolog|stem/i.test(a)) return "Science and Technology";
+  if (/hsie|history|geograph|human society|civics/i.test(a)) return "HSIE";
+  if (/creative|visual art|music|drama|dance/i.test(a)) return "Creative Arts";
+  if (/pdhpe|health|physical|personal development/i.test(a)) return "PDHPE";
+  return a || "Other";
 };
 
 export default function LessonsPage() {
@@ -29,7 +65,8 @@ export default function LessonsPage() {
   const [view, setView] = useState(null);
   const [assignOpen, setAssignOpen] = useState(null);
   const [params, setParams] = useSearchParams();
-  const year = params.get("year");
+  const stage = params.get("stage");
+  const subject = params.get("subject");
 
   const load = () => api.get("/lessons").then(r => setLessons(r.data));
   useEffect(() => {
@@ -49,39 +86,69 @@ export default function LessonsPage() {
     w.document.close(); w.print();
   };
 
-  const counts = {};
-  lessons.forEach(l => yearsOf(l).forEach(y => { counts[y] = (counts[y] || 0) + 1; }));
-  const extraGroups = Object.keys(counts).filter(y => !YEARS.includes(y));
-  const groups = [...YEARS, ...extraGroups];
-  const yearLessons = year ? lessons.filter(l => yearsOf(l).includes(year)) : [];
+  const stageCounts = {};
+  lessons.forEach(l => stagesOf(l).forEach(s => { stageCounts[s] = (stageCounts[s] || 0) + 1; }));
+  const extraStages = Object.keys(stageCounts).filter(s => !STAGES.some(x => x.name === s));
+  const stageCards = [...STAGES, ...extraStages.map(name => ({ name, years: "" }))];
+
+  const inStage = stage ? lessons.filter(l => stagesOf(l).includes(stage)) : [];
+  const subjectCounts = {};
+  inStage.forEach(l => { const s = subjectOf(l); subjectCounts[s] = (subjectCounts[s] || 0) + 1; });
+  const extraSubjects = Object.keys(subjectCounts).filter(s => !SUBJECTS.includes(s));
+  const subjectCards = [...SUBJECTS, ...extraSubjects];
+  const visibleLessons = stage && subject ? inStage.filter(l => subjectOf(l) === subject) : [];
+
+  const stageYears = (STAGES.find(s => s.name === stage) || {}).years;
+  const heading = !stage ? "Lessons" : !subject ? stage : `${stage} ${subject}`;
+  const subheading = !stage
+    ? "Choose a NESA stage to see its subjects."
+    : !subject
+      ? `${stageYears ? stageYears + ". " : ""}Choose a subject to see its premade lessons.`
+      : "Premade lessons aligned to the curriculum outcomes for this stage and subject.";
 
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="lessons-page">
       <div className="flex items-end justify-between">
         <div>
-          {year && (
-            <button onClick={() => setParams({})} className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900" data-testid="back-to-years"><ArrowLeft size={14}/> All year groups</button>
+          {stage && !subject && (
+            <button onClick={() => setParams({})} className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900" data-testid="back-to-stages"><ArrowLeft size={14}/> All stages</button>
           )}
-          <h1 className="font-display text-3xl font-bold text-slate-900">{year ? `${year} lessons` : "Lessons"}</h1>
-          <p className="text-sm text-slate-600 mt-1">{year ? "Premade lessons aligned to the curriculum outcomes for this year." : "Choose a year group to see its premade lessons."}</p>
+          {stage && subject && (
+            <button onClick={() => setParams({ stage })} className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900" data-testid="back-to-subjects"><ArrowLeft size={14}/> All {stage} subjects</button>
+          )}
+          <h1 className="font-display text-3xl font-bold text-slate-900">{heading}</h1>
+          <p className="text-sm text-slate-600 mt-1">{subheading}</p>
         </div>
       </div>
 
-      {!year && (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" data-testid="year-groups">
-          {groups.map(y => (
-            <button key={y} onClick={() => setParams({ year: y })} className="text-left rounded-2xl border border-slate-200 bg-white p-5 hover:border-slate-400 transition" data-testid={`year-${y}`}>
-              <BookOpen size={18} className="text-slate-500"/>
-              <div className="font-display text-lg font-semibold text-slate-900 mt-3">{y}</div>
-              <div className="text-xs text-slate-500 mt-1">{counts[y] ? `${counts[y]} lesson${counts[y] === 1 ? "" : "s"}` : "No lessons yet"}</div>
+      {!stage && (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="stage-cards">
+          {stageCards.map(s => (
+            <button key={s.name} onClick={() => setParams({ stage: s.name })} className="text-left rounded-2xl border border-slate-200 bg-white p-5 hover:border-slate-400 transition" data-testid={`stage-${s.name}`}>
+              <Layers size={18} className="text-slate-500"/>
+              <div className="font-display text-lg font-semibold text-slate-900 mt-3">{s.name}</div>
+              {s.years && <div className="text-xs text-slate-500 mt-0.5">{s.years}</div>}
+              <div className="text-xs text-slate-500 mt-1">{stageCounts[s.name] ? `${stageCounts[s.name]} lesson${stageCounts[s.name] === 1 ? "" : "s"}` : "No lessons yet"}</div>
             </button>
           ))}
         </div>
       )}
 
-      {year && (
+      {stage && !subject && (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="subject-cards">
+          {subjectCards.map(s => (
+            <button key={s} onClick={() => setParams({ stage, subject: s })} className="text-left rounded-2xl border border-slate-200 bg-white p-5 hover:border-slate-400 transition" data-testid={`subject-${s}`}>
+              <BookOpen size={18} className="text-slate-500"/>
+              <div className="font-display text-lg font-semibold text-slate-900 mt-3">{s}</div>
+              <div className="text-xs text-slate-500 mt-1">{subjectCounts[s] ? `${subjectCounts[s]} lesson${subjectCounts[s] === 1 ? "" : "s"}` : "No lessons yet"}</div>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {stage && subject && (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {yearLessons.map(l => (
+          {visibleLessons.map(l => (
             <div key={l.id} className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col" data-testid={`lesson-${l.id}`}>
               <div className="flex items-start justify-between gap-2">
                 <div>
@@ -101,7 +168,7 @@ export default function LessonsPage() {
               </div>
             </div>
           ))}
-          {yearLessons.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500">No premade lessons for {year} yet.</div>}
+          {visibleLessons.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500">No premade {subject} lessons for {stage} yet.</div>}
         </div>
       )}
 
