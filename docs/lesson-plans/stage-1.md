@@ -1,15 +1,23 @@
 # Stage 1 (Years 1-2)
 
-Primary time allocation, 40 weeks a year, four terms of 10 weeks.
+Two school years, 8 terms of 10 weeks. Hours below are per term and for the full stage.
 
-| Subject | NSW guidance hrs/week | NSW guidance hrs/year | Planned hrs/week | Planned hrs/year | Per term | One-hour lessons per year | Status |
-|---|---|---|---|---|---|---|---|
-| English | 4-5 | 160-200 | 5 | 200 | 50 | 200 | Not started |
-| Mathematics | 3 | 120 | 3 | 120 | 30 | 120 | Not started |
-| Science and Technology | 1-1.5 | 40-60 | 1.5 | 60 | 15 | 60 | Not started |
-| HSIE | 1-1.5 | 40-60 | 1.5 | 60 | 15 | 60 | Not started |
-| PDHPE | 1-1.5 | 40-60 | 1.5 | 60 | 15 | 60 | Not started |
-| Creative Arts | 1-1.5 | 40-60 | 1.5 | 60 | 15 | 60 | Not started |
-| Additional activities | up to 3 | up to 120 | 3 | 120 | 30 | n/a | Not started |
+| Subject | Planned hrs/week | Per term | Per year | Whole stage | Lessons (1 hr) for stage |
+|---|---|---|---|---|---|
+| English | 5 | 50 | 200 | 400 | 400 |
+| Mathematics | 3 | 30 | 120 | 240 | 240 |
+| Science and Technology | 1.5 | 15 | 60 | 120 | 120 |
+| HSIE | 1.5 | 15 | 60 | 120 | 120 |
+| PDHPE | 1.5 | 15 | 60 | 120 | 120 |
+| Creative Arts | 1.5 | 15 | 60 | 120 | 120 |
+| Additional activities | 3 | 30 | 120 | 240 | n/a |
 
-Build one set for Year 1 and one for Year 2 where the syllabus content differs. Term topics come from the NESA Stage 1 syllabus content. Previous stage: Early Stage 1. Next stage: Stage 2.
+NSW guidance: English 160-200 hours a year, Mathematics 120, the four other key learning areas 40-60, additional activities up to 120.
+
+## Subject plans
+
+- Mathematics focus areas: Number and algebra (Representing whole numbers, Combining and separating quantities, Forming groups); Measurement and space (Geometric measure, 2D spatial structure, 3D spatial structure, Non-spatial measure); Statistics and probability (Data, Chance).
+- Science and Technology and HSIE: one sample unit per term over 8 terms, 15 hours each.
+- English, PDHPE, Creative Arts: focus areas not yet sourced.
+
+Status: time plan settled; subject content plans open. Previous stage: Early Stage 1. Next stage: Stage 2.
