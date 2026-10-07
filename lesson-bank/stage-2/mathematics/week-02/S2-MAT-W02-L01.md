@@ -42,7 +42,7 @@ Instructions: Use partitioning for each question and show the parts. Then answer
 - 724 + 163 :: 887
 - {{name}} collects 142 shells on Monday and 256 shells on Tuesday. How many shells altogether? :: 398 shells
 - A school library has 315 fiction books and 274 non-fiction books. How many books altogether? :: 589 books
-- Challenge: write two different three-digit numbers that add to 600 without any place adding to more than 9. :: Many answers, for example 400 + 200 or 310 + 290 (check: 0 + 0, 1 + 9 = 10 fails), so use 500 + 100 or 420 + 180? also fails, so a safe example is 300 + 300 only if different is not required. Teacher note: only pairs such as 500 + 100, 400 + 200 and 200 + 400 work, since every other digit pair must add to 0.
+- Challenge: write an addition of two three-digit numbers that has an answer of 589 and no place that adds to more than 9. :: Many answers, for example 321 + 268 or 400 + 189
 ## Quiz
 - 321 + 246 :: 457 | 567 | 667 :: 567 :: 300 + 200 = 500, 20 + 40 = 60, 1 + 6 = 7.
 - 152 + 437 :: 489 | 589 | 599 :: 589 :: 100 + 400 = 500, 50 + 30 = 80, 2 + 7 = 9.
