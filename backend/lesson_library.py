@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 7
+LESSON_LIBRARY_VERSION = 8
 
 LESSON_LIBRARY = [
     {
@@ -56,7 +56,7 @@ LESSON_LIBRARY = [
         "steps": [
             {"title": "\U0001F4DC Step 1: Accept the quest", "detail": "Read your mission. Say each Quest Codex word aloud and use two of them in a spoken sentence.", "duration_minutes": 5},
             {"title": "\U0001F4D6 Step 2: Study the map", "detail": "Read the worked example and label the orientation, complication and resolution.", "duration_minutes": 10},
-            {"title": "\U0001F50D Step 3: Decode the craft", "detail": "Watch the two videos in Resources, then find the technique the writer used to build suspense.", "duration_minutes": 10},
+            {"title": "\U0001F50D Step 3: Decode the craft", "detail": "Watch the two videos in Watch and play, then find the technique the writer used to build suspense.", "duration_minutes": 10},
             {"title": "\U0001F5FA\uFE0F Step 4: Chart your route", "detail": "Plan your story: character, setting, problem and solution. A simple map or storyboard works well.", "duration_minutes": 10},
             {"title": "\u270D\uFE0F Step 5: Write the tale", "detail": "Write your story. Use three precise words and slow down one moment.", "duration_minutes": 15},
             {"title": "\U0001F6E1\uFE0F Step 6: Proof your work", "detail": "Reread aloud, fix spelling and punctuation, and note how you spelled two tricky words.", "duration_minutes": 5},
@@ -65,13 +65,19 @@ LESSON_LIBRARY = [
         "resources": [
             {
                 "type": "video",
-                "title": "Pixar in a Box: Introduction to storytelling (Khan Academy)",
-                "url": "https://www.khanacademy.org/computing/pixar/storytelling/we-are-all-storytellers/v/storytelling-introb"
+                "title": "What is a narrative? Orientation, complication and resolution",
+                "url": "https://www.youtube.com/watch?v=0NESGqweSwI",
+                "embed_url": "https://www.youtube-nocookie.com/embed/0NESGqweSwI",
+                "prompt": "Watch for the three parts of a narrative. Can you name them in order before the video ends?",
+                "offline_alternative": "Re-read the worked example and label the orientation, complication and resolution."
             },
             {
                 "type": "video",
-                "title": "Story structure (BBC Bitesize)",
-                "url": "https://www.bbc.co.uk/bitesize/topics/zbh9fdm"
+                "title": "Pixar in a Box: Introduction to storytelling (Khan Academy)",
+                "url": "https://www.youtube.com/watch?v=1rMnzNZkIX0",
+                "embed_url": "https://www.youtube-nocookie.com/embed/1rMnzNZkIX0",
+                "prompt": "Pixar's storytellers say a story is meant to make the audience feel something. What feeling do you want your readers to have at the end of your story?",
+                "offline_alternative": "Think of a film you love and describe the feeling it gave you and why."
             },
             {
                 "type": "article",
