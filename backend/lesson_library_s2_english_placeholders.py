@@ -8,8 +8,9 @@ then skips that week, so there are no duplicates and nothing else changes.
 Week 1 is already built out in lesson_library_s2_english_w1_w2.py.
 
 SPELLING: every lesson has Step 6 'Spelling', which shows the week's spelling focus.
-Each lesson dict has a 'hoard_words' list. Fill it with the words that lesson adds to
-the Word Hoard when the lesson is built out.
+Each lesson dict has an empty 'hoard_words' list. Word Hoard wiring is DEFERRED until
+the lessons are built (see the plan note in the scope and sequence doc). Until then,
+words reach the Hoard only when someone adds them by hand.
 
 NOVELS: weeks in NOVEL_WEEKS are written broadly so the parent can allocate any novel.
 They use the words 'your class novel' and never name a title.
@@ -106,7 +107,7 @@ def _make(week, slot, topic, spelling):
         for i in range(1, 6)
     ]
     steps.append(_step("6", "Spelling: " + spelling,
-                       "This week's spelling focus is: " + spelling + ". Use words from this lesson, and use Look, Say, Cover, Write, Check for the tricky ones. Words from this lesson are added to your Word Hoard.",
+                       "This week's spelling focus is: " + spelling + ". Use words from this lesson, and use Look, Say, Cover, Write, Check for the tricky ones. You can add any tricky words to your Word Hoard yourself.",
                        "Example words to be added.", "Spelling is practised in every lesson, not only in spelling lessons.", check))
     lesson = build(
         "s2-eng-w%02d-l%d" % (week, slot + 1), title,
