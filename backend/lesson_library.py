@@ -336,18 +336,49 @@ from lesson_library_s2_english_w1_w2 import WEEK_1  # noqa: E402
 
 LESSON_LIBRARY.extend(WEEK_1)
 
-# Week 2 lessons are loaded behind a guard so a mistake in a new lesson file
-# can never stop the app from starting. Failures are logged as warnings.
-try:
-    from lesson_library_s2_english_w02_pilot import LESSONS as _W2_PILOT  # noqa: E402
-    from lesson_library_s2_english_w02_l2_l3 import LESSONS as _W2_L2_L3  # noqa: E402
 
-    LESSON_LIBRARY.extend(_W2_PILOT)
-    LESSON_LIBRARY.extend(_W2_L2_L3)
-except Exception as _exc:  # noqa: BLE001
-    import logging as _logging
+def _lesson_dicts_in(module):
+    """Return every lesson dict (or list of lesson dicts) exposed by a module,
+    whatever the variables are called. Helper functions are ignored."""
+    found = []
+    for name in sorted(dir(module)):
+        if name.startswith("_"):
+            continue
+        value = getattr(module, name)
+        if isinstance(value, dict) and value.get("seed_key"):
+            found.append(value)
+        elif isinstance(value, (list, tuple)) and value and all(isinstance(i, dict) and i.get("seed_key") for i in value):
+            found.extend(value)
+    return found
 
-    _logging.getLogger("sidequest").warning("Week 2 lessons not loaded: %s", _exc)
+
+def _register_week2():
+    """Load Week 2 modules one at a time. A problem in one file is logged and
+    skipped, so it can never stop the app from starting."""
+    import importlib
+    import logging
+
+    log = logging.getLogger("sidequest")
+    have = {item.get("seed_key") for item in LESSON_LIBRARY}
+    for module_name in ("lesson_library_s2_english_w02_pilot", "lesson_library_s2_english_w02_l2_l3"):
+        try:
+            module = importlib.import_module(module_name)
+            added = 0
+            for lesson in _lesson_dicts_in(module):
+                if lesson["seed_key"] not in have:
+                    LESSON_LIBRARY.append(lesson)
+                    have.add(lesson["seed_key"])
+                    added += 1
+            log.warning("Week 2 module %s added %s lessons", module_name, added)
+        except Exception as exc:  # noqa: BLE001
+            log.warning("Week 2 module %s not loaded: %r", module_name, exc)
+
+
+_register_week2()
+
+# The Week 1 module also changes the version when it is imported. Set the final
+# value here, after every import, so this always wins and forces a re-seed.
+LESSON_LIBRARY_VERSION = max(LESSON_LIBRARY_VERSION, 15) + 1
 
 
 def _purge_all_lessons_once():
