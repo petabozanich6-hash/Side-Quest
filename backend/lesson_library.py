@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 36
+LESSON_LIBRARY_VERSION = 37
 
 # The Cartographer lesson and the old Week 1 lessons have been removed.
 # The library now starts with the former Week 2 lessons, renumbered as Week 1.
@@ -110,19 +110,27 @@ _register_lessons()
 
 def _register_maths():
     """Load the Stage 2 Maths modules WITHOUT the _renumber step, which would
-    rewrite the maths w02 seed keys to w01. Week 1 loads from the corrected
-    _fixed module. Add each new maths week module to this tuple.
+    rewrite the maths w02 seed keys to w01. Every file named
+    lesson_library_s2_maths_w<N>*.py in this folder is found automatically and
+    loaded in week order, so new maths weeks need no edit here. The original
+    lesson_library_s2_maths_w1 is skipped because _w1_fixed replaces it.
     A problem in one file is logged and skipped."""
     import importlib
     import logging
+    import os
+    import pkgutil
+    import re
 
     log = logging.getLogger("sidequest")
     have = {item.get("seed_key") for item in LESSON_LIBRARY}
-    modules = (
-        "lesson_library_s2_maths_w1_fixed",
-        "lesson_library_s2_maths_w2",
-    )
-    for module_name in modules:
+    here = os.path.dirname(os.path.abspath(__file__))
+    pattern = re.compile(r"^lesson_library_s2_maths_w(\d+)")
+    found = []
+    for info in pkgutil.iter_modules([here]):
+        match = pattern.match(info.name)
+        if match and info.name != "lesson_library_s2_maths_w1":
+            found.append((int(match.group(1)), info.name))
+    for _, module_name in sorted(found):
         try:
             module = importlib.import_module(module_name)
             added = 0
