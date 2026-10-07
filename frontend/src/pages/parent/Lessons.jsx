@@ -15,8 +15,82 @@ const STAGES = [
   { name: "Stage 5", years: "Years 9-10" },
 ];
 
-// Subject cards shown inside every stage. Lessons with another learning area get their own extra card.
-const SUBJECTS = ["English", "Mathematics", "Science and Technology", "HSIE", "Creative Arts", "PDHPE"];
+// Subject cards. A card can carry `m`, a regex tested against a lesson's learning_area; otherwise the
+// learning_area must equal or contain the card name (case-insensitive).
+const card = (name, m) => (m ? { name, m } : { name });
+
+// Primary (K-6): the six key learning areas every child studies.
+const PRIMARY_SECTIONS = [
+  {
+    title: "Key learning areas",
+    cards: [
+      card("English", /english/i),
+      card("Mathematics", /math/i),
+      card("Science and Technology", /science|technolog|stem/i),
+      card("HSIE", /hsie|human society|history|geograph|civics/i),
+      card("PDHPE", /pdhpe|health|physical|personal development/i),
+      card("Creative Arts", /creative|visual art|music|drama|dance/i),
+    ],
+  },
+];
+
+// Secondary (7-10). English, Mathematics, Science and one HSIE syllabus are compulsory; the parent then
+// chooses two electives from different key learning areas (PDHPE, Creative Arts, Languages, Technology).
+const SECONDARY_SECTIONS = (stage) => [
+  {
+    title: "Compulsory",
+    cards: [card("English", /english/i), card("Mathematics", /math/i), card("Science", /science/i)],
+  },
+  {
+    title: "HSIE (study at least one)",
+    cards: [
+      card("History", /^history$/i),
+      card("Geography", /^geography$/i),
+      card("Aboriginal Studies"),
+      card("Commerce"),
+      card("Geography Elective"),
+      card("History Elective"),
+      card("Work Education"),
+    ],
+  },
+  {
+    title: "Creative Arts",
+    cards: [card("Dance"), card("Drama"), card("Music"), card("Photographic and Digital Media"), card("Visual Arts"), card("Visual Design")],
+  },
+  {
+    title: "PDHPE",
+    cards: [card("PDHPE", /^pdhpe$|^personal development/i), card("Child Studies"), card("Physical Activity and Sports Studies")],
+  },
+  {
+    title: "Languages",
+    cards: [card("Modern Languages"), card("Classical Languages"), card("Auslan")],
+  },
+  {
+    title: "Technology",
+    cards: [
+      card("Agricultural Technology"),
+      card("Design and Technology"),
+      card("Food Technology"),
+      card("Graphics Technology"),
+      card("Industrial Technology"),
+      card("Information and Software Technology"),
+      card("Marine and Aquaculture Technology"),
+      ...(stage === "Stage 4" ? [card("Technology (Mandatory)")] : []),
+      card("Textiles Technology"),
+    ],
+  },
+  ...(stage === "Stage 5" ? [{ title: "Vocational education (Stage 5)", cards: [card("Vocational Education and Training (VET)", /vet|vocational/i)] }] : []),
+];
+
+const sectionsFor = (stage) => (/^Stage [45]$/.test(stage || "") ? SECONDARY_SECTIONS(stage) : PRIMARY_SECTIONS);
+
+const matchesCard = (l, c) => {
+  const a = String(l.learning_area || "").trim();
+  if (c.m) return c.m.test(a);
+  const al = a.toLowerCase();
+  const nl = c.name.toLowerCase();
+  return al === nl || al.includes(nl);
+};
 
 const stageForYear = (n) => {
   if (n === 0) return "Early Stage 1";
@@ -45,18 +119,6 @@ const stagesOf = (l) => {
   }
   list.forEach(n => { const st = stageForYear(n); if (st) out.add(st); });
   return out.size ? [...out] : ["Other"];
-};
-
-// Group free-text learning areas under the standard subject names.
-const subjectOf = (l) => {
-  const a = String(l.learning_area || "").trim();
-  if (/english/i.test(a)) return "English";
-  if (/math/i.test(a)) return "Mathematics";
-  if (/science|technolog|stem/i.test(a)) return "Science and Technology";
-  if (/hsie|history|geograph|human society|civics/i.test(a)) return "HSIE";
-  if (/creative|visual art|music|drama|dance/i.test(a)) return "Creative Arts";
-  if (/pdhpe|health|physical|personal development/i.test(a)) return "PDHPE";
-  return a || "Other";
 };
 
 export default function LessonsPage() {
@@ -92,10 +154,19 @@ export default function LessonsPage() {
   const stageCards = [...STAGES, ...extraStages.map(name => ({ name, years: "" }))];
 
   const inStage = stage ? lessons.filter(l => stagesOf(l).includes(stage)) : [];
+  const sections = stage ? sectionsFor(stage) : [];
+  const allCards = sections.flatMap(s => s.cards);
+  const subjectOf = (l) => {
+    const hit = allCards.find(c => matchesCard(l, c));
+    return hit ? hit.name : (String(l.learning_area || "").trim() || "Other");
+  };
   const subjectCounts = {};
   inStage.forEach(l => { const s = subjectOf(l); subjectCounts[s] = (subjectCounts[s] || 0) + 1; });
-  const extraSubjects = Object.keys(subjectCounts).filter(s => !SUBJECTS.includes(s));
-  const subjectCards = [...SUBJECTS, ...extraSubjects];
+  const known = new Set(allCards.map(c => c.name));
+  const extraSubjects = Object.keys(subjectCounts).filter(s => !known.has(s));
+  const visibleSections = extraSubjects.length
+    ? [...sections, { title: "Other learning areas", cards: extraSubjects.map(name => ({ name })) }]
+    : sections;
   const visibleLessons = stage && subject ? inStage.filter(l => subjectOf(l) === subject) : [];
 
   const stageYears = (STAGES.find(s => s.name === stage) || {}).years;
@@ -135,13 +206,20 @@ export default function LessonsPage() {
       )}
 
       {stage && !subject && (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="subject-cards">
-          {subjectCards.map(s => (
-            <button key={s} onClick={() => setParams({ stage, subject: s })} className="text-left rounded-2xl border border-slate-200 bg-white p-5 hover:border-slate-400 transition" data-testid={`subject-${s}`}>
-              <BookOpen size={18} className="text-slate-500"/>
-              <div className="font-display text-lg font-semibold text-slate-900 mt-3">{s}</div>
-              <div className="text-xs text-slate-500 mt-1">{subjectCounts[s] ? `${subjectCounts[s]} lesson${subjectCounts[s] === 1 ? "" : "s"}` : "No lessons yet"}</div>
-            </button>
+        <div className="space-y-8" data-testid="subject-cards">
+          {visibleSections.map(sec => (
+            <div key={sec.title}>
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">{sec.title}</h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {sec.cards.map(c => (
+                  <button key={c.name} onClick={() => setParams({ stage, subject: c.name })} className="text-left rounded-2xl border border-slate-200 bg-white p-5 hover:border-slate-400 transition" data-testid={`subject-${c.name}`}>
+                    <BookOpen size={18} className="text-slate-500"/>
+                    <div className="font-display text-lg font-semibold text-slate-900 mt-3">{c.name}</div>
+                    <div className="text-xs text-slate-500 mt-1">{subjectCounts[c.name] ? `${subjectCounts[c.name]} lesson${subjectCounts[c.name] === 1 ? "" : "s"}` : "No lessons yet"}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       )}
