@@ -1,6 +1,6 @@
 """Stage 2 English, Block B (poetry and word play), week 10, lessons 1 to 4.
-Pass 1 (writing pass): four lessons at full depth, taught from scratch. Videos are not attached yet (pass 2).
-Not yet registered in lesson_library.py (pass 3). Keys use the prefix b10. Poems for reading are chosen by the parent; the example lines here are original.\"\"\"
+Pass 1 (writing pass): four lessons at full depth, taught from scratch. Videos and links are attached in pass 2 (lesson_library_s2_english_b_wk10_pass2).
+Registered in lesson_library.py. Keys use the prefix b10. Poems for reading are chosen by the parent; the example lines here are original."""
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _video, _sort, _wc
 
 CHECK = "Check your work against the checklist before you submit."
@@ -283,7 +283,7 @@ B10L4 = build(
     [
         _step("1", "What a root is",
               "A ROOT is the central part of a word that carries its main meaning. Other word parts attach to it.\n\nA PREFIX is a part added to the front of a word, such as un-, re- or dis-. A SUFFIX is a part added to the end, such as -ful, -less or -able.\n\nSo a word can be built like this:\nprefix + root + suffix\n\nExample: transportable\ntrans- (across) + port (carry) + -able (able to be)\nMeaning: able to be carried across.\n\nMany roots come from LATIN, the language of ancient Rome, or GREEK, the language of ancient Greece. A root is not always a word you can use by itself. 'Port' on its own is a harbour in English, but in the words transport and portable it means carry, which is its older Latin meaning.\n\nKnowing roots is like having a set of keys. One root can open the meaning of dozens of words.",
-              "Split: unportable? No. Split: portable = port + able.",
+              "Split: portable = port + able.",
               "A root carries the core meaning; prefixes and suffixes add to it.",
               ("The root of a word is...", ["the central part that carries its main meaning", "the last letter", "always a whole word"], 0, "Roots hold the core meaning.")),
         _step("2", "The roots port, scope and graph",
@@ -312,7 +312,7 @@ B10L4 = build(
               "Make cards, build and decode words, then write your own sentences.",
               ("A good way to remember roots is to...", ["make cards with meanings and examples", "never write them down", "only read them once"], 0, "Cards help you revise and use roots.")),
     ],
-    "Model answers. A root is the central part of a word that carries its main meaning; prefixes and suffixes attach to it. Port means carry (transport, import, export, portable). Scope means look at (telescope, microscope, periscope). Graph means write or draw (autograph, photograph, paragraph, biography). Aqua means water (aquarium, aquatic). Bio means life (biology, biography). Phon means sound (phone, microphone). To decode a word: split it, say the meanings, join them, check with the sentence and a dictionary. Portrait looks as if it contains port but does not mean carry. Sorter: port: transport, import, export, portable. scope: telescope, microscope, periscope, horoscope not used. graph: autograph, paragraph, photograph.",
+    "Model answers. A root is the central part of a word that carries its main meaning; prefixes and suffixes attach to it. Port means carry (transport, import, export, portable). Scope means look at (telescope, microscope, periscope). Graph means write or draw (autograph, photograph, paragraph, biography). Aqua means water (aquarium, aquatic). Bio means life (biology, biography). Phon means sound (phone, microphone). To decode a word: split it, say the meanings, join them, check with the sentence and a dictionary. Portrait looks as if it contains port but does not mean carry. Sorter: port: transport, import, export, portable. scope: telescope, microscope, periscope. graph: autograph, paragraph, photograph.",
     "1) Match six roots to their meanings. 2) Sort twelve words by root. 3) Build five words by joining parts. 4) Decode six words. 5) Write six sentences using decoded words. 6) Find two extra words in a text and decode them.",
     "Upload a photo of your six root cards, your decoded words and your six sentences.",
     CHECK,
