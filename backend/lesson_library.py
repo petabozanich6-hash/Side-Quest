@@ -1,19 +1,13 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 35
+LESSON_LIBRARY_VERSION = 36
 
-# The Cartographer lesson and the old Week 1 lessons have been removed.
-# The library now starts with the former Week 2 lessons, renumbered as Week 1.
-# Plan week 3 lessons are renumbered as Week 2, and so on.
+# All previous lessons have been cleared so the library can be rebuilt from scratch.
+# The old lesson files are still in the repo but are no longer registered.
+# New modules are listed in LESSON_MODULES below as they are written.
+# Renumbering has been removed: lessons now keep the week numbers they are written with.
 LESSON_LIBRARY = []
 
-# Phrases that pointed back to earlier learning. This is now the first week,
-# so each one is rewritten to teach the idea in place.
-_EXACT_FIXES = [
-    ("Practise with Look, Say, Cover, Write, Check from Week 1.",
-     "Practise with Look, Say, Cover, Write, Check: look carefully at the word, say it aloud, cover it, write it from memory, then check it letter by letter."),
-    ("Use the rules from Week 1. Drop the silent e",
-     "Use these three rules. Drop the silent e"),
-]
+LESSON_MODULES = ()
 
 
 def _lesson_dicts_in(module):
@@ -31,76 +25,24 @@ def _lesson_dicts_in(module):
     return found
 
 
-def _renumber(value):
-    """Rewrite plan Week 2 labels and seed keys as Week 1 and plan Week 3 as
-    Week 2, and remove references to earlier learning, throughout a lesson."""
-    if isinstance(value, str):
-        for old, new in _EXACT_FIXES:
-            value = value.replace(old, new)
-        value = (
-            value.replace("Week 2", "Week 1")
-            .replace("week 2", "week 1")
-            .replace("-w02-", "-w01-")
-            .replace("_w02_", "_w01_")
-            .replace("w02", "w01")
-        )
-        return (
-            value.replace("Week 3", "Week 2")
-            .replace("week 3", "week 2")
-            .replace("-w03-", "-w02-")
-            .replace("_w03_", "_w02_")
-        )
-    if isinstance(value, list):
-        return [_renumber(v) for v in value]
-    if isinstance(value, dict):
-        out = {k: _renumber(v) for k, v in value.items()}
-        question = out.get("question")
-        if isinstance(question, str) and question.startswith("How many n letters are in 'beginning'"):
-            out["correct_index"] = 0
-            out["explanation"] = "beginning is spelt b-e-g-i-n-n-i-n-g, so it has three n letters."
-        return out
-    return value
-
-
 def _register_lessons():
     """Load the lesson modules one at a time. A problem in one file is
-    logged and skipped, so it can never stop the app from starting.
-    The fully taught lessons load first so they win over the older versions."""
+    logged and skipped, so it can never stop the app from starting."""
     import importlib
     import logging
 
     log = logging.getLogger("sidequest")
     have = {item.get("seed_key") for item in LESSON_LIBRARY}
-    modules = (
-        "lesson_library_s2_english_w02_pilot",
-        "lesson_library_s2_english_w02_l2_full",
-        "lesson_library_s2_english_w02_l3_full",
-        "lesson_library_s2_english_w02_l4_full",
-        "lesson_library_s2_english_w03_l1_full",
-        "lesson_library_s2_english_w03_l2_full",
-        "lesson_library_s2_english_w03_l3_full",
-        "lesson_library_s2_english_w03_l4_full",
-        "lesson_library_s2_english_a_wk3",
-        "lesson_library_s2_english_a_wk4",
-        "lesson_library_s2_english_a_wk5",
-        "lesson_library_s2_english_a_wk6",
-        "lesson_library_s2_english_a_wk7",
-        "lesson_library_s2_english_a_wk8",
-        "lesson_library_s2_english_b_wk9",
-        "lesson_library_s2_english_b_wk10_pass2",
-        "lesson_library_s2_english_w02_l2_l3",
-    )
-    for module_name in modules:
+    for module_name in LESSON_MODULES:
         try:
             module = importlib.import_module(module_name)
             added = 0
             for lesson in _lesson_dicts_in(module):
-                lesson = _renumber(lesson)
                 if lesson["seed_key"] not in have:
                     LESSON_LIBRARY.append(lesson)
                     have.add(lesson["seed_key"])
                     added += 1
-            log.warning("Lesson module %s added %s lessons (renumbered)", module_name, added)
+            log.warning("Lesson module %s added %s lessons", module_name, added)
         except Exception as exc:  # noqa: BLE001
             log.warning("Lesson module %s not loaded: %r", module_name, exc)
 
@@ -153,15 +95,15 @@ def _orphan_cleanup_later():
 
 
 def _purge_all_lessons_once():
-    """One-time cleanup: delete every stored lesson so the old five are gone,
-    then record that it ran. Already run on the live database in v3."""
+    """One-time cleanup: delete every stored lesson so the old ones are gone,
+    then record that it ran. Marker v4 makes it run once more on the live database."""
     import logging
     import os
     try:
         from pymongo import MongoClient
         client = MongoClient(os.environ["MONGO_URL"], serverSelectionTimeoutMS=8000)
         db = client[os.environ["DB_NAME"]]
-        marker = "purge_all_lessons_v3"
+        marker = "purge_all_lessons_v4"
         if db.maintenance.find_one({"key": marker}):
             return
         result = db.lessons.delete_many({})
