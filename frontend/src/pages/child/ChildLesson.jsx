@@ -18,7 +18,11 @@ import {
   Lock
 } from "lucide-react";
 import PetCompanion from "../../components/shared/PetCompanion";
+import QuestBanner from "../../components/shared/QuestBanner";
 import { Leaf } from "../../components/shared/Botanical";
+
+const cleanStepTitle = (title = "") =>
+  title.replace(/^(\S+\s)?Step \d+:\s*/, "$1");
 
 export default function ChildLesson() {
   const { aid } = useParams();
@@ -177,7 +181,7 @@ export default function ChildLesson() {
             ${(l.steps || [])
               .map(
                 (step) =>
-                  `<li><strong>${step.title}</strong><br/>${step.detail}</li>`
+                  `<li><strong>${cleanStepTitle(step.title)}</strong><br/>${step.detail}</li>`
               )
               .join("")}
           </ol>
@@ -276,6 +280,8 @@ export default function ChildLesson() {
       </button>
 
       <header className="paper-card p-6 relative overflow-hidden">
+        <QuestBanner lesson={l} />
+
         <div className="text-xs font-mono text-stone-500">
           {l.stage} · {l.learning_area}
         </div>
@@ -331,7 +337,7 @@ export default function ChildLesson() {
       </Step>
 
       {l.steps?.length > 0 && (
-        <Step n="3b" title="Your quest steps">
+        <Step n="3b" title="Your quest route">
           <ol className="space-y-3">
             {l.steps.map((step, index) => (
               <li
@@ -340,7 +346,7 @@ export default function ChildLesson() {
                 style={{ borderColor: "#D4C8A8" }}
               >
                 <div className="font-bold">
-                  {index + 1}. {step.title}
+                  {index + 1}. {cleanStepTitle(step.title)}
                 </div>
 
                 <p className="text-sm text-stone-700 mt-1">
@@ -456,7 +462,12 @@ export default function ChildLesson() {
                   style={{ borderColor: "#D4C8A8" }}
                 >
                   <div className="font-semibold text-sm">
-                    {resource.type === "video" ? "🎬" : "🎮"} {resource.title}
+                    {resource.type === "video"
+                      ? "🎬"
+                      : resource.type === "article"
+                        ? "📖"
+                        : "🎮"}{" "}
+                    {resource.title}
                   </div>
 
                   <div className="text-xs text-stone-600 mt-0.5">
