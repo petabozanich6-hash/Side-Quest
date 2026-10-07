@@ -8,7 +8,7 @@
 - L3 Language: grammar, punctuation, vocabulary
 - L4 Oral language, literature response or handwriting
 
-Spelling runs through all four lessons. Each week has one spelling focus (last column). Each lesson also adds its own topic words to the Word Hoard.
+Spelling runs through all four lessons. Each week has one spelling focus (last column). The plan is for each lesson to add its own topic words to the Word Hoard, but that is not wired up yet (see "Word Hoard wiring (deferred)" below).
 
 ## Outcome codes
 Codes in nsw_outcomes.py: EN2-OLC-01, EN2-VOCAB-01, EN2-RECOM-01, EN2-CWT-01, EN2-SPELL-01, EN2-HANDW-01. Week 1 also used EN2-REFLU-01 (fluency). EN2-UARL-01 (literature) is proposed for the novel and poetry units. Both must be checked against the NESA syllabus and added to the seed file.
@@ -110,6 +110,18 @@ Parent chooses a class novel at Stage 2 level. Public-domain options: The Wind i
 
 ## Embedded resources rule
 Each lesson has at least one YouTube video embedded in the page, plus a card for one BBC Bitesize or Khan Academy link if it embeds. Every link is fetched and checked before it goes in. No NSW Department of Education pages.
+
+## Word Hoard wiring (deferred)
+The Word Hoard (backend/word_bank.py) currently only receives words that someone types in by hand. Lesson words are not added automatically, and placeholder lessons do not claim they are.
+
+This is deliberately left until the lessons are built, because the Hoard draws on words from across the whole year: spelling focuses repeat and are revisited (review weeks, "Homophones 2" to "5", suffix rules revisited, "Revision of weekly lists" in Weeks 46-49), and the novel weeks cannot have words written in advance.
+
+Plan for when the lessons are built:
+1. Build one master word list across all 50 weeks, removing repeats and deciding which week each word first appears in.
+2. Fill each lesson's `hoard_words` list from that master list (the field already exists and is empty on placeholders).
+3. For the novel weeks, let the parent enter 5 to 10 words when allocating the novel.
+4. Add a hook so that finishing a lesson sends its `hoard_words` to POST /word-bank/words with source "lesson" and the lesson id. The endpoint already skips words the child already has.
+5. Do this on its own branch, separate from lesson content, after reading the lesson-completion code.
 
 ## Open questions for review
 1. Which novels for Units 5 and 10?
