@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, Home, FolderOpen, LogOut, Heart, Award } from "lucide-react";
+import { Compass, Home, FolderOpen, LogOut, Heart, Award, BookOpen } from "lucide-react";
 import { api } from "../../lib/api";
 import PetPicker from "./PetPicker";
 import PetCompanion from "../../components/shared/PetCompanion";
@@ -43,6 +43,7 @@ export default function ChildLayout() {
           <nav className="flex items-center gap-1 text-sm">
             <Link to="/child" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-home"><Home size={14} className="inline mr-1"/> Home</Link>
             <Link to="/child/portfolio" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/portfolio" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/portfolio" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-portfolio"><FolderOpen size={14} className="inline mr-1"/> Portfolio</Link>
+            <Link to="/child/word-hoard" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/word-hoard" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/word-hoard" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-word-hoard"><BookOpen size={14} className="inline mr-1"/> Word Hoard</Link>
             <Link to="/child/achievements" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/achievements" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/achievements" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-achievements"><Award size={14} className="inline mr-1"/> Achievements</Link>
             <Link to="/child/room" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/room" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/room" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-room"><Heart size={14} className="inline mr-1"/> Pet room</Link>
             <button onClick={doLogout} className="rounded-full px-3 py-1.5 font-bold hover:bg-white" style={{color:"#2A2822"}} data-testid="child-logout"><LogOut size={14} className="inline mr-1"/> Sign out</button>
