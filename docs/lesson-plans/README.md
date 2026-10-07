@@ -16,9 +16,9 @@ NESA stages in primary and Years 7-10 span two years. NSW Department sample prog
 | Stage 5 | 9-10 | stage-5.md |
 | Stage 6 | 11-12 | stage-6.md |
 
-Other documents: primary-subject-plans.md, stage-2-english.md, outcomes-primary-and-maths-7-10.md, outcomes-pdhpe-creative-arts-k-6.md, stage-4-5-science-geography-hsie.md, stage-4-5-english-history-technology.md, TEMPLATE.md.
+Other documents: primary-subject-plans.md, stage-2-english.md, outcomes-primary-and-maths-7-10.md, outcomes-pdhpe-creative-arts-k-6.md, stage-4-5-science-geography-hsie.md, stage-4-5-english-history-technology.md, stage-4-5-pdhpe-creative-arts-languages.md, TEMPLATE.md.
 
-Correction: Stage 4 Technology is now Technology 7-8 (2023 syllabus), not Technology (Mandatory).
+Correction: Stage 4 Technology is now Technology 7-8 (2023 syllabus), not Technology (Mandatory). Stage 5 Languages is a 200 hour elective, not 100.
 
 ## Status by stage and subject
 
@@ -26,7 +26,7 @@ Correction: Stage 4 Technology is now Technology 7-8 (2023 syllabus), not Techno
 |---|---|---|---|---|
 | Early Stage 1 to Stage 2 | Settled | All subjects settled | English, Mathematics, Science and Technology, PDHPE, Creative Arts done | HSIE codes |
 | Stage 3 | Settled | English, Mathematics, PDHPE, Creative Arts, HSIE settled | Not captured | All Stage 3 codes |
-| Stage 4 and 5 | Settled | Mathematics, Science, Geography, English, History, Technology 7-8 settled | Mathematics structure; Science partly | Codes for English, History, Technology; PDHPE, Creative Arts, Languages |
+| Stage 4 and 5 | Settled | Mathematics, Science, Geography, English, History, Technology 7-8, Languages, Visual Arts, Drama settled; PDHPE 7-10 partly | Mathematics structure; Science partly | Most outcome codes; PDHPE new syllabus; Music, Dance and other electives |
 | Stage 6 | Settled | Not sourced | Not captured | All courses |
 
 Sources: NSW Government home schooling guidelines, NESA NSW Curriculum site, NSW Department of Education sample units. Verify against the current syllabus before building lessons.
