@@ -21,6 +21,7 @@ import PetCompanion from "../../components/shared/PetCompanion";
 import QuestBanner from "../../components/shared/QuestBanner";
 import QuestQuiz from "../../components/shared/QuestQuiz";
 import TeachStep from "../../components/shared/QuestTeach";
+import SpellingSegment from "../../components/shared/SpellingSegment";
 import {
   RevealCards,
   SortActivity,
@@ -401,6 +402,7 @@ export default function ChildLesson() {
   const sortData = sortActivity || l.sort_activity;
   const builder = l.suspense_builder;
   const plannerFields = l.planner_fields || [];
+  const spellingData = l.spelling && (l.spelling.teaching || (l.spelling.words || []).length) ? l.spelling : null;
 
   const stages = [
     { key: "accept", icon: "📜", title: "Accept the quest" },
@@ -413,6 +415,11 @@ export default function ChildLesson() {
       key: "learn",
       icon: "🧭",
       title: teachSteps.length > 0 ? "Put it all together" : "Learn the map"
+    },
+    spellingData && {
+      key: "spelling",
+      icon: "🔤",
+      title: spellingData.focus ? `Spelling: ${spellingData.focus}` : "Spelling"
     },
     sortData && { key: "sort", icon: "🧩", title: "Spot the structure" },
     embeds.length > 0 && { key: "watch", icon: "🎬", title: "Watch and notice" },
@@ -443,6 +450,8 @@ export default function ChildLesson() {
         return !!done.accept;
       case "learn":
         return !!done.learn;
+      case "spelling":
+        return !!done.spelling;
       case "sort":
         return !!done.sort;
       case "watch":
@@ -606,6 +615,14 @@ export default function ChildLesson() {
               </button>
             )}
           </div>
+        );
+
+      case "spelling":
+        return (
+          <SpellingSegment
+            spelling={spellingData}
+            onComplete={mark("spelling")}
+          />
         );
 
       case "sort":
