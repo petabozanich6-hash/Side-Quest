@@ -3,16 +3,20 @@ import { Link } from "react-router-dom";
 import { api } from "../../lib/api";
 import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2 } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
+import ReviewModal from "../../components/parent/ReviewModal";
 
-const Stat = ({ icon: Icon, label, value, testid, accent="#4A5D3A" }) => (
-  <div className="paper-card p-5" data-testid={testid}>
-    <div className="flex items-center justify-between">
-      <div className="text-xs font-bold uppercase tracking-widest text-stone-500">{label}</div>
-      <Icon size={16} style={{color: accent}}/>
+const Stat = ({ icon: Icon, label, value, testid, accent="#4A5D3A", href }) => {
+  const body = (
+    <div className="paper-card p-5" data-testid={testid}>
+      <div className="flex items-center justify-between">
+        <div className="text-xs font-bold uppercase tracking-widest text-stone-500">{label}</div>
+        <Icon size={16} style={{color: accent}}/>
+      </div>
+      <div className="mt-2 font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>{value}</div>
     </div>
-    <div className="mt-2 font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>{value}</div>
-  </div>
-);
+  );
+  return href ? <a href={href} className="block hover:translate-y-[-2px] transition">{body}</a> : body;
+};
 
 const Quick = ({ to, icon: Icon, label, desc, tint = "#4A5D3A", testid }) => (
   <Link to={to} className="paper-card p-5 hover:translate-y-[-2px] transition flex items-start gap-3" data-testid={testid}>
@@ -26,7 +30,14 @@ const Quick = ({ to, icon: Icon, label, desc, tint = "#4A5D3A", testid }) => (
 
 export default function ParentDashboard() {
   const [data, setData] = useState(null);
-  useEffect(() => { api.get("/dashboard/parent").then(r => setData(r.data)); }, []);
+  const [waiting, setWaiting] = useState([]);
+  const [openId, setOpenId] = useState(null);
+
+  const load = () => {
+    api.get("/dashboard/parent").then(r => setData(r.data));
+    api.get("/submissions").then(r => setWaiting((r.data || []).filter(s => ["submitted", "awaiting_help"].includes(s.status))));
+  };
+  useEffect(() => { load(); }, []);
   if (!data) return <div className="p-10 text-stone-500">Loading dashboard…</div>;
 
   return (
@@ -46,9 +57,28 @@ export default function ParentDashboard() {
 
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Stat icon={Users} label="Students" value={data.students.length} testid="stat-students"/>
-        <Stat icon={Camera} label="Pending review" value={data.pending_review} testid="stat-pending" accent="#D4A574"/>
-        <Stat icon={AlertTriangle} label="Awaiting help" value={data.awaiting_help} testid="stat-help" accent="#E11D48"/>
+        <Stat icon={Camera} label="Pending review" value={waiting.length} testid="stat-pending" accent="#D4A574" href="#waiting"/>
+        <Stat icon={AlertTriangle} label="Awaiting help" value={data.awaiting_help} testid="stat-help" accent="#E11D48" href="#waiting"/>
         <Stat icon={BookOpen} label="Resources to approve" value={data.unapproved_resources} testid="stat-resources" accent="#C77B5B"/>
+      </section>
+
+      <section id="waiting" data-testid="waiting-list">
+        <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Waiting for you</h2>
+        {waiting.length === 0 ? (
+          <div className="paper-card p-6 text-sm text-stone-500">Nothing to review right now.</div>
+        ) : (
+          <div className="space-y-3">
+            {waiting.map(s => (
+              <div key={s.id} className="paper-card p-4 flex items-center justify-between gap-4" data-testid={`waiting-${s.id}`}>
+                <div>
+                  <div className="font-display font-bold" style={{color:"#1F3B2D"}}>{s.lesson?.title || "Lesson"}</div>
+                  <div className="text-xs text-stone-500 mt-0.5">{s.student?.name} · {new Date(s.submitted_at).toLocaleString()}{s.needs_help ? " · asked for help" : ""}</div>
+                </div>
+                <button onClick={() => setOpenId(s.id)} className="rounded-full px-4 py-2 text-xs font-bold" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid={`open-${s.id}`}>Open</button>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <section>
@@ -99,6 +129,8 @@ export default function ParentDashboard() {
           <p>Side Quest Learning is a planning, teaching and record-keeping support tool. Parents remain responsible for checking current official requirements, selecting an appropriate educational program, supervising learning and confirming alignment with the relevant curriculum and syllabus requirements. This platform is free. Paid resource options may be added by parents at their discretion.</p>
         </div>
       </section>
+
+      {openId && <ReviewModal submissionId={openId} onClose={() => setOpenId(null)} onDone={load} />}
     </div>
   );
 }
