@@ -20,6 +20,13 @@ import {
 import PetCompanion from "../../components/shared/PetCompanion";
 import QuestBanner from "../../components/shared/QuestBanner";
 import QuestQuiz from "../../components/shared/QuestQuiz";
+import {
+  RevealCards,
+  SortActivity,
+  ChoiceSet,
+  SentenceBuilder,
+  Planner
+} from "../../components/shared/QuestActivities";
 import { Leaf } from "../../components/shared/Botanical";
 
 const cleanStepTitle = (title = "") =>
@@ -28,12 +35,15 @@ const cleanStepTitle = (title = "") =>
 const hasScoredQuiz = (lesson) =>
   (lesson?.quiz || []).some((q) => q.type !== "short_answer");
 
+const CONTINUE_STYLE = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
+
 export default function ChildLesson() {
   const { aid } = useParams();
   const nav = useNavigate();
 
   const [a, setA] = useState(null);
   const [response, setResponse] = useState("");
+  const [promptAnswer, setPromptAnswer] = useState("");
   const [reflection, setReflection] = useState("");
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -42,6 +52,11 @@ export default function ChildLesson() {
   const [submitted, setSubmitted] = useState(false);
 
   const [quizResult, setQuizResult] = useState(null);
+  const [plan, setPlan] = useState({});
+  const [done, setDone] = useState({});
+  const [skipped, setSkipped] = useState({});
+  const [current, setCurrent] = useState(0);
+  const [open, setOpen] = useState(0);
 
   const [activeChallenge, setActiveChallenge] = useState(null);
   const [challengeResponse, setChallengeResponse] = useState("");
@@ -63,6 +78,9 @@ export default function ChildLesson() {
       }
     });
   }, [aid]);
+
+  const mark = (key) => (value) =>
+    setDone((d) => (d[key] === value ? d : { ...d, [key]: value }));
 
   const uploadFile = async (file, setter) => {
     setUploading(true);
@@ -89,26 +107,39 @@ export default function ChildLesson() {
   const quizPassed = !quizRequired || !!quizResult?.passed;
 
   const submit = async () => {
+    const lesson = a.lesson || {};
+
     if (!quizPassed) {
       toast.error("Clear the quiz (90% or more) before submitting");
       return;
     }
 
     if (!response.trim() && files.length === 0) {
-      toast.error("Add a written response or upload your work");
+      toast.error("Add your finished work or upload a photo of it");
       return;
     }
 
     setSubmitting(true);
 
     const quizLine = quizResult
-      ? `[Quiz: ${quizResult.score}/${quizResult.total} (${quizResult.percent}%), attempt ${quizResult.attempt}, PASSED] `
+      ? `[Quiz: ${quizResult.score}/${quizResult.total} (${quizResult.percent}%), attempt ${quizResult.attempt}, PASSED]\n`
       : "";
+
+    const planLine = (lesson.planner_fields || []).length
+      ? `[Plan] ${lesson.planner_fields
+          .map((f) => `${f.key}: ${(plan[f.key] || "").trim()}`)
+          .join(" | ")}\n`
+      : "";
+
+    const answerLine =
+      promptAnswer.trim() && lesson.response_prompt
+        ? `\n\n[Answer to "${lesson.response_prompt}"] ${promptAnswer.trim()}`
+        : "";
 
     try {
       await api.post("/submissions", {
         assignment_id: aid,
-        response_text: `${quizLine}${response}`,
+        response_text: `${quizLine}${planLine}${response}${answerLine}`,
         reflection,
         file_ids: files.map((file) => file.id),
         needs_help: needsHelp
@@ -219,7 +250,7 @@ export default function ChildLesson() {
           <br/>
           <br/>
           <div style="border-top: 1px dashed #333; padding-top: 10px">
-            My response:
+            My finished work:
             <br/><br/><br/><br/>
           </div>
         </body>
@@ -236,6 +267,92 @@ export default function ChildLesson() {
 
   const l = a.lesson || {};
 
+  const embeds = (l.resources || []).filter(
+    (r) => r.type === "video" && r.embed_url
+  );
+  const links = (l.resources || []).filter(
+    (r) => !(r.type === "video" && r.embed_url)
+  );
+  const flip = (l.interactive_activities || []).find(
+    (x) => x.type === "flip_cards"
+  );
+  const wordQs = l.word_challenges || [];
+  const builder = l.suspense_builder;
+  const plannerFields = l.planner_fields || [];
+
+  const stages = [
+    { key: "accept", icon: "📜", title: "Accept the quest" },
+    { key: "learn", icon: "📖", title: "Learn the map" },
+    l.sort_activity && { key: "sort", icon: "🧩", title: "Spot the structure" },
+    embeds.length > 0 && { key: "watch", icon: "🎬", title: "Watch and notice" },
+    (wordQs.length > 0 || builder) && {
+      key: "words",
+      icon: "💎",
+      title: "Word power"
+    },
+    plannerFields.length > 0 && {
+      key: "plan",
+      icon: "🗺️",
+      title: "Plan your work"
+    },
+    { key: "write", icon: "✍️", title: "Do the task" },
+    quizRequired && { key: "quiz", icon: "🛡️", title: "Quest check" },
+    { key: "submit", icon: "🏆", title: "Hand it in" }
+  ].filter(Boolean);
+
+  const planOk = plannerFields.every(
+    (f) => (plan[f.key] || "").trim().length >= 3
+  );
+
+  const stageDone = (key) => {
+    if (skipped[key]) return true;
+
+    switch (key) {
+      case "accept":
+        return !!done.accept;
+      case "learn":
+        return !!done.learn;
+      case "sort":
+        return !!done.sort;
+      case "watch":
+        return embeds.every((_, i) => done[`watch${i}`]);
+      case "words":
+        return (
+          (wordQs.length === 0 || !!done.wordsA) &&
+          (!builder || !!done.wordsB)
+        );
+      case "plan":
+        return planOk;
+      case "write":
+        return response.trim().length > 0 || files.length > 0;
+      case "quiz":
+        return quizPassed;
+      case "submit":
+        return submitted;
+      default:
+        return false;
+    }
+  };
+
+  const advance = (from) => {
+    const next = Math.min(from + 1, stages.length - 1);
+    setCurrent((c) => Math.max(c, next));
+    setOpen(next);
+  };
+
+  const skipStage = (key) => {
+    if (
+      window.confirm(
+        "Grown-up check: skip this activity? Only do this if it is not working."
+      )
+    ) {
+      setSkipped((s) => ({ ...s, [key]: true }));
+    }
+  };
+
+  const completed = stages.filter((s) => stageDone(s.key)).length;
+  const percent = Math.round((completed / stages.length) * 100);
+
   const supportBanner =
     a.support_level === "red"
       ? {
@@ -251,6 +368,417 @@ export default function ChildLesson() {
             cls: "bg-emerald-50 border-emerald-200 text-emerald-900",
             text: "Green — have a go on your own"
           };
+
+  const renderBody = (key) => {
+    switch (key) {
+      case "accept":
+        return (
+          <div>
+            <p
+              className="font-display text-xl font-bold"
+              style={{ color: "#1F3B2D" }}
+            >
+              {l.child_mission || l.learning_intention}
+            </p>
+
+            {(l.success_criteria || []).length > 0 && (
+              <div className="mt-4">
+                <div className="text-xs font-mono uppercase text-stone-500">
+                  By the end you will be able to
+                </div>
+
+                <ul className="list-disc pl-5 mt-1 space-y-1 text-sm">
+                  {l.success_criteria.map((c, i) => (
+                    <li key={i}>{c}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <p className="text-sm mt-4">
+              <strong>You will need:</strong>{" "}
+              {(l.materials || []).join(", ") || "Nothing special"}
+            </p>
+
+            {!done.accept ? (
+              <button
+                type="button"
+                onClick={() => {
+                  mark("accept")(true);
+                  advance(0);
+                }}
+                className="mt-5 rounded-full px-6 py-3 text-base font-bold"
+                style={{ backgroundColor: "#C77B5B", color: "#F5EFE0" }}
+                data-testid="accept-quest"
+              >
+                ⚔️ I accept this quest!
+              </button>
+            ) : (
+              <p className="mt-4 text-sm font-bold text-green-800">
+                Quest accepted. Good luck, explorer!
+              </p>
+            )}
+          </div>
+        );
+
+      case "learn":
+        return (
+          <div className="space-y-4">
+            <div className="whitespace-pre-wrap text-sm">
+              {l.explicit_teaching}
+            </div>
+
+            {l.worked_example && (
+              <div className="rounded-lg bg-indigo-50 border border-indigo-200 p-4 text-sm">
+                <div className="font-bold mb-1">Read this example</div>
+                {l.worked_example}
+              </div>
+            )}
+
+            {flip && (
+              <div>
+                <div className="font-bold text-sm mb-2">{flip.title}</div>
+                <RevealCards
+                  cards={flip.cards || []}
+                  onComplete={mark("learn")}
+                />
+              </div>
+            )}
+
+            {!flip && (
+              <button
+                type="button"
+                onClick={mark("learn")}
+                className="rounded-full px-5 py-2 text-sm font-bold"
+                style={CONTINUE_STYLE}
+              >
+                I have read it
+              </button>
+            )}
+          </div>
+        );
+
+      case "sort":
+        return (
+          <SortActivity activity={l.sort_activity} onComplete={mark("sort")} />
+        );
+
+      case "watch":
+        return (
+          <div className="space-y-5">
+            {embeds.map((resource, i) => (
+              <div
+                key={i}
+                className="rounded-xl border p-3 bg-white"
+                style={{ borderColor: "#D4C8A8" }}
+              >
+                <div className="font-semibold text-sm mb-2">
+                  🎬 {resource.title}
+                </div>
+
+                <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
+                  <iframe
+                    src={resource.embed_url}
+                    title={resource.title}
+                    className="w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+
+                {resource.url && (
+                  <a
+                    href={resource.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 inline-flex items-center gap-1 text-xs font-semibold"
+                    style={{ color: "#4A5D3A" }}
+                  >
+                    <ExternalLink size={12} />
+                    Video not playing? Open it with a grown-up
+                  </a>
+                )}
+
+                {resource.prompt && (
+                  <p className="text-xs text-stone-700 mt-2">{resource.prompt}</p>
+                )}
+
+                <div className="mt-3">
+                  {resource.check ? (
+                    <ChoiceSet
+                      questions={[resource.check]}
+                      onComplete={mark(`watch${i}`)}
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => mark(`watch${i}`)(true)}
+                      className="rounded-full px-5 py-2 text-sm font-bold"
+                      style={CONTINUE_STYLE}
+                    >
+                      I watched it
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            {links.length > 0 && (
+              <div className="space-y-2">
+                <div className="text-xs font-mono uppercase text-stone-500">
+                  Optional extras (with a grown-up)
+                </div>
+
+                {links.map((resource, i) => (
+                  <a
+                    key={i}
+                    href={resource.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block rounded-xl p-3 border bg-white hover:bg-stone-50 text-sm"
+                    style={{ borderColor: "#D4C8A8" }}
+                  >
+                    📖 {resource.title}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+
+      case "words":
+        return (
+          <div className="space-y-5">
+            {wordQs.length > 0 && (
+              <div>
+                <p className="text-sm text-stone-700 mb-3">
+                  Pick the best word for each sentence.
+                </p>
+                <ChoiceSet questions={wordQs} onComplete={mark("wordsA")} />
+              </div>
+            )}
+
+            {builder && (
+              <SentenceBuilder builder={builder} onComplete={mark("wordsB")} />
+            )}
+          </div>
+        );
+
+      case "plan":
+        return (
+          <div>
+            <p className="text-sm text-stone-700 mb-3">
+              Good writers plan first. Fill in each box with a few words.
+            </p>
+
+            <Planner
+              fields={plannerFields}
+              values={plan}
+              setValues={setPlan}
+              onComplete={() => {}}
+            />
+          </div>
+        );
+
+      case "write":
+        return (
+          <div className="space-y-4">
+            <div className="rounded-xl bg-amber-50 border border-amber-200 p-4 text-sm space-y-2">
+              <div className="font-bold">What to do</div>
+
+              <ol className="list-decimal pl-5 space-y-1">
+                <li>{l.independent_task}</li>
+                <li>
+                  Type your finished work in the big box below, or write it on
+                  paper and upload a photo.
+                </li>
+                {l.response_prompt && (
+                  <li>
+                    Then answer the question in the small box: "
+                    {l.response_prompt}"
+                  </li>
+                )}
+              </ol>
+            </div>
+
+            {plannerFields.length > 0 && (
+              <div className="rounded-xl bg-stone-50 border border-stone-200 p-3 text-sm">
+                <div className="font-bold mb-1">Your plan</div>
+
+                {plannerFields.map((f) => (
+                  <div key={f.key}>
+                    <strong>{f.label}:</strong> {plan[f.key]}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div>
+              <label className="text-sm font-bold">Your finished work</label>
+
+              <textarea
+                rows={8}
+                value={response}
+                onChange={(event) => setResponse(event.target.value)}
+                placeholder="Type here… or leave empty and upload a photo of your paper work"
+                className="mt-1 w-full rounded-lg border px-3 py-2 text-base bg-white"
+                style={{ borderColor: "#D4C8A8" }}
+                data-testid="response-text"
+              />
+            </div>
+
+            {l.response_prompt && (
+              <div>
+                <label className="text-sm font-bold">
+                  Your answer: {l.response_prompt}
+                </label>
+
+                <textarea
+                  rows={2}
+                  value={promptAnswer}
+                  onChange={(event) => setPromptAnswer(event.target.value)}
+                  className="mt-1 w-full rounded-lg border px-3 py-2 text-sm bg-white"
+                  style={{ borderColor: "#D4C8A8" }}
+                />
+              </div>
+            )}
+
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*,audio/*,video/*,application/pdf"
+              onChange={(event) =>
+                event.target.files[0] &&
+                uploadFile(event.target.files[0], setFiles)
+              }
+              className="hidden"
+              data-testid="file-input"
+            />
+
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={uploading}
+              className="rounded-xl border-2 border-dashed w-full p-5 flex flex-col items-center gap-1 hover:bg-stone-50 disabled:opacity-50"
+              style={{ borderColor: "#D4C8A8" }}
+              data-testid="upload-btn"
+            >
+              {uploading ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                <Upload size={20} />
+              )}
+
+              <span className="text-sm font-bold">
+                {uploading ? "Uploading…" : "Add a photo, recording or PDF of your work"}
+              </span>
+            </button>
+
+            {files.length > 0 && (
+              <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+                {files.map((file) => (
+                  <FilePreview key={file.id} file={file} />
+                ))}
+              </div>
+            )}
+
+            <div>
+              <label className="text-sm font-bold">Reflect (optional)</label>
+
+              <textarea
+                rows={2}
+                value={reflection}
+                onChange={(event) => setReflection(event.target.value)}
+                placeholder={
+                  l.reflection_prompts?.[0] ||
+                  l.reflection_prompt ||
+                  "What did you learn? What was tricky?"
+                }
+                className="mt-1 w-full rounded-lg border px-3 py-2 text-sm bg-white"
+                style={{ borderColor: "#D4C8A8" }}
+                data-testid="reflection-text"
+              />
+            </div>
+          </div>
+        );
+
+      case "quiz":
+        return (
+          <QuestQuiz
+            quiz={l.quiz}
+            passMark={l.pass_mark || 0.9}
+            onResult={setQuizResult}
+          />
+        );
+
+      case "submit":
+        return (
+          <div className="space-y-3">
+            <p className="text-sm">
+              You have finished every stage. Hand in your work for a grown-up to
+              review.
+            </p>
+
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={needsHelp}
+                onChange={(event) => setNeedsHelp(event.target.checked)}
+                className="mt-1 h-5 w-5"
+                data-testid="needs-help"
+              />
+
+              <span className="text-sm">
+                I need help from a grown-up before I finish this.
+              </span>
+            </label>
+
+            <div className="flex items-center gap-3 flex-wrap">
+              <button
+                type="button"
+                onClick={submit}
+                disabled={submitting || submitted || !quizPassed}
+                className="rounded-full px-6 py-3 text-sm font-bold hover:translate-y-[-1px] transition disabled:opacity-50 flex items-center gap-2"
+                style={CONTINUE_STYLE}
+                data-testid="submit-work"
+              >
+                {submitting ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    Sending…
+                  </>
+                ) : submitted ? (
+                  <>
+                    <CheckCircle2 size={14} />
+                    Submitted
+                  </>
+                ) : (
+                  <>
+                    <Send size={14} />
+                    {needsHelp ? "Send for help" : "Submit for review"}
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={printLesson}
+                className="rounded-full border px-4 py-3 text-sm font-bold flex items-center gap-2"
+                style={{ borderColor: "#D4C8A8" }}
+                data-testid="print-btn"
+              >
+                <Printer size={14} />
+                Print
+              </button>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="space-y-5 animate-in relative" data-testid="child-lesson">
@@ -291,436 +819,105 @@ export default function ChildLesson() {
         >
           {supportBanner.text}
         </div>
+
+        <div className="mt-4">
+          <div className="flex justify-between text-xs font-mono text-stone-500">
+            <span>
+              Quest progress: {completed} of {stages.length} stages
+            </span>
+            <span>{percent}%</span>
+          </div>
+
+          <div className="h-2 rounded-full bg-stone-200 mt-1 overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all"
+              style={{ width: `${percent}%`, backgroundColor: "#4A5D3A" }}
+            />
+          </div>
+        </div>
       </header>
 
-      {l.child_mission && (
-        <div className="paper-card p-6">
-          <div className="text-xs font-mono text-stone-500 uppercase tracking-wider">
-            Your mission
-          </div>
+      <div className="space-y-3">
+        {stages.map((stage, i) => {
+          const unlocked = i <= current;
+          const finished = stageDone(stage.key);
+          const isOpen = open === i && unlocked;
+          const canSkip =
+            isOpen &&
+            !finished &&
+            ["sort", "watch", "words"].includes(stage.key);
 
-          <p
-            className="font-display text-xl font-bold mt-2"
-            style={{ color: "#1F3B2D" }}
-          >
-            {l.child_mission}
-          </p>
-        </div>
-      )}
-
-      <Step n="1" title="What am I learning?">
-        <p className="text-base">
-          {l.child_mission || l.learning_intention}
-        </p>
-      </Step>
-
-      <Step n="2" title="How I'll know I've got it">
-        <ul className="list-disc pl-5 space-y-1">
-          {(l.success_criteria || []).map((criterion, index) => (
-            <li key={index}>{criterion}</li>
-          ))}
-        </ul>
-      </Step>
-
-      <Step n="3" title="What I need">
-        <p className="text-sm">
-          {(l.materials || []).join(", ") || "Nothing special"}
-        </p>
-      </Step>
-
-      {l.steps?.length > 0 && (
-        <Step n="3b" title="Your quest route">
-          <ol className="space-y-3">
-            {l.steps.map((step, index) => (
-              <li
-                key={index}
-                className="rounded-xl border p-4 bg-white"
-                style={{ borderColor: "#D4C8A8" }}
-              >
-                <div className="font-bold">
-                  {index + 1}. {cleanStepTitle(step.title)}
-                </div>
-
-                <p className="text-sm text-stone-700 mt-1">
-                  {step.detail}
-                </p>
-
-                {step.duration_minutes && (
-                  <div className="text-xs font-mono text-stone-500 mt-1">
-                    {step.duration_minutes} minutes
-                  </div>
-                )}
-              </li>
-            ))}
-          </ol>
-        </Step>
-      )}
-
-      {l.key_vocabulary?.length > 0 && (
-        <Step n="4" title="Key words">
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-            {l.key_vocabulary.map((word, index) => (
-              <li
-                key={index}
-                className="rounded-lg bg-white border border-stone-200 p-2"
-              >
-                {word}
-              </li>
-            ))}
-          </ul>
-        </Step>
-      )}
-
-      <Step n="5" title="Let's learn">
-        <div className="prose prose-sm max-w-none whitespace-pre-wrap">
-          {l.explicit_teaching}
-        </div>
-      </Step>
-
-      {l.interactive_activities?.map((activity, index) => {
-        if (activity.type === "flip_cards") {
           return (
-            <Step key={index} n={`5c-${index}`} title={activity.title}>
-              <FlipCards cards={activity.cards || []} />
-            </Step>
-          );
-        }
-
-        return null;
-      })}
-
-      {l.resources?.length > 0 && (
-        <Step n="5b" title="Watch and play">
-          <div className="space-y-4">
-            {l.resources.map((resource, index) => {
-              if (resource.type === "video" && resource.embed_url) {
-                return (
-                  <div
-                    key={index}
-                    className="rounded-xl border p-3 bg-white"
-                    style={{ borderColor: "#D4C8A8" }}
-                  >
-                    <div className="font-semibold text-sm mb-2">
-                      🎬 {resource.title}
-                    </div>
-
-                    <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
-                      <iframe
-                        src={resource.embed_url}
-                        title={resource.title}
-                        className="w-full h-full"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    </div>
-
-                    {resource.url && (
-                      <a
-                        href={resource.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-2 inline-flex items-center gap-1 text-xs font-semibold"
-                        style={{ color: "#4A5D3A" }}
-                      >
-                        <ExternalLink size={12} />
-                        Video not playing? Open it with a grown-up
-                      </a>
-                    )}
-
-                    {resource.prompt && (
-                      <p className="text-xs text-stone-700 mt-2">
-                        {resource.prompt}
-                      </p>
-                    )}
-
-                    {resource.offline_alternative && (
-                      <p className="text-xs text-stone-500 mt-2">
-                        <strong>No internet?</strong>{" "}
-                        {resource.offline_alternative}
-                      </p>
-                    )}
-                  </div>
-                );
-              }
-
-              return (
-                <a
-                  key={index}
-                  href={resource.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block rounded-xl p-3 border bg-white hover:bg-stone-50"
-                  style={{ borderColor: "#D4C8A8" }}
-                >
-                  <div className="font-semibold text-sm">
-                    {resource.type === "video"
-                      ? "🎬"
-                      : resource.type === "article"
-                        ? "📖"
-                        : "🎮"}{" "}
-                    {resource.title}
-                  </div>
-
-                  {resource.prompt && (
-                    <div className="text-xs text-stone-700 mt-1">
-                      {resource.prompt}
-                    </div>
-                  )}
-
-                  <div className="text-xs text-stone-600 mt-0.5">
-                    Tap to open with a grown-up
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        </Step>
-      )}
-
-      {l.suggested_resources?.length > 0 && (
-        <Step n="6" title="Explore further (optional)">
-          <p className="text-sm text-stone-600 mb-3">
-            These are places your parent can help you find. Ask them first
-            before opening anything online.
-          </p>
-
-          <div className="space-y-2">
-            {l.suggested_resources.map((resource, index) => (
-              <div
-                key={index}
-                className="rounded-xl p-3 border bg-white"
-                style={{ borderColor: "#D4C8A8" }}
-                data-testid={`res-${index}`}
+            <section
+              key={stage.key}
+              className="paper-card overflow-hidden"
+              data-testid={`stage-${stage.key}`}
+            >
+              <button
+                type="button"
+                disabled={!unlocked}
+                onClick={() => setOpen(isOpen ? -1 : i)}
+                className="w-full flex items-center gap-3 p-4 text-left disabled:opacity-60"
               >
-                <div className="flex items-start gap-2">
-                  <div
-                    className="h-8 w-8 rounded-lg grid place-items-center shrink-0"
-                    style={{ backgroundColor: "#F5EFE0", color: "#4A5D3A" }}
+                <span className="text-xl">{unlocked ? stage.icon : ""}</span>
+
+                {!unlocked && <Lock size={16} className="text-stone-400" />}
+
+                <span className="flex-1">
+                  <span className="block text-[10px] font-mono uppercase text-stone-500">
+                    Stage {i + 1} of {stages.length}
+                  </span>
+
+                  <span
+                    className="font-display text-lg font-semibold"
+                    style={{ color: "#1F3B2D" }}
                   >
-                    <ExternalLink size={14} />
-                  </div>
+                    {stage.title}
+                  </span>
+                </span>
 
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-sm">
-                      {resource.title}
-                      <span className="text-[10px] font-mono text-stone-500 uppercase tracking-wider ml-1">
-                        {resource.type}
-                      </span>
-                    </div>
+                {finished && (
+                  <CheckCircle2 size={20} className="text-green-700" />
+                )}
+              </button>
 
-                    {resource.provider && (
-                      <div className="text-[11px] font-mono text-stone-500">
-                        {resource.provider}
-                        {resource.legally_free ? " · free" : ""}
+              {isOpen && (
+                <div className="px-5 pb-5">
+                  {renderBody(stage.key)}
+
+                  {stage.key !== "accept" &&
+                    stage.key !== "submit" &&
+                    i < stages.length - 1 && (
+                      <div className="mt-5 flex items-center gap-3 flex-wrap">
+                        <button
+                          type="button"
+                          disabled={!finished}
+                          onClick={() => advance(i)}
+                          className="rounded-full px-6 py-2.5 text-sm font-bold disabled:opacity-40"
+                          style={CONTINUE_STYLE}
+                          data-testid={`continue-${stage.key}`}
+                        >
+                          {finished
+                            ? "Continue to the next stage →"
+                            : "Finish this stage to continue"}
+                        </button>
+
+                        {canSkip && (
+                          <button
+                            type="button"
+                            onClick={() => skipStage(stage.key)}
+                            className="text-xs underline text-stone-500"
+                          >
+                            Grown-up: skip this activity
+                          </button>
+                        )}
                       </div>
                     )}
-
-                    <div className="text-xs text-stone-600 mt-0.5">
-                      {resource.purpose}
-                    </div>
-
-                    {resource.url && (
-                      <a
-                        href={resource.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-xs mt-1 inline-flex items-center gap-1 font-semibold"
-                        style={{ color: "#4A5D3A" }}
-                      >
-                        <ExternalLink size={10} />
-                        Open {resource.provider || "resource"}
-                      </a>
-                    )}
-
-                    {resource.where_to_find && (
-                      <div className="text-xs italic mt-1 text-stone-500">
-                        Search: "{resource.where_to_find}"
-                      </div>
-                    )}
-
-                    {resource.offline_alternative && (
-                      <div className="text-xs mt-1 text-stone-500">
-                        <strong>No internet?</strong>{" "}
-                        {resource.offline_alternative}
-                      </div>
-                    )}
-                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </Step>
-      )}
-
-      {l.worked_example && (
-        <Step n="7" title="Example">
-          <div className="rounded-lg bg-indigo-50 border border-indigo-200 p-4 text-sm">
-            {l.worked_example}
-          </div>
-        </Step>
-      )}
-
-      {l.guided_practice && (
-        <Step n="8" title="Try with me">
-          <p className="text-sm">{l.guided_practice}</p>
-        </Step>
-      )}
-
-      <Step n="9" title="My task">
-        <p className="text-base">{l.independent_task}</p>
-
-        {l.response_prompt && (
-          <div className="mt-3 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm">
-            <strong>Respond to:</strong> {l.response_prompt}
-          </div>
-        )}
-      </Step>
-
-      {quizRequired && (
-        <Step n="9b" title="Quest check (90% to clear)">
-          <QuestQuiz
-            quiz={l.quiz}
-            passMark={l.pass_mark || 0.9}
-            onResult={setQuizResult}
-          />
-        </Step>
-      )}
-
-      <Step n="10" title="My response">
-        <textarea
-          rows={5}
-          value={response}
-          onChange={(event) => setResponse(event.target.value)}
-          placeholder="Type your answer here… (or upload a photo of your paper work below)"
-          className="w-full rounded-lg border px-3 py-2 text-base bg-white"
-          style={{ borderColor: "#D4C8A8" }}
-          data-testid="response-text"
-        />
-      </Step>
-
-      <Step n="11" title="Upload my work">
-        <input
-          ref={fileRef}
-          type="file"
-          accept="image/*,audio/*,video/*,application/pdf"
-          onChange={(event) =>
-            event.target.files[0] &&
-            uploadFile(event.target.files[0], setFiles)
-          }
-          className="hidden"
-          data-testid="file-input"
-        />
-
-        <button
-          type="button"
-          onClick={() => fileRef.current?.click()}
-          disabled={uploading}
-          className="rounded-xl border-2 border-dashed w-full p-6 flex flex-col items-center gap-2 hover:bg-stone-50 disabled:opacity-50"
-          style={{ borderColor: "#D4C8A8" }}
-          data-testid="upload-btn"
-        >
-          {uploading ? (
-            <Loader2 className="animate-spin" />
-          ) : (
-            <Upload size={20} />
-          )}
-
-          <span className="text-sm font-bold">
-            {uploading
-              ? "Uploading…"
-              : "Tap to add photo, audio, video or PDF"}
-          </span>
-
-          <span className="text-xs text-stone-500">
-            Great for paper work, drawings, recordings
-          </span>
-        </button>
-
-        {files.length > 0 && (
-          <div className="mt-3 grid grid-cols-3 md:grid-cols-5 gap-2">
-            {files.map((file) => (
-              <FilePreview key={file.id} file={file} />
-            ))}
-          </div>
-        )}
-      </Step>
-
-      <Step n="12" title="Reflect">
-        <textarea
-          rows={3}
-          value={reflection}
-          onChange={(event) => setReflection(event.target.value)}
-          placeholder={
-            l.reflection_prompts?.[0] ||
-            l.reflection_prompt ||
-            "What did you learn? What was tricky?"
-          }
-          className="w-full rounded-lg border px-3 py-2 text-sm bg-white"
-          style={{ borderColor: "#D4C8A8" }}
-          data-testid="reflection-text"
-        />
-      </Step>
-
-      <div className="paper-card p-6 space-y-3">
-        <label className="flex items-start gap-3 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={needsHelp}
-            onChange={(event) => setNeedsHelp(event.target.checked)}
-            className="mt-1 h-5 w-5"
-            data-testid="needs-help"
-          />
-
-          <span className="text-sm">
-            I need help from a grown-up before I finish this.
-          </span>
-        </label>
-
-        {!quizPassed && (
-          <p className="text-sm text-amber-900 bg-amber-50 border border-amber-200 rounded-lg p-3">
-            Clear the Quest check above (90% or more) to unlock submitting.
-          </p>
-        )}
-
-        <div className="flex items-center gap-3 flex-wrap">
-          <button
-            type="button"
-            onClick={submit}
-            disabled={submitting || submitted || !quizPassed}
-            className="rounded-full px-6 py-3 text-sm font-bold hover:translate-y-[-1px] transition disabled:opacity-50 flex items-center gap-2"
-            style={{ backgroundColor: "#1F3B2D", color: "#F5EFE0" }}
-            data-testid="submit-work"
-          >
-            {submitting ? (
-              <>
-                <Loader2 size={16} className="animate-spin" />
-                Sending…
-              </>
-            ) : submitted ? (
-              <>
-                <CheckCircle2 size={14} />
-                Submitted
-              </>
-            ) : (
-              <>
-                <Send size={14} />
-                {needsHelp ? "Send for help" : "Submit for review"}
-              </>
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={printLesson}
-            className="rounded-full border px-4 py-3 text-sm font-bold flex items-center gap-2"
-            style={{ borderColor: "#D4C8A8" }}
-            data-testid="print-btn"
-          >
-            <Printer size={14} />
-            Print
-          </button>
-        </div>
+              )}
+            </section>
+          );
+        })}
       </div>
 
       {l.follow_up_challenges?.length > 0 && (
@@ -898,76 +1095,6 @@ export default function ChildLesson() {
   );
 }
 
-const FlipCards = ({ cards }) => {
-  const [flipped, setFlipped] = useState({});
-
-  const toggle = (index) => {
-    setFlipped((current) => ({
-      ...current,
-      [index]: !current[index]
-    }));
-  };
-
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-      {cards.map((card, index) => {
-        const isFlipped = !!flipped[index];
-
-        return (
-          <button
-            key={index}
-            type="button"
-            onClick={() => toggle(index)}
-            className="h-32 rounded-xl border p-3 text-left transition hover:translate-y-[-2px] focus:outline-none focus:ring-2 focus:ring-[#4A5D3A]"
-            style={{
-              borderColor: "#D4C8A8",
-              backgroundColor: isFlipped ? "#F0F4E8" : "#FFFFFF"
-            }}
-          >
-            {!isFlipped ? (
-              <div>
-                <div className="text-[10px] font-mono uppercase text-stone-500">
-                  Tap to reveal
-                </div>
-
-                <p
-                  className="font-display font-bold text-lg mt-1"
-                  style={{ color: "#1F3B2D" }}
-                >
-                  {card.front}
-                </p>
-              </div>
-            ) : (
-              <div>
-                <div className="text-[10px] font-mono uppercase text-stone-500">
-                  Meaning
-                </div>
-
-                <p className="text-sm mt-1">{card.back}</p>
-              </div>
-            )}
-          </button>
-        );
-      })}
-    </div>
-  );
-};
-
-const Step = ({ n, title, children }) => (
-  <section className="paper-card p-5" data-testid={`step-${n}`}>
-    <div className="text-xs font-mono text-stone-500">Step {n}</div>
-
-    <h2
-      className="font-display text-lg font-semibold mt-0.5 mb-3"
-      style={{ color: "#1F3B2D" }}
-    >
-      {title}
-    </h2>
-
-    <div className="text-stone-800">{children}</div>
-  </section>
-);
-
 const FilePreview = ({ file }) => {
   const Icon = file.content_type?.startsWith("image/")
     ? ImgIcon
@@ -994,9 +1121,7 @@ const FilePreview = ({ file }) => {
         </div>
       )}
 
-      <div className="p-1 text-[10px] truncate">
-        {file.original_filename}
-      </div>
+      <div className="p-1 text-[10px] truncate">{file.original_filename}</div>
     </div>
   );
 };

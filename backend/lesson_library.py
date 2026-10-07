@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 9
+LESSON_LIBRARY_VERSION = 10
 
 LESSON_LIBRARY = [
     {
@@ -15,12 +15,12 @@ LESSON_LIBRARY = [
         "pass_mark": 0.9,
         "outcome_codes": ["EN2-CWT-01", "EN2-RECOM-01", "EN2-UARL-01", "EN2-VOCAB-01", "EN2-SPELL-01", "EN2-OLC-01"],
         "outcome_notes": {
-            "EN2-CWT-01": "Primary outcome. Plans, writes and revises an imaginative narrative (Steps 4-6).",
-            "EN2-RECOM-01": "Reads a model story and identifies its structure: orientation, complication, resolution (Steps 2-3; quiz questions 1-5).",
-            "EN2-UARL-01": "Explains how the author builds tension or a feeling, then uses a similar technique in their own story (Steps 3 and 5; quiz questions 7-9).",
-            "EN2-VOCAB-01": "Learns and uses precise Tier 2 words such as 'vanished', 'treacherous' and 'cautiously' (Steps 1 and 5; quiz questions 6 and 10).",
-            "EN2-SPELL-01": "Proofreads and explains how they spelled two tricky words (Step 6, assessed through submitted work).",
-            "EN2-OLC-01": "Retells the story aloud to a family member (Step 7, assessed through the Storyteller's Table challenge)."
+            "EN2-CWT-01": "Primary outcome. Plans (story planner), writes and revises an imaginative narrative.",
+            "EN2-RECOM-01": "Sorts sentences into orientation, complication and resolution, then answers quiz questions 1-5.",
+            "EN2-UARL-01": "Builds a suspenseful sentence and explains technique (suspense builder; quiz questions 7-9).",
+            "EN2-VOCAB-01": "Chooses precise Tier 2 words such as 'vanished', 'treacherous' and 'cautiously' (word power stage; quiz questions 6 and 10).",
+            "EN2-SPELL-01": "Proofreads and explains how they spelled two tricky words (assessed through submitted work).",
+            "EN2-OLC-01": "Retells the story aloud to a family member (Storyteller's Table challenge)."
         },
         "learning_intention": "We are learning to plan and write an imaginative story with a clear beginning, problem and ending, using precise words to build atmosphere.",
         "success_criteria": [
@@ -32,12 +32,12 @@ LESSON_LIBRARY = [
             "I can score 90% or more on the Quest check."
         ],
         "key_vocabulary": ["orientation", "complication", "resolution", "atmosphere", "vanished", "treacherous", "cautiously", "suspense"],
-        "materials": ["Paper or a device for writing", "Pencil and coloured pencils", "A short story to read (provided below, or any adventure story from home)", "A family member to listen at the end"],
+        "materials": ["Paper or a device for writing", "Pencil and coloured pencils", "A family member to listen at the end"],
         "prior_knowledge": "Familiar with the idea that stories have characters and a setting. Can write several connected sentences.",
-        "explicit_teaching": "Most narratives follow a pattern. The ORIENTATION introduces the character, the setting and the time. The COMPLICATION is the problem that disrupts everything. The RESOLUTION is how the problem is solved. Strong writers also build ATMOSPHERE, which is the feeling a reader gets, using precise words. 'The path was bad' tells us little. 'The path was treacherous' makes us feel danger. Precise words also build SUSPENSE, which is the feeling of wanting to know what happens next. A writer can build suspense by slowing the moment down, for example 'She stepped cautiously onto the bridge, one plank at a time.'",
-        "worked_example": "Read this short story. ORIENTATION: Mira, a young mapmaker, lived in a lighthouse at the edge of the sea. COMPLICATION: One morning her teacher had vanished, leaving a half-drawn map with a red circle on it. RESOLUTION: Mira followed the map across the treacherous cliffs and found her teacher safe in a cave, sketching the stars. Now notice the technique: the writer slowed the moment down ('She moved cautiously along the cliff, one step at a time') so that we feel the danger. That is how suspense is built.",
-        "guided_practice": "Read the worked example again. Copy the three labels (Orientation, Complication, Resolution) onto your page and write one sentence from the story under each. Then underline one precise word that builds atmosphere and write what feeling it creates. Finally, find one place where the writer slows the moment down and explain how it builds suspense.",
-        "independent_task": "Write your own ending to the Cartographer's story, or invent a new quest of your own. Plan first: character, setting, problem, solution. Then write at least 8 sentences. Include the orientation, a clear complication and a resolution. Use at least three of the vocabulary words and slow down one moment to build suspense.",
+        "explicit_teaching": "Most narratives follow a pattern. The ORIENTATION introduces the character, the setting and the time. The COMPLICATION is the problem that disrupts everything. The RESOLUTION is how the problem is solved.\n\nStrong writers also build ATMOSPHERE, which is the feeling a reader gets, using precise words. 'The path was bad' tells us little. 'The path was treacherous' makes us feel danger.\n\nPrecise words also build SUSPENSE, which is the feeling of wanting to know what happens next. A writer can build suspense by slowing the moment down, for example 'She stepped cautiously onto the bridge, one plank at a time.'",
+        "worked_example": "ORIENTATION: Mira, a young mapmaker, lived in a lighthouse at the edge of the sea. COMPLICATION: One morning her teacher had vanished, leaving a half-drawn map with a red circle on it. RESOLUTION: Mira followed the map across the treacherous cliffs and found her teacher safe in a cave, sketching the stars. Notice the technique: the writer slowed the moment down ('She moved cautiously along the cliff, one step at a time') so that we feel the danger.",
+        "guided_practice": "Copy the three labels (Orientation, Complication, Resolution) onto your page and write one sentence from the story under each. Underline one precise word that builds atmosphere and write what feeling it creates.",
+        "independent_task": "Write your own ending to the Cartographer's story, or invent a new quest of your own. Write at least 8 sentences. Include the orientation, a clear complication and a resolution. Use at least three of the key words and slow down one moment to build suspense.",
         "response_prompt": "Which technique did you use to build suspense or atmosphere, and where in your story can we see it?",
         "self_check": "Does my story have an orientation, a complication and a resolution? Did I use three precise words? Did I slow one moment down? Did I check my spelling?",
         "accessibility_notes": "Allow the story to be dictated or typed. Provide sentence starters for each part. Reduce the required length to 5 sentences if needed.",
@@ -55,14 +55,50 @@ LESSON_LIBRARY = [
                 ]
             }
         ],
+        "sort_activity": {
+            "title": "Story sorter",
+            "instructions": "Each sentence comes from a short story. Tap the part of the story it belongs to, then press Check.",
+            "buckets": ["Orientation", "Complication", "Resolution"],
+            "items": [
+                {"text": "Finn, a young sailor, lived in a harbour town where the fog rolled in every morning.", "answer": 0},
+                {"text": "One night, the harbour lantern vanished from the dock.", "answer": 1},
+                {"text": "At last, Finn carried the lantern home and the harbour glowed again.", "answer": 2},
+                {"text": "Long ago, in a forest village, lived a girl named Ada who loved baking.", "answer": 0},
+                {"text": "Suddenly the bakery's secret recipe book disappeared.", "answer": 1},
+                {"text": "Ada found the book hidden in the mayor's hat, and the bakery reopened.", "answer": 2}
+            ]
+        },
+        "word_challenges": [
+            {"question": "The cave was ___ and silent, so Mira felt uneasy.", "options": ["nice", "gloomy", "big"], "correct_index": 1, "explanation": "Gloomy creates a dark, uneasy feeling."},
+            {"question": "Mira walked ___ across the old bridge so she would not slip.", "options": ["quickly", "cautiously", "loudly"], "correct_index": 1, "explanation": "Cautiously means with great care."},
+            {"question": "Her teacher had ___, leaving only a half-drawn map.", "options": ["vanished", "arrived", "laughed"], "correct_index": 0, "explanation": "Vanished means disappeared suddenly."},
+            {"question": "The ___ cliff path made her heart pound.", "options": ["pretty", "short", "treacherous"], "correct_index": 2, "explanation": "Treacherous means dangerous in a hidden way."}
+        ],
+        "suspense_builder": {
+            "title": "Suspense builder",
+            "instructions": "Make this sentence build suspense. Choose the best piece for each gap.",
+            "template": ["Mira ", 0, " onto the old bridge, ", 1, ", while ", 2, "."],
+            "slots": [
+                {"options": ["ran", "stepped cautiously", "skipped"], "correct": 1},
+                {"options": ["feeling happy", "one plank at a time", "very quickly"], "correct": 1},
+                {"options": ["the river roared far below", "it was a bridge", "she ate lunch"], "correct": 0}
+            ],
+            "success": "That is suspense! You slowed the moment down and added a danger clue."
+        },
+        "planner_fields": [
+            {"key": "hero", "label": "\U0001F9ED Hero", "hint": "Who is your main character? Give them a name and one special trait."},
+            {"key": "place", "label": "\U0001F3DE\uFE0F Place", "hint": "Where does your story happen? Describe it in a few words."},
+            {"key": "problem", "label": "\u26A1 Problem", "hint": "What goes wrong? This is your complication."},
+            {"key": "solution", "label": "\U0001F3C1 Solution", "hint": "How does your hero fix it? This is your resolution."}
+        ],
         "steps": [
-            {"title": "\U0001F4DC Step 1: Accept the quest", "detail": "Read your mission. Say each Quest Codex word aloud and use two of them in a spoken sentence.", "duration_minutes": 5},
-            {"title": "\U0001F4D6 Step 2: Study the map", "detail": "Read the worked example and label the orientation, complication and resolution.", "duration_minutes": 10},
-            {"title": "\U0001F50D Step 3: Decode the craft", "detail": "Watch the two videos in Watch and play, then find the technique the writer used to build suspense.", "duration_minutes": 10},
-            {"title": "\U0001F5FA\uFE0F Step 4: Chart your route", "detail": "Plan your story: character, setting, problem and solution. A simple map or storyboard works well.", "duration_minutes": 10},
+            {"title": "\U0001F4DC Step 1: Accept the quest", "detail": "Read your mission and accept the quest.", "duration_minutes": 5},
+            {"title": "\U0001F4D6 Step 2: Learn the map", "detail": "Read the teaching, flip every Quest Codex card and sort the story sentences.", "duration_minutes": 10},
+            {"title": "\U0001F50D Step 3: Decode the craft", "detail": "Watch the two videos, then build a suspenseful sentence and choose precise words.", "duration_minutes": 10},
+            {"title": "\U0001F5FA\uFE0F Step 4: Chart your route", "detail": "Fill in your story planner: hero, place, problem and solution.", "duration_minutes": 10},
             {"title": "\u270D\uFE0F Step 5: Write the tale", "detail": "Write your story. Use three precise words and slow down one moment.", "duration_minutes": 15},
-            {"title": "\U0001F6E1\uFE0F Step 6: Proof your work", "detail": "Reread aloud, fix spelling and punctuation, and note how you spelled two tricky words.", "duration_minutes": 5},
-            {"title": "\U0001F3C6 Step 7: Clear the Quest check", "detail": "Answer the 10-question Quest check. You need 9 out of 10 to pass. Then retell your story to a family member and upload your evidence.", "duration_minutes": 5}
+            {"title": "\U0001F6E1\uFE0F Step 6: Clear the Quest check", "detail": "Answer the 10-question Quest check. You need 9 out of 10 to pass.", "duration_minutes": 5},
+            {"title": "\U0001F3C6 Step 7: Hand it in", "detail": "Proofread, retell your story to a family member and submit your evidence.", "duration_minutes": 5}
         ],
         "resources": [
             {
@@ -70,22 +106,32 @@ LESSON_LIBRARY = [
                 "title": "What is a narrative? Orientation, complication and resolution",
                 "url": "https://www.youtube.com/watch?v=0NESGqweSwI",
                 "embed_url": "https://www.youtube-nocookie.com/embed/0NESGqweSwI",
-                "prompt": "Watch for the three parts of a narrative. Can you name them in order before the video ends?",
-                "offline_alternative": "Re-read the worked example and label the orientation, complication and resolution."
+                "prompt": "Watch for the parts of a narrative. Then answer the question below.",
+                "offline_alternative": "Re-read the worked example and label the orientation, complication and resolution.",
+                "check": {
+                    "question": "In a story, which part is the problem that disrupts everything?",
+                    "options": ["Orientation", "Resolution", "Complication"],
+                    "correct_index": 2,
+                    "explanation": "Yes! The complication is the problem."
+                }
             },
             {
                 "type": "video",
                 "title": "Pixar in a Box: Introduction to storytelling (Khan Academy)",
                 "url": "https://www.youtube.com/watch?v=1rMnzNZkIX0",
                 "embed_url": "https://www.youtube-nocookie.com/embed/1rMnzNZkIX0",
-                "prompt": "Pixar's storytellers say a story is meant to make the audience feel something. What feeling do you want your readers to have at the end of your story?",
-                "offline_alternative": "Think of a film you love and describe the feeling it gave you and why."
+                "prompt": "Pixar's storytellers say a story is meant to make the audience feel something.",
+                "offline_alternative": "Think of a film you love and describe the feeling it gave you and why.",
+                "check": {
+                    "question": "Which feeling do you want YOUR readers to have at the end of your story?",
+                    "options": ["Excited", "Relieved", "Surprised", "Proud"],
+                    "explanation": "Great choice. Keep that feeling in mind as you write."
+                }
             },
             {
                 "type": "article",
                 "title": "How to create a character for a story (BBC Bitesize)",
-                "url": "https://www.bbc.co.uk/bitesize/articles/zd72scw",
-                "prompt": "Optional. Read with a grown-up and pick one idea for your main character."
+                "url": "https://www.bbc.co.uk/bitesize/articles/zd72scw"
             }
         ],
         "quiz": [
@@ -186,8 +232,8 @@ LESSON_LIBRARY = [
             }
         ],
         "reflection_prompts": ["Which part of your story are you proudest of, and why?", "What would you change if you wrote a second draft?"],
-        "evidence_instructions": "Upload a photo or typed copy of your story plan and finished story. Highlight your three precise words and the moment where you built suspense.",
-        "parent_notes": "This quest develops narrative writing (EN2-CWT-01) alongside reading structure (EN2-RECOM-01), how authors shape ideas (EN2-UARL-01), vocabulary (EN2-VOCAB-01), spelling strategies (EN2-SPELL-01) and spoken retelling (EN2-OLC-01). The 10-question Quest check requires 90% (9 out of 10) before work can be submitted, and your child can retry. Ask your child to point out the orientation, complication and resolution, and to read the ending aloud. Verify the outcome mapping against the NESA English K-10 syllabus.",
+        "evidence_instructions": "Upload a photo or typed copy of your finished story. Highlight your three precise words and the moment where you built suspense.",
+        "parent_notes": "The quest is a staged sequence: accept the quest, learn the key terms (flip all cards), sort story sentences, watch two short videos with a check question, choose precise words and build a suspenseful sentence, fill in a story planner, write the story, then clear a 10-question Quest check (90%, so 9 out of 10, with retries). Submission is locked until the quiz is passed. The submission text includes the quiz score, the plan and the answer to the response question. Outcomes covered: EN2-CWT-01, EN2-RECOM-01, EN2-UARL-01, EN2-VOCAB-01, EN2-SPELL-01 and EN2-OLC-01. Verify the outcome mapping against the NESA English K-10 syllabus.",
         "source_note": "Outcome codes are from the NSW English K-10 Syllabus (NESA 2022), Stage 2. Parent to verify alignment against the NESA website.",
         "offline_alternative": "Hand-write the story on paper and draw the route map instead of using a device. The videos can be skipped if the worked example is read aloud.",
         "extension": "Write a second ending in a different mood, such as humorous instead of tense, and compare how word choice changes the atmosphere.",
