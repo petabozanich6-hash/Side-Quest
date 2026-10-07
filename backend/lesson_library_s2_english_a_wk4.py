@@ -1,5 +1,5 @@
 """Stage 2 English, Block A (narrative writing), week 4, lessons 1 to 4.
-Pass 1: lessons written and fully taught. Videos are left empty until pass 2 (find and verify).
+Pass 2: videos added. Video ids came from search and must be checked on playback.
 Not yet registered in lesson_library.py. Keys use the prefix a4."""
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _video, _sort, _wc
 
@@ -70,7 +70,12 @@ A4L1 = build(
     "Take the same character and write a second paragraph showing them in a different situation. Do they act in the same way? Explain how their traits stay the same.",
     [("protagonist", "The main character of a story."), ("antagonist", "The character or force that works against the main character."), ("character trait", "A word describing a lasting part of someone's personality."),
      ("motivation", "The reason a character does something."), ("dialogue", "The words characters speak."), ("evidence", "A detail from a text that supports an idea.")],
-    [],
+    [
+        _video("Character Traits for Kids: Reading Literature Lesson", "341a-wTgFi0",
+               "Watch how to be a trait detective by looking closely at what a character says, does and feels, not just how they look. Notice how the clues point to a personality trait.",
+               "Pick one character you know and name a trait, with one clue from what they do or say.",
+               ("What do trait detectives look for?", ["Clues in what a character says, does and feels", "Only what they wear", "The page number"], 0, "Traits are worked out from clues about personality.")),
+    ],
     _sort("Trait or feeling sorter", "Is each word a lasting trait or a passing feeling? Tap a group, then Check.",
           ["Trait", "Feeling"],
           [("loyal", 0), ("stubborn", 0), ("generous", 0), ("curious", 0), ("nervous today", 1), ("embarrassed", 1), ("excited right now", 1), ("disappointed", 1)]),
@@ -157,7 +162,12 @@ A4L2 = build(
     "Collect the first lines of five books of your choice and sort them by hook technique. Which technique do you like best, and why?",
     [("hook", "An opening line that makes the reader curious."), ("orientation", "The part of a story that tells who, where and when."), ("sensory detail", "Detail about what can be seen, heard, smelt, felt or tasted."),
      ("onomatopoeia", "A word that sounds like its meaning, such as splash."), ("rhetorical question", "A question asked to make the reader think, not to get an answer."), ("dialogue", "The words characters speak.")],
-    [],
+    [
+        _video("How to Write a Story for Kids: the Beginning", "Rfj4yFosaOw",
+               "Watch how the beginning of a story introduces the characters and the setting and gets the action started. Notice what the opening tells us. This video covers the basics, so think about how you could make your own opening more exciting with a hook.",
+               "Say who, where and when for the beginning of a story you know.",
+               ("What should the beginning of a story introduce?", ["The characters and setting", "Only the ending", "The glossary"], 0, "The beginning sets up the characters and setting.")),
+    ],
     _sort("Hook sorter", "Which technique does each opening use? Tap a technique, then Check.",
           ["Action or sound", "Question or speech", "Senses"],
           [("Crash! The door burst open.", 0), ("Max sprinted down the hallway with the glowing stone.", 0), ("Have you ever heard your shadow whisper?", 1), ("'Don't touch that button,' whispered Leo.", 1), ("The cave smelt of damp stone and old smoke.", 2), ("Cold rain drummed on the tin roof and the room smelt of wet dog.", 2)]),
@@ -244,7 +254,16 @@ A4L3 = build(
     "Choose a page from a book of your choice and find ten verbs. Sort them into action, saying, thinking and being, and say which kind the author uses most.",
     [("verb", "A word that tells what someone does, thinks, says or is."), ("action verb", "A verb that tells what someone does."), ("saying verb", "A verb that shows how someone speaks."),
      ("thinking verb", "A verb that shows what someone thinks or feels."), ("being verb", "A verb that says what something is or has."), ("tense", "The form of a verb that shows when something happens."), ("verb group", "A main verb with a helping verb, such as was running.")],
-    [],
+    [
+        _video("Verb Tenses for Kids: Past, Present and Future Tense Explained", "QiZxIBHg9uc",
+               "Watch how the difference between past, present and future tense is explained with simple, everyday examples. Notice how the verb changes for each tense.",
+               "Say one sentence about yesterday, one about now and one about tomorrow.",
+               ("Which tense tells about something that already happened?", ["Past", "Present", "Future"], 0, "Past tense is for things that already happened.")),
+        _video("Verbs Part 3: Simple Verb Tenses", "4Rm9l6y3-WY",
+               "Watch how verbs are put into the past, present and future tense. Notice that some verbs change in an irregular way in the past tense, such as ate, not eated.",
+               "Write the past tense of three verbs and check which are irregular.",
+               ("Which is the correct past tense of eat?", ["ate", "eated", "eating"], 0, "Eat is an irregular verb.")),
+    ],
     _sort("Verb type sorter", "What kind of verb is each word? Tap a type, then Check.",
           ["Action", "Saying", "Thinking", "Being"],
           [("sprinted", 0), ("climbed", 0), ("whispered", 1), ("bellowed", 1), ("wondered", 2), ("hoped", 2), ("was", 3), ("seems", 3)]),
@@ -331,7 +350,12 @@ A4L4 = build(
     "Write a short note to someone in your family in your neatest joined writing and give it to them.",
     [("join", "A connecting stroke between two letters."), ("ascender", "A letter part that goes up above the middle zone."), ("descender", "A letter part that goes down below the baseline."),
      ("slope", "The lean of your letters."), ("spacing", "The gaps between letters and words."), ("fluent", "Smooth and flowing."), ("legible", "Easy for others to read.")],
-    [],
+    [
+        _video("Joined up Handwriting: How to Write in Cursive, the Ladder Letter Family", "CU4ucOYDedk",
+               "Watch how a family of letters is written and joined in cursive, one stroke at a time. Notice where each letter starts and how the join leaves the letter.",
+               "Write the practice joins from the video along a line, slowly and neatly.",
+               ("Where should you start each letter?", ["In the correct starting place, every time", "Anywhere", "At the bottom of the page"], 0, "Starting in the right place makes joins smooth.")),
+    ],
     _sort("Letter shape sorter", "Does each letter have an ascender, a descender or neither? Tap a group, then Check.",
           ["Ascender", "Descender", "Neither"],
           [("b", 0), ("h", 0), ("t", 0), ("g", 1), ("y", 1), ("p", 1), ("a", 2), ("m", 2), ("o", 2)]),
