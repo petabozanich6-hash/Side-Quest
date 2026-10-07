@@ -1,0 +1,258 @@
+# Stage 2 Year 3 Maths lessons 6 and 7 for Ollie. Same structure as the Cartographer quest.
+# Not yet registered in LESSON_LIBRARY. No reflection prompts (parent preference).
+# Resource links marked 'search' are search pages, not specific items.
+
+MINI_LESSONS = "https://iview.abc.net.au/show/mini-lessons-maths"
+
+
+def _common(**kw):
+    base = {
+        "library": True,
+        "stage": "S2",
+        "year_level": "Year 3",
+        "learning_area": "Mathematics",
+        "pass_mark": 0.9,
+        "reflection_prompts": [],
+        "accessibility_notes": "Allow a real clock, jugs and cubes throughout. Answers can be spoken instead of written. Reduce the independent task to two parts if needed. Replay any video as often as needed.",
+        "source_note": "Outcome codes checked against published NESA code lists. Parent to verify the exact outcome wording on curriculum.nsw.edu.au.",
+    }
+    base.update(kw)
+    return base
+
+
+LESSON_TIME = _common(
+    seed_key="s2-y3-maths-time-clock-tower-06",
+    subject="Time: analog and digital time in hours, minutes and seconds; elapsed time",
+    title="The Clock Tower Keeper",
+    child_mission="Welcome to the town clock tower. Read every clock, fix the timetable and work out how long each event lasts before the bells ring.",
+    duration_minutes=75,
+    outcome_codes=["MA2-NSM-02", "MAO-WM-01"],
+    cross_outcome_codes=[],
+    outcome_notes={
+        "MA2-NSM-02": "Primary. Reads and writes analog and digital time in hours, minutes and seconds, uses am and pm, converts between units of time and finds elapsed time (steps 1-5, quiz 1-10, sort).",
+        "MAO-WM-01": "Working mathematically: uses a number line to model elapsed time and explains steps (independent task, rubric).",
+    },
+    learning_intention="We are learning to read and write time in analog and digital form and to work out how long something takes.",
+    success_criteria=[
+        "I can read analog time to the minute.",
+        "I can write the same time in digital form using am or pm.",
+        "I know there are 60 seconds in a minute and 60 minutes in an hour.",
+        "I can find elapsed time using a number line.",
+        "I can score 90% or more on the Quest check.",
+    ],
+    key_vocabulary=["analog", "digital", "hour hand", "minute hand", "second", "minute", "hour", "am", "pm", "quarter past", "quarter to", "elapsed time"],
+    materials=["A real analog clock or a paper clock", "Number line on paper", "Pencil", "Device"],
+    prior_knowledge="Child can read o'clock, half past, quarter past and quarter to.",
+    common_misconceptions=[
+        {"misconception": "The child mixes up the hour hand and the minute hand.", "fix": "The short hand shows the hour. The long hand shows the minutes. Say it aloud each time."},
+        {"misconception": "The child reads 'quarter to 5' as 5:15.", "fix": "Quarter to 5 is 15 minutes before 5, so it is 4:45."},
+        {"misconception": "The child thinks there are 100 minutes in an hour.", "fix": "Use a real clock. One lap of the minute hand is 60 minutes."},
+    ],
+    explicit_teaching="Time is measured in seconds, minutes and hours. 60 seconds = 1 minute, and 60 minutes = 1 hour. On an analog clock the short hand shows the hour and the long hand shows the minutes. Count by fives around the clock face to read minutes: each number is 5 minutes. Digital time shows hours, then a colon, then minutes, such as 4:45. Use am for times from midnight to noon and pm for times from noon to midnight. ELAPSED TIME is how long something takes. Find it by jumping along a number line from the start time to the end time, using hours and minutes.",
+    teach_steps=[
+        {"icon": "🕰️", "title": "Hour and minute hands", "explain": "The short hand points to the hour. The long hand points to the minutes. When the long hand is on 12 it is o'clock, on 3 it is quarter past, on 6 it is half past and on 9 it is quarter to.\n\nTry it: set a clock to half past 4.", "example": "Short hand at 4, long hand at 6 means half past 4, which is 4:30.", "notice": "Long hand = minutes. Short hand = hours.", "check": {"question": "The short hand is on 7 and the long hand is on 3. What time is it?", "options": ["3:07", "7:15", "7:30"], "correct_index": 1, "explanation": "The long hand on 3 is quarter past, so it is 7:15."}},
+        {"icon": "⏱️", "title": "Minutes past and to", "explain": "Count by fives from 12: each number on the clock is 5 more minutes. Up to 30 we say minutes PAST the hour. After 30 we say minutes TO the next hour.\n\nTry it: set a clock to 20 to 6.", "example": "Long hand on 4 is 20 minutes past. Long hand on 8 is 40 minutes past, or 20 minutes to the next hour.", "notice": "Past the hour for the first half. To the next hour for the second half.", "check": {"question": "The long hand is on 9 and the short hand is between 4 and 5. What time is it?", "options": ["quarter to 5", "quarter past 4", "quarter to 4"], "correct_index": 0, "explanation": "Long hand on 9 is quarter to, so it is quarter to 5, or 4:45."}},
+        {"icon": "🔢", "title": "Digital time, am and pm", "explain": "Digital time shows the hour, a colon, then minutes. Minutes under 10 need a zero first. Am is for midnight to noon. Pm is for noon to midnight.\n\nTry it: write twenty past 7 in the morning as a digital time.", "example": "Five past seven in the morning is 7:05 am. Quarter to nine at night is 8:45 pm.", "notice": "5 minutes past is written 05, not just 5.", "check": {"question": "How is 'five past six' written in digital time?", "options": ["6:05", "6:50", "5:06"], "correct_index": 0, "explanation": "Five past six is 6:05."}},
+        {"icon": "⌛", "title": "Seconds, minutes, hours", "explain": "60 seconds = 1 minute. 60 minutes = 1 hour. So 90 minutes is 1 hour and 30 minutes, and 2 hours is 120 minutes.\n\nTry it: time yourself doing 10 jumps with a stopwatch in seconds.", "example": "90 minutes = 60 + 30 = 1 h 30 min. 2 h = 2 x 60 = 120 min.", "notice": "Time uses 60s, not 100s.", "check": {"question": "How many minutes are in 2 hours?", "options": ["100", "120", "200"], "correct_index": 1, "explanation": "2 x 60 = 120 minutes."}},
+        {"icon": "📏", "title": "Elapsed time", "explain": "Draw a number line. Jump from the start to the next hour, then jump whole hours, then jump the leftover minutes. Add the jumps.\n\nTry it: find how long it is from 3:15 to 4:45.", "example": "3:15 to 4:00 is 45 minutes. 4:00 to 4:45 is 45 minutes. Total is 1 h 30 min.", "notice": "Jump to the next hour first. It makes the sum easier.", "check": {"question": "How long is it from 3:15 to 4:00?", "options": ["15 minutes", "45 minutes", "60 minutes"], "correct_index": 1, "explanation": "3:15 to 4:00 is 45 minutes."}},
+    ],
+    worked_example="The clock tower show starts at 5:40 pm and lasts 50 minutes. Jump from 5:40 to 6:00 (20 minutes). 50 - 20 = 30 minutes left. 6:00 + 30 minutes = 6:30 pm. The show ends at 6:30 pm. For elapsed time: 8:15 am to 10:00 am. 8:15 to 9:00 is 45 minutes. 9:00 to 10:00 is 1 hour. Total is 1 h 45 min.",
+    guided_practice="The bells ring at 7:50 am. School starts at 9:00 am. How long is the gap? Draw a number line with two jumps and check your total.",
+    practice_questions=[
+        {"q": "Write quarter past 3 in digital time.", "a": "3:15"},
+        {"q": "Write 20 to 9 in digital time.", "a": "8:40"},
+        {"q": "How many seconds in 3 minutes?", "a": "180"},
+        {"q": "150 minutes in hours and minutes", "a": "2 h 30 min"},
+        {"q": "Elapsed time: 2:30 pm to 4:00 pm", "a": "1 h 30 min"},
+        {"q": "Elapsed time: 9:10 am to 9:55 am", "a": "45 min"},
+    ],
+    hands_on_activity="Clock builder. Make or use a clock with moveable hands. Set it to ten different times that your parent calls out (include quarter past, quarter to and minutes to the hour). Write each in digital time with am or pm. Then time three activities with a stopwatch, such as brushing teeth or packing a bag, and record the seconds and minutes.",
+    independent_task="Plan the Clock Tower's day. Write a timetable with five events (for example Opening, Tour, Lunch, Show, Closing) with start and end times in digital time. Draw an analog clock for the start of two events. For each event, work out how long it lasts using a number line. Finally find the total time from the first start to the last finish.",
+    cross_curricular={"title": "Link idea", "note": "None recorded. Time supports planning and routines across all subjects."},
+    response_prompt="Show each timetable event as a digital time and a number line.",
+    self_check="Did I use the hour hand for hours and the minute hand for minutes? Did I write minutes under 10 with a zero? Does my number line add up?",
+    rubric={"title": "What to look for", "levels": [
+        {"level": "Getting started", "descriptor": "Reads o'clock, half past and quarter times and needs support with minutes and elapsed time."},
+        {"level": "Secure", "descriptor": "Reads times to the minute, writes digital time with am or pm, converts units and finds elapsed time with a number line."},
+        {"level": "Strong", "descriptor": "Solves multi-step timetable problems, explains each jump and checks answers with a second strategy."},
+    ]},
+    interactive_activities=[{"type": "flip_cards", "title": "Quest Codex: key terms", "cards": [
+        {"front": "Analog clock", "back": "A clock with a face and moving hands."},
+        {"front": "Digital clock", "back": "A clock that shows time as numbers, like 4:45."},
+        {"front": "Hour hand", "back": "The short hand. It shows the hour."},
+        {"front": "Minute hand", "back": "The long hand. It shows the minutes."},
+        {"front": "Second", "back": "A small unit of time. 60 seconds = 1 minute."},
+        {"front": "Minute", "back": "60 minutes = 1 hour."},
+        {"front": "am and pm", "back": "am is midnight to noon. pm is noon to midnight."},
+        {"front": "Elapsed time", "back": "How long something takes from start to finish."},
+    ]}],
+    sort_activity={"title": "Morning or afternoon?", "instructions": "Sort each event into am or pm.", "buckets": ["am (midnight to noon)", "pm (noon to midnight)"], "items": [
+        {"text": "Eating breakfast", "answer": 0}, {"text": "Going to bed", "answer": 1}, {"text": "Lunch at school", "answer": 1}, {"text": "Sunrise", "answer": 0},
+        {"text": "After-school snack", "answer": 1}, {"text": "Brushing teeth after waking", "answer": 0}, {"text": "Dinner", "answer": 1}, {"text": "Morning tea", "answer": 0},
+    ]},
+    word_challenges=[
+        {"question": "The short hand on a clock shows the ___.", "options": ["hour", "minute", "second"], "correct_index": 0, "explanation": "The short hand shows the hour."},
+        {"question": "The long hand on a clock shows the ___.", "options": ["minutes", "hour", "date"], "correct_index": 0, "explanation": "The long hand shows the minutes."},
+        {"question": "How long something takes is the ___ time.", "options": ["elapsed", "digital", "analog"], "correct_index": 0, "explanation": "Elapsed time is the time that passes."},
+        {"question": "Times from noon to midnight are labelled ___.", "options": ["pm", "am", "mm"], "correct_index": 0, "explanation": "pm is for noon to midnight."},
+    ],
+    planner_fields=[
+        {"key": "events", "label": "My five events", "hint": "List each event with its start and end times."},
+        {"key": "lengths", "label": "How long each lasts", "hint": "Write the elapsed time for each event."},
+        {"key": "total", "label": "Total time", "hint": "Write the total from first start to last finish."},
+    ],
+    steps=[
+        {"title": "Step 1: Accept the quest", "detail": "Read your mission and accept the quest.", "duration_minutes": 5},
+        {"title": "Step 2: Watch and warm up", "detail": "Watch an ABC Mini Lessons Maths episode on time, then do the clock builder activity.", "duration_minutes": 15},
+        {"title": "Step 3: Learn the skills", "detail": "Five short lessons: hands, minutes past and to, digital time, units and elapsed time.", "duration_minutes": 15},
+        {"title": "Step 4: Practise", "detail": "Flip the key-term cards, sort am and pm, answer word challenges and do the practice questions.", "duration_minutes": 10},
+        {"title": "Step 5: Plan and build", "detail": "Fill in your planner, then complete the independent task on paper.", "duration_minutes": 20},
+        {"title": "Step 6: Clear the Quest check", "detail": "Answer the 10-question Quest check. You need 9 out of 10 to pass.", "duration_minutes": 5},
+        {"title": "Step 7: Hand it in", "detail": "Check your work and submit your evidence.", "duration_minutes": 5},
+    ],
+    resources=[
+        {"type": "video", "title": "ABC Mini Lessons: Maths (series page; choose a time episode for Years 3-4)", "url": MINI_LESSONS, "prompt": "Pick an episode on telling the time. Pause and try each example first."},
+        {"type": "worksheet", "title": "Twinkl Australia: telling the time Year 3 (search)", "url": "https://www.twinkl.com.au/search?q=telling+the+time+year+3", "prompt": "Choose a printable worksheet. Log in to your Twinkl account to download."},
+        {"type": "worksheet", "title": "Twinkl Australia: elapsed time Year 3 (search)", "url": "https://www.twinkl.com.au/search?q=elapsed+time+year+3", "prompt": "Choose a printable worksheet."},
+    ],
+    quiz=[
+        {"question": "How many seconds are in 1 minute?", "type": "multiple_choice", "options": ["10", "60", "100", "30"], "correct_index": 1, "explanation": "60 seconds = 1 minute."},
+        {"question": "How many minutes are in 1 hour?", "type": "multiple_choice", "options": ["24", "60", "100", "30"], "correct_index": 1, "explanation": "60 minutes = 1 hour."},
+        {"question": "The short hand is on 4 and the long hand is on 6. What time is it?", "type": "multiple_choice", "options": ["6:04", "4:30", "6:20", "3:30"], "correct_index": 1, "explanation": "Long hand on 6 is half past, so 4:30."},
+        {"question": "How do you write quarter to 5 in digital time?", "type": "multiple_choice", "options": ["5:15", "4:45", "4:15", "5:45"], "correct_index": 1, "explanation": "Quarter to 5 is 15 minutes before 5, so 4:45."},
+        {"question": "What is 7:05 in words?", "type": "multiple_choice", "options": ["five to seven", "five past seven", "seven past five", "quarter past seven"], "correct_index": 1, "explanation": "7:05 is five minutes past seven."},
+        {"question": "How long is it from 3:15 to 4:00?", "type": "multiple_choice", "options": ["15 minutes", "30 minutes", "45 minutes", "60 minutes"], "correct_index": 2, "explanation": "3:15 to 4:00 is 45 minutes."},
+        {"question": "How long is it from 9:00 am to 10:30 am?", "type": "multiple_choice", "options": ["1 hour", "1 hour 30 minutes", "2 hours", "30 minutes"], "correct_index": 1, "explanation": "9:00 to 10:00 is 1 hour and 10:00 to 10:30 is 30 minutes."},
+        {"question": "90 minutes is the same as ___.", "type": "multiple_choice", "options": ["1 h 9 min", "1 h 30 min", "1 h 90 min", "2 h"], "correct_index": 1, "explanation": "60 + 30 = 90 minutes."},
+        {"question": "How many minutes are in 2 hours?", "type": "multiple_choice", "options": ["100", "120", "200", "60"], "correct_index": 1, "explanation": "2 x 60 = 120 minutes."},
+        {"question": "A movie starts at 5:40 pm and lasts 50 minutes. When does it end?", "type": "multiple_choice", "options": ["6:10 pm", "6:20 pm", "6:30 pm", "6:40 pm"], "correct_index": 2, "explanation": "5:40 plus 20 minutes is 6:00, plus 30 more minutes is 6:30 pm."},
+    ],
+    evidence_instructions="Upload a photo of your timetable with digital times, your two analog clock drawings, number lines for each event and your total time working.",
+    parent_notes="Seven steps, about 75 minutes. Builds from reading hour and minute hands to minutes past and to, digital time with am and pm, unit conversions and elapsed time with a number line. Look for: correct hand roles, a zero before single-digit minutes, 60s not 100s, and clear number-line jumps. Outcomes: MA2-NSM-02 (time) and MAO-WM-01. No cross-curricular outcome recorded. Video resource is a series page: choose one episode.",
+    offline_alternative="Use a real clock and a printed timetable with paper number lines.",
+    extension="Work out the total time spent at school in a day, then find how many minutes that is.",
+    follow_up_challenges=[
+        {"title": "Day in the life", "description": "Record the start and end times of five family activities today and find how long each takes.", "type": "investigation", "difficulty": "medium", "evidence_type": "photo"},
+        {"title": "Beat the clock", "description": "Time three quick tasks with a stopwatch and find the total in seconds, then minutes and seconds.", "type": "create", "difficulty": "medium", "evidence_type": "photo"},
+    ],
+)
+
+
+LESSON_CAPACITY_VOLUME = _common(
+    seed_key="s2-y3-maths-capacity-volume-potion-07",
+    subject="Capacity in litres and millilitres; volume in cubic centimetres",
+    title="The Potion Lab",
+    child_mission="You are the apprentice in a potion lab. Measure each ingredient exactly and build the perfect box to store your bottles.",
+    duration_minutes=75,
+    outcome_codes=["MA2-3DS-02", "MAO-WM-01"],
+    cross_outcome_codes=[],
+    outcome_notes={
+        "MA2-3DS-02": "Primary. Estimates, measures and compares capacity in litres and millilitres, and finds volume by counting cubic centimetre blocks (steps 1-5, quiz 1-10, sort).",
+        "MAO-WM-01": "Working mathematically: estimates and checks with real jugs, explains layers when building prisms (hands-on activity, independent task, rubric).",
+    },
+    learning_intention="We are learning to measure capacity in litres and millilitres and to find volume by counting cubes.",
+    success_criteria=[
+        "I can choose litres or millilitres to measure a container.",
+        "I can read a measuring jug scale.",
+        "I can change between litres and millilitres.",
+        "I can find the volume of a box built from 1 cm cubes.",
+        "I can score 90% or more on the Quest check.",
+    ],
+    key_vocabulary=["capacity", "volume", "litre", "millilitre", "cubic centimetre", "cm3", "layer", "measuring jug", "estimate", "container"],
+    materials=["Measuring jug marked in mL", "Water and containers", "Centimetre cubes (24 or more)", "Paper and pencil", "Device"],
+    prior_knowledge="Child knows a litre is a larger amount than a millilitre and can read a simple scale.",
+    common_misconceptions=[
+        {"misconception": "The child thinks taller containers always hold more.", "fix": "Pour from a tall thin glass to a short wide one. The amount stays the same."},
+        {"misconception": "The child confuses capacity and volume.", "fix": "Capacity is how much a container can hold. Volume is how much space a solid takes up."},
+        {"misconception": "The child counts only the visible cubes when finding volume.", "fix": "Build the box in layers. Count one layer, then multiply by the number of layers."},
+    ],
+    explicit_teaching="CAPACITY is how much a container can hold. We measure capacity in millilitres (mL) and litres (L). 1 L = 1,000 mL. A teaspoon holds about 5 mL, and a bucket holds about 10 L. VOLUME is the amount of space a 3D object takes up. We measure volume in cubic centimetres (cm3). One cube with sides of 1 cm has a volume of 1 cm3. To find the volume of a box built from cubes, count the cubes in one layer and multiply by the number of layers.",
+    teach_steps=[
+        {"icon": "🧪", "title": "Capacity units", "explain": "Use mL for small amounts and L for large amounts. A teaspoon is about 5 mL. A drink bottle is about 1 L. A bathtub holds many litres.\n\nTry it: find three containers at home and choose a unit for each.", "example": "A spoon of cough medicine is 5 mL. A bucket holds about 10 L.", "notice": "Small amounts use mL. Large amounts use L.", "check": {"question": "Which unit is best for the amount in a bathtub?", "options": ["millilitres", "litres", "centimetres"], "correct_index": 1, "explanation": "A bathtub holds a large amount, so litres are best."}},
+        {"icon": "📏", "title": "Reading a jug", "explain": "Find the line the liquid reaches. Check what each mark is worth. Read at eye level.\n\nTry it: pour water to 250 mL and then 500 mL.", "example": "If the marks go up by 100 mL, a level halfway between 200 and 300 is 250 mL.", "notice": "Always work out what each small mark is worth first.", "check": {"question": "A jug has marks every 100 mL. The water is halfway between 400 and 500. How much water?", "options": ["450 mL", "410 mL", "540 mL"], "correct_index": 0, "explanation": "Halfway between 400 and 500 is 450 mL."}},
+        {"icon": "🔄", "title": "Litres and millilitres", "explain": "1 L = 1,000 mL. To change litres to millilitres, multiply by 1,000. Mixed amounts, like 2 L 500 mL, become 2,500 mL.\n\nTry it: write 1 L 250 mL in millilitres.", "example": "3 L = 3,000 mL. 2 L 500 mL = 2,000 + 500 = 2,500 mL.", "notice": "Use the same unit when you compare.", "check": {"question": "2 L 500 mL is how many millilitres?", "options": ["2,500 mL", "2,050 mL", "250 mL"], "correct_index": 0, "explanation": "2,000 mL + 500 mL = 2,500 mL."}},
+        {"icon": "🧊", "title": "What is volume?", "explain": "Volume is the space a solid takes up. A 1 cm cube has a volume of 1 cm3 (one cubic centimetre). Build shapes with cubes and count them.\n\nTry it: build a block 3 cubes long, 2 wide and 1 high.", "example": "A block 3 long and 2 wide is 6 cubes in one layer, so 6 cm3.", "notice": "Volume counts all the cubes, including the ones you cannot see.", "check": {"question": "A box has 6 cubes in each layer and 2 layers. What is the volume?", "options": ["8 cm3", "12 cm3", "6 cm3"], "correct_index": 1, "explanation": "6 x 2 = 12 cubes, so 12 cm3."}},
+        {"icon": "📦", "title": "Volume by layers", "explain": "Count the cubes in one layer: length times width. Then multiply by the number of layers.\n\nTry it: build a box 4 long, 3 wide and 2 high and count the cubes.", "example": "4 x 3 = 12 cubes in one layer. 12 x 2 layers = 24 cubes, so 24 cm3.", "notice": "Layers make counting faster and checks your answer.", "check": {"question": "A box is 4 cubes long, 3 wide and 2 high. What is its volume?", "options": ["9 cm3", "12 cm3", "24 cm3"], "correct_index": 2, "explanation": "4 x 3 x 2 = 24 cm3."}},
+    ],
+    worked_example="The potion needs 2 L 500 mL of water. 2 L = 2,000 mL, so 2 L 500 mL = 2,500 mL. A 250 mL cup is used to fill a jug: 2,500 / 250 = 10 cups. For storage, a box is 3 cubes long, 2 wide and 2 high. One layer has 3 x 2 = 6 cubes. Two layers give 6 x 2 = 12 cubes, so the volume is 12 cm3.",
+    guided_practice="Fill a jug with 750 mL of water using a 250 mL cup. How many cups do you need? Then build a box 2 cubes long, 2 wide and 3 high and find its volume.",
+    practice_questions=[
+        {"q": "4 L in millilitres", "a": "4,000 mL"},
+        {"q": "1,500 mL in litres and millilitres", "a": "1 L 500 mL"},
+        {"q": "Which is more, 1 L or 900 mL?", "a": "1 L"},
+        {"q": "How many 250 mL cups fill 1 L?", "a": "4"},
+        {"q": "Volume of a box 2 x 3 x 2 cubes", "a": "12 cm3"},
+        {"q": "Volume of a box 5 x 2 x 2 cubes", "a": "20 cm3"},
+    ],
+    hands_on_activity="Pour and build. Use a measuring jug to measure out 250 mL, 500 mL and 1 L of water into different containers. Estimate first, then check, and record each estimate and result. Then use cubes to build three different boxes. For each, count one layer, count the layers and record the volume in cm3. Try to build two different boxes with the same volume.",
+    independent_task="Design the Potion Lab shelf. Choose five containers from around the house. Estimate and measure the capacity of each in mL, then order them from smallest to largest. Convert two of them to litres and millilitres. Build a storage box with at least 24 cubes and show its length, width, height and volume. Draw it and explain how you counted the cubes.",
+    cross_curricular={"title": "Link idea", "note": "None recorded. Measuring skills support later Science investigations."},
+    response_prompt="Show your container table, your conversions and your box drawing with the layer count.",
+    self_check="Did I estimate first? Did I read the jug at eye level? Did I count every layer of cubes?",
+    rubric={"title": "What to look for", "levels": [
+        {"level": "Getting started", "descriptor": "Reads simple jug scales and counts visible cubes with support."},
+        {"level": "Secure", "descriptor": "Chooses suitable units, converts between L and mL, and finds volume by counting layers of cubes."},
+        {"level": "Strong", "descriptor": "Estimates accurately, explains the layer method and solves multi-step capacity and volume problems."},
+    ]},
+    interactive_activities=[{"type": "flip_cards", "title": "Quest Codex: key terms", "cards": [
+        {"front": "Capacity", "back": "How much a container can hold."},
+        {"front": "Volume", "back": "The amount of space a solid takes up."},
+        {"front": "Millilitre (mL)", "back": "A small unit of capacity. 1,000 mL = 1 L."},
+        {"front": "Litre (L)", "back": "A larger unit of capacity. 1 L = 1,000 mL."},
+        {"front": "Cubic centimetre (cm3)", "back": "The volume of a cube with 1 cm sides."},
+        {"front": "Layer", "back": "One flat level of cubes in a box."},
+        {"front": "Estimate", "back": "A careful guess before measuring."},
+        {"front": "Measuring jug", "back": "A container with marks that show how much it holds."},
+    ]}],
+    sort_activity={"title": "mL or L?", "instructions": "Sort each container or amount into the best unit.", "buckets": ["Millilitres (mL)", "Litres (L)"], "items": [
+        {"text": "Teaspoon of syrup", "answer": 0}, {"text": "Bucket of water", "answer": 1}, {"text": "Swimming pool", "answer": 1}, {"text": "Eyedropper", "answer": 0},
+        {"text": "Kettle", "answer": 1}, {"text": "Juice box", "answer": 0}, {"text": "Fish tank", "answer": 1}, {"text": "Can of soft drink", "answer": 0},
+    ]},
+    word_challenges=[
+        {"question": "How much a container can hold is its ___.", "options": ["capacity", "mass", "length"], "correct_index": 0, "explanation": "Capacity is measured in mL and L."},
+        {"question": "The space a solid takes up is its ___.", "options": ["volume", "capacity", "perimeter"], "correct_index": 0, "explanation": "Volume is measured in cubic units."},
+        {"question": "1,000 mL is the same as 1 ___.", "options": ["litre", "gram", "metre"], "correct_index": 0, "explanation": "1 L = 1,000 mL."},
+        {"question": "A 1 cm cube has a volume of one ___.", "options": ["cubic centimetre", "litre", "gram"], "correct_index": 0, "explanation": "1 cm3 is the volume of a 1 cm cube."},
+    ],
+    planner_fields=[
+        {"key": "containers", "label": "My five containers", "hint": "List each container and your estimate in mL."},
+        {"key": "order", "label": "Smallest to largest", "hint": "Write the order using measured capacity."},
+        {"key": "box", "label": "My box", "hint": "Write the length, width, height and volume."},
+    ],
+    steps=[
+        {"title": "Step 1: Accept the quest", "detail": "Read your mission and accept the quest.", "duration_minutes": 5},
+        {"title": "Step 2: Watch and warm up", "detail": "Watch an ABC Mini Lessons Maths episode on capacity or volume, then do the pour and build activity.", "duration_minutes": 15},
+        {"title": "Step 3: Learn the skills", "detail": "Five short lessons: capacity units, reading a jug, converting, volume and layers.", "duration_minutes": 15},
+        {"title": "Step 4: Practise", "detail": "Flip the key-term cards, sort mL and L, answer word challenges and do the practice questions.", "duration_minutes": 10},
+        {"title": "Step 5: Plan and build", "detail": "Fill in your planner, then complete the independent task on paper.", "duration_minutes": 20},
+        {"title": "Step 6: Clear the Quest check", "detail": "Answer the 10-question Quest check. You need 9 out of 10 to pass.", "duration_minutes": 5},
+        {"title": "Step 7: Hand it in", "detail": "Check your work and submit your evidence.", "duration_minutes": 5},
+    ],
+    resources=[
+        {"type": "video", "title": "ABC Mini Lessons: Maths (series page; choose a capacity or volume episode for Years 3-4)", "url": MINI_LESSONS, "prompt": "Pick an episode on capacity or volume. Pause and try each example first."},
+        {"type": "worksheet", "title": "Twinkl Australia: capacity litres millilitres Year 3 (search)", "url": "https://www.twinkl.com.au/search?q=capacity+litres+millilitres+year+3", "prompt": "Choose a printable worksheet. Log in to your Twinkl account to download."},
+        {"type": "worksheet", "title": "Twinkl Australia: volume cubic centimetres Year 3 (search)", "url": "https://www.twinkl.com.au/search?q=volume+cubic+centimetres+year+3", "prompt": "Choose a printable worksheet."},
+    ],
+    quiz=[
+        {"question": "Which unit is best for the amount of water in a bathtub?", "type": "multiple_choice", "options": ["millilitres", "litres", "centimetres", "kilograms"], "correct_index": 1, "explanation": "A bathtub holds a large amount, so litres are best."},
+        {"question": "Which unit is best for a teaspoon of cough medicine?", "type": "multiple_choice", "options": ["litres", "millilitres", "metres", "kilograms"], "correct_index": 1, "explanation": "A teaspoon is a small amount, so millilitres are best."},
+        {"question": "1 L is how many millilitres?", "type": "multiple_choice", "options": ["10 mL", "100 mL", "1,000 mL", "10,000 mL"], "correct_index": 2, "explanation": "1 L = 1,000 mL."},
+        {"question": "3 L is how many millilitres?", "type": "multiple_choice", "options": ["300 mL", "3,000 mL", "30 mL", "3,100 mL"], "correct_index": 1, "explanation": "3 x 1,000 = 3,000 mL."},
+        {"question": "2 L 500 mL is the same as ___.", "type": "multiple_choice", "options": ["2,500 mL", "2,050 mL", "250 mL", "25,000 mL"], "correct_index": 0, "explanation": "2,000 mL + 500 mL = 2,500 mL."},
+        {"question": "1,500 mL is the same as ___.", "type": "multiple_choice", "options": ["1 L 500 mL", "1 L 50 mL", "15 L", "150 mL"], "correct_index": 0, "explanation": "1,000 mL is 1 L, so 1,500 mL is 1 L 500 mL."},
+        {"question": "Which is more?", "type": "multiple_choice", "options": ["1 L", "900 mL", "They are the same", "You cannot tell"], "correct_index": 0, "explanation": "1 L = 1,000 mL, which is more than 900 mL."},
+        {"question": "How many 250 mL cups fill a 1 L jug?", "type": "multiple_choice", "options": ["2", "4", "5", "10"], "correct_index": 1, "explanation": "4 x 250 = 1,000 mL, which is 1 L."},
+        {"question": "A box is 3 cubes long, 2 wide and 2 high. What is its volume?", "type": "multiple_choice", "options": ["7 cm3", "10 cm3", "12 cm3", "6 cm3"], "correct_index": 2, "explanation": "3 x 2 x 2 = 12 cm3."},
+        {"question": "A box is 4 cubes long, 3 wide and 2 high. What is its volume?", "type": "multiple_choice", "options": ["9 cm3", "12 cm3", "24 cm3", "48 cm3"], "correct_index": 2, "explanation": "4 x 3 x 2 = 24 cm3."},
+    ],
+    evidence_instructions="Upload a photo of your container table, your litre and millilitre conversions, your cube box and a drawing that shows your layer count and volume.",
+    parent_notes="Seven steps, about 75 minutes. Covers capacity units, reading a jug, converting between L and mL, then volume by counting cubes and layers. Look for: estimates before measures, reading at eye level, correct conversions, and counting hidden cubes. Outcomes: MA2-3DS-02 (capacity and volume) and MAO-WM-01. Video resource is a series page: choose one episode.",
+    offline_alternative="Use real jugs and cups with a printed worksheet. Use sugar cubes, blocks or dice if you do not have centimetre cubes (check the sizes).",
+    extension="Find how many 1 cm cubes fit in a box 5 by 4 by 3. Can you build a different box with the same volume?",
+    follow_up_challenges=[
+        {"title": "Kitchen capacity", "description": "Find five containers in the kitchen, read their labels for capacity and put them in order.", "type": "investigation", "difficulty": "medium", "evidence_type": "photo"},
+        {"title": "Same volume, different box", "description": "Build three boxes with a volume of 24 cm3 and draw them.", "type": "create", "difficulty": "medium", "evidence_type": "photo"},
+    ],
+)
+
+S2Y3_MATHS_LESSONS_4 = [LESSON_TIME, LESSON_CAPACITY_VOLUME]
