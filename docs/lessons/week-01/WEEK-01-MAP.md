@@ -1,6 +1,6 @@
 # Week 1: The Lost Island Expedition
 
-Story: an explorer's journal washes ashore with half its pages missing. Each day the children follow clues, and each lesson is one stop on the map. Both children work alone on their own computers. Oliver is Stage 2 (Year 3), with Mathematics starting at Year 2 level (Stage 1 outcomes). Mason is Stage 4 (Year 7). Outcome codes are those verified earlier; items marked 'check' need the code confirmed before release.
+Story: an explorer's journal washes ashore with half its pages missing. Each day the children follow clues, and each lesson is one stop on the map. Both children work alone on their own computers. Oliver is Stage 2 (Year 3) in every subject. Mason is Stage 4 (Year 7). Outcome codes are those verified earlier; items marked 'check' need the code confirmed before release.
 
 Resource links are marked PENDING until each is found and tested. Do not release a lesson with a pending link.
 
@@ -9,7 +9,7 @@ Resource links are marked PENDING until each is found and tested. Do not release
 | Code | Quest title | Plain title | Outcome |
 |---|---|---|---|
 | S2-W01-D1-L1-ENG | The Map Maker's Clue | Reading for information | EN2-RECOM-01 |
-| S2-W01-D1-L2-MAT | The Counting Cave | Place value to 100 (Stage 1 level) | Stage 1 number outcome (check code) |
+| S2-W01-D1-L2-MAT | The Counting Cave | Representing numbers to 1000 (place value) | MA2-RN-01 (check) |
 | S2-W01-D1-L3-SCI | The Floating Test | Floating and sinking, observing | ST2-SCI-01 (check) |
 | S2-W01-D1-L4-HSI | The Island on the Map | Places and maps | HS2-GEO-01 |
 
