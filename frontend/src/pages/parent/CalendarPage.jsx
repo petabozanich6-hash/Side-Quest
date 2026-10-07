@@ -28,6 +28,8 @@ export default function CalendarPage() {
   const [cur, setCur] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [schedOpen, setSchedOpen] = useState(false);
+  const [dayOpen, setDayOpen] = useState(null);
+  const [saving, setSaving] = useState(false);
   const [filter, setFilter] = useState("");
   const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "lesson", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
 
@@ -39,6 +41,7 @@ export default function CalendarPage() {
     return i < 0 ? "#475569" : COLOURS[i % COLOURS.length];
   };
   const nameOf = (sid) => students.find(s => s.id === sid)?.name;
+  const labelOf = (e) => (e.student_id && nameOf(e.student_id) ? `${nameOf(e.student_id).split(" ")[0]}: ` : "") + e.title;
 
   const month = cur.getMonth(), year = cur.getFullYear();
   const weeks = monthMatrix(year, month);
@@ -48,13 +51,32 @@ export default function CalendarPage() {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (saving) return;
+    const targets = form.student_id ? [form.student_id] : (students.length ? students.map(s => s.id) : [null]);
+    setSaving(true);
     try {
-      await api.post("/calendar", { ...form, duration_minutes: Number(form.duration_minutes), student_id: form.student_id || null, linked_lesson_id: form.linked_lesson_id || null });
-      toast.success("Scheduled"); setOpen(false); load();
-    } catch { toast.error("Failed"); }
+      for (const sid of targets) {
+        let assignmentId = null;
+        if (sid && form.linked_lesson_id) {
+          const a = await api.post("/assignments", { student_id: sid, lesson_id: form.linked_lesson_id, support_level: "green" });
+          assignmentId = a.data?.id || null;
+        }
+        await api.post("/calendar", {
+          ...form,
+          duration_minutes: Number(form.duration_minutes),
+          student_id: sid,
+          linked_lesson_id: form.linked_lesson_id || null,
+          linked_assignment_id: assignmentId,
+        });
+      }
+      toast.success(targets.length > 1 ? `Scheduled for ${targets.length} children` : "Scheduled");
+      setOpen(false); load();
+    } catch { toast.error("Failed. Some entries may already have been added."); load(); }
+    finally { setSaving(false); }
   };
 
   const monthName = cur.toLocaleString("en-AU", { month: "long", year: "numeric" });
+  const dayList = dayOpen ? (eventsByDate[dayOpen] || []) : [];
 
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="calendar-page">
@@ -76,7 +98,7 @@ export default function CalendarPage() {
       {students.length > 0 && (
         <div className="flex flex-wrap gap-3 text-xs">
           {students.map(s => <span key={s.id} className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full" style={{backgroundColor: colourOf(s.id)}}/>{s.name}</span>)}
-          <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-slate-500"/>Whole family</span>
+          <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-slate-500"/>Older whole-family events</span>
         </div>
       )}
 
@@ -105,9 +127,9 @@ export default function CalendarPage() {
                     <div className={`text-xs ${isToday ? "font-bold text-teal-700" : ""}`}>{dt.getDate()}</div>
                     <div className="mt-1 space-y-0.5">
                       {dayEvents.slice(0,3).map(e => (
-                        <div key={e.id} title={`${nameOf(e.student_id) || "Whole family"}: ${e.title}`} className="truncate text-[10px] rounded px-1.5 py-0.5 text-white" style={{backgroundColor: colourOf(e.student_id)}}>{e.title}</div>
+                        <div key={e.id} title={`${nameOf(e.student_id) || "Whole family"}: ${e.title}`} className="truncate text-[10px] rounded px-1.5 py-0.5 text-white" style={{backgroundColor: colourOf(e.student_id)}}>{labelOf(e)}</div>
                       ))}
-                      {dayEvents.length > 3 && <div className="text-[10px] text-slate-500">+{dayEvents.length - 3} more</div>}
+                      {dayEvents.length > 3 && <button type="button" onClick={()=>setDayOpen(iso)} className="text-[10px] text-teal-700 font-semibold underline" data-testid={`more-${iso}`}>+{dayEvents.length - 3} more</button>}
                     </div>
                   </div>
                 );
@@ -118,6 +140,23 @@ export default function CalendarPage() {
       </div>
 
       {schedOpen && <ScheduleModal lessons={lessons} students={students} onClose={()=>setSchedOpen(false)} onDone={load} />}
+
+      {dayOpen && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={()=>setDayOpen(null)}>
+          <div onClick={e=>e.stopPropagation()} className="w-full max-w-md rounded-2xl bg-white p-6 max-h-[80vh] overflow-y-auto" data-testid="day-modal">
+            <div className="flex items-center justify-between mb-4"><h2 className="font-display text-lg font-bold">{dayOpen}</h2><button type="button" onClick={()=>setDayOpen(null)}><X size={18}/></button></div>
+            <div className="space-y-2">
+              {dayList.map(e => (
+                <div key={e.id} className="flex items-center gap-2 text-sm rounded-lg border border-slate-200 px-3 py-2">
+                  <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{backgroundColor: colourOf(e.student_id)}}/>
+                  <span className="font-medium">{nameOf(e.student_id) || "Whole family"}</span>
+                  <span className="text-slate-600 truncate">{e.title}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {open && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={()=>setOpen(false)}>
@@ -135,9 +174,9 @@ export default function CalendarPage() {
                   <option value="parent-review">Parent review</option>
                 </select>
               </L>
-              <L label="Student (optional)">
+              <L label="Child">
                 <select value={form.student_id} onChange={e=>setForm({...form, student_id: e.target.value})} className="input" data-testid="e-student">
-                  <option value="">Family-wide</option>
+                  <option value="">Every child (one entry each)</option>
                   {students.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
               </L>
@@ -149,7 +188,7 @@ export default function CalendarPage() {
               </L>
               <L label="Notes"><textarea rows={2} value={form.notes} onChange={e=>setForm({...form, notes: e.target.value})} className="input" data-testid="e-notes"/></L>
             </div>
-            <button className="mt-5 w-full rounded-full bg-slate-900 py-2.5 text-sm font-semibold text-white" data-testid="submit-event">Schedule</button>
+            <button disabled={saving} className="mt-5 w-full rounded-full bg-slate-900 py-2.5 text-sm font-semibold text-white disabled:opacity-50" data-testid="submit-event">{saving ? "Scheduling\u2026" : "Schedule"}</button>
           </form>
         </div>
       )}
