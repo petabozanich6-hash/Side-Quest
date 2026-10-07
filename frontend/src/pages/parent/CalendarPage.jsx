@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
-import { Plus, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, X, ChevronLeft, ChevronRight, CalendarPlus } from "lucide-react";
+import ScheduleModal, { isoLocal } from "../../components/parent/ScheduleModal";
+
+const COLOURS = ["#0F766E", "#B45309", "#6D28D9", "#BE123C", "#1D4ED8", "#4D7C0F"];
 
 function monthMatrix(year, month) {
   const first = new Date(year, month, 1);
@@ -24,14 +27,24 @@ export default function CalendarPage() {
   const [lessons, setLessons] = useState([]);
   const [cur, setCur] = useState(new Date());
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({ title: "", date: new Date().toISOString().slice(0,10), event_type: "lesson", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
+  const [schedOpen, setSchedOpen] = useState(false);
+  const [filter, setFilter] = useState("");
+  const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "lesson", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
 
   const load = () => api.get("/calendar").then(r => setEvents(r.data));
   useEffect(() => { load(); api.get("/students").then(r=>setStudents(r.data)); api.get("/lessons").then(r=>setLessons(r.data)); }, []);
 
+  const colourOf = (sid) => {
+    const i = students.findIndex(s => s.id === sid);
+    return i < 0 ? "#475569" : COLOURS[i % COLOURS.length];
+  };
+  const nameOf = (sid) => students.find(s => s.id === sid)?.name;
+
   const month = cur.getMonth(), year = cur.getFullYear();
   const weeks = monthMatrix(year, month);
-  const eventsByDate = events.reduce((m, e) => { (m[e.date] = m[e.date] || []).push(e); return m; }, {});
+  const shown = events.filter(e => !filter || e.student_id === filter || !e.student_id);
+  const eventsByDate = shown.reduce((m, e) => { (m[e.date] = m[e.date] || []).push(e); return m; }, {});
+  const todayIso = isoLocal(new Date());
 
   const submit = async (e) => {
     e.preventDefault();
@@ -45,13 +58,27 @@ export default function CalendarPage() {
 
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="calendar-page">
-      <div className="flex items-end justify-between">
+      <div className="flex items-end justify-between gap-4 flex-wrap">
         <div>
           <h1 className="font-display text-3xl font-bold text-slate-900">Family Calendar</h1>
-          <p className="text-sm text-slate-600 mt-1">Plan lessons, assessments, excursions and parent review.</p>
+          <p className="text-sm text-slate-600 mt-1">Each child has their own days. Scheduled lessons show on their side.</p>
         </div>
-        <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
+        <div className="flex items-center gap-2 flex-wrap">
+          <select value={filter} onChange={e=>setFilter(e.target.value)} className="rounded-lg border border-slate-300 px-3 py-2 text-sm" data-testid="cal-filter">
+            <option value="">All children</option>
+            {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+          </select>
+          <button onClick={()=>setSchedOpen(true)} className="rounded-full bg-teal-700 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Schedule lesson</button>
+          <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
+        </div>
       </div>
+
+      {students.length > 0 && (
+        <div className="flex flex-wrap gap-3 text-xs">
+          {students.map(s => <span key={s.id} className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full" style={{backgroundColor: colourOf(s.id)}}/>{s.name}</span>)}
+          <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-slate-500"/>Whole family</span>
+        </div>
+      )}
 
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
         <div className="flex items-center justify-between p-4 border-b border-slate-100">
@@ -70,15 +97,15 @@ export default function CalendarPage() {
             <div key={i} className="grid grid-cols-7 border-b border-slate-100 last:border-0">
               {row.map((dt, j) => {
                 const inMonth = dt.getMonth() === month;
-                const iso = dt.toISOString().slice(0,10);
+                const iso = isoLocal(dt);
                 const dayEvents = eventsByDate[iso] || [];
-                const isToday = iso === new Date().toISOString().slice(0,10);
+                const isToday = iso === todayIso;
                 return (
                   <div key={j} className={`min-h-[88px] p-2 border-r border-slate-100 last:border-0 ${inMonth ? "bg-white" : "bg-slate-50/40 text-slate-400"}`} data-testid={`cal-day-${iso}`}>
                     <div className={`text-xs ${isToday ? "font-bold text-teal-700" : ""}`}>{dt.getDate()}</div>
                     <div className="mt-1 space-y-0.5">
                       {dayEvents.slice(0,3).map(e => (
-                        <div key={e.id} className="truncate text-[10px] rounded px-1.5 py-0.5 bg-teal-50 border border-teal-200 text-teal-900">{e.title}</div>
+                        <div key={e.id} title={`${nameOf(e.student_id) || "Whole family"}: ${e.title}`} className="truncate text-[10px] rounded px-1.5 py-0.5 text-white" style={{backgroundColor: colourOf(e.student_id)}}>{e.title}</div>
                       ))}
                       {dayEvents.length > 3 && <div className="text-[10px] text-slate-500">+{dayEvents.length - 3} more</div>}
                     </div>
@@ -89,6 +116,8 @@ export default function CalendarPage() {
           ))}
         </div>
       </div>
+
+      {schedOpen && <ScheduleModal lessons={lessons} students={students} onClose={()=>setSchedOpen(false)} onDone={load} />}
 
       {open && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={()=>setOpen(false)}>
