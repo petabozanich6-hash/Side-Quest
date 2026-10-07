@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 12
+LESSON_LIBRARY_VERSION = 13
 
 LESSON_LIBRARY = [
     {
@@ -335,6 +335,19 @@ LESSON_LIBRARY = [
 from lesson_library_s2_english_w1_w2 import WEEK_1  # noqa: E402
 
 LESSON_LIBRARY.extend(WEEK_1)
+
+# Week 2 lessons are loaded behind a guard so a mistake in a new lesson file
+# can never stop the app from starting. Failures are logged as warnings.
+try:
+    from lesson_library_s2_english_w02_pilot import LESSONS as _W2_PILOT  # noqa: E402
+    from lesson_library_s2_english_w02_l2_l3 import LESSONS as _W2_L2_L3  # noqa: E402
+
+    LESSON_LIBRARY.extend(_W2_PILOT)
+    LESSON_LIBRARY.extend(_W2_L2_L3)
+except Exception as _exc:  # noqa: BLE001
+    import logging as _logging
+
+    _logging.getLogger("sidequest").warning("Week 2 lessons not loaded: %s", _exc)
 
 
 def _purge_all_lessons_once():
