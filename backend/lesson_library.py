@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 29
+LESSON_LIBRARY_VERSION = 30
 
 # The Cartographer lesson and the old Week 1 lessons have been removed.
 # The library now starts with the former Week 2 lessons, renumbered as Week 1.
@@ -81,6 +81,7 @@ def _register_lessons():
         "lesson_library_s2_english_w03_l3_full",
         "lesson_library_s2_english_w03_l4_full",
         "lesson_library_s2_english_a_wk3",
+        "lesson_library_s2_english_a_wk4",
         "lesson_library_s2_english_w02_l2_l3",
     )
     for module_name in modules:
