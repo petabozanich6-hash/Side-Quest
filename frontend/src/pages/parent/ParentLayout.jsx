@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck } from "lucide-react";
+import { Compass, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 
 const nav = [
@@ -11,6 +11,7 @@ const nav = [
   { to: "/parent/lessons", icon: BookOpen, label: "Lessons", testid: "nav-lessons" },
   { to: "/parent/learning-plans", icon: FileCheck, label: "Learning plans", testid: "nav-plans" },
   { to: "/parent/reading-log", icon: BookOpen, label: "Reading log", testid: "nav-reading" },
+  { to: "/parent/word-hoard", icon: Sparkles, label: "Word Hoard", testid: "nav-word-hoard" },
   { to: "/parent/side-quest", icon: Wand2, label: "Side Quests", testid: "nav-sidequest" },
   { to: "/parent/evidence", icon: Camera, label: "Evidence", testid: "nav-evidence" },
   { to: "/parent/life-learning", icon: Trees, label: "Life learning", testid: "nav-life" },

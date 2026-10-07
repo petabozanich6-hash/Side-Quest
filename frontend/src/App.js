@@ -23,12 +23,14 @@ import LifeLearningPage from "./pages/parent/LifeLearning";
 import LearningPlansPage from "./pages/parent/LearningPlans";
 import ReadingLogPage from "./pages/parent/ReadingLog";
 import ChildOverviewPage from "./pages/parent/ChildOverview";
+import ParentWordHoard from "./pages/parent/WordHoard";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
 import ChildLesson from "./pages/child/ChildLesson";
 import ChildPortfolio from "./pages/child/ChildPortfolio";
 import ChildCalendar from "./pages/child/ChildCalendar";
 import ChildAchievements from "./pages/child/ChildAchievements";
+import ChildWordHoard from "./pages/child/ChildWordHoard";
 import PetRoom from "./pages/child/PetRoom";
 
 function Guard({ role, children }) {
@@ -64,6 +66,7 @@ function Router() {
         <Route path="life-learning" element={<LifeLearningPage />} />
         <Route path="learning-plans" element={<LearningPlansPage />} />
         <Route path="reading-log" element={<ReadingLogPage />} />
+        <Route path="word-hoard" element={<ParentWordHoard />} />
       </Route>
       <Route path="/child" element={<Guard role="child"><ChildLayout /></Guard>}>
         <Route index element={<ChildHome />} />
@@ -71,6 +74,7 @@ function Router() {
         <Route path="portfolio" element={<ChildPortfolio />} />
         <Route path="calendar" element={<ChildCalendar />} />
         <Route path="achievements" element={<ChildAchievements />} />
+        <Route path="word-hoard" element={<ChildWordHoard />} />
         <Route path="room" element={<PetRoom />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
