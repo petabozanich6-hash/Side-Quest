@@ -1,8 +1,9 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 24
+LESSON_LIBRARY_VERSION = 25
 
 # The Cartographer lesson and the old Week 1 lessons have been removed.
 # The library now starts with the former Week 2 lessons, renumbered as Week 1.
+# Plan week 3 lessons are renumbered as Week 2, and so on.
 LESSON_LIBRARY = []
 
 # Phrases that pointed back to earlier learning. This is now the first week,
@@ -31,17 +32,23 @@ def _lesson_dicts_in(module):
 
 
 def _renumber(value):
-    """Rewrite Week 2 labels and seed keys as Week 1, and remove references
-    to earlier learning, throughout a lesson."""
+    """Rewrite plan Week 2 labels and seed keys as Week 1 and plan Week 3 as
+    Week 2, and remove references to earlier learning, throughout a lesson."""
     if isinstance(value, str):
         for old, new in _EXACT_FIXES:
             value = value.replace(old, new)
-        return (
+        value = (
             value.replace("Week 2", "Week 1")
             .replace("week 2", "week 1")
             .replace("-w02-", "-w01-")
             .replace("_w02_", "_w01_")
             .replace("w02", "w01")
+        )
+        return (
+            value.replace("Week 3", "Week 2")
+            .replace("week 3", "week 2")
+            .replace("-w03-", "-w02-")
+            .replace("_w03_", "_w02_")
         )
     if isinstance(value, list):
         return [_renumber(v) for v in value]
@@ -58,7 +65,7 @@ def _renumber(value):
 def _register_lessons():
     """Load the lesson modules one at a time. A problem in one file is
     logged and skipped, so it can never stop the app from starting.
-    The fully taught Lessons 2 and 3 load first so they win over the older versions."""
+    The fully taught lessons load first so they win over the older versions."""
     import importlib
     import logging
 
@@ -69,6 +76,7 @@ def _register_lessons():
         "lesson_library_s2_english_w02_l2_full",
         "lesson_library_s2_english_w02_l3_full",
         "lesson_library_s2_english_w02_l4_full",
+        "lesson_library_s2_english_w03_l1_full",
         "lesson_library_s2_english_w02_l2_l3",
     )
     for module_name in modules:
@@ -81,7 +89,7 @@ def _register_lessons():
                     LESSON_LIBRARY.append(lesson)
                     have.add(lesson["seed_key"])
                     added += 1
-            log.warning("Lesson module %s added %s lessons (renumbered as Week 1)", module_name, added)
+            log.warning("Lesson module %s added %s lessons (renumbered)", module_name, added)
         except Exception as exc:  # noqa: BLE001
             log.warning("Lesson module %s not loaded: %r", module_name, exc)
 
