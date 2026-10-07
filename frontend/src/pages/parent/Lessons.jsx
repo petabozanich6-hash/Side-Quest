@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { Printer, Eye, X, Send, Trash2, ArrowLeft, BookOpen } from "lucide-react";
+import ScheduleModal from "../../components/parent/ScheduleModal";
 
 const YEARS = ["Kindergarten", "Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6", "Year 7", "Year 8", "Year 9", "Year 10"];
 
@@ -40,14 +41,6 @@ export default function LessonsPage() {
     if (!window.confirm("Delete this lesson? Submissions remain for your records.")) return;
     try { await api.delete(`/lessons/${id}`); toast.success("Deleted"); load(); }
     catch (err) { toast.error(err.response?.data?.detail || "Failed"); }
-  };
-
-  const assign = async (studentId, lessonId) => {
-    try {
-      await api.post("/assignments", { student_id: studentId, lesson_id: lessonId, support_level: "green" });
-      toast.success("Assigned");
-      setAssignOpen(null);
-    } catch (err) { toast.error(err.response?.data?.detail || "Failed"); }
   };
 
   const printLesson = (l) => {
@@ -114,21 +107,7 @@ export default function LessonsPage() {
 
       {view && <LessonView lesson={view} onClose={()=>setView(null)} />}
       {assignOpen && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={()=>setAssignOpen(null)}>
-          <div onClick={e=>e.stopPropagation()} className="w-full max-w-sm rounded-2xl bg-white p-6" data-testid="assign-modal">
-            <h3 className="font-display text-lg font-bold">Assign to…</h3>
-            <p className="text-xs text-slate-500 mt-1">{assignOpen.title}</p>
-            <div className="mt-4 space-y-2">
-              {students.map(s => (
-                <button key={s.id} onClick={()=>assign(s.id, assignOpen.id)} className="w-full flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2 hover:border-slate-400" data-testid={`assign-to-${s.id}`}>
-                  <span className="font-medium text-sm">{s.name}</span>
-                  <span className="pill pill-not-started">{s.stage}</span>
-                </button>
-              ))}
-              {students.length === 0 && <p className="text-sm text-slate-500">Add a student first.</p>}
-            </div>
-          </div>
-        </div>
+        <ScheduleModal lesson={assignOpen} students={students} onClose={()=>setAssignOpen(null)} />
       )}
     </div>
   );
