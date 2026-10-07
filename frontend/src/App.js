@@ -27,11 +27,12 @@ import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
 import ChildLesson from "./pages/child/ChildLesson";
 import ChildPortfolio from "./pages/child/ChildPortfolio";
+import ChildCalendar from "./pages/child/ChildCalendar";
 import PetRoom from "./pages/child/PetRoom";
 
 function Guard({ role, children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-stone-500">Loading…</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-stone-500">Loading\u2026</div>;
   if (!user) return <Navigate to="/login" replace />;
   if (role && user.role !== role) return <Navigate to={user.role === "child" ? "/child" : "/parent"} replace />;
   return children;
@@ -67,6 +68,7 @@ function Router() {
         <Route index element={<ChildHome />} />
         <Route path="lesson/:aid" element={<ChildLesson />} />
         <Route path="portfolio" element={<ChildPortfolio />} />
+        <Route path="calendar" element={<ChildCalendar />} />
         <Route path="room" element={<PetRoom />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
