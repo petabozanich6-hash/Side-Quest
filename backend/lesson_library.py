@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 35
+LESSON_LIBRARY_VERSION = 36
 
 # The Cartographer lesson and the old Week 1 lessons have been removed.
 # The library now starts with the former Week 2 lessons, renumbered as Week 1.
@@ -106,6 +106,37 @@ def _register_lessons():
 
 
 _register_lessons()
+
+
+def _register_maths():
+    """Load the Stage 2 Maths modules WITHOUT the _renumber step, which would
+    rewrite the maths w02 seed keys to w01. Week 1 loads from the corrected
+    _fixed module. Add each new maths week module to this tuple.
+    A problem in one file is logged and skipped."""
+    import importlib
+    import logging
+
+    log = logging.getLogger("sidequest")
+    have = {item.get("seed_key") for item in LESSON_LIBRARY}
+    modules = (
+        "lesson_library_s2_maths_w1_fixed",
+        "lesson_library_s2_maths_w2",
+    )
+    for module_name in modules:
+        try:
+            module = importlib.import_module(module_name)
+            added = 0
+            for lesson in _lesson_dicts_in(module):
+                if lesson["seed_key"] not in have:
+                    LESSON_LIBRARY.append(lesson)
+                    have.add(lesson["seed_key"])
+                    added += 1
+            log.warning("Maths module %s added %s lessons", module_name, added)
+        except Exception as exc:  # noqa: BLE001
+            log.warning("Maths module %s not loaded: %r", module_name, exc)
+
+
+_register_maths()
 
 
 def _orphan_cleanup_later():
