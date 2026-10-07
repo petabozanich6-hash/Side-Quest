@@ -1,8 +1,8 @@
 """Stage 2 English, Block A (narrative writing), week 8, lessons 1 to 4.
-Pass 1: full-depth lessons only. Videos are intentionally empty and the module is not yet registered.
-Keys use the prefix a8.
-"""
-from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc
+Pass 2 (video pass): lessons at full depth plus videos for L1, L2 and L3. L4 has no video yet.
+Video ids came from search and must be checked on playback. The module is not yet registered in lesson_library.py.
+Keys use the prefix a8."""
+from lesson_library_s2_english_w1_w2 import build, _q, _step, _video, _sort, _wc
 
 CHECK = "Check your work against the checklist before you submit."
 
@@ -70,7 +70,12 @@ A8L1 = build(
     "Upload a photo of your labelled 6 to 8 sentence scene.",
     "With a parent-chosen narrative, copy two sentences that show point of view. Circle the pronouns and explain whether the narrator is inside or outside the story.",
     [("narrator", "The voice that tells a story."), ("point of view", "The position from which a story is told."), ("first person", "A character tells the story using I, me and my."), ("third person", "A narrator outside the story uses names, he, she, they and related pronouns."), ("pronoun", "A word used instead of a name, such as I, she, they or our."), ("perspective", "A person's particular way of seeing or understanding events.")],
-    [],
+    [
+        _video("Point of View for Kids: First and Third Person", "R9-ONtB1GBY",
+               "Watch how clue words such as I, me and my show first person, and he, she and they show third person. Pause and say which clue words you would use in your own scene.",
+               "If the video does not play, write two sentences about the same event, one with I and one with a character's name, and circle the clue words.",
+               ("Clue words such as I, me and my show which point of view?", ["first person", "third person", "no point of view"], 0, "I, me and my show that a character is telling the story.")),
+    ],
     _sort("Point of view", "Which point of view does each sentence use? Tap a group, then Check.",
           ["First person", "Third person"],
           [("I tucked the key into my pocket.", 0), ("We could hear the rain on the roof.", 0), ("My hands shook as I opened the letter.", 0), ("Mia tucked the key into her pocket.", 1), ("They could hear the rain on the roof.", 1), ("His hands shook as Leo opened the letter.", 1)]),
@@ -157,7 +162,12 @@ A8L2 = build(
     "Upload a photo of the original paragraph, clean copy and two revision notes.",
     "Ask a parent to choose one paragraph from a story you are reading. Find one revision the author might have made: a precise verb, a sensory detail, a reordered sentence or an omitted repeated idea.",
     [("draft", "An early version of writing that can be changed."), ("revise", "To improve the meaning, detail, structure or clarity of writing."), ("edit", "To check and correct how sentences work, including punctuation, grammar and spelling."), ("proofread", "To make a slow final check for small errors."), ("feedback", "Helpful information about what works and what could improve."), ("publish", "To share or present a final version of writing.")],
-    [],
+    [
+        _video("Writing Videos for Kids - REVISION: Revising vs Editing", "nSu0lvaoSOI",
+               "Listen for what revising means and how it is different from editing. Pause and say one thing you could revise in your own draft and one thing you could edit.",
+               "If the video does not play, write one sentence that tells what revising is and one that tells what editing is.",
+               ("Revising means to...", ["see your writing again and improve it", "only fix spelling", "throw the story away"], 0, "Revising means taking another look at the story to make it stronger.")),
+    ],
     _sort("Improve the draft", "Which stage is each action part of? Tap a group, then Check.",
           ["Revise", "Edit", "Proofread"],
           [("Add a detail about the storm.", 0), ("Remove a repeated sentence.", 0), ("Check capital letters.", 1), ("Correct a comma after a fronted clause.", 1), ("Read the neat copy slowly for missed letters.", 2), ("Check every word in the final sentence.", 2)]),
@@ -243,7 +253,12 @@ A8L3 = build(
     "Upload a photo of your six sentences and edited narrative paragraph.",
     "Find one list and one opening clause in a parent-chosen book. Copy each sentence, underline the listed items or opening clause, and explain why the comma is there.",
     [("comma", "A punctuation mark that separates parts inside a sentence."), ("list", "Three or more items named in a sentence."), ("item", "One thing, action or description in a list."), ("clause", "A group of words containing a verb."), ("main clause", "A clause that makes complete sense on its own."), ("subordinate clause", "A clause that adds information but needs a main clause.")],
-    [],
+    [
+        _video("English Lesson: Commas (in lists) for Kids", "t8q2Bx8q4L0",
+               "Watch how a comma separates the items in a list. This video covers lists only, so use step 5 of the lesson for the comma after an opening clause. Pause and say a list sentence of your own.",
+               "If the video does not play, write a sentence that lists four things you would pack for a trip, with commas between the items.",
+               ("A comma in a list is used to...", ["separate the items", "end the sentence", "show a question"], 0, "Commas separate the items in a list.")),
+    ],
     _sort("Comma job", "Why is the comma used in each sentence? Tap a group, then Check.",
           ["List", "Opening clause"],
           [("Mia packed rope, food, water and matches.", 0), ("The cave was cold, wet, narrow and dark.", 0), ("Leo climbed, slipped, grabbed the rail and shouted.", 0), ("When the rain stopped, the path gleamed.", 1), ("Although she was tired, Mia kept rowing.", 1), ("Before the door opened, everyone held their breath.", 1)]),
@@ -281,7 +296,7 @@ A8L4 = build(
     "Some words are used so often that spelling them correctly makes writing much easier to read. These are COMMON WORDS. Many common words follow patterns, but some have a part that does not sound exactly as we expect. That part can make a word TRICKY.\n\nFor example, in 'because', the middle sound can be hard to hear clearly. In 'people', the letters eo do not sound the way they do in many other words. In 'their' and 'there', the words sound alike but have different meanings.\n\nTricky words are not learned by staring at a long list. Good spellers notice the part that is difficult, choose a strategy, practise briefly from memory and use the word in a meaningful sentence. This lesson teaches that process step by step.",
     [
         _step("1", "Common words and tricky parts",
-              "A COMMON WORD is a word we use often in reading and writing. Examples include because, people, friends, different, through, thought, their, there and they're.\n\nA TRICKY WORD has a part that is hard to spell by sound alone. The whole word is not necessarily tricky. Find the small part that needs extra attention.\n\nbecause: say be-cause; notice the a-u in cause.\npeople: say people; notice the e-o in the middle.\nfriends: say friends; notice ie, not ei.\ndifferent: split it dif-fer-ent; notice the double f and the ending ent.\n\nWhen you notice the exact tricky part, your brain has a smaller job. Do not just say, 'I cannot spell it.' Say, 'The tricky part is ___." ,
+              "A COMMON WORD is a word we use often in reading and writing. Examples include because, people, friends, different, through, thought, their, there and they're.\n\nA TRICKY WORD has a part that is hard to spell by sound alone. The whole word is not necessarily tricky. Find the small part that needs extra attention.\n\nbecause: say be-cause; notice the a-u in cause.\npeople: say people; notice the e-o in the middle.\nfriends: say friends; notice ie, not ei.\ndifferent: split it dif-fer-ent; notice the double f and the ending ent.\n\nWhen you notice the exact tricky part, your brain has a smaller job. Do not just say, 'I cannot spell it.' Say, 'The tricky part is ___.'",
               "Mark the tricky part: becAUse, pEOple, frIEnds, diFFerent.",
               "Find the small part that needs special attention.",
               ("Which part of 'different' needs special attention?", ["The double f", "The first d", "The full stop"], 0, "Different has two f letters in the middle.")),
