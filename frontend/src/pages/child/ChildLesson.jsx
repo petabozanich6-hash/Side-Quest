@@ -20,6 +20,7 @@ import {
 import PetCompanion from "../../components/shared/PetCompanion";
 import QuestBanner from "../../components/shared/QuestBanner";
 import QuestQuiz from "../../components/shared/QuestQuiz";
+import TeachStep from "../../components/shared/QuestTeach";
 import {
   RevealCards,
   SortActivity,
@@ -36,6 +37,41 @@ const hasScoredQuiz = (lesson) =>
   (lesson?.quiz || []).some((q) => q.type !== "short_answer");
 
 const CONTINUE_STYLE = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
+
+const shuffled = (arr, isBad) => {
+  let out = arr;
+
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    out = [...arr];
+
+    for (let i = out.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+
+    const same = out.every((item, i) => item === arr[i]);
+
+    if (!same && !(isBad && isBad(out))) return out;
+  }
+
+  return out;
+};
+
+const sortIsPredictable = (items, bucketCount) =>
+  items.every((item, i) => item.answer === i % bucketCount);
+
+const shuffleQuestion = (q) => {
+  const order = shuffled(q.options.map((_, i) => i));
+
+  return {
+    ...q,
+    options: order.map((i) => q.options[i]),
+    correct_index:
+      typeof q.correct_index === "number"
+        ? order.indexOf(q.correct_index)
+        : q.correct_index
+  };
+};
 
 export default function ChildLesson() {
   const { aid } = useParams();
@@ -57,6 +93,8 @@ export default function ChildLesson() {
   const [skipped, setSkipped] = useState({});
   const [current, setCurrent] = useState(0);
   const [open, setOpen] = useState(0);
+  const [sortActivity, setSortActivity] = useState(null);
+  const [wordQsMixed, setWordQsMixed] = useState(null);
 
   const [activeChallenge, setActiveChallenge] = useState(null);
   const [challengeResponse, setChallengeResponse] = useState("");
@@ -67,6 +105,23 @@ export default function ChildLesson() {
 
   useEffect(() => {
     api.get(`/assignments/${aid}`).then((result) => {
+      const lesson = result.data.lesson || {};
+
+      if (lesson.sort_activity?.items?.length) {
+        const bucketCount = (lesson.sort_activity.buckets || []).length || 3;
+
+        setSortActivity({
+          ...lesson.sort_activity,
+          items: shuffled(lesson.sort_activity.items, (list) =>
+            sortIsPredictable(list, bucketCount)
+          )
+        });
+      }
+
+      if (lesson.word_challenges?.length) {
+        setWordQsMixed(shuffled(lesson.word_challenges).map(shuffleQuestion));
+      }
+
       setA(result.data);
 
       if (result.data.status === "not_started") {
@@ -276,14 +331,25 @@ export default function ChildLesson() {
   const flip = (l.interactive_activities || []).find(
     (x) => x.type === "flip_cards"
   );
-  const wordQs = l.word_challenges || [];
+  const teachSteps = l.teach_steps || [];
+  const wordQs = wordQsMixed || l.word_challenges || [];
+  const sortData = sortActivity || l.sort_activity;
   const builder = l.suspense_builder;
   const plannerFields = l.planner_fields || [];
 
   const stages = [
     { key: "accept", icon: "📜", title: "Accept the quest" },
-    { key: "learn", icon: "📖", title: "Learn the map" },
-    l.sort_activity && { key: "sort", icon: "🧩", title: "Spot the structure" },
+    ...teachSteps.map((step, i) => ({
+      key: `teach${i}`,
+      icon: step.icon || "📖",
+      title: `Lesson ${i + 1}: ${step.title}`
+    })),
+    {
+      key: "learn",
+      icon: "🧭",
+      title: teachSteps.length > 0 ? "Put it all together" : "Learn the map"
+    },
+    sortData && { key: "sort", icon: "🧩", title: "Spot the structure" },
     embeds.length > 0 && { key: "watch", icon: "🎬", title: "Watch and notice" },
     (wordQs.length > 0 || builder) && {
       key: "words",
@@ -330,7 +396,7 @@ export default function ChildLesson() {
       case "submit":
         return submitted;
       default:
-        return false;
+        return !!done[key];
     }
   };
 
@@ -370,6 +436,14 @@ export default function ChildLesson() {
           };
 
   const renderBody = (key) => {
+    if (key.startsWith("teach")) {
+      const index = Number(key.replace("teach", ""));
+
+      return (
+        <TeachStep step={teachSteps[index]} onComplete={mark(key)} />
+      );
+    }
+
     switch (key) {
       case "accept":
         return (
@@ -379,6 +453,11 @@ export default function ChildLesson() {
               style={{ color: "#1F3B2D" }}
             >
               {l.child_mission || l.learning_intention}
+            </p>
+
+            <p className="text-sm mt-3 text-stone-700">
+              Don't worry if this is new. You will learn each idea one small
+              step at a time, with an example and a quick try before moving on.
             </p>
 
             {(l.success_criteria || []).length > 0 && (
@@ -424,13 +503,19 @@ export default function ChildLesson() {
       case "learn":
         return (
           <div className="space-y-4">
-            <div className="whitespace-pre-wrap text-sm">
-              {l.explicit_teaching}
-            </div>
+            {teachSteps.length === 0 && (
+              <div className="whitespace-pre-wrap text-sm">
+                {l.explicit_teaching}
+              </div>
+            )}
 
             {l.worked_example && (
               <div className="rounded-lg bg-indigo-50 border border-indigo-200 p-4 text-sm">
-                <div className="font-bold mb-1">Read this example</div>
+                <div className="font-bold mb-1">
+                  {teachSteps.length > 0
+                    ? "Here is a whole story with every part. Read it slowly."
+                    : "Read this example"}
+                </div>
                 {l.worked_example}
               </div>
             )}
@@ -459,9 +544,7 @@ export default function ChildLesson() {
         );
 
       case "sort":
-        return (
-          <SortActivity activity={l.sort_activity} onComplete={mark("sort")} />
-        );
+        return <SortActivity activity={sortData} onComplete={mark("sort")} />;
 
       case "watch":
         return (
@@ -671,7 +754,9 @@ export default function ChildLesson() {
               )}
 
               <span className="text-sm font-bold">
-                {uploading ? "Uploading…" : "Add a photo, recording or PDF of your work"}
+                {uploading
+                  ? "Uploading…"
+                  : "Add a photo, recording or PDF of your work"}
               </span>
             </button>
 
