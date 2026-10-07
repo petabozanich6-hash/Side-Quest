@@ -28,6 +28,7 @@ import ChildHome from "./pages/child/ChildHome";
 import ChildLesson from "./pages/child/ChildLesson";
 import ChildPortfolio from "./pages/child/ChildPortfolio";
 import ChildCalendar from "./pages/child/ChildCalendar";
+import ChildAchievements from "./pages/child/ChildAchievements";
 import PetRoom from "./pages/child/PetRoom";
 
 function Guard({ role, children }) {
@@ -69,6 +70,7 @@ function Router() {
         <Route path="lesson/:aid" element={<ChildLesson />} />
         <Route path="portfolio" element={<ChildPortfolio />} />
         <Route path="calendar" element={<ChildCalendar />} />
+        <Route path="achievements" element={<ChildAchievements />} />
         <Route path="room" element={<PetRoom />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
