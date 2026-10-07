@@ -1,6 +1,7 @@
 """Stage 2 English, Block B (poetry and word play), week 9, lessons 1 to 4.
-Pass 1: lessons at full depth, no videos yet (videos are pass 2). Not yet registered in lesson_library.py.
-Keys use the prefix b9. Poems for reading are chosen by the parent; the example lines here are original."""
+Pass 2 (video pass): lessons at full depth plus videos on every lesson (two each for L1 and L4).
+Video ids came from search. Transcript-checked: lOUnhSMGdOo, 5Mrb6wzbWmM, rQuWqcVzqUU. Still to check on playback: 5hGyLcNBZoM, GYIVwQdlmiw, f9fy4NREF-E.
+Not yet registered in lesson_library.py. Keys use the prefix b9. Poems for reading are chosen by the parent; the example lines here are original."""
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _video, _sort, _wc
 
 CHECK = "Check your work against the checklist before you submit."
@@ -69,7 +70,16 @@ B9L1 = build(
     "Upload a photo of your marked poem and two sentences.",
     "With a parent, choose a short poem you have not seen before. Read it aloud twice, tap the beat, and find the rhyme scheme.",
     [("verse", "A group of lines in a poem, separated from the next group by a space."), ("line", "One row of words in a poem."), ("rhyme", "Words whose ending sounds match."), ("syllable", "One beat of sound in a word."), ("rhythm", "The pattern of strong and weak beats in a line."), ("rhyme scheme", "The pattern of rhymes in a poem, shown with letters such as AABB.")],
-    [],
+    [
+        _video("POEMS for Kids: Characteristics and Elements of Poems", "lOUnhSMGdOo",
+               "Listen for lines, stanzas, rhyme and rhythm. The video says stanza where this lesson says verse, and it also mentions meter, which you do not need to learn yet. Pause and clap the beat of one line.",
+               "If the video does not play, say a four-line poem aloud, clap the beat and name one pair of rhyming words.",
+               ("In a poem, a stanza is the same as a...", ["verse", "syllable", "title"], 0, "A stanza is another word for a verse, a group of lines.")),
+        _video("How to Rhyme: A Poetry Lesson (Kenn Nesbitt)", "5hGyLcNBZoM",
+               "Watch what a rhyme is and what is not a rhyme. Say each rhyming pair aloud and listen to the ending sounds.",
+               "If the video does not play, write three pairs of rhyming words and one pair of words that look alike but do not rhyme.",
+               ("Do two words need the same spelling to rhyme?", ["No, they need matching ending sounds", "Yes, always", "Only if they have the same letters"], 0, "Rhyme is about sound, not spelling.")),
+    ],
     _sort("Rhyme families", "Which rhyming family does each word belong to? Tap a group, then Check.",
           ["-ight", "-ake", "-oon"],
           [("spoon", 2), ("night", 0), ("lake", 1), ("flight", 0), ("soon", 2), ("shake", 1), ("light", 0), ("balloon", 2), ("bake", 1)]),
@@ -155,7 +165,12 @@ B9L2 = build(
     "Upload a photo of your poem, topic web and rhyme bank.",
     "Read your poem to a family member. Ask them to clap the beat while you read, and fix any line where the clapping gets lost.",
     [("topic", "The subject a poem is about."), ("rhyme bank", "A list of rhyming words collected before drafting."), ("draft", "An early version of writing that can be changed."), ("stanza", "A verse; a group of lines in a poem."), ("imagery", "Descriptive language that creates pictures or senses in the reader's mind."), ("revise", "To improve the meaning or sound of writing.")],
-    [],
+    [
+        _video("Writing Poetry for Kids - Episode 6: Rhyming", "5Mrb6wzbWmM",
+               "Watch how a rhyming poem is built: choose a topic, find rhyming words and fit them into lines. Pause and name the rhyme scheme of the example, then think of a rhyming pair for your own topic.",
+               "If the video does not play, choose a topic and write four rhyming words for it. Use two pairs as the end words of a four-line poem.",
+               ("A good way to find a rhyming word is to...", ["run through the alphabet with the ending sound", "pick any word at random", "copy the first line"], 0, "Trying each starting letter with the same ending finds many rhymes.")),
+    ],
     _sort("Weak or strong?", "Is each line weak or strong imagery? Tap a group, then Check.",
           ["Weak", "Strong"],
           [("The rain drummed on the tin roof.", 1), ("It was a wet day.", 0), ("Puddles splashed around my feet.", 1), ("The wind was loud.", 0), ("A big dog was there.", 0), ("The old dog trotted to the gate.", 1)]),
@@ -242,7 +257,12 @@ B9L3 = build(
     "Upload a photo of your sound lines and marked poem.",
     "With a parent, collect ten sound words you hear in one day at home or outside. Write each in a sentence.",
     [("alliteration", "Repeating the same starting sound in words close together."), ("onomatopoeia", "A word that sounds like the noise it names."), ("consonant", "A speech sound made by blocking or narrowing the air, such as b, s or t."), ("sound word", "Another name for an onomatopoeia word, such as buzz or crash."), ("sound device", "A technique a writer uses to play with sound, such as rhyme or alliteration."), ("effect", "What a technique makes the reader hear, see or feel.")],
-    [],
+    [
+        _video("Alliteration and Onomatopoeia Explained for Kids", "GYIVwQdlmiw",
+               "Listen for what alliteration and onomatopoeia mean and how each one sounds. Pause and say one example of each, then think of a sound word you could use in your own poem.",
+               "If the video does not play, write one alliteration line and one sentence with a sound word, then read both aloud.",
+               ("A word that sounds like the noise it names is...", ["onomatopoeia", "alliteration", "a verse"], 0, "Onomatopoeia words imitate sounds, such as buzz and splash.")),
+    ],
     _sort("Sound device", "Which device is shown in each phrase? Tap a group, then Check.",
           ["Alliteration", "Onomatopoeia"],
           [("sizzle and pop", 1), ("big brown bears", 0), ("clang, clang, clang", 1), ("slippery slimy slugs", 0), ("whoosh went the wind", 1), ("tiny tigers tiptoed", 0), ("the kettle hissed", 1), ("wild white waves", 0)]),
@@ -328,7 +348,16 @@ B9L4 = build(
     "Upload a photo of your homophone cards, dictation and proofread paragraph.",
     "Ask a parent for three more homophone pairs. Look each up in a dictionary and write a sentence for each word.",
     [("homophone", "A word that sounds like another word but has a different spelling and meaning."), ("meaning", "What a word or sentence tells you."), ("context", "The words around a word that help show its meaning."), ("strategy", "A plan or method for doing something well."), ("proofread", "To read slowly and check for small mistakes."), ("pair", "Two things that go together, such as two homophones.")],
-    [],
+    [
+        _video("Homophones for Kids: Grammar for Elementary Students", "rQuWqcVzqUU",
+               "Listen for what a homophone is and how the same sound can have different spellings and meanings. This video uses simple examples such as nose and knows, and eight and ate. Pause and say which spelling you would use in a sentence of your own.",
+               "If the video does not play, write three homophone pairs and a sentence for each word.",
+               ("Homophones are words that...", ["sound the same but have different meanings and spellings", "look the same and sound different", "mean the same thing"], 0, "Homophones share a sound but not a spelling or meaning.")),
+        _video("Homophones for Kids (Luke and Rover)", "f9fy4NREF-E",
+               "Watch the pairs of words that sound the same and say each pair aloud. Listen for any of this week's pairs, such as hear and here, or write and right, and pause to say which meaning goes with which spelling.",
+               "If the video does not play, say each of this week's six pairs aloud and give a short meaning for each word.",
+               ("To choose between homophones you should think about...", ["the meaning in the sentence", "only how the word sounds", "how long the word is"], 0, "The meaning tells you which spelling fits.")),
+    ],
     _sort("Choose by meaning", "Which spelling fits each meaning? Tap a group, then Check.",
           ["hear", "here"],
           [("listen with your ears", 0), ("in this place", 1), ("I can ___ the music", 0), ("Come over ___", 1), ("Did you ___ that sound?", 0), ("Put it ___ on the table", 1)]),
