@@ -1,5 +1,6 @@
 """Stage 2 English, Block A (narrative writing), week 7, lessons 1 to 4.
-Pass 1 (rewritten at full depth): lessons only. Videos are empty and the module is not yet registered in lesson_library.py.
+Pass 2 (video pass): lessons at full depth plus videos for L2, L3 and L4. L1 has no video yet.
+Video ids came from search and must be checked on playback. The module is not yet registered in lesson_library.py.
 Keys use the prefix a7."""
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _video, _sort, _wc
 
@@ -157,7 +158,12 @@ A7L2 = build(
     "Pick a short story from a book of your choice and make a story map for it. Check whether it has a planted clue.",
     [("orientation", "The part that introduces character, setting and time."), ("complication", "A new event that makes the problem harder."), ("resolution", "The part where the problem is solved."),
      ("paragraph", "A group of sentences about one idea."), ("plan", "Notes made before writing."), ("scope", "How big or small a story is.")],
-    [],
+    [
+        _video("How to Create a Story Map for Kids: Planning Your Narrative Writing", "lcD6ijirN2g",
+               "Watch how a story map shows the characters, setting and the plot events in the beginning, middle and end. Pause and say what would go in each box of your own story map.",
+               "If the video does not play, make a story map on paper with boxes for characters, setting, beginning, middle and end.",
+               ("A story map shows the characters, the setting and...", ["the plot events", "the spelling words", "the page numbers"], 0, "A story map organises the plot events in the beginning, middle and end.")),
+    ],
     _sort("Which stage?", "Which stage does each line belong to? Tap a group, then Check.",
           ["Orientation", "Complication", "Resolution"],
           [("A foggy harbour at dawn", 0), ("Mia lived in an old lighthouse", 0), ("A storm blew out the lamp", 1), ("The matches were wet", 1), ("Sparks from the flint lit the wick", 2), ("The ships were guided safely home", 2)]),
@@ -244,7 +250,12 @@ A7L3 = build(
     "Find three complex sentences in a book of your choice. Underline the conjunctions, circle the main clauses and say what job each conjunction does.",
     [("clause", "A group of words that contains a verb."), ("conjunction", "A word that joins clauses, such as because or although."), ("main clause", "A clause that makes sense on its own."),
      ("subordinate clause", "A clause that adds information and cannot stand alone."), ("complex sentence", "A sentence with a main clause and at least one subordinate clause."), ("fragment", "A subordinate clause written as if it were a complete sentence.")],
-    [],
+    [
+        _video("What Is a Subordinate Clause? KS2 English Concept for Kids", "qxTTQ8t7OcY",
+               "Watch how a subordinate clause has a subject and a verb but cannot make sense on its own, and how it usually starts with a subordinating conjunction such as if, since, as, when or although. Pause and say your own example.",
+               "If the video does not play, write three main clauses and add a subordinate clause to each using because, when or although.",
+               ("A subordinate clause...", ["cannot make sense on its own", "is always a full sentence", "has no verb"], 0, "It depends on a main clause to make a full sentence.")),
+    ],
     _sort("Conjunction jobs", "What job does each conjunction do? Tap a group, then Check.",
           ["Reason", "Time", "Contrast"],
           [("because", 0), ("since", 0), ("when", 1), ("until", 1), ("although", 2), ("whereas", 2)]),
@@ -331,7 +342,12 @@ A7L4 = build(
     "Look for five more words that end in -ful, -less or -ly in a book of your choice. Split each into base word and suffix and say which rule applies.",
     [("suffix", "Letters added to the end of a word to change its meaning."), ("base word", "The word a suffix is added to."), ("-ful", "A suffix meaning full of."),
      ("-less", "A suffix meaning without."), ("-ly", "A suffix that often makes an adverb."), ("adverb", "A word that tells how, when or where something happens.")],
-    [],
+    [
+        _video("Suffixes ful, less, ly, able | English Grammar for Grade 2 (Kids Academy)", "U_6mfwXe3Bo",
+               "Watch how the suffix -ful means full of, -less means without, and -ly tells how or how often. Pause after each suffix and think of your own word.",
+               "If the video does not play, write one word for each suffix, such as colourful, helpless and quickly, and say what each one means.",
+               ("The suffix -less means...", ["without", "full of", "again"], 0, "-less means without, as in helpless.")),
+    ],
     _sort("Suffix sorter", "Which suffix does each word end with? Tap a group, then Check.",
           ["-ful", "-less", "-ly"],
           [("careful", 0), ("hopeful", 0), ("careless", 1), ("fearless", 1), ("quickly", 2), ("bravely", 2)]),
