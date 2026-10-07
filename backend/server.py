@@ -1762,7 +1762,8 @@ async def startup():
 @app.on_event("shutdown")
 async def shutdown():
     client.close()
-
+import achievements
+achievements.register(api, db, current_user, require_child, new_id, now_iso)
 # Router is included AFTER every route is defined so no endpoint is dropped.
 app.include_router(api)
 _cors = os.environ.get('CORS_ORIGINS', '*').split(',')
