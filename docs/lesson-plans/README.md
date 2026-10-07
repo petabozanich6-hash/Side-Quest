@@ -16,16 +16,20 @@ NESA stages in primary and Years 7-10 span two years. NSW Department sample prog
 | Stage 5 | 9-10 | stage-5.md |
 | Stage 6 | 11-12 | stage-6.md |
 
-Shared primary subject plans: primary-subject-plans.md. English Stage 2 detail: stage-2-english.md. Lesson template: TEMPLATE.md.
+Other documents: primary-subject-plans.md (shared primary plans), stage-2-english.md, outcomes-primary-and-maths-7-10.md (outcome code maps), TEMPLATE.md (lesson template).
 
 ## Status by stage
 
-| Stage | Time plan | Subject focus areas | Left for build time |
-|---|---|---|---|
-| Early Stage 1 to Stage 3 | Settled | Settled for English, Mathematics, PDHPE, Creative Arts; Science and Technology and HSIE by sample unit | Outcome codes, Science and Technology and HSIE unit titles, Stage 1 English focus area check |
-| Stage 4 and Stage 5 | Settled | Not sourced from NESA | Focus areas, term plan and outcome codes per subject, taken from the NESA syllabus when building |
-| Stage 6 | Settled | Not sourced from NESA | Content per course, taken from the NESA course page when building |
+| Stage | Time plan | Focus areas and term plan | Outcome codes | Left for later |
+|---|---|---|---|---|
+| Early Stage 1 | Settled | English, Mathematics, PDHPE, Creative Arts settled; Science and Technology by outcome | English, Mathematics, Science and Technology done | HSIE, PDHPE, Creative Arts codes |
+| Stage 1 | Settled | As above | English, Mathematics, Science and Technology done | HSIE, PDHPE, Creative Arts codes |
+| Stage 2 | Settled | As above plus Stage 2 English term plan | English, Mathematics, Science and Technology done | HSIE, PDHPE, Creative Arts codes |
+| Stage 3 | Settled | English, Mathematics, PDHPE, Creative Arts settled | Not captured | All Stage 3 codes |
+| Stage 4 | Settled | Mathematics structure only | Not captured | All subjects except Mathematics structure |
+| Stage 5 | Settled | Mathematics structure only | Not captured | All subjects except Mathematics structure |
+| Stage 6 | Settled | Not sourced | Not captured | All courses |
 
 The new K-6 Science and Technology, HSIE, PDHPE and Creative Arts syllabuses are implemented from 2027, so primary plans for those follow the 2024 versions.
 
-Sources: NSW Government home schooling guidelines, NESA curriculum pages, NSW Department of Education sample units. Verify against the current syllabus before building lessons.
+Sources: NSW Government home schooling guidelines, NESA NSW Curriculum site, NSW Department of Education sample units. Verify against the current syllabus before building lessons.
