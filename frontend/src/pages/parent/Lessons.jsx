@@ -13,6 +13,7 @@ const STAGES = [
   { name: "Stage 3", years: "Years 5-6" },
   { name: "Stage 4", years: "Years 7-8" },
   { name: "Stage 5", years: "Years 9-10" },
+  { name: "Stage 6", years: "Years 11-12" },
 ];
 
 // Subject cards. A card can carry `m`, a regex tested against a lesson's learning_area; otherwise the
@@ -82,7 +83,57 @@ const SECONDARY_SECTIONS = (stage) => [
   ...(stage === "Stage 5" ? [{ title: "Vocational education (Stage 5)", cards: [card("Vocational Education and Training (VET)", /vet|vocational/i)] }] : []),
 ];
 
-const sectionsFor = (stage) => (/^Stage [45]$/.test(stage || "") ? SECONDARY_SECTIONS(stage) : PRIMARY_SECTIONS);
+// Senior (11-12, Stage 6): courses are specialised. English is the only compulsory subject.
+const STAGE6_SECTIONS = [
+  {
+    title: "English (compulsory)",
+    cards: [card("English Standard"), card("English Advanced"), card("English Studies"), card("English EAL/D"), card("English Extension")],
+  },
+  {
+    title: "Mathematics",
+    cards: [card("Mathematics Standard"), card("Mathematics Advanced"), card("Mathematics Extension 1"), card("Mathematics Extension 2")],
+  },
+  {
+    title: "Science",
+    cards: [card("Biology"), card("Chemistry"), card("Physics"), card("Earth and Environmental Science"), card("Investigating Science"), card("Science Extension")],
+  },
+  {
+    title: "HSIE",
+    cards: [
+      card("Ancient History"), card("Modern History"), card("History Extension"), card("Geography"), card("Business Studies"),
+      card("Economics"), card("Legal Studies"), card("Society and Culture"), card("Studies of Religion"), card("Aboriginal Studies"),
+    ],
+  },
+  {
+    title: "Creative Arts",
+    cards: [card("Dance"), card("Drama"), card("Music 1"), card("Music 2"), card("Music Extension"), card("Visual Arts")],
+  },
+  {
+    title: "PDHPE",
+    cards: [card("PDHPE", /^pdhpe$|^personal development/i), card("Community and Family Studies"), card("Sport, Lifestyle and Recreation Studies")],
+  },
+  {
+    title: "Technology",
+    cards: [
+      card("Agriculture"), card("Design and Technology"), card("Enterprise Computing"), card("Engineering Studies"), card("Food Technology"),
+      card("Industrial Technology"), card("Information Processes and Technology"), card("Software Engineering"), card("Textiles and Design"),
+    ],
+  },
+  {
+    title: "Languages",
+    cards: [card("Modern Languages"), card("Classical Languages"), card("Auslan")],
+  },
+  {
+    title: "Vocational education",
+    cards: [card("Vocational Education and Training (VET)", /vet|vocational/i)],
+  },
+];
+
+const sectionsFor = (stage) => {
+  if (stage === "Stage 6") return STAGE6_SECTIONS;
+  if (stage === "Stage 4" || stage === "Stage 5") return SECONDARY_SECTIONS(stage);
+  return PRIMARY_SECTIONS;
+};
 
 const matchesCard = (l, c) => {
   const a = String(l.learning_area || "").trim();
@@ -99,6 +150,7 @@ const stageForYear = (n) => {
   if (n <= 6) return "Stage 3";
   if (n <= 8) return "Stage 4";
   if (n <= 10) return "Stage 5";
+  if (n <= 12) return "Stage 6";
   return null;
 };
 
