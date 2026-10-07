@@ -1,0 +1,58 @@
+{
+  "code": "S2-MAT-W01-L02",
+  "stage": 2,
+  "subject": "Mathematics",
+  "week": 1,
+  "lesson": 2,
+  "title": "Expanded form and zero as a place holder",
+  "minutes": 45,
+  "outcomes": ["MA2-RN-01"],
+  "warmup": [
+    {"q": "How many hundreds, tens and ones are in 352?", "a": "3 hundreds, 5 tens, 2 ones"},
+    {"q": "Write the number: 8 hundreds, 1 ten, 6 ones.", "a": "816"},
+    {"q": "What is the value of the 4 in 640?", "a": "40"}
+  ],
+  "teach": [
+    {"heading": "Expanded form", "body": "Expanded form shows a number as the sum of its parts. 346 = 300 + 40 + 6. Each part is the value of one digit."},
+    {"heading": "Zero holds a place", "body": "In 407 there are 4 hundreds, 0 tens and 7 ones. The zero holds the tens place so the 4 stays in the hundreds place. Without it, 47 and 407 would look the same."},
+    {"heading": "Expanded form with zeros", "body": "We can leave out parts that are zero. 407 = 400 + 0 + 7, or just 400 + 7. 350 = 300 + 50."},
+    {"heading": "Going backwards", "body": "To turn expanded form back into a number, write each part in its place. 600 + 20 + 5 is 625. 800 + 3 is 803, because there are no tens."}
+  ],
+  "worked_examples": [
+    {"q": "Write 725 in expanded form.", "steps": "7 is in the hundreds place: 700. 2 is in the tens place: 20. 5 is in the ones place: 5.", "a": "700 + 20 + 5"},
+    {"q": "Write 900 + 6 as a number.", "steps": "9 hundreds, no tens, 6 ones.", "a": "906"},
+    {"q": "Which number is 500 + 40?", "steps": "5 hundreds, 4 tens, no ones.", "a": "540"}
+  ],
+  "guided_practice": [
+    {"q": "Write 563 in expanded form.", "hint": "Split into hundreds, tens and ones.", "a": "500 + 60 + 3"},
+    {"q": "Write 608 in expanded form.", "hint": "There are no tens.", "a": "600 + 8"},
+    {"q": "Write 300 + 70 + 1 as a number.", "hint": "Put each part in its place.", "a": "371"},
+    {"q": "Write 400 + 9 as a number.", "hint": "What is in the tens place?", "a": "409"}
+  ],
+  "task": {
+    "instructions": "Complete all parts.",
+    "questions": [
+      "A. Write in expanded form: (a) 842 (b) 760 (c) 905 (d) 118.",
+      "B. Write as a number: (a) 200 + 30 + 4 (b) 700 + 5 (c) 90 + 600 (d) 8 + 40 + 300.",
+      "C. Fix the mistake: Sam wrote 'six hundred and five' as 65. What number should he write? Explain what the zero does.",
+      "D. A mystery number is between 400 and 500. Its tens digit is double its ones digit and its ones digit is 3. What is it?"
+    ],
+    "answers": [
+      "A. 800 + 40 + 2; 700 + 60; 900 + 5; 100 + 10 + 8",
+      "B. 234, 705, 690, 348",
+      "C. 605. The zero holds the tens place so the 6 stays in the hundreds place.",
+      "D. 463"
+    ]
+  },
+  "quiz": [
+    {"q": "300 + 50 + 4 equals", "options": ["354", "345", "3054"], "answer": "354", "explain": "3 hundreds, 5 tens, 4 ones."},
+    {"q": "Which is 800 + 6?", "options": ["86", "806", "860"], "answer": "806", "explain": "No tens, so a zero holds the tens place."},
+    {"q": "270 in expanded form is", "options": ["200 + 70", "20 + 70", "270 + 0"], "answer": "200 + 70", "explain": "2 is in the hundreds place, 7 is in the tens place."},
+    {"q": "The zero in 509 shows there are", "options": ["no hundreds", "no tens", "no ones"], "answer": "no tens", "explain": "The zero is in the tens place."}
+  ],
+  "resources": {
+    "video": "https://www.khanacademy.org/math/early-math/cc-early-math-place-value-topic",
+    "practice": "https://www.khanacademy.org/math/early-math/cc-early-math-place-value-topic/cc-early-math-hundreds/e/hundreds--tens--and-ones",
+    "worksheet": "expanded form cards (to make)"
+  }
+}
