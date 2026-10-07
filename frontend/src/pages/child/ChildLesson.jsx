@@ -38,6 +38,8 @@ const hasScoredQuiz = (lesson) =>
 
 const CONTINUE_STYLE = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
 
+const progressKey = (aid) => `sidequest-progress-${aid}`;
+
 const shuffled = (arr, isBad) => {
   let out = arr;
 
@@ -95,6 +97,7 @@ export default function ChildLesson() {
   const [open, setOpen] = useState(0);
   const [sortActivity, setSortActivity] = useState(null);
   const [wordQsMixed, setWordQsMixed] = useState(null);
+  const [restored, setRestored] = useState(false);
 
   const [activeChallenge, setActiveChallenge] = useState(null);
   const [challengeResponse, setChallengeResponse] = useState("");
@@ -122,7 +125,30 @@ export default function ChildLesson() {
         setWordQsMixed(shuffled(lesson.word_challenges).map(shuffleQuestion));
       }
 
+      try {
+        const raw = window.localStorage.getItem(progressKey(aid));
+
+        if (raw) {
+          const saved = JSON.parse(raw);
+
+          setDone(saved.done || {});
+          setSkipped(saved.skipped || {});
+          setCurrent(saved.current || 0);
+          setOpen(typeof saved.open === "number" ? saved.open : 0);
+          setPlan(saved.plan || {});
+          setResponse(saved.response || "");
+          setPromptAnswer(saved.promptAnswer || "");
+          setReflection(saved.reflection || "");
+          setFiles(saved.files || []);
+          setNeedsHelp(!!saved.needsHelp);
+          setQuizResult(saved.quizResult || null);
+        }
+      } catch {
+        // ignore unreadable saved progress
+      }
+
       setA(result.data);
+      setRestored(true);
 
       if (result.data.status === "not_started") {
         api.put(`/assignments/${aid}/status?status=opened`).catch(() => {});
@@ -133,6 +159,45 @@ export default function ChildLesson() {
       }
     });
   }, [aid]);
+
+  useEffect(() => {
+    if (!restored) return;
+
+    try {
+      window.localStorage.setItem(
+        progressKey(aid),
+        JSON.stringify({
+          done,
+          skipped,
+          current,
+          open,
+          plan,
+          response,
+          promptAnswer,
+          reflection,
+          files,
+          needsHelp,
+          quizResult
+        })
+      );
+    } catch {
+      // storage full or blocked; progress just will not be saved
+    }
+  }, [
+    restored,
+    aid,
+    done,
+    skipped,
+    current,
+    open,
+    plan,
+    response,
+    promptAnswer,
+    reflection,
+    files,
+    needsHelp,
+    quizResult
+  ]);
 
   const mark = (key) => (value) =>
     setDone((d) => (d[key] === value ? d : { ...d, [key]: value }));
