@@ -4,6 +4,7 @@ import uuid
 import logging
 from seed_lessons import CORE_LESSONS
 from lesson_library import LESSON_LIBRARY, LESSON_LIBRARY_VERSION
+from calendar_routes import calendar_query, clean_event_update
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional, Dict, Any
@@ -1376,11 +1377,7 @@ async def approve_resource(rid: str, user=Depends(require_parent)):
 # ----- Calendar -----
 @api.get("/calendar")
 async def list_events(student_id: Optional[str] = None, user=Depends(current_user)):
-    q = {"family_id": user["family_id"]}
-    if user.get("role") == "child":
-        q["student_id"] = user["id"]
-    elif student_id:
-        q["student_id"] = student_id
+    q = calendar_query(user, student_id)
     return await db.calendar_events.find(q, {"_id": 0}).sort("date", 1).to_list(1000)
 
 @api.post("/calendar")
@@ -1456,16 +1453,36 @@ async def export_calendar_ics(student_id: Optional[str] = None, user=Depends(req
         headers={"Content-Disposition": 'attachment; filename="side-quest-learning.ics"'},
     )
 
+@api.put("/calendar/{eid}/done")
+async def mark_event_done(eid: str, done: bool = True, user=Depends(current_user)):
+    """Mark an event done (or undo). Children can only touch their own events."""
+    q = {"id": eid, "family_id": user["family_id"]}
+    if user.get("role") == "child":
+        q["$or"] = [{"student_id": user["id"]}, {"student_id": None}]
+    res = await db.calendar_events.update_one(
+        q,
+        {"$set": {"status": "done" if done else "scheduled",
+                   "completed_at": now_iso() if done else None}},
+    )
+    if res.matched_count == 0:
+        raise HTTPException(404, "Event not found")
+    return {"ok": True, "status": "done" if done else "scheduled"}
+
 @api.put("/calendar/{eid}")
 async def update_event(eid: str, data: dict, user=Depends(require_parent)):
-    data.pop("id", None)
-    data.pop("family_id", None)
-    await db.calendar_events.update_one({"id": eid, "family_id": user["family_id"]}, {"$set": data})
+    update = clean_event_update(data)
+    if not update:
+        raise HTTPException(400, "Nothing to update")
+    res = await db.calendar_events.update_one({"id": eid, "family_id": user["family_id"]}, {"$set": update})
+    if res.matched_count == 0:
+        raise HTTPException(404, "Event not found")
     return await db.calendar_events.find_one({"id": eid, "family_id": user["family_id"]}, {"_id": 0})
 
 @api.delete("/calendar/{eid}")
 async def delete_event(eid: str, user=Depends(require_parent)):
-    await db.calendar_events.delete_one({"id": eid, "family_id": user["family_id"]})
+    res = await db.calendar_events.delete_one({"id": eid, "family_id": user["family_id"]})
+    if res.deleted_count == 0:
+        raise HTTPException(404, "Event not found")
     return {"ok": True}
 
 # ----- Life Learning Evidence (everyday activities, parent-mapped to outcomes) -----
