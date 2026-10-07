@@ -1,13 +1,14 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 36
+LESSON_LIBRARY_VERSION = 37
 
 # All previous lessons have been cleared so the library can be rebuilt from scratch.
-# The old lesson files are still in the repo but are no longer registered.
 # New modules are listed in LESSON_MODULES below as they are written.
-# Renumbering has been removed: lessons now keep the week numbers they are written with.
+# Renumbering has been removed: lessons keep the week numbers they are written with.
 LESSON_LIBRARY = []
 
-LESSON_MODULES = ()
+LESSON_MODULES = (
+    "lesson_library_s2_maths_wk01",
+)
 
 
 def _lesson_dicts_in(module):
