@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 21
+LESSON_LIBRARY_VERSION = 22
 
 # The Cartographer lesson and the old Week 1 lessons have been removed.
 # The library now starts with the former Week 2 lessons, renumbered as Week 1.
@@ -46,19 +46,30 @@ def _renumber(value):
     if isinstance(value, list):
         return [_renumber(v) for v in value]
     if isinstance(value, dict):
-        return {k: _renumber(v) for k, v in value.items()}
+        out = {k: _renumber(v) for k, v in value.items()}
+        question = out.get("question")
+        if isinstance(question, str) and question.startswith("How many n letters are in 'beginning'"):
+            out["correct_index"] = 0
+            out["explanation"] = "beginning is spelt b-e-g-i-n-n-i-n-g, so it has three n letters."
+        return out
     return value
 
 
 def _register_lessons():
-    """Load the former Week 2 modules one at a time. A problem in one file is
-    logged and skipped, so it can never stop the app from starting."""
+    """Load the lesson modules one at a time. A problem in one file is
+    logged and skipped, so it can never stop the app from starting.
+    The fully taught Lesson 2 loads first so it wins over the older version."""
     import importlib
     import logging
 
     log = logging.getLogger("sidequest")
     have = {item.get("seed_key") for item in LESSON_LIBRARY}
-    for module_name in ("lesson_library_s2_english_w02_pilot", "lesson_library_s2_english_w02_l2_l3"):
+    modules = (
+        "lesson_library_s2_english_w02_pilot",
+        "lesson_library_s2_english_w02_l2_full",
+        "lesson_library_s2_english_w02_l2_l3",
+    )
+    for module_name in modules:
         try:
             module = importlib.import_module(module_name)
             added = 0
@@ -122,7 +133,7 @@ def _orphan_cleanup_later():
 
 def _purge_all_lessons_once():
     """One-time cleanup: delete every stored lesson so the old five are gone,
-    then record that it ran. Already run on the live database in v2."""
+    then record that it ran. Already run on the live database in v3."""
     import logging
     import os
     try:
