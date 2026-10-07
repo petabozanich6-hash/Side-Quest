@@ -7,6 +7,7 @@ LESSON_LIBRARY_VERSION = 37
 LESSON_LIBRARY = []
 
 LESSON_MODULES = (
+    "lesson_library_s2_english_w1_w2",
     "lesson_library_s2_english_placeholders",
 )
 
