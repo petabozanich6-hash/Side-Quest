@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 8
+LESSON_LIBRARY_VERSION = 9
 
 LESSON_LIBRARY = [
     {
@@ -12,14 +12,15 @@ LESSON_LIBRARY = [
         "title": "The Cartographer's Last Tale",
         "child_mission": "\U0001F5FA\uFE0F A cartographer has vanished, leaving behind one unfinished map and a story with no ending. Study how stories are built, then write the ending that brings the cartographer home.",
         "duration_minutes": 60,
+        "pass_mark": 0.9,
         "outcome_codes": ["EN2-CWT-01", "EN2-RECOM-01", "EN2-UARL-01", "EN2-VOCAB-01", "EN2-SPELL-01", "EN2-OLC-01"],
         "outcome_notes": {
             "EN2-CWT-01": "Primary outcome. Plans, writes and revises an imaginative narrative (Steps 4-6).",
-            "EN2-RECOM-01": "Reads a model story and identifies its structure: orientation, complication, resolution (Steps 2-3).",
-            "EN2-UARL-01": "Explains how the author builds tension or a feeling, then uses a similar technique in their own story (Steps 3 and 5).",
-            "EN2-VOCAB-01": "Learns and uses precise Tier 2 words such as 'vanished', 'treacherous' and 'cautiously' (Steps 1 and 5).",
-            "EN2-SPELL-01": "Proofreads and explains how they spelled two tricky words (Step 6).",
-            "EN2-OLC-01": "Retells the story aloud to a family member (Step 7)."
+            "EN2-RECOM-01": "Reads a model story and identifies its structure: orientation, complication, resolution (Steps 2-3; quiz questions 1-5).",
+            "EN2-UARL-01": "Explains how the author builds tension or a feeling, then uses a similar technique in their own story (Steps 3 and 5; quiz questions 7-9).",
+            "EN2-VOCAB-01": "Learns and uses precise Tier 2 words such as 'vanished', 'treacherous' and 'cautiously' (Steps 1 and 5; quiz questions 6 and 10).",
+            "EN2-SPELL-01": "Proofreads and explains how they spelled two tricky words (Step 6, assessed through submitted work).",
+            "EN2-OLC-01": "Retells the story aloud to a family member (Step 7, assessed through the Storyteller's Table challenge)."
         },
         "learning_intention": "We are learning to plan and write an imaginative story with a clear beginning, problem and ending, using precise words to build atmosphere.",
         "success_criteria": [
@@ -27,7 +28,8 @@ LESSON_LIBRARY = [
             "I can explain one technique an author uses to build suspense or a feeling.",
             "I can plan a story with a character, a setting, a problem and a solution.",
             "I can write a story ending using at least three precise vocabulary words.",
-            "I can proofread my writing and explain how I spelled two tricky words."
+            "I can proofread my writing and explain how I spelled two tricky words.",
+            "I can score 90% or more on the Quest check."
         ],
         "key_vocabulary": ["orientation", "complication", "resolution", "atmosphere", "vanished", "treacherous", "cautiously", "suspense"],
         "materials": ["Paper or a device for writing", "Pencil and coloured pencils", "A short story to read (provided below, or any adventure story from home)", "A family member to listen at the end"],
@@ -60,7 +62,7 @@ LESSON_LIBRARY = [
             {"title": "\U0001F5FA\uFE0F Step 4: Chart your route", "detail": "Plan your story: character, setting, problem and solution. A simple map or storyboard works well.", "duration_minutes": 10},
             {"title": "\u270D\uFE0F Step 5: Write the tale", "detail": "Write your story. Use three precise words and slow down one moment.", "duration_minutes": 15},
             {"title": "\U0001F6E1\uFE0F Step 6: Proof your work", "detail": "Reread aloud, fix spelling and punctuation, and note how you spelled two tricky words.", "duration_minutes": 5},
-            {"title": "\U0001F3C6 Step 7: Return with the story", "detail": "Read or retell your story to a family member, complete the quiz and upload your evidence.", "duration_minutes": 5}
+            {"title": "\U0001F3C6 Step 7: Clear the Quest check", "detail": "Answer the 10-question Quest check. You need 9 out of 10 to pass. Then retell your story to a family member and upload your evidence.", "duration_minutes": 5}
         ],
         "resources": [
             {
@@ -82,12 +84,8 @@ LESSON_LIBRARY = [
             {
                 "type": "article",
                 "title": "How to create a character for a story (BBC Bitesize)",
-                "url": "https://www.bbc.co.uk/bitesize/articles/zd72scw"
-            },
-            {
-                "type": "practice",
-                "title": "The elements of a story (Khan Academy, Grade 3)",
-                "url": "https://www.khanacademy.org/ela/cc-3rd-reading-vocab/xaf0c1b5d7010608e:cc-3rd-homes"
+                "url": "https://www.bbc.co.uk/bitesize/articles/zd72scw",
+                "prompt": "Optional. Read with a grown-up and pick one idea for your main character."
             }
         ],
         "quiz": [
@@ -96,32 +94,100 @@ LESSON_LIBRARY = [
                 "type": "multiple_choice",
                 "options": ["Resolution", "Orientation", "Complication", "Atmosphere"],
                 "correct_index": 1,
-                "explanation": "The orientation introduces who, where and when."
+                "explanation": "Look at the Quest Codex card for orientation. It tells us who, where and when."
             },
             {
-                "question": "What is a complication?",
+                "question": "What is a complication in a story?",
                 "type": "multiple_choice",
-                "options": ["The ending of the story", "The problem that disrupts the story", "A list of characters", "The title"],
-                "correct_index": 1,
+                "options": ["The ending of the story", "A list of characters", "The problem that disrupts the story", "The title"],
+                "correct_index": 2,
                 "explanation": "The complication is the problem the character has to deal with."
             },
             {
-                "question": "Which word best builds a sense of danger? 'The path was ___.'",
+                "question": "What happens in the resolution of a story?",
                 "type": "multiple_choice",
-                "options": ["nice", "treacherous", "big", "long"],
-                "correct_index": 1,
-                "explanation": "Treacherous suggests hidden danger, which builds atmosphere."
+                "options": ["The problem is introduced", "The characters are described", "We learn where the story is set", "The problem is solved"],
+                "correct_index": 3,
+                "explanation": "The resolution is how the problem is solved at the end."
             },
             {
-                "question": "Describe one way a writer can build suspense.",
-                "type": "short_answer",
-                "sample_answer": "The writer can slow the moment down by describing each small step, such as 'She stepped cautiously onto the bridge, one plank at a time.'",
-                "marking_guide": "Accept any valid technique: slowing the moment, precise words, short sentences, withholding information."
+                "question": "Which sentence is the ORIENTATION of a story?",
+                "type": "multiple_choice",
+                "options": [
+                    "Mira, a young mapmaker, lived in a lighthouse at the edge of the sea.",
+                    "One morning her teacher had vanished.",
+                    "At last she found her teacher safe in a cave.",
+                    "The path was treacherous."
+                ],
+                "correct_index": 0,
+                "explanation": "The orientation introduces the character and the setting."
+            },
+            {
+                "question": "Which sentence shows the COMPLICATION?",
+                "type": "multiple_choice",
+                "options": [
+                    "Long ago, a small village sat beside a quiet river.",
+                    "Suddenly the bridge collapsed and the villagers were trapped.",
+                    "In the end, everyone was rescued and the bridge was rebuilt.",
+                    "Finn loved to draw maps of the village."
+                ],
+                "correct_index": 1,
+                "explanation": "The complication is the sudden problem that disrupts the story."
+            },
+            {
+                "question": "Which word best builds a feeling of hidden danger? 'The path along the cliff was ___.'",
+                "type": "multiple_choice",
+                "options": ["nice", "long", "treacherous", "big"],
+                "correct_index": 2,
+                "explanation": "Treacherous suggests danger that is not obvious at first."
+            },
+            {
+                "question": "What does 'suspense' mean?",
+                "type": "multiple_choice",
+                "options": [
+                    "A funny part of a story",
+                    "The wish to know what happens next",
+                    "The title of a story",
+                    "The last sentence"
+                ],
+                "correct_index": 1,
+                "explanation": "Suspense is the feeling of wanting to know what happens next."
+            },
+            {
+                "question": "Which technique builds suspense by slowing the moment down?",
+                "type": "multiple_choice",
+                "options": [
+                    "She crossed the bridge.",
+                    "She stepped cautiously onto the bridge, one plank at a time.",
+                    "The bridge was there.",
+                    "Bridges are made of wood."
+                ],
+                "correct_index": 1,
+                "explanation": "Describing each small step slows the moment, so the reader feels the danger."
+            },
+            {
+                "question": "Which sentence builds the strongest atmosphere?",
+                "type": "multiple_choice",
+                "options": [
+                    "The cave was dark.",
+                    "A cold, silent darkness swallowed the cave.",
+                    "There was a cave.",
+                    "The cave was a cave."
+                ],
+                "correct_index": 1,
+                "explanation": "Precise words like 'cold', 'silent' and 'swallowed' create a feeling."
+            },
+            {
+                "question": "What does 'cautiously' mean?",
+                "type": "multiple_choice",
+                "options": ["Very fast", "Very loudly", "With great care", "Without looking"],
+                "correct_index": 2,
+                "explanation": "Cautiously means carefully, to avoid danger."
             }
         ],
         "reflection_prompts": ["Which part of your story are you proudest of, and why?", "What would you change if you wrote a second draft?"],
         "evidence_instructions": "Upload a photo or typed copy of your story plan and finished story. Highlight your three precise words and the moment where you built suspense.",
-        "parent_notes": "This quest develops narrative writing (EN2-CWT-01) alongside reading structure (EN2-RECOM-01), how authors shape ideas (EN2-UARL-01), vocabulary (EN2-VOCAB-01), spelling strategies (EN2-SPELL-01) and spoken retelling (EN2-OLC-01). Ask your child to point out the orientation, complication and resolution, and to read the ending aloud. Verify the outcome mapping against the NESA English K-10 syllabus.",
+        "parent_notes": "This quest develops narrative writing (EN2-CWT-01) alongside reading structure (EN2-RECOM-01), how authors shape ideas (EN2-UARL-01), vocabulary (EN2-VOCAB-01), spelling strategies (EN2-SPELL-01) and spoken retelling (EN2-OLC-01). The 10-question Quest check requires 90% (9 out of 10) before work can be submitted, and your child can retry. Ask your child to point out the orientation, complication and resolution, and to read the ending aloud. Verify the outcome mapping against the NESA English K-10 syllabus.",
         "source_note": "Outcome codes are from the NSW English K-10 Syllabus (NESA 2022), Stage 2. Parent to verify alignment against the NESA website.",
         "offline_alternative": "Hand-write the story on paper and draw the route map instead of using a device. The videos can be skipped if the worked example is read aloud.",
         "extension": "Write a second ending in a different mood, such as humorous instead of tense, and compare how word choice changes the atmosphere.",

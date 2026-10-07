@@ -19,10 +19,14 @@ import {
 } from "lucide-react";
 import PetCompanion from "../../components/shared/PetCompanion";
 import QuestBanner from "../../components/shared/QuestBanner";
+import QuestQuiz from "../../components/shared/QuestQuiz";
 import { Leaf } from "../../components/shared/Botanical";
 
 const cleanStepTitle = (title = "") =>
   title.replace(/^(\S+\s)?Step \d+:\s*/, "$1");
+
+const hasScoredQuiz = (lesson) =>
+  (lesson?.quiz || []).some((q) => q.type !== "short_answer");
 
 export default function ChildLesson() {
   const { aid } = useParams();
@@ -37,8 +41,7 @@ export default function ChildLesson() {
   const [needsHelp, setNeedsHelp] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const [quizAnswers, setQuizAnswers] = useState({});
-  const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [quizResult, setQuizResult] = useState(null);
 
   const [activeChallenge, setActiveChallenge] = useState(null);
   const [challengeResponse, setChallengeResponse] = useState("");
@@ -82,7 +85,15 @@ export default function ChildLesson() {
     }
   };
 
+  const quizRequired = hasScoredQuiz(a?.lesson);
+  const quizPassed = !quizRequired || !!quizResult?.passed;
+
   const submit = async () => {
+    if (!quizPassed) {
+      toast.error("Clear the quiz (90% or more) before submitting");
+      return;
+    }
+
     if (!response.trim() && files.length === 0) {
       toast.error("Add a written response or upload your work");
       return;
@@ -90,10 +101,14 @@ export default function ChildLesson() {
 
     setSubmitting(true);
 
+    const quizLine = quizResult
+      ? `[Quiz: ${quizResult.score}/${quizResult.total} (${quizResult.percent}%), attempt ${quizResult.attempt}, PASSED] `
+      : "";
+
     try {
       await api.post("/submissions", {
         assignment_id: aid,
-        response_text: response,
+        response_text: `${quizLine}${response}`,
         reflection,
         file_ids: files.map((file) => file.id),
         needs_help: needsHelp
@@ -236,29 +251,6 @@ export default function ChildLesson() {
             cls: "bg-emerald-50 border-emerald-200 text-emerald-900",
             text: "Green — have a go on your own"
           };
-
-  const multipleChoiceQuestions = (l.quiz || []).filter(
-    (question) => question.type !== "short_answer"
-  );
-
-  const correctMultipleChoiceAnswers = multipleChoiceQuestions.filter(
-    (question) => {
-      const originalIndex = l.quiz.indexOf(question);
-      return quizAnswers[originalIndex] === question.correct_index;
-    }
-  ).length;
-
-  const quizComplete =
-    l.quiz?.length > 0 &&
-    l.quiz.every((question, index) => {
-      const answer = quizAnswers[index];
-
-      if (question.type === "short_answer") {
-        return typeof answer === "string" && answer.trim().length > 0;
-      }
-
-      return typeof answer === "number";
-    });
 
   return (
     <div className="space-y-5 animate-in relative" data-testid="child-lesson">
@@ -470,8 +462,14 @@ export default function ChildLesson() {
                     {resource.title}
                   </div>
 
+                  {resource.prompt && (
+                    <div className="text-xs text-stone-700 mt-1">
+                      {resource.prompt}
+                    </div>
+                  )}
+
                   <div className="text-xs text-stone-600 mt-0.5">
-                    Tap to open
+                    Tap to open with a grown-up
                   </div>
                 </a>
               );
@@ -579,149 +577,13 @@ export default function ChildLesson() {
         )}
       </Step>
 
-      {l.quiz?.length > 0 && (
-        <Step n="9b" title="Quick check">
-          <div className="space-y-4">
-            {l.quiz.map((question, questionIndex) => {
-              const selected = quizAnswers[questionIndex];
-
-              if (question.type === "short_answer") {
-                return (
-                  <div
-                    key={questionIndex}
-                    className="rounded-xl border p-4 bg-white"
-                    style={{ borderColor: "#D4C8A8" }}
-                  >
-                    <p className="font-semibold">
-                      {questionIndex + 1}. {question.question}
-                    </p>
-
-                    <textarea
-                      rows={4}
-                      value={quizAnswers[questionIndex] || ""}
-                      onChange={(event) =>
-                        setQuizAnswers((current) => ({
-                          ...current,
-                          [questionIndex]: event.target.value
-                        }))
-                      }
-                      disabled={quizSubmitted}
-                      placeholder="Type your answer here…"
-                      className="mt-3 w-full rounded-lg border px-3 py-2 text-sm bg-white"
-                      style={{ borderColor: "#D4C8A8" }}
-                    />
-
-                    {quizSubmitted && (
-                      <div className="mt-3 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm text-stone-700">
-                        <p>
-                          <strong>Suggested answer:</strong>{" "}
-                          {question.sample_answer ||
-                            question.explanation ||
-                            "Use the marking guide to review your answer."}
-                        </p>
-
-                        {question.marking_guide && (
-                          <p className="mt-2">
-                            <strong>Check:</strong> {question.marking_guide}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-
-              const options = question.options || [];
-
-              return (
-                <div
-                  key={questionIndex}
-                  className="rounded-xl border p-4 bg-white"
-                  style={{ borderColor: "#D4C8A8" }}
-                >
-                  <p className="font-semibold">
-                    {questionIndex + 1}. {question.question}
-                  </p>
-
-                  <div className="mt-3 space-y-2">
-                    {options.map((option, optionIndex) => {
-                      const isSelected = selected === optionIndex;
-                      const isCorrect =
-                        optionIndex === question.correct_index;
-
-                      let className =
-                        "w-full text-left px-3 py-2 rounded-lg border transition";
-
-                      if (quizSubmitted && isCorrect) {
-                        className +=
-                          " border-green-500 bg-green-50 text-green-800";
-                      } else if (
-                        quizSubmitted &&
-                        isSelected &&
-                        !isCorrect
-                      ) {
-                        className +=
-                          " border-red-500 bg-red-50 text-red-800";
-                      } else if (isSelected) {
-                        className +=
-                          " border-blue-500 bg-blue-50 text-blue-800";
-                      } else {
-                        className +=
-                          " border-stone-200 hover:border-blue-300";
-                      }
-
-                      return (
-                        <button
-                          key={optionIndex}
-                          type="button"
-                          disabled={quizSubmitted}
-                          onClick={() =>
-                            setQuizAnswers((current) => ({
-                              ...current,
-                              [questionIndex]: optionIndex
-                            }))
-                          }
-                          className={className}
-                        >
-                          {option}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {quizSubmitted && question.explanation && (
-                    <p className="mt-2 text-sm text-stone-700">
-                      {question.explanation}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {!quizSubmitted ? (
-            <button
-              type="button"
-              onClick={() => setQuizSubmitted(true)}
-              disabled={!quizComplete}
-              className="mt-4 rounded-full px-5 py-2 text-sm font-bold disabled:opacity-50"
-              style={{ backgroundColor: "#1F3B2D", color: "#F5EFE0" }}
-            >
-              Check my answers
-            </button>
-          ) : (
-            <div className="mt-4 rounded-xl bg-green-50 border border-green-200 p-3 text-green-900">
-              <p className="font-bold">
-                You got {correctMultipleChoiceAnswers} of{" "}
-                {multipleChoiceQuestions.length} multiple-choice questions
-                correct.
-              </p>
-
-              <p className="text-sm mt-2">
-                Check the suggested answer for the written question.
-              </p>
-            </div>
-          )}
+      {quizRequired && (
+        <Step n="9b" title="Quest check (90% to clear)">
+          <QuestQuiz
+            quiz={l.quiz}
+            passMark={l.pass_mark || 0.9}
+            onResult={setQuizResult}
+          />
         </Step>
       )}
 
@@ -815,11 +677,17 @@ export default function ChildLesson() {
           </span>
         </label>
 
+        {!quizPassed && (
+          <p className="text-sm text-amber-900 bg-amber-50 border border-amber-200 rounded-lg p-3">
+            Clear the Quest check above (90% or more) to unlock submitting.
+          </p>
+        )}
+
         <div className="flex items-center gap-3 flex-wrap">
           <button
             type="button"
             onClick={submit}
-            disabled={submitting || submitted}
+            disabled={submitting || submitted || !quizPassed}
             className="rounded-full px-6 py-3 text-sm font-bold hover:translate-y-[-1px] transition disabled:opacity-50 flex items-center gap-2"
             style={{ backgroundColor: "#1F3B2D", color: "#F5EFE0" }}
             data-testid="submit-work"
