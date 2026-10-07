@@ -1,11 +1,14 @@
 """Stage 2 English: 50-week placeholder lessons (200 lessons), generated from one table.
 Source plan: docs/english_s2_scope_and_sequence.md.
 
+The library starts again from scratch: ONLY these placeholders are registered.
+Older lesson files are not registered. lesson_library_s2_english_w1_w2.py is kept
+only because this module imports its build helpers (build, _q, _step).
+
 TO BUILD A WEEK OUT: write a full module for that week (keys may include a name,
 e.g. s2-eng-w02-l1-story-elements), register the module in lesson_library.py
 LESSON_MODULES, and add the week number to BUILT_OUT_WEEKS below. The generator
 then skips that week, so there are no duplicates and nothing else changes.
-Week 1 is already built out in lesson_library_s2_english_w1_w2.py.
 
 SPELLING: every lesson has Step 6 'Spelling', which shows the week's spelling focus.
 Each lesson dict has an empty 'hoard_words' list. Word Hoard wiring is DEFERRED until
@@ -17,7 +20,7 @@ They use the words 'your class novel' and never name a title.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step
 
-BUILT_OUT_WEEKS = {1}
+BUILT_OUT_WEEKS = set()
 NOVEL_WEEKS = {21, 22, 23, 24, 25, 46, 47}
 
 UNITS = {
