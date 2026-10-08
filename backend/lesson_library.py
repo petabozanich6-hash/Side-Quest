@@ -1,14 +1,19 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 70
+LESSON_LIBRARY_VERSION = 71
 
 # All previous lessons have been cleared so the library can be rebuilt from scratch.
-# Finished Stage 4 lesson files named lesson_library_s4_<subject>_wNN_lN.py are found automatically
-# and loaded before the listed modules, so a new finished lesson only needs its own file.
+# Stage 4 lessons only go live when their module name is listed in S4_LIVE below. Every other
+# lesson_library_s4_<subject>_wNN_lN.py file stays in the repo as a build reference but is NOT loaded.
+# To release a finished Stage 4 lesson: add its module name to S4_LIVE and bump LESSON_LIBRARY_VERSION.
 # Other modules are listed in LESSON_MODULES below as they are written.
 # Placeholder lesson sets (lesson_library_*_placeholders.py) are NOT registered here, so they do not
 # appear on the live site. The files stay in the repo as a build reference.
 # Renumbering has been removed: lessons keep the week numbers they are written with.
 LESSON_LIBRARY = []
+
+# Finished Stage 4 lessons that are live. Add one module name per release.
+S4_LIVE = (
+)
 
 LESSON_MODULES = (
     "lesson_library_s2_english_w01_l1",
@@ -41,10 +46,11 @@ def _discover_finished_s4():
     import re
     here = os.path.dirname(os.path.abspath(__file__))
     pattern = re.compile(r"^lesson_library_s4_[a-z_]+_w\d{2}_l\d+\.py$")
+    live = set(S4_LIVE)
     names = []
     for path in sorted(glob.glob(os.path.join(here, "lesson_library_s4_*.py"))):
         base = os.path.basename(path)
-        if pattern.match(base):
+        if pattern.match(base) and base[:-3] in live:
             names.append(base[:-3])
     return tuple(names)
 
