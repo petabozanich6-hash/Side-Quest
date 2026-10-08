@@ -14,13 +14,14 @@ SYLLABUSES (2027 planning basis):
   Life Skills outcomes are deliberately left out.
 
 OUTCOME CODE STATUS.
-  Read on curriculum.nsw.edu.au (Oct 2026): Science (16), PDHPE (8), Technology 7-8 (8), History (8),
-  Geography (7), Visual Arts (6), Music (3), Dance (3), Drama (3).
+  Read on NSW Curriculum / NSW Department of Education pages (Oct 2026): Science (16), PDHPE (8),
+  Technology 7-8 (8), History (8), Geography (7), Visual Arts (6), Music (3), Dance (3), Drama (3),
+  Modern Languages (3), Classical Languages (3), Auslan (4).
   Drama: the wording of all three Stage 4 outcomes was read, but the performing code DR4-PER-01 is
   inferred from the Dance and Music pattern (MAK, PER, APP). Confirm it.
   Mathematics (16 + MAO-WM-01) and English (6) came from NESA-based sources and should be re-checked.
-  The four Languages syllabuses have EMPTY outcome_codes on purpose, because their Stage 4 codes have
-  not been read. See CODES_TO_VERIFY.
+  Aboriginal Languages has EMPTY outcome_codes on purpose, because its Stage 4 codes have not been
+  read. See CODES_TO_VERIFY.
   Which unit uses which codes is a DRAFT mapping, to be refined against NSW sample scope and sequences.
   Science: all eight Working scientifically outcomes are attached to every Science lesson, like MAO-WM-01.
 
@@ -123,12 +124,21 @@ OUTCOMES = {
     "DA4-PER-01": "Performs dance works, demonstrating safe dance practice, dance technique and performance quality",
     "DA4-COM-01": "Creates movements using the elements of dance to communicate an idea and intent",
     "DA4-APP-01": "Describes dance works from a range of contexts using the elements of dance",
+    "ML4-INT-01": "Exchanges information and opinions in a range of familiar contexts by using culturally appropriate language",
+    "ML4-UND-01": "Interprets and responds to information, opinions and ideas in texts to demonstrate understanding",
+    "ML4-CRT-01": "Creates a range of texts for familiar communicative purposes by using culturally appropriate language",
+    "CL4-UND-01": "Interprets and responds to information to demonstrate understanding of a range of predictable texts",
+    "CL4-UND-02": "Translates a range of predictable texts into English",
+    "CL4-ICU-01": "Describes the relationship between contemporary and target languages, culture(s) and identity",
+    "AU4-INT-01": "Exchanges information, opinions and ideas using a range of linguistic structures and protocols appropriate for different audiences",
+    "AU4-UND-01": "Explains how texts represent information, opinions and/or ideas and responds in Auslan and/or English",
+    "AU4-CRE-01": "Creates informative and imaginative texts for different contexts and audiences using a range of linguistic structures",
+    "AU4-RLC-01": "Explains the relationship between language, culture and identity",
 }
 
 CODES_TO_VERIFY = {
     "drama": "DR4-PER-01 is inferred from the naming pattern; wording confirmed",
-    "modern_languages": "Stage 4 codes", "classical_languages": "Stage 4 codes",
-    "aboriginal_languages": "Stage 4 codes", "auslan": "Stage 4 codes",
+    "aboriginal_languages": "Stage 4 codes not read",
 }
 
 _M = ["MA4-INT-C-01", "MA4-FRC-C-01", "MA4-RAT-C-01", "MA4-ALG-C-01", "MA4-IND-C-01", "MA4-EQU-C-01",
@@ -144,6 +154,9 @@ _VA = ["VA4-AMC-01", "VA4-AMV-01", "VA4-AMP-01", "VA4-CHC-01", "VA4-CHV-01", "VA
 _MU = ["MU4-PER-01", "MU4-LIS-01", "MU4-COM-01"]
 _DR = ["DR4-MAK-01", "DR4-PER-01", "DR4-APP-01"]
 _DA = ["DA4-PER-01", "DA4-COM-01", "DA4-APP-01"]
+_ML = ["ML4-INT-01", "ML4-UND-01", "ML4-CRT-01"]
+_CL = ["CL4-UND-01", "CL4-UND-02", "CL4-ICU-01"]
+_AU = ["AU4-INT-01", "AU4-UND-01", "AU4-CRE-01", "AU4-RLC-01"]
 
 # skey: (learning_area, prefix, source, lessons_per_week, units[(first_week, last_week, title, codes)])
 SUBJECTS = {
@@ -209,17 +222,22 @@ SUBJECTS = {
         (1, 17, "Performing", ["DA4-PER-01"]), (18, 34, "Composing", ["DA4-COM-01"]),
         (35, 50, "Appreciating", ["DA4-APP-01"])]),
     "modern_languages": ("Modern Languages", "mlang", "NSW Modern Languages K-10 Syllabus (2022)", 2, [
-        (1, 10, "Introducing myself", []), (11, 20, "Family and friends", []), (21, 30, "School and daily life", []),
-        (31, 40, "Food, places and culture", []), (41, 50, "Review and project", [])]),
+        (1, 10, "Introducing myself", list(_ML)), (11, 20, "Family and friends", list(_ML)),
+        (21, 30, "School and daily life", list(_ML)), (31, 40, "Food, places and culture", list(_ML)),
+        (41, 50, "Review and project", list(_ML))]),
     "classical_languages": ("Classical Languages", "clang", "NSW Classical Languages K-10 Syllabus (2022)", 2, [
-        (1, 12, "Reading and forming Latin", []), (13, 25, "Roman daily life", []),
-        (26, 38, "Myth and stories", []), (39, 50, "The Roman world and review", [])]),
+        (1, 12, "Reading and forming Latin", ["CL4-UND-01", "CL4-UND-02"]),
+        (13, 25, "Roman daily life", ["CL4-UND-01", "CL4-ICU-01"]),
+        (26, 38, "Myth and stories", ["CL4-UND-01", "CL4-UND-02"]),
+        (39, 50, "The Roman world and review", ["CL4-UND-02", "CL4-ICU-01"])]),
     "aboriginal_languages": ("Aboriginal Languages", "alang", "NSW Aboriginal Languages K-10 Syllabus (2022)", 2, [
         (1, 13, "Sounds and greetings", []), (14, 25, "Family and community", []),
         (26, 38, "Country and place", []), (39, 50, "Stories and review", [])]),
     "auslan": ("Auslan", "auslan", "NSW Auslan K-10 Syllabus (2023)", 2, [
-        (1, 10, "Fingerspelling and greetings", []), (11, 25, "Family and identity", []),
-        (26, 38, "Deaf culture and community", []), (39, 50, "Signed texts and review", [])]),
+        (1, 10, "Fingerspelling and greetings", ["AU4-INT-01", "AU4-UND-01"]),
+        (11, 25, "Family and identity", ["AU4-INT-01", "AU4-RLC-01", "AU4-CRE-01"]),
+        (26, 38, "Deaf culture and community", ["AU4-RLC-01", "AU4-UND-01"]),
+        (39, 50, "Signed texts and review", ["AU4-UND-01", "AU4-CRE-01"])]),
 }
 
 CORE_MINUTES = (60, 60, 60, 60, 45)
@@ -294,6 +312,7 @@ if __name__ == "__main__":
         assert set(_l["outcome_codes"]) <= set(OUTCOMES), (_l["seed_key"], "code missing from OUTCOMES")
     for _k, _want in (("maths", _M), ("english", _E), ("science", _SC), ("history", _HI), ("geography", _GE),
                       ("pdhpe", _PH), ("technology", _TE), ("visual_arts", _VA), ("music", _MU),
-                      ("drama", _DR), ("dance", _DA)):
+                      ("drama", _DR), ("dance", _DA), ("modern_languages", _ML),
+                      ("classical_languages", _CL), ("auslan", _AU)):
         assert {c for u in SUBJECTS[_k][4] for c in u[3]} == set(_want), (_k, "codes")
     print("OK: 1800 lessons across 15 subjects")
