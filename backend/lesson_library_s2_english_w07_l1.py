@@ -1,7 +1,8 @@
 """Stage 2 English, Week 7 Lesson 1: Main Idea and Key Details (Reading and comprehension).
 The child learns to find the main idea of an information text and the key details that support it, using a short original passage about honey bees.
 Spelling: the -sion and -ssion endings: decision, television, explosion, permission, discussion, expression.
-Video status: NO VIDEO YET. The scope and sequence says every lesson needs a checked YouTube video. Find one, check its transcript, then add it to the videos list below. Do not register this module in lesson_library.py or add week 7 to BUILT_OUT_WEEKS until the whole week is built.
+Video status: Main Idea | Key Details | 3rd Grade Reading (eSpark, YouTube uRrygEfp9qo) was checked against its transcript. It is a US video: it covers finding the main idea of a paragraph, then supporting details, using a main idea organizer. It runs roughly three and a half minutes. It uses American phrasing (Grade 3, a US state example) and says the main idea tells the topic of the paragraph, which is looser than this lesson's topic versus main idea split. Exact length and playback not confirmed in the app.
+Do not register this module in lesson_library.py or add week 7 to BUILT_OUT_WEEKS until the whole week is built.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -88,7 +89,14 @@ LESSON = build(
     "Type your answers in the practice boxes and submit them.",
     "Extension: choose an advertisement or news story from a magazine. Say its main idea in one sentence and find three key details. Then compare with a family member to see if you agree.",
     [("main idea", "The most important point a text makes about its topic"), ("key detail", "A fact that supports the main idea"), ("topic", "What a text is about in a word or two"), ("paragraph", "A group of sentences about one idea"), ("supporting detail", "A fact that backs up an idea"), ("summary", "A short retelling of the main points in your own words")],
-    [],
+    [
+        _video(
+            "Main Idea | Key Details | 3rd Grade Reading (eSpark)", "uRrygEfp9qo",
+            "Watch a teacher find the main idea of a paragraph, then find the details that support it and place both in a main idea organizer. Listen for how the details describe or explain the main idea. This video comes from the United States, so it says Grade 3 and uses a US example. In Australia this is about Year 3 or 4. Status: transcript checked.",
+            "If the video will not play, reread Steps 2 and 3 and the bee passage.",
+            ("Where does the teacher put the main idea in the organizer?", ["In the middle", "At the very bottom", "She leaves it out"], 0, "In the video, the main idea goes in the middle of the organizer because it is the most important part."),
+        ),
+    ],
     _sort("Topic, main idea or key detail?", "Sort each item into the right group using the bee passage.", ["Topic", "Main idea", "Key detail"], [("Honey bees", 0), ("Honey bees work as a team and people depend on them", 1), ("The queen bee lays the eggs", 2), ("Pollen is carried from flower to flower", 2), ("Bees help plants grow", 1), ("Worker bees collect nectar", 2)]),
     [
         _wc("Which is the most important point of a text?", ["main idea", "title", "glossary"], 0, "The main idea is the most important point."),
