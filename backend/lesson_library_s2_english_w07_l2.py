@@ -1,7 +1,7 @@
 """Stage 2 English, Week 7 Lesson 2: Writing a Classification Paragraph (Writing).
 The child learns that a classification paragraph sorts a topic into groups, then plans and writes one using a model about musical instruments.
 Spelling: more -sion and -ssion words: confusion, occasion, impression, mission, passion, version.
-Video status: NO VIDEO YET. Find one, check its transcript, then add it to the videos list. Do not register this module in lesson_library.py or add week 7 to BUILT_OUT_WEEKS until the whole week is built.
+Video status: NO VIDEO YET. Candidate found but NOT verified: Information Investigation Episode 3, How to Plan and Write an Information Report (YouTube bbV_YFoqu5I). Only the search snippet was seen; the page could not be fetched, so the transcript has not been checked. Check it (or find another) before adding it to the videos list. Do not register this module in lesson_library.py or add week 7 to BUILT_OUT_WEEKS until the whole week is built.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -59,7 +59,7 @@ LESSON = build(
         "Let's look at the model paragraph on the screen. The opening sentence says musical instruments can be sorted into three main groups: strings, wind and percussion. Now I check each group. For strings, the rule is that sound is made by plucking, strumming or using a bow, and the examples are a guitar and a violin. For wind, the rule is that the player blows air, and the examples are a flute and a trumpet. For percussion, the rule is that the instrument is hit, shaken or scraped, and the examples are drums and a tambourine. Each group follows the same order: rule, then examples. The closing sentence says sorting the instruments helps us understand how each makes its sound. Notice that it does not add a fourth group.\n\n" + MODEL
     ),
     (
-        "Type your answers in the practice boxes. Part A: write what classification means in your own words. Part B: sort these into three groups and name each group: apple, carrot, banana, potato, orange, pumpkin. Part C: write an opening sentence for a paragraph about types of transport. Part D: type the correct word for each blank. Choose from confusion, occasion, impression, mission, passion and version. A birthday is a special ___. I made a good ___ on my teacher. There was some ___ about the rules. Your parent can check your answers against the answer key."
+        "Type your answers in the practice boxes. Part A: write what classification means in your own words. Part B: sort these six animals into three groups and name each group: dog, eagle, snake, cat, sparrow, lizard. Part C: write an opening sentence for a paragraph about types of transport. Part D: type the correct word for each blank. Choose from confusion, occasion, impression, mission, passion and version. A birthday is a special ___. I made a good ___ on my teacher. There was some ___ about the rules. Your parent can check your answers against the answer key."
     ),
     (
         "Write your own classification paragraph. Typed answers go in the boxes. Use the model as a guide.\n\n" + MODEL + "\n\n"
@@ -103,7 +103,7 @@ LESSON = build(
     ],
     [
         {"key": "partA", "label": "Part A: classification", "hint": "In your own words, what does classification mean?"},
-        {"key": "partB", "label": "Part B: sort the foods", "hint": "Three groups with a name for each."},
+        {"key": "partB", "label": "Part B: sort the animals", "hint": "Name three groups and put two animals in each: dog, eagle, snake, cat, sparrow, lizard."},
         {"key": "partC", "label": "Part C: opening sentence", "hint": "An opening sentence about types of transport."},
         {"key": "partD", "label": "Part D: -sion and -ssion words", "hint": "Fill the three blanks. Choose from confusion, occasion, impression, mission, passion and version."},
         {"key": "stage1", "label": "My topic", "hint": "A topic you can sort."},
@@ -116,7 +116,7 @@ LESSON = build(
     ],
     ["Choosing a topic that cannot be sorted", "Groups that overlap", "Forgetting examples", "Adding a new group in the closing sentence", "Writing in the past tense"],
     ["Sort the items in a kitchen drawer into groups and name each group.", "Practise your six spelling words by writing a sentence for each."],
-    "Part A: sorting things that are alike into groups. Part B: fruit (apple, banana, orange), vegetables (carrot, potato, pumpkin) and a sensible third name if the child uses a different grouping, such as root vegetables (carrot, potato) and others; accept any sensible, non-overlapping grouping. Part C: accept a sentence such as types of transport can be sorted into three main groups: land, water and air. Part D: occasion, impression, confusion. Main task: accept any sensible topic; two to four non-overlapping groups with a rule each; one or two examples per group; an opening sentence that names the topic and groups; a draft in present tense; a closing sentence that sums up without a new group. Quiz answers: a paragraph that sorts a topic into groups; names the topic and groups; a rule and examples; types of transport; present tense; sum up; fruit; confusion; impression; passion.",
+    "Part A: sorting things that are alike into groups. Part B: mammals (dog, cat), birds (eagle, sparrow), reptiles (snake, lizard). Part C: accept a sentence such as types of transport can be sorted into three main groups: land, water and air. Part D: occasion, impression, confusion. Main task: accept any sensible topic; two to four non-overlapping groups with a rule each; one or two examples per group; an opening sentence that names the topic and groups; a draft in present tense; a closing sentence that sums up without a new group. Quiz answers: a paragraph that sorts a topic into groups; names the topic and groups; a rule and examples; types of transport; present tense; sum up; fruit; confusion; impression; passion.",
 )
 
 LESSON["spelling"] = {
