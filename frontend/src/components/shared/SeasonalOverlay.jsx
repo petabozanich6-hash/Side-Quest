@@ -19,28 +19,32 @@ const CSS = `
 
 export default function SeasonalOverlay() {
   const [packs, setPacks] = useState([]);
+  const [keepsakes, setKeepsakes] = useState([]);
 
   useEffect(() => {
     let alive = true;
     api.get("/seasonal/active")
-      .then(r => { if (alive) setPacks(r.data?.packs || []); })
-      .catch(() => { if (alive) setPacks([]); });
+      .then(r => { if (alive) { setPacks(r.data?.packs || []); setKeepsakes(r.data?.keepsakes || []); } })
+      .catch(() => { if (alive) { setPacks([]); setKeepsakes([]); } });
     return () => { alive = false; };
   }, []);
 
   const claim = async (pack) => {
     try {
       const r = await api.post(`/seasonal/${pack}/claim`);
+      const prize = r.data?.prize;
+      const label = packs.find(p => p.pack === pack)?.label;
       setPacks(ps => ps.map(p => p.pack === pack ? { ...p, claimed: true } : p));
-      toast.success(`You got the ${r.data?.prize?.name || "prize"}!`);
+      if (prize) setKeepsakes(ks => ks.some(k => k.pack === pack) ? ks : [...ks, { pack, label, ...prize }]);
+      toast.success(`You got the ${prize?.name || "prize"}! It's yours to keep.`);
     } catch (e) {
       toast.error(e?.response?.data?.detail || "Try again shortly");
     }
   };
 
-  if (!packs.length) return null;
+  if (!packs.length && !keepsakes.length) return null;
   const decorated = packs.filter(p => p.decorations && THEMES[p.pack]);
-  const prizes = packs.filter(p => p.prize);
+  const claimable = packs.filter(p => p.prize && !p.claimed);
 
   return (
     <>
@@ -63,11 +67,12 @@ export default function SeasonalOverlay() {
           )}
         </div>
       )}
-      {prizes.map((p, i) => p.claimed ? (
-        <span key={`prize-${p.pack}`} className="absolute text-5xl pointer-events-none"
+      {keepsakes.map((k, i) => (
+        <span key={`keep-${k.pack}`} className="absolute text-5xl pointer-events-none"
           style={{ zIndex: 12, bottom: 16, left: "50%", transform: `translateX(${-150 - i * 50}px)` }}
-          title={p.prize.name} data-testid={`prize-${p.pack}`}>{p.prize.emoji}</span>
-      ) : (
+          title={`${k.name} (${k.label})`} data-testid={`prize-${k.pack}`}>{k.emoji}</span>
+      ))}
+      {claimable.map((p, i) => (
         <button key={`claim-${p.pack}`} onClick={() => claim(p.pack)}
           className="absolute rounded-full px-3 py-1.5 text-xs font-bold shadow"
           style={{ zIndex: 20, top: 12 + i * 40, left: 12, backgroundColor: "#1F3B2D", color: "#F5EFE0" }}

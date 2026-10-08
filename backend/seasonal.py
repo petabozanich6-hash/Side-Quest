@@ -2,6 +2,7 @@
 
 Registered from reading_approvals.register, so server.py needs no edit.
 Every pack is OFF by default. Nothing is assumed for any family.
+Claimed prizes are kept by the child permanently.
 """
 from datetime import datetime, date
 from typing import Optional
@@ -91,6 +92,11 @@ def register(api, db, require_child, require_parent, now_iso):
         docs = await db.seasonal_packs.find({"family_id": family_id}, {"_id": 0}).to_list(50)
         return {d["pack"]: d for d in docs}
 
+    async def _keepsakes(student_id) -> list:
+        claims = await db.seasonal_prizes.find({"student_id": student_id}, {"_id": 0, "pack": 1}).to_list(50)
+        got = {c["pack"] for c in claims}
+        return [{"pack": p, "label": PACKS[p]["label"], **PACKS[p]["prize"]} for p in PACKS if p in got]
+
     @api.get("/seasonal")
     async def list_packs(user=Depends(require_parent)):
         cfgs = await _family_configs(_family_parent(user))
@@ -115,8 +121,8 @@ def register(api, db, require_child, require_parent, now_iso):
     @api.get("/seasonal/active")
     async def active_packs(user=Depends(require_child)):
         cfgs = await _family_configs(_family_child(user))
-        claims = await db.seasonal_prizes.find({"student_id": user["id"]}, {"_id": 0, "pack": 1}).to_list(50)
-        claimed = {c["pack"] for c in claims}
+        keepsakes = await _keepsakes(user["id"])
+        claimed = {k["pack"] for k in keepsakes}
         out = []
         for p in PACKS:
             v = _view(p, cfgs.get(p))
@@ -125,7 +131,7 @@ def register(api, db, require_child, require_parent, now_iso):
             out.append({"pack": p, "label": v["label"], "decorations": v["decorations"],
                         "prize": v["prize"] if v["prize_enabled"] else None,
                         "claimed": p in claimed})
-        return {"packs": out}
+        return {"packs": out, "keepsakes": keepsakes}
 
     @api.post("/seasonal/{pack}/claim")
     async def claim_prize(pack: str, user=Depends(require_child)):
