@@ -14,6 +14,25 @@ const STAGES = [
   { code: "S6", name: "Stage 6 (Years 11-12 / HSC)", theme: "senior", years: ["11", "12"] },
 ];
 
+// Used when the server returns no Stage 4 electives. Optional `years` limits an elective to those year levels.
+const S4_ELECTIVES = [
+  { code: "DRAMA-S4", name: "Drama", learning_area: "Creative Arts" },
+  { code: "DANCE-S4", name: "Dance", learning_area: "Creative Arts" },
+  { code: "MUSIC-S4", name: "Music (elective)", learning_area: "Creative Arts" },
+  { code: "VISARTS-S4", name: "Visual Arts (elective)", learning_area: "Creative Arts" },
+  { code: "AGR-S4", name: "Agricultural Technology", learning_area: "Technology" },
+  { code: "DT-S4", name: "Design and Technology", learning_area: "Technology" },
+  { code: "FT-S4", name: "Food Technology", learning_area: "Technology" },
+  { code: "IND-S4", name: "Industrial Technology", learning_area: "Technology" },
+  { code: "IST-S4", name: "Information and Software Technology", learning_area: "Technology" },
+  { code: "TEXT-S4", name: "Textiles Technology", learning_area: "Technology" },
+  { code: "LOTE-S4", name: "Languages", learning_area: "Languages" },
+  { code: "PASS-S4", name: "Physical Activity and Sports Studies", learning_area: "PDHPE" },
+  { code: "HISTE-S4", name: "History Elective", learning_area: "HSIE" },
+  { code: "GEOE-S4", name: "Geography Elective", learning_area: "HSIE" },
+  { code: "COM-S4", name: "Commerce", learning_area: "HSIE", years: ["8"] },
+];
+
 export default function ChildrenPage() {
   const [students, setStudents] = useState([]);
   const [open, setOpen] = useState(false);
@@ -28,9 +47,15 @@ export default function ChildrenPage() {
     const stage = STAGES.find(s => s.code === form.stage);
     setForm(f => ({ ...f, year_level: stage?.years?.[0] || "" }));
     if (["S4","S5","S6"].includes(form.stage)) {
-      api.get(`/curriculum/pattern/${form.stage}`).then(r => setPattern(r.data));
+      api.get(`/curriculum/pattern/${form.stage}`).then(r => {
+        const p = r.data || {};
+        setPattern(form.stage === "S4" && !(p.electives || []).length ? { ...p, electives: S4_ELECTIVES } : p);
+      });
     } else { setPattern(null); setElectives([]); }
   }, [form.stage]);
+
+  const shownElectives = (pattern?.electives || []).filter(e => !e.years || !form.year_level || e.years.includes(form.year_level));
+  const chosen = electives.filter(e => shownElectives.some(x => x.code === e.code));
 
   const toggleElective = (e) => {
     setElectives(cur => cur.find(x => x.code === e.code) ? cur.filter(x => x.code !== e.code) : [...cur, e]);
@@ -41,7 +66,7 @@ export default function ChildrenPage() {
     try {
       const stage = STAGES.find(s => s.code === form.stage);
       const chosenElectives = ["S4","S5","S6"].includes(form.stage)
-        ? [...(pattern?.compulsory || []), ...electives] : [];
+        ? [...(pattern?.compulsory || []), ...chosen] : [];
       await api.post("/students", {
         ...form, theme: stage?.theme,
         birth_year: form.birth_year ? Number(form.birth_year) : null,
@@ -61,7 +86,7 @@ export default function ChildrenPage() {
   };
 
   const currentStage = STAGES.find(s => s.code === form.stage);
-  const totalUnits = [...(pattern?.compulsory || []), ...electives].reduce((n, e) => n + (e.units || 1), 0);
+  const totalUnits = [...(pattern?.compulsory || []), ...chosen].reduce((n, e) => n + (e.units || 1), 0);
 
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="children-page">
@@ -131,11 +156,11 @@ export default function ChildrenPage() {
                       ))}
                     </div>
                   </div>
-                  {pattern.electives?.length > 0 && (
+                  {shownElectives.length > 0 && (
                     <div className="mt-3">
                       <div className="text-[10px] font-bold uppercase tracking-widest text-stone-500">Electives (select as needed)</div>
                       <div className="mt-1 grid grid-cols-1 md:grid-cols-2 gap-1 max-h-56 overflow-y-auto">
-                        {pattern.electives.map((e,i) => {
+                        {shownElectives.map((e,i) => {
                           const sel = electives.find(x => x.code === e.code);
                           return (
                             <button type="button" key={i} onClick={()=>toggleElective(e)} className={`rounded-lg border p-2 text-xs flex items-center gap-2 text-left ${sel ? "" : "bg-white"}`} style={sel ? {backgroundColor:"#F0F4E8", borderColor:"#4A5D3A"} : {borderColor:"#D4C8A8"}} data-testid={`elect-${e.code}`}>
@@ -145,7 +170,7 @@ export default function ChildrenPage() {
                           );
                         })}
                       </div>
-                      <div className="mt-2 text-xs text-stone-600">Selected: {electives.length} elective{electives.length === 1 ? "" : "s"} · Total units planned: {totalUnits}</div>
+                      <div className="mt-2 text-xs text-stone-600">Selected: {chosen.length} elective{chosen.length === 1 ? "" : "s"} · Total units planned: {totalUnits}</div>
                       {pattern.note && <div className="mt-2 text-[11px] text-stone-500 italic">{pattern.note}</div>}
                     </div>
                   )}
