@@ -303,6 +303,16 @@ def _entries(student: dict, plan: dict):
     return out
 
 
+def _focus_goal(first: str, label: str, end_text: str, deepen: bool, interests):
+    s = (
+        f"This period {first}'s main aim in {label} is to build on what they already know and take the next step at a level that suits them, "
+        f"so that by {end_text} there is clear, dated work to show the progress {first} has made."
+    )
+    if deepen:
+        s += f" {label} is also a subject the family has chosen to give extra time and depth for {first}."
+    return s
+
+
 async def build_plan_content(db, plan: dict, student: dict) -> dict:
     stage = student.get("stage") or ""
     stage_label = STAGE_LABEL.get(stage, stage or "their stage")
@@ -310,15 +320,24 @@ async def build_plan_content(db, plan: dict, student: dict) -> dict:
     year_text = f"Year {year}, which is {stage_label}" if year and str(year) != "K" else stage_label
     name = student.get("name") or "the student"
     first = name.split()[0]
+    birth = student.get("birth_year")
+    try:
+        age = datetime.now(timezone.utc).year - int(birth) if birth else None
+    except (TypeError, ValueError):
+        age = None
+    if age is not None and not (3 <= age <= 19):
+        age = None
     interests = [i for i in (plan.get("interests") or []) if i]
     interest_text = _join(interests)
     start, end = plan.get("period_start", ""), plan.get("period_end", "")
+    end_text = _nice_date(end) or "the end of the period"
     weeks = _weeks(start, end)
     approach = (plan.get("teaching_approach") or "").strip()
     notes = (plan.get("notes") or "").strip()
     secondary = stage in SECONDARY
     entries = _entries(student, plan)
     labels = [e[0] for e in entries]
+    deepen_set = {a for a in (plan.get("subject_focus") or [])}
 
     learning_areas = []
     for label, area, words, key in entries:
@@ -326,9 +345,10 @@ async def build_plan_content(db, plan: dict, student: dict) -> dict:
         outs = await _outcomes(db, stage, words) if stage else []
         if not outs and key:
             outs = await _outcomes(db, stage, AREA_MATCH.get(area, [area]))
-        goals = [g.format(n=first) for g in t["goals"]]
+        goals = [_focus_goal(first, label, end_text, label in deepen_set or area in deepen_set, interests)]
+        goals += [g.format(n=first) for g in t["goals"]]
         if key in SUBJECT_GOAL:
-            goals.insert(0, SUBJECT_GOAL[key].format(n=first))
+            goals.insert(1, SUBJECT_GOAL[key].format(n=first))
         for o in outs:
             desc = (o.get("description") or "").strip().rstrip(".")
             goals.append(f"Syllabus link: this work supports the NSW outcome \"{desc}\" ({o['code']}), which {first} is working towards during this period.")
@@ -349,20 +369,25 @@ async def build_plan_content(db, plan: dict, student: dict) -> dict:
     books, minutes = await _reading_summary(db, plan["student_id"], start, end)
     reading_line = (f"{first} has logged {books} reading sessions totalling {minutes} minutes during this period, which is kept as a record of daily reading. " if books else "")
 
+    who = f"{first}" + (f" is {age} years old and" if age else "") + f" is working at {year_text}."
     overview = (
-        f"This learning plan sets out what {first} will learn from {_nice_date(start)} to {_nice_date(end)}, a period of about {weeks} weeks. "
-        f"{first} is working at {year_text}, and the program covers {_join(labels)}. "
-        f"The aim is for {first} to make steady, visible progress in each area, with work that is pitched at the right level and recorded as it is completed. "
+        f"This learning plan sets out what {first} will learn from {_nice_date(start)} to {end_text}, a period of about {weeks} weeks. "
+        f"{who} The program covers {_join(labels)}, and it is pitched at the level {first} is working at now, with room to move faster or slower as the work shows what is needed. "
     )
     if interests:
         overview += (
-            f"{first} is especially interested in {interest_text}, and these interests are woven through the program wherever they fit, "
-            f"because {first} learns best when the work feels meaningful. Every goal remains tied to the NSW syllabus outcomes listed under each area."
+            f"{first} is especially interested in {interest_text}. These interests are woven through the program wherever they fit, "
+            f"because {first} learns best when the work feels meaningful to them. Every goal remains tied to the NSW syllabus outcomes listed under each area."
         )
     else:
         overview += f"Every goal for {first} remains tied to the NSW syllabus outcomes listed under each area."
+    overview += (
+        f"\n\nThe period is planned in three parts. In the opening weeks {first} settles into the routine and any gaps from earlier work are identified and filled. "
+        f"The middle of the period is the main teaching phase, when new skills are introduced and practised in each area. "
+        f"The final weeks are used to revise, finish outstanding projects and gather {first}'s best work, so that {first} can see and show how much has been learned."
+    )
     if notes:
-        overview += f"\n\nParent notes: {notes}"
+        overview += f"\n\nA note from {first}'s parent: {notes}"
 
     philosophy = (
         f"We believe {first} learns best when the work is structured, clear and matched to where they are up to, and when it connects to real life. "
@@ -412,7 +437,7 @@ async def build_plan_content(db, plan: dict, student: dict) -> dict:
         "assessor_notes": (
             f"{reading_line}Evidence of {first}'s learning in each area is available to look at during the visit, including the reading log, lesson "
             f"results, work samples and photos. This plan was prepared by {first}'s parent using the NSW syllabus outcomes for "
-            f"{stage_label}, and reflects what {first} is working on at present."
+            f"{stage_label}, and reflects what {first} is working on at present. {first}'s parent is happy to talk through any part of it."
         ),
         "generated_by": "template",
         "generated_at": datetime.now(timezone.utc).isoformat(),
