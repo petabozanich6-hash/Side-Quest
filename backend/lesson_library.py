@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 64
+LESSON_LIBRARY_VERSION = 65
 
 # All previous lessons have been cleared so the library can be rebuilt from scratch.
 # New modules are listed in LESSON_MODULES below as they are written.
@@ -12,8 +12,10 @@ LESSON_MODULES = (
     "lesson_library_s2_english_w03_l1", "lesson_library_s2_english_w03_l2", "lesson_library_s2_english_w03_l3", "lesson_library_s2_english_w03_l4",
     "lesson_library_s2_english_w04_l1", "lesson_library_s2_english_w04_l2", "lesson_library_s2_english_w04_l3", "lesson_library_s2_english_w04_l4",
     "lesson_library_s4_maths_w01_l1",
-    "lesson_library_s2_english_placeholders", "lesson_library_s2_maths_placeholders", "lesson_library_s2_other_placeholders",
-    "lesson_library_s4_placeholders",
+    "lesson_library_s2_english_placeholders",
+    "lesson_library_s2_maths_placeholders",
+    "lesson_library_s2_other_placeholders",
+    "lesson_library_s4_plan",
 )
 
 
@@ -59,7 +61,7 @@ def _attach_spelling():
         from spelling_live import apply_spelling
         apply_spelling(LESSON_LIBRARY)
         count = len([item for item in LESSON_LIBRARY if item.get("spelling")])
-        log.warning("Spelling segments not attached: %r", exc)
+        log.warning("Spelling segment attached to %s lessons", count)
     except Exception as exc:
         log.warning("Spelling segments not attached: %r", exc)
 
@@ -100,7 +102,7 @@ def _orphan_cleanup_later():
                     log.warning("Orphan cleanup: removed %s orphaned records from %s", result.deleted_count, name)
                 client.close()
             except Exception as exc:
-                logging.getLogger("sidequest").warning("Orphan cleanup failed: %s", exc)
+                log.warning("Orphan cleanup failed: %s", exc)
     threading.Thread(target=run, daemon=True).start()
 
 
