@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 44
+LESSON_LIBRARY_VERSION = 45
 
 # All previous lessons have been cleared so the library can be rebuilt from scratch.
 # New modules are listed in LESSON_MODULES below as they are written.
