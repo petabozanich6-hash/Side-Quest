@@ -14,8 +14,9 @@ This file is written for anyone building lessons: a person, or an AI assistant t
 2. **Everything a child writes is typed inside the lesson.** No notebook is needed. Use practice boxes.
 3. **Teach before you ask.** Every concept is explained in plain language, with a worked example, before a question is asked about it.
 4. **Understand first, then do.** The lesson follows: Learn it, See it done, Try it, Prove it.
-5. **Batch your changes.** Every content change needs a backend deploy (see section 8). Finish the whole lesson, then bump the version once.
+5. **Build on the `lesson-build` branch, merge once.** Render only deploys `main`, so nothing goes live until the branch is merged.
 6. **Never use a seed_key twice.** Spelling and the Word Hoard are attached by `seed_key`, so a wrong key silently shows nothing.
+7. **Build whole weeks.** The placeholder generator skips a whole week at a time (see section 9), so a built week needs all four lessons.
 
 ---
 
@@ -24,10 +25,10 @@ This file is written for anyone building lessons: a person, or an AI assistant t
 | File | What it does |
 |---|---|
 | `backend/lesson_library_s2_english_wXX_lY.py` | The lesson itself (one file per lesson) |
-| `backend/lesson_library_s2_english_w1_w2.py` | Contains the `build()` function and the helpers `_q`, `_step`, `_sort`, `_wc`, `_video`, `_article` |
+| `backend/lesson_library_s2_english_w1_w2.py` | Contains `build()` and the helpers `_q`, `_step`, `_sort`, `_wc`, `_video`, `_article` |
 | `backend/lesson_library.py` | Holds `LESSON_LIBRARY_VERSION` and the `LESSON_MODULES` list that registers lesson files |
 | `backend/spelling_live.py` | The spelling words for each lesson, keyed by `seed_key` |
-| `backend/lesson_library_s2_english_placeholders.py` | Placeholder lessons for slots that are not built yet |
+| `backend/lesson_library_s2_english_placeholders.py` | Generates 200 placeholder lessons; skips weeks listed in `BUILT_OUT_WEEKS` |
 | `docs/english_s2_scope_and_sequence.md` | What each week and lesson should cover |
 | `frontend/src/components/shared/SpellingSegment.jsx` | The See it, Hear it, Spell it, Type it spelling stage |
 | `frontend/src/lib/speak.js` | The voice used to read words aloud |
@@ -37,48 +38,62 @@ This file is written for anyone building lessons: a person, or an AI assistant t
 ## 3. Naming
 
 - **Module file:** `lesson_library_s2_english_w01_l1.py` (week and lesson numbers, two digits for the week).
-- **seed_key:** `s2-eng-w01-l1-reading-expression` (stage, subject, week, lesson, short topic name).
+- **seed_key:** `s2-eng-w01-l1-reading-expression` (stage, subject, week, lesson, short topic name). The placeholder for the same slot is `s2-eng-w01-l1`, so a built lesson always has a topic suffix and never collides with its placeholder.
 - **Lesson variable:** call it `LESSON`. The loader finds any dict with a `seed_key`, but `LESSON` keeps it clear.
 
 ---
 
 ## 4. The lesson anatomy
 
-The reference lesson is built with one `build(...)` call. The arguments go in this order. If you are unsure, check the `build()` signature in `lesson_library_s2_english_w1_w2.py`, then copy the reference lesson.
+Each lesson is one `build(...)` call. The arguments are positional and go in exactly this order (confirmed against both the reference lesson and the placeholder generator):
 
 | # | Part | What to write |
 |---|---|---|
 | 1 | `seed_key` | Unique key, never reused |
-| 2 | Title | Short and child friendly |
+| 2 | Title | For example "Week 1, Lesson 1: Reading with Expression" style, or the short title the reference uses |
 | 3 | Hook | 1 to 2 sentences that make a child want to start |
 | 4 | Strand | For example "Reading: fluency and comprehension" |
-| 5 | Outcome codes | The NSW outcome codes this lesson covers (see `nsw_outcomes.py`) |
-| 6 | Outcome notes | One line per code saying how this lesson meets it, and which is Primary |
+| 5 | Outcome codes | List of NSW outcome codes (see `OUTCOMES` in the placeholders file) |
+| 6 | Outcome notes | Dict of code to one line saying how this lesson meets it |
 | 7 | Learning intention | "We are learning to..." |
-| 8 | Success criteria | 5 to 6 "I can..." statements |
-| 9 | Key vocabulary | Single words, lowercase |
-| 10 | Materials | Keep it short. "This lesson, everything you need is inside it" is ideal |
+| 8 | Success criteria | List of 5 to 6 "I can..." statements |
+| 9 | Key vocabulary | List of single lowercase words |
+| 10 | Materials | Keep it short. "This lesson (everything you need is inside it)" is ideal |
 | 11 | Prior knowledge | One sentence on what a child should already know |
-| 12 | Teaching text | The long explicit teaching (see section 5) |
-| 13 | Steps | 6 to 8 steps, each with a small check question (see section 6) |
-| 14 | Worked example | A full example done start to finish, showing every thinking step |
+| 12 | Teaching text | The long explicit teaching (section 5) |
+| 13 | Steps | List of 6 to 8 `_step(...)` (section 6) |
+| 14 | Worked example | A full example done start to finish |
 | 15 | Guided practice | Parts A, B, C, D that the child types into practice boxes |
-| 16 | Main task | A passage or scenario, broken into numbered stages |
+| 16 | Main task | A passage or scenario, in numbered stages |
 | 17 | Reflection question | One open question |
 | 18 | Self check | One sentence listing everything the child should have done |
-| 19 | Quiz | 10 multiple-choice questions using `_q(...)` |
+| 19 | Quiz | List of 10 `_q(...)` |
 | 20 | Submission note | Tells the child what to submit |
 | 21 | Extension | One challenge for children who finish early |
 | 22 | Glossary | List of `(word, simple meaning)` pairs |
-| 23 | Resources | Videos with `_video(...)` and articles with `_article(...)` |
-| 24 | Sorting activity | One `_sort(...)` (drag items into groups) |
-| 25 | Word challenges | About 8 quick `_wc(...)` questions |
-| 26 | Practice boxes | Dicts with `key`, `label`, `hint`, one per typed answer |
-| 27 | Common mistakes | 4 to 5 mistakes children often make |
-| 28 | Extra activities | 2 optional activities |
+| 23 | Resources | List of `_video(...)` and `_article(...)` |
+| 24 | Sorting activity | One `_sort(...)` |
+| 25 | Word challenges | List of about 8 `_wc(...)` |
+| 26 | Practice boxes | List of dicts with `key`, `label`, `hint` |
+| 27 | Common mistakes | List of 4 to 5 |
+| 28 | Extra activities | List of 2 |
 | 29 | Answer key | For the parent, covering every Part, with accepted alternatives |
 
 Keep the practice box `key` values short and unique within the lesson (`partA`, `partB`, `explain`).
+
+### Fields the placeholder generator sets after `build()`
+
+The placeholders also set these on the lesson dict. Check whether `build()` already sets them for a real lesson, and copy the placeholder's values if not:
+
+```python
+lesson["learning_area"] = "English"
+lesson["reflection_prompts"] = []
+lesson["interactive_activities"] = []
+lesson["hoard_words"] = []          # filled from the master word list
+lesson["spelling_focus"] = "..."     # the week's spelling focus
+```
+
+Leave `is_placeholder` unset (or False) on built lessons.
 
 ---
 
@@ -101,6 +116,10 @@ Writing rules:
 - Explain *why*, not only *what*.
 - Do not use dashes as punctuation. Use commas, full stops or colons.
 
+### Novel weeks
+
+Weeks 21 to 25, 46 and 47 are novel weeks. Never name a title. Write "your class novel" and make every example and task work with any Stage 2 novel the parent allocates. Use short template prompts such as "Find a sentence in your class novel that shows how the main character feels". Practice boxes carry the child's own examples.
+
 ---
 
 ## 6. Writing a step
@@ -118,8 +137,9 @@ _step(
 ```
 
 - The check question is a tuple: question, list of choices, index of the right answer (starting at 0), and the explanation shown afterwards.
-- Put the right answer in a different position across steps. Do not always make it the first one.
+- Put the right answer in different positions across steps. Do not always make it the first one.
 - Each step teaches one idea only.
+- The placeholders use Step 6 for spelling. Keep that: step 6 states the week's spelling focus and previews the six words.
 
 ---
 
@@ -146,42 +166,44 @@ Rules:
 
 - Use 6 words per lesson. Choose words that appear in the lesson text or fit the week's spelling focus.
 - Each word needs: the word, syllable or chunk breaks with hyphens, and a one-line memory tip about the tricky part.
-- Keep the spelling `focus` the same as step 6 of the lesson.
-- **The key must match the lesson `seed_key` exactly.** A mismatch means no spelling stage appears and nothing reaches the Word Hoard. This already happened once.
+- Keep the spelling `focus` the same as the week's spelling focus in the scope and sequence.
+- **The key must match the lesson `seed_key` exactly.** A mismatch means no spelling stage appears and nothing reaches the Word Hoard.
 - The spelling words are added to the Word Hoard automatically when the lesson opens. A word is mastered after 10 correct tries in a row, with a limit of 2 counted tries per word per day.
-- Each word in the lesson goes through four steps: **See it**, **Hear it**, **Spell it** (say the letters out loud), **Type it** (word hidden, typed from memory). This is built into `SpellingSegment.jsx`, so no extra work is needed per lesson.
+- Each word goes through four steps: **See it**, **Hear it**, **Spell it** (say the letters out loud), **Type it** (word hidden, typed from memory). This is built into `SpellingSegment.jsx`, so no extra work is needed per lesson.
+- Spelling focuses repeat (Homophones 2 to 5, review weeks, revision weeks). Use the master word list so a word is introduced once, in the week it first appears, and revision weeks draw from earlier words.
 
 ---
 
 ## 8. Registering the lesson and deploying
 
-Do these steps once the whole lesson is written, not after each small edit.
+Work on the `lesson-build` branch. Nothing is deployed until it is merged into `main`.
 
-1. Add the module name to `LESSON_MODULES` in `backend/lesson_library.py`, **before** the placeholder modules:
+For each week you build:
 
-   ```python
-   LESSON_MODULES = (
-       "lesson_library_s2_english_w01_l1",
-       "lesson_library_s2_english_w01_l2",   # new
-       "lesson_library_s2_english_placeholders",
-       ...
-   )
-   ```
+1. Write the four lesson modules (L1 to L4) for the week.
+2. Add the module names to `LESSON_MODULES` in `backend/lesson_library.py`, **before** the placeholder modules.
+3. Add the week number to `BUILT_OUT_WEEKS` in `backend/lesson_library_s2_english_placeholders.py` so the placeholders for that week stop being generated.
+4. Add the six-word spelling entries for each lesson in `backend/spelling_live.py`.
 
-2. Add the spelling entry in `backend/spelling_live.py`.
-3. **Bump `LESSON_LIBRARY_VERSION`** in `backend/lesson_library.py` by one. Without this the live database keeps the old copy of the lesson.
-4. Push to `main`. Render redeploys automatically.
-5. Wait for the backend deploy to say **Live**. The free plan can take about 10 minutes after a version bump, and the new backend may log "No open ports detected" for a while before it comes up. That is normal while it reloads the lessons.
-6. Hard refresh the site (Ctrl+Shift+R, or Cmd+Shift+R on a Mac) and open the lesson.
-7. In the backend logs, look for `Lesson module ... added N lessons` and `Spelling segment attached to N lessons`.
+Once, at the very end:
 
-Why lesson changes need a deploy: lesson content lives in Python files, not in the database editor. To avoid repeated deploys, finish the whole lesson, check it carefully against the checklist below, and push once.
+5. **Bump `LESSON_LIBRARY_VERSION`** in `backend/lesson_library.py` by one. Without this the live database keeps the old copy.
+6. Open a pull request from `lesson-build` into `main`, check the diff, then merge. Render redeploys automatically.
+7. Wait for the backend deploy to say **Live**. After a version bump the free plan can take about 10 minutes or more, and the new backend may log "No open ports detected" until the lessons finish loading. A very large library may take longer.
+8. Hard refresh the site (Ctrl+Shift+R, or Cmd+Shift+R on a Mac).
+9. In the backend logs, look for `Lesson module ... added N lessons` and `Spelling segment attached to N lessons`.
+
+Why lesson changes need a deploy: lesson content lives in Python files, not in the database editor. Building on a branch and merging once keeps it to a single deploy.
 
 ---
 
-## 9. Placeholders
+## 9. Placeholders and duplicates
 
-Each slot in the scope and sequence has a placeholder in `lesson_library_s2_english_placeholders.py`. A built lesson uses its own `seed_key`. Check how the placeholder for the same slot behaves once the real lesson is registered, and remove or retire it if both appear. Confirm this the first time you build a second lesson.
+The placeholder module generates 200 lessons from one table. It skips every week listed in `BUILT_OUT_WEEKS`, and it skips the **whole** week, all four lessons.
+
+- A built lesson has its own `seed_key` (with a topic suffix), so it does not replace the placeholder for its slot. Until the week is added to `BUILT_OUT_WEEKS`, you will see both. This is why Week 1 currently shows two Week 1 lessons.
+- When you add a week to `BUILT_OUT_WEEKS`, make sure all four lessons of that week are built and registered, otherwise the week will have missing slots.
+- The placeholder module's self-check (`python lesson_library_s2_english_placeholders.py`) asserts exactly 200 lessons, so it will fail once weeks are built out. That is expected. Update or remove that assertion in the same commit.
 
 ---
 
@@ -189,29 +211,32 @@ Each slot in the scope and sequence has a placeholder in `lesson_library_s2_engl
 
 - Use only videos you have checked. Re-check every video ID and article link before release, as videos get removed.
 - Child safe, ad light, read-aloud or explainer style, under about 5 minutes.
+- At least one embedded YouTube video per lesson, plus a card for one BBC Bitesize or Khan Academy link if it embeds. No NSW Department of Education pages.
 - Every video needs a **watch-for note**, a **do-after task** and a **check question**: `_video(title, id, watch_for, do_after, check_question)`.
 
 ---
 
-## 11. Before you push: checklist
+## 11. Before you commit: checklist
 
 - [ ] `seed_key` is unique and follows the naming pattern
-- [ ] Outcome codes exist in `nsw_outcomes.py`, and one is marked Primary
+- [ ] Outcome codes exist in the `OUTCOMES` table, and one is clearly primary
 - [ ] Learning intention and 5 to 6 success criteria written
 - [ ] Teaching text has all six parts (section 5)
 - [ ] 6 to 8 steps, each with an example, key idea and check question
 - [ ] Right answers are spread across positions (not all first)
 - [ ] Worked example shows the full thinking
 - [ ] Guided practice and main task are typed into practice boxes, with unique `key` values
-- [ ] 10 quiz questions, 8 word challenges, 1 sorting activity
+- [ ] 10 quiz questions, about 8 word challenges, 1 sorting activity
 - [ ] Glossary covers every key vocabulary word
 - [ ] Common mistakes, extension and extra activities written
 - [ ] Answer key covers every Part, with accepted alternatives
 - [ ] Videos and links re-checked
 - [ ] Spelling entry added in `spelling_live.py` with the **same seed_key**
-- [ ] Module added to `LESSON_MODULES`
-- [ ] `LESSON_LIBRARY_VERSION` bumped by one
+- [ ] Module added to `LESSON_MODULES`, week added to `BUILT_OUT_WEEKS` once all four lessons exist
+- [ ] Novel weeks never name a title
 - [ ] Australian spelling, plain language, no dashes as punctuation
+
+Final checks before the single merge: `LESSON_LIBRARY_VERSION` bumped, no duplicate `seed_key` anywhere, every spelling key matches a lesson, and every lesson imports without error.
 
 ---
 
@@ -221,6 +246,8 @@ Each slot in the scope and sequence has a placeholder in `lesson_library_s2_engl
 |---|---|---|
 | Lesson does not appear | Module missing from `LESSON_MODULES`, or an error in the file | Check logs for `Lesson module ... not loaded` |
 | Old version of the lesson shows | Version not bumped | Bump `LESSON_LIBRARY_VERSION` |
+| Two lessons in the same slot | Week not yet in `BUILT_OUT_WEEKS` | Add the week once all four lessons are built |
+| A slot is missing from a week | Week in `BUILT_OUT_WEEKS` but fewer than four lessons built | Build the missing lesson or remove the week from the set |
 | No spelling stage, empty Word Hoard | Spelling key does not match `seed_key` | Make the keys identical |
 | New page looks unchanged | Browser cache, or backend still deploying | Wait for Live, then hard refresh |
 | Blank cards on the child page | Assignments pointing at lessons that no longer exist | The orphan cleanup in `lesson_library.py` removes them after startup |
