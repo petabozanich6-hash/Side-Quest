@@ -64,7 +64,7 @@ const SECONDARY_SECTIONS = (stage) => [
   },
   {
     title: "Languages",
-    cards: [card("Modern Languages"), card("Classical Languages"), card("Auslan")],
+    cards: [card("Modern Languages"), card("Classical Languages"), card("Aboriginal Languages"), card("Auslan")],
   },
   {
     title: "Technology",
@@ -76,7 +76,7 @@ const SECONDARY_SECTIONS = (stage) => [
       card("Industrial Technology"),
       card("Information and Software Technology"),
       card("Marine and Aquaculture Technology"),
-      ...(stage === "Stage 4" ? [card("Technology (Mandatory)")] : []),
+      ...(stage === "Stage 4" ? [card("Technology (Mandatory)", /^technology(\s*\(mandatory\))?$/i)] : []),
       card("Textiles Technology"),
     ],
   },
