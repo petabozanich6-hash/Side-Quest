@@ -2,7 +2,7 @@
 The child learns to find the main idea of a paragraph and of a whole information text, and the key details that support it, then writes a short summary using a model text about echidnas.
 Spelling: -sion and -ssion: decision, vision, division, session, discussion, permission.
 Outcomes: EN2-RECOM-01 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 7, Lesson 1, Main idea and key details, spelling -sion and -ssion). Outcome wording is the official NESA text, with a short note on this lesson's focus.
-Video status: no video is attached to this lesson, because none has been found and checked.
+Video status: two main idea videos attached, chosen from search descriptions. They have not been watched in full, so each carries a parent preview note. No -sion/-ssion spelling video has been found yet.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -96,7 +96,20 @@ LESSON = build(
     "Type your answers in the practice boxes and submit them.",
     "Extension: choose a short information article. Write its main idea in one sentence and list three key details. Then write a two-sentence summary and ask a family member whether it tells them what the article was about.",
     [("main idea", "What a paragraph or text is mostly about"), ("key detail", "A fact that supports the main idea"), ("topic sentence", "A sentence that tells the main idea of a paragraph"), ("paragraph", "A group of sentences about one idea"), ("summary", "A short retelling of the most important ideas"), ("supporting detail", "A fact that backs up the main idea"), ("monotreme", "A mammal that lays eggs"), ("in your own words", "Said or written without copying the exact words of the text")],
-    [],
+    [
+        _video(
+            "Nonfiction Main Idea and Key Details for Kids", "FtBwpToLBd0",
+            "Watch for how to find the main idea of a nonfiction text and how key details support it. Notice the tips about using keywords and looking at the title and headings. The video ends with a short recap. Parent: this video has not been fully checked, so please preview it before your child watches.",
+            "If the video will not play, reread Steps 1 to 5 and the Echidnas text.",
+            ("What do key details do?", ["Support the main idea", "Change the topic", "Make the text shorter"], 0, "Key details support and explain the main idea."),
+        ),
+        _video(
+            "Main Idea and Supporting Details Teaching Video", "mkZo2zVKJR4",
+            "Watch for the difference between the topic, the main idea and the supporting details. Notice how every sentence in a paragraph should support the main idea. The video calls key details supporting details, which means the same thing. Parent: this video has not been fully checked, so please preview it before your child watches.",
+            "If the video will not play, reread Steps 2 to 4 and say the main idea of each Echidnas paragraph aloud.",
+            ("What is the main idea of a paragraph?", ["What it is mostly about", "Its longest word", "Its first letter"], 0, "The main idea is what the paragraph is mostly about."),
+        ),
+    ],
     _sort("Key detail or extra detail?", "Sort each fact into key detail or extra detail, if the main idea of Paragraph 2 is that echidnas lay eggs.", ["Key detail", "Extra detail"], [("Echidnas are monotremes", 0), ("The female lays one egg", 0), ("She keeps the egg in a pouch", 0), ("The baby is called a puggle", 0), ("The egg hatches after about ten days", 1), ("Echidnas are covered in sharp spines", 1), ("Echidnas eat ants and termites", 1), ("Echidnas can curl into a spiky ball", 1)]),
     [
         _wc("Which is what a paragraph is mostly about?", ["main idea", "summary", "index"], 0, "The main idea is what a paragraph is mostly about."),
