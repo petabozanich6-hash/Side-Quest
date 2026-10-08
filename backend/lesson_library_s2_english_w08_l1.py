@@ -2,7 +2,7 @@
 The child learns to tell a fact (something that can be checked and proved) from an opinion (what someone thinks or feels), to spot signal words for opinions, and to check a fact in a reliable source. The model text is a short passage about the platypus that mixes facts and opinions.
 Spelling: plurals: -s, -es, -ves and irregular: boxes, brushes, wolves, knives, children, feet.
 Outcomes: EN2-RECOM-01 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 8, Lesson 1, Fact versus opinion, reading slot, spelling plurals). Outcome wording is the official NESA text, with a short note on this lesson's focus.
-Video status: no video is attached to this lesson, because none has been found and checked.
+Video status: three videos attached (fact versus opinion basics; opinion signal words and proving a fact; plural spelling rules), chosen from search descriptions. They have not been watched in full, so each carries a parent preview note.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -93,7 +93,26 @@ LESSON = build(
     "Type your answers in the practice boxes and submit them.",
     "Extension: find an advertisement or a short article. Write down two facts and two opinions from it, and circle the signal words. Tell a family member which sentences you trust and why.",
     [("fact", "Something that can be checked and proved to be true"), ("opinion", "What someone thinks or feels"), ("check", "To look carefully to make sure something is right"), ("evidence", "Facts or signs that show something is true"), ("reliable", "Able to be trusted to be correct"), ("claim", "A statement that says something is true"), ("signal word", "A word that gives a clue about the kind of sentence it is in"), ("judge", "To decide what you think is true or good")],
-    [],
+    [
+        _video(
+            "Fact or Opinion for Kids", "FIyt5pEcE_g",
+            "Watch for the two questions to ask about a sentence: Is it always true? Can it be proven? Notice the examples of facts and opinions. Parent: this video has not been fully checked, so please preview it before your child watches.",
+            "If the video will not play, reread Steps 1 and 2 and the platypus passage.",
+            ("What can you ask to find out if a sentence is a fact?", ["Can it be proven?", "Is it fun?", "Is it short?"], 0, "A fact can be proven."),
+        ),
+        _video(
+            "Fact or Opinion for Kids in English | Fact and Opinion Game", "iRI33jg4NFo",
+            "Listen for how to prove that something is a fact, and for the opinion signal words. You can stop before the game at the end if you like. Parent: this video has not been fully checked, so please preview it before your child watches.",
+            "If the video will not play, reread Steps 3 and 4 and the list of signal words.",
+            ("Which words often signal an opinion?", ["I think, best, should", "in 2020, 50 centimetres", "north, south, east"], 0, "I think, best and should often signal an opinion."),
+        ),
+        _video(
+            "Spelling Rules for Plural Nouns: -s, -es, -ies, -ves", "-bwAPUnMWCQ",
+            "Listen for when to add s, es and ves. Focus on the parts about words ending in x, sh and f or fe, which match boxes, brushes, wolves and knives. You can skip the parts about other endings. Parent: this video has not been fully checked, so please preview it before your child watches.",
+            "If the video will not play, reread Step 7 and say each plural rule aloud.",
+            ("What is the plural of wolf?", ["wolves", "wolfs", "wolfes"], 0, "Wolf changes to wolves."),
+        ),
+    ],
     _sort("Fact or opinion?", "Sort each sentence into fact or opinion.", ["Fact", "Opinion"], [("A platypus lays eggs", 0), ("Koalas are the cutest animals", 1), ("Echidnas have spines", 0), ("Kangaroos are boring", 1), ("Sydney is in New South Wales", 0), ("Summer is the best season", 1), ("A week has seven days", 0), ("Dogs make the best pets", 1)]),
     [
         _wc("Which means something that can be checked and proved?", ["fact", "opinion", "title"], 0, "A fact can be checked and proved."),
