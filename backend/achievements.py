@@ -159,3 +159,7 @@ def register(api, db, current_user, require_child, new_id, now_iso):
     # does not need to change.
     import word_bank
     word_bank.register(api, db, current_user, require_child, new_id, now_iso)
+
+    # Uncapped lesson list (GET /api/lesson-index); old /lessons is untouched.
+    import lesson_routes
+    lesson_routes.register(api, db, current_user, require_child, new_id, now_iso)

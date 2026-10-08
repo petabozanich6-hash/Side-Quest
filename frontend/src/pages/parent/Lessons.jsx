@@ -182,7 +182,7 @@ export default function LessonsPage() {
   const stage = params.get("stage");
   const subject = params.get("subject");
 
-  const load = () => api.get("/lessons").then(r => setLessons(r.data));
+  const load = () => api.get("/lesson-index").then(r => setLessons(r.data));
   useEffect(() => {
     load();
     api.get("/students").then(r => setStudents(r.data));
