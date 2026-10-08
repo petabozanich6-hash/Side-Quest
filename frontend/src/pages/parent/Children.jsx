@@ -14,6 +14,23 @@ const STAGES = [
   { code: "S6", name: "Stage 6 (Years 11-12 / HSC)", theme: "senior", years: ["11", "12"] },
 ];
 
+// NESA mandatory subjects per stage. Anything else the server calls compulsory is shown as an elective instead.
+const c = (code, name, learning_area) => ({ code, name, learning_area });
+const MANDATORY = {
+  S4: [
+    c("ENG-S4", "English", "English"), c("MATH-S4", "Mathematics", "Mathematics"), c("SCI-S4", "Science", "Science"),
+    c("HIST-S4", "History", "HSIE"), c("GEO-S4", "Geography", "HSIE"), c("PDHPE-S4", "PDHPE", "PDHPE"),
+    c("MUS-S4", "Music", "Creative Arts"), c("VA-S4", "Visual Arts", "Creative Arts"),
+    c("TECH-S4", "Technology (Mandatory)", "Technology"), c("LOTE-M-S4", "Languages (100 hours)", "Languages"),
+  ],
+  S5: [
+    c("ENG-S5", "English", "English"), c("MATH-S5", "Mathematics", "Mathematics"), c("SCI-S5", "Science", "Science"),
+    c("HIST-S5", "History (Mandatory)", "HSIE"), c("GEO-S5", "Geography (Mandatory)", "HSIE"), c("PDHPE-S5", "PDHPE", "PDHPE"),
+  ],
+  S6: [c("ENG-S6", "English", "English")],
+};
+const mandatoryWords = (stage) => (MANDATORY[stage] || []).map(m => m.name.toLowerCase().replace(/\s*\(.*\)/, ""));
+
 // Used when the server returns no Stage 4 electives. Optional `years` limits an elective to those year levels.
 const S4_ELECTIVES = [
   { code: "DRAMA-S4", name: "Drama", learning_area: "Creative Arts" },
@@ -26,12 +43,27 @@ const S4_ELECTIVES = [
   { code: "IND-S4", name: "Industrial Technology", learning_area: "Technology" },
   { code: "IST-S4", name: "Information and Software Technology", learning_area: "Technology" },
   { code: "TEXT-S4", name: "Textiles Technology", learning_area: "Technology" },
-  { code: "LOTE-S4", name: "Languages", learning_area: "Languages" },
+  { code: "LOTE-S4", name: "Languages (extended study)", learning_area: "Languages" },
   { code: "PASS-S4", name: "Physical Activity and Sports Studies", learning_area: "PDHPE" },
   { code: "HISTE-S4", name: "History Elective", learning_area: "HSIE" },
   { code: "GEOE-S4", name: "Geography Elective", learning_area: "HSIE" },
   { code: "COM-S4", name: "Commerce", learning_area: "HSIE", years: ["8"] },
 ];
+
+// Replace the server's compulsory list with the NESA one; keep its other base subjects as electives.
+const applyMandatory = (stage, p) => {
+  const words = mandatoryWords(stage);
+  const isMandatory = (x) => words.some(w => String(x.name || "").toLowerCase().startsWith(w));
+  const demoted = (p.compulsory || []).filter(x => !isMandatory(x));
+  const baseElectives = stage === "S4" && !(p.electives || []).length ? S4_ELECTIVES : (p.electives || []);
+  const seen = new Set();
+  const electives = [...baseElectives, ...demoted].filter(x => {
+    if (!x.code || seen.has(x.code)) return false;
+    seen.add(x.code);
+    return !isMandatory(x) || baseElectives.includes(x);
+  });
+  return { ...p, compulsory: MANDATORY[stage] || p.compulsory || [], electives };
+};
 
 export default function ChildrenPage() {
   const [students, setStudents] = useState([]);
@@ -46,12 +78,10 @@ export default function ChildrenPage() {
   useEffect(() => {
     const stage = STAGES.find(s => s.code === form.stage);
     setForm(f => ({ ...f, year_level: stage?.years?.[0] || "" }));
+    setElectives([]);
     if (["S4","S5","S6"].includes(form.stage)) {
-      api.get(`/curriculum/pattern/${form.stage}`).then(r => {
-        const p = r.data || {};
-        setPattern(form.stage === "S4" && !(p.electives || []).length ? { ...p, electives: S4_ELECTIVES } : p);
-      });
-    } else { setPattern(null); setElectives([]); }
+      api.get(`/curriculum/pattern/${form.stage}`).then(r => setPattern(applyMandatory(form.stage, r.data || {})));
+    } else { setPattern(null); }
   }, [form.stage]);
 
   const shownElectives = (pattern?.electives || []).filter(e => !e.years || !form.year_level || e.years.includes(form.year_level));
