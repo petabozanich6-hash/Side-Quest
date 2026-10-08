@@ -24,7 +24,8 @@ export default function SeasonalOverlay() {
   const claim = async (pack) => {
     try {
       const r = await api.post(`/seasonal/${pack}/claim`);
-      toast.success(`You got the ${r.data?.prize?.name || "prize"}! Find it in your Wardrobe.`);
+      const p = r.data?.prize;
+      toast.success(`You got a surprise: ${p?.emoji || ""} ${p?.name || "a prize"}! Find it in your Wardrobe.`);
       notifySeasonal();
     } catch (e) {
       toast.error(e?.response?.data?.detail || "Try again shortly");
@@ -33,7 +34,7 @@ export default function SeasonalOverlay() {
 
   if (!packs.length) return null;
   const decorated = packs.filter(p => p.decorations && THEMES[p.pack]);
-  const claimable = packs.filter(p => p.prize && !p.claimed);
+  const claimable = packs.filter(p => p.prize_enabled && !p.claimed && !p.complete);
 
   return (
     <>
@@ -61,7 +62,7 @@ export default function SeasonalOverlay() {
           className="absolute rounded-full px-3 py-1.5 text-xs font-bold shadow"
           style={{ zIndex: 20, top: 12 + i * 40, left: 12, backgroundColor: "#1F3B2D", color: "#F5EFE0" }}
           data-testid={`claim-${p.pack}`}>
-          {p.prize.emoji} Claim: {p.prize.name}
+          🎁 Claim a {p.label} surprise
         </button>
       ))}
     </>

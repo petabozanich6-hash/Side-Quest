@@ -7,7 +7,7 @@ export default function SeasonalWorn() {
   if (!worn.length) return null;
   return (
     <div className="absolute -top-11 left-1/2 -translate-x-1/2 flex gap-1 text-3xl pointer-events-none" data-testid="worn-seasonal">
-      {worn.map(k => <span key={k.pack} title={k.name}>{k.emoji}</span>)}
+      {worn.map(k => <span key={k.id} title={k.name}>{k.emoji}</span>)}
     </div>
   );
 }
