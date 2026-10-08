@@ -49,6 +49,13 @@ def register(api, db, require_child, require_parent, now_iso):
     except Exception:
         logging.getLogger("sidequest").exception("Seasonal pack failed to load")
 
+    # Parent account deletion. Wrapped so a problem here cannot stop reading approvals loading.
+    try:
+        from account_deletion import register as register_account_deletion
+        register_account_deletion(api, db, require_parent)
+    except Exception:
+        logging.getLogger("sidequest").exception("Account deletion failed to load")
+
     @api.post("/reading-submissions")
     async def submit(data: dict, user=Depends(require_child)):
         title = str(data.get("title", "")).strip()

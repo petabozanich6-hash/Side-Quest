@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles } from "lucide-react";
+import { Compass, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2 } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
+import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 
 const nav = [
   { to: "/parent", icon: LayoutDashboard, label: "Dashboard", end: true, testid: "nav-dashboard" },
@@ -23,6 +24,7 @@ const nav = [
 export default function ParentLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [showDelete, setShowDelete] = useState(false);
   const doLogout = async () => { await logout(); navigate("/"); };
   return (
     <div className="parent-shell flex relative">
@@ -52,11 +54,15 @@ export default function ParentLayout() {
           <button onClick={doLogout} className="w-full flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-stone-700 hover:bg-white/80" data-testid="parent-logout">
             <LogOut size={16} /> Sign out
           </button>
+          <button onClick={() => setShowDelete(true)} className="w-full flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold hover:bg-white/80" style={{color:"#9B2C2C"}} data-testid="parent-delete-account">
+            <Trash2 size={14} /> Delete account
+          </button>
         </div>
       </aside>
       <main className="flex-1 min-w-0 relative">
         <Outlet />
       </main>
+      {showDelete && <DeleteAccountDialog onClose={() => setShowDelete(false)} />}
     </div>
   );
 }
