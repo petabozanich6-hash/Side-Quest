@@ -37,6 +37,10 @@ def _clean_int(v, lo, hi, field):
 
 def register(api, db, require_child, require_parent, now_iso):
 
+    # Learning plan builder (template based, no AI). Registered here so server.py needs no edit.
+    from learning_plan_builder import register as register_plan_builder
+    register_plan_builder(api, db, require_parent)
+
     @api.post("/reading-submissions")
     async def submit(data: dict, user=Depends(require_child)):
         title = str(data.get("title", "")).strip()
