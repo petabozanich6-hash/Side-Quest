@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
 import { Pet, Fern, Flower, Branch } from "../../components/shared/Botanical";
 import HalloweenOverlay from "../../components/shared/HalloweenOverlay";
+import SeasonalWorn from "../../components/shared/SeasonalWorn";
+import SeasonalWardrobeItems from "../../components/shared/SeasonalWardrobeItems";
 import { toast } from "sonner";
 import { ArrowLeft, Apple, Gamepad2, Palette, Sparkles, Loader2, Droplets } from "lucide-react";
 
@@ -211,6 +213,7 @@ export default function PetRoom() {
                   {worn.map(a => <span key={a}>{ACC_EMOJI[a] || "✨"}</span>)}
                 </div>
               )}
+              {hatched && <SeasonalWorn />}
               {asleep && <div className="zzz absolute -top-4 right-0 text-3xl font-bold" style={{ color: "#4A5D3A" }}>Zzz</div>}
               {sick && <div className="absolute top-0 right-0 text-3xl">🤒</div>}
               {care.needs_cleaning && hatched && (
@@ -288,6 +291,7 @@ export default function PetRoom() {
                 </button>
               );
             })}
+            <SeasonalWardrobeItems hatched={hatched} />
           </div>
         </section>
       )}

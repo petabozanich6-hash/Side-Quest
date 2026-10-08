@@ -2,10 +2,10 @@
 
 Registered from reading_approvals.register, so server.py needs no edit.
 Every pack is OFF by default. Nothing is assumed for any family.
-Claimed prizes are kept by the child permanently.
+Claimed prizes are kept permanently and the child chooses whether to wear them.
 """
 from datetime import datetime, date
-from typing import Optional
+from typing import List, Optional
 
 from fastapi import HTTPException, Depends
 from pydantic import BaseModel
@@ -32,6 +32,10 @@ class SeasonalIn(BaseModel):
     end_date: Optional[str] = None
     decorations: bool = True
     prize: bool = True
+
+
+class WornIn(BaseModel):
+    packs: List[str] = []
 
 
 def _family_parent(user: dict):
@@ -93,14 +97,27 @@ def register(api, db, require_child, require_parent, now_iso):
         return {d["pack"]: d for d in docs}
 
     async def _keepsakes(student_id) -> list:
-        claims = await db.seasonal_prizes.find({"student_id": student_id}, {"_id": 0, "pack": 1}).to_list(50)
-        got = {c["pack"] for c in claims}
-        return [{"pack": p, "label": PACKS[p]["label"], **PACKS[p]["prize"]} for p in PACKS if p in got]
+        claims = await db.seasonal_prizes.find({"student_id": student_id}, {"_id": 0}).to_list(50)
+        by_pack = {c["pack"]: c for c in claims if c.get("pack") in PACKS}
+        return [{"pack": p, "label": PACKS[p]["label"], **PACKS[p]["prize"],
+                 "worn": bool(by_pack[p].get("worn", True))}
+                for p in PACKS if p in by_pack]
 
     @api.get("/seasonal")
     async def list_packs(user=Depends(require_parent)):
         cfgs = await _family_configs(_family_parent(user))
         return {"today": _today(), "packs": [_view(p, cfgs.get(p)) for p in PACKS]}
+
+    # Registered before PUT /seasonal/{pack} so "worn" is not read as a pack name.
+    @api.put("/seasonal/worn")
+    async def set_worn(data: WornIn, user=Depends(require_child)):
+        wanted = set(data.packs)
+        mine = await _keepsakes(user["id"])
+        for k in mine:
+            await db.seasonal_prizes.update_one(
+                {"student_id": user["id"], "pack": k["pack"]},
+                {"$set": {"worn": k["pack"] in wanted}})
+        return {"ok": True, "keepsakes": await _keepsakes(user["id"])}
 
     @api.put("/seasonal/{pack}")
     async def save_pack(pack: str, data: SeasonalIn, user=Depends(require_parent)):
@@ -143,6 +160,6 @@ def register(api, db, require_child, require_parent, now_iso):
             raise HTTPException(400, "This prize is not available right now")
         await db.seasonal_prizes.update_one(
             {"student_id": user["id"], "pack": pack},
-            {"$setOnInsert": {"student_id": user["id"], "pack": pack, "claimed_at": _now()}},
+            {"$setOnInsert": {"student_id": user["id"], "pack": pack, "claimed_at": _now(), "worn": True}},
             upsert=True)
         return {"ok": True, "prize": v["prize"]}

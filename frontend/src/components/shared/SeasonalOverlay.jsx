@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
+import useSeasonal, { notifySeasonal } from "./useSeasonal";
 
 const THEMES = {
   halloween: { tint: "linear-gradient(180deg, rgba(40,20,70,0.35), rgba(255,140,0,0.12))", items: ["🦇", "👻", "🕸️", "🎃"] },
@@ -18,31 +19,19 @@ const CSS = `
 `;
 
 export default function SeasonalOverlay() {
-  const [packs, setPacks] = useState([]);
-  const [keepsakes, setKeepsakes] = useState([]);
-
-  useEffect(() => {
-    let alive = true;
-    api.get("/seasonal/active")
-      .then(r => { if (alive) { setPacks(r.data?.packs || []); setKeepsakes(r.data?.keepsakes || []); } })
-      .catch(() => { if (alive) { setPacks([]); setKeepsakes([]); } });
-    return () => { alive = false; };
-  }, []);
+  const { packs } = useSeasonal();
 
   const claim = async (pack) => {
     try {
       const r = await api.post(`/seasonal/${pack}/claim`);
-      const prize = r.data?.prize;
-      const label = packs.find(p => p.pack === pack)?.label;
-      setPacks(ps => ps.map(p => p.pack === pack ? { ...p, claimed: true } : p));
-      if (prize) setKeepsakes(ks => ks.some(k => k.pack === pack) ? ks : [...ks, { pack, label, ...prize }]);
-      toast.success(`You got the ${prize?.name || "prize"}! It's yours to keep.`);
+      toast.success(`You got the ${r.data?.prize?.name || "prize"}! Find it in your Wardrobe.`);
+      notifySeasonal();
     } catch (e) {
       toast.error(e?.response?.data?.detail || "Try again shortly");
     }
   };
 
-  if (!packs.length && !keepsakes.length) return null;
+  if (!packs.length) return null;
   const decorated = packs.filter(p => p.decorations && THEMES[p.pack]);
   const claimable = packs.filter(p => p.prize && !p.claimed);
 
@@ -67,11 +56,6 @@ export default function SeasonalOverlay() {
           )}
         </div>
       )}
-      {keepsakes.map((k, i) => (
-        <span key={`keep-${k.pack}`} className="absolute text-5xl pointer-events-none"
-          style={{ zIndex: 12, bottom: 16, left: "50%", transform: `translateX(${-150 - i * 50}px)` }}
-          title={`${k.name} (${k.label})`} data-testid={`prize-${k.pack}`}>{k.emoji}</span>
-      ))}
       {claimable.map((p, i) => (
         <button key={`claim-${p.pack}`} onClick={() => claim(p.pack)}
           className="absolute rounded-full px-3 py-1.5 text-xs font-bold shadow"
