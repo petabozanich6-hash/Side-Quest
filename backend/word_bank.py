@@ -1,12 +1,14 @@
 """The Word Hoard: a quest-style spelling word bank.
 
 Every word is a creature that starts Wild. A child tames it by spelling it
-correctly on different days:
+correctly again and again. A word is only Mastered after 10 correct spellings
+in a row. One miss sends the run back to zero:
 
-    wild -> spotted -> tamed -> mastered
+    0 in a row  -> wild
+    1 to 3      -> spotted
+    4 to 9      -> tamed
+    10          -> mastered (and it leaves the practice list)
 
-One correct answer per day moves a word up one stage. A miss moves it back
-one stage, so words are only mastered after real, spaced practice.
 The child sees their hoard; the parent sees how it is going.
 """
 from datetime import datetime, timezone, timedelta
@@ -22,6 +24,9 @@ STAGE_LABELS = {
     "tamed": "Tamed",
     "mastered": "Mastered",
 }
+MASTERY_STREAK = 10
+SPOTTED_AT = 1
+TAMED_AT = 4
 XP_STEP = 2
 XP_MASTERED = 10
 TRICKY_MISSES = 2
@@ -42,12 +47,39 @@ class PracticeIn(BaseModel):
     correct: bool
 
 
+class TryIn(BaseModel):
+    word: str
+    guess: str
+    lesson_id: Optional[str] = None
+
+
 def today_local() -> str:
     return datetime.now(LOCAL_TZ).strftime("%Y-%m-%d")
 
 
 def clean_word(raw: str) -> str:
     return "".join(ch for ch in (raw or "").strip() if ch.isalpha() or ch in "'-").lower()[:40]
+
+
+def stage_for_streak(streak: int) -> str:
+    if streak >= MASTERY_STREAK:
+        return "mastered"
+    if streak >= TAMED_AT:
+        return "tamed"
+    if streak >= SPOTTED_AT:
+        return "spotted"
+    return "wild"
+
+
+def streak_of(doc) -> int:
+    """Current run of correct spellings. Older words without a streak start
+    from where their stage left them."""
+    value = doc.get("streak")
+    if isinstance(value, int):
+        return value
+    return {"wild": 0, "spotted": SPOTTED_AT, "tamed": TAMED_AT, "mastered": MASTERY_STREAK}.get(
+        doc.get("stage", "wild"), 0
+    )
 
 
 def streak_from_days(days) -> int:
@@ -66,6 +98,10 @@ def streak_from_days(days) -> int:
 def register(api, db, current_user, require_child, new_id, now_iso):
     def public(doc):
         d = {k: v for k, v in doc.items() if k != "_id"}
+        streak = streak_of(d)
+        d["streak"] = streak
+        d["streak_target"] = MASTERY_STREAK
+        d["stage"] = d.get("stage") or stage_for_streak(streak)
         d["stage_label"] = STAGE_LABELS.get(d.get("stage"), "Wild")
         d["practised_today"] = today_local() in (d.get("correct_days") or [])
         return d
@@ -94,6 +130,7 @@ def register(api, db, current_user, require_child, new_id, now_iso):
             "attempts_this_week": len(week),
             "accuracy_this_week": round(100 * week_correct / len(week)) if week else None,
             "practised_today": today_local() in days,
+            "mastery_streak": MASTERY_STREAK,
         }, words, log
 
     async def add_words(student_id, family_id, data: AddWordsIn, added_by):
@@ -115,6 +152,7 @@ def register(api, db, current_user, require_child, new_id, now_iso):
                 "word": word,
                 "hint": data.hint,
                 "stage": "wild",
+                "streak": 0,
                 "correct_days": [],
                 "attempts": 0,
                 "misses": 0,
@@ -128,6 +166,71 @@ def register(api, db, current_user, require_child, new_id, now_iso):
             await db.word_bank.insert_one(doc)
             added.append(public(doc))
         return {"added": added, "skipped": skipped}
+
+    async def apply_attempt(w, correct: bool, user):
+        """Record one spelling attempt. A correct spelling adds one to the run,
+        a miss sends the run back to zero. Ten in a row masters the word."""
+        today = today_local()
+        old_stage = w.get("stage", "wild")
+        streak = streak_of(w)
+        update = {"last_practised": now_iso()}
+        inc = {"attempts": 1}
+        xp = 0
+
+        if correct:
+            streak = min(streak + 1, MASTERY_STREAK)
+            days = list(w.get("correct_days") or [])
+            if today not in days:
+                days.append(today)
+                update["correct_days"] = days
+        else:
+            streak = 0
+            inc["misses"] = 1
+
+        new_stage = stage_for_streak(streak)
+        moved = new_stage != old_stage
+        just_mastered = new_stage == "mastered" and old_stage != "mastered"
+
+        if correct and moved and STAGES.index(new_stage) > STAGES.index(old_stage):
+            xp = XP_MASTERED if just_mastered else XP_STEP
+        if just_mastered:
+            update["mastered_at"] = now_iso()
+        elif new_stage != "mastered":
+            update["mastered_at"] = None
+
+        update["streak"] = streak
+        update["stage"] = new_stage
+        await db.word_bank.update_one({"id": w["id"]}, {"$set": update, "$inc": inc})
+        await db.word_practice.insert_one({
+            "id": new_id(),
+            "family_id": user["family_id"],
+            "student_id": user["id"],
+            "word_id": w["id"],
+            "word": w["word"],
+            "correct": correct,
+            "date": today,
+            "at": now_iso(),
+        })
+
+        if xp:
+            await db.pets.update_one(
+                {"student_id": user["id"]},
+                {"$inc": {"xp": xp},
+                 "$push": {"activity": {"amount": xp, "reason": f"Word Hoard: {w['word']}", "at": now_iso()}}},
+            )
+
+        fresh = await db.word_bank.find_one({"id": w["id"]}, {"_id": 0})
+        return {
+            "word": public(fresh),
+            "correct": correct,
+            "moved": moved,
+            "new_stage": new_stage,
+            "xp_gained": xp,
+            "just_mastered": just_mastered,
+            "streak": streak,
+            "streak_target": MASTERY_STREAK,
+            "to_go": max(MASTERY_STREAK - streak, 0),
+        }
 
     @api.post("/word-bank/words")
     async def add_word_bank_words(data: AddWordsIn, user=Depends(current_user)):
@@ -150,17 +253,15 @@ def register(api, db, current_user, require_child, new_id, now_iso):
         grouped = {s: [] for s in STAGES}
         for w in words:
             grouped.setdefault(w.get("stage", "wild"), []).append(public(w))
-        today = today_local()
-        to_tame = [
-            public(w) for w in words
-            if w.get("stage") != "mastered" and today not in (w.get("correct_days") or [])
-        ]
+        # Everything not yet mastered stays on the practice list.
+        to_tame = [public(w) for w in words if w.get("stage") != "mastered"]
         # Wildest and most-missed creatures first.
         to_tame.sort(key=lambda w: (STAGES.index(w["stage"]), -w.get("misses", 0)))
         return {
             "summary": summary,
             "stages": STAGES,
             "labels": STAGE_LABELS,
+            "mastery_streak": MASTERY_STREAK,
             "words": grouped,
             "to_tame_today": to_tame[:10],
         }
@@ -172,62 +273,29 @@ def register(api, db, current_user, require_child, new_id, now_iso):
         )
         if not w:
             raise HTTPException(404, "Word not found")
+        return await apply_attempt(w, data.correct, user)
 
-        today = today_local()
-        stage_i = STAGES.index(w.get("stage", "wild"))
-        days = list(w.get("correct_days") or [])
-        update = {"last_practised": now_iso()}
-        inc = {"attempts": 1}
-        xp = 0
-        moved = False
-
-        if data.correct:
-            if today not in days:
-                days.append(today)
-                update["correct_days"] = days
-                if stage_i < len(STAGES) - 1:
-                    stage_i += 1
-                    moved = True
-                    xp = XP_MASTERED if STAGES[stage_i] == "mastered" else XP_STEP
-                    if STAGES[stage_i] == "mastered":
-                        update["mastered_at"] = now_iso()
-        else:
-            inc["misses"] = 1
-            if stage_i > 0:
-                stage_i -= 1
-                moved = True
-                update["mastered_at"] = None
-
-        update["stage"] = STAGES[stage_i]
-        await db.word_bank.update_one(
-            {"id": w["id"]}, {"$set": update, "$inc": inc}
-        )
-        await db.word_practice.insert_one({
-            "id": new_id(),
-            "family_id": user["family_id"],
-            "student_id": user["id"],
-            "word_id": w["id"],
-            "word": w["word"],
-            "correct": data.correct,
-            "date": today,
-            "at": now_iso(),
-        })
-
-        if xp:
-            await db.pets.update_one(
-                {"student_id": user["id"]},
-                {"$inc": {"xp": xp},
-                 "$push": {"activity": {"amount": xp, "reason": f"Word Hoard: {w['word']}", "at": now_iso()}}},
+    @api.post("/word-bank/try")
+    async def try_spelling(data: TryIn, user=Depends(require_child)):
+        """The child types the word from memory. The server checks the spelling
+        and counts it towards the run of 10 in a row."""
+        word = clean_word(data.word)
+        if not word:
+            raise HTTPException(400, "A word is required")
+        query = {"student_id": user["id"], "family_id": user["family_id"], "word": word}
+        w = await db.word_bank.find_one(query, {"_id": 0})
+        if not w:
+            await add_words(
+                user["id"],
+                user["family_id"],
+                AddWordsIn(words=[word], source="lesson", lesson_id=data.lesson_id),
+                user["id"],
             )
-
-        fresh = await db.word_bank.find_one({"id": w["id"]}, {"_id": 0})
-        return {
-            "word": public(fresh),
-            "moved": moved,
-            "new_stage": STAGES[stage_i],
-            "xp_gained": xp,
-            "just_mastered": bool(xp == XP_MASTERED),
-        }
+            w = await db.word_bank.find_one(query, {"_id": 0})
+        if not w:
+            raise HTTPException(404, "Word not found")
+        correct = (data.guess or "").strip().lower() == word
+        return await apply_attempt(w, correct, user)
 
     @api.get("/word-bank/parent/{student_id}")
     async def parent_hoard_report(student_id: str, user=Depends(current_user)):

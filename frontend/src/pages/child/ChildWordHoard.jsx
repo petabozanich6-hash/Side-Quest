@@ -3,12 +3,13 @@ import { api } from "../../lib/api";
 import { toast } from "sonner";
 
 const BUTTON_STYLE = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
+const TARGET = 10;
 
 const STAGE_INFO = {
   wild: { emoji: "🥚", title: "Wild", blurb: "Not tamed yet" },
-  spotted: { emoji: "👀", title: "Spotted", blurb: "You have met these" },
-  tamed: { emoji: "🐾", title: "Tamed", blurb: "Almost yours" },
-  mastered: { emoji: "🏆", title: "Mastered", blurb: "In your hoard for good" },
+  spotted: { emoji: "👀", title: "Spotted", blurb: "1 to 3 in a row" },
+  tamed: { emoji: "🐾", title: "Tamed", blurb: "4 to 9 in a row" },
+  mastered: { emoji: "🏆", title: "Mastered", blurb: "10 in a row. Yours for good" },
 };
 
 function speak(word) {
@@ -60,14 +61,13 @@ export default function ChildWordHoard() {
   const check = async (e) => {
     e.preventDefault();
     if (!current || !guess.trim()) return;
-    const correct = guess.trim().toLowerCase() === current.word;
     setBusy(true);
     try {
-      const { data: res } = await api.post("/word-bank/practice", {
-        word_id: current.id,
-        correct,
+      const { data: res } = await api.post("/word-bank/try", {
+        word: current.word,
+        guess: guess.trim(),
       });
-      setResult({ ...res, correct });
+      setResult(res);
     } catch (error) {
       toast.error(error?.response?.data?.detail || "Could not save that try");
     } finally {
@@ -79,6 +79,10 @@ export default function ChildWordHoard() {
     setCurrent(null);
     setResult(null);
     await load();
+  };
+
+  const again = () => {
+    start(current);
   };
 
   const addWords = async (e) => {
@@ -102,7 +106,7 @@ export default function ChildWordHoard() {
           The Word Hoard
         </h1>
         <p className="text-sm text-stone-600 mt-1">
-          Spell each wild word right on different days to tame it.
+          Spell a word right {TARGET} times in a row to master it. One mistake and the run starts again.
         </p>
       </div>
 
@@ -127,14 +131,14 @@ export default function ChildWordHoard() {
 
       <section className="paper-card p-6" data-testid="tame-panel">
         <h2 className="font-display text-xl font-bold mb-3" style={{ color: "#1F3B2D" }}>
-          Words to tame today
+          Words to practise
         </h2>
 
         {!current && queue.length === 0 && (
           <p className="text-sm text-stone-700">
             {summary.total === 0
-              ? "No words yet. Add some below to begin your hoard."
-              : "You have tamed everything for today. Come back tomorrow!"}
+              ? "No words yet. Open a lesson or add some below to begin your hoard."
+              : "Every word is mastered. Brilliant! New words will appear with your next lesson."}
           </p>
         )}
 
@@ -148,7 +152,7 @@ export default function ChildWordHoard() {
                 className="rounded-full border px-4 py-2 text-sm bg-white hover:translate-y-[-2px] transition"
                 style={{ borderColor: "#C77B5B" }}
               >
-                {STAGE_INFO[w.stage].emoji} Tame a {w.stage} word
+                {STAGE_INFO[w.stage].emoji} Tame a {w.stage} word ({w.streak || 0}/{TARGET})
               </button>
             ))}
           </div>
@@ -156,7 +160,9 @@ export default function ChildWordHoard() {
 
         {current && !result && (
           <form onSubmit={check} className="space-y-3 text-center">
-            <p className="text-sm text-stone-700">Listen, then spell the word.</p>
+            <p className="text-sm text-stone-700">
+              Listen, then spell the word. In a row so far: {current.streak || 0} of {TARGET}.
+            </p>
             <button
               type="button"
               onClick={() => speak(current.word)}
@@ -195,25 +201,40 @@ export default function ChildWordHoard() {
             <div className="text-5xl">{result.correct ? (result.just_mastered ? "🏆" : "🎉") : "🌱"}</div>
             <h3 className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>
               {result.correct
-                ? result.moved
-                  ? `It is now ${result.new_stage}!`
-                  : "Spot on! You tamed this one already today."
+                ? result.just_mastered
+                  ? "Mastered! 10 in a row!"
+                  : `Correct! ${result.streak} in a row. ${result.to_go} to go.`
                 : `Nearly! It is spelled “${current.word}”.`}
             </h3>
+            {result.correct && result.moved && !result.just_mastered && (
+              <p className="text-sm text-stone-700">It is now {result.new_stage}!</p>
+            )}
             {result.xp_gained > 0 && (
               <p className="text-sm text-stone-700">+{result.xp_gained} XP for your pet</p>
             )}
             {!result.correct && (
-              <p className="text-sm text-stone-600">It slips back a stage. You will meet it again.</p>
+              <p className="text-sm text-stone-600">Your run starts again from 0. Look closely at the tricky part.</p>
             )}
-            <button
-              type="button"
-              onClick={nextWord}
-              className="mt-2 rounded-full px-6 py-3 text-sm font-bold"
-              style={BUTTON_STYLE}
-            >
-              Continue
-            </button>
+            <div className="flex justify-center gap-3 flex-wrap">
+              {!result.just_mastered && (
+                <button
+                  type="button"
+                  onClick={again}
+                  className="mt-2 rounded-full px-6 py-3 text-sm font-bold"
+                  style={BUTTON_STYLE}
+                >
+                  Spell it again
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={nextWord}
+                className="mt-2 rounded-full border px-6 py-3 text-sm font-bold"
+                style={{ borderColor: "#1F3B2D", color: "#1F3B2D" }}
+              >
+                Back to my words
+              </button>
+            </div>
           </div>
         )}
       </section>
@@ -242,6 +263,11 @@ export default function ChildWordHoard() {
                     style={{ borderColor: "#D4C8A8" }}
                   >
                     {stage === "wild" ? "???" : w.word}
+                    {stage !== "mastered" && (
+                      <span className="text-xs text-stone-500 ml-1">
+                        {w.streak || 0}/{TARGET}
+                      </span>
+                    )}
                   </span>
                 ))}
               </div>

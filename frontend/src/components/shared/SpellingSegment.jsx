@@ -1,25 +1,53 @@
 import React, { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { ChoiceSet } from "./QuestActivities";
+import { api } from "../../lib/api";
 
 const BTN = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
 
-function WordPractice({ item, onCorrect }) {
+function speak(word) {
+  if (typeof window === "undefined" || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(word);
+  utter.rate = 0.8;
+  window.speechSynthesis.speak(utter);
+}
+
+function WordPractice({ item, lessonId, onCorrect }) {
   const [phase, setPhase] = useState("look");
   const [value, setValue] = useState("");
   const [result, setResult] = useState(null);
+  const [info, setInfo] = useState(null);
+  const [busy, setBusy] = useState(false);
 
-  const check = () => {
-    const ok = value.trim().toLowerCase() === item.word.toLowerCase();
+  const startTry = () => {
+    setValue("");
+    setResult(null);
+    setInfo(null);
+    setPhase("covered");
+    speak(item.word);
+  };
+
+  const check = async () => {
+    const guess = value.trim();
+    if (!guess) return;
+    setBusy(true);
+    let ok = guess.toLowerCase() === item.word.toLowerCase();
+    try {
+      const { data } = await api.post("/word-bank/try", {
+        word: item.word,
+        guess,
+        lesson_id: lessonId,
+      });
+      ok = !!data.correct;
+      setInfo(data);
+    } catch {
+      setInfo(null);
+    }
+    setBusy(false);
     setResult(ok ? "right" : "wrong");
     setPhase("checked");
     if (ok) onCorrect(item.word);
-  };
-
-  const retry = () => {
-    setValue("");
-    setResult(null);
-    setPhase("look");
   };
 
   return (
@@ -43,17 +71,25 @@ function WordPractice({ item, onCorrect }) {
       {phase === "look" && (
         <div className="mt-3">
           <p className="text-xs text-stone-600">
-            Look at the word. Say it out loud. Find the tricky part. Then cover it.
+            Look at the word. Say it out loud. Find the tricky part. When you are ready, the word will be blocked out and you spell it yourself.
           </p>
-          <button type="button" onClick={() => setPhase("covered")} className="mt-2 rounded-full px-5 py-2 text-sm font-bold" style={BTN}>
-            I have looked and said it. Cover it
+          <button type="button" onClick={startTry} className="mt-2 rounded-full px-5 py-2 text-sm font-bold" style={BTN}>
+            ✏️ Try spelling now
           </button>
         </div>
       )}
 
       {phase === "covered" && (
         <div className="mt-3">
-          <p className="text-xs text-stone-600">Now write it from memory.</p>
+          <p className="text-xs text-stone-600">The word is hidden. Write it from memory.</p>
+          <button
+            type="button"
+            onClick={() => speak(item.word)}
+            className="mt-2 rounded-full border px-4 py-1.5 text-xs font-bold"
+            style={{ borderColor: "#1F3B2D", color: "#1F3B2D" }}
+          >
+            🔊 Hear it again
+          </button>
           <input
             type="text"
             value={value}
@@ -64,7 +100,7 @@ function WordPractice({ item, onCorrect }) {
             className="mt-2 w-full rounded-lg border px-3 py-2 text-base bg-white"
             style={{ borderColor: "#D4C8A8" }}
           />
-          <button type="button" onClick={check} disabled={!value.trim()} className="mt-2 rounded-full px-5 py-2 text-sm font-bold disabled:opacity-40" style={BTN}>
+          <button type="button" onClick={check} disabled={!value.trim() || busy} className="mt-2 rounded-full px-5 py-2 text-sm font-bold disabled:opacity-40" style={BTN}>
             Check
           </button>
         </div>
@@ -73,13 +109,26 @@ function WordPractice({ item, onCorrect }) {
       {phase === "checked" && (
         <div className="mt-3 text-sm">
           {result === "right" ? (
-            <p className="font-bold text-green-800">Correct. Well done.</p>
+            <div>
+              <p className="font-bold text-green-800">Correct. Well done.</p>
+              {info && (
+                <p className="text-stone-700 mt-1">
+                  {info.just_mastered
+                    ? "Mastered! 10 in a row."
+                    : `In your Word Hoard: ${info.streak} in a row, ${info.to_go} to go.`}
+                </p>
+              )}
+              <button type="button" onClick={startTry} className="mt-2 rounded-full border px-4 py-1.5 text-xs font-bold" style={{ borderColor: "#1F3B2D", color: "#1F3B2D" }}>
+                Spell it again
+              </button>
+            </div>
           ) : (
             <div>
               <p className="font-bold text-amber-900">
                 Not quite. You wrote "{value}". Find the part that is different, then try again.
               </p>
-              <button type="button" onClick={retry} className="mt-2 rounded-full px-5 py-2 text-sm font-bold" style={BTN}>
+              {info && <p className="text-stone-700 mt-1">Your run in the Word Hoard starts again from 0.</p>}
+              <button type="button" onClick={startTry} className="mt-2 rounded-full px-5 py-2 text-sm font-bold" style={BTN}>
                 Try again
               </button>
             </div>
@@ -90,7 +139,7 @@ function WordPractice({ item, onCorrect }) {
   );
 }
 
-export default function SpellingSegment({ spelling, onComplete }) {
+export default function SpellingSegment({ spelling, lessonId, onComplete }) {
   const words = spelling?.words || [];
   const check = spelling?.check || [];
   const [right, setRight] = useState({});
@@ -119,8 +168,11 @@ export default function SpellingSegment({ spelling, onComplete }) {
       {words.length > 0 && (
         <div className="space-y-3">
           <div className="font-bold text-sm">Your words for this lesson</div>
+          <p className="text-xs text-stone-600">
+            These words are now in your Word Hoard. Spell each one right 10 times in a row to master it.
+          </p>
           {words.map((item) => (
-            <WordPractice key={item.word} item={item} onCorrect={(w) => setRight((r) => ({ ...r, [w]: true }))} />
+            <WordPractice key={item.word} item={item} lessonId={lessonId} onCorrect={(w) => setRight((r) => ({ ...r, [w]: true }))} />
           ))}
         </div>
       )}
