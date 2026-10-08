@@ -1,10 +1,12 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 69
+LESSON_LIBRARY_VERSION = 70
 
 # All previous lessons have been cleared so the library can be rebuilt from scratch.
 # Finished Stage 4 lesson files named lesson_library_s4_<subject>_wNN_lN.py are found automatically
 # and loaded before the listed modules, so a new finished lesson only needs its own file.
 # Other modules are listed in LESSON_MODULES below as they are written.
+# Placeholder lesson sets (lesson_library_*_placeholders.py) are NOT registered here, so they do not
+# appear on the live site. The files stay in the repo as a build reference.
 # Renumbering has been removed: lessons keep the week numbers they are written with.
 LESSON_LIBRARY = []
 
@@ -30,10 +32,6 @@ LESSON_MODULES = (
     "lesson_library_s2_english_w05_l3",
     "lesson_library_s2_english_w05_l4",
     "lesson_library_s2_english_w06_l1",
-    "lesson_library_s2_english_placeholders",
-    "lesson_library_s2_maths_placeholders",
-    "lesson_library_s2_other_placeholders",
-    "lesson_library_s4_placeholders",
 )
 
 
