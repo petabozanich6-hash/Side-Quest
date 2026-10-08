@@ -1,5 +1,5 @@
-// Reads a spelling word aloud clearly: an English voice, a low steady pitch,
-// a slow rate, and the word said twice with a short gap between.
+// Reads spelling words aloud clearly: an English voice, a low steady pitch,
+// a slow rate. speakWord says the word twice; speakLetters says the letters.
 
 let cachedVoice = null;
 
@@ -19,7 +19,6 @@ function pickVoice() {
     const matches = usable.filter((v) => (v.lang || "").toLowerCase().replace("_", "-").startsWith(lang));
     if (matches.length === 0) continue;
 
-    // Prefer natural-sounding voices when the device has them.
     const natural = matches.find((v) => /(natural|premium|enhanced|neural|online)/i.test(v.name));
     const female = matches.find((v) => /(karen|catherine|natasha|libby|hazel|susan|samantha|google)/i.test(v.name));
     cachedVoice = natural || female || matches[0];
@@ -36,8 +35,8 @@ if (typeof window !== "undefined" && window.speechSynthesis) {
   };
 }
 
-function say(word, rate) {
-  const utter = new SpeechSynthesisUtterance(word);
+function say(text, rate) {
+  const utter = new SpeechSynthesisUtterance(text);
   const voice = pickVoice();
 
   if (voice) {
@@ -67,5 +66,16 @@ export function speakWord(word) {
   };
 
   synth.speak(first);
+  return true;
+}
+
+export function speakLetters(word) {
+  if (typeof window === "undefined" || !window.speechSynthesis || !word) return false;
+
+  const synth = window.speechSynthesis;
+  synth.cancel();
+
+  const letters = word.replace(/[^a-zA-Z]/g, "").split("").join(", ");
+  synth.speak(say(letters, 0.5));
   return true;
 }
