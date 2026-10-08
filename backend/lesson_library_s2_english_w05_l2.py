@@ -1,7 +1,7 @@
 """Stage 2 English, Week 5 Lesson 2: Resolution, Revising and Editing (Writing).
 The child writes the resolution for a model story (or their own story from Weeks 2 to 4), then revises it with ARMS and edits it with CUPS.
 Spelling: the week's homophone focus (there, their, they're) is practised inside the editing task, with six new words: somewhere, anywhere, elsewhere, therefore, wherever, whenever.
-Video status: all three videos were checked by search transcript excerpts only. Open and play each once before use, then update the notes.
+Video status: all three videos were checked against their full transcripts and lengths.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -100,19 +100,19 @@ LESSON = build(
     [
         _video(
             "What is a Resolution? (Story Elements for Kids)", "a4DOtwzQRCU",
-            "Watch for the meaning of resolution and the different kinds: a character meeting a goal, or learning a lesson. Notice how loose ends are tied up. Status: transcript excerpts checked only, so a parent should play it once first and note the length.",
+            "Watch for the meaning of resolution and the different kinds: a character meeting a goal, or learning a lesson. Notice how loose ends are tied up. This is about 3 and a half minutes. Status: full transcript checked.",
             "If the video will not play, reread Steps 1 to 3 and the model plan in the teaching text.",
             ("What is a resolution?", ["The final part where the problem is solved", "The first part of a story", "The setting"], 0, "The resolution is where the problem or conflict is resolved."),
         ),
         _video(
             "Narrative Writing for Kids: resolutions and solutions", "AgVQ1yxvXy4",
-            "Watch how a resolution fixes the problem, wraps everything up, and can share a lesson. Notice how it gives the reader a feeling of satisfaction. Status: transcript excerpts checked only, so a parent should play it once first and note the length.",
+            "Watch how a resolution fixes the problem, wraps everything up, and can share a lesson. Notice how it gives the reader a feeling of satisfaction. This is about 2 and three-quarter minutes, and it is comedic in style with some silly dialogue. Status: full transcript checked.",
             "If the video will not play, reread Step 2 and write an ending that shows a feeling and a lesson.",
             ("What does a good resolution give the reader?", ["A sense of satisfaction", "More questions", "A new problem"], 0, "The video says a resolution gives a sense of satisfaction."),
         ),
         _video(
             "Editing Your Writing for Kids", "izENvJJY6Hg",
-            "Watch the four things to check when editing: grammar, spelling, capitalisation and punctuation. This video is made for younger students and uses American spelling, so use it as a reminder only. Status: transcript excerpts checked only, so a parent should play it once first.",
+            "Watch the four things to check when editing: grammar, spelling, capitalisation and punctuation. This is about 3 and a half minutes. It is made for younger students, uses an informational example about caring for a dog, and says period instead of full stop. Status: full transcript checked.",
             "If the video will not play, reread Step 6 and use CUPS as your checklist.",
             ("Which is NOT one of the four things to check when editing?", ["Spelling", "Punctuation", "Changing the plot"], 2, "Editing checks grammar, spelling, capitals and punctuation, not the plot."),
         ),
