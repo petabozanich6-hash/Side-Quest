@@ -5,7 +5,7 @@ import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, Fil
 import { Leaf, Branch } from "../../components/shared/Botanical";
 import ReviewModal from "../../components/parent/ReviewModal";
 
-const Stat = ({ icon: Icon, label, value, testid, accent="#4A5D3A", href }) => {
+const Stat = ({ icon: Icon, label, value, testid, accent="#4A5D3A", href, to }) => {
   const body = (
     <div className="paper-card p-5" data-testid={testid}>
       <div className="flex items-center justify-between">
@@ -15,6 +15,7 @@ const Stat = ({ icon: Icon, label, value, testid, accent="#4A5D3A", href }) => {
       <div className="mt-2 font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>{value}</div>
     </div>
   );
+  if (to) return <Link to={to} className="block hover:translate-y-[-2px] transition" aria-label={`${label}: ${value}. Open ${label.toLowerCase()} page`}>{body}</Link>;
   return href ? <a href={href} className="block hover:translate-y-[-2px] transition">{body}</a> : body;
 };
 
@@ -56,7 +57,7 @@ export default function ParentDashboard() {
       </header>
 
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat icon={Users} label="Students" value={data.students.length} testid="stat-students"/>
+        <Stat icon={Users} label="Students" value={data.students.length} testid="stat-students" to="/parent/children"/>
         <Stat icon={Camera} label="Pending review" value={waiting.length} testid="stat-pending" accent="#D4A574" href="#waiting"/>
         <Stat icon={AlertTriangle} label="Awaiting help" value={data.awaiting_help} testid="stat-help" accent="#E11D48" href="#waiting"/>
         <Stat icon={BookOpen} label="Resources to approve" value={data.unapproved_resources} testid="stat-resources" accent="#C77B5B"/>
