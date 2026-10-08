@@ -1,8 +1,11 @@
-"""Seasonal release packs (Halloween). Per-family on/off switch with optional dates."""
+"""Seasonal release packs (Halloween). Per-family on/off switch with optional dates.
+
+Registered from reading_approvals.register, so server.py needs no edit.
+"""
 from datetime import datetime, date
 from typing import Optional
 
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
 from pydantic import BaseModel
 
 try:
@@ -18,6 +21,14 @@ class SeasonalIn(BaseModel):
     enabled: bool = False
     start_date: Optional[str] = None  # YYYY-MM-DD, empty = no start limit
     end_date: Optional[str] = None    # YYYY-MM-DD, empty = no end limit
+
+
+def _family_parent(user: dict):
+    return user.get("family_id") or user.get("id")
+
+
+def _family_child(user: dict):
+    return user.get("family_id") or user.get("parent_id")
 
 
 def _clean_date(value: Optional[str]) -> Optional[str]:
@@ -53,8 +64,8 @@ def register(api, db, require_child, require_parent, now_iso):
         )
 
     @api.get("/seasonal/halloween")
-    async def get_halloween(user=require_parent_dep(require_parent)):
-        cfg = await _load(user["family_id"]) or {}
+    async def get_halloween(user=Depends(require_parent)):
+        cfg = await _load(_family_parent(user)) or {}
         return {
             "enabled": bool(cfg.get("enabled", False)),
             "start_date": cfg.get("start_date"),
@@ -64,23 +75,22 @@ def register(api, db, require_child, require_parent, now_iso):
         }
 
     @api.put("/seasonal/halloween")
-    async def put_halloween(data: SeasonalIn, user=require_parent_dep(require_parent)):
+    async def put_halloween(data: SeasonalIn, user=Depends(require_parent)):
         start = _clean_date(data.start_date)
         end = _clean_date(data.end_date)
         if start and end and end < start:
             raise HTTPException(400, "End date must be on or after the start date")
+        fam = _family_parent(user)
         doc = {
-            "family_id": user["family_id"],
+            "family_id": fam,
             "pack": PACK,
             "enabled": data.enabled,
             "start_date": start,
             "end_date": end,
-            "updated_at": now_iso(),
+            "updated_at": now_iso() if callable(now_iso) else str(now_iso),
         }
         await db.seasonal_packs.update_one(
-            {"family_id": user["family_id"], "pack": PACK},
-            {"$set": doc},
-            upsert=True,
+            {"family_id": fam, "pack": PACK}, {"$set": doc}, upsert=True
         )
         return {
             "enabled": data.enabled,
@@ -91,16 +101,6 @@ def register(api, db, require_child, require_parent, now_iso):
         }
 
     @api.get("/seasonal/halloween/active")
-    async def halloween_active(user=require_child_dep(require_child)):
-        cfg = await _load(user["family_id"])
+    async def halloween_active(user=Depends(require_child)):
+        cfg = await _load(_family_child(user))
         return {"active": is_active(cfg)}
-
-
-def require_parent_dep(dep):
-    from fastapi import Depends
-    return Depends(dep)
-
-
-def require_child_dep(dep):
-    from fastapi import Depends
-    return Depends(dep)

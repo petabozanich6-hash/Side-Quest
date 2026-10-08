@@ -8,6 +8,7 @@ Wire-up in server.py, next to the other register calls:
     reading_approvals.register(api, db, require_child, require_parent, now_iso)
 """
 import uuid
+import logging
 from datetime import datetime, timezone, timedelta
 
 from fastapi import HTTPException, Depends
@@ -40,6 +41,13 @@ def register(api, db, require_child, require_parent, now_iso):
     # Learning plan builder (template based, no AI). Registered here so server.py needs no edit.
     from learning_plan_builder import register as register_plan_builder
     register_plan_builder(api, db, require_parent)
+
+    # Seasonal packs (Halloween). Wrapped so a problem here cannot stop reading approvals loading.
+    try:
+        from seasonal import register as register_seasonal
+        register_seasonal(api, db, require_child, require_parent, now_iso)
+    except Exception:
+        logging.getLogger("sidequest").exception("Seasonal pack failed to load")
 
     @api.post("/reading-submissions")
     async def submit(data: dict, user=Depends(require_child)):
