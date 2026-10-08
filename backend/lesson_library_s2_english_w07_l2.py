@@ -87,7 +87,7 @@ LESSON = build(
         _q("Why use technical words in information writing?", ["They are exact and clear", "They are longer", "They are funny", "They are always shorter"], 0, "Technical words are exact and clear."),
         _q("What should a closing sentence do?", ["Sum up the main idea", "Add a brand new fact", "Start a new paragraph", "Repeat every sentence"], 0, "A closing sentence sums up the main idea."),
         _q("Which is spelled correctly?", ["televishun", "televission", "television", "televizion"], 2, "Television is spelled with -sion."),
-        _q("Which is spelled correctly?", ["expresion", "expression", "expreshun", "expresion"], 1, "Expression is spelled with -ssion."),
+        _q("Which is spelled correctly?", ["expresion", "expression", "expreshun", "expretion"], 1, "Expression is spelled with -ssion."),
     ],
     "Type your answers in the practice boxes and submit them.",
     "Extension: write a second classification paragraph on a different topic, using a different rule. Swap it with a family member and ask them to name your groups and your rule without being told.",
