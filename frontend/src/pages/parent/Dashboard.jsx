@@ -56,11 +56,10 @@ export default function ParentDashboard() {
         </div>
       </header>
 
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <section className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <Stat icon={Users} label="Students" value={data.students.length} testid="stat-students" to="/parent/children"/>
         <Stat icon={Camera} label="Pending review" value={waiting.length} testid="stat-pending" accent="#D4A574" href="#waiting"/>
         <Stat icon={AlertTriangle} label="Awaiting help" value={data.awaiting_help} testid="stat-help" accent="#E11D48" href="#waiting"/>
-        <Stat icon={BookOpen} label="Resources to approve" value={data.unapproved_resources} testid="stat-resources" accent="#C77B5B"/>
       </section>
 
       <section id="waiting" data-testid="waiting-list">
