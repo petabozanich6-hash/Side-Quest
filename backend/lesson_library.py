@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 46
+LESSON_LIBRARY_VERSION = 47
 
 # All previous lessons have been cleared so the library can be rebuilt from scratch.
 # New modules are listed in LESSON_MODULES below as they are written.
@@ -53,6 +53,25 @@ def _register_lessons():
 
 
 _register_lessons()
+
+
+def _attach_spelling():
+    """Attach the interactive spelling segment (and its Word Hoard words) to
+    every lesson that has spelling content. Failure is logged, never fatal."""
+    import logging
+
+    log = logging.getLogger("sidequest")
+    try:
+        from spelling_live import apply_spelling
+
+        apply_spelling(LESSON_LIBRARY)
+        count = len([item for item in LESSON_LIBRARY if item.get("spelling")])
+        log.warning("Spelling segment attached to %s lessons", count)
+    except Exception as exc:  # noqa: BLE001
+        log.warning("Spelling segments not attached: %r", exc)
+
+
+_attach_spelling()
 
 
 def _orphan_cleanup_later():
