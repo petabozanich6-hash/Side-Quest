@@ -1,15 +1,18 @@
 """Stage 2 Mathematics outcome codes (NSW Mathematics K-10 Syllabus, NESA 2022).
 
-STATUS: DRAFT. The 20 codes below come from a secondary source (Sprout Lessons) and have NOT yet been
-checked against curriculum.nsw.edu.au. Descriptions are short plain-language focus-area labels, not the
-official wording. Parent to verify each code on the NESA outcomes page, then set VERIFIED = True.
+STATUS: VERIFIED. The 20 content codes below match the NESA outcomes page on curriculum.nsw.edu.au
+(checked Oct 2026). MAO-WM-01 (Working mathematically) is the cross-stage process outcome and is
+attached to every Maths lesson. Descriptions are short plain-language focus-area labels, not the
+official wording.
 
 Note: backend/nsw_outcomes.py still holds the older MA2-RWN-01/02 codes. The current syllabus uses
-MA2-RN-01/02 for place value, so those seed rows should be retired once this file is confirmed.
+MA2-RN-01/02 for place value, so those seed rows should be retired.
 """
 
-VERIFIED = False
+VERIFIED = True
 SOURCE = "NSW Mathematics K-10 Syllabus (NESA 2022), Stage 2"
+
+WORKING_MATHEMATICALLY = "MAO-WM-01"
 
 STAGE2_MATHS_OUTCOMES = {
     "MA2-RN-01": "Representing numbers: place value for whole numbers",
@@ -32,4 +35,5 @@ STAGE2_MATHS_OUTCOMES = {
     "MA2-CHAN-01": "Chance: experiments and likelihood",
     "MA2-DATA-01": "Data: collecting data and constructing displays",
     "MA2-DATA-02": "Data: interpreting tables and graphs",
+    "MAO-WM-01": "Working mathematically: reasoning, communicating and solving problems (applies across all content)",
 }
