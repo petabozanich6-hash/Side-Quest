@@ -5,6 +5,7 @@ import { Plus, X, Sparkles, Loader2, FileCheck, Printer, Trash2 } from "lucide-r
 import { Leaf, Branch } from "../../components/shared/Botanical";
 
 const AREAS = ["English","Mathematics","Science and Technology","HSIE","PDHPE","Creative Arts","Languages","TAS"];
+const SECONDARY = ["S4","S5","S6"];
 
 export default function LearningPlans() {
   const [plans, setPlans] = useState([]);
@@ -24,6 +25,14 @@ export default function LearningPlans() {
     api.get("/students").then(r => { setStudents(r.data); if (r.data[0]) setForm(f => ({...f, student_id: r.data[0].id})); });
   }, []);
 
+  const student = students.find(s => s.id === form.student_id);
+  const isSecondary = SECONDARY.includes(student?.stage);
+  const childCourses = isSecondary
+    ? [...new Set((student?.electives || []).map(c => c.name).filter(Boolean))]
+    : [];
+  const areaChoices = childCourses.length ? childCourses : AREAS;
+
+  const pickStudent = (id) => setForm(f => ({...f, student_id: id, subject_focus: []}));
   const toggleArea = (a) => setForm(f => ({...f, subject_focus: f.subject_focus.includes(a) ? f.subject_focus.filter(x=>x!==a) : [...f.subject_focus, a]}));
 
   const build = async (id) => {
@@ -142,9 +151,9 @@ export default function LearningPlans() {
             <div className="flex items-center justify-between mb-4"><h2 className="font-display text-2xl font-bold" style={{color:"#1F3B2D"}}>New learning plan</h2><button type="button" onClick={()=>setOpen(false)}><X size={18}/></button></div>
             <div className="space-y-3.5">
               <F label="Student">
-                <select required value={form.student_id} onChange={e=>setForm({...form, student_id: e.target.value})} className="input" data-testid="plan-student">
+                <select required value={form.student_id} onChange={e=>pickStudent(e.target.value)} className="input" data-testid="plan-student">
                   <option value="">Choose…</option>
-                  {students.map(s => <option key={s.id} value={s.id}>{s.name} ({s.stage})</option>)}
+                  {students.map(s => <option key={s.id} value={s.id}>{s.name} ({s.stage}{s.year_level ? `, Year ${s.year_level}` : ""})</option>)}
                 </select>
               </F>
               <F label="Plan title"><input required value={form.title} onChange={e=>setForm({...form, title: e.target.value})} placeholder="e.g. Semester 1 2027 Learning Plan" className="input" data-testid="plan-title"/></F>
@@ -154,12 +163,13 @@ export default function LearningPlans() {
               </div>
               <F label="Child's interests (comma separated)"><input value={form.interests} onChange={e=>setForm({...form, interests: e.target.value})} placeholder="dinosaurs, cooking, Lego, soccer, drawing" className="input" data-testid="plan-interests"/></F>
               <div>
-                <label className="text-xs font-bold uppercase tracking-widest text-stone-500">Extra learning areas (the six key areas are always included)</label>
+                <label className="text-xs font-bold uppercase tracking-widest text-stone-500">{childCourses.length ? `Focus courses for ${student?.name}` : "Extra learning areas (the six key areas are always included)"}</label>
                 <div className="mt-2 flex flex-wrap gap-1.5">
-                  {AREAS.map(a => (
+                  {areaChoices.map(a => (
                     <button type="button" key={a} onClick={()=>toggleArea(a)} className={`rounded-full border px-3 py-1 text-xs font-semibold ${form.subject_focus.includes(a) ? "bg-moss text-cream" : "bg-white"}`} style={form.subject_focus.includes(a) ? {backgroundColor:"#4A5D3A", color:"#F5EFE0", borderColor:"#4A5D3A"} : {borderColor:"#D4C8A8"}} data-testid={`area-${a.replace(/\s+/g,'-')}`}>{a}</button>
                   ))}
                 </div>
+                {isSecondary && !childCourses.length && <div className="mt-2 text-[11px] text-stone-500 italic">No courses saved for this child yet. Showing general learning areas.</div>}
               </div>
               <F label="Teaching approach (optional)"><input value={form.teaching_approach} onChange={e=>setForm({...form, teaching_approach: e.target.value})} placeholder="e.g. project-based, nature-rich, explicit teaching mornings" className="input" data-testid="plan-approach"/></F>
               <F label="Notes (optional)"><textarea rows={3} value={form.notes} onChange={e=>setForm({...form, notes: e.target.value})} className="input" data-testid="plan-notes"/></F>
