@@ -32,6 +32,7 @@ import ChildCalendar from "./pages/child/ChildCalendar";
 import ChildAchievements from "./pages/child/ChildAchievements";
 import ChildWordHoard from "./pages/child/ChildWordHoard";
 import PetRoom from "./pages/child/PetRoom";
+import ChildReading from "./pages/child/ChildReading";
 
 function Guard({ role, children }) {
   const { user, loading } = useAuth();
@@ -76,6 +77,7 @@ function Router() {
         <Route path="achievements" element={<ChildAchievements />} />
         <Route path="word-hoard" element={<ChildWordHoard />} />
         <Route path="room" element={<PetRoom />} />
+        <Route path="reading" element={<ChildReading />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

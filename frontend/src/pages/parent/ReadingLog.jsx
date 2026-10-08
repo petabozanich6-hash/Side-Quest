@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
-import { Plus, X, BookOpen, Trash2, Printer } from "lucide-react";
+import { Plus, X, BookOpen, Trash2, Printer, Check } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
 
 const TYPES = [
@@ -24,6 +24,7 @@ export default function ReadingLog() {
   const [entries, setEntries] = useState([]);
   const [stats, setStats] = useState(null);
   const [students, setStudents] = useState([]);
+  const [pending, setPending] = useState([]);
   const [filter, setFilter] = useState("");
   const [open, setOpen] = useState(false);
   const today = new Date().toISOString().slice(0,10);
@@ -38,10 +39,31 @@ export default function ReadingLog() {
     const [a, b] = await Promise.all([api.get(`/reading-log${q}`), api.get(`/reading-log/stats${q}`)]);
     setEntries(a.data); setStats(b.data);
   };
+  const loadPending = () => api.get("/reading-submissions/pending").then(r => setPending(r.data)).catch(() => setPending([]));
   useEffect(() => {
     api.get("/students").then(r => { setStudents(r.data); if (r.data[0]) setForm(f => ({...f, student_id: r.data[0].id})); });
+    loadPending();
   }, []);
   useEffect(() => { load(); }, [filter]);
+
+  const studentName = (id) => students.find(s => s.id === id)?.name || "Child";
+
+  const approve = async (p) => {
+    try {
+      await api.post(`/reading-submissions/${p.id}/approve`, {});
+      toast.success("Approved and added to the log");
+      loadPending(); load();
+    } catch (e) { toast.error(e?.response?.data?.detail || "Failed"); }
+  };
+  const sendBack = async (p) => {
+    const note = window.prompt("Optional message for your child (e.g. 'Tell me about it first'):", "");
+    if (note === null) return;
+    try {
+      await api.post(`/reading-submissions/${p.id}/reject`, { parent_note: note });
+      toast.success("Sent back");
+      loadPending();
+    } catch (e) { toast.error(e?.response?.data?.detail || "Failed"); }
+  };
 
   const submit = async (e) => {
     e.preventDefault();
@@ -68,7 +90,7 @@ export default function ReadingLog() {
   const printLog = () => {
     const w = window.open("", "_blank");
     const header = `<html><head><title>Reading Log</title><style>body{font-family:Georgia,serif;max-width:900px;margin:40px auto;padding:0 20px}h1{font-size:24px}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{border:1px solid #ccc;padding:8px;text-align:left;font-size:12px;vertical-align:top}th{background:#f5efe0}</style></head><body>`;
-    const rows = entries.map(e => `<tr><td>${e.read_date}</td><td>${e.student?.name||""}</td><td><strong>${e.title}</strong>${e.author ? ` — ${e.author}` : ""}</td><td>${e.book_type}</td><td>${e.reading_mode.replace(/_/g,' ')}</td><td>${e.duration_minutes||""}</td><td>${e.pages_read||e.pages||""}</td><td>${e.comprehension_notes||""}</td></tr>`).join("");
+    const rows = entries.map(e => `<tr><td>${e.read_date}</td><td>${e.student?.name||""}</td><td><strong>${e.title}</strong>${e.author ? ` — ${e.author}` : ""}${e.verified_by_parent ? " (verified by parent)" : ""}</td><td>${e.book_type}</td><td>${e.reading_mode.replace(/_/g,' ')}</td><td>${e.duration_minutes||""}</td><td>${e.pages_read||e.pages||""}</td><td>${e.comprehension_notes||""}</td></tr>`).join("");
     w.document.write(`${header}<h1>Reading Log</h1><p>Entries: ${entries.length} · Unique books: ${stats?.unique_books||0} · Total minutes: ${stats?.total_minutes||0} · Total pages: ${stats?.total_pages||0}</p><table><thead><tr><th>Date</th><th>Student</th><th>Book</th><th>Type</th><th>Mode</th><th>Min</th><th>Pages</th><th>Comprehension notes</th></tr></thead><tbody>${rows}</tbody></table></body></html>`);
     w.document.close(); w.print();
   };
@@ -87,6 +109,27 @@ export default function ReadingLog() {
           clean printable log for your inspection folder.
         </p>
       </header>
+
+      {pending.length > 0 && (
+        <section className="paper-card p-6" style={{backgroundColor:"#FFF8E7"}} data-testid="pending-reading">
+          <h2 className="font-display text-xl font-bold mb-1" style={{color:"#1F3B2D"}}>Waiting for your approval ({pending.length})</h2>
+          <p className="text-xs text-stone-600 mb-3">Your children added these. Only approved books count towards the log and pet XP.</p>
+          <div className="space-y-2">
+            {pending.map(p => (
+              <div key={p.id} className="rounded-xl border bg-white p-3 flex items-center justify-between gap-3 flex-wrap" style={{borderColor:"#E8E2D1"}} data-testid={`pending-${p.id}`}>
+                <div className="min-w-0">
+                  <div className="font-semibold text-sm">{p.title}{p.author ? <span className="text-stone-500 font-normal"> by {p.author}</span> : null}</div>
+                  <div className="text-xs text-stone-500">{studentName(p.student_id)} · {p.read_date} · {p.duration_minutes} min{p.pages ? ` · ${p.pages} pages` : ""} · {p.book_type} · {p.reading_mode.replace(/_/g,' ')}</div>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={()=>approve(p)} className="rounded-full px-4 py-1.5 text-xs font-bold flex items-center gap-1" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid={`approve-${p.id}`}><Check size={12}/> Approve</button>
+                  <button onClick={()=>sendBack(p)} className="rounded-full border px-4 py-1.5 text-xs font-bold" style={{borderColor:"#D4C8A8"}} data-testid={`reject-${p.id}`}>Send back</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -116,7 +159,7 @@ export default function ReadingLog() {
               <tr key={e.id} className="border-t group" style={{borderColor:"#E8E2D1"}} data-testid={`read-${e.id}`}>
                 <td className="p-3 font-mono text-xs">{e.read_date}</td>
                 <td className="p-3 font-semibold">{e.student?.name}</td>
-                <td className="p-3"><div className="font-semibold">{e.title}</div>{e.author && <div className="text-xs text-stone-500">by {e.author}</div>}</td>
+                <td className="p-3"><div className="font-semibold">{e.title}{e.verified_by_parent && <span title="Verified by parent" className="ml-2 text-[10px] font-bold uppercase tracking-wider text-emerald-700">verified</span>}</div>{e.author && <div className="text-xs text-stone-500">by {e.author}</div>}</td>
                 <td className="p-3 text-xs">{e.book_type}</td>
                 <td className="p-3 text-xs">{e.reading_mode.replace(/_/g,' ')}</td>
                 <td className="p-3 text-xs">{e.duration_minutes || "—"}</td>
