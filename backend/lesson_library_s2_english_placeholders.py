@@ -1,6 +1,12 @@
 """Stage 2 English: 50-week placeholder lessons (200 lessons), generated from one table.
 Source plan: docs/english_s2_scope_and_sequence.md.
 
+OUTCOMES: all 11 Stage 2 outcomes of the English K-10 Syllabus (2022) are covered, checked against
+the NESA outcomes page on curriculum.nsw.edu.au (Oct 2026): EN2-OLC-01, EN2-VOCAB-01, EN2-REFLU-01,
+EN2-RECOM-01, EN2-CWT-01/02/03, EN2-SPELL-01, EN2-HANDW-01/02, EN2-UARL-01. Writing lessons use
+CWT-01 (imaginative) in narrative, poetry, novel and myth units, CWT-02 (informative) in report,
+explanation and research units, and CWT-03 (persuasive) in persuasion units.
+
 The library starts again from scratch: ONLY these placeholders are registered.
 Older lesson files are not registered. lesson_library_s2_english_w1_w2.py is kept
 only because this module imports its build helpers (build, _q, _step).
@@ -22,6 +28,24 @@ from lesson_library_s2_english_w1_w2 import build, _q, _step
 
 BUILT_OUT_WEEKS = set()
 NOVEL_WEEKS = {21, 22, 23, 24, 25, 46, 47}
+
+OUTCOMES = {
+    "EN2-OLC-01": "communicates with familiar audiences for social and learning purposes, by interacting, understanding and presenting",
+    "EN2-VOCAB-01": "builds knowledge and use of Tier 1, Tier 2 and Tier 3 vocabulary through interacting, wide reading and writing, and by defining and analysing words",
+    "EN2-REFLU-01": "sustains independent reading with accuracy, automaticity, rate and prosody suited to purpose, audience and meaning",
+    "EN2-RECOM-01": "reads and comprehends texts for wide purposes using knowledge of text structures and language, and by monitoring comprehension",
+    "EN2-CWT-01": "plans, creates and revises written texts for imaginative purposes, using text features, sentence-level grammar, punctuation and word-level language for a target audience",
+    "EN2-CWT-02": "plans, creates and revises written texts for informative purposes, using text features, sentence-level grammar, punctuation and word-level language for a target audience",
+    "EN2-CWT-03": "plans, creates and revises written texts for persuasive purposes, using text features, sentence-level grammar, punctuation and word-level language for a target audience",
+    "EN2-SPELL-01": "selects, applies and describes appropriate phonological, orthographic and morphological generalisations and strategies when spelling in a range of contexts",
+    "EN2-HANDW-01": "forms legible joined letters to develop handwriting fluency",
+    "EN2-HANDW-02": "uses digital technologies to create texts",
+    "EN2-UARL-01": "identifies and describes how ideas are represented in literature and strategically uses similar representations when creating texts",
+}
+LITERATURE_WEEKS = set(range(1, 6)) | set(range(11, 16)) | set(range(21, 31)) | set(range(41, 48))
+INFORMATIVE_WEEKS = set(range(6, 11)) | set(range(31, 36)) | set(range(48, 51))
+PERSUASIVE_WEEKS = set(range(16, 21)) | set(range(36, 41))
+DIGITAL_WEEKS = {5, 10, 34, 35, 49}
 
 UNITS = {
     1: "Narrative foundations", 6: "Information reports", 11: "Poetry", 16: "Persuasive texts",
@@ -85,7 +109,6 @@ WEEKS = [
 ]
 
 SLOTS = ["Reading and comprehension", "Writing", "Language", "Oral language and handwriting"]
-CODES = ["EN2-RECOM-01", "EN2-CWT-01", "EN2-VOCAB-01", "EN2-OLC-01"]
 
 
 def _unit_for(week):
@@ -93,11 +116,34 @@ def _unit_for(week):
     return UNITS[start]
 
 
+def _codes_for(week, slot, topic):
+    if slot == 0:
+        codes = ["EN2-RECOM-01"]
+        if week % 5 == 1:
+            codes.append("EN2-REFLU-01")
+        if week in LITERATURE_WEEKS:
+            codes.append("EN2-UARL-01")
+    elif slot == 1:
+        if week in PERSUASIVE_WEEKS:
+            codes = ["EN2-CWT-03"]
+        elif week in INFORMATIVE_WEEKS:
+            codes = ["EN2-CWT-02"]
+        else:
+            codes = ["EN2-CWT-01"]
+    elif slot == 2:
+        codes = ["EN2-VOCAB-01"]
+    else:
+        codes = ["EN2-OLC-01"]
+        if "andwriting" in topic:
+            codes.append("EN2-HANDW-01")
+        if week in DIGITAL_WEEKS:
+            codes.append("EN2-HANDW-02")
+    return codes + ["EN2-SPELL-01"]
+
+
 def _make(week, slot, topic, spelling):
     novel = week in NOVEL_WEEKS
-    code = CODES[slot]
-    if slot == 3 and "andwriting" in topic:
-        code = "EN2-HANDW-01"
+    codes = _codes_for(week, slot, topic)
     title = "Week %d, Lesson %d: %s" % (week, slot + 1, topic)
     if novel:
         title += " (your class novel)"
@@ -112,10 +158,11 @@ def _make(week, slot, topic, spelling):
     steps.append(_step("6", "Spelling: " + spelling,
                        "This week's spelling focus is: " + spelling + ". Use words from this lesson, and use Look, Say, Cover, Write, Check for the tricky ones. You can add any tricky words to your Word Hoard yourself.",
                        "Example words to be added.", "Spelling is practised in every lesson, not only in spelling lessons.", check))
+    notes = {c: OUTCOMES[c] for c in codes}
     lesson = build(
         "s2-eng-w%02d-l%d" % (week, slot + 1), title,
         "Placeholder lesson: %s. %s.%s" % (topic, SLOTS[slot], novel_line),
-        unit, [code, "EN2-SPELL-01"], {code: "Primary.", "EN2-SPELL-01": "Spelling focus: " + spelling},
+        unit, codes, notes,
         "We are learning about: " + topic + ".",
         ["I can explain the main idea of this lesson.", "I can use it in my own work.", "I can spell this week's focus words."],
         [], ["Paper or notebook", "Pencil"], "To be added.", placeholder, steps,
@@ -143,3 +190,12 @@ for _w, _row in enumerate(WEEKS, start=1):
         continue
     for _slot in range(4):
         LESSONS.append(_make(_w, _slot, _row[_slot], _row[4]))
+
+
+if __name__ == "__main__":
+    keys = [l["seed_key"] for l in LESSONS]
+    assert len(keys) == len(set(keys)), "duplicate seed keys"
+    assert len(LESSONS) == 200, len(LESSONS)
+    used = {c for l in LESSONS for c in l["outcome_codes"]}
+    assert used == set(OUTCOMES), set(OUTCOMES) ^ used
+    print("OK: 200 lessons, all 11 Stage 2 English outcomes used")
