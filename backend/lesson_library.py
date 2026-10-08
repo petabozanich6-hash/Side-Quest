@@ -1,8 +1,9 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 66
+LESSON_LIBRARY_VERSION = 67
 
 # All previous lessons have been cleared so the library can be rebuilt from scratch.
-# New modules are listed in LESSON_MODULES below as they are written.
+# Finished Stage 4 lesson files named lesson_library_s4_<subject>_wNN_lN.py are found automatically,
+# so a new finished lesson only needs its own file. Other modules are listed in LESSON_MODULES below.
 # Renumbering has been removed: lessons keep the week numbers they are written with.
 LESSON_LIBRARY = []
 
@@ -11,13 +12,26 @@ LESSON_MODULES = (
     "lesson_library_s2_english_w02_l1", "lesson_library_s2_english_w02_l2", "lesson_library_s2_english_w02_l3", "lesson_library_s2_english_w02_l4",
     "lesson_library_s2_english_w03_l1", "lesson_library_s2_english_w03_l2", "lesson_library_s2_english_w03_l3", "lesson_library_s2_english_w03_l4",
     "lesson_library_s2_english_w04_l1", "lesson_library_s2_english_w04_l2", "lesson_library_s2_english_w04_l3", "lesson_library_s2_english_w04_l4",
-    "lesson_library_s4_maths_w01_l1",
     "lesson_library_s2_english_placeholders",
     "lesson_library_s2_maths_placeholders",
     "lesson_library_s2_other_placeholders",
     "lesson_library_s4_plan_more",
     "lesson_library_s4_plan",
 )
+
+
+def _discover_finished_s4():
+    import glob
+    import os
+    import re
+    here = os.path.dirname(os.path.abspath(__file__))
+    pattern = re.compile(r"^lesson_library_s4_[a-z_]+_w\d{2}_l\d+\.py$")
+    names = []
+    for path in sorted(glob.glob(os.path.join(here, "lesson_library_s4_*.py"))):
+        base = os.path.basename(path)
+        if pattern.match(base):
+            names.append(base[:-3])
+    return tuple(names)
 
 
 def _lesson_dicts_in(module):
@@ -38,7 +52,9 @@ def _register_lessons():
     import logging
     log = logging.getLogger("sidequest")
     have = {item.get("seed_key") for item in LESSON_LIBRARY}
-    for module_name in LESSON_MODULES:
+    finished = _discover_finished_s4()
+    ordered = list(finished) + [m for m in LESSON_MODULES if m not in finished]
+    for module_name in ordered:
         try:
             module = importlib.import_module(module_name)
             added = 0
