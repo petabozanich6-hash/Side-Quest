@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 69
+LESSON_LIBRARY_VERSION = 70
 
 # All previous lessons have been cleared so the library can be rebuilt from scratch.
 # New modules are listed in LESSON_MODULES below as they are written.
@@ -31,6 +31,10 @@ LESSON_MODULES = (
     "lesson_library_s2_english_w06_l2",
     "lesson_library_s2_english_w06_l3",
     "lesson_library_s2_english_w06_l4",
+    "lesson_library_s2_english_w07_l1",
+    "lesson_library_s2_english_w07_l2",
+    "lesson_library_s2_english_w07_l3",
+    "lesson_library_s2_english_w07_l4",
     "lesson_library_s2_english_placeholders",
     "lesson_library_s2_maths_placeholders",
     "lesson_library_s2_other_placeholders",
