@@ -4,6 +4,7 @@ import { api } from "../../lib/api";
 import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2 } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
 import ReviewModal from "../../components/parent/ReviewModal";
+import SeasonalCard from "../../components/parent/SeasonalCard";
 
 const Stat = ({ icon: Icon, label, value, testid, accent="#4A5D3A", href, to }) => {
   const body = (
@@ -104,6 +105,8 @@ export default function ParentDashboard() {
           <Quick to="/parent/reading-log" icon={BookOpen} label="Add to reading log" desc="Track every book, chapter and audiobook for records" tint="#C8893B" testid="quick-reading"/>
         </div>
       </section>
+
+      <SeasonalCard />
 
       <section>
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Children</h2>
