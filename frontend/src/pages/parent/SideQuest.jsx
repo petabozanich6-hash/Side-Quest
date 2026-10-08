@@ -3,6 +3,7 @@ import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { Wand2, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import SeasonalCard from "../../components/parent/SeasonalCard";
 
 const THEMES = [
   "Halloween", "Christmas", "Easter", "Lunar New Year", "Diwali", "Ramadan",
@@ -42,6 +43,8 @@ export default function SideQuestPage() {
         <h1 className="font-display text-3xl font-bold text-slate-900">Create a Side Quest</h1>
         <p className="text-sm text-slate-600 mt-1 max-w-2xl">Seasonal and interest-based themes mapped to genuine curriculum outcomes. The theme is a context for learning, not a replacement for it.</p>
       </header>
+
+      <SeasonalCard />
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 space-y-5">
