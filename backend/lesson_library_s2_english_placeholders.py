@@ -26,7 +26,7 @@ They use the words 'your class novel' and never name a title.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step
 
-BUILT_OUT_WEEKS = {1, 2, 3, 4, 5, 6}
+BUILT_OUT_WEEKS = {1, 2, 3, 4, 5, 6, 7}
 NOVEL_WEEKS = {21, 22, 23, 24, 25, 46, 47}
 
 OUTCOMES = {
