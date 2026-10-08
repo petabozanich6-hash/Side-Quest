@@ -41,6 +41,12 @@ const CONTINUE_STYLE = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
 
 const progressKey = (aid) => `sidequest-progress-${aid}`;
 
+const lessonHoardWords = (lesson) => {
+  const fromSpelling = (lesson?.spelling?.words || []).map((w) => w.word);
+  const extra = lesson?.hoard_words || [];
+  return [...new Set([...fromSpelling, ...extra].filter(Boolean))];
+};
+
 const shuffled = (arr, isBad) => {
   let out = arr;
 
@@ -158,6 +164,27 @@ export default function ChildLesson() {
       if (result.data.submissions?.length > 0) {
         setSubmitted(true);
       }
+
+      const hoardWords = lessonHoardWords(lesson);
+
+      if (hoardWords.length > 0) {
+        api
+          .post("/word-bank/words", {
+            words: hoardWords,
+            source: "lesson",
+            lesson_id: lesson.id
+          })
+          .then((res) => {
+            const count = res.data?.added?.length || 0;
+
+            if (count > 0) {
+              toast.success(
+                `${count} new word${count === 1 ? "" : "s"} added to your Word Hoard 🐾`
+              );
+            }
+          })
+          .catch(() => {});
+      }
     });
   }, [aid]);
 
@@ -271,6 +298,10 @@ export default function ChildLesson() {
           ? "Sent for help"
           : "Submitted! Try a follow-up challenge 🌱"
       );
+
+      if (lessonHoardWords(lesson).length > 0) {
+        toast.info("Don't forget to practise your new words in the Word Hoard 🐾");
+      }
 
       setSubmitted(true);
     } catch {
@@ -403,6 +434,7 @@ export default function ChildLesson() {
   const builder = l.suspense_builder;
   const plannerFields = l.planner_fields || [];
   const spellingData = l.spelling && (l.spelling.teaching || (l.spelling.words || []).length) ? l.spelling : null;
+  const hasHoardWords = lessonHoardWords(l).length > 0;
 
   const stages = [
     { key: "accept", icon: "📜", title: "Accept the quest" },
@@ -621,6 +653,7 @@ export default function ChildLesson() {
         return (
           <SpellingSegment
             spelling={spellingData}
+            lessonId={l.id}
             onComplete={mark("spelling")}
           />
         );
@@ -887,6 +920,33 @@ export default function ChildLesson() {
               review.
             </p>
 
+            {hasHoardWords && (
+              <div
+                className="rounded-xl border p-4 text-sm space-y-2"
+                style={{ backgroundColor: "#FBF3E4", borderColor: "#C77B5B" }}
+                data-testid="word-hoard-reminder"
+              >
+                <div className="font-bold" style={{ color: "#1F3B2D" }}>
+                  🐾 Don't forget your Word Hoard!
+                </div>
+
+                <p className="text-stone-700">
+                  The spelling words from this lesson are waiting in your Word
+                  Hoard. Spell each one right 10 times in a row to master it.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => nav("/child/word-hoard")}
+                  className="rounded-full px-5 py-2 text-sm font-bold"
+                  style={{ backgroundColor: "#C77B5B", color: "#F5EFE0" }}
+                  data-testid="go-word-hoard"
+                >
+                  Go to my Word Hoard
+                </button>
+              </div>
+            )}
+
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -1086,6 +1146,37 @@ export default function ChildLesson() {
           );
         })}
       </div>
+
+      {submitted && hasHoardWords && (
+        <div
+          className="paper-card p-5 flex items-center gap-4 flex-wrap"
+          style={{ backgroundColor: "#FBF3E4", borderColor: "#C77B5B" }}
+          data-testid="word-hoard-reminder-done"
+        >
+          <div className="flex-1 min-w-[220px]">
+            <div
+              className="font-display text-lg font-bold"
+              style={{ color: "#1F3B2D" }}
+            >
+              🐾 Time to check your Word Hoard
+            </div>
+
+            <p className="text-sm text-stone-700 mt-1">
+              Your new spelling words are in there. Practise them until you can
+              spell each one right 10 times in a row.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => nav("/child/word-hoard")}
+            className="rounded-full px-5 py-2.5 text-sm font-bold"
+            style={{ backgroundColor: "#C77B5B", color: "#F5EFE0" }}
+          >
+            Go to my Word Hoard
+          </button>
+        </div>
+      )}
 
       {l.follow_up_challenges?.length > 0 && (
         <div
