@@ -1783,6 +1783,9 @@ import achievements
 achievements.register(api, db, current_user, require_child, new_id, now_iso)
 import pet_care
 pet_care.register(api, db, require_child, require_parent, now_iso)
+import reading_approvals
+reading_approvals.register(api, db, require_child, require_parent, now_iso)
+
 
 # Router is included AFTER every route is defined so no endpoint is dropped.
 app.include_router(api)
