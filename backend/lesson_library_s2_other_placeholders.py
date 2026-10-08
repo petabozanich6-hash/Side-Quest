@@ -1,11 +1,20 @@
 """Stage 2 placeholder lessons for Science and Technology, HSIE, PDHPE and Creative Arts.
-50 weeks each, 2 lessons per week of 45 minutes (90 minutes a week per subject, about 6.3% of a
-23.75 hour week; NESA K-6 advice is 6 to 10% for each of these areas). 400 lessons in total.
+50 weeks each, 2 lessons per week of 45 minutes (400 lessons in total).
 
-Outcome codes are the ones already in nsw_outcomes.py (ST2-*, GE2-*, HT2-1, PH2-1, VA2-1, MU2-1).
-They are NOT yet verified against curriculum.nsw.edu.au, and the syllabus has more Stage 2 outcomes
-than these (for example more Science and Technology and Creative Arts codes). Full coverage of every
-Stage 2 code in these subjects still needs a verified code list, as was done for Maths.
+SYLLABUSES (outcome codes checked against curriculum.nsw.edu.au, Oct 2026):
+  Science and Technology K-6 (2024): ST2-SCI-01, ST2-PQU-01, ST2-DAT-01, ST2-DDT-01.
+  HSIE K-6 (2024): HS2-ACH-01, HS2-GEO-01, HS2-HIS-01.
+  Creative Arts K-6 (2024): CA2-VIS-01, CA2-MUS-01, CA2-DRA-01, CA2-DAN-01.
+  PDHPE K-10 (2018): PD2-1 to PD2-11. NESA also publishes a PDHPE K-6 (2024) syllabus whose
+  Stage 2 codes have NOT been read yet, so PDHPE stays on the 2018 codes for now.
+The 2024 K-6 syllabuses are implemented from 2027.
+
+OPEN CHECKS: (1) text for PD2-4 and PD2-6 not yet read; (2) the Science and Technology outcome
+list shown to me had four Stage 2 codes and may not be complete; (3) PDHPE K-6 (2024) codes.
+
+Unit titles follow the NSW Department of Education sample Stage 2 units (for example climate
+zones, Country, nature-inspired design, design for living beyond Earth). They are placeholders
+and will be refined when each week is built out.
 
 TO BUILD A WEEK OUT: write a full module, register it in lesson_library.py LESSON_MODULES, and add
 (subject_key, week) to BUILT_OUT below. The generator then skips it.
@@ -17,34 +26,59 @@ PLACEHOLDER = "PLACEHOLDER. Full teaching content for this lesson will be added 
 _CHECK = {"question": "Placeholder check: choose the first answer.", "options": ["Yes", "No"],
           "correct_index": 0, "explanation": "Placeholder only."}
 
-# key: (learning area, key prefix, source, [(unit title, [codes], {code: description})] x 5 units of 10 weeks)
-_SCI = ("Science and Technology", "sci", "NSW Science and Technology K-6 Syllabus", [
-    ("Working scientifically", ["ST2-1WS-S"]),
-    ("Living things", ["ST2-4LW-S", "ST2-1WS-S"]),
-    ("Electrical circuits", ["ST2-7PW-T", "ST2-1WS-S"]),
-    ("Investigations: question, plan, test", ["ST2-1WS-S"]),
-    ("Living things and environments", ["ST2-4LW-S", "ST2-1WS-S"]),
+OUTCOMES = {
+    "ST2-SCI-01": "uses information to investigate the solar system and the effects of energy on living, physical and geological systems",
+    "ST2-PQU-01": "poses questions to create fair tests that investigate the effects of energy on living things and physical systems",
+    "ST2-DAT-01": "uses and interprets data to describe patterns and relationships",
+    "ST2-DDT-01": "uses a design process to create products to address user needs or opportunities",
+    "HS2-ACH-01": "describes Aboriginal Peoples' obligations to Country, Culture and Community",
+    "HS2-GEO-01": "explains how people care for Australia's environments and participate in Australian society, using geographical information",
+    "HS2-HIS-01": "explains how people lived in the past, how navigation connected the world, and what life was like in the Sydney Cove penal settlement, using sources as evidence",
+    "CA2-VIS-01": "makes artworks using art forms to represent subject matter and ideas, and describes ways artists convey ideas about their world to audiences through artworks",
+    "CA2-MUS-01": "performs, uses listening skills and composes to communicate musical ideas, and describes ways the elements of music are used to convey musical ideas",
+    "CA2-DRA-01": "makes and performs drama to embody and enact characters, ideas and stories for an audience, and describes ways the dramatic elements are used to convey meaning",
+    "CA2-DAN-01": "composes and performs dance to communicate ideas to an audience, and describes ways the elements of dance are used to convey ideas through movement",
+    "PD2-1": "explores strategies to manage physical, social and emotional change",
+    "PD2-2": "explains and uses strategies to develop resilience and to make them feel comfortable and safe",
+    "PD2-3": "explains how empathy, inclusion and respect can positively influence relationships",
+    "PD2-4": "(text not yet read)",
+    "PD2-5": "applies strategies to solve movement challenges",
+    "PD2-6": "(text not yet read)",
+    "PD2-7": "describes strategies to make home and school healthy, safe and physically active spaces",
+    "PD2-8": "investigates and participates in physical activities to promote the benefits of physical activity on health and wellbeing",
+    "PD2-9": "demonstrates self-management skills to respond to their own and others' actions",
+    "PD2-10": "demonstrates a range of interpersonal skills that build and enhance relationships and promote inclusion in various situations",
+    "PD2-11": "combines movement skills and concepts to effectively create and perform movement sequences",
+}
+_ALL_PD = ["PD2-%d" % i for i in range(1, 12)]
+
+_SCI = ("Science and Technology", "sci", "NSW Science and Technology K-6 Syllabus (2024)", [
+    ("Living things, Earth's systems and energy", ["ST2-SCI-01", "ST2-PQU-01"]),
+    ("Fair tests and data", ["ST2-PQU-01", "ST2-DAT-01"]),
+    ("The solar system", ["ST2-SCI-01", "ST2-DAT-01"]),
+    ("Design inspired by nature", ["ST2-DDT-01", "ST2-DAT-01"]),
+    ("Design for living beyond Earth", ["ST2-DDT-01", "ST2-SCI-01", "ST2-PQU-01"]),
 ])
-_HSIE = ("HSIE", "hsie", "NSW Geography K-10 and History K-10 Syllabuses", [
-    ("Features of places and environments", ["GE2-1"]),
-    ("People, places and environments", ["GE2-2"]),
-    ("Celebrations and commemorations", ["HT2-1"]),
-    ("Places and environments in Australia", ["GE2-1", "GE2-2"]),
-    ("Significant events and people", ["HT2-1"]),
+_HSIE = ("HSIE", "hsie", "NSW HSIE K-6 Syllabus (2024)", [
+    ("Climate zones and geographical features", ["HS2-GEO-01"]),
+    ("Connections to Country", ["HS2-ACH-01", "HS2-GEO-01"]),
+    ("How people lived in the past", ["HS2-HIS-01"]),
+    ("Navigation and Sydney Cove", ["HS2-HIS-01"]),
+    ("Caring for Australia's environments", ["HS2-GEO-01", "HS2-ACH-01"]),
 ])
-_PDHPE = ("PDHPE", "pdhpe", "NSW PDHPE K-10 Syllabus", [
-    ("Health, safety and wellbeing", ["PH2-1"]),
-    ("Relationships and respect", ["PH2-1"]),
-    ("Movement skills and games", ["PH2-1"]),
-    ("Active lifestyles", ["PH2-1"]),
-    ("Safe choices and decision making", ["PH2-1"]),
+_PDHPE = ("PDHPE", "pdhpe", "NSW PDHPE K-10 Syllabus (2018)", [
+    ("Change, resilience and self-management", ["PD2-1", "PD2-2", "PD2-9"]),
+    ("Relationships and inclusion", ["PD2-3", "PD2-10"]),
+    ("Movement skills and sequences", ["PD2-4", "PD2-5", "PD2-11"]),
+    ("Healthy, safe and active spaces", ["PD2-6", "PD2-7", "PD2-8"]),
+    ("Review: health, movement and relationships", _ALL_PD),
 ])
-_ARTS = ("Creative Arts", "arts", "NSW Creative Arts K-6 Syllabus", [
-    ("Visual arts: making and appreciating", ["VA2-1"]),
-    ("Music: sing, play and move", ["MU2-1"]),
-    ("Visual arts: materials and techniques", ["VA2-1"]),
-    ("Music: rhythm and composing", ["MU2-1"]),
-    ("Arts showcase", ["VA2-1", "MU2-1"]),
+_ARTS = ("Creative Arts", "arts", "NSW Creative Arts K-6 Syllabus (2024)", [
+    ("Visual arts", ["CA2-VIS-01"]),
+    ("Music", ["CA2-MUS-01"]),
+    ("Drama", ["CA2-DRA-01"]),
+    ("Dance", ["CA2-DAN-01"]),
+    ("Arts showcase", ["CA2-VIS-01", "CA2-MUS-01", "CA2-DRA-01", "CA2-DAN-01"]),
 ])
 SUBJECTS = {"science": _SCI, "hsie": _HSIE, "pdhpe": _PDHPE, "arts": _ARTS}
 SLOT_NAMES = ("Explore", "Create and apply")
@@ -63,7 +97,7 @@ def _make(skey, week, slot):
         "seed_key": "s2-%s-w%02d-l%d" % (prefix, week, slot + 1), "library": True, "stage": "S2",
         "year_level": "Stage 2", "learning_area": area, "subject": unit_title, "title": title,
         "child_mission": "Placeholder lesson: %s." % topic, "duration_minutes": LESSON_MINUTES, "pass_mark": 0.9,
-        "outcome_codes": codes, "outcome_notes": {c: "Unit focus: " + unit_title for c in codes},
+        "outcome_codes": codes, "outcome_notes": {c: OUTCOMES[c] for c in codes},
         "learning_intention": "We are learning about: %s." % topic,
         "success_criteria": ["I can explain the main idea of this lesson.", "I can use it in my own work.",
                              "I can score 90% or more on the Quest check."],
@@ -75,7 +109,7 @@ def _make(skey, week, slot):
         "word_challenges": [], "steps": [], "resources": [], "quiz": [], "reflection_prompts": [],
         "evidence_instructions": "To be added.",
         "parent_notes": "PLACEHOLDER lesson. Not ready to teach. Practice lesson only.",
-        "source_note": "Outcome codes from the %s. Codes not yet verified against curriculum.nsw.edu.au." % source,
+        "source_note": "Outcome codes from the %s, checked on curriculum.nsw.edu.au." % source,
         "offline_alternative": "To be added.", "extension": "To be added.", "follow_up_challenges": [],
         "is_placeholder": True,
     }
@@ -94,4 +128,8 @@ if __name__ == "__main__":
     keys = [l["seed_key"] for l in LESSONS]
     assert len(keys) == len(set(keys)), "duplicate seed keys"
     assert len(LESSONS) == 400, len(LESSONS)
-    print("OK: 400 lessons")
+    for skey, (area, prefix, source, units) in SUBJECTS.items():
+        used = {c for _t, cs in units for c in cs}
+        want = {c for c in OUTCOMES if c.split("-")[0] in {c2.split("-")[0] for c2 in used}}
+        assert used == want, (skey, want - used)
+    print("OK: 400 lessons, every listed outcome used")
