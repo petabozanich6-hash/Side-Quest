@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 53
+LESSON_LIBRARY_VERSION = 54
 
 # All previous lessons have been cleared so the library can be rebuilt from scratch.
 # New modules are listed in LESSON_MODULES below as they are written.
@@ -13,6 +13,7 @@ LESSON_MODULES = (
     "lesson_library_s2_english_w01_l4",
     "lesson_library_s2_english_w02_l1",
     "lesson_library_s2_english_w02_l2",
+    "lesson_library_s2_english_w02_l3",
     "lesson_library_s2_english_placeholders",
     "lesson_library_s2_maths_placeholders",
     "lesson_library_s2_other_placeholders",
@@ -36,11 +37,8 @@ def _lesson_dicts_in(module):
 
 
 def _register_lessons():
-    """Load the lesson modules one at a time. A problem in one file is
-    logged and skipped, so it can never stop the app from starting."""
     import importlib
     import logging
-
     log = logging.getLogger("sidequest")
     have = {item.get("seed_key") for item in LESSON_LIBRARY}
     for module_name in LESSON_MODULES:
@@ -53,7 +51,7 @@ def _register_lessons():
                     have.add(lesson["seed_key"])
                     added += 1
             log.warning("Lesson module %s added %s lessons", module_name, added)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             log.warning("Lesson module %s not loaded: %r", module_name, exc)
 
 
@@ -61,18 +59,14 @@ _register_lessons()
 
 
 def _attach_spelling():
-    """Attach the interactive spelling segment (and its Word Hoard words) to
-    every lesson that has spelling content. Failure is logged, never fatal."""
     import logging
-
     log = logging.getLogger("sidequest")
     try:
         from spelling_live import apply_spelling
-
         apply_spelling(LESSON_LIBRARY)
         count = len([item for item in LESSON_LIBRARY if item.get("spelling")])
         log.warning("Spelling segment attached to %s lessons", count)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         log.warning("Spelling segments not attached: %r", exc)
 
 
@@ -80,17 +74,11 @@ _attach_spelling()
 
 
 def _orphan_cleanup_later():
-    """After the app has seeded the new lessons, delete any assignment whose
-    lesson no longer exists. Those are the blank cards on the child page.
-    It only acts when it can positively identify the lesson id field and the
-    assignment collection, and it logs everything it does."""
     import logging
     import os
     import threading
     import time
-
     log = logging.getLogger("sidequest")
-
     def run():
         for delay in (75, 120, 240):
             time.sleep(delay)
@@ -117,15 +105,12 @@ def _orphan_cleanup_later():
                     result = coll.delete_many({field: {"$exists": True, "$nin": list(valid)}})
                     log.warning("Orphan cleanup: removed %s orphaned records from %s", result.deleted_count, name)
                 client.close()
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 log.warning("Orphan cleanup failed: %s", exc)
-
     threading.Thread(target=run, daemon=True).start()
 
 
 def _purge_all_lessons_once():
-    """One-time cleanup: delete every stored lesson so the old ones are gone,
-    then record that it ran. Marker v4 makes it run once more on the live database."""
     import logging
     import os
     try:
