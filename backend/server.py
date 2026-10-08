@@ -1,5 +1,6 @@
 """Side Quest Learning - K-12 Homeschool Platform Backend."""
 import os
+import re
 import uuid
 import logging
 from seed_lessons import CORE_LESSONS
@@ -1055,30 +1056,66 @@ async def create_unit(data: UnitIn, user=Depends(require_parent)):
     return strip_mongo(u)
 
 # ----- Lessons -----
+LESSON_LIST_MAX = 5000
+LESSON_SUMMARY_FIELDS = [
+    "id", "title", "stage", "year_level", "learning_area", "subject",
+    "duration_minutes", "status", "family_id", "library", "seed_key",
+    "unit_id", "program_id", "outcome_codes", "learning_intention", "created_at",
+]
+
 @api.get("/lessons")
 async def list_lessons(
+    response: Response,
     unit_id: Optional[str] = None,
     stage: Optional[str] = None,
+    learning_area: Optional[str] = None,
+    year_level: Optional[str] = None,
+    q: Optional[str] = None,
+    summary: bool = False,
+    limit: int = Query(LESSON_LIST_MAX, ge=1, le=LESSON_LIST_MAX),
+    skip: int = Query(0, ge=0),
     user=Depends(require_parent)
 ):
-    q = {
+    """List lessons visible to this family.
+
+    Defaults keep the old behaviour (full lesson documents, no filters) but the
+    500 cap is gone. For large libraries pass filters, summary=true and limit/skip.
+    The total number of matches is returned in the X-Total-Count header.
+    """
+    access = {
         "$or": [
             {"family_id": user["family_id"]},
             {"family_id": None},
             {"library": True},
         ]
     }
-
-    filters = []
+    filters = [access]
     if unit_id:
         filters.append({"unit_id": unit_id})
     if stage:
         filters.append({"stage": stage})
+    if learning_area:
+        filters.append({"learning_area": learning_area})
+    if year_level:
+        filters.append({"year_level": year_level})
+    if q and q.strip():
+        filters.append({"title": {"$regex": re.escape(q.strip()), "$options": "i"}})
+    query = {"$and": filters}
 
-    if filters:
-        q = {"$and": [q, *filters]}
+    projection = {"_id": 0}
+    if summary:
+        projection = {"_id": 0, **{f: 1 for f in LESSON_SUMMARY_FIELDS}}
 
-    return await db.lessons.find(q, {"_id": 0}).sort("created_at", -1).to_list(500)
+    total = await db.lessons.count_documents(query)
+    response.headers["X-Total-Count"] = str(total)
+
+    cursor = (
+        db.lessons.find(query, projection)
+        .sort([("stage", 1), ("learning_area", 1), ("title", 1), ("id", 1)])
+        .skip(skip)
+        .limit(limit)
+    )
+    return await cursor.to_list(limit)
 
 @api.post("/lessons")
 async def create_lesson(data: LessonIn, user=Depends(require_parent)):
@@ -1719,6 +1756,13 @@ async def curriculum_audit(student_id: Optional[str] = None, user=Depends(requir
 # ----- Seed curriculum + demo -----
 @app.on_event("startup")
 async def startup():
+    try:
+        await db.lessons.create_index("seed_key", sparse=True)
+        await db.lessons.create_index("id")
+        await db.lessons.create_index([("family_id", 1), ("stage", 1), ("learning_area", 1)])
+    except Exception as e:
+        logger.warning(f"Could not create lesson indexes: {e}")
+
     cfg = await db.app_config.find_one({"id": "seed"}) or {}
     if cfg.get("outcomes_version", 0) < SEED_VERSION:
         await db.outcomes.delete_many({})
@@ -1791,4 +1835,5 @@ app.add_middleware(
     allow_origin_regex=".*" if _cors == ['*'] else None,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["X-Total-Count"],
 )
