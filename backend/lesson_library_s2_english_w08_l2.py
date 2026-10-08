@@ -2,7 +2,7 @@
 The child learns how to write a description paragraph for an information report: a topic sentence, detail sentences with precise adjectives and noun groups, and a concluding sentence. The model paragraph describes the echidna.
 Spelling: plurals: classes, bunches, leaves, shelves, mice, teeth.
 Outcomes: EN2-CWT-02 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 8, Lesson 2, Description paragraph, writing slot, informative week, spelling plurals). Outcome wording is the official NESA text, with a short note on this lesson's focus.
-Video status: no video is attached to this lesson, because none has been found and checked.
+Video status: two videos attached (paragraph structure; plural spelling rules), chosen from search descriptions. They have not been watched in full, so each carries a parent preview note.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -92,7 +92,20 @@ LESSON = build(
     "Type your answers in the practice boxes and submit them.",
     "Extension: write a second description paragraph about a place, such as a beach or a bush track, and use precise noun groups to help the reader picture it. Read both paragraphs aloud to a family member.",
     [("describe", "To tell what something is like"), ("paragraph", "A group of sentences about one main idea"), ("topic sentence", "The sentence that tells the main idea of a paragraph"), ("detail", "A small piece of information that adds to the main idea"), ("adjective", "A word that describes a noun"), ("noun group", "A noun with words that describe it, such as a long, thin snout"), ("concluding sentence", "The sentence that wraps up a paragraph"), ("feature", "A part or quality that something has")],
-    [],
+    [
+        _video(
+            "How to Write a Paragraph for Kids (Grades 3-5)", "kw9GOUqSc5M",
+            "Watch for the three parts of a paragraph: the topic sentence, the supporting details and the concluding sentence. Notice how each part matches the echidna model in this lesson. Parent: this video has not been fully checked, so please preview it before your child watches.",
+            "If the video will not play, reread Steps 2 to 5 and the echidna model paragraph.",
+            ("Which three parts does a paragraph have?", ["Topic sentence, details and concluding sentence", "Title, picture and caption", "Question, answer and score"], 0, "A paragraph has a topic sentence, details and a concluding sentence."),
+        ),
+        _video(
+            "Spelling Rules for Plural Nouns: -s, -es, -ies, -ves", "-bwAPUnMWCQ",
+            "Listen for when to add s, es and ves. Focus on the parts about words ending in ch, s and f or fe, which match classes, bunches, leaves and shelves. You can skip the parts about other endings. Parent: this video has not been fully checked, so please preview it before your child watches.",
+            "If the video will not play, reread Step 7 and say each plural rule aloud.",
+            ("What is the plural of shelf?", ["shelves", "shelfs", "shelfes"], 0, "Shelf changes to shelves."),
+        ),
+    ],
     _sort("Precise or vague?", "Sort each phrase into precise detail or vague word.", ["Precise detail", "Vague word"], [("sharp, cream-coloured spines", 0), ("a nice animal", 1), ("sticky tongue", 0), ("pretty cool", 1), ("strong claws", 0), ("some things", 1), ("long, thin snout", 0), ("it is good", 1)]),
     [
         _wc("Which means a group of sentences about one main idea?", ["paragraph", "title", "caption"], 0, "A paragraph is a group of sentences about one main idea."),
