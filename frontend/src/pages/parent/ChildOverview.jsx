@@ -26,8 +26,18 @@ export default function ChildOverview() {
     } catch { toast.error("Failed"); }
   };
 
+  const togglePause = async () => {
+    const paused = !!data.pet?.care_paused;
+    try {
+      await api.post(paused ? "/pet/care/resume" : "/pet/care/pause", { student_id: sid });
+      toast.success(paused ? "Pet care resumed" : "Pet care paused. Their pet will be safe while you're away.");
+      load();
+    } catch { toast.error("Could not change pet care"); }
+  };
+
   if (!data) return <div className="p-10 text-stone-500">Loading…</div>;
   const s = data.student;
+  const petPaused = !!data.pet?.care_paused;
 
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="child-overview">
@@ -45,6 +55,23 @@ export default function ChildOverview() {
           </div>
         </div>
       </header>
+
+      {data.pet && (
+        <section className="paper-card p-6 flex flex-wrap items-center justify-between gap-4" data-testid="pet-care-panel">
+          <div>
+            <h2 className="font-display text-lg font-bold" style={{color:"#1F3B2D"}}>{data.pet.name}'s care</h2>
+            <p className="text-xs text-stone-600 mt-1 max-w-md">
+              {petPaused
+                ? "Care is paused (sick day, holiday, etc). Hunger and mess timers are frozen until you resume."
+                : "Pets need feeding and cleaning daily. Pause care for holidays or sick days so nothing gets neglected while you're away."}
+            </p>
+          </div>
+          <button onClick={togglePause} className="rounded-full px-5 py-2 text-sm font-bold"
+            style={{backgroundColor: petPaused ? "#C77B5B" : "#1F3B2D", color:"#F5EFE0"}} data-testid="toggle-pet-pause">
+            {petPaused ? "Resume pet care" : "Pause pet care"}
+          </button>
+        </section>
+      )}
 
       <section className="paper-card p-6" style={{backgroundColor:"#F0F4E8"}}>
         <div className="flex items-center gap-2 mb-3">
