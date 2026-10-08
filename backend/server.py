@@ -1763,6 +1763,17 @@ async def startup():
         )
         logger.info(f"Seeded {len(LESSON_LIBRARY)} comprehensive lessons")
 
+    # Remove shared lessons that are no longer part of the current library.
+    # Only touches shared lessons (family_id None) that carry a seed_key.
+    library_keys = [l["seed_key"] for l in LESSON_LIBRARY]
+    stale = await db.lessons.find(
+        {"family_id": None, "seed_key": {"$exists": True, "$nin": library_keys}},
+        {"_id": 0, "id": 1, "title": 1, "seed_key": 1},
+    ).to_list(1000)
+    if stale:
+        await db.lessons.delete_many({"id": {"$in": [s["id"] for s in stale]}})
+        logger.info(f"Removed {len(stale)} stale shared lessons: {[s['seed_key'] for s in stale]}")
+
     for lesson in CORE_LESSONS:
         existing = await db.lessons.find_one({"seed_key": lesson["seed_key"]})
         if not existing:
