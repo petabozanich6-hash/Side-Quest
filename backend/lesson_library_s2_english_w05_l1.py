@@ -1,7 +1,7 @@
 """Stage 2 English, Week 5 Lesson 1: Summarising a Story (Reading and comprehension).
 The child reads an original short story, then summarises it with the beginning-middle-end frame and the Somebody Wanted But So frame.
 Spelling focus for the week: the homophones there, their and they're. Six words are used here.
-Video status: all three videos were checked against transcript excerpts only. Open and play each once before use.
+Video status: the summarising video and the Somebody Wanted But So video were checked against their full transcripts. The homophones song was checked by title, description and a noisy transcript (it confirms their = possession and they're = contraction), so open and play it once before use.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -95,19 +95,19 @@ LESSON = build(
     [
         _video(
             "How to summarise a story (beginning, middle and end)", "cXTmf6tjhJw",
-            "Watch how the story is split into beginning, middle and end, and how only the most important parts are kept. This is about 8 minutes, so you can watch it in two parts. Status: transcript excerpts checked only, so a parent should play it once first.",
+            "Watch how the story is split into beginning, middle and end, and how only the most important parts are kept in your own words. This is about 9 and a half minutes, so you can watch it in two parts. Status: full transcript checked.",
             "If the video will not play, reread Steps 2 and 3 and the worked example in the teaching text.",
             ("What does the video say you should include when you summarise?", ["Every detail", "Only the most important parts", "Your opinions"], 1, "A summary tells only the most important parts."),
         ),
         _video(
             "Summarising with Somebody Wanted But So", "4jUi0pSQ-bU",
-            "Watch how Reya fills in Somebody wanted, but, so to retell The Three Little Pigs in one sentence. This is about 1 to 2 minutes. Status: transcript excerpts checked only, so a parent should play it once first.",
+            "Watch how Reya fills in Somebody wanted, but, so to retell The Three Little Pigs in one sentence. This is about 1 and a half minutes. Status: full transcript checked.",
             "If the video will not play, reread Step 4 and try the frame on a story you know well.",
             ("What does the word but introduce in the frame?", ["The problem", "The characters", "The setting"], 0, "But tells the problem in the story."),
         ),
         _video(
             "There, Their, They're homophones song", "3OjweUfHZ90",
-            "Listen for what each word means: there is a place, their shows belonging, they're means they are. This is a song with a British accent, about 3 minutes. Status: transcript excerpts checked only, so a parent should play it once first.",
+            "Listen for what each word means: their shows that something belongs to someone, they're is a contraction, and there is a place. This is a rock song from a UK classroom group, about 4 minutes. Status: title, description and a noisy transcript checked (it confirms their and they're), so a parent should play it once first. It is a song, so it mostly helps the words stick.",
             "If the video will not play, reread Step 7: place, belonging, or they are.",
             ("What does they're mean?", ["A place", "They are", "Belonging to them"], 1, "They're is short for they are."),
         ),
