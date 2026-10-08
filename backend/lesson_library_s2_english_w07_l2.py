@@ -1,8 +1,9 @@
 """Stage 2 English, Week 7 Lesson 2: Writing a Classification Paragraph (Writing).
 The child learns that a classification paragraph sorts a topic into groups, then plans and writes one using a model about musical instruments.
 Spelling: more -sion and -ssion words: confusion, occasion, impression, mission, passion, version.
-Outcome codes: EN2-CWT-01 and EN2-SPELL-01, both of which exist in nsw_outcomes.py. (An earlier draft used EN2-CWT-02, which is not in the seed file.)
-Video status: NO VIDEO YET. Candidate found but NOT verified: Information Investigation Episode 3, How to Plan and Write an Information Report (YouTube bbV_YFoqu5I). Only the search snippet was seen; the page could not be fetched, so the transcript has not been checked. Check it (or find another) before adding it to the videos list. Do not register this module in lesson_library.py or add week 7 to BUILT_OUT_WEEKS until the whole week is built.
+Outcome codes: EN2-CWT-01 and EN2-SPELL-01, both of which exist in nsw_outcomes.py. nsw_outcomes.py has only EN2-CWT-01 for writing, described there as 'multiple purposes and audiences'; EN2-CWT-02 is not in the seed file. (The placeholders file maps informative-writing weeks to EN2-CWT-02; reconcile the two if the seed file is extended.)
+Video status: NO VIDEO YET. Candidate found but NOT verified: Information Investigation Episode 3, How to Plan and Write an Information Report (YouTube bbV_YFoqu5I). Only the search snippet was seen; the page could not be fetched, so the transcript has not been checked. Check it (or find another) before adding it to the videos list.
+Registration: registered in lesson_library.py, and week 7 is in BUILT_OUT_WEEKS.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -25,7 +26,7 @@ LESSON = build(
     "Writing: a classification paragraph",
     ["EN2-CWT-01", "EN2-SPELL-01"],
     {
-        "EN2-CWT-01": "Primary. Plans, creates and revises written texts for informative purposes, using text features, sentence-level grammar, punctuation and word-level language for a target audience. In this lesson the child writes a classification paragraph that sorts a topic into groups.",
+        "EN2-CWT-01": "Primary. Plans, creates and revises written texts for multiple purposes and audiences. In this lesson the child writes an informative classification paragraph that sorts a topic into groups.",
         "EN2-SPELL-01": "Selects, applies and describes appropriate phonological, orthographic and morphological generalisations and strategies when spelling, including more words ending in -sion and -ssion (week 7 spelling focus).",
     },
     "We are learning to write a classification paragraph that sorts a topic into groups and gives examples, and to spell more words that end in -sion and -ssion.",
