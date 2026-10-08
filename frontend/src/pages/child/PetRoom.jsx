@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
 import { Pet, Fern, Flower, Branch } from "../../components/shared/Botanical";
+import HalloweenOverlay from "../../components/shared/HalloweenOverlay";
 import { toast } from "sonner";
 import { ArrowLeft, Apple, Gamepad2, Palette, Sparkles, Loader2, Droplets } from "lucide-react";
 
@@ -193,6 +194,7 @@ export default function PetRoom() {
 
       <div className="paper-card overflow-hidden relative" data-testid="pet-stage">
         <div className="relative h-80 flex items-end justify-center" style={{ background: bgStyle }}>
+          <HalloweenOverlay />
           <Fern className="absolute left-4 bottom-0" size={160} color="#4A5D3A" />
           <Fern className="absolute right-4 bottom-0" size={140} color="#6B8A5B" />
           <Flower className="absolute left-28 bottom-6" size={28} color="#D4857A" />
