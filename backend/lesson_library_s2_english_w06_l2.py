@@ -36,9 +36,9 @@ LESSON = build(
     "Planning an Information Report",
     "Great reports start with a great plan. Learn how to choose a topic, split it into subtopics, make short notes and lay out a plan, then plan your own report.",
     "Writing: planning an information report",
-    ["EN2-CWT-01", "EN2-SPELL-01"],
+    ["EN2-CWT-02", "EN2-SPELL-01"],
     {
-        "EN2-CWT-01": "Primary. Plans, composes, revises and edits written texts, selecting text forms to suit purpose and audience. In this lesson the child plans an information report by choosing subtopics, making notes and organising an introduction, body and conclusion.",
+        "EN2-CWT-02": "Primary. Plans, creates and revises written texts for informative purposes. In this lesson the child plans an information report by choosing subtopics, making notes and organising an introduction, body and conclusion.",
         "EN2-SPELL-01": "Selects, applies and describes appropriate phonological, orthographic and morphological generalisations and strategies when spelling, including words ending in -tion (week 6 spelling focus).",
     },
     "We are learning to plan an information report by choosing subtopics, making short notes in our own words, and organising an introduction, subtopic paragraphs and a conclusion, and to spell words that end in -tion.",
