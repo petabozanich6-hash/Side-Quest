@@ -32,14 +32,18 @@ const Quick = ({ to, icon: Icon, label, desc, tint = "#4A5D3A", testid }) => (
 export default function ParentDashboard() {
   const [data, setData] = useState(null);
   const [waiting, setWaiting] = useState([]);
+  const [readingPending, setReadingPending] = useState([]);
   const [openId, setOpenId] = useState(null);
 
   const load = () => {
     api.get("/dashboard/parent").then(r => setData(r.data));
     api.get("/submissions").then(r => setWaiting((r.data || []).filter(s => ["submitted", "awaiting_help"].includes(s.status))));
+    api.get("/reading-submissions/pending").then(r => setReadingPending(r.data || [])).catch(() => setReadingPending([]));
   };
   useEffect(() => { load(); }, []);
   if (!data) return <div className="p-10 text-stone-500">Loading dashboard…</div>;
+
+  const pendingTotal = waiting.length + readingPending.length;
 
   return (
     <div className="p-8 lg:p-10 space-y-8 relative" data-testid="parent-dashboard">
@@ -58,16 +62,25 @@ export default function ParentDashboard() {
 
       <section className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <Stat icon={Users} label="Students" value={data.students.length} testid="stat-students" to="/parent/children"/>
-        <Stat icon={Camera} label="Pending review" value={waiting.length} testid="stat-pending" accent="#D4A574" href="#waiting"/>
+        <Stat icon={Camera} label="Pending review" value={pendingTotal} testid="stat-pending" accent="#D4A574" href="#waiting"/>
         <Stat icon={AlertTriangle} label="Awaiting help" value={data.awaiting_help} testid="stat-help" accent="#E11D48" href="#waiting"/>
       </section>
 
       <section id="waiting" data-testid="waiting-list">
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Waiting for you</h2>
-        {waiting.length === 0 ? (
+        {pendingTotal === 0 ? (
           <div className="paper-card p-6 text-sm text-stone-500">Nothing to review right now.</div>
         ) : (
           <div className="space-y-3">
+            {readingPending.map(r => (
+              <div key={r.id} className="paper-card p-4 flex items-center justify-between gap-4" data-testid={`waiting-reading-${r.id}`}>
+                <div>
+                  <div className="font-display font-bold" style={{color:"#1F3B2D"}}>Reading: {r.title}</div>
+                  <div className="text-xs text-stone-500 mt-0.5">{r.duration_minutes} min · {r.read_date} · waiting for your approval</div>
+                </div>
+                <Link to="/parent/reading-log" className="rounded-full px-4 py-2 text-xs font-bold" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid={`open-reading-${r.id}`}>Review</Link>
+              </div>
+            ))}
             {waiting.map(s => (
               <div key={s.id} className="paper-card p-4 flex items-center justify-between gap-4" data-testid={`waiting-${s.id}`}>
                 <div>
