@@ -206,14 +206,13 @@ export default function PetRoom() {
             <div className="relative" onClick={() => react(hatched ? "hop" : "wobble")}
               style={{ filter: sick ? "grayscale(0.7)" : asleep ? "brightness(0.75)" : "none", cursor: "pointer" }}>
               {hatched
-                ? <Pet species={pet.species} size={200} happy={!sad && pet.happiness > 40} />
+                ? <Pet species={pet.species} size={200} happy={!sad && pet.happiness > 40}><SeasonalWorn /></Pet>
                 : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"} />}
               {hatched && worn.length > 0 && (
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2 flex gap-1 text-2xl" data-testid="worn-accessories">
                   {worn.map(a => <span key={a}>{ACC_EMOJI[a] || "✨"}</span>)}
                 </div>
               )}
-              {hatched && <SeasonalWorn />}
               {asleep && <div className="zzz absolute -top-4 right-0 text-3xl font-bold" style={{ color: "#4A5D3A" }}>Zzz</div>}
               {sick && <div className="absolute top-0 right-0 text-3xl">🤒</div>}
               {care.needs_cleaning && hatched && (
