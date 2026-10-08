@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
 import { Pet, Fern, Flower, Branch } from "../../components/shared/Botanical";
+import { SeasonalDecor, SeasonalGifts, SEASONS, GIFT_EMOJI } from "../../components/shared/SeasonalRoom";
 import { toast } from "sonner";
 import { ArrowLeft, Apple, Gamepad2, Palette, Sparkles, Loader2, Droplets } from "lucide-react";
 
@@ -97,6 +98,8 @@ export default function PetRoom() {
   const [renaming, setRenaming] = useState(false);
   const [newName, setNewName] = useState("");
   const [reaction, setReaction] = useState(null);
+  const [seasonal, setSeasonal] = useState({ events: [], owned: [] });
+  const [claiming, setClaiming] = useState(false);
 
   const apply = (data) => {
     if (!data || data.needs_pet) return;
@@ -109,7 +112,10 @@ export default function PetRoom() {
     try { apply((await api.get("/pet/state")).data); }
     catch { apply((await api.get("/pet")).data); } // falls back to old endpoint
   };
-  useEffect(() => { load(); }, []);
+  const loadSeasonal = async () => {
+    try { setSeasonal((await api.get("/seasonal/active")).data); } catch { /* seasonal is optional */ }
+  };
+  useEffect(() => { load(); loadSeasonal(); }, []);
 
   const react = (kind) => { setReaction(kind); setTimeout(() => setReaction(null), 1000); };
 
@@ -151,9 +157,25 @@ export default function PetRoom() {
     catch { toast.error("Could not change accessories"); load(); }
   };
 
+  const claimGift = async (eventId) => {
+    setClaiming(true);
+    try {
+      const res = await api.post(`/seasonal/${eventId}/claim`);
+      toast.success(`You got the ${res.data?.gift?.label || "gift"}!`);
+      await Promise.all([load(), loadSeasonal()]);
+    } catch (e) {
+      toast.error(e?.response?.data?.detail || "Try again shortly");
+    } finally { setClaiming(false); }
+  };
+
   if (!pet) return <div className="text-stone-500">Loading your room…</div>;
 
-  const bgStyle = BG_OPTIONS.find(b => b.id === bg)?.bg || BG_OPTIONS[0].bg;
+  const liveIds = (seasonal.events || []).map(e => e.id);
+  const bgOptions = [
+    ...BG_OPTIONS,
+    ...liveIds.filter(id => SEASONS[id]).map(id => ({ id: `season_${id}`, label: SEASONS[id].label, bg: SEASONS[id].bg })),
+  ];
+  const bgStyle = bgOptions.find(b => b.id === bg)?.bg || BG_OPTIONS[0].bg;
   const hatched = pet.hatched !== undefined ? pet.hatched : pet.level_name !== "Egg";
   const status = pet.care_status || "ok";
   const asleep = status === "asleep";
@@ -191,6 +213,9 @@ export default function PetRoom() {
         <div className="paper-card p-3 text-sm" style={{ color: "#1F3B2D" }}>Your parent has paused pet care. Enjoy the break!</div>
       )}
 
+      <SeasonalGifts petName={pet.name} data={seasonal} hatched={hatched} worn={worn}
+        claiming={claiming} onClaim={claimGift} onToggle={toggleAcc} />
+
       <div className="paper-card overflow-hidden relative" data-testid="pet-stage">
         <div className="relative h-80 flex items-end justify-center" style={{ background: bgStyle }}>
           <Fern className="absolute left-4 bottom-0" size={160} color="#4A5D3A" />
@@ -198,6 +223,7 @@ export default function PetRoom() {
           <Flower className="absolute left-28 bottom-6" size={28} color="#D4857A" />
           <Flower className="absolute right-32 bottom-10" size={24} color="#C77B5B" />
           <Branch className="absolute right-10 top-4" size={120} color="#4A5D3A" />
+          <SeasonalDecor ids={liveIds} />
           <div className="relative z-10 mb-2 flex flex-col items-center">
             <div className="relative" onClick={() => react(hatched ? "hop" : "wobble")}
               style={{ filter: sick ? "grayscale(0.7)" : asleep ? "brightness(0.75)" : "none", cursor: "pointer" }}>
@@ -206,7 +232,7 @@ export default function PetRoom() {
                 : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"} />}
               {hatched && worn.length > 0 && (
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2 flex gap-1 text-2xl" data-testid="worn-accessories">
-                  {worn.map(a => <span key={a}>{ACC_EMOJI[a] || "✨"}</span>)}
+                  {worn.map(a => <span key={a}>{ACC_EMOJI[a] || GIFT_EMOJI[a] || "✨"}</span>)}
                 </div>
               )}
               {asleep && <div className="zzz absolute -top-4 right-0 text-3xl font-bold" style={{ color: "#4A5D3A" }}>Zzz</div>}
@@ -258,11 +284,11 @@ export default function PetRoom() {
           <div className="font-display text-lg font-bold" style={{ color: "#1F3B2D" }}>Decorate the room</div>
           <p className="text-xs text-stone-600 mt-1 mb-3">Pick a scene — it's saved automatically.</p>
           <div className="flex flex-wrap gap-2">
-            {BG_OPTIONS.map(b => (
+            {bgOptions.map(b => (
               <button key={b.id} onClick={() => chooseBg(b.id)}
                 className={`h-10 w-10 rounded-xl border-2 overflow-hidden ${bg === b.id ? "ring-2" : ""}`}
                 style={{ background: b.bg, borderColor: bg === b.id ? "#1F3B2D" : "#D4C8A8" }}
-                aria-label={b.label} data-testid={`bg-${b.id}`} />
+                aria-label={b.label} title={b.label} data-testid={`bg-${b.id}`} />
             ))}
           </div>
         </div>

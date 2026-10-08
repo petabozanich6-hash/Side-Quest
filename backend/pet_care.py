@@ -350,3 +350,7 @@ def register(api, db, require_child, require_parent, now_iso):
                 upd[key] = _iso(d + delta)
         await db.pets.update_one({"student_id": pet["student_id"]}, {"$set": upd})
         return {"ok": True, "paused": False}
+
+    # ---- Seasonal events (Halloween, Christmas, etc) ----
+    import seasonal_events
+    seasonal_events.register(api, db, require_child, require_parent, now_iso)
