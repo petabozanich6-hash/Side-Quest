@@ -1,8 +1,9 @@
 """Stage 2 English, Week 7 Lesson 3: Pronouns and Cohesion (Language).
 The child learns that pronouns replace nouns, which stops repetition and links sentences together, and learns to check that each pronoun clearly points back to one noun.
 Spelling: -sion and -ssion review words: division, collision, conclusion, invasion, profession, session.
-Outcome code note: uses EN2-CWT-01, the code that exists in nsw_outcomes.py. Check that Week 7 Lesson 2 uses the same code, because it was first written with EN2-CWT-02, which is not in the seed file.
-Video status: NO VIDEO YET. Find one, check its transcript, then add it to the videos list. Do not register this module in lesson_library.py or add week 7 to BUILT_OUT_WEEKS until the whole week is built.
+Outcome code note: uses EN2-CWT-01, the code that exists in nsw_outcomes.py. Lesson 2 now uses the same code.
+Video status: Personal Pronouns for Kids | Subject and Object Pronouns (YouTube PjhpcGoQPhk). Only the search description was seen, which says it asks whether the child can tell subject pronouns from object pronouns. The full transcript was NOT checked, and it does not cover possessive pronouns or clear reference. Check it before relying on it. Exact length and playback not confirmed in the app.
+Do not register this module in lesson_library.py or add week 7 to BUILT_OUT_WEEKS until the whole week is built.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -90,7 +91,14 @@ LESSON = build(
     "Type your answers in the practice boxes and submit them.",
     "Extension: take a paragraph from a book or magazine and circle every pronoun. For each, draw an arrow to the noun it points to.",
     [("pronoun", "A word that takes the place of a noun"), ("noun", "A word for a person, place, thing or idea"), ("cohesion", "How the parts of a text link together"), ("repetition", "Using the same word again and again"), ("possessive", "Showing who owns something"), ("reference", "The noun a pronoun points back to")],
-    [],
+    [
+        _video(
+            "Personal Pronouns for Kids | Subject and Object Pronouns", "PjhpcGoQPhk",
+            "Watch a kids' grammar video on personal pronouns, and listen for how it tells subject pronouns from object pronouns. It does not cover possessive pronouns or clear reference, so use Steps 4 and 5 for those. Status: description only, transcript not fully checked.",
+            "If the video will not play, reread Steps 1 to 3.",
+            ("Which two kinds of pronoun does the video ask you to tell apart?", ["Subject and object", "Past and future", "Capital and small"], 0, "The video asks whether you can tell subject pronouns from object pronouns."),
+        ),
+    ],
     _sort("Which kind of pronoun?", "Sort each pronoun into the right group.", ["Subject", "Object", "Possessive"], [("they", 0), ("them", 1), ("their", 2), ("she", 0), ("us", 1), ("our", 2)]),
     [
         _wc("Which takes the place of a noun?", ["pronoun", "verb", "adjective"], 0, "A pronoun takes the place of a noun."),
