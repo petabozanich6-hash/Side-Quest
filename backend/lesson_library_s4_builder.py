@@ -8,7 +8,7 @@ from lesson_library_s2_english_w1_w2 import _q, _step, _sort, _wc, _video, _arti
 
 ACCESS_S4 = (
     "Allow typing, dictation or handwriting on paper. Split the lesson into two sittings if needed: teaching and "
-    "checks first, then the practice and independent task. Reduce the independent task to parts (a) to (d) if time "
+    "checks first, then the practice and independent task. Reduce the independent task to the first few stages if time "
     "is short, then return to the rest. Use a printed number line and a ruler for support. Pause any video as often as you like."
 )
 
@@ -42,8 +42,7 @@ def build_s4(key, title, mission, subject, codes, notes, intention, criteria, vo
             {"title": "Step 6: Hand it in", "detail": "Check your work against the success criteria and submit your evidence.", "duration_minutes": mins(5)},
         ],
         "resources": resources, "quiz": quiz,
-        "reflection_prompts": ["What was the trickiest part today, and how did you work it out?",
-                               "What will you do differently next time?"],
+        "reflection_prompts": [],
         "evidence_instructions": evidence,
         "parent_notes": ("Practice lesson only. Quiz scores are formative; competency is decided by the fortnightly mini exam. "
                          "Check the independent task against the success criteria, and look for reasoning, not only answers.\n\n"
