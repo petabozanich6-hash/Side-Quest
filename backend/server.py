@@ -1,6 +1,7 @@
 """Side Quest Learning - K-12 Homeschool Platform Backend."""
 import os
 import uuid
+import asyncio
 import logging
 from seed_lessons import CORE_LESSONS
 from lesson_library import LESSON_LIBRARY, LESSON_LIBRARY_VERSION
@@ -19,6 +20,7 @@ from fastapi.responses import Response
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, EmailStr
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorGridFSBucket
+from pymongo import UpdateOne
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 
@@ -553,6 +555,10 @@ NSW_SECONDARY_PATTERN = {
 @api.get("/")
 async def root():
     return {"name": "Side Quest Learning API", "version": "1.0.0"}
+
+@api.get("/health")
+async def health():
+    return {"ok": True}
 
 @api.get("/pet/species")
 async def pet_species():
@@ -1717,8 +1723,7 @@ async def curriculum_audit(student_id: Optional[str] = None, user=Depends(requir
     return {"issues": issues, "coverage": list(coverage.values()), "notice": "This audit identifies planning and evidence gaps. It does not determine registration eligibility or replace official advice."}
 
 # ----- Seed curriculum + demo -----
-@app.on_event("startup")
-async def startup():
+async def _seed_outcomes():
     cfg = await db.app_config.find_one({"id": "seed"}) or {}
     if cfg.get("outcomes_version", 0) < SEED_VERSION:
         await db.outcomes.delete_many({})
@@ -1726,6 +1731,8 @@ async def startup():
         await db.app_config.update_one({"id": "seed"}, {"$set": {"outcomes_version": SEED_VERSION, "updated_at": now_iso()}}, upsert=True)
         logger.info(f"Reseeded NSW outcomes to version {SEED_VERSION} ({len(NSW_OUTCOMES_SEED)} entries)")
 
+
+async def _seed_owner():
     owner = await db.users.find_one({"email": OWNER_EMAIL})
     if not owner and OWNER_PASSWORD:
         family_id = new_id()
@@ -1737,10 +1744,13 @@ async def startup():
     elif not owner:
         logger.warning("OWNER_PASSWORD not set; owner account not seeded")
 
+
+async def _seed_lesson_library():
     lesson_cfg = await db.app_config.find_one({"id": "lesson_library"}) or {}
     if lesson_cfg.get("version", 0) < LESSON_LIBRARY_VERSION:
+        ops = []
         for lesson in LESSON_LIBRARY:
-            await db.lessons.update_one(
+            ops.append(UpdateOne(
                 {"seed_key": lesson["seed_key"]},
                 {
                     "$set": {
@@ -1755,7 +1765,9 @@ async def startup():
                     }
                 },
                 upsert=True
-            )
+            ))
+        for i in range(0, len(ops), 500):
+            await db.lessons.bulk_write(ops[i:i + 500], ordered=False)
         await db.app_config.update_one(
             {"id": "lesson_library"},
             {"$set": {"version": LESSON_LIBRARY_VERSION, "updated_at": now_iso()}},
@@ -1763,9 +1775,11 @@ async def startup():
         )
         logger.info(f"Seeded {len(LESSON_LIBRARY)} comprehensive lessons")
 
+    existing_keys = set()
+    async for doc in db.lessons.find({"seed_key": {"$in": [l["seed_key"] for l in CORE_LESSONS]}}, {"seed_key": 1, "_id": 0}):
+        existing_keys.add(doc["seed_key"])
     for lesson in CORE_LESSONS:
-        existing = await db.lessons.find_one({"seed_key": lesson["seed_key"]})
-        if not existing:
+        if lesson["seed_key"] not in existing_keys:
             await db.lessons.insert_one({
                 **lesson,
                 "id": new_id(),
@@ -1776,8 +1790,30 @@ async def startup():
             })
     logger.info(f"Ensured {len(CORE_LESSONS)} starter lessons are available")
 
+
+async def _run_background_seeding():
+    """Seeding runs after the server is listening so logins never wait on it."""
+    for name, step in (("outcomes", _seed_outcomes), ("lesson library", _seed_lesson_library)):
+        try:
+            await step()
+        except Exception:
+            logger.exception(f"Background seeding step failed: {name}")
+
+
+@app.on_event("startup")
+async def startup():
+    # Owner account is quick and needed for login, so it stays inline.
+    try:
+        await _seed_owner()
+    except Exception:
+        logger.exception("Owner seeding failed")
+    app.state.seed_task = asyncio.create_task(_run_background_seeding())
+
 @app.on_event("shutdown")
 async def shutdown():
+    task = getattr(app.state, "seed_task", None)
+    if task and not task.done():
+        task.cancel()
     client.close()
 import achievements
 achievements.register(api, db, current_user, require_child, new_id, now_iso)
