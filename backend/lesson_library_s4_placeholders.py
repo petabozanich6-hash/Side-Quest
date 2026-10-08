@@ -14,14 +14,15 @@ SYLLABUSES (2027 planning basis):
   Life Skills outcomes are deliberately left out.
 
 OUTCOME CODE STATUS.
-  Read on curriculum.nsw.edu.au (Oct 2026): Science (16), PDHPE (8), Technology 7-8 (8), Drama (2 of 3).
+  Read on curriculum.nsw.edu.au (Oct 2026): Science (16), PDHPE (8), Technology 7-8 (8), History (8),
+  Geography (7), Visual Arts (6), Music (3), Drama (2 of 3).
   Mathematics (16 + MAO-WM-01) and English (6) came from NESA-based sources and should be re-checked.
-  Every other subject has an EMPTY outcome_codes list on purpose, because their Stage 4 codes have
-  not been read in full. See CODES_TO_VERIFY. Labels are short plain descriptions, not NESA wording.
+  Dance, the performing outcome of Drama, and the four Languages syllabuses have EMPTY outcome_codes on
+  purpose, because their Stage 4 codes have not been read in full. See CODES_TO_VERIFY.
   Which unit uses which codes is a DRAFT mapping, to be refined against NSW sample scope and sequences.
   Science: all eight Working scientifically outcomes are attached to every Science lesson, like MAO-WM-01.
 
-Unit titles are draft placeholders.
+Unit titles are draft placeholders. History and Geography units follow the Stage 4 focus areas.
 
 TO BUILD A WEEK OUT: write a full module for it, register it in lesson_library.py LESSON_MODULES, and
 add (subject_key, week) to BUILT_OUT below. The generator then skips that week.
@@ -74,6 +75,21 @@ OUTCOMES = {
     "SC4-PRT-01": "Periodic table and atomic structure",
     "SC4-CHG-01": "Change",
     "SC4-DA1-01": "Data science",
+    "HI4-CON-01": "Describes continuity and change over a period of time in relation to a historical context",
+    "HI4-SPE-01": "Explains the key features of past societies, historical periods and events",
+    "HI4-CPP-01": "Describes different contexts and perspectives of the past",
+    "HI4-IEP-01": "Accounts for significant ideas and events that shaped the past",
+    "HI4-APP-01": "Explains Aboriginal Peoples' experiences and perspectives of colonisation",
+    "HI4-SOU-01": "Uses evidence from sources to support historical accounts and explanations about the past",
+    "HI4-INQ-01": "Explains the meaning and context of sources as part of a historical inquiry",
+    "HI4-COM-01": "Communicates historical ideas using historical terms and concepts for a range of purposes, audiences and contexts",
+    "GE4-DFC-01": "Locates the diverse features and describes the characteristics of a range of places and environments",
+    "GE4-PRI-01": "Explains the processes and interactions that change people, places and environments",
+    "GE4-PER-01": "Examines and describes the perspectives of people and organisations on a range of geographical issues",
+    "GE4-MAN-01": "Explains the management and protection of places and environments",
+    "GE4-APC-01": "Explains Aboriginal Peoples' Custodianship, care and management of Country",
+    "GE4-TAP-01": "Selects and uses geographical tools to acquire and process geographical information",
+    "GE4-COM-01": "Uses concepts and terminology to communicate geographical information for a range of purposes, audiences and contexts",
     "PH4-MSS-01": "Transfers movement skills and concepts for use in a range of dynamic movement environments",
     "PH4-MSS-02": "Demonstrates how strategies and actions can be transferred to solve movement challenges",
     "PH4-SHP-01": "Plans for and uses strategies to participate in activities that encourage safety, health and lifelong physical activity",
@@ -90,16 +106,24 @@ OUTCOMES = {
     "TE4-SAF-01": "Selects and safely uses tools, materials, technologies and processes",
     "TE4-DIG-01": "Demonstrates technological literacy to safely interact in digital environments",
     "TE4-DIG-02": "Uses data and digital systems to code, design and produce projects",
+    "VA4-AMC-01": "Makes artworks to represent ideas that explore Artworld concepts and their relationships",
+    "VA4-AMV-01": "Uses Viewpoints to explore and develop artistic intent and represent meaning in artworks",
+    "VA4-AMP-01": "Uses aspects of Practice in artworks",
+    "VA4-CHC-01": "Explains Artworld concepts in Art critical and historical studies",
+    "VA4-CHV-01": "Explains meaning in artworks and the artworld using Viewpoints",
+    "VA4-CHP-01": "Explains aspects of Practice to represent Art critical and historical perspectives",
+    "MU4-PER-01": "Uses performance skills to demonstrate understanding of the elements of music and communicate musical ideas",
+    "MU4-LIS-01": "Uses listening skills to describe music in relation to stylistic, cultural, historical or social contexts and the elements of music",
+    "MU4-COM-01": "Improvises, arranges or composes using the elements of music to create musical ideas",
     "DR4-MAK-01": "Creates meaning through experimentation with dramatic contexts, processes and elements",
     "DR4-APP-01": "Explains how creative choices shape works and experiences",
 }
 
 CODES_TO_VERIFY = {
-    "history": "HI4 codes, 8 Stage 4 outcomes", "geography": "GE4 codes, 7 Stage 4 outcomes",
-    "visual_arts": "VA4 codes, 6 Stage 4 outcomes", "music": "MU4 codes, 3 Stage 4 outcomes",
     "drama": "third Stage 4 outcome (performing); DR4-MAK-01 and DR4-APP-01 confirmed",
-    "dance": "DA4 codes, 3 Stage 4 outcomes", "modern_languages": "ML4 codes",
-    "classical_languages": "Stage 4 codes", "aboriginal_languages": "Stage 4 codes", "auslan": "Stage 4 codes",
+    "dance": "DA4 codes, 3 Stage 4 outcomes (performing, composing, appreciating)",
+    "modern_languages": "ML4 codes", "classical_languages": "Stage 4 codes",
+    "aboriginal_languages": "Stage 4 codes", "auslan": "Stage 4 codes",
 }
 
 _M = ["MA4-INT-C-01", "MA4-FRC-C-01", "MA4-RAT-C-01", "MA4-ALG-C-01", "MA4-IND-C-01", "MA4-EQU-C-01",
@@ -107,8 +131,12 @@ _M = ["MA4-INT-C-01", "MA4-FRC-C-01", "MA4-RAT-C-01", "MA4-ALG-C-01", "MA4-IND-C
       "MA4-GEO-C-01", "MA4-DAT-C-01", "MA4-DAT-C-02", "MA4-PRO-C-01"]
 _E = ["EN4-RVL-01", "EN4-URA-01", "EN4-URB-01", "EN4-URC-01", "EN4-ECA-01", "EN4-ECB-01"]
 _SC = ["SC4-OTU-01", "SC4-FOR-01", "SC4-CLS-01", "SC4-SOL-01", "SC4-LIV-01", "SC4-PRT-01", "SC4-CHG-01", "SC4-DA1-01"]
+_HI = ["HI4-CON-01", "HI4-SPE-01", "HI4-CPP-01", "HI4-IEP-01", "HI4-APP-01", "HI4-SOU-01", "HI4-INQ-01", "HI4-COM-01"]
+_GE = ["GE4-DFC-01", "GE4-PRI-01", "GE4-PER-01", "GE4-MAN-01", "GE4-APC-01", "GE4-TAP-01", "GE4-COM-01"]
 _PH = ["PH4-MSS-01", "PH4-MSS-02", "PH4-SHP-01", "PH4-SMI-01", "PH4-SHW-01", "PH4-IPS-01", "PH4-RRL-01", "PH4-IBC-01"]
 _TE = ["TE4-SDP-01", "TE4-PDP-01", "TE4-MSC-01", "TE4-PPM-01", "TE4-DES-01", "TE4-SAF-01", "TE4-DIG-01", "TE4-DIG-02"]
+_VA = ["VA4-AMC-01", "VA4-AMV-01", "VA4-AMP-01", "VA4-CHC-01", "VA4-CHV-01", "VA4-CHP-01"]
+_MU = ["MU4-PER-01", "MU4-LIS-01", "MU4-COM-01"]
 
 # skey: (learning_area, prefix, source, lessons_per_week, units[(first_week, last_week, title, codes)])
 SUBJECTS = {
@@ -137,13 +165,17 @@ SUBJECTS = {
         (39, 44, "Change", ["SC4-CHG-01"]), (45, 48, "Data science", ["SC4-DA1-01"]),
         (49, 50, "Depth study and review", list(_SC))]),
     "history": ("History", "history", "NSW History 7-10 Syllabus (2024)", 2, [
-        (1, 10, "Historical inquiry and sources", []), (11, 20, "The ancient world", []),
-        (21, 30, "The medieval world", []), (31, 40, "Australia and First Nations history", []),
-        (41, 50, "Depth study and review", [])]),
+        (1, 8, "Historical inquiry and sources", ["HI4-INQ-01", "HI4-SOU-01", "HI4-COM-01"]),
+        (9, 20, "The ancient past", ["HI4-SPE-01", "HI4-CON-01", "HI4-CPP-01", "HI4-SOU-01"]),
+        (21, 32, "The medieval world", ["HI4-SPE-01", "HI4-IEP-01", "HI4-CPP-01", "HI4-CON-01"]),
+        (33, 44, "The era of colonisation", ["HI4-APP-01", "HI4-IEP-01", "HI4-CPP-01", "HI4-SOU-01"]),
+        (45, 50, "Depth studies and review", list(_HI))]),
     "geography": ("Geography", "geography", "NSW Geography 7-10 Syllabus (2024)", 2, [
-        (1, 10, "Geographical inquiry and skills", []), (11, 20, "Landscapes and landforms", []),
-        (21, 30, "Place and liveability", []), (31, 40, "Water in the world", []),
-        (41, 50, "Fieldwork and review", [])]),
+        (1, 8, "Geographical inquiry and skills", ["GE4-TAP-01", "GE4-COM-01", "GE4-PER-01"]),
+        (9, 20, "Landscapes and landforms", ["GE4-DFC-01", "GE4-PRI-01", "GE4-MAN-01", "GE4-TAP-01"]),
+        (21, 32, "Liveability of places", ["GE4-DFC-01", "GE4-PER-01", "GE4-PRI-01", "GE4-COM-01"]),
+        (33, 42, "Water in the world", ["GE4-PRI-01", "GE4-MAN-01", "GE4-APC-01", "GE4-TAP-01"]),
+        (43, 50, "Interconnections and trade", ["GE4-PRI-01", "GE4-PER-01", "GE4-DFC-01", "GE4-APC-01"])]),
     "pdhpe": ("PDHPE", "pdhpe", "NSW PDHPE 7-10 Syllabus (2024)", 2, [
         (1, 10, "Movement skills and strategies", ["PH4-MSS-01", "PH4-MSS-02", "PH4-SMI-01"]),
         (11, 20, "Health and wellbeing through physical activity", ["PH4-SHP-01", "PH4-SHW-01", "PH4-SMI-01"]),
@@ -156,10 +188,13 @@ SUBJECTS = {
         (26, 38, "Food and agricultural practices", ["TE4-PDP-01", "TE4-SDP-01", "TE4-PPM-01", "TE4-SAF-01"]),
         (39, 50, "Materials and production processes", ["TE4-MSC-01", "TE4-PPM-01", "TE4-SAF-01", "TE4-PDP-01"])]),
     "visual_arts": ("Visual Arts", "vart", "NSW Visual Arts 7-10 Syllabus (2024)", 2, [
-        (1, 12, "Drawing and painting", []), (13, 25, "Sculpture and design", []),
-        (26, 37, "Artists and artworks", []), (38, 50, "Digital and mixed media", [])]),
+        (1, 12, "Drawing and painting", ["VA4-AMC-01", "VA4-AMV-01", "VA4-AMP-01"]),
+        (13, 25, "Sculpture and design", ["VA4-AMC-01", "VA4-AMP-01", "VA4-AMV-01"]),
+        (26, 37, "Artists and artworks", ["VA4-CHC-01", "VA4-CHV-01", "VA4-CHP-01"]),
+        (38, 50, "Digital and mixed media", ["VA4-AMP-01", "VA4-AMV-01", "VA4-CHV-01"])]),
     "music": ("Music", "music", "NSW Music 7-10 Syllabus (2024)", 2, [
-        (1, 17, "Performing", []), (18, 34, "Listening", []), (35, 50, "Composing", [])]),
+        (1, 17, "Performing", ["MU4-PER-01"]), (18, 34, "Listening", ["MU4-LIS-01"]),
+        (35, 50, "Composing", ["MU4-COM-01"])]),
     "drama": ("Drama", "drama", "NSW Drama 7-10 Syllabus (2023)", 2, [
         (1, 17, "Making", ["DR4-MAK-01"]), (18, 34, "Performing", []), (35, 50, "Appreciating", ["DR4-APP-01"])]),
     "dance": ("Dance", "dance", "NSW Dance 7-10 Syllabus (2023)", 2, [
@@ -248,9 +283,7 @@ if __name__ == "__main__":
         assert weeks == list(range(1, 51)), (_k, "weeks not 1-50 without gaps")
     for _l in LESSONS:
         assert set(_l["outcome_codes"]) <= set(OUTCOMES), (_l["seed_key"], "code missing from OUTCOMES")
-    assert {c for u in SUBJECTS["maths"][4] for c in u[3]} == set(_M), "maths codes"
-    assert {c for u in SUBJECTS["english"][4] for c in u[3]} == set(_E), "english codes"
-    assert {c for u in SUBJECTS["science"][4] for c in u[3]} == set(_SC), "science codes"
-    assert {c for u in SUBJECTS["pdhpe"][4] for c in u[3]} == set(_PH), "pdhpe codes"
-    assert {c for u in SUBJECTS["technology"][4] for c in u[3]} == set(_TE), "technology codes"
+    for _k, _want in (("maths", _M), ("english", _E), ("science", _SC), ("history", _HI), ("geography", _GE),
+                      ("pdhpe", _PH), ("technology", _TE), ("visual_arts", _VA), ("music", _MU)):
+        assert {c for u in SUBJECTS[_k][4] for c in u[3]} == set(_want), (_k, "codes")
     print("OK: 1800 lessons across 15 subjects")
