@@ -1,6 +1,7 @@
 """Stage 2 English, Week 6 Lesson 2: Planning an Information Report (Writing).
 The child learns to choose a focused topic, ask questions, brainstorm facts, group the facts into categories, turn the categories into subheadings, and plan an introduction and a conclusion. This is a planning lesson only; the child drafts the report in later lessons.
 Spelling: the -tion ending continued: question, location, description, population, introduction, classification.
+Outcomes: EN2-CWT-02 (informative writing) and EN2-SPELL-01, matching lesson_library_s2_english_placeholders.py.
 Video status: bbV_YFoqu5I (Information Investigation, Episode 3) was checked against its title, description and chapter list only. Its transcript and exact length have NOT been verified. Watch it and re-check before release, or replace it.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
@@ -43,10 +44,10 @@ LESSON = build(
     "Planning an Information Report",
     "A good report starts before the first sentence. Learn how to turn a pile of jumbled facts into a clear plan with groups, subheadings, an introduction and a conclusion, so that your report is easy to write and easy to read.",
     "Writing: planning an information report",
-    ["EN2-CWT-01", "EN2-SPELL-01"],
+    ["EN2-CWT-02", "EN2-SPELL-01"],
     {
-        "EN2-CWT-01": "Primary. Plans, composes, revises and edits written texts, selecting and organising information into groups and subheadings to plan an information report for a purpose and an audience.",
-        "EN2-SPELL-01": "Selects, applies and describes appropriate phonological, orthographic and morphological generalisations and strategies when spelling, including words ending in -tion (week 6 spelling focus).",
+        "EN2-CWT-02": "Plans, creates and revises written texts for informative purposes, using text features, sentence-level grammar, punctuation and word-level language for a target audience. This lesson focuses on planning: choosing a topic, grouping facts under subheadings, and outlining an introduction and a conclusion.",
+        "EN2-SPELL-01": "Selects, applies and describes appropriate phonological, orthographic and morphological generalisations and strategies when spelling in a range of contexts. This week's focus is words ending in -tion.",
     },
     "We are learning to plan an information report by choosing a focused topic, brainstorming facts, grouping them under subheadings, and planning an introduction and a conclusion, and to spell words that end in -tion.",
     [
