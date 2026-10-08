@@ -57,7 +57,8 @@ const EggPattern = ({ kind, accent }) => {
   }
 };
 
-const SpeciesEgg = ({ style, size = 200, reaction, cold }) => {
+// children are drawn on top of the egg inside its 190x230 drawing (used for worn prizes).
+const SpeciesEgg = ({ style, size = 200, reaction, cold, children }) => {
   const s = style || EGG_FALLBACK;
   const id = `egg-${s.pattern}`;
   return (
@@ -73,6 +74,7 @@ const SpeciesEgg = ({ style, size = 200, reaction, cold }) => {
       <path d="M95,12 C150,12 175,95 175,140 C175,190 140,218 95,218 C50,218 15,190 15,140 C15,95 40,12 95,12z" fill={s.base}/>
       <g clipPath={`url(#${id})`}><EggPattern kind={s.pattern} accent={s.accent}/></g>
       <path d="M95,12 C150,12 175,95 175,140 C175,190 140,218 95,218 C50,218 15,190 15,140 C15,95 40,12 95,12z" fill={`url(#${id}-shine)`}/>
+      {children}
     </svg>
   );
 };
@@ -207,7 +209,7 @@ export default function PetRoom() {
               style={{ filter: sick ? "grayscale(0.7)" : asleep ? "brightness(0.75)" : "none", cursor: "pointer" }}>
               {hatched
                 ? <Pet species={pet.species} size={200} happy={!sad && pet.happiness > 40}><SeasonalWorn /></Pet>
-                : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"} />}
+                : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"}><SeasonalWorn layout="egg" /></SpeciesEgg>}
               {hatched && worn.length > 0 && (
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2 flex gap-1 text-2xl" data-testid="worn-accessories">
                   {worn.map(a => <span key={a}>{ACC_EMOJI[a] || "✨"}</span>)}
@@ -290,7 +292,7 @@ export default function PetRoom() {
                 </button>
               );
             })}
-            <SeasonalWardrobeItems hatched={hatched} />
+            <SeasonalWardrobeItems hatched />
           </div>
         </section>
       )}
