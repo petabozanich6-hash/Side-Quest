@@ -2,16 +2,9 @@ import React, { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { ChoiceSet } from "./QuestActivities";
 import { api } from "../../lib/api";
+import { speakWord } from "../../lib/speak";
 
 const BTN = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
-
-function speak(word) {
-  if (typeof window === "undefined" || !window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const utter = new SpeechSynthesisUtterance(word);
-  utter.rate = 0.8;
-  window.speechSynthesis.speak(utter);
-}
 
 function WordPractice({ item, lessonId, onCorrect }) {
   const [phase, setPhase] = useState("look");
@@ -26,7 +19,7 @@ function WordPractice({ item, lessonId, onCorrect }) {
     setResult(null);
     setInfo(null);
     setPhase("covered");
-    speak(item.word);
+    speakWord(item.word);
   };
 
   const check = async () => {
@@ -90,7 +83,7 @@ function WordPractice({ item, lessonId, onCorrect }) {
           <p className="text-xs text-stone-600">The word is hidden. Write it from memory.</p>
           <button
             type="button"
-            onClick={() => speak(item.word)}
+            onClick={() => speakWord(item.word)}
             className="mt-2 rounded-full border px-4 py-1.5 text-xs font-bold"
             style={{ borderColor: "#1F3B2D", color: "#1F3B2D" }}
           >
