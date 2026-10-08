@@ -1,12 +1,22 @@
 """Stage 2 English, Week 1 Lesson 1: Reading with Expression.
-One fully built test lesson, written to the Week 1 L1 slot of docs/english_s2_scope_and_sequence.md.
+One fully built lesson, written to the Week 1 L1 slot of docs/english_s2_scope_and_sequence.md.
 It uses the build helpers from lesson_library_s2_english_w1_w2 (only the helpers; no old lesson content).
 The placeholder for this slot still exists in lesson_library_s2_english_placeholders.py.
 
-TODO before release: add checked YouTube and BBC Bitesize / Khan Academy resources
-(plan rule: every link is fetched and checked first). Word Hoard wiring is deferred.
+All written work is done inside the lesson (planner boxes, sorter, word challenges, quiz); no notebook needed.
+Video IDs and the article link were already used in earlier lessons in this repo. Re-check them before release.
 """
-from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc
+from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video, _article
+
+PASSAGE = (
+    "The Night the Dingo Came\n\n"
+    "Mia woke to a scratching sound outside the tent. She sat up, listening. Scratch, scratch, scratch. "
+    "'Dad?' she whispered. 'Is that you?' Nobody answered.\n\n"
+    "Slowly, she unzipped the flap and peeked out. Moonlight spilled across the red dirt, and there, beside "
+    "the campfire, stood a thin, golden dingo. Its ears were pointed. Its eyes glittered. Mia held her breath.\n\n"
+    "For a long moment, neither of them moved. Then the dingo licked the last crumbs from the damper tin, "
+    "turned, and trotted away into the dark. 'Well!' Mia laughed softly. 'You only wanted supper!'"
+)
 
 LESSON = build(
     "s2-eng-w01-l1-reading-expression",
@@ -30,7 +40,7 @@ LESSON = build(
         "I can explain why I read a part the way I did.",
     ],
     ["fluency", "expression", "pace", "volume", "tone", "emphasis", "phrasing", "punctuation", "syllable"],
-    ["A short story or poem you like (8 to 10 sentences)", "Pencil and coloured pencil", "Notebook", "A listener, or a device to record yourself"],
+    ["This lesson (everything you need is inside it)", "A listener, or a device to record yourself (optional)"],
     "Child can read simple sentences aloud and recognises full stops, commas, question marks and exclamation marks.",
     (
         "Fluent reading sounds like talking. A fluent reader reads accurately, at a steady pace, in phrases rather than word by word, and with expression. "
@@ -81,7 +91,7 @@ LESSON = build(
             "Other clues are what is happening in the story and how the character would feel.\n\n"
             "Authors choose speech verbs carefully. 'Said' is neutral. 'Roared' and 'whispered' tell you exactly how to sound.",
             "'Get out,' she whispered (scared, quiet). 'Get out!' she roared (angry, loud). 'Get out,' she sighed (tired, sad).",
-            "Underline the speech verb first, then choose the tone.",
+            "Find the speech verb first, then choose the tone.",
             ("Which word is the best clue to tone?", ["grumbled", "the", "and"], 0, "Speech verbs like grumbled tell you how to say the words."),
         ),
         _step(
@@ -94,9 +104,9 @@ LESSON = build(
         ),
         _step(
             "7", "Marking a passage like a performer",
-            "Professional readers mark their script. Use a simple code: a single slash / for a short pause, a double slash // for a long pause, an underline for a word to stress, an arrow up for a rising voice, an arrow down for a falling voice, and a note in the margin for tone.\n\n"
+            "Professional readers mark their script. Use a simple code you can type in the lesson: one slash / for a short pause, two slashes // for a long pause, CAPITALS for a word to stress, (up) for a rising voice, (down) for a falling voice, and a note in brackets for tone.\n\n"
             "Read the passage silently first to find out what it means. Then mark it. Then read it aloud three times: once for smooth and accurate, once adding pace and volume, and once adding tone and emphasis.",
-            "'The cave was silent. // Then, / from far below, / came a sound.' Marks: slow pace at 'silent', long pause after 'silent', rising voice on 'Was it water?'.",
+            "'The cave was silent. // Then, / from far BELOW, / came a SOUND.' Marks: slow pace at 'silent', long pause after 'silent', 'Was it water? (up)'.",
             "Marking turns your thinking into a plan you can follow.",
             ("What should you do before you mark a passage?", ["Read it silently to understand it", "Read it as fast as you can", "Skip to the end"], 0, "You need to understand the meaning before you choose how to read."),
         ),
@@ -111,27 +121,27 @@ LESSON = build(
     ],
     (
         "Passage: 'The cave was silent. Then, from far below, came a sound. Was it water? Was it breathing? Mia gripped the torch and whispered, \"Hello?\"'\n\n"
-        "Step 1, understand it: it is a tense, scary moment and Mia is nervous. Step 2, mark it: slow pace on the first sentence with a long pause after 'silent'. Underline 'below' and 'sound' for emphasis. "
-        "Rising arrows on both questions. A soft volume and nervous tone note on the last line. Step 3, perform: first read for accuracy, then add pace and volume, then tone. "
+        "Step 1, understand it: it is a tense, scary moment and Mia is nervous. Step 2, mark it: slow pace on the first sentence with a long pause after 'silent'. Stress 'below' and 'sound'. "
+        "Rising voice on both questions. A soft volume and nervous tone on the last line. Step 3, perform: first read for accuracy, then add pace and volume, then tone. "
         "Step 4, explain: 'I slowed down and paused after silent because the cave is quiet and the author wants the listener to feel the tension. I made my voice rise at the two questions because they are questions, and I whispered Hello because Mia is scared.'"
     ),
     (
-        "Work in your notebook. Part A, pauses and stress: copy this sentence, put / for short pauses and underline the word to stress: 'Wait,' said Tom, 'that is not my bag.' (Hint: which word shows he is sure?)\n"
+        "Type your answers in the practice boxes in the lesson. Part A, pauses and stress: put / for short pauses and type the word to stress in capitals: 'Wait,' said Tom, 'that is not my bag.' (Hint: which word shows he is sure?)\n"
         "Part B, tone match: choose a tone for each line. 1. 'Come here at once!' 2. 'It's all right, I'm here.' 3. 'I suppose so,' he sighed. 4. 'We won!' she cheered.\n"
         "Part C, syllables: split into syllables and write how many: adventure, excellent, remember, beautiful, unforgettable.\n"
-        "Part D, same words, different meaning: read 'I never said he was late' aloud six times, stressing a different word each time, and write what each version means.\n"
-        "Check your answers against the answer key your parent has."
+        "Part D, same words, different meaning: read 'I never said he was late' aloud six times, stressing a different word each time, and type what each version means.\n"
+        "Your parent can check your answers against the answer key."
     ),
     (
-        "Stage 1 (choose): pick a passage of 8 to 10 sentences from your own reading book, with some speech.\n"
-        "Stage 2 (understand): read it silently and write one sentence about what is happening and how the characters feel.\n"
-        "Stage 3 (mark): mark pauses, circle or underline at least three words to stress, add arrows for rising or falling voice, and write a tone note beside the speech.\n"
-        "Stage 4 (practise): read it aloud three times (smooth, then pace and volume, then tone and emphasis). Split two tricky long words into syllables and practise each three times.\n"
-        "Stage 5 (perform): perform for a family member or record yourself. Ask your listener one thing that sounded good and one thing to improve.\n"
-        "Stage 6 (explain): write at least four sentences explaining your choices. Use 'I ___ because ___'. Include at least one about pace, one about tone and one about emphasis."
+        "Read this passage silently first, then aloud. Everything you write goes in the boxes in this lesson.\n\n" + PASSAGE + "\n\n"
+        "Stage 1 (understand): type one sentence about what is happening and how Mia feels.\n"
+        "Stage 2 (mark): type the first paragraph with / for short pauses, // for long pauses, CAPITALS on at least three words to stress, (up) or (down) for your voice, and a tone note in brackets beside the speech.\n"
+        "Stage 3 (practise): read the whole passage aloud three times (smooth, then pace and volume, then tone and emphasis). Split two tricky long words from the passage into syllables and type them.\n"
+        "Stage 4 (perform): perform it for a family member, or record yourself. Type one thing that sounded good and one thing to improve.\n"
+        "Stage 5 (explain): type at least four sentences explaining your choices. Use 'I ___ because ___'. Include at least one about pace, one about tone and one about emphasis."
     ),
     "Which reading tool made the biggest difference to your performance, and how do you know? What would you do differently next time?",
-    "Did I choose a passage, write what is happening, mark pauses, stress and tone, read it three times, practise two long words by syllables, perform it, record feedback, and write four sentences explaining my choices?",
+    "Did I type what is happening, mark pauses, stress and tone, read it three times, split two long words into syllables, perform it, type my feedback, and write four sentences explaining my choices?",
     [
         _q("What does a full stop tell a reader to do?", ["Stop and take a small breath", "Speed up", "Shout", "Whisper"], 0, "A full stop is a stop."),
         _q("What happens to your voice at a question mark?", ["It rises", "It drops", "It stays flat", "It disappears"], 0, "A question mark makes the voice rise."),
@@ -144,8 +154,8 @@ LESSON = build(
         _q("Why do good readers read silently first?", ["To understand the meaning before deciding how to read", "To read faster", "To avoid mistakes in spelling", "It is not necessary"], 0, "Expression comes from understanding."),
         _q("Which is a good explanation of a reading choice?", ["I whispered because Mia is scared of the dark cave.", "I read it loudly.", "I like whispering.", "I read it three times."], 0, "A good explanation gives the reason from the text."),
     ],
-    "Submit your marked passage (photo or copy), your answers to Parts A to D, a recording or a note from your listener, and your explanation sentences.",
-    "Extension: choose a passage with two characters and use a different voice for each. Mark which tool you change between them.",
+    "Type your answers in the practice boxes and submit them. Optional: add a recording of your performance or a note from your listener.",
+    "Extension: read the dialogue in the passage twice, once as Mia and once as a narrator, and type which tool you changed between them.",
     [
         ("fluency", "Reading smoothly and accurately, like talking"),
         ("phrasing", "Reading in chunks of words that belong together"),
@@ -156,26 +166,51 @@ LESSON = build(
         ("syllable", "One beat in a word, with one vowel sound"),
         ("speech verb", "A verb like whispered or roared that shows how something was said"),
     ],
-    [],
+    [
+        _video("Punctuation Celebration (read aloud)", "RgGrNL82r4I",
+               "Listen to how the reader's voice changes with punctuation. Notice the pauses, the rises and the feeling.",
+               "Read the first paragraph of the passage aloud and pause at every comma and full stop.",
+               ("Which part of fluency is shown when a reader's voice changes with the meaning?", ["Expression", "Spelling", "Handwriting"], 0, "Expression shows meaning through the voice.")),
+        _video("Punctuation and grammar for kids (read aloud)", "2zNAQW5jPwI",
+               "Listen to the read-aloud and notice how the narrator treats each punctuation mark.",
+               "Read the passage with a pause at every punctuation mark.",
+               ("What should a reader do at a full stop?", ["Pause and let the idea finish", "Speed up", "Skip it"], 0, "A full stop is a longer pause.")),
+        _article("Fluency practice: reading with expression (Reading Universe)", "https://readinguniverse.org/resources/video/fluency/fluency-practice-reading-with-expression"),
+    ],
     _sort(
         "Match the tool to the job",
         "Sort each reading choice under the tool it belongs to.",
         ["Pace", "Volume", "Tone"],
         [
-            ("Slow down at a sad moment", "Pace"),
-            ("Speed up during a chase", "Pace"),
-            ("Whisper a secret", "Volume"),
-            ("Shout a warning", "Volume"),
-            ("Sound nervous when a character is scared", "Tone"),
-            ("Sound cheerful when a character is delighted", "Tone"),
+            ("Slow down at a sad moment", 0),
+            ("Speed up during a chase", 0),
+            ("Whisper a secret", 1),
+            ("Shout a warning", 1),
+            ("Sound nervous when a character is scared", 2),
+            ("Sound cheerful when a character is delighted", 2),
         ],
     ),
     [
         _wc("How many syllables are in 'beautiful'?", ["2", "3", "4"], 1, "beau-ti-ful."),
         _wc("Which speech verb shows the quietest way of speaking?", ["whispered", "shouted", "roared"], 0, "Whispered is soft and quiet."),
         _wc("Which is split into syllables correctly?", ["ex-cel-lent", "exc-ell-ent", "e-xcel-lent"], 0, "ex-cel-lent."),
+        _wc("Which tone fits: 'Come here at once!'", ["Urgent or angry", "Gentle", "Bored"], 0, "The exclamation mark and the command show strong feeling."),
+        _wc("Which tone fits: 'It's all right, I'm here.'", ["Gentle and comforting", "Angry", "Excited"], 0, "The words are kind and calming."),
+        _wc("Which tone fits: 'I suppose so,' he sighed.", ["Reluctant or tired", "Delighted", "Furious"], 0, "Sighed and 'I suppose' show he does not really want to."),
+        _wc("In 'Wait,' said Tom, 'that is not my bag.' which word shows he is sure?", ["not", "Wait", "said"], 0, "Stressing 'not' shows he is certain."),
+        _wc("How many syllables are in 'unforgettable'?", ["3", "4", "5"], 2, "un-for-get-ta-ble."),
     ],
-    None,
+    [
+        {"key": "partA", "label": "Part A: pauses and stress", "hint": "Type: 'Wait,' said Tom, 'that is not my bag.' Put / for short pauses and write the word you would stress in CAPITALS."},
+        {"key": "partB", "label": "Part B: tone match", "hint": "Give a tone for each: 1 'Come here at once!' 2 'It's all right, I'm here.' 3 'I suppose so,' he sighed. 4 'We won!' she cheered."},
+        {"key": "partC", "label": "Part C: syllables", "hint": "Split and count: adventure, excellent, remember, beautiful, unforgettable. Example: won-der-ful (3)."},
+        {"key": "partD", "label": "Part D: same words, new meaning", "hint": "Read 'I never said he was late' six times, stressing a different word each time. Type what each version means."},
+        {"key": "understand", "label": "What is happening?", "hint": "One sentence about the dingo passage: what is happening and how does Mia feel?"},
+        {"key": "marked", "label": "My marked paragraph", "hint": "Type the first paragraph with / and // for pauses, CAPITALS for stressed words, (up) or (down), and tone notes in brackets."},
+        {"key": "syllables", "label": "Two tricky words", "hint": "Pick two long words from the passage and split them into syllables."},
+        {"key": "feedback", "label": "Listener feedback", "hint": "Type one thing that sounded good and one thing to improve."},
+        {"key": "explain", "label": "My explanation", "hint": "Write at least four sentences using 'I ___ because ___': one about pace, one about tone, one about emphasis, plus one more."},
+    ],
     [
         "Reading too fast and ignoring punctuation",
         "Reading in a flat voice with no pauses or change of tone",
@@ -190,6 +225,7 @@ LESSON = build(
     (
         "Part A: Wait, / said Tom, / that is not my bag. Stress 'not' (or 'my'). Part B: 1 urgent or angry; 2 gentle or comforting; 3 reluctant or tired; 4 excited or joyful. "
         "Part C: ad-ven-ture (3), ex-cel-lent (3), re-mem-ber (3), beau-ti-ful (3), un-for-get-ta-ble (5). "
-        "Part D: 'I never said he was late' - Stress I: someone else said it. Stress never: you did not say it at all. Stress said: you hinted or wrote it instead. Stress he: you meant someone else. Stress was: you meant he is late now or will be. Stress late: you said he was early or on time or something else. Accept any sensible explanation."
+        "Part D: 'I never said he was late' - Stress I: someone else said it. Stress never: you did not say it at all. Stress said: you hinted or wrote it instead. Stress he: you meant someone else. Stress was: you meant he is late now or will be. Stress late: you said he was early or on time or something else. Accept any sensible explanation. "
+        "Dingo passage: Mia is startled and nervous, then relieved and amused. Good marking slows down at 'Mia held her breath', raises the voice at 'Is that you?', and warms the tone at 'You only wanted supper!'."
     ),
 )
