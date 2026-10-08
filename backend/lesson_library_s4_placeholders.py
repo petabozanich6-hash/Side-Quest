@@ -15,10 +15,12 @@ SYLLABUSES (2027 planning basis):
 
 OUTCOME CODE STATUS.
   Read on curriculum.nsw.edu.au (Oct 2026): Science (16), PDHPE (8), Technology 7-8 (8), History (8),
-  Geography (7), Visual Arts (6), Music (3), Drama (2 of 3).
+  Geography (7), Visual Arts (6), Music (3), Dance (3), Drama (3).
+  Drama: the wording of all three Stage 4 outcomes was read, but the performing code DR4-PER-01 is
+  inferred from the Dance and Music pattern (MAK, PER, APP). Confirm it.
   Mathematics (16 + MAO-WM-01) and English (6) came from NESA-based sources and should be re-checked.
-  Dance, the performing outcome of Drama, and the four Languages syllabuses have EMPTY outcome_codes on
-  purpose, because their Stage 4 codes have not been read in full. See CODES_TO_VERIFY.
+  The four Languages syllabuses have EMPTY outcome_codes on purpose, because their Stage 4 codes have
+  not been read. See CODES_TO_VERIFY.
   Which unit uses which codes is a DRAFT mapping, to be refined against NSW sample scope and sequences.
   Science: all eight Working scientifically outcomes are attached to every Science lesson, like MAO-WM-01.
 
@@ -116,13 +118,16 @@ OUTCOMES = {
     "MU4-LIS-01": "Uses listening skills to describe music in relation to stylistic, cultural, historical or social contexts and the elements of music",
     "MU4-COM-01": "Improvises, arranges or composes using the elements of music to create musical ideas",
     "DR4-MAK-01": "Creates meaning through experimentation with dramatic contexts, processes and elements",
-    "DR4-APP-01": "Explains how creative choices shape works and experiences",
+    "DR4-PER-01": "Uses performance skills to communicate meaning and engage audiences through dramatic contexts, processes and elements",
+    "DR4-APP-01": "Explains how creative choices shape works and experiences through dramatic contexts, processes and elements",
+    "DA4-PER-01": "Performs dance works, demonstrating safe dance practice, dance technique and performance quality",
+    "DA4-COM-01": "Creates movements using the elements of dance to communicate an idea and intent",
+    "DA4-APP-01": "Describes dance works from a range of contexts using the elements of dance",
 }
 
 CODES_TO_VERIFY = {
-    "drama": "third Stage 4 outcome (performing); DR4-MAK-01 and DR4-APP-01 confirmed",
-    "dance": "DA4 codes, 3 Stage 4 outcomes (performing, composing, appreciating)",
-    "modern_languages": "ML4 codes", "classical_languages": "Stage 4 codes",
+    "drama": "DR4-PER-01 is inferred from the naming pattern; wording confirmed",
+    "modern_languages": "Stage 4 codes", "classical_languages": "Stage 4 codes",
     "aboriginal_languages": "Stage 4 codes", "auslan": "Stage 4 codes",
 }
 
@@ -137,6 +142,8 @@ _PH = ["PH4-MSS-01", "PH4-MSS-02", "PH4-SHP-01", "PH4-SMI-01", "PH4-SHW-01", "PH
 _TE = ["TE4-SDP-01", "TE4-PDP-01", "TE4-MSC-01", "TE4-PPM-01", "TE4-DES-01", "TE4-SAF-01", "TE4-DIG-01", "TE4-DIG-02"]
 _VA = ["VA4-AMC-01", "VA4-AMV-01", "VA4-AMP-01", "VA4-CHC-01", "VA4-CHV-01", "VA4-CHP-01"]
 _MU = ["MU4-PER-01", "MU4-LIS-01", "MU4-COM-01"]
+_DR = ["DR4-MAK-01", "DR4-PER-01", "DR4-APP-01"]
+_DA = ["DA4-PER-01", "DA4-COM-01", "DA4-APP-01"]
 
 # skey: (learning_area, prefix, source, lessons_per_week, units[(first_week, last_week, title, codes)])
 SUBJECTS = {
@@ -196,9 +203,11 @@ SUBJECTS = {
         (1, 17, "Performing", ["MU4-PER-01"]), (18, 34, "Listening", ["MU4-LIS-01"]),
         (35, 50, "Composing", ["MU4-COM-01"])]),
     "drama": ("Drama", "drama", "NSW Drama 7-10 Syllabus (2023)", 2, [
-        (1, 17, "Making", ["DR4-MAK-01"]), (18, 34, "Performing", []), (35, 50, "Appreciating", ["DR4-APP-01"])]),
+        (1, 17, "Making", ["DR4-MAK-01"]), (18, 34, "Performing", ["DR4-PER-01"]),
+        (35, 50, "Appreciating", ["DR4-APP-01"])]),
     "dance": ("Dance", "dance", "NSW Dance 7-10 Syllabus (2023)", 2, [
-        (1, 17, "Performing", []), (18, 34, "Composing", []), (35, 50, "Appreciating", [])]),
+        (1, 17, "Performing", ["DA4-PER-01"]), (18, 34, "Composing", ["DA4-COM-01"]),
+        (35, 50, "Appreciating", ["DA4-APP-01"])]),
     "modern_languages": ("Modern Languages", "mlang", "NSW Modern Languages K-10 Syllabus (2022)", 2, [
         (1, 10, "Introducing myself", []), (11, 20, "Family and friends", []), (21, 30, "School and daily life", []),
         (31, 40, "Food, places and culture", []), (41, 50, "Review and project", [])]),
@@ -284,6 +293,7 @@ if __name__ == "__main__":
     for _l in LESSONS:
         assert set(_l["outcome_codes"]) <= set(OUTCOMES), (_l["seed_key"], "code missing from OUTCOMES")
     for _k, _want in (("maths", _M), ("english", _E), ("science", _SC), ("history", _HI), ("geography", _GE),
-                      ("pdhpe", _PH), ("technology", _TE), ("visual_arts", _VA), ("music", _MU)):
+                      ("pdhpe", _PH), ("technology", _TE), ("visual_arts", _VA), ("music", _MU),
+                      ("drama", _DR), ("dance", _DA)):
         assert {c for u in SUBJECTS[_k][4] for c in u[3]} == set(_want), (_k, "codes")
     print("OK: 1800 lessons across 15 subjects")
