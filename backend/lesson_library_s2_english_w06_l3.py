@@ -1,7 +1,8 @@
 """Stage 2 English, Week 6 Lesson 3: Tier 3 Vocabulary and Technical Words (Vocabulary).
 The child learns that information texts use technical (Tier 3) words for their topic, and uses context clues, the glossary and word parts to work out meanings, then uses technical words in a koala fact file and in their own topic.
 Spelling: the -tion ending continued: addition, condition, pollution, protection, nutrition, migration.
-Build status: the scope-document entry for this lesson and the outcome code EN2-VOCAB-01 have NOT been re-checked. Video status: eHCpJ86XDY4 (Context Clues, Mind Blooming) was seen only as a title and short excerpts. Its full transcript and length have NOT been verified. Preview it before release, or replace it.
+Outcomes: EN2-VOCAB-01 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 6, Lesson 3, Language slot, technical words and vocabulary). Outcome wording is the official NESA text.
+Video status: eHCpJ86XDY4 (Context Clues, Mind Blooming) was seen only as a title and short excerpts. Its full transcript and length have NOT been verified. Preview it before release, or replace it.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -29,8 +30,8 @@ LESSON = build(
     "Vocabulary: technical words in information texts",
     ["EN2-VOCAB-01", "EN2-SPELL-01"],
     {
-        "EN2-VOCAB-01": "Primary. Understands and uses topic-specific (technical) vocabulary in information texts, working out meanings from context, glossaries and word parts, and choosing precise words for a purpose.",
-        "EN2-SPELL-01": "Selects, applies and describes appropriate phonological, orthographic and morphological generalisations and strategies when spelling, including words ending in -tion (week 6 spelling focus).",
+        "EN2-VOCAB-01": "Builds knowledge and use of Tier 1, Tier 2 and Tier 3 vocabulary through interacting, wide reading and writing, and by defining and analysing words. This lesson focuses on Tier 3 (technical) words in information texts.",
+        "EN2-SPELL-01": "Selects, applies and describes appropriate phonological, orthographic and morphological generalisations and strategies when spelling in a range of contexts. This week's focus is words ending in -tion.",
     },
     "We are learning to find and use technical words in an information text by using context clues, the glossary and word parts, and to spell words that end in -tion.",
     [
@@ -92,7 +93,7 @@ LESSON = build(
         _q("What is a habitat?", ["A kind of food", "A baby animal", "A type of tree", "The place where an animal lives and finds what it needs"], 3, "A habitat is where an animal lives and finds what it needs."),
         _q("What should you do with a glossary meaning?", ["Say it in your own words", "Copy it exactly", "Ignore it", "Change the word"], 0, "Saying it in your own words shows you understand."),
         _q("Which is spelled correctly?", ["pollushun", "pollusion", "pollution", "polution"], 2, "Pollution has a double l and ends in -tion."),
-        _q("Which is spelled correctly?", ["nutrishun", "nutrition", "nutrision", "nutrition"], 1, "Nutrition ends in -tion."),
+        _q("Which is spelled correctly?", ["nutrishun", "nutrition", "nutrision", "nutrisyon"], 1, "Nutrition ends in -tion."),
     ],
     "Type your answers in the practice boxes and submit them.",
     "Extension: find a real information book or website about an animal or hobby. Write down three technical words and say how you worked out each meaning (context clue, glossary or word part). Then use all three correctly in one short paragraph.",
