@@ -5,7 +5,8 @@ Every pack is OFF by default. Nothing is assumed for any family.
 
 Each pack has 12 wearable prizes (one for each year of schooling). A child can claim
 one random prize per pack per year, never a repeat, and keeps them all permanently.
-The child chooses which prizes to wear (up to MAX_WORN at once).
+Every prize fits one spot on the pet's body (its "slot"). The child chooses which to wear:
+up to MAX_WORN at once, and only one per slot so they never overlap.
 """
 import random
 from datetime import datetime, date
@@ -22,31 +23,39 @@ except Exception:  # pragma: no cover
 
 MAX_WORN = 3
 
+# Slots: head, face, neck, chest, left, right, ears, feet, cheeks.
+# Each pack: 2 head, 1 face, 2 neck, 2 chest, 1 left, 1 right, 1 ears, 1 feet, 1 cheeks.
 PACKS = {
     "halloween": {"label": "Halloween", "prizes": [
-        ("Pumpkin buddy", "🎃"), ("Bat wings", "🦇"), ("Friendly ghost", "👻"), ("Spider pal", "🕷️"),
-        ("Wizard hat", "🧙"), ("Cobweb cape", "🕸️"), ("Candy sack", "🍬"), ("Spooky owl", "🦉"),
-        ("Harvest moon", "🌙"), ("Vampire cape", "🧛"), ("Midnight cat", "🐈"), ("Crystal ball", "🔮")]},
+        ("Pumpkin hat", "🎃", "head"), ("Spooky cap", "🧢", "head"), ("Spooky shades", "🕶️", "face"),
+        ("Cobweb scarf", "🕸️", "neck"), ("Bone necklace", "🦴", "neck"), ("Spider brooch", "🕷️", "chest"),
+        ("Crystal charm", "🔮", "chest"), ("Friendly ghost", "👻", "left"), ("Candy sack", "🍬", "right"),
+        ("Bat wings", "🦇", "ears"), ("Witch boots", "🥾", "feet"), ("Moon stickers", "🌙", "cheeks")]},
     "christmas": {"label": "Christmas", "prizes": [
-        ("Santa hat", "🎅"), ("Tree topper", "🎄"), ("Snowman scarf", "⛄"), ("Reindeer antlers", "🦌"),
-        ("Jingle bell", "🔔"), ("Sleigh ride", "🛷"), ("Snowflake crown", "❄️"), ("Stocking", "🧦"),
-        ("Candle glow", "🕯️"), ("Cookie badge", "🍪"), ("Bright star", "🌟"), ("Warm mittens", "🧤")]},
+        ("Tree hat", "🎄", "head"), ("Bright star", "🌟", "head"), ("Snow goggles", "🥽", "face"),
+        ("Cosy scarf", "🧣", "neck"), ("Jingle collar", "🔔", "neck"), ("Gingerbread badge", "🍪", "chest"),
+        ("Candle brooch", "🕯️", "chest"), ("Wrapped present", "🎁", "left"), ("Snowman friend", "⛄", "right"),
+        ("Snowflake studs", "❄️", "ears"), ("Ice skates", "⛸️", "feet"), ("Candy cheeks", "🍭", "cheeks")]},
     "new_year": {"label": "New Year", "prizes": [
-        ("Party popper", "🎉"), ("Fireworks", "🎆"), ("Top hat", "🎩"), ("Juice toast", "🧃"),
-        ("Glitter halo", "✨"), ("Confetti cape", "🎊"), ("Midnight clock", "🕛"), ("Sparkle burst", "💫"),
-        ("Dance moves", "🕺"), ("Sparkler", "🎇"), ("Party tunes", "🎶"), ("Shooting star", "🌠")]},
+        ("Party popper", "🎉", "right"), ("Top hat", "🎩", "head"), ("Glitter halo", "✨", "head"),
+        ("Party mask", "🎭", "face"), ("Confetti scarf", "🎊", "neck"), ("Streamer bow", "🎀", "neck"),
+        ("Midnight clock", "🕛", "chest"), ("Sparkle brooch", "💫", "chest"), ("Sparkler", "🎇", "left"),
+        ("Fireworks studs", "🎆", "ears"), ("Dancing shoes", "👟", "feet"), ("Star stickers", "🌠", "cheeks")]},
     "easter": {"label": "Easter", "prizes": [
-        ("Bunny ears", "🐰"), ("Hatching chick", "🐣"), ("Painted egg", "🥚"), ("Tulip crown", "🌷"),
-        ("Daisy chain", "🌼"), ("Butterfly wings", "🦋"), ("Egg basket", "🧺"), ("Woolly lamb", "🐑"),
-        ("Little sprout", "🌱"), ("Chocolate medal", "🍫"), ("Rainbow ribbon", "🌈"), ("Ladybird", "🐞")]},
+        ("Bunny ears", "🐰", "head"), ("Tulip crown", "🌷", "head"), ("Round specs", "👓", "face"),
+        ("Daisy chain", "🌼", "neck"), ("Leaf collar", "🌿", "neck"), ("Chocolate medal", "🍫", "chest"),
+        ("Rainbow badge", "🌈", "chest"), ("Egg basket", "🧺", "left"), ("Painted egg", "🥚", "right"),
+        ("Butterfly wings", "🦋", "ears"), ("Garden boots", "👢", "feet"), ("Ladybird stickers", "🐞", "cheeks")]},
     "lunar_new_year": {"label": "Lunar New Year", "prizes": [
-        ("Red envelope", "🧧"), ("Paper lantern", "🏮"), ("Dragon", "🐉"), ("Lion dance", "🦁"),
-        ("Bamboo", "🎍"), ("Dumpling", "🥟"), ("Lucky mandarin", "🍊"), ("Fish banner", "🎏"),
-        ("Firecracker", "🧨"), ("Plum blossom", "🌸"), ("Fortune cookie", "🥠"), ("Zodiac mouse", "🐭")]},
+        ("Red envelope", "🧧", "right"), ("Lion hat", "🦁", "head"), ("Bamboo crown", "🎍", "head"),
+        ("Lucky shades", "😎", "face"), ("Lucky coin necklace", "🪙", "neck"), ("Red ribbon", "🎗️", "neck"),
+        ("Dumpling", "🥟", "chest"), ("Lucky mandarin", "🍊", "chest"), ("Paper lantern", "🏮", "left"),
+        ("Fortune stickers", "🥠", "cheeks"), ("Plum blossom studs", "🌸", "ears"), ("Dragon slippers", "🐉", "feet")]},
     "birthday": {"label": "Child birthday", "prizes": [
-        ("Birthday cake", "🎂"), ("Party balloon", "🎈"), ("Cupcake", "🧁"), ("Cake slice", "🍰"),
-        ("Wrapped gift", "🎁"), ("Birthday crown", "👑"), ("Party face", "🥳"), ("Party ribbon", "🎀"),
-        ("Ice cream", "🍦"), ("Carousel pony", "🎠"), ("Big wheel", "🎡"), ("Golden trophy", "🏆")]},
+        ("Birthday cake", "🎂", "left"), ("Birthday crown", "👑", "head"), ("Party balloon", "🎈", "head"),
+        ("Party face", "🥳", "face"), ("Winner's medal", "🏅", "neck"), ("Yarn scarf", "🧶", "neck"),
+        ("Cupcake", "🧁", "chest"), ("Golden trophy", "🏆", "chest"), ("Ice cream", "🍦", "right"),
+        ("Music notes", "🎵", "ears"), ("Party shoes", "🩰", "feet"), ("Strawberry cheeks", "🍓", "cheeks")]},
 }
 
 # Shown in the parent view, which describes the prize rather than naming one.
@@ -125,7 +134,7 @@ def _norm(doc: dict) -> Optional[dict]:
         return None
     pid = doc.get("prize_id") or f"{pack}-1"
     try:
-        name, emoji = PACKS[pack]["prizes"][int(pid.rsplit("-", 1)[1]) - 1]
+        name, emoji, slot = PACKS[pack]["prizes"][int(pid.rsplit("-", 1)[1]) - 1]
     except (ValueError, IndexError):
         return None
     try:
@@ -133,7 +142,7 @@ def _norm(doc: dict) -> Optional[dict]:
     except ValueError:
         year = _year()
     return {"id": pid, "pack": pack, "label": PACKS[pack]["label"], "name": name,
-            "emoji": emoji, "year": year, "worn": bool(doc.get("worn", True))}
+            "emoji": emoji, "slot": slot, "year": year, "worn": bool(doc.get("worn", True))}
 
 
 def register(api, db, require_child, require_parent, now_iso):
@@ -161,12 +170,16 @@ def register(api, db, require_child, require_parent, now_iso):
     @api.put("/seasonal/worn")
     async def set_worn(data: WornIn, user=Depends(require_child)):
         rows = await _owned(user["id"])
-        wanted = {n["id"] for _, n in rows if n["id"] in set(data.ids)}
+        wanted = [n for _, n in rows if n["id"] in set(data.ids)]
         if len(wanted) > MAX_WORN:
             raise HTTPException(400, f"Pick up to {MAX_WORN} prizes at a time")
+        slots = [n["slot"] for n in wanted]
+        if len(slots) != len(set(slots)):
+            raise HTTPException(400, "Only one prize can go in each spot")
+        ids = {n["id"] for n in wanted}
         for d, n in rows:
-            await db.seasonal_prizes.update_one({"_id": d["_id"]}, {"$set": {"worn": n["id"] in wanted}})
-        return {"ok": True, "keepsakes": [{**n, "worn": n["id"] in wanted} for _, n in rows]}
+            await db.seasonal_prizes.update_one({"_id": d["_id"]}, {"$set": {"worn": n["id"] in ids}})
+        return {"ok": True, "keepsakes": [{**n, "worn": n["id"] in ids} for _, n in rows]}
 
     @api.put("/seasonal/{pack}")
     async def save_pack(pack: str, data: SeasonalIn, user=Depends(require_parent)):
@@ -219,13 +232,14 @@ def register(api, db, require_child, require_parent, now_iso):
         if not left:
             raise HTTPException(400, "You have collected every prize in this set!")
         pid = random.choice(left)
-        worn_now = sum(1 for _, n in rows if n["worn"])
+        name, emoji, slot = PACKS[pack]["prizes"][int(pid.rsplit("-", 1)[1]) - 1]
+        worn_rows = [n for _, n in rows if n["worn"]]
+        can_wear = len(worn_rows) < MAX_WORN and all(n["slot"] != slot for n in worn_rows)
         res = await db.seasonal_prizes.update_one(
             {"student_id": user["id"], "pack": pack, "year": year},
             {"$setOnInsert": {"student_id": user["id"], "pack": pack, "year": year, "prize_id": pid,
-                             "claimed_at": _now(), "worn": worn_now < MAX_WORN}},
+                             "claimed_at": _now(), "worn": can_wear}},
             upsert=True)
         if res.upserted_id is None:
             raise HTTPException(400, "You already claimed this year's prize. See you next year!")
-        name, emoji = PACKS[pack]["prizes"][int(pid.rsplit("-", 1)[1]) - 1]
-        return {"ok": True, "prize": {"id": pid, "name": name, "emoji": emoji}}
+        return {"ok": True, "prize": {"id": pid, "name": name, "emoji": emoji, "slot": slot}}
