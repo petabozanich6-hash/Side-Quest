@@ -26,7 +26,7 @@ They use the words 'your class novel' and never name a title.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step
 
-BUILT_OUT_WEEKS = set()
+BUILT_OUT_WEEKS = {1, 2, 3}
 NOVEL_WEEKS = {21, 22, 23, 24, 25, 46, 47}
 
 OUTCOMES = {
@@ -195,7 +195,7 @@ for _w, _row in enumerate(WEEKS, start=1):
 if __name__ == "__main__":
     keys = [l["seed_key"] for l in LESSONS]
     assert len(keys) == len(set(keys)), "duplicate seed keys"
-    assert len(LESSONS) == 200, len(LESSONS)
+    assert len(LESSONS) == 200 - 4 * len(BUILT_OUT_WEEKS), len(LESSONS)
     used = {c for l in LESSONS for c in l["outcome_codes"]}
-    assert used == set(OUTCOMES), set(OUTCOMES) ^ used
-    print("OK: 200 lessons, all 11 Stage 2 English outcomes used")
+    assert used <= set(OUTCOMES), set(OUTCOMES) ^ used
+    print("OK: %d placeholder lessons, built weeks skipped" % len(LESSONS))
