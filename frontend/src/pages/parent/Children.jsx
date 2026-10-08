@@ -14,55 +14,63 @@ const STAGES = [
   { code: "S6", name: "Stage 6 (Years 11-12 / HSC)", theme: "senior", years: ["11", "12"] },
 ];
 
-// NESA mandatory subjects per stage. Anything else the server calls compulsory is shown as an elective instead.
+// Compulsory for Stages 4 and 5: English, Mathematics, Science, and one HSIE pathway chosen by the parent.
+// Anything else the server calls compulsory is shown as an optional elective instead.
 const c = (code, name, learning_area) => ({ code, name, learning_area });
-const MANDATORY = {
-  S4: [
-    c("ENG-S4", "English", "English"), c("MATH-S4", "Mathematics", "Mathematics"), c("SCI-S4", "Science", "Science"),
-    c("HIST-S4", "History", "HSIE"), c("GEO-S4", "Geography", "HSIE"), c("PDHPE-S4", "PDHPE", "PDHPE"),
-    c("MUS-S4", "Music", "Creative Arts"), c("VA-S4", "Visual Arts", "Creative Arts"),
-    c("TECH-S4", "Technology (Mandatory)", "Technology"), c("LOTE-M-S4", "Languages (100 hours)", "Languages"),
-  ],
-  S5: [
-    c("ENG-S5", "English", "English"), c("MATH-S5", "Mathematics", "Mathematics"), c("SCI-S5", "Science", "Science"),
-    c("HIST-S5", "History (Mandatory)", "HSIE"), c("GEO-S5", "Geography (Mandatory)", "HSIE"), c("PDHPE-S5", "PDHPE", "PDHPE"),
-  ],
-  S6: [c("ENG-S6", "English", "English")],
-};
-const mandatoryWords = (stage) => (MANDATORY[stage] || []).map(m => m.name.toLowerCase().replace(/\s*\(.*\)/, ""));
+const CORE = (s) => [
+  c(`ENG-${s}`, "English", "English"),
+  c(`MATH-${s}`, "Mathematics", "Mathematics"),
+  c(`SCI-${s}`, "Science", "Science"),
+];
+const MANDATORY = { S4: CORE("S4"), S5: CORE("S5"), S6: [c("ENG-S6", "English", "English")] };
+const HSIE_PATHWAYS = (s) => [
+  c(`COM-${s}`, "Commerce", "HSIE"),
+  c(`ABS-${s}`, "Aboriginal Studies", "HSIE"),
+  c(`HIST-${s}`, "History", "HSIE"),
+  c(`GEO-${s}`, "Geography", "HSIE"),
+];
+const PATHWAY_NAMES = ["commerce", "aboriginal studies", "history", "geography"];
+const HAS_PATHWAY = ["S4", "S5"];
 
-// Used when the server returns no Stage 4 electives. Optional `years` limits an elective to those year levels.
+// Extra Stage 4 electives, used when the server sends no electives.
 const S4_ELECTIVES = [
   { code: "DRAMA-S4", name: "Drama", learning_area: "Creative Arts" },
   { code: "DANCE-S4", name: "Dance", learning_area: "Creative Arts" },
-  { code: "MUSIC-S4", name: "Music (elective)", learning_area: "Creative Arts" },
-  { code: "VISARTS-S4", name: "Visual Arts (elective)", learning_area: "Creative Arts" },
   { code: "AGR-S4", name: "Agricultural Technology", learning_area: "Technology" },
   { code: "DT-S4", name: "Design and Technology", learning_area: "Technology" },
   { code: "FT-S4", name: "Food Technology", learning_area: "Technology" },
   { code: "IND-S4", name: "Industrial Technology", learning_area: "Technology" },
   { code: "IST-S4", name: "Information and Software Technology", learning_area: "Technology" },
   { code: "TEXT-S4", name: "Textiles Technology", learning_area: "Technology" },
-  { code: "LOTE-S4", name: "Languages (extended study)", learning_area: "Languages" },
   { code: "PASS-S4", name: "Physical Activity and Sports Studies", learning_area: "PDHPE" },
-  { code: "HISTE-S4", name: "History Elective", learning_area: "HSIE" },
-  { code: "GEOE-S4", name: "Geography Elective", learning_area: "HSIE" },
-  { code: "COM-S4", name: "Commerce", learning_area: "HSIE", years: ["8"] },
+];
+const OPTIONAL_CORE = (s) => [
+  c(`PDHPE-${s}`, "PDHPE", "PDHPE"),
+  c(`MUS-${s}`, "Music", "Creative Arts"),
+  c(`VA-${s}`, "Visual Arts", "Creative Arts"),
+  c(`LOTE-${s}`, "Languages", "Languages"),
+  c(`TECH-${s}`, "Technology", "Technology"),
 ];
 
-// Replace the server's compulsory list with the NESA one; keep its other base subjects as electives.
-const applyMandatory = (stage, p) => {
-  const words = mandatoryWords(stage);
-  const isMandatory = (x) => words.some(w => String(x.name || "").toLowerCase().startsWith(w));
-  const demoted = (p.compulsory || []).filter(x => !isMandatory(x));
-  const baseElectives = stage === "S4" && !(p.electives || []).length ? S4_ELECTIVES : (p.electives || []);
-  const seen = new Set();
-  const electives = [...baseElectives, ...demoted].filter(x => {
-    if (!x.code || seen.has(x.code)) return false;
-    seen.add(x.code);
-    return !isMandatory(x) || baseElectives.includes(x);
+const norm = (n) => String(n || "").toLowerCase().replace(/\s*\(.*\)/, "").trim();
+
+const applyPattern = (stage, p) => {
+  const coreNames = (MANDATORY[stage] || []).map(m => norm(m.name));
+  const hasPathway = HAS_PATHWAY.includes(stage);
+  const isCore = (x) => coreNames.includes(norm(x.name));
+  const isPathway = (x) => hasPathway && PATHWAY_NAMES.includes(norm(x.name));
+  const serverElectives = p.electives || [];
+  const extras = stage === "S4" && !serverElectives.length ? S4_ELECTIVES : [];
+  const optional = hasPathway ? OPTIONAL_CORE(stage) : [];
+  const seenCodes = new Set(); const seenNames = new Set();
+  const electives = [...serverElectives, ...(p.compulsory || []), ...optional, ...extras].filter(x => {
+    if (!x.code || seenCodes.has(x.code) || isCore(x) || isPathway(x) || norm(x.name) === "hsie") return false;
+    const key = norm(x.name);
+    if (seenNames.has(key)) return false;
+    seenCodes.add(x.code); seenNames.add(key);
+    return true;
   });
-  return { ...p, compulsory: MANDATORY[stage] || p.compulsory || [], electives };
+  return { ...p, compulsory: MANDATORY[stage] || p.compulsory || [], pathways: hasPathway ? HSIE_PATHWAYS(stage) : [], electives };
 };
 
 export default function ChildrenPage() {
@@ -71,6 +79,7 @@ export default function ChildrenPage() {
   const [pattern, setPattern] = useState(null);
   const [form, setForm] = useState({ name: "", username: "", pin: "", stage: "S2", year_level: "3", birth_year: "" });
   const [electives, setElectives] = useState([]);
+  const [pathway, setPathway] = useState("");
 
   const load = () => api.get("/students").then(r => setStudents(r.data));
   useEffect(() => { load(); }, []);
@@ -78,14 +87,16 @@ export default function ChildrenPage() {
   useEffect(() => {
     const stage = STAGES.find(s => s.code === form.stage);
     setForm(f => ({ ...f, year_level: stage?.years?.[0] || "" }));
-    setElectives([]);
+    setElectives([]); setPathway("");
     if (["S4","S5","S6"].includes(form.stage)) {
-      api.get(`/curriculum/pattern/${form.stage}`).then(r => setPattern(applyMandatory(form.stage, r.data || {})));
+      api.get(`/curriculum/pattern/${form.stage}`).then(r => setPattern(applyPattern(form.stage, r.data || {})));
     } else { setPattern(null); }
   }, [form.stage]);
 
   const shownElectives = (pattern?.electives || []).filter(e => !e.years || !form.year_level || e.years.includes(form.year_level));
   const chosen = electives.filter(e => shownElectives.some(x => x.code === e.code));
+  const pathwayObj = (pattern?.pathways || []).find(x => x.code === pathway);
+  const compulsoryAll = [...(pattern?.compulsory || []), ...(pathwayObj ? [pathwayObj] : [])];
 
   const toggleElective = (e) => {
     setElectives(cur => cur.find(x => x.code === e.code) ? cur.filter(x => x.code !== e.code) : [...cur, e]);
@@ -93,10 +104,10 @@ export default function ChildrenPage() {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (HAS_PATHWAY.includes(form.stage) && !pathwayObj) { toast.error("Choose an HSIE pathway"); return; }
     try {
       const stage = STAGES.find(s => s.code === form.stage);
-      const chosenElectives = ["S4","S5","S6"].includes(form.stage)
-        ? [...(pattern?.compulsory || []), ...chosen] : [];
+      const chosenElectives = ["S4","S5","S6"].includes(form.stage) ? [...compulsoryAll, ...chosen] : [];
       await api.post("/students", {
         ...form, theme: stage?.theme,
         birth_year: form.birth_year ? Number(form.birth_year) : null,
@@ -105,7 +116,7 @@ export default function ChildrenPage() {
       toast.success("Student added");
       setOpen(false);
       setForm({ name: "", username: "", pin: "", stage: "S2", year_level: "3", birth_year: "" });
-      setElectives([]);
+      setElectives([]); setPathway("");
       load();
     } catch (err) { toast.error(err.response?.data?.detail || "Failed"); }
   };
@@ -116,7 +127,7 @@ export default function ChildrenPage() {
   };
 
   const currentStage = STAGES.find(s => s.code === form.stage);
-  const totalUnits = [...(pattern?.compulsory || []), ...chosen].reduce((n, e) => n + (e.units || 1), 0);
+  const totalUnits = [...compulsoryAll, ...chosen].reduce((n, e) => n + (e.units || 1), 0);
 
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="children-page">
@@ -174,7 +185,7 @@ export default function ChildrenPage() {
 
               {pattern && (
                 <div className="rounded-xl p-4" style={{backgroundColor:"#F5EFE0", border:"1px solid #D4C8A8"}} data-testid="pattern-block">
-                  <div className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>NESA pattern — {pattern.band_name}</div>
+                  <div className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>Home education pattern — {pattern.band_name}</div>
                   <div className="mt-2">
                     <div className="text-[10px] font-bold uppercase tracking-widest text-stone-500">Compulsory</div>
                     <div className="mt-1 space-y-1">
@@ -186,9 +197,25 @@ export default function ChildrenPage() {
                       ))}
                     </div>
                   </div>
+                  {pattern.pathways?.length > 0 && (
+                    <div className="mt-3" data-testid="hsie-pathway">
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-stone-500">HSIE — choose one pathway</div>
+                      <div className="mt-1 grid grid-cols-1 md:grid-cols-2 gap-1">
+                        {pattern.pathways.map(w => {
+                          const sel = pathway === w.code;
+                          return (
+                            <button type="button" key={w.code} onClick={()=>setPathway(w.code)} className={`rounded-lg border p-2 text-xs flex items-center gap-2 text-left ${sel ? "" : "bg-white"}`} style={sel ? {backgroundColor:"#F0F4E8", borderColor:"#4A5D3A"} : {borderColor:"#D4C8A8"}} data-testid={`pathway-${w.code}`}>
+                              {sel ? <Check size={12} className="text-emerald-700"/> : <span className="h-3 w-3 rounded-full border" style={{borderColor:"#D4C8A8"}}/>}
+                              <strong>{w.name}</strong>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                   {shownElectives.length > 0 && (
                     <div className="mt-3">
-                      <div className="text-[10px] font-bold uppercase tracking-widest text-stone-500">Electives (select as needed)</div>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-stone-500">Optional subjects (select as needed)</div>
                       <div className="mt-1 grid grid-cols-1 md:grid-cols-2 gap-1 max-h-56 overflow-y-auto">
                         {shownElectives.map((e,i) => {
                           const sel = electives.find(x => x.code === e.code);
@@ -200,7 +227,7 @@ export default function ChildrenPage() {
                           );
                         })}
                       </div>
-                      <div className="mt-2 text-xs text-stone-600">Selected: {chosen.length} elective{chosen.length === 1 ? "" : "s"} · Total units planned: {totalUnits}</div>
+                      <div className="mt-2 text-xs text-stone-600">Selected: {chosen.length} optional subject{chosen.length === 1 ? "" : "s"} · Total units planned: {totalUnits}</div>
                       {pattern.note && <div className="mt-2 text-[11px] text-stone-500 italic">{pattern.note}</div>}
                     </div>
                   )}
