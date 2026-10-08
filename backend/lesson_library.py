@@ -29,6 +29,7 @@ LESSON_MODULES = (
     "lesson_library_s2_english_w05_l4",
     "lesson_library_s2_english_w06_l1",
     "lesson_library_s2_english_w06_l2",
+    "lesson_library_s2_english_w06_l3",
     "lesson_library_s2_english_placeholders",
     "lesson_library_s2_maths_placeholders",
     "lesson_library_s2_other_placeholders",
