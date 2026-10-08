@@ -2,9 +2,15 @@
 
 Registered from reading_approvals.register, so server.py needs no edit.
 Every pack is OFF by default. Nothing is assumed for any family.
+
+Each pack has 12 wearable prizes (one for each year of schooling). A child can claim
+one random prize per pack per year, never a repeat, and keeps them all permanently.
+Every prize fits one spot on the pet's body (its "slot"). The child chooses which to wear:
+up to MAX_WORN at once, and only one per slot so they never overlap.
 """
+import random
 from datetime import datetime, date
-from typing import Optional
+from typing import List, Optional
 
 from fastapi import HTTPException, Depends
 from pydantic import BaseModel
@@ -15,14 +21,45 @@ try:
 except Exception:  # pragma: no cover
     _TZ = None
 
+MAX_WORN = 3
+
+# Slots: head, face, neck, chest, left, right, ears, feet, cheeks.
+# Each pack: 2 head, 1 face, 2 neck, 2 chest, 1 left, 1 right, 1 ears, 1 feet, 1 cheeks.
 PACKS = {
-    "halloween": {"label": "Halloween", "prize": {"name": "Pumpkin buddy", "emoji": "🎃"}},
-    "christmas": {"label": "Christmas", "prize": {"name": "Santa hat", "emoji": "🎅"}},
-    "new_year": {"label": "New Year", "prize": {"name": "Party popper", "emoji": "🎉"}},
-    "easter": {"label": "Easter", "prize": {"name": "Bunny ears", "emoji": "🐰"}},
-    "lunar_new_year": {"label": "Lunar New Year", "prize": {"name": "Red envelope", "emoji": "🧧"}},
-    "birthday": {"label": "Child birthday", "prize": {"name": "Birthday cake", "emoji": "🎂"}},
+    "halloween": {"label": "Halloween", "prizes": [
+        ("Pumpkin hat", "🎃", "head"), ("Spooky cap", "🧢", "head"), ("Spooky shades", "🕶️", "face"),
+        ("Cobweb scarf", "🕸️", "neck"), ("Bone necklace", "🦴", "neck"), ("Spider brooch", "🕷️", "chest"),
+        ("Crystal charm", "🔮", "chest"), ("Friendly ghost", "👻", "left"), ("Candy sack", "🍬", "right"),
+        ("Bat wings", "🦇", "ears"), ("Witch boots", "🥾", "feet"), ("Moon stickers", "🌙", "cheeks")]},
+    "christmas": {"label": "Christmas", "prizes": [
+        ("Tree hat", "🎄", "head"), ("Bright star", "🌟", "head"), ("Snow goggles", "🥽", "face"),
+        ("Cosy scarf", "🧣", "neck"), ("Jingle collar", "🔔", "neck"), ("Gingerbread badge", "🍪", "chest"),
+        ("Candle brooch", "🕯️", "chest"), ("Wrapped present", "🎁", "left"), ("Snowman friend", "⛄", "right"),
+        ("Snowflake studs", "❄️", "ears"), ("Ice skates", "⛸️", "feet"), ("Candy cheeks", "🍭", "cheeks")]},
+    "new_year": {"label": "New Year", "prizes": [
+        ("Party popper", "🎉", "right"), ("Top hat", "🎩", "head"), ("Glitter halo", "✨", "head"),
+        ("Party mask", "🎭", "face"), ("Confetti scarf", "🎊", "neck"), ("Streamer bow", "🎀", "neck"),
+        ("Midnight clock", "🕛", "chest"), ("Sparkle brooch", "💫", "chest"), ("Sparkler", "🎇", "left"),
+        ("Fireworks studs", "🎆", "ears"), ("Dancing shoes", "👟", "feet"), ("Star stickers", "🌠", "cheeks")]},
+    "easter": {"label": "Easter", "prizes": [
+        ("Bunny ears", "🐰", "head"), ("Tulip crown", "🌷", "head"), ("Round specs", "👓", "face"),
+        ("Daisy chain", "🌼", "neck"), ("Leaf collar", "🌿", "neck"), ("Chocolate medal", "🍫", "chest"),
+        ("Rainbow badge", "🌈", "chest"), ("Egg basket", "🧺", "left"), ("Painted egg", "🥚", "right"),
+        ("Butterfly wings", "🦋", "ears"), ("Garden boots", "👢", "feet"), ("Ladybird stickers", "🐞", "cheeks")]},
+    "lunar_new_year": {"label": "Lunar New Year", "prizes": [
+        ("Red envelope", "🧧", "right"), ("Lion hat", "🦁", "head"), ("Bamboo crown", "🎍", "head"),
+        ("Lucky shades", "😎", "face"), ("Lucky coin necklace", "🪙", "neck"), ("Red ribbon", "🎗️", "neck"),
+        ("Dumpling", "🥟", "chest"), ("Lucky mandarin", "🍊", "chest"), ("Paper lantern", "🏮", "left"),
+        ("Fortune stickers", "🥠", "cheeks"), ("Plum blossom studs", "🌸", "ears"), ("Dragon slippers", "🐉", "feet")]},
+    "birthday": {"label": "Child birthday", "prizes": [
+        ("Birthday cake", "🎂", "left"), ("Birthday crown", "👑", "head"), ("Party balloon", "🎈", "head"),
+        ("Party face", "🥳", "face"), ("Winner's medal", "🏅", "neck"), ("Yarn scarf", "🧶", "neck"),
+        ("Cupcake", "🧁", "chest"), ("Golden trophy", "🏆", "chest"), ("Ice cream", "🍦", "right"),
+        ("Music notes", "🎵", "ears"), ("Party shoes", "🩰", "feet"), ("Strawberry cheeks", "🍓", "cheeks")]},
 }
+
+# Shown in the parent view, which describes the prize rather than naming one.
+PRIZE_BLURB = {"name": "Surprise prize (12 to collect)", "emoji": "🎁"}
 
 
 class SeasonalIn(BaseModel):
@@ -31,6 +68,10 @@ class SeasonalIn(BaseModel):
     end_date: Optional[str] = None
     decorations: bool = True
     prize: bool = True
+
+
+class WornIn(BaseModel):
+    ids: List[str] = []
 
 
 def _family_parent(user: dict):
@@ -55,6 +96,10 @@ def _today() -> str:
     return now.date().isoformat()
 
 
+def _year() -> int:
+    return int(_today()[:4])
+
+
 def is_active(cfg: Optional[dict]) -> bool:
     if not cfg or not cfg.get("enabled"):
         return False
@@ -69,11 +114,10 @@ def is_active(cfg: Optional[dict]) -> bool:
 
 def _view(pack: str, cfg: Optional[dict]) -> dict:
     cfg = cfg or {}
-    meta = PACKS[pack]
     return {
         "pack": pack,
-        "label": meta["label"],
-        "prize": meta["prize"],
+        "label": PACKS[pack]["label"],
+        "prize": PRIZE_BLURB,
         "enabled": bool(cfg.get("enabled", False)),
         "start_date": cfg.get("start_date"),
         "end_date": cfg.get("end_date"),
@@ -81,6 +125,24 @@ def _view(pack: str, cfg: Optional[dict]) -> dict:
         "prize_enabled": bool(cfg.get("prize", True)),
         "active": is_active(cfg),
     }
+
+
+def _norm(doc: dict) -> Optional[dict]:
+    """Turn a stored claim into a prize. Older single-prize claims become the pack's first prize."""
+    pack = doc.get("pack")
+    if pack not in PACKS:
+        return None
+    pid = doc.get("prize_id") or f"{pack}-1"
+    try:
+        name, emoji, slot = PACKS[pack]["prizes"][int(pid.rsplit("-", 1)[1]) - 1]
+    except (ValueError, IndexError):
+        return None
+    try:
+        year = int(doc.get("year") or str(doc.get("claimed_at") or "")[:4])
+    except ValueError:
+        year = _year()
+    return {"id": pid, "pack": pack, "label": PACKS[pack]["label"], "name": name,
+            "emoji": emoji, "slot": slot, "year": year, "worn": bool(doc.get("worn", True))}
 
 
 def register(api, db, require_child, require_parent, now_iso):
@@ -91,10 +153,33 @@ def register(api, db, require_child, require_parent, now_iso):
         docs = await db.seasonal_packs.find({"family_id": family_id}, {"_id": 0}).to_list(50)
         return {d["pack"]: d for d in docs}
 
+    async def _owned(student_id) -> list:
+        docs = await db.seasonal_prizes.find({"student_id": student_id}).to_list(500)
+        rows = [(d, _norm(d)) for d in docs]
+        rows = [(d, n) for d, n in rows if n]
+        order = list(PACKS)
+        rows.sort(key=lambda r: (order.index(r[1]["pack"]), int(r[1]["id"].rsplit("-", 1)[1])))
+        return rows
+
     @api.get("/seasonal")
     async def list_packs(user=Depends(require_parent)):
         cfgs = await _family_configs(_family_parent(user))
         return {"today": _today(), "packs": [_view(p, cfgs.get(p)) for p in PACKS]}
+
+    # Registered before PUT /seasonal/{pack} so "worn" is not read as a pack name.
+    @api.put("/seasonal/worn")
+    async def set_worn(data: WornIn, user=Depends(require_child)):
+        rows = await _owned(user["id"])
+        wanted = [n for _, n in rows if n["id"] in set(data.ids)]
+        if len(wanted) > MAX_WORN:
+            raise HTTPException(400, f"Pick up to {MAX_WORN} prizes at a time")
+        slots = [n["slot"] for n in wanted]
+        if len(slots) != len(set(slots)):
+            raise HTTPException(400, "Only one prize can go in each spot")
+        ids = {n["id"] for n in wanted}
+        for d, n in rows:
+            await db.seasonal_prizes.update_one({"_id": d["_id"]}, {"$set": {"worn": n["id"] in ids}})
+        return {"ok": True, "keepsakes": [{**n, "worn": n["id"] in ids} for _, n in rows]}
 
     @api.put("/seasonal/{pack}")
     async def save_pack(pack: str, data: SeasonalIn, user=Depends(require_parent)):
@@ -115,17 +200,19 @@ def register(api, db, require_child, require_parent, now_iso):
     @api.get("/seasonal/active")
     async def active_packs(user=Depends(require_child)):
         cfgs = await _family_configs(_family_child(user))
-        claims = await db.seasonal_prizes.find({"student_id": user["id"]}, {"_id": 0, "pack": 1}).to_list(50)
-        claimed = {c["pack"] for c in claims}
+        keepsakes = [n for _, n in await _owned(user["id"])]
+        year = _year()
+        this_year = {k["pack"] for k in keepsakes if k["year"] == year}
         out = []
         for p in PACKS:
             v = _view(p, cfgs.get(p))
             if not v["active"]:
                 continue
+            have = sum(1 for k in keepsakes if k["pack"] == p)
             out.append({"pack": p, "label": v["label"], "decorations": v["decorations"],
-                        "prize": v["prize"] if v["prize_enabled"] else None,
-                        "claimed": p in claimed})
-        return {"packs": out}
+                        "prize_enabled": v["prize_enabled"], "claimed": p in this_year,
+                        "complete": have >= len(PACKS[p]["prizes"])})
+        return {"packs": out, "keepsakes": keepsakes, "max_worn": MAX_WORN}
 
     @api.post("/seasonal/{pack}/claim")
     async def claim_prize(pack: str, user=Depends(require_child)):
@@ -135,8 +222,24 @@ def register(api, db, require_child, require_parent, now_iso):
         v = _view(pack, cfg)
         if not v["active"] or not v["prize_enabled"]:
             raise HTTPException(400, "This prize is not available right now")
-        await db.seasonal_prizes.update_one(
-            {"student_id": user["id"], "pack": pack},
-            {"$setOnInsert": {"student_id": user["id"], "pack": pack, "claimed_at": _now()}},
+        rows = await _owned(user["id"])
+        year = _year()
+        mine = [n for _, n in rows if n["pack"] == pack]
+        if any(n["year"] == year for n in mine):
+            raise HTTPException(400, "You already claimed this year's prize. See you next year!")
+        have = {n["id"] for n in mine}
+        left = [f"{pack}-{i + 1}" for i in range(len(PACKS[pack]["prizes"])) if f"{pack}-{i + 1}" not in have]
+        if not left:
+            raise HTTPException(400, "You have collected every prize in this set!")
+        pid = random.choice(left)
+        name, emoji, slot = PACKS[pack]["prizes"][int(pid.rsplit("-", 1)[1]) - 1]
+        worn_rows = [n for _, n in rows if n["worn"]]
+        can_wear = len(worn_rows) < MAX_WORN and all(n["slot"] != slot for n in worn_rows)
+        res = await db.seasonal_prizes.update_one(
+            {"student_id": user["id"], "pack": pack, "year": year},
+            {"$setOnInsert": {"student_id": user["id"], "pack": pack, "year": year, "prize_id": pid,
+                             "claimed_at": _now(), "worn": can_wear}},
             upsert=True)
-        return {"ok": True, "prize": v["prize"]}
+        if res.upserted_id is None:
+            raise HTTPException(400, "You already claimed this year's prize. See you next year!")
+        return {"ok": True, "prize": {"id": pid, "name": name, "emoji": emoji, "slot": slot}}

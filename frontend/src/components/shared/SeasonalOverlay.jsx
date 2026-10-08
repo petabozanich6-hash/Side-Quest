@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
+import useSeasonal, { notifySeasonal } from "./useSeasonal";
 
 const THEMES = {
   halloween: { tint: "linear-gradient(180deg, rgba(40,20,70,0.35), rgba(255,140,0,0.12))", items: ["🦇", "👻", "🕸️", "🎃"] },
@@ -18,21 +19,14 @@ const CSS = `
 `;
 
 export default function SeasonalOverlay() {
-  const [packs, setPacks] = useState([]);
-
-  useEffect(() => {
-    let alive = true;
-    api.get("/seasonal/active")
-      .then(r => { if (alive) setPacks(r.data?.packs || []); })
-      .catch(() => { if (alive) setPacks([]); });
-    return () => { alive = false; };
-  }, []);
+  const { packs } = useSeasonal();
 
   const claim = async (pack) => {
     try {
       const r = await api.post(`/seasonal/${pack}/claim`);
-      setPacks(ps => ps.map(p => p.pack === pack ? { ...p, claimed: true } : p));
-      toast.success(`You got the ${r.data?.prize?.name || "prize"}!`);
+      const p = r.data?.prize;
+      toast.success(`You got a surprise: ${p?.emoji || ""} ${p?.name || "a prize"}! Find it in your Wardrobe.`);
+      notifySeasonal();
     } catch (e) {
       toast.error(e?.response?.data?.detail || "Try again shortly");
     }
@@ -40,7 +34,7 @@ export default function SeasonalOverlay() {
 
   if (!packs.length) return null;
   const decorated = packs.filter(p => p.decorations && THEMES[p.pack]);
-  const prizes = packs.filter(p => p.prize);
+  const claimable = packs.filter(p => p.prize_enabled && !p.claimed && !p.complete);
 
   return (
     <>
@@ -63,16 +57,12 @@ export default function SeasonalOverlay() {
           )}
         </div>
       )}
-      {prizes.map((p, i) => p.claimed ? (
-        <span key={`prize-${p.pack}`} className="absolute text-5xl pointer-events-none"
-          style={{ zIndex: 12, bottom: 16, left: "50%", transform: `translateX(${-150 - i * 50}px)` }}
-          title={p.prize.name} data-testid={`prize-${p.pack}`}>{p.prize.emoji}</span>
-      ) : (
+      {claimable.map((p, i) => (
         <button key={`claim-${p.pack}`} onClick={() => claim(p.pack)}
           className="absolute rounded-full px-3 py-1.5 text-xs font-bold shadow"
           style={{ zIndex: 20, top: 12 + i * 40, left: 12, backgroundColor: "#1F3B2D", color: "#F5EFE0" }}
           data-testid={`claim-${p.pack}`}>
-          {p.prize.emoji} Claim: {p.prize.name}
+          🎁 Claim a {p.label} surprise
         </button>
       ))}
     </>

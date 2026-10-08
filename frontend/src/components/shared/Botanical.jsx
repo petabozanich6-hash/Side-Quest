@@ -39,7 +39,8 @@ export const Flower = ({ className = "", color = "#D4857A", size = 40 }) => (
   </svg>
 );
 
-export const Pet = ({ species = "fox", size = 120, happy = true }) => {
+// children are drawn on top of the pet inside its 120x120 drawing (used for worn prizes).
+export const Pet = ({ species = "fox", size = 120, happy = true, children }) => {
   const bodyColor = {
     fox: "#C77B5B", owl: "#8B6F47", turtle: "#6B8A5B", hedgehog: "#9B7E5C",
     fawn: "#D4A574", squirrel: "#B8755A", rabbit: "#E8E2D1", dragon: "#4A6D5A"
@@ -50,7 +51,7 @@ export const Pet = ({ species = "fox", size = 120, happy = true }) => {
   }[species] || "#F5EFE0";
 
   return (
-    <svg width={size} height={size} viewBox="0 0 120 120" className="animate-bob">
+    <svg width={size} height={size} viewBox="0 0 120 120" className="animate-bob" style={{ overflow: "visible" }}>
       {/* Body */}
       <ellipse cx="60" cy="78" rx="34" ry="30" fill={bodyColor}/>
       {/* Belly */}
@@ -101,6 +102,7 @@ export const Pet = ({ species = "fox", size = 120, happy = true }) => {
         : <path d="M53 63 L 67 63" stroke="#2A2822" strokeWidth="2" strokeLinecap="round"/>}
       {/* Nose */}
       <ellipse cx="60" cy="54" rx="2" ry="1.5" fill="#2A2822"/>
+      {children}
     </svg>
   );
 };

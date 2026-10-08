@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
 import { Pet, Fern, Flower, Branch } from "../../components/shared/Botanical";
 import HalloweenOverlay from "../../components/shared/HalloweenOverlay";
+import SeasonalWorn from "../../components/shared/SeasonalWorn";
+import SeasonalWardrobeItems from "../../components/shared/SeasonalWardrobeItems";
 import { toast } from "sonner";
 import { ArrowLeft, Apple, Gamepad2, Palette, Sparkles, Loader2, Droplets } from "lucide-react";
 
@@ -204,7 +206,7 @@ export default function PetRoom() {
             <div className="relative" onClick={() => react(hatched ? "hop" : "wobble")}
               style={{ filter: sick ? "grayscale(0.7)" : asleep ? "brightness(0.75)" : "none", cursor: "pointer" }}>
               {hatched
-                ? <Pet species={pet.species} size={200} happy={!sad && pet.happiness > 40} />
+                ? <Pet species={pet.species} size={200} happy={!sad && pet.happiness > 40}><SeasonalWorn /></Pet>
                 : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"} />}
               {hatched && worn.length > 0 && (
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2 flex gap-1 text-2xl" data-testid="worn-accessories">
@@ -288,6 +290,7 @@ export default function PetRoom() {
                 </button>
               );
             })}
+            <SeasonalWardrobeItems hatched={hatched} />
           </div>
         </section>
       )}
