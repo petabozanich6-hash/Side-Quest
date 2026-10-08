@@ -2,7 +2,7 @@
 The child learns to sort things into groups, then write an information paragraph with a general topic sentence, a sentence for each group with examples, and a closing sentence. The model paragraph classifies Australian mammals into marsupials, monotremes and placental mammals.
 Spelling: -sion and -ssion: television, conclusion, confusion, mission, expression, passion.
 Outcomes: EN2-CWT-02 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 7, Lesson 2, Classification paragraph, informative writing, spelling -sion and -ssion). Outcome wording is the official NESA text, with a short note on this lesson's focus.
-Video status: no video is attached to this lesson, because none has been found and checked.
+Video status: two videos attached, chosen from search descriptions. They have not been watched in full, so each carries a parent preview note. No -sion/-ssion spelling video has been found yet.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -92,7 +92,20 @@ LESSON = build(
     "Type your answers in the practice boxes and submit them.",
     "Extension: write a second classification paragraph on a different topic, using a different rule. Swap it with a family member and ask them to name your groups and your rule without being told.",
     [("classify", "To sort things into groups using a rule"), ("group", "A set of things that share a feature"), ("rule", "The way you decide which group something belongs in"), ("example", "One item that shows what a group is like"), ("feature", "Something special about a group"), ("topic sentence", "A sentence that tells the main idea of a paragraph"), ("such as", "Words that introduce examples"), ("closing sentence", "A last sentence that sums up the paragraph")],
-    [],
+    [
+        _video(
+            "How to Write a Paragraph for Kids", "keBFpEdiVVU",
+            "Watch for the three parts of a paragraph: the topic sentence, the supporting details and the concluding sentence. The video compares them to the top bun, the filling and the bottom bun of a burger. Pause the video to try each part yourself. Parent: this video has not been fully checked, so please preview it before your child watches. It is not about classifying, so point out that this lesson's supporting sentences are the group sentences.",
+            "If the video will not play, reread Steps 2, 3 and 6 and the model paragraph.",
+            ("What does a closing sentence do?", ["Sums up the main idea", "Adds a new topic", "Asks for a snack"], 0, "A closing sentence sums up the paragraph."),
+        ),
+        _video(
+            "How to Write a Classification Paragraph", "jlBYEr6J5LY",
+            "Watch for how a classification paragraph is built: a topic sentence, then each type or group with details, then a concluding sentence. Notice that things are sorted by one single rule. Parent: this video is made for older English learners and has not been fully checked, so please preview it before your child watches. Some of its examples may be too hard, but the structure matches this lesson.",
+            "If the video will not play, reread Steps 1 to 3 and the model paragraph about Australian mammals.",
+            ("What does classify mean?", ["Sort things into groups using a rule", "Draw a picture", "Count the words"], 0, "To classify is to sort things into groups using a rule."),
+        ),
+    ],
     _sort("Which group?", "Sort each Australian mammal into marsupial, monotreme or placental mammal.", ["Marsupial", "Monotreme", "Placental mammal"], [("kangaroo", 0), ("koala", 0), ("wombat", 0), ("Tasmanian devil", 0), ("echidna", 1), ("platypus", 1), ("dingo", 2), ("bat", 2)]),
     [
         _wc("Which means to sort things into groups?", ["classify", "retell", "describe"], 0, "To classify is to sort things into groups."),
