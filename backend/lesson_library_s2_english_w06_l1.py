@@ -1,6 +1,7 @@
 """Stage 2 English, Week 6 Lesson 1: Text Features: Headings, Glossary, Index (Reading and viewing).
 The child learns what headings, the table of contents, bold key words, the glossary and the index do, then uses them on a model information book (Sea Turtles) to find facts quickly.
 Spelling: the -tion ending: action, section, station, direction, information, collection.
+Outcome wording for EN2-RECOM-01 and EN2-SPELL-01 is the official NESA text, with a short note on this lesson's focus.
 Video status: both videos were checked against their full transcripts and lengths. The 8:34 video uses a Costa Rica travel guide and the map versus magnifying glass idea for contents versus index. The 6:58 video uses a book about the moon and also covers key words, labels and captions.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
@@ -50,8 +51,8 @@ LESSON = build(
     "Reading and viewing: text features of information texts",
     ["EN2-RECOM-01", "EN2-SPELL-01"],
     {
-        "EN2-RECOM-01": "Primary. Fluently reads and comprehends texts, using the text features of information texts, such as headings, glossaries and indexes, to locate information and understand how texts are organised.",
-        "EN2-SPELL-01": "Selects, applies and describes appropriate phonological, orthographic and morphological generalisations and strategies when spelling, including words ending in -tion (week 6 spelling focus).",
+        "EN2-RECOM-01": "Reads and comprehends texts for wide purposes using knowledge of text structures and language, and by monitoring comprehension. This lesson focuses on text features of information texts: headings, the contents page, the glossary and the index.",
+        "EN2-SPELL-01": "Selects, applies and describes appropriate phonological, orthographic and morphological generalisations and strategies when spelling in a range of contexts. This week's focus is words ending in -tion.",
     },
     "We are learning to use headings, the table of contents, the glossary and the index to find information quickly in an information text, and to spell words that end in -tion.",
     [
@@ -88,7 +89,7 @@ LESSON = build(
         "Notice how we did not read the whole book. We used the features to go straight to the answer. The index and glossary are in ABC order, so we found carapace and algae quickly.\n\n" + SEA_TURTLES
     ),
     (
-        "Type your answers in the practice boxes. Part A: say the difference between the table of contents and the index. Part B: in the Sea Turtles book, type the page where you find out about jellyfish and what herbivore means. Part C: type the correct word for each blank: Look in the glossary for the ___ of a word. Follow the ___ to the station. This book has lots of ___ about turtles. Your parent can check your answers against the answer key."
+        "Type your answers in the practice boxes. Part A: say the difference between the table of contents and the index. Part B: in the Sea Turtles book, type the page where you find out about jellyfish and what herbivore means. Part C: type the correct word for each blank: Follow the ___ to the station. This book has lots of ___ about turtles. The library has a ___ of turtle books. Your parent can check your answers against the answer key."
     ),
     (
         "Use the Sea Turtles book to do the tasks. Typed answers go in the boxes.\n\n" + SEA_TURTLES + "\n\n"
@@ -146,7 +147,7 @@ LESSON = build(
     [
         {"key": "partA", "label": "Part A: contents or index", "hint": "What is the difference between the table of contents and the index?"},
         {"key": "partB", "label": "Part B: Sea Turtles", "hint": "The page for jellyfish and what herbivore means."},
-        {"key": "partC", "label": "Part C: -tion words", "hint": "meaning/definition is not a -tion word, so fill: direction, information and one more -tion word of your own."},
+        {"key": "partC", "label": "Part C: -tion words", "hint": "direction, information, collection."},
         {"key": "stage1", "label": "Find it fast", "hint": "Pages for eggs, what green sea turtles eat, and how people can help."},
         {"key": "stage2", "label": "Glossary", "hint": "Carnivore, herbivore and algae in your own words."},
         {"key": "stage3", "label": "Index", "hint": "Pages for flippers, nests, seagrass and rubbish, and the feature you used."},
@@ -157,7 +158,7 @@ LESSON = build(
     ],
     ["Reading the whole book instead of using the features", "Mixing up the contents page and the index", "Forgetting that the glossary and index are in ABC order", "Copying glossary meanings word for word instead of using your own words", "Spelling the shun sound as shun or sion"],
     ["Find an information book at home and show a parent its contents page, glossary and index.", "Practise your six spelling words by writing a sentence for each."],
-    "Part A: the table of contents is at the front and lists the big sections in order with page numbers, like a map; the index is at the back and lists small topics in ABC order with page numbers, like a magnifying glass. Part B: jellyfish is on page 4 (index); herbivore means an animal that eats only plants (glossary, page 6). Part C: accept direction, information and a sensible third -tion word such as action or section. Main task: eggs, page 3; green sea turtles eat seagrass and algae, page 4; how people can help, page 5; carnivore is an animal that eats only meat, herbivore eats only plants, algae are simple plant-like living things that grow in water (own words); flippers, 2; nests, 3; seagrass, 4; rubbish, 5, found using the index; accept any sensible heading and subheadings for Baby turtles; the child's own glossary must have three words in alphabetical order; the contents page must list four sections with page numbers. Quiz answers: a heading; at the back of the book; in alphabetical order; a map of the whole book; the index; the glossary; the author wants you to notice them; page 4; action; information.",
+    "Part A: the table of contents is at the front and lists the big sections in order with page numbers, like a map; the index is at the back and lists small topics in ABC order with page numbers, like a magnifying glass. Part B: jellyfish is on page 4 (index); herbivore means an animal that eats only plants (glossary, page 6). Part C: direction, information, collection in that order. Main task: eggs, page 3; green sea turtles eat seagrass and algae, page 4; how people can help, page 5; carnivore is an animal that eats only meat, herbivore eats only plants, algae are simple plant-like living things that grow in water (own words); flippers, 2; nests, 3; seagrass, 4; rubbish, 5, found using the index; accept any sensible heading and subheadings for Baby turtles; the child's own glossary must have three words in alphabetical order; the contents page must list four sections with page numbers. Quiz answers: a heading; at the back of the book; in alphabetical order; a map of the whole book; the index; the glossary; the author wants you to notice them; page 4; action; information.",
 )
 
 LESSON["spelling"] = {
