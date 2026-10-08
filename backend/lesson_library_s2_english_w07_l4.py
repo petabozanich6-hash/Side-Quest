@@ -2,7 +2,8 @@
 The child learns what a source is, five questions for judging whether a source is reliable, and practises explaining a choice aloud to a parent.
 Spelling: Week 7 review of -sion and -ssion: television, decision, permission, discussion, impression, conclusion.
 Outcome codes: EN2-RECOM-01, EN2-OLC-01 and EN2-SPELL-01, all of which exist in nsw_outcomes.py.
-Video status: NO VIDEO YET. Find one, check its transcript, then add it to the videos list. Do not register this module in lesson_library.py or add week 7 to BUILT_OUT_WEEKS until the whole week is built. No NSW Department of Education pages are used.
+Video status: Evaluating Websites (for Elementary students) (YouTube 3y-1cpnIZxs) was checked against its transcript from the search result. It is a US video. It covers stopping to check whether a site is a good fit, a TRAAP checklist (Timeliness, Relevance, Accuracy, Author, Purpose), looking for the date, checking facts against other sources, asking whether the author is an expert, and noticing that sites ending in .edu or government sites are more likely to be trustworthy. Its checklist differs from this lesson's five questions, and it covers URL endings, which the lesson does not. Exact length and playback not confirmed in the app.
+Do not register this module in lesson_library.py or add week 7 to BUILT_OUT_WEEKS until the whole week is built. No NSW Department of Education pages are used.
 """
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
 from spelling_s2_w1 import _w, _c
@@ -93,7 +94,14 @@ LESSON = build(
     "Type your answers in the practice boxes and submit them.",
     "Extension: choose a claim you have heard, such as that cats always land on their feet, and check it in two reliable sources. Report what you found to your family.",
     [("source", "Where information comes from"), ("reliable", "Able to be trusted"), ("author", "The person who wrote a text"), ("expert", "A person who knows a lot about a topic"), ("evidence", "Facts, numbers or examples that show something is true"), ("opinion", "What someone thinks, which cannot be checked")],
-    [],
+    [
+        _video(
+            "Evaluating Websites (for Elementary students)", "3y-1cpnIZxs",
+            "Watch a tutorial on how and why to think carefully about information on websites. Listen for how it checks the date, whether the author is an expert, and whether other sources agree. This video comes from the United States. It uses a checklist called TRAAP, which is a little different from this lesson's five questions, and it talks about web address endings such as .edu. Status: transcript checked.",
+            "If the video will not play, reread Steps 2 to 4 and the five questions.",
+            ("According to the video, which sites are more likely to give trustworthy information?", ["Educational or government sites", "Any site with lots of ads", "Sites from unknown people"], 0, "The video says educational or government sites are more likely to provide trustworthy information."),
+        ),
+    ],
     _sort("Fact or opinion?", "Sort each statement into the right group.", ["Fact", "Opinion"], [("Frogs are amphibians", 0), ("Frogs are the best pets", 1), ("A tadpole grows legs", 0), ("Spiders are scary", 1), ("A giraffe has a long neck", 0), ("Giraffes are beautiful", 1)]),
     [
         _wc("Which means able to be trusted?", ["reliable", "opinion", "source"], 0, "Reliable means able to be trusted."),
@@ -120,7 +128,7 @@ LESSON = build(
     ],
     ["Trusting the first result without checking", "Thinking a source is reliable just because it looks professional", "Mixing up fact and opinion", "Using only one source for an important fact", "Giving a choice without a reason"],
     ["Check one fact you heard this week in two sources.", "Practise your six spelling words by writing a sentence for each."],
-    "Part A: able to be trusted, with accurate information. Part B: fact, opinion, fact. Part C: accept two of: no author; no date; lots of exclamation marks; it is trying to sell something. Part D: permission, television, conclusion and discussion in the last two blanks (a decision after a long discussion). Main task: accept any sensible topic and two sources; short answers to the five questions for each; a choice with two reasons from the questions; a spoken explanation with an opening, two reasons and a conclusion. Quiz answers: where information comes from; can be trusted; who wrote it; a page written by an expert with evidence; a fact; check a third source; an opening, two reasons and a conclusion; television; impression; conclusion.",
+    "Part A: able to be trusted, with accurate information. Part B: fact, opinion, fact. Part C: accept two of: no author; no date; lots of exclamation marks; it is trying to sell something. Part D: permission; television; conclusion or decision; discussion (so the last two blanks read: a conclusion or decision after a long discussion). Main task: accept any sensible topic and two sources; short answers to the five questions for each; a choice with two reasons from the questions; a spoken explanation with an opening, two reasons and a conclusion. Quiz answers: where information comes from; can be trusted; who wrote it; a page written by an expert with evidence; a fact; check a third source; an opening, two reasons and a conclusion; television; impression; conclusion.",
 )
 
 LESSON["spelling"] = {
