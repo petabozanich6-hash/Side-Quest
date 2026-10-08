@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
-import { Printer, Eye, X, Send, Trash2, ArrowLeft, BookOpen, Layers } from "lucide-react";
+import { Printer, Eye, X, Send, Trash2, ArrowLeft, BookOpen, Layers, Search } from "lucide-react";
 import ScheduleModal from "../../components/parent/ScheduleModal";
 
 // NESA stages and the school years they cover.
@@ -173,11 +173,20 @@ const stagesOf = (l) => {
   return out.size ? [...out] : ["Other"];
 };
 
+// Text a search is matched against. Every word typed must appear somewhere in it.
+const searchTextOf = (l) => [
+  l.title, l.learning_area, l.stage, l.year_level, l.learning_intention,
+  (l.outcome_codes || []).join(" "),
+  (l.key_vocabulary || []).join(" "),
+  l.is_side_quest ? "side quest" : "",
+].join(" ").toLowerCase();
+
 export default function LessonsPage() {
   const [lessons, setLessons] = useState([]);
   const [students, setStudents] = useState([]);
   const [view, setView] = useState(null);
   const [assignOpen, setAssignOpen] = useState(null);
+  const [query, setQuery] = useState("");
   const [params, setParams] = useSearchParams();
   const stage = params.get("stage");
   const subject = params.get("subject");
@@ -221,6 +230,19 @@ export default function LessonsPage() {
     : sections;
   const visibleLessons = stage && subject ? inStage.filter(l => subjectOf(l) === subject) : [];
 
+  const q = query.trim().toLowerCase();
+  const searching = q.length > 0;
+  const terms = q.split(/\s+/).filter(Boolean);
+  const searchResults = searching
+    ? lessons
+        .filter(l => { const t = searchTextOf(l); return terms.every(w => t.includes(w)); })
+        .sort((a, b) => {
+          const ta = String(a.title || "").toLowerCase().includes(q) ? 0 : 1;
+          const tb = String(b.title || "").toLowerCase().includes(q) ? 0 : 1;
+          return ta - tb;
+        })
+    : [];
+
   const stageYears = (STAGES.find(s => s.name === stage) || {}).years;
   const heading = !stage ? "Lessons" : !subject ? stage : `${stage} ${subject}`;
   const subheading = !stage
@@ -228,6 +250,27 @@ export default function LessonsPage() {
     : !subject
       ? `${stageYears ? stageYears + ". " : ""}Choose a subject to see its premade lessons.`
       : "Premade lessons aligned to the curriculum outcomes for this stage and subject.";
+
+  const lessonCard = (l) => (
+    <div key={l.id} className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col" data-testid={`lesson-${l.id}`}>
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <div className="font-mono text-[10px] uppercase tracking-wider text-slate-500">{l.stage} · {l.learning_area}{l.is_side_quest ? " · Side Quest" : ""}</div>
+          <h3 className="font-display text-lg font-semibold text-slate-900 mt-1 leading-tight">{l.title}</h3>
+        </div>
+      </div>
+      <p className="mt-3 text-sm text-slate-600 line-clamp-3">{l.learning_intention}</p>
+      <div className="mt-3 flex flex-wrap gap-1">
+        {(l.outcome_codes||[]).map(c => <span key={c} className="font-mono text-[10px] px-2 py-0.5 bg-slate-100 rounded border border-slate-200">{c}</span>)}
+      </div>
+      <div className="mt-auto pt-4 flex items-center gap-2 flex-wrap">
+        <Link to={`/parent/lessons/${l.id}`} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`view-${l.id}`}><Eye size={12}/> View</Link>
+        <button onClick={()=>printLesson(l)} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`print-${l.id}`}><Printer size={12}/> Print</button>
+        <button onClick={()=>del(l.id)} className="rounded-lg border border-rose-300 text-rose-700 px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`del-lesson-${l.id}`}><Trash2 size={12}/> Delete</button>
+        <button onClick={()=>setAssignOpen(l)} className="ml-auto rounded-lg bg-slate-900 text-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`assign-${l.id}`}><Send size={12}/> Assign</button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="lessons-page">
@@ -244,7 +287,34 @@ export default function LessonsPage() {
         </div>
       </div>
 
-      {!stage && (
+      <div className="relative max-w-xl">
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"/>
+        <input
+          type="search"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          onKeyDown={e => { if (e.key === "Escape") setQuery(""); }}
+          placeholder="Search all lessons by title, subject, outcome code or topic…"
+          aria-label="Search lessons"
+          className="w-full rounded-xl border border-slate-300 bg-white pl-9 pr-9 py-2.5 text-sm focus:outline-none focus:border-slate-500"
+          data-testid="lesson-search"
+        />
+        {searching && (
+          <button onClick={() => setQuery("")} aria-label="Clear search" className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700" data-testid="lesson-search-clear"><X size={14}/></button>
+        )}
+      </div>
+
+      {searching && (
+        <div className="space-y-4" data-testid="search-results">
+          <div className="text-sm text-slate-600">{searchResults.length} {searchResults.length === 1 ? "lesson" : "lessons"} found for “{query.trim()}”</div>
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {searchResults.map(lessonCard)}
+            {searchResults.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500">No lessons match your search. Try fewer or different words.</div>}
+          </div>
+        </div>
+      )}
+
+      {!searching && !stage && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="stage-cards">
           {stageCards.map(s => (
             <button key={s.name} onClick={() => setParams({ stage: s.name })} className="text-left rounded-2xl border border-slate-200 bg-white p-5 hover:border-slate-400 transition" data-testid={`stage-${s.name}`}>
@@ -257,7 +327,7 @@ export default function LessonsPage() {
         </div>
       )}
 
-      {stage && !subject && (
+      {!searching && stage && !subject && (
         <div className="space-y-8" data-testid="subject-cards">
           {visibleSections.map(sec => (
             <div key={sec.title}>
@@ -276,28 +346,9 @@ export default function LessonsPage() {
         </div>
       )}
 
-      {stage && subject && (
+      {!searching && stage && subject && (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {visibleLessons.map(l => (
-            <div key={l.id} className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col" data-testid={`lesson-${l.id}`}>
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <div className="font-mono text-[10px] uppercase tracking-wider text-slate-500">{l.stage} · {l.learning_area}{l.is_side_quest ? " · Side Quest" : ""}</div>
-                  <h3 className="font-display text-lg font-semibold text-slate-900 mt-1 leading-tight">{l.title}</h3>
-                </div>
-              </div>
-              <p className="mt-3 text-sm text-slate-600 line-clamp-3">{l.learning_intention}</p>
-              <div className="mt-3 flex flex-wrap gap-1">
-                {(l.outcome_codes||[]).map(c => <span key={c} className="font-mono text-[10px] px-2 py-0.5 bg-slate-100 rounded border border-slate-200">{c}</span>)}
-              </div>
-              <div className="mt-auto pt-4 flex items-center gap-2 flex-wrap">
-                <Link to={`/parent/lessons/${l.id}`} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`view-${l.id}`}><Eye size={12}/> View</Link>
-                <button onClick={()=>printLesson(l)} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`print-${l.id}`}><Printer size={12}/> Print</button>
-                <button onClick={()=>del(l.id)} className="rounded-lg border border-rose-300 text-rose-700 px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`del-lesson-${l.id}`}><Trash2 size={12}/> Delete</button>
-                <button onClick={()=>setAssignOpen(l)} className="ml-auto rounded-lg bg-slate-900 text-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`assign-${l.id}`}><Send size={12}/> Assign</button>
-              </div>
-            </div>
-          ))}
+          {visibleLessons.map(lessonCard)}
           {visibleLessons.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500">No premade {subject} lessons for {stage} yet.</div>}
         </div>
       )}
