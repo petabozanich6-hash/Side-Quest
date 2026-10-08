@@ -151,7 +151,7 @@ def _purge_all_lessons_once():
         from pymongo import MongoClient
         client = MongoClient(os.environ["MONGO_URL"], serverSelectionTimeoutMS=8000)
         db = client[os.environ["DB_NAME"]]
-        marker = "purge_all_lessons_v4"
+        marker = "purge_all_lessons_v5"
         if db.maintenance.find_one({"key": marker}):
             return
         result = db.lessons.delete_many({})
