@@ -26,26 +26,28 @@ export default function LearningPlans() {
 
   const toggleArea = (a) => setForm(f => ({...f, subject_focus: f.subject_focus.includes(a) ? f.subject_focus.filter(x=>x!==a) : [...f.subject_focus, a]}));
 
+  const build = async (id) => {
+    setGenerating(true);
+    try {
+      await api.post(`/learning-plans/${id}/build`);
+      toast.success("Plan built — read it through before the visit");
+      const { data: refreshed } = await api.get(`/learning-plans/${id}`);
+      setView(refreshed);
+      load();
+    } catch (err) { toast.error(err.response?.data?.detail || "Could not build the plan"); }
+    finally { setGenerating(false); }
+  };
+
   const submit = async (e) => {
     e.preventDefault();
     if (!form.student_id) { toast.error("Choose a student"); return; }
     try {
       const payload = { ...form, interests: form.interests.split(",").map(s=>s.trim()).filter(Boolean) };
-      await api.post("/learning-plans", payload);
-      toast.success("Plan draft created");
+      const { data: created } = await api.post("/learning-plans", payload);
       setOpen(false); load();
+      if (created && created.id) { await build(created.id); }
+      else { toast.success("Plan created — press Build plan"); }
     } catch { toast.error("Failed"); }
-  };
-
-  const generate = async (id) => {
-    setGenerating(true);
-    try {
-      const { data } = await api.post(`/learning-plans/${id}/generate`);
-      toast.success("AI draft ready — review before showing an AP");
-      const { data: refreshed } = await api.get(`/learning-plans/${id}`);
-      setView(refreshed);
-    } catch (err) { toast.error(err.response?.data?.detail || "Generation failed"); }
-    finally { setGenerating(false); }
   };
 
   const del = async (id) => {
@@ -77,7 +79,7 @@ export default function LearningPlans() {
     lines.push(`<h2>Resources Overview</h2><p>${c.resources_overview||""}</p>`);
     lines.push(`<h2>Review Schedule</h2><p>${c.review_schedule||""}</p>`);
     lines.push(`<h2>Notes for Authorised Person</h2><p>${c.assessor_notes||""}</p>`);
-    lines.push(`<p style="margin-top:40px;font-size:11px;color:#666">This plan was AI-drafted and parent-reviewed. The parent remains responsible for selecting an appropriate educational program and confirming current NESA requirements.</p></body></html>`);
+    lines.push(`<p style="margin-top:40px;font-size:11px;color:#666">This plan was built from the parent's inputs and NSW syllabus outcomes and reviewed by the parent. The parent remains responsible for selecting an appropriate educational program and confirming current NESA requirements.</p></body></html>`);
     w.document.write(lines.join("")); w.document.close(); w.print();
   };
 
@@ -90,9 +92,8 @@ export default function LearningPlans() {
         <div className="font-script text-2xl" style={{color:"#C77B5B"}}>For your inspection folder</div>
         <h1 className="font-display text-4xl font-bold" style={{color:"#1F3B2D"}}>Learning Plans</h1>
         <p className="mt-2 text-sm text-stone-600 max-w-3xl leading-relaxed">
-          Professional learning-plan documents for NESA Authorised Person (AP) inspection. AI drafts the plan from your
-          child's stage, interests, and chosen focus areas — then you review, edit, and print. The plan weaves interests
-          into genuine syllabus goals.
+          Learning-plan documents for your Authorised Person (AP) visit. Choose a child, a period and their interests, and the plan is
+          built for you from their stage and the NSW syllabus outcomes. Read it through, then print it.
         </p>
       </header>
 
@@ -117,10 +118,11 @@ export default function LearningPlans() {
               {p.ai_content ? (
                 <button onClick={()=>setView(p)} className="rounded-full px-4 py-1.5 text-xs font-bold" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid={`view-plan-${p.id}`}>View plan</button>
               ) : (
-                <button onClick={()=>generate(p.id)} disabled={generating} className="rounded-full px-4 py-1.5 text-xs font-bold flex items-center gap-1 disabled:opacity-50" style={{backgroundColor:"#4A5D3A", color:"#F5EFE0"}} data-testid={`gen-plan-${p.id}`}>
-                  {generating ? <><Loader2 size={10} className="animate-spin"/> Drafting…</> : <><Sparkles size={10}/> Draft with AI</>}
+                <button onClick={()=>build(p.id)} disabled={generating} className="rounded-full px-4 py-1.5 text-xs font-bold flex items-center gap-1 disabled:opacity-50" style={{backgroundColor:"#4A5D3A", color:"#F5EFE0"}} data-testid={`gen-plan-${p.id}`}>
+                  {generating ? <><Loader2 size={10} className="animate-spin"/> Building…</> : <><Sparkles size={10}/> Build plan</>}
                 </button>
               )}
+              {p.ai_content && <button onClick={()=>build(p.id)} disabled={generating} className="rounded-full border px-3 py-1.5 text-xs font-bold disabled:opacity-50" style={{borderColor:"#D4C8A8"}} data-testid={`rebuild-plan-${p.id}`}>Rebuild</button>}
               {p.ai_content && <button onClick={()=>printPlan(p)} className="rounded-full border px-3 py-1.5 text-xs font-bold flex items-center gap-1" style={{borderColor:"#D4C8A8"}} data-testid={`print-plan-${p.id}`}><Printer size={10}/> Print</button>}
             </div>
           </div>
@@ -129,7 +131,7 @@ export default function LearningPlans() {
           <div className="col-span-full paper-card p-10 text-center">
             <FileCheck className="mx-auto mb-3" size={32} style={{color:"#4A5D3A"}}/>
             <p className="font-display text-lg" style={{color:"#1F3B2D"}}>No learning plans yet</p>
-            <p className="text-sm text-stone-500 mt-2 max-w-md mx-auto">Create a plan for each inspection period. The AI will draft a professional document weaving your child's interests into syllabus-aligned goals.</p>
+            <p className="text-sm text-stone-500 mt-2 max-w-md mx-auto">Create a plan for each inspection period. It is built for you from your child's stage, interests and the NSW syllabus outcomes.</p>
           </div>
         )}
       </div>
@@ -145,14 +147,14 @@ export default function LearningPlans() {
                   {students.map(s => <option key={s.id} value={s.id}>{s.name} ({s.stage})</option>)}
                 </select>
               </F>
-              <F label="Plan title"><input required value={form.title} onChange={e=>setForm({...form, title: e.target.value})} placeholder="e.g. Semester 1 2026 Learning Plan" className="input" data-testid="plan-title"/></F>
+              <F label="Plan title"><input required value={form.title} onChange={e=>setForm({...form, title: e.target.value})} placeholder="e.g. Semester 1 2027 Learning Plan" className="input" data-testid="plan-title"/></F>
               <div className="grid grid-cols-2 gap-3">
                 <F label="Period starts"><input required type="date" value={form.period_start} onChange={e=>setForm({...form, period_start: e.target.value})} className="input" data-testid="plan-start"/></F>
                 <F label="Period ends"><input required type="date" value={form.period_end} onChange={e=>setForm({...form, period_end: e.target.value})} className="input" data-testid="plan-end"/></F>
               </div>
               <F label="Child's interests (comma separated)"><input value={form.interests} onChange={e=>setForm({...form, interests: e.target.value})} placeholder="dinosaurs, cooking, Lego, soccer, drawing" className="input" data-testid="plan-interests"/></F>
               <div>
-                <label className="text-xs font-bold uppercase tracking-widest text-stone-500">Focus learning areas (optional)</label>
+                <label className="text-xs font-bold uppercase tracking-widest text-stone-500">Extra learning areas (the six key areas are always included)</label>
                 <div className="mt-2 flex flex-wrap gap-1.5">
                   {AREAS.map(a => (
                     <button type="button" key={a} onClick={()=>toggleArea(a)} className={`rounded-full border px-3 py-1 text-xs font-semibold ${form.subject_focus.includes(a) ? "bg-moss text-cream" : "bg-white"}`} style={form.subject_focus.includes(a) ? {backgroundColor:"#4A5D3A", color:"#F5EFE0", borderColor:"#4A5D3A"} : {borderColor:"#D4C8A8"}} data-testid={`area-${a.replace(/\s+/g,'-')}`}>{a}</button>
@@ -162,7 +164,7 @@ export default function LearningPlans() {
               <F label="Teaching approach (optional)"><input value={form.teaching_approach} onChange={e=>setForm({...form, teaching_approach: e.target.value})} placeholder="e.g. project-based, nature-rich, explicit teaching mornings" className="input" data-testid="plan-approach"/></F>
               <F label="Notes (optional)"><textarea rows={3} value={form.notes} onChange={e=>setForm({...form, notes: e.target.value})} className="input" data-testid="plan-notes"/></F>
             </div>
-            <button className="mt-5 w-full rounded-full py-3 text-sm font-bold" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="submit-plan">Create draft</button>
+            <button className="mt-5 w-full rounded-full py-3 text-sm font-bold" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="submit-plan">Create and build plan</button>
           </form>
         </div>
       )}
@@ -183,7 +185,7 @@ export default function LearningPlans() {
             </div>
             <Content c={view.ai_content}/>
             <div className="mt-6 rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900">
-              This plan was AI-drafted and parent-reviewed. You remain responsible for selecting the educational program and verifying current NESA requirements.
+              This plan was built from your inputs and NSW syllabus outcomes. Read it through before the visit. You remain responsible for selecting the educational program and verifying current NESA requirements.
             </div>
           </div>
         </div>
@@ -195,7 +197,7 @@ export default function LearningPlans() {
 
 const F = ({ label, children }) => (<div><label className="text-xs font-bold uppercase tracking-widest text-stone-500">{label}</label><div className="mt-1">{children}</div></div>);
 
-const Content = ({ c }) => !c ? <p className="text-stone-500">No AI content yet.</p> : (
+const Content = ({ c }) => !c ? <p className="text-stone-500">The plan has not been built yet.</p> : (
   <div className="space-y-5 text-sm leading-relaxed" style={{color:"#2A2822"}}>
     <Sec title="Overview">{c.overview}</Sec>
     <Sec title="Educational Philosophy">{c.educational_philosophy}</Sec>
