@@ -9,6 +9,8 @@ in a row. One miss sends the run back to zero:
     4 to 9      -> tamed
     10          -> mastered (and it leaves the practice list)
 
+Each word can be attempted twice per day (right or wrong), so mastery is
+spread over several days of real practice.
 The child sees their hoard; the parent sees how it is going.
 """
 from datetime import datetime, timezone, timedelta
@@ -25,6 +27,7 @@ STAGE_LABELS = {
     "mastered": "Mastered",
 }
 MASTERY_STREAK = 10
+DAILY_ATTEMPTS = 2
 SPOTTED_AT = 1
 TAMED_AT = 4
 XP_STEP = 2
@@ -82,6 +85,12 @@ def streak_of(doc) -> int:
     )
 
 
+def attempts_used_today(doc) -> int:
+    if doc.get("attempt_day") == today_local():
+        return int(doc.get("attempts_today") or 0)
+    return 0
+
+
 def streak_from_days(days) -> int:
     """Consecutive practice days ending today (or yesterday, so the streak is not lost early)."""
     have = set(days)
@@ -99,8 +108,11 @@ def register(api, db, current_user, require_child, new_id, now_iso):
     def public(doc):
         d = {k: v for k, v in doc.items() if k != "_id"}
         streak = streak_of(d)
+        used = attempts_used_today(d)
         d["streak"] = streak
         d["streak_target"] = MASTERY_STREAK
+        d["attempts_today"] = used
+        d["attempts_left"] = max(DAILY_ATTEMPTS - used, 0)
         d["stage"] = d.get("stage") or stage_for_streak(streak)
         d["stage_label"] = STAGE_LABELS.get(d.get("stage"), "Wild")
         d["practised_today"] = today_local() in (d.get("correct_days") or [])
@@ -131,6 +143,7 @@ def register(api, db, current_user, require_child, new_id, now_iso):
             "accuracy_this_week": round(100 * week_correct / len(week)) if week else None,
             "practised_today": today_local() in days,
             "mastery_streak": MASTERY_STREAK,
+            "daily_attempts": DAILY_ATTEMPTS,
         }, words, log
 
     async def add_words(student_id, family_id, data: AddWordsIn, added_by):
@@ -155,6 +168,8 @@ def register(api, db, current_user, require_child, new_id, now_iso):
                 "streak": 0,
                 "correct_days": [],
                 "attempts": 0,
+                "attempt_day": None,
+                "attempts_today": 0,
                 "misses": 0,
                 "source": data.source,
                 "lesson_id": data.lesson_id,
@@ -169,11 +184,19 @@ def register(api, db, current_user, require_child, new_id, now_iso):
 
     async def apply_attempt(w, correct: bool, user):
         """Record one spelling attempt. A correct spelling adds one to the run,
-        a miss sends the run back to zero. Ten in a row masters the word."""
+        a miss sends the run back to zero. Ten in a row masters the word.
+        Each word allows DAILY_ATTEMPTS attempts per day."""
         today = today_local()
+        used = attempts_used_today(w)
+        if used >= DAILY_ATTEMPTS:
+            raise HTTPException(
+                429,
+                f"You have used both tries for this word today. Come back tomorrow!",
+            )
+
         old_stage = w.get("stage", "wild")
         streak = streak_of(w)
-        update = {"last_practised": now_iso()}
+        update = {"last_practised": now_iso(), "attempt_day": today, "attempts_today": used + 1}
         inc = {"attempts": 1}
         xp = 0
 
@@ -230,6 +253,8 @@ def register(api, db, current_user, require_child, new_id, now_iso):
             "streak": streak,
             "streak_target": MASTERY_STREAK,
             "to_go": max(MASTERY_STREAK - streak, 0),
+            "attempts_left": max(DAILY_ATTEMPTS - (used + 1), 0),
+            "daily_attempts": DAILY_ATTEMPTS,
         }
 
     @api.post("/word-bank/words")
@@ -253,8 +278,10 @@ def register(api, db, current_user, require_child, new_id, now_iso):
         grouped = {s: [] for s in STAGES}
         for w in words:
             grouped.setdefault(w.get("stage", "wild"), []).append(public(w))
-        # Everything not yet mastered stays on the practice list.
-        to_tame = [public(w) for w in words if w.get("stage") != "mastered"]
+        # Words that are not mastered and still have tries left today.
+        open_words = [public(w) for w in words if w.get("stage") != "mastered"]
+        to_tame = [w for w in open_words if w["attempts_left"] > 0]
+        resting = len(open_words) - len(to_tame)
         # Wildest and most-missed creatures first.
         to_tame.sort(key=lambda w: (STAGES.index(w["stage"]), -w.get("misses", 0)))
         return {
@@ -262,8 +289,10 @@ def register(api, db, current_user, require_child, new_id, now_iso):
             "stages": STAGES,
             "labels": STAGE_LABELS,
             "mastery_streak": MASTERY_STREAK,
+            "daily_attempts": DAILY_ATTEMPTS,
             "words": grouped,
             "to_tame_today": to_tame[:10],
+            "resting_today": resting,
         }
 
     @api.post("/word-bank/practice")

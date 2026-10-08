@@ -18,6 +18,7 @@ function WordPractice({ item, lessonId, onCorrect }) {
   const [value, setValue] = useState("");
   const [result, setResult] = useState(null);
   const [info, setInfo] = useState(null);
+  const [limited, setLimited] = useState(false);
   const [busy, setBusy] = useState(false);
 
   const startTry = () => {
@@ -33,6 +34,7 @@ function WordPractice({ item, lessonId, onCorrect }) {
     if (!guess) return;
     setBusy(true);
     let ok = guess.toLowerCase() === item.word.toLowerCase();
+    let hitLimit = false;
     try {
       const { data } = await api.post("/word-bank/try", {
         word: item.word,
@@ -41,14 +43,18 @@ function WordPractice({ item, lessonId, onCorrect }) {
       });
       ok = !!data.correct;
       setInfo(data);
-    } catch {
+    } catch (error) {
       setInfo(null);
+      hitLimit = error?.response?.status === 429;
     }
+    setLimited(hitLimit);
     setBusy(false);
     setResult(ok ? "right" : "wrong");
     setPhase("checked");
     if (ok) onCorrect(item.word);
   };
+
+  const canAgainInHoard = !limited && (!info || info.attempts_left > 0);
 
   return (
     <div className="rounded-xl border bg-white p-4" style={{ borderColor: "#D4C8A8" }}>
@@ -71,7 +77,7 @@ function WordPractice({ item, lessonId, onCorrect }) {
       {phase === "look" && (
         <div className="mt-3">
           <p className="text-xs text-stone-600">
-            Look at the word. Say it out loud. Find the tricky part. When you are ready, the word will be blocked out and you spell it yourself.
+            Look at the word. Say it out loud. Find the tricky part. When you are ready, the word will be blocked out and you spell it yourself. You get 2 counted tries per word each day.
           </p>
           <button type="button" onClick={startTry} className="mt-2 rounded-full px-5 py-2 text-sm font-bold" style={BTN}>
             ✏️ Try spelling now
@@ -118,8 +124,20 @@ function WordPractice({ item, lessonId, onCorrect }) {
                     : `In your Word Hoard: ${info.streak} in a row, ${info.to_go} to go.`}
                 </p>
               )}
+              {info && !info.just_mastered && (
+                <p className="text-stone-600 mt-1">
+                  {info.attempts_left > 0
+                    ? `${info.attempts_left} counted ${info.attempts_left === 1 ? "try" : "tries"} left for this word today.`
+                    : "That was your last counted try for this word today. Come back to the Word Hoard tomorrow."}
+                </p>
+              )}
+              {limited && (
+                <p className="text-stone-600 mt-1">
+                  You have used both counted tries for this word today, so this one was just practice.
+                </p>
+              )}
               <button type="button" onClick={startTry} className="mt-2 rounded-full border px-4 py-1.5 text-xs font-bold" style={{ borderColor: "#1F3B2D", color: "#1F3B2D" }}>
-                Spell it again
+                {canAgainInHoard ? "Spell it again" : "Practise it again (not counted)"}
               </button>
             </div>
           ) : (
@@ -128,6 +146,18 @@ function WordPractice({ item, lessonId, onCorrect }) {
                 Not quite. You wrote "{value}". Find the part that is different, then try again.
               </p>
               {info && <p className="text-stone-700 mt-1">Your run in the Word Hoard starts again from 0.</p>}
+              {info && (
+                <p className="text-stone-600 mt-1">
+                  {info.attempts_left > 0
+                    ? `${info.attempts_left} counted ${info.attempts_left === 1 ? "try" : "tries"} left for this word today.`
+                    : "That was your last counted try for this word today."}
+                </p>
+              )}
+              {limited && (
+                <p className="text-stone-600 mt-1">
+                  You have used both counted tries for this word today, so this one was just practice.
+                </p>
+              )}
               <button type="button" onClick={startTry} className="mt-2 rounded-full px-5 py-2 text-sm font-bold" style={BTN}>
                 Try again
               </button>
@@ -169,7 +199,7 @@ export default function SpellingSegment({ spelling, lessonId, onComplete }) {
         <div className="space-y-3">
           <div className="font-bold text-sm">Your words for this lesson</div>
           <p className="text-xs text-stone-600">
-            These words are now in your Word Hoard. Spell each one right 10 times in a row to master it.
+            These words are now in your Word Hoard. Spell each one right 10 times in a row to master it. Each word gets 2 counted tries per day.
           </p>
           {words.map((item) => (
             <WordPractice key={item.word} item={item} lessonId={lessonId} onCorrect={(w) => setRight((r) => ({ ...r, [w]: true }))} />

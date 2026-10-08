@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 const BUTTON_STYLE = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
 const TARGET = 10;
+const DAILY = 2;
 
 const STAGE_INFO = {
   wild: { emoji: "🥚", title: "Wild", blurb: "Not tamed yet" },
@@ -50,6 +51,7 @@ export default function ChildWordHoard() {
   }
 
   const { summary, words, to_tame_today: queue } = data;
+  const resting = data.resting_today || 0;
 
   const start = (word) => {
     setCurrent(word);
@@ -70,6 +72,11 @@ export default function ChildWordHoard() {
       setResult(res);
     } catch (error) {
       toast.error(error?.response?.data?.detail || "Could not save that try");
+      if (error?.response?.status === 429) {
+        setCurrent(null);
+        setResult(null);
+        load();
+      }
     } finally {
       setBusy(false);
     }
@@ -107,6 +114,7 @@ export default function ChildWordHoard() {
         </h1>
         <p className="text-sm text-stone-600 mt-1">
           Spell a word right {TARGET} times in a row to master it. One mistake and the run starts again.
+          You get {DAILY} tries per word each day.
         </p>
       </div>
 
@@ -138,23 +146,32 @@ export default function ChildWordHoard() {
           <p className="text-sm text-stone-700">
             {summary.total === 0
               ? "No words yet. Open a lesson or add some below to begin your hoard."
-              : "Every word is mastered. Brilliant! New words will appear with your next lesson."}
+              : resting > 0
+                ? `You have used today's tries on ${resting} word${resting === 1 ? "" : "s"}. Come back tomorrow to keep your runs going!`
+                : "Every word is mastered. Brilliant! New words will appear with your next lesson."}
           </p>
         )}
 
         {!current && queue.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {queue.map((w) => (
-              <button
-                key={w.id}
-                type="button"
-                onClick={() => start(w)}
-                className="rounded-full border px-4 py-2 text-sm bg-white hover:translate-y-[-2px] transition"
-                style={{ borderColor: "#C77B5B" }}
-              >
-                {STAGE_INFO[w.stage].emoji} Tame a {w.stage} word ({w.streak || 0}/{TARGET})
-              </button>
-            ))}
+          <div className="space-y-3">
+            <div className="flex flex-wrap gap-2">
+              {queue.map((w) => (
+                <button
+                  key={w.id}
+                  type="button"
+                  onClick={() => start(w)}
+                  className="rounded-full border px-4 py-2 text-sm bg-white hover:translate-y-[-2px] transition"
+                  style={{ borderColor: "#C77B5B" }}
+                >
+                  {STAGE_INFO[w.stage].emoji} Tame a {w.stage} word ({w.streak || 0}/{TARGET}, {w.attempts_left} {w.attempts_left === 1 ? "try" : "tries"} left)
+                </button>
+              ))}
+            </div>
+            {resting > 0 && (
+              <p className="text-xs text-stone-500">
+                {resting} other word{resting === 1 ? " is" : "s are"} resting until tomorrow.
+              </p>
+            )}
           </div>
         )}
 
@@ -215,8 +232,15 @@ export default function ChildWordHoard() {
             {!result.correct && (
               <p className="text-sm text-stone-600">Your run starts again from 0. Look closely at the tricky part.</p>
             )}
+            {!result.just_mastered && (
+              <p className="text-sm text-stone-600">
+                {result.attempts_left > 0
+                  ? `${result.attempts_left} ${result.attempts_left === 1 ? "try" : "tries"} left for this word today.`
+                  : "That was your last try for this word today. Come back tomorrow!"}
+              </p>
+            )}
             <div className="flex justify-center gap-3 flex-wrap">
-              {!result.just_mastered && (
+              {!result.just_mastered && result.attempts_left > 0 && (
                 <button
                   type="button"
                   onClick={again}
