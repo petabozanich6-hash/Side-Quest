@@ -1,5 +1,14 @@
 # Lesson Build Guide
 
+> **READ FIRST (note added 9 October 2026).** Where this guide disagrees with `docs/LESSON_BUILD_HANDOFF.md` or with the code, the handoff and the code win. The body below is unchanged from the original, so these points are superseded:
+>
+> - **Reference lesson:** `backend/lesson_library_s2_english_w09_l1.py` is the approved standard, not W1 L1. Copy its shape and its `build()` argument order from the file itself.
+> - **Branch rule (section 1 rule 5 and section 8):** the single `lesson-build` branch is replaced by one branch and one pull request per lesson. Merge one PR at a time. Each PR that adds or changes a lesson bumps `LESSON_LIBRARY_VERSION` by one from the value on `main`.
+> - **Spelling (section 7):** W9 L1 sets `spelling`, `spelling_focus` and `hoard_words` inside the lesson after `build()`. New lessons do the same. Only add a `spelling_live.py` entry if told to, and never use a key that is already in `SPELLING_W1` or `SPELLING_LIVE`, because those replace the lesson's own spelling.
+> - **BUILT_OUT_WEEKS (section 8 step 3 and section 9):** leave it alone. Placeholders are not registered, so it does not affect the live site.
+> - **Planner label:** every lesson must set `planner_title` and `planner_intro` after `build()`, as W9 L1 does, or the child sees "Plan your work".
+> - **Videos (section 10):** the real call is `_video(title, youtube_id, prompt, offline, (question, options, correct_index, explanation))`. Attach none if none is verified.
+
 How to build a lesson to the same standard as **Stage 2 English, Week 1 Lesson 1: Reading with Expression**.
 
 The reference lesson is `backend/lesson_library_s2_english_w01_l1.py`. When in doubt, open it and copy its shape.
