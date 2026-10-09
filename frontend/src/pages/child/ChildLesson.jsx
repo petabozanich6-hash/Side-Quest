@@ -21,6 +21,7 @@ import PetCompanion from "../../components/shared/PetCompanion";
 import QuestBanner from "../../components/shared/QuestBanner";
 import QuestQuiz from "../../components/shared/QuestQuiz";
 import TeachStep from "../../components/shared/QuestTeach";
+import QuestVisual from "../../components/shared/QuestVisual";
 import SpellingSegment from "../../components/shared/SpellingSegment";
 import {
   RevealCards,
@@ -33,6 +34,14 @@ import { Leaf } from "../../components/shared/Botanical";
 
 const cleanStepTitle = (title = "") =>
   title.replace(/^(\S+\s)?Step \d+:\s*/, "$1");
+
+// Parent-only paragraphs (starting with "Parent:" or "Grown-up:") must not be shown to the child.
+const childText = (text = "") =>
+  String(text || "")
+    .split(/\n\s*\n/)
+    .filter((para) => !/^\s*(Parent|Grown-up|Grown up)\s*(note|check)?\s*:/i.test(para))
+    .join("\n\n")
+    .trim();
 
 const hasScoredQuiz = (lesson) =>
   (lesson?.quiz || []).some((q) => q.type !== "short_answer");
@@ -358,6 +367,9 @@ export default function ChildLesson() {
               margin-top: 20px;
             }
             p, li { line-height: 1.6; }
+            figure { margin: 12px 0; text-align: center; }
+            figure svg { max-width: 100%; height: auto; }
+            figcaption { font-style: italic; font-size: 13px; }
           </style>
         </head>
         <body>
@@ -388,13 +400,19 @@ export default function ChildLesson() {
           <p>${(l.explicit_teaching || "").replace(/\n/g, "<br/>")}</p>
 
           <h2>Worked example</h2>
-          <p>${l.worked_example || ""}</p>
+          ${(l.worked_visuals || [])
+            .map(
+              (v) =>
+                `<figure>${v.svg || (v.src ? `<img src="${v.src}" alt="${v.alt || ""}" />` : "")}<figcaption>${v.caption || ""}</figcaption></figure>`
+            )
+            .join("")}
+          <p>${(l.worked_example || "").replace(/\n/g, "<br/>")}</p>
 
           <h2>Guided practice</h2>
-          <p>${l.guided_practice || ""}</p>
+          <p>${childText(l.guided_practice).replace(/\n/g, "<br/>")}</p>
 
           <h2>Independent task</h2>
-          <p>${l.independent_task || ""}</p>
+          <p>${childText(l.independent_task).replace(/\n/g, "<br/>")}</p>
 
           <h2>Offline alternative</h2>
           <p>${l.offline_alternative || ""}</p>
@@ -435,6 +453,11 @@ export default function ChildLesson() {
   const plannerFields = l.planner_fields || [];
   const spellingData = l.spelling && (l.spelling.teaching || (l.spelling.words || []).length) ? l.spelling : null;
   const hasHoardWords = lessonHoardWords(l).length > 0;
+  const guidedText = childText(l.guided_practice);
+  const taskText = childText(l.independent_task);
+  const plannerTitle = l.planner_title || "Plan your work";
+  const plannerIntro =
+    l.planner_intro || "Good writers plan first. Fill in each box with a few words.";
 
   const stages = [
     { key: "accept", icon: "📜", title: "Accept the quest" },
@@ -460,10 +483,11 @@ export default function ChildLesson() {
       icon: "💎",
       title: "Word power"
     },
+    guidedText && { key: "guided", icon: "🤝", title: "Try it with help" },
     plannerFields.length > 0 && {
       key: "plan",
       icon: "🗺️",
-      title: "Plan your work"
+      title: plannerTitle
     },
     { key: "write", icon: "✍️", title: "Do the task" },
     quizRequired && { key: "quiz", icon: "🛡️", title: "Quest check" },
@@ -486,6 +510,8 @@ export default function ChildLesson() {
         return !!done.spelling;
       case "sort":
         return !!done.sort;
+      case "guided":
+        return !!done.guided;
       case "watch":
         return embeds.every((_, i) => done[`watch${i}`]);
       case "words":
@@ -622,7 +648,14 @@ export default function ChildLesson() {
                     ? "Here is a whole story with every part. Read it slowly."
                     : "Read this example"}
                 </div>
-                {l.worked_example}
+
+                {(l.worked_visuals || []).map((v, i) => (
+                  <QuestVisual key={i} visual={v} />
+                ))}
+
+                <div className="whitespace-pre-wrap leading-relaxed">
+                  {l.worked_example}
+                </div>
               </div>
             )}
 
@@ -660,6 +693,26 @@ export default function ChildLesson() {
 
       case "sort":
         return <SortActivity activity={sortData} onComplete={mark("sort")} />;
+
+      case "guided":
+        return (
+          <div className="space-y-4">
+            <div className="rounded-xl bg-indigo-50 border border-indigo-200 p-4 text-sm whitespace-pre-wrap leading-relaxed">
+              {guidedText}
+            </div>
+
+            {!done.guided && (
+              <button
+                type="button"
+                onClick={mark("guided")}
+                className="rounded-full px-5 py-2 text-sm font-bold"
+                style={CONTINUE_STYLE}
+              >
+                I have read this and I am ready
+              </button>
+            )}
+          </div>
+        );
 
       case "watch":
         return (
@@ -766,9 +819,7 @@ export default function ChildLesson() {
       case "plan":
         return (
           <div>
-            <p className="text-sm text-stone-700 mb-3">
-              Good writers plan first. Fill in each box with a few words.
-            </p>
+            <p className="text-sm text-stone-700 mb-3">{plannerIntro}</p>
 
             <Planner
               fields={plannerFields}
@@ -785,8 +836,9 @@ export default function ChildLesson() {
             <div className="rounded-xl bg-amber-50 border border-amber-200 p-4 text-sm space-y-2">
               <div className="font-bold">What to do</div>
 
+              <div className="whitespace-pre-wrap leading-relaxed">{taskText}</div>
+
               <ol className="list-decimal pl-5 space-y-1">
-                <li>{l.independent_task}</li>
                 <li>
                   Type your finished work in the big box below, or write it on
                   paper and upload a photo.
@@ -802,7 +854,9 @@ export default function ChildLesson() {
 
             {plannerFields.length > 0 && (
               <div className="rounded-xl bg-stone-50 border border-stone-200 p-3 text-sm">
-                <div className="font-bold mb-1">Your plan</div>
+                <div className="font-bold mb-1">
+                  {l.planner_title ? l.planner_title : "Your plan"}
+                </div>
 
                 {plannerFields.map((f) => (
                   <div key={f.key}>
