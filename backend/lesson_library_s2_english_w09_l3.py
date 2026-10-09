@@ -1,353 +1,267 @@
 """Stage 2 English, Week 9 Lesson 3: Compound and Complex Sentences (Language).
-Built to match the W9 L1 benchmark. The sentence pictures are drawn as SVG by the helper functions below, so the child can see how clauses join.
-The child revisits clauses and conjunctions (first met in Week 4 Lesson 3) and uses them in report writing: simple, compound and complex sentences, choosing the right joining word, placing the comma, and fixing fragments and run-ons. The practice sentences continue the Australian animals topic of Weeks 7 to 9.
-Spelling: silent letters kn, wr, mb, gn: knife, knit, wreck, lamb, gnaw, design.
-Outcomes: EN2-VOCAB-01 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 9, Lesson 3, Compound and complex sentences, language slot). The EN2-VOCAB-01 wording is the NESA text held in backend/nsw_outcomes.py, with a short note on this lesson's focus.
-Video status: two videos attached. Simple, Compound, Complex Sentences (YouTube smgyeUomfyA) and Fragments and Run-On Sentences (YouTube a30A0a-9mCA). Both were chosen from their titles and descriptions, so please watch each one before relying on it. The first video says independent clause where this lesson says main clause, and uses the word coordinating conjunction for the FANBOYS words. The second is a general grammar video and may mention more than this lesson teaches.
-Facts used: wombats dig burrows and can run quickly over short distances, echidnas curl into a ball when in danger and have spines, koalas sleep a lot and eat gum leaves, which give them little energy. These facts are for practice sentences, so a parent should check any of them the child wants to reuse in a real report.
+UPGRADED in place from the W9 L1 template. Same seed key as before. Every picture is drawn as SVG by _chain_svg below.
+The child learns what a clause is, the difference between a main clause and a dependent clause, how to join two main clauses into a compound sentence, how to join a main clause and a dependent clause into a complex sentence, and how to fix fragments. The example topic is Australian animals, continuing Weeks 7 to 9.
+Spelling: silent letters kn, wr, mb, gn: knee, knock, wrist, wrap, climb, gnat.
+Outcomes: EN2-VOCAB-01 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 9, Lesson 3). Wording is the official NESA text held in the placeholders file, with a short note on this lesson's focus. backend/nsw_outcomes.py holds a shorter plain language version of EN2-VOCAB-01 and EN2-SPELL-01, so the parent should check the wording against NESA.
+Video status: no video attached. None was searched for or verified in this build.
+Facts used: echidnas have sharp spines, strong claws for digging, a long snout and a sticky tongue for catching ants and termites (from W9 L1). Koalas eat gum leaves (from W9 L1). Koalas climb and kangaroos hop are general knowledge, so please check them. Sentences about hats, rain and bags are made up.
 """
-from html import escape as _esc
+import math
 
 from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _visual, _video
 from spelling_s2_w1 import _w, _c
 
-WORDS = ["knife", "knit", "wreck", "lamb", "gnaw", "design"]
+WORDS = ["knee", "knock", "wrist", "wrap", "climb", "gnat"]
 
-MAIN_FILL, MAIN_LINE = "#E9EFE3", "#6B8A5B"
-DEP_FILL, DEP_LINE = "#F6E7DF", "#C77B5B"
-BAD_FILL, BAD_LINE = "#FBE3E1", "#C0392B"
-
-
-def _rows_svg(title, rows):
-    y = 46
-    body = []
-    for r in rows:
-        kind = r[0]
-        if kind == "clause":
-            _, label, text, fill, line = r
-            body.append(f'<rect x="40" y="{y}" width="480" height="60" rx="8" fill="{fill}" stroke="{line}" stroke-width="2"/>')
-            body.append(f'<text x="54" y="{y + 20}" font-size="12" font-weight="bold" fill="{line}">{_esc(label)}</text>')
-            body.append(f'<text x="54" y="{y + 46}" font-size="18" fill="#222">{_esc(text)}</text>')
-            y += 68
-        elif kind == "join":
-            _, text, colour = r
-            body.append(f'<rect x="100" y="{y}" width="360" height="32" rx="16" fill="{colour}"/>')
-            body.append(f'<text x="280" y="{y + 22}" text-anchor="middle" font-size="15" font-weight="bold" fill="#FFFFFF">{_esc(text)}</text>')
-            y += 40
-        else:
-            _, text, colour = r
-            body.append(f'<text x="280" y="{y + 18}" text-anchor="middle" font-size="15" font-weight="bold" fill="{colour}">{_esc(text)}</text>')
-            y += 34
-    h = y + 10
-    head = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 {h}" font-family="Arial, sans-serif">',
-        f'<rect width="560" height="{h}" fill="#FFFDF6"/>',
-        f'<text x="280" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#1F3B2D">{_esc(title)}</text>',
-    ]
-    return "".join(head + body + ['</svg>'])
+KINDS = {
+    "main": ("#DCEBD3", "#5C8A4A", "can stand alone"),
+    "join": ("#FBE3C4", "#C77B2B", "joiner"),
+    "dep": ("#D6E6F2", "#4A6D8C", "cannot stand alone"),
+}
 
 
-def _words_svg():
+def _chain_svg(title, parts):
+    sizes = [int(len(t) * 8.4) + 26 for t, _ in parts]
+    gap = 14
+    total = sum(sizes) + gap * (len(parts) - 1)
+    w = max(total + 40, 440)
+    x = (w - total) / 2
     p = [
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 340" font-family="Arial, sans-serif">',
-        '<rect width="560" height="340" fill="#FFFDF6"/>',
-        '<text x="280" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1F3B2D">Two kinds of joining word</text>',
-        '<rect x="20" y="44" width="250" height="284" rx="8" fill="#E9EFE3" stroke="#6B8A5B" stroke-width="2"/>',
-        '<text x="145" y="70" text-anchor="middle" font-size="14" font-weight="bold" fill="#1F3B2D">Joins two main clauses</text>',
-        '<text x="145" y="88" text-anchor="middle" font-size="12" fill="#333">(use a comma before it)</text>',
-        '<rect x="290" y="44" width="250" height="284" rx="8" fill="#F6E7DF" stroke="#C77B5B" stroke-width="2"/>',
-        '<text x="415" y="70" text-anchor="middle" font-size="14" font-weight="bold" fill="#1F3B2D">Starts a dependent clause</text>',
-        '<text x="415" y="88" text-anchor="middle" font-size="12" fill="#333">(the clause cannot stand alone)</text>',
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w:.0f} 170" font-family="Arial, sans-serif">',
+        f'<rect width="{w:.0f}" height="170" fill="#FFFDF6"/>',
+        f'<text x="{w / 2:.0f}" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1F3B2D">{title}</text>',
     ]
-    left = [("F", "for"), ("A", "and"), ("N", "nor"), ("B", "but"), ("O", "or"), ("Y", "yet"), ("S", "so")]
-    for i, (letter, word) in enumerate(left):
-        y = 120 + i * 29
-        p.append(f'<text x="70" y="{y}" font-size="18" font-weight="bold" fill="#6B8A5B">{letter}</text>')
-        p.append(f'<text x="110" y="{y}" font-size="18" fill="#222">{word}</text>')
-    right = ["because", "when", "although", "while", "if", "after", "before", "until"]
-    for i, word in enumerate(right):
-        y = 118 + i * 25
-        p.append(f'<text x="350" y="{y}" font-size="18" fill="#222">{word}</text>')
+    for (text, kind), size in zip(parts, sizes):
+        fill, stroke, note = KINDS[kind]
+        cx = x + size / 2
+        p.append(f'<rect x="{x:.0f}" y="65" width="{size}" height="46" rx="8" fill="{fill}" stroke="{stroke}" stroke-width="2"/>')
+        p.append(f'<text x="{cx:.0f}" y="94" text-anchor="middle" font-size="15" fill="#222">{text}</text>')
+        p.append(f'<text x="{cx:.0f}" y="135" text-anchor="middle" font-size="13" font-weight="bold" fill="{stroke}">{note}</text>')
+        x += size + gap
     p.append('</svg>')
     return "".join(p)
 
 
 V_SIMPLE = _visual(
-    _rows_svg("A simple sentence", [
-        ("clause", "MAIN CLAUSE (one subject and one verb)", "Wombats dig burrows.", MAIN_FILL, MAIN_LINE),
-        ("note", "One main clause. It makes sense on its own.", MAIN_LINE),
-    ]),
-    "A single green box labelled main clause containing the sentence Wombats dig burrows. A note says it is one main clause that makes sense on its own.",
-    "A simple sentence has one main clause.",
+    _chain_svg("A simple sentence (one clause)", [("The echidna digs", "main")]),
+    "A single green box containing the words The echidna digs, with the note can stand alone underneath.",
+    "One clause with a subject (The echidna) and a verb (digs) can stand alone.",
+)
+V_FRAGMENT = _visual(
+    _chain_svg("A fragment (a dependent clause on its own)", [("Because it has sharp spines", "dep")]),
+    "A single blue box containing the words Because it has sharp spines, with the note cannot stand alone underneath. The title calls it a fragment.",
+    "A dependent clause cannot stand alone. On its own it is a fragment.",
 )
 V_COMPOUND = _visual(
-    _rows_svg("A compound sentence: two main clauses", [
-        ("clause", "MAIN CLAUSE 1", "Wombats dig burrows", MAIN_FILL, MAIN_LINE),
-        ("join", ", and  (comma + joining word)", "#1F3B2D"),
-        ("clause", "MAIN CLAUSE 2", "they rest inside during the day.", MAIN_FILL, MAIN_LINE),
-        ("note", "Each clause could stand alone as a sentence.", MAIN_LINE),
-    ]),
-    "Two green boxes labelled main clause 1 and main clause 2, joined by a dark pill that says comma and joining word, and. The sentence reads Wombats dig burrows, and they rest inside during the day. A note underneath says each clause could stand alone as a sentence.",
-    "A compound sentence joins two main clauses with a comma and a joining word.",
-)
-V_WORDS = _visual(
-    _words_svg(),
-    "Two columns of joining words. The left column, joins two main clauses with a comma before it, lists for, and, nor, but, or, yet and so, with the letters F, A, N, B, O, Y, S beside them. The right column, starts a dependent clause that cannot stand alone, lists because, when, although, while, if, after, before and until.",
-    "Two kinds of joining word, and the job each one does.",
+    _chain_svg("A compound sentence", [("Echidnas dig", "main"), (", and", "join"), ("koalas climb", "main")]),
+    "Three boxes in a row. A green box says Echidnas dig, an orange box says comma and, and a second green box says koalas climb. Under the green boxes are the words can stand alone, and under the orange box is the word joiner.",
+    "A compound sentence joins two main clauses with a comma and a joiner.",
 )
 V_COMPLEX = _visual(
-    _rows_svg("A complex sentence: main clause + dependent clause", [
-        ("clause", "MAIN CLAUSE (stands alone)", "Koalas sleep for most of the day", MAIN_FILL, MAIN_LINE),
-        ("join", "because  (joining word, no comma)", "#1F3B2D"),
-        ("clause", "DEPENDENT CLAUSE (cannot stand alone)", "gum leaves give them little energy.", DEP_FILL, DEP_LINE),
-    ]),
-    "A green main clause box reading Koalas sleep for most of the day, a dark pill that says because, joining word, no comma, then an orange dependent clause box reading gum leaves give them little energy.",
-    "A complex sentence has a main clause and a dependent clause. The dependent clause cannot stand alone.",
+    _chain_svg("A complex sentence", [("An echidna is safe", "main"), ("because", "join"), ("it has sharp spines", "dep")]),
+    "Three boxes in a row. A green box says An echidna is safe, an orange box says because, and a blue box says it has sharp spines. Notes underneath say can stand alone, joiner and cannot stand alone.",
+    "A complex sentence joins a main clause and a dependent clause.",
 )
-V_COMPLEX_FIRST = _visual(
-    _rows_svg("Dependent clause first: add a comma", [
-        ("clause", "DEPENDENT CLAUSE (starts with the joining word)", "Because gum leaves give them little energy", DEP_FILL, DEP_LINE),
-        ("join", ",  the comma goes here", "#4A6D8C"),
-        ("clause", "MAIN CLAUSE", "koalas sleep for most of the day.", MAIN_FILL, MAIN_LINE),
-    ]),
-    "An orange dependent clause box reading Because gum leaves give them little energy, a blue pill that says the comma goes here, then a green main clause box reading koalas sleep for most of the day.",
+V_ORDER = _visual(
+    _chain_svg("Dependent clause first, then a comma", [("Because it has sharp spines,", "dep"), ("an echidna is safe.", "main")]),
+    "Two boxes in a row. A blue box says Because it has sharp spines, with a comma at the end, and a green box says an echidna is safe. Notes underneath say cannot stand alone and can stand alone.",
     "When the dependent clause comes first, a comma follows it.",
-)
-V_FAULTY = _visual(
-    _rows_svg("Two common mistakes", [
-        ("clause", "FRAGMENT", "Because gum leaves give them little energy.", BAD_FILL, BAD_LINE),
-        ("note", "A dependent clause alone. There is no main clause.", BAD_LINE),
-        ("clause", "RUN-ON", "Wombats dig burrows they rest inside.", BAD_FILL, BAD_LINE),
-        ("note", "Two main clauses with no joining word.", BAD_LINE),
-    ]),
-    "Two red boxes. The first is a fragment, Because gum leaves give them little energy, with a note that it has no main clause. The second is a run-on, Wombats dig burrows they rest inside, with a note that two main clauses have no joining word.",
-    "A fragment has no main clause. A run-on has two main clauses with no join.",
 )
 
 MODEL = (
-    "MODEL PARAGRAPH: WOMBATS (practice facts)\n\n"
-    "Wombats dig burrows, and they rest inside during the day. Although wombats look slow, they can run quickly over short distances. When a wombat feels danger, it dashes into its burrow.\n\n"
-    "Sentence 1: compound. Two main clauses joined by , and.\n"
-    "Sentence 2: complex. The dependent clause comes first, so there is a comma after it.\n"
-    "Sentence 3: complex. The dependent clause comes first, so there is a comma after it."
+    "MODEL SENTENCES: ECHIDNA FACTS\n\n"
+    "Simple: An echidna digs.\n"
+    "Compound: Echidnas dig, and koalas climb.\n"
+    "Complex: An echidna is safe because it has sharp spines.\n"
+    "Complex, dependent clause first: Because it has sharp spines, an echidna is safe.\n"
+    "Fragment to fix: Because it has sharp spines."
 )
 
 LESSON = build(
     "s2-eng-w09-l3-compound-complex-sentences",
     "Compound and Complex Sentences",
-    "Learn how to join ideas in a report using compound and complex sentences, place the comma correctly, and fix fragments and run-ons.",
+    "Learn what a clause is, and how to join clauses into compound and complex sentences, and how to fix fragments.",
     "Language: compound and complex sentences",
     ["EN2-VOCAB-01", "EN2-SPELL-01"],
     {
-        "EN2-VOCAB-01": "Builds knowledge and use of Tier 1, Tier 2 and Tier 3 vocabulary through interacting, wide reading and writing. This lesson focuses on the joining words (conjunctions) that build compound and complex sentences, and on the grammar words clause, fragment and run-on.",
+        "EN2-VOCAB-01": "Builds knowledge and use of Tier 1, Tier 2 and Tier 3 vocabulary through interacting, wide reading and writing, and by defining and analysing words. This lesson focuses on the grammar words clause, conjunction, compound and complex, and on using them to build and fix sentences.",
         "EN2-SPELL-01": "Selects, applies and describes appropriate phonological, orthographic and morphological generalisations and strategies when spelling in a range of contexts. This week's focus is silent letters: kn, wr, mb and gn.",
     },
-    "We are learning how to join ideas with compound and complex sentences, and to spell words with silent letters.",
+    "We are learning how to build compound and complex sentences with clauses and joining words, and to spell words with silent letters.",
     [
-        "I can say what a clause is and tell a main clause from a dependent clause.",
-        "I can write a compound sentence using a comma and a joining word.",
-        "I can write a complex sentence using a joining word such as because, when or although.",
-        "I can choose a joining word that matches my meaning.",
-        "I can put the comma in the right place.",
-        "I can fix a fragment and a run-on.",
-        "I can spell and use knife, knit, wreck, lamb, gnaw and design.",
+        "I can find the subject and the verb in a clause.",
+        "I can tell a main clause from a dependent clause.",
+        "I can join two main clauses into a compound sentence with a comma and a joiner.",
+        "I can join a main clause and a dependent clause into a complex sentence.",
+        "I can put a comma after a dependent clause that starts a sentence.",
+        "I can fix a fragment.",
+        "I can spell and use knee, knock, wrist, wrap, climb and gnat.",
     ],
-    ["clause", "main clause", "dependent clause", "conjunction", "compound sentence", "complex sentence", "fragment", "run-on"],
-    ["This lesson (everything you need is inside it)", "Paper and a pencil", "Two coloured pencils for marking clauses (optional)"],
-    "Child has met conjunctions and compound and complex sentences in Week 4 Lesson 3, has written description paragraphs in the timeless present tense (Week 8), and has built a report page in Week 9 Lesson 2.",
+    ["clause", "conjunction", "compound", "complex", "fragment", "comma", "subject", "verb"],
+    ["This lesson (everything you need is inside it)", "Paper and a pencil", "Two coloured pencils (for the main task)"],
+    "Child has met nouns, verbs and adjectives (Week 2 Lesson 3), conjunctions and complex sentences (Week 4 Lesson 3) and the timeless present tense (Week 8 Lesson 3), and has read and written about the echidna in Weeks 7 to 9.",
     (
-        "Short sentences are clear, but a whole report of short sentences sounds choppy. Good writers join ideas so that the reader can see how they connect. A compound sentence joins two equal ideas. A complex sentence joins a main idea to a smaller idea that explains it. In this lesson you will build both kinds, put the commas in the right places, and fix two common mistakes."
+        "Short sentences are easy to read, but a page of only short sentences sounds choppy. Good writers join their ideas so the reader can see how they fit together. This lesson shows you how. You will learn what a clause is, then how to join clauses into compound and complex sentences. You will also learn how to spot and fix a fragment. The examples are about echidnas and koalas."
     ),
     [
         _step(
-            "🧩", "What is a clause?",
-            "A clause is a group of words with a subject and a verb. The subject is who or what the sentence is about, and the verb tells what it does or is.\n\n"
-            "A main clause makes sense on its own, so it can be a whole sentence. Wombats dig burrows is a main clause. The subject is wombats and the verb is dig. A sentence with only one main clause is a simple sentence.\n\n"
-            "Why it matters: if you can find the clauses, you can see how a sentence is built, and you can join or fix them.\n\n"
-            "Common mistake: thinking a long sentence must have more than one clause.\nFix: count the verbs and their subjects. One subject and verb pair means one clause, however many describing words it has.",
-            "Wombats dig burrows. (subject: wombats, verb: dig)\nThe large, grey echidna curls into a ball. (subject: the large, grey echidna, verb: curls) Still one clause.",
-            "One subject and verb pair is one clause.",
-            ("Which is a main clause?", ["Wombats dig burrows.", "Because it is hot.", "In the forest."], 0, "A main clause has a subject and a verb and makes sense on its own."),
+            "🧱", "What a clause is",
+            "Say just one word out loud, like digs. It feels unfinished, doesn't it? Now say: The echidna digs. That feels complete, because it tells you who or what the sentence is about and what that thing does. A group of words that does this job is called a clause. Every clause has a subject, which is the who or what, and a verb, which is the doing or being word.\n\n"
+            "To find a clause, ask two questions in this order. First, who or what is this about? That is the subject. Then, what is it doing or being? That is the verb. In the picture, The echidna is the subject and digs is the verb. If you can answer both questions, you have found a clause.\n\n"
+            "Clauses matter because every longer sentence is built from them, the way a wall is built from bricks. A common mistake is to call any group of words a clause, such as in the soil. Test it with the two questions. There is no subject and no verb, so it is only a phrase, and it needs a clause to hold it up.",
+            "The echidna digs. Subject: The echidna. Verb: digs.\n\nKoalas eat gum leaves. Subject: Koalas. Verb: eat.",
+            "A clause has a subject and a verb.",
+            ("Which group of words is a clause?", ["Koalas climb", "in the tall tree", "very slowly"], 0, "Koalas climb has a subject (Koalas) and a verb (climb)."),
             visual=[V_SIMPLE],
         ),
         _step(
+            "✋", "Stands alone or needs help",
+            "Some clauses can stand on their own as a whole sentence. An echidna is safe makes complete sense by itself. This is called a main clause. Other clauses start with a word like because or although, and when you read them alone you are left hanging. Because it has sharp spines. Because it has sharp spines, what? That kind of clause is called a dependent clause, since it depends on a main clause to finish its meaning.\n\n"
+            "Here is a quick test. Read the clause by itself and ask, does this make complete sense? If yes, it is a main clause. If you are left waiting for more, it is a dependent clause. In the picture, the blue box starts with because, and the note under it says it cannot stand alone.\n\n"
+            "This matters because a dependent clause written alone and ended with a full stop is a fragment, which is a piece of a sentence pretending to be a whole one. It is one of the most common writing mistakes. The fix is to join the fragment to a main clause, for example: An echidna is safe because it has sharp spines.",
+            "An echidna is safe. Does it make sense alone? Yes, so it is a main clause.\n\nBecause it has sharp spines. Does it make sense alone? No, we are waiting for more, so it is a dependent clause.",
+            "A main clause stands alone. A dependent clause needs a main clause.",
+            ("Which one is a dependent clause?", ["Koalas climb", "Although echidnas are small", "Echidnas dig"], 1, "Although echidnas are small leaves us waiting for the rest, so it cannot stand alone."),
+            visual=[V_FRAGMENT],
+        ),
+        _step(
             "🔗", "Compound sentences",
-            "A compound sentence joins two main clauses. Each clause could stand alone as a sentence, and the two ideas are equally important.\n\n"
-            "You join them with a comma and a joining word. Put the comma before the joining word, not after it. Look at the picture: the two green boxes are both main clauses, and the dark pill in the middle is the comma and the joining word.\n\n"
-            "Why it matters: a compound sentence shows how two ideas fit together, so your writing sounds smoother than two short sentences side by side.\n\n"
-            "Common mistake: leaving out the joining word, so there is only a comma.\nFix: a comma on its own is too weak. Add and, but or so after it.",
-            "Wombats dig burrows. They rest inside during the day.\nJoined: Wombats dig burrows, and they rest inside during the day.",
-            "Two main clauses, a comma, then a joining word.",
-            ("Where does the comma go in a compound sentence?", ["After the joining word", "Before the joining word", "At the very start"], 1, "The comma goes before the joining word."),
+            "Two main clauses can be joined into one longer sentence. Echidnas dig. Koalas climb. Each one makes sense alone. Join them with a joining word and you get: Echidnas dig, and koalas climb. A sentence made from two main clauses is called a compound sentence, and the joining word is called a conjunction.\n\n"
+            "Seven joiners do this job: for, and, nor, but, or, yet and so. Each one does something different. And adds an idea, but shows a difference, or gives a choice, and so shows a result. Write a comma before the joiner, as the picture shows. Before you join, check that the words on both sides could stand alone as sentences.\n\n"
+            "Compound sentences matter because they show how two equal ideas are linked. A common mistake is to join two clauses with only a comma, like Echidnas dig, koalas climb. The joiner is missing. The fix is easy: add a joiner after the comma, as in Echidnas dig, and koalas climb.",
+            "Koalas eat gum leaves. Echidnas eat ants.\n\nJoin them with but: Koalas eat gum leaves, but echidnas eat ants.\n\nBoth sides can stand alone, so this is a compound sentence.",
+            "Compound: two main clauses, a comma and a joiner.",
+            ("Which joiner shows a difference?", ["and", "but", "so"], 1, "But shows that the two ideas are different."),
             visual=[V_COMPOUND],
         ),
         _step(
-            "🎯", "Choose the right joining word",
-            "The joining words in the left column are easy to remember with the word FANBOYS: for, and, nor, but, or, yet, so. They join two main clauses. The three you will use most are and, but and so.\n\n"
-            "And adds an idea. But shows a contrast. So shows a result. Or shows a choice. Pick the word that matches what your two clauses mean, not the first one you think of.\n\n"
-            "Why it matters: the wrong joining word changes the meaning, or makes the sentence strange.\n\n"
-            "Common mistake: using and for everything.\nFix: ask how the two ideas connect. Is the second one extra, the opposite, or the result?",
-            "Echidnas have spines, but wombats have thick fur. (but: a contrast)\nEchidnas curl into a ball, so their spines face outwards. (so: a result)\nWombats dig burrows, and they rest inside. (and: an extra idea)",
-            "And adds, but contrasts, so gives a result.",
-            ("Which joining word shows a contrast?", ["and", "but", "so"], 1, "But shows that the two ideas are different."),
-            visual=[V_WORDS],
-        ),
-        _step(
-            "🌳", "Complex sentences",
-            "A complex sentence has one main clause and one dependent clause. A dependent clause has a subject and a verb, but it cannot stand alone, because it begins with a joining word such as because, when, although, while, if, after, before or until.\n\n"
-            "In the picture, the green box is the main clause and the orange box is the dependent clause. The dependent clause gives extra information, such as the reason, the time or the condition.\n\n"
-            "Why it matters: a complex sentence lets you give a reason or a time in the same sentence, and it shows the main idea and the smaller idea clearly.\n\n"
-            "Common mistake: thinking any sentence with a joining word is compound.\nFix: test each part. If one part cannot stand alone, the sentence is complex.",
-            "Koalas sleep for most of the day because gum leaves give them little energy.\nTest: Koalas sleep for most of the day stands alone. Gum leaves give them little energy would stand alone too, but because makes it depend on the first part. So the sentence is complex.",
-            "Main clause plus a dependent clause that starts with because, when, although and so on.",
-            ("Which word starts a dependent clause?", ["but", "although", "and"], 1, "Although starts a dependent clause. But and and join two main clauses."),
+            "🧩", "Complex sentences",
+            "A complex sentence has one main clause and one dependent clause. The dependent clause starts with a different kind of joining word, called a subordinating conjunction. Some are because, when, if, although, while, after, before and until. For example: An echidna is safe because it has sharp spines. The main clause is An echidna is safe, and the dependent clause is because it has sharp spines.\n\n"
+            "The joiner sits at the start of the dependent clause, and it tells you how the two ideas connect. Because gives a reason. When, after and before give a time. If gives a condition. Although shows a surprise. To build a complex sentence, write your main clause first, choose the joiner that matches your meaning, then add the dependent clause.\n\n"
+            "Complex sentences matter because they explain how ideas are linked, not just that they are. A common mistake is to choose a joiner that does not fit, such as An echidna is safe although it has sharp spines. It sounds odd, because the spines are the reason. Swap although for because and it makes sense.",
+            "I wear a hat. The sun is strong. (made up)\n\nJoin with because: I wear a hat because the sun is strong.\n\nMain clause: I wear a hat. Dependent clause: because the sun is strong.",
+            "Complex: a main clause plus a dependent clause that starts with a joiner such as because.",
+            ("Which word starts a dependent clause?", ["echidna", "because", "spines"], 1, "Because is a joiner that starts a dependent clause."),
             visual=[V_COMPLEX],
         ),
         _step(
-            "📍", "Where does the comma go?",
-            "In a complex sentence, the comma depends on which clause comes first. If the main clause comes first, you usually do not need a comma: Koalas sleep a lot because gum leaves give them little energy.\n\n"
-            "If the dependent clause comes first, put a comma after it, where the main clause begins. Look at the picture: the blue pill shows the comma between the two clauses.\n\n"
-            "Why it matters: the comma tells the reader where to pause, so the sentence is easy to read aloud.\n\n"
-            "Common mistake: putting the comma after the joining word, such as Because, gum leaves give them little energy.\nFix: read the dependent clause to its end, then put the comma.",
-            "Although wombats look slow, they can run quickly over short distances.\nWhen a wombat feels danger, it dashes into its burrow.",
-            "Dependent clause first means a comma after it.",
-            ("Which sentence is punctuated correctly?", ["When an echidna feels danger, it curls into a ball.", "When, an echidna feels danger it curls into a ball.", "When an echidna feels danger it, curls into a ball."], 0, "The comma goes at the end of the dependent clause."),
-            visual=[V_COMPLEX_FIRST],
+            "🔄", "Dependent clause first",
+            "You can swap the order of a complex sentence. Instead of putting the main clause first, you can start with the dependent clause: Because it has sharp spines, an echidna is safe. The meaning stays the same, but it reads differently, and starting with a joiner makes your writing more interesting.\n\n"
+            "When the dependent clause comes first, put a comma after it, right where the main clause begins, as the picture shows. When the main clause comes first, you usually do not need a comma. To check, find the joiner. If it starts the sentence, a comma is needed.\n\n"
+            "Mistakes come from forgetting this comma: Because it has sharp spines an echidna is safe. Read it aloud and you will hear a small pause after spines, and that pause is where the comma goes. Fix it by writing the comma, then read it again.",
+            "Main clause first: An echidna is safe because it has sharp spines. No comma.\n\nDependent clause first: Because it has sharp spines, an echidna is safe. Comma after spines.",
+            "If the dependent clause comes first, put a comma after it.",
+            ("Which sentence has the comma in the right place?", ["Because it has sharp spines, an echidna is safe.", "Because it has sharp spines an echidna, is safe.", "Because, it has sharp spines an echidna is safe."], 0, "The comma goes after the whole dependent clause."),
+            visual=[V_ORDER],
         ),
         _step(
-            "📝", "Why join ideas in a report?",
-            "A report with only short, simple sentences sounds choppy. Joining ideas makes the writing flow, and it shows the reader how the facts connect. Look back at the pictures: a compound sentence joins equal ideas, and a complex sentence adds a reason, a time or a surprise.\n\n"
-            "Mix the kinds. A paragraph of all compound sentences sounds like a list, and one of all complex sentences is hard to read. Use a short simple sentence to make a point strongly.\n\n"
-            "Why it matters: varied sentences keep the reader interested, and your report sounds more grown up.\n\n"
-            "Common mistake: joining every sentence with and.\nFix: use and, but, so, because and when, and keep some sentences short.",
-            "Choppy: Wombats dig burrows. They rest inside. They come out at night.\nSmoother: Wombats dig burrows, and they rest inside during the day. They come out at night.",
-            "Mix short and joined sentences.",
-            ("Why mix simple, compound and complex sentences?", ["To make the writing flow and stay interesting", "To make the report longer", "To use more commas"], 0, "Varied sentences flow better and keep the reader interested."),
+            "⚖️", "Choosing the right sentence",
+            "Now you have three tools. A simple sentence has one clause. A compound sentence joins two main clauses. A complex sentence joins a main clause and a dependent clause. Good writers mix them, because a page of only short sentences sounds choppy, and a page of only long ones is tiring to read.\n\n"
+            "To choose, ask how your ideas are linked. If both ideas are equally important, join them as a compound sentence with and, but, or or so. If one idea explains the other or depends on it, make a complex sentence with because, when, if or although. Look at the two pictures and notice what each joiner does.\n\n"
+            "The mistake to avoid is making a sentence very long by chaining ideas with and, and, and. Echidnas dig and koalas climb and kangaroos hop and it goes on and on. Stop after two ideas and begin a new sentence. A good rule is one joiner in each sentence.",
+            "Two equal ideas: Echidnas dig, and koalas climb. (compound)\n\nOne idea explains the other: An echidna is safe because it has sharp spines. (complex)",
+            "Equal ideas make a compound sentence. A reason or a time makes a complex sentence.",
+            ("Which sentence gives a reason?", ["Echidnas dig, and koalas climb.", "An echidna is safe because it has sharp spines.", "Koalas climb."], 1, "Because gives a reason, so this is a complex sentence."),
             visual=[V_COMPOUND, V_COMPLEX],
         ),
         _step(
-            "🛠️", "Fix fragments and run-ons",
-            "A fragment is a group of words that looks like a sentence but is missing a main clause. Because gum leaves give them little energy is a fragment, because it starts with because and has no main clause to go with it. Fix it by joining it to a main clause: Koalas sleep a lot because gum leaves give them little energy.\n\n"
-            "A run-on is two main clauses pushed together with no joining word. Wombats dig burrows they rest inside is a run-on. Fix it with a comma and a joining word: Wombats dig burrows, and they rest inside. You could also split it into two sentences.\n\n"
-            "Why it matters: fragments and run-ons confuse the reader, because they cannot tell where one idea ends.\n\n"
-            "Common mistake: only a comma between two main clauses (a comma splice).\nFix: add a joining word after the comma, or use a full stop.",
-            "Fragment: When the sun sets. Fixed: When the sun sets, wombats come out to feed.\nRun-on: Echidnas have spines wombats have fur. Fixed: Echidnas have spines, but wombats have fur.",
-            "A fragment needs a main clause. A run-on needs a join.",
-            ("Which is a fragment?", ["Wombats dig burrows.", "Because gum leaves give them little energy.", "Koalas sleep, and they eat."], 1, "It starts with because and has no main clause."),
-            visual=[V_FAULTY],
-        ),
-        _step(
-            "🔍", "Compound or complex?",
-            "Use a quick test. Cover the joining word. Then ask whether each part could stand alone as a sentence. If both parts could, the sentence is compound. If one part cannot, it is complex.\n\n"
-            "Then look at the joining word. And, but, so and or join two main clauses. Because, when, although, while, if, after, before and until start a dependent clause. The picture of the two kinds of joining word is a good thing to look back at.\n\n"
-            "Why it matters: when you can name the kind of sentence, you can decide where the comma goes and how to fix it.\n\n"
-            "Common mistake: judging by the length of the parts, not by whether they can stand alone.\nFix: always test each part by itself.",
-            "Echidnas curl into a ball, so their spines face outwards. Both parts stand alone: compound.\nWhen an echidna feels danger, it curls into a ball. The first part cannot stand alone: complex.",
-            "Test each part by itself.",
-            ("Both parts of the sentence could stand alone. What kind is it?", ["Compound", "Complex", "A fragment"], 0, "Two main clauses make a compound sentence."),
-            visual=[V_WORDS],
+            "🛠️", "Fixing fragments and run ons",
+            "Before you hand in your writing, check for two big mistakes. The first is a fragment, a dependent clause standing alone, like Because it has sharp spines. The second is a run on sentence, where two main clauses are stuck together with no joiner, like Echidnas dig koalas climb.\n\n"
+            "To fix a fragment, join it to a main clause, either after the clause or before it with a comma, as the pictures show. To fix a run on, add a comma and a joiner, or finish the first sentence with a full stop and start the next with a capital letter. Read each sentence aloud and listen for where it feels unfinished or where you run out of breath.\n\n"
+            "Checking matters because readers only understand writing that is clear, and fixing mistakes is part of being a writer. A common slip is to fix a fragment by adding only a capital letter or a full stop. That cannot rescue a dependent clause. It needs a main clause to lean on.",
+            "Fragment: Although echidnas are small.\nFixed: Although echidnas are small, they are tough.\n\nRun on: Echidnas dig koalas climb.\nFixed: Echidnas dig, and koalas climb.",
+            "Fix a fragment by adding a main clause. Fix a run on with a comma and a joiner.",
+            ("What fixes the fragment Because it has sharp spines?", ["Add a main clause", "Add a full stop", "Add a capital letter"], 0, "A dependent clause needs a main clause to finish its meaning."),
+            visual=[V_FRAGMENT, V_ORDER],
         ),
         _step(
             "🔤", "Spelling focus: silent letters",
-            "Some words have a letter that you write but do not say. The k is silent in knife and knit, the w in wreck, the b in lamb, and the g in gnaw and design.\n\n"
-            "Say the word the way it sounds, then say it in a silly way with the silent letter pronounced, like k-nife or lam-b, and write what you say. The silly voice helps your hand remember the silent letter. Related words help too: design and signal both keep the g.\n\n"
-            "Why it matters: a silent letter is still part of the spelling, so leaving it out makes the word wrong.",
-            "knife, knit, wreck, lamb, gnaw, design.\n\nSay: k-nife. Write: knife.\nSay: w-reck. Write: wreck.\nSay: lam-b. Write: lamb.",
+            "Some words have a letter that you write but do not say. These are called silent letters. Long ago people really did say them. Knee began with a k sound, and so did knock. The way we say the words changed slowly, but the spelling stayed, so the old letters are still there.\n\n"
+            "This week we have four patterns. The k is silent in kn words: knee and knock. The w is silent in wr words: wrist and wrap. The b is silent after m in climb. The g is silent in gn words: gnat.\n\n"
+            "A good way to remember is to say the word the silly way, with the silent letter sounded out, like k-nee, and write what you say. That silly voice helps your hand remember the silent letter. Then say the word the normal way.",
+            "knee, knock, wrist, wrap, climb, gnat.\n\nSay: k-nee. Write: knee.\nSay: w-rist. Write: wrist.\nSay: clim-b. Write: climb.",
             "kn, wr, mb, gn: one letter is silent but you still write it.",
-            ("Which word has a silent b?", ["lamb", "lamp", "land"], 0, "The b in lamb is silent."),
+            ("Which word has a silent w?", ["wrap", "water", "will"], 0, "The w in wrap is silent."),
         ),
     ],
     (
-        "I DO. Watch me build a paragraph with joined sentences. My topic is wombats. First I write the simple facts. Wombats dig burrows. Wombats rest inside during the day. Both are main clauses, so I can make them one compound sentence. I put a comma and a joining word between them: Wombats dig burrows, and they rest inside during the day. I used and because the second idea adds to the first.\n\n"
-        "Next I want to say that wombats look slow but are not. The ideas contrast, so I choose although. Although starts a dependent clause, so it needs a main clause. I write the dependent clause first, so I put a comma after it: Although wombats look slow, they can run quickly over short distances.\n\n"
-        "Last I write a sentence about danger. When a wombat feels danger, it dashes into its burrow. The dependent clause comes first, so there is a comma after it. I test the first part by itself: When a wombat feels danger cannot stand alone, so the sentence is complex. You can see my sentences in the pictures above.\n\n"
-        "WE DO. Now think it through with me. Echidnas have spines. Wombats have thick fur. These are two main clauses with a contrast, so which joining word fits? But. Where does the comma go? Before but. Say the whole sentence with me: Echidnas have spines, but wombats have thick fur. Now try a complex one. Koalas sleep a lot. Gum leaves give them little energy. Which joining word shows the reason? Because. Is a comma needed when the main clause comes first? No.\n\n"
-        "YOU DO. Now it is your turn. Write your own sentences about an animal you know. Here is my finished paragraph to check against.\n\n" + MODEL
+        "I do. I will build sentences about echidnas and koalas out loud, using the pictures above.\n\n"
+        "My first clause is The echidna digs. I ask who or what? The echidna, so that is the subject. I ask what is it doing? Digs, so that is the verb. It makes sense alone, so it is a main clause. My second clause is Koalas climb. That is also a main clause. I want to link them as equal ideas, so I choose and, and I put a comma before it: Echidnas dig, and koalas climb. That is a compound sentence.\n\n"
+        "Now a reason. I know that an echidna is safe, and I know why: it has sharp spines. I join them with because: An echidna is safe because it has sharp spines. The part that starts with because cannot stand alone, so it is the dependent clause. If I want it to come first, I write the comma after spines: Because it has sharp spines, an echidna is safe.\n\n"
+        "We do. Let us try one together. Koalas eat gum leaves. Echidnas eat ants. What joiner shows a difference? But. Where does the comma go? Before but. So we write: Koalas eat gum leaves, but echidnas eat ants. Is each side able to stand alone? Yes, so it is a compound sentence. Now fix this fragment together: Although echidnas are small. What does it need? A main clause. We add one: Although echidnas are small, they are tough.\n\n"
+        "You do. Now it is your turn to build and fix sentences of your own.\n\n" + MODEL
     ),
     (
-        "Here we practise together. Read each part, then type your answers in the boxes on the next stage. You can open the 'Put it all together' stage again to look at the pictures.\n\n"
-        "Part A: type simple, compound or complex for each sentence. (1) Koalas climb trees. (2) Echidnas have spines, but wombats have thick fur. (3) When an echidna feels danger, it curls into a ball. (4) Wombats dig burrows, and they rest inside.\n\n"
-        "Part B: join these two sentences into one compound sentence, using a comma and a joining word: Echidnas have spines. Wombats have thick fur. Then type which joining word you chose and why.\n\n"
-        "Part C: fix both mistakes. Fragment: Because gum leaves give them little energy. Run-on: Wombats dig burrows they rest inside.\n\n"
-        "Part D: type the missing silent letters to make six words: _nife, _nit, _reck, lam_, _naw, desi_n."
+        "Here we practise together. Read each part, then type your answers in the boxes on the next stage. You can open the 'Put it all together' stage again at any time to look at the sentence pictures.\n\n"
+        "Part A: type the subject and the verb in this clause: The koala climbs.\n\n"
+        "Part B: join these two main clauses into one compound sentence with a comma and a joiner: Koalas climb. Echidnas dig.\n\n"
+        "Part C: finish this complex sentence: An echidna is safe because ... Then fix this fragment by adding a main clause: Although echidnas are small.\n\n"
+        "Part D: type the missing silent letters to make five words: _nock, _rap, _nat, clim_, _nee."
     ),
     (
-        "Now write your own joined sentences. Type your answers in the big box, and number each one. You can look back at the pictures in the 'Put it all together' stage. Choose an Australian animal you know, such as a kangaroo, kookaburra, platypus or the wombat from the model. These are practice sentences, so ask a grown-up to check any fact you want to use in a real report.\n\n" + MODEL + "\n\n"
-        "1. Clauses: type the two clauses in the sentence Wombats dig burrows, and they rest inside during the day. Say which joining word links them.\n\n"
-        "2. Compound: type three compound sentences about your animal. Use a different joining word in each one (choose from and, but, so, or).\n\n"
-        "3. Complex: type three complex sentences about your animal. Use because, when or although. Make at least one start with the dependent clause, and put the comma after it.\n\n"
-        "4. Mark: choose two of your sentences. Type the joining word in each, and type the dependent clause from one of them.\n\n"
-        "5. Fix: type a correct version of each of these. Fragment: When the sun sets. Run-on: Echidnas have spines wombats have fur.\n\n"
-        "6. Paragraph: type a paragraph of four to six sentences about your animal. Include at least one compound sentence, one complex sentence and one short simple sentence.\n\n"
-        "7. Spelling: type your six spelling words, and write one sentence each for knife, lamb and design."
+        "Now build and fix sentences of your own. Type your answers in the big box, and number each one. You can look back at the sentence pictures in the 'Put it all together' stage.\n\n"
+        "1. Clauses: type the subject and the verb in each sentence. The echidna digs. Koalas eat gum leaves. Kangaroos hop.\n\n"
+        "2. Compound sentences: join each pair with a comma and a joiner, and type the new sentence. Koalas eat gum leaves. Echidnas eat ants. / An echidna has spines. It has a long snout.\n\n"
+        "3. Complex sentences: join each pair with because and type the new sentence. I wear a hat. The sun is strong. (made up) / An echidna is safe. It has sharp spines.\n\n"
+        "4. Fragments: turn each fragment into a full sentence by adding a main clause. Although echidnas are small. / When it is hot.\n\n"
+        "5. Swap the order: take your complex sentence about the hat from question 3 and write it again with the dependent clause first. Remember the comma.\n\n"
+        "6. Your own paragraph: on paper, write four sentences about an animal you know. Write one simple sentence, one compound sentence, one complex sentence, and one complex sentence that starts with the dependent clause. Use two coloured pencils to underline the main clauses in one colour and the dependent clauses in the other. Type your paragraph.\n\n"
+        "7. Spelling: type your six spelling words, and write one sentence each for knee, wrist and climb."
     ),
-    "Which was harder for you: choosing the joining word, putting the comma in the right place, or fixing a fragment, and what helps you check your sentence?",
-    "Did I find the main clause and the dependent clause, join two main clauses with a comma and a joining word, use because, when or although for a complex sentence, put the comma after a dependent clause that comes first, fix a fragment and a run-on, and spell knife, knit, wreck, lamb, gnaw and design correctly?",
+    "Which kind of sentence was easiest for you to build, and which was hardest? What helps you check that you have joined the clauses correctly?",
+    "Did I find the subject and verb, check that my compound sentences have a comma and a joiner, put a comma after a dependent clause that starts a sentence, fix every fragment, and spell knee, knock, wrist, wrap, climb and gnat correctly?",
     [
-        _q("Which sentence is compound?", ["Wombats dig burrows.", "Wombats dig burrows, and they rest inside.", "Wombats dig burrows because they need shelter.", "Because wombats need shelter."], 1, "It joins two main clauses with a comma and and."),
-        _q("Which sentence is complex?", ["Koalas climb trees, and they eat leaves.", "Koalas climb.", "Koalas sleep a lot because gum leaves give little energy.", "Koalas and wombats."], 2, "It has a main clause and a dependent clause that starts with because."),
-        _q("What does a compound sentence join?", ["Two main clauses", "A main clause and a dependent clause", "Two fragments", "Two titles"], 0, "A compound sentence joins two main clauses."),
-        _q("Which word starts a dependent clause?", ["and", "but", "although", "so"], 2, "Although starts a dependent clause. The others join two main clauses."),
-        _q("Where does the comma go in a compound sentence?", ["After the last word", "Before the joining word", "Nowhere", "After the first word"], 1, "The comma goes before the joining word."),
-        _q("Which sentence is punctuated correctly?", ["When an echidna feels danger it curls up.", "When an echidna feels danger, it curls up.", "When, an echidna feels danger it curls up.", "When an echidna, feels danger it curls up."], 1, "The comma goes after the dependent clause."),
-        _q("Which is a fragment?", ["Wombats dig burrows.", "Because gum leaves give little energy.", "Koalas sleep, and they eat.", "Echidnas have spines."], 1, "It has no main clause, so it cannot stand alone."),
-        _q("Which joining word shows a contrast?", ["and", "so", "but", "because"], 2, "But shows that two ideas are different."),
-        _q("Which word has a silent k?", ["knife", "kite", "kick", "kind"], 0, "The k in knife is silent."),
-        _q("Which word is spelled correctly?", ["reck", "wrek", "wreck", "wrec"], 2, "Wreck has a silent w."),
+        _q("What is a clause?", ["A group of words with a subject and a verb", "A single letter", "A picture label", "A page number"], 0, "A clause has a subject and a verb."),
+        _q("Which word is a conjunction?", ["echidna", "and", "spines", "quickly"], 1, "And joins two clauses, so it is a conjunction."),
+        _q("Which sentence is compound?", ["Echidnas dig, and koalas climb.", "Because it rained.", "An echidna digs.", "Although it is small."], 0, "It joins two main clauses with a comma and and."),
+        _q("Which sentence is complex?", ["Koalas climb, but echidnas dig.", "An echidna is safe because it has sharp spines.", "Koalas climb.", "Echidnas dig, and koalas climb."], 1, "It has a main clause and a dependent clause that starts with because."),
+        _q("Which is a fragment?", ["An echidna is safe.", "Echidnas dig.", "Because it has sharp spines", "Koalas climb, and echidnas dig."], 2, "Because it has sharp spines cannot stand alone."),
+        _q("When a dependent clause starts a sentence, what comes after it?", ["A full stop", "A comma", "A question mark", "Nothing"], 1, "A comma separates the dependent clause from the main clause."),
+        _q("Which joiner shows a reason?", ["but", "or", "yet", "because"], 3, "Because gives a reason."),
+        _q("Which joiner gives a choice?", ["because", "although", "or", "when"], 2, "Or gives a choice between two things."),
+        _q("Which word has a silent g?", ["gum", "gnat", "goat", "grass"], 1, "The g in gnat is silent."),
+        _q("Which word is spelled correctly?", ["rapp", "wrapp", "wrap", "wrapt"], 2, "Wrap has a silent w."),
     ],
     "Type your answers in the practice boxes and in the big box, then submit them.",
-    "Extension: choose a paragraph from a book or website about an animal. Find one compound sentence and one complex sentence in it. Type or write them out, circle the joining word in each, and say how you know which kind each one is. Then rewrite one choppy pair of simple sentences as a single joined sentence.",
-    [("clause", "A group of words with a subject and a verb"), ("main clause", "A clause that makes sense on its own"), ("dependent clause", "A clause that cannot stand alone"), ("conjunction", "A joining word, such as and, but or because"), ("compound sentence", "A sentence with two main clauses"), ("complex sentence", "A sentence with a main clause and a dependent clause"), ("fragment", "Words that look like a sentence but have no main clause"), ("run-on", "Two main clauses joined with no joining word")],
+    "Extension: find a paragraph in a book or a website page. Find one compound sentence and one complex sentence. Copy each one, circle the joiner, and underline the main clause. Show a family member.",
+    [("clause", "A group of words with a subject and a verb"), ("conjunction", "A joining word such as and, but or because"), ("compound", "Made of two main clauses joined together"), ("complex", "Made of a main clause and a dependent clause"), ("fragment", "A piece of a sentence that cannot stand alone"), ("comma", "A small mark that shows a short pause"), ("subject", "The who or what a clause is about"), ("verb", "The word that shows what someone or something does or is")],
+    [],
+    _sort("Compound or complex?", "Sort each sentence into compound or complex.", ["Compound sentence", "Complex sentence"], [("Echidnas dig, and koalas climb.", 0), ("An echidna is safe because it has sharp spines.", 1), ("Koalas eat gum leaves, but echidnas eat ants.", 0), ("I stayed inside because it was raining. (made up)", 1), ("I wore a hat, so I stayed cool. (made up)", 0), ("We will go outside if it stops raining. (made up)", 1), ("The tongue is sticky, and it catches ants.", 0), ("Although echidnas are small, they are tough.", 1)]),
     [
-        _video(
-            "Simple, Compound, Complex Sentences", "smgyeUomfyA",
-            "Watch how the video tells the three kinds of sentence apart. It says independent clause for what we call a main clause. Listen for the comma before the joining word in a compound sentence.",
-            "Ask your child to say one compound sentence and one complex sentence about an animal, then tell you which joining word they used.",
-            ("What does a compound sentence join?", ["Two main clauses", "Two titles", "Two pictures"], 0, "A compound sentence joins two main clauses with a comma and a joining word."),
-        ),
-        _video(
-            "Fragments and Run-On Sentences", "a30A0a-9mCA",
-            "Watch for how the video spots a fragment and a run-on, and how it fixes each one. If it mentions anything beyond this lesson, you can skip that part.",
-            "Ask your child to find the mistake in a sentence you make up, name it as a fragment or a run-on, and say how to fix it.",
-            ("What is a fragment?", ["Words that look like a sentence but are missing a main clause", "A very long sentence", "A title"], 0, "A fragment is missing something, so it cannot stand alone as a sentence."),
-        ),
-    ],
-    _sort("Simple, compound or complex?", "Sort each sentence by how it is built.", ["Simple", "Compound", "Complex"], [("Koalas climb trees.", 0), ("Koalas climb trees, and they eat gum leaves.", 1), ("Koalas sleep a lot because gum leaves give little energy.", 2), ("Echidnas have spines, but wombats have thick fur.", 1), ("When an echidna feels danger, it curls into a ball.", 2), ("Kookaburras sit in tall gum trees.", 0), ("Wombats dig burrows, so they have shelter.", 1), ("Although wombats look slow, they can run fast.", 2)]),
-    [
-        _wc("Which is a group of words with a subject and a verb?", ["clause", "comma", "caption"], 0, "A clause has a subject and a verb."),
-        _wc("Which is a joining word?", ["conjunction", "fragment", "scale"], 0, "A conjunction is a joining word."),
-        _wc("Which cannot stand alone?", ["main clause", "dependent clause", "simple sentence"], 1, "A dependent clause cannot stand alone."),
-        _wc("Which is unfinished because it has no main clause?", ["fragment", "compound sentence", "title"], 0, "A fragment has no main clause."),
-        _wc("Which word is spelled correctly?", ["nife", "knife", "kniff"], 1, "Knife has a silent k."),
-        _wc("Which word is spelled correctly?", ["reck", "wrek", "wreck"], 2, "Wreck has a silent w."),
-        _wc("Which word is spelled correctly?", ["lam", "lamb", "lambe"], 1, "Lamb has a silent b."),
-        _wc("Which word is spelled correctly?", ["naw", "gnor", "gnaw"], 2, "Gnaw has a silent g."),
+        _wc("Which is a group of words with a subject and a verb?", ["clause", "comma", "fragment"], 0, "A clause has a subject and a verb."),
+        _wc("Which is a joining word such as and or because?", ["comma", "conjunction", "fragment"], 1, "A conjunction joins clauses."),
+        _wc("Which is a piece of a sentence that cannot stand alone?", ["fragment", "conjunction", "comma"], 0, "A fragment is a piece of a sentence."),
+        _wc("Which mark goes after a dependent clause that starts a sentence?", ["conjunction", "fragment", "comma"], 2, "A comma goes after the dependent clause."),
+        _wc("Which is the correct spelling for the sound at a door?", ["nock", "knock", "knok"], 1, "Knock has a silent k."),
+        _wc("Which is the correct spelling for covering a present?", ["rap", "wrapp", "wrap"], 2, "Wrap has a silent w."),
+        _wc("Which is the correct spelling for a tiny flying insect?", ["gnat", "nat", "gnatt"], 0, "Gnat has a silent g."),
+        _wc("Which is the correct spelling for going up a tree?", ["clim", "climb", "clime"], 1, "Climb has a silent b."),
     ],
     [
-        {"key": "partA", "label": "Part A: name the sentence", "hint": "simple, compound or complex for each of the four sentences."},
-        {"key": "partB", "label": "Part B: join the sentences", "hint": "One compound sentence with a comma, then the joining word you chose and why."},
-        {"key": "partC", "label": "Part C: fix the mistakes", "hint": "A correct version of the fragment and of the run-on."},
-        {"key": "partD", "label": "Part D: silent letters", "hint": "The six words from _nife, _nit, _reck, lam_, _naw, desi_n."},
+        {"key": "partA", "label": "Part A: subject and verb", "hint": "Type the subject and the verb from The koala climbs."},
+        {"key": "partB", "label": "Part B: a compound sentence", "hint": "Join Koalas climb and Echidnas dig with a comma and a joiner."},
+        {"key": "partC", "label": "Part C: complex and fragment", "hint": "Finish the sentence with because, then fix Although echidnas are small."},
+        {"key": "partD", "label": "Part D: silent letters", "hint": "The five words from _nock, _rap, _nat, clim_, _nee."},
     ],
-    ["Putting only a comma between two main clauses", "Using and for every joining job", "Writing a dependent clause on its own as a sentence", "Leaving out the comma after a dependent clause that comes first", "Putting the comma after the joining word, not before it", "Leaving out the silent letter: nife, reck, lam, naw"],
+    ["Writing a dependent clause on its own as if it were a sentence", "Joining two main clauses with only a comma and no joiner", "Forgetting the comma after a dependent clause that starts a sentence", "Choosing a joiner that does not fit the meaning", "Chaining many ideas together with and", "Leaving out the silent letter: nock, rap, clim, nat"],
     ["Read a page of a book and find one compound sentence and one complex sentence.", "Practise your six spelling words by writing a sentence for each."],
-    "Part A: (1) simple; (2) compound; (3) complex; (4) compound. Part B: accept a sentence such as Echidnas have spines, but wombats have thick fur, with a comma before but, and a reason such as but shows a contrast. Part C: accept a fragment fixed by joining it to a main clause, such as Koalas sleep a lot because gum leaves give them little energy; and a run-on fixed with a comma and a joining word, such as Wombats dig burrows, and they rest inside, or split into two sentences. Part D: knife, knit, wreck, lamb, gnaw, design. Main task 1: Wombats dig burrows and they rest inside during the day; the joining word is and. 2: accept three compound sentences, each with two main clauses, a comma before the joining word and a different joining word. 3: accept three complex sentences with a joining word such as because, when or although, at least one with the dependent clause first and a comma after it. 4: accept the joining words identified and one correct dependent clause. 5: accept a fragment joined to a main clause, such as When the sun sets, wombats come out to feed, and a run-on fixed, such as Echidnas have spines, but wombats have fur. 6: accept a paragraph with at least one compound, one complex and one simple sentence. 7: accept six correctly spelled words and sentences. Quiz answers: Wombats dig burrows, and they rest inside; Koalas sleep a lot because gum leaves give little energy; two main clauses; although; before the joining word; When an echidna feels danger, it curls up; Because gum leaves give little energy; but; knife; wreck.",
+    "Part A: subject The koala, verb climbs. Part B: Koalas climb, and echidnas dig. (accept but or so if the meaning is explained). Part C: accept a complete reason such as An echidna is safe because it has sharp spines; accept a fragment fixed with a main clause, such as Although echidnas are small, they are tough. Part D: knock, wrap, gnat, climb, knee. Main task 1: The echidna digs (subject The echidna, verb digs); Koalas eat gum leaves (Koalas, eat); Kangaroos hop (Kangaroos, hop). 2: Koalas eat gum leaves, but echidnas eat ants. An echidna has spines, and it has a long snout. 3: I wear a hat because the sun is strong. An echidna is safe because it has sharp spines. 4: accept any complete sentence that adds a main clause, such as Although echidnas are small, they are tough. When it is hot, I drink water. 5: Because the sun is strong, I wear a hat. 6: accept any four sentences that include a simple, a compound, a complex and a complex with the dependent clause first and a comma, with the clauses underlined in two colours. 7: accept six correctly spelled words and sentences. Quiz answers: a group of words with a subject and a verb; and; Echidnas dig, and koalas climb.; An echidna is safe because it has sharp spines.; Because it has sharp spines; a comma; because; or; gnat; wrap.",
     parent_check=(
-        "Check that every compound sentence has two clauses that could each stand alone, a comma before the joining word, and a joining word that fits the meaning. Check that every complex sentence has a dependent clause that begins with a joining word such as because, when or although, and that a comma follows a dependent clause that comes first. Check that the fragment is joined to a main clause and the run-on has a comma and a joining word, or is split in two. Check that the paragraph includes a compound, a complex and a short simple sentence. The animal facts in the practice sentences are for practice, so check any fact your child wants to reuse in a real report. Accept any sensible animal and sentences."
+        "Check that the child finds the subject and the verb in each clause, that each compound sentence has a comma and a joiner, and that each complex sentence uses a joiner that fits the meaning. Check that the comma follows the dependent clause when it comes first, and that every fragment now has a main clause. Check that the paragraph has one simple, one compound and one complex sentence plus one with the dependent clause first. Accept any sensible animal and sentences. The hat, rain and bag sentences are made up, and koalas climb and kangaroos hop should be checked as general knowledge."
     ),
-    worked_visuals=[V_COMPOUND, V_COMPLEX, V_COMPLEX_FIRST],
+    worked_visuals=[V_COMPOUND, V_COMPLEX],
 )
 
 EXPLICIT_TEACHING = (
-    "The big idea. A report made only of short sentences sounds choppy and makes the reader do the work of connecting the facts. Compound and complex sentences do that work for the reader. A compound sentence joins two equal ideas. A complex sentence joins a main idea to a smaller idea that gives a reason, a time or a surprise. Your child met these in Week 4, and this lesson uses them in report writing and tidies up the punctuation.\n\n"
-    "How to open the lesson. Read your child a short choppy paragraph, such as Wombats dig burrows. They rest inside. They come out at night. Then read the joined version, Wombats dig burrows, and they rest inside during the day. Ask which one sounds better and why. Once your child has heard the difference, the grammar words have a job to do.\n\n"
-    "Clauses. A clause has a subject and a verb. A main clause makes sense on its own, and a dependent clause does not. Teach one test and use it every time: could this part be a whole sentence on its own? If yes, it is a main clause. If no, it depends on another clause. Children who can apply that test can sort almost any sentence.\n\n"
-    "Compound sentences. Two main clauses, then a comma and a joining word. The seven joining words are for, and, nor, but, or, yet and so, which spell FANBOYS. Children overuse and, so ask what the second idea does. Does it add, contrast or give a result? That tells them to use and, but or so. The comma goes before the joining word, never after it.\n\n"
-    "Complex sentences. A main clause and a dependent clause that begins with a joining word such as because, when, although, while, if, after, before or until. When the main clause comes first, no comma is usually needed. When the dependent clause comes first, a comma follows it. Have your child read the sentence aloud, and listen for the natural pause where the comma belongs.\n\n"
-    "Fragments and run-ons. A fragment is a dependent clause standing alone, such as Because gum leaves give them little energy. A run-on pushes two main clauses together with no join. A comma alone between two main clauses (a comma splice) is a common version, so teach that a comma is too weak to join them. For every mistake, ask your child to name it first and then fix it.\n\n"
-    "The videos. Watch each one yourself before you use it. The first video says independent clause where this lesson says main clause, so tell your child the two names mean the same thing. The second video is a general grammar lesson and may go beyond what this lesson teaches, so skip any part that does.\n\n"
-    "The spelling work. The silent letters in knife, knit, wreck, lamb, gnaw and design are left over from older pronunciations. Use the silly-voice method: say k-nife, w-reck and lam-b with the silent letter pronounced, write exactly what you said, then say the word normally. Related words help with design, because signal and sign also keep the g.\n\n"
-    "Pace and support. The lesson runs about an hour and splits well into two sittings: clauses, compound and complex sentences in the first, and commas, mistakes, the main task and spelling in the second. The pictures are there to look back at, so encourage your child to open the 'Put it all together' stage whenever a rule slips. If your child finds complex sentences hard, spend longer on because and when, and leave although for later."
+    "The big idea. A sentence is built from clauses, and a clause is a group of words with a subject and a verb. Once your child can see clauses, joining them stops being a mystery and becomes a choice. This lesson teaches three sentence shapes: the simple sentence with one clause, the compound sentence that joins two equal main clauses, and the complex sentence that joins a main clause with a dependent clause. The skill matters because young writers tend to produce either a string of short sentences or one long sentence chained with and. Knowing the shapes lets them vary their writing on purpose.\n\n"
+    "How to open the lesson. Write two short sentences on paper: Echidnas dig. Koalas climb. Read them aloud in a flat, choppy voice and ask your child what it sounds like. Most children say it sounds like a robot. Then read the joined version, Echidnas dig, and koalas climb, in a natural voice. The difference in rhythm is the reason this lesson exists. Name the skill: today you learn to join ideas so they flow, and to know exactly what kind of joining you have done.\n\n"
+    "Teaching the clause. Give your child a two question routine and use it every time. Ask who or what is this about, which finds the subject, and ask what is it doing or being, which finds the verb. If both answers exist, it is a clause. Practise with plain examples first, such as The echidna digs, then show a non example such as in the soil. A phrase has no subject and verb together, so it cannot be a clause. Children who can say why in the soil is not a clause have understood the idea, even if they cannot yet name every word type.\n\n"
+    "Teaching main and dependent clauses. The key test is whether the clause makes complete sense when read alone. An echidna is safe does. Because it has sharp spines does not, and the reader is left waiting. Tell your child that the first kind is a main clause and the second is a dependent clause because it depends on a main clause. This is the foundation for understanding fragments. A fragment is a dependent clause that has been written alone and ended with a full stop. It is one of the most common errors in Year 3 and 4 writing, and children fix it best when they hear it. Read the fragment aloud and ask what the reader is waiting for.\n\n"
+    "Teaching compound sentences. A compound sentence joins two main clauses with a comma and one of seven joiners: for, and, nor, but, or, yet and so. Focus on and, but, or and so first, because children use them most. Teach the meaning of each. And adds, but contrasts, or offers a choice, and so gives a result. Insist on the check that both sides can stand alone, because that check separates a compound sentence from a main clause with a list or an extra phrase. The common error is a comma splice, where two clauses are joined by a comma and no joiner, as in Echidnas dig, koalas climb. The fix is to add the joiner after the comma.\n\n"
+    "Teaching complex sentences. A complex sentence has one main clause and one dependent clause, and the dependent clause begins with a subordinating conjunction such as because, when, if, although, while, after, before or until. Teach the job of each joiner. Because gives a reason, when, after and before give a time, if gives a condition, and although shows a surprise. The most useful habit is to write the main clause first, then choose the joiner that matches the meaning. When the dependent clause starts the sentence, a comma follows it. When it comes second, no comma is usually needed. Let your child read both versions aloud, because the small pause after the dependent clause is something they can hear.\n\n"
+    "Fixing fragments and run ons. These are the two mistakes your child should be able to spot in their own writing. To fix a fragment, join it to a main clause. To fix a run on, add a comma and a joiner, or split it into two sentences with a full stop and a capital letter. Avoid fixing a fragment only by adding a capital letter or a full stop, because that does not change what the clause is. Encourage your child to read each sentence aloud slowly, and to put a finger on each full stop and ask whether the words before it make complete sense. Praise the moment your child catches an error without help.\n\n"
+    "The spelling work. The silent letters in knee, knock, wrist, wrap, climb and gnat are left over from a time when people pronounced them. Tell your child that story, because a reason is easier to remember than a rule. Then use the silly voice method: say k-nee, w-rist and clim-b with the silent letter sounded out, write exactly what you said, and then say the word normally. Ten minutes of this beats copying a list three times.\n\n"
+    "What to watch for and how to fix it. If your child cannot find the subject, ask who or what the sentence is about. If they write fragments, ask what the reader is waiting for. If they join clauses with only a comma, ask which joiner is missing. If they forget the comma after a dependent clause that starts a sentence, read the sentence aloud and ask where the pause is. If they chain many ideas with and, tell them one joiner in each sentence. Keep the pace relaxed. The lesson runs about an hour and splits well into two sittings, with clauses and compound sentences in the first, and complex sentences, fixing and spelling in the second."
 )
 LESSON["explicit_teaching"] = EXPLICIT_TEACHING
 
@@ -356,18 +270,18 @@ LESSON["planner_intro"] = "Type your answer to each part of the guided practice.
 
 LESSON["spelling"] = {
     "focus": "Silent letters: kn, wr, mb, gn",
-    "teaching": "In some words one letter is silent. The k is silent in knife and knit, the w in wreck, the b in lamb, and the g in gnaw and design. Long ago people said these letters aloud, and the spelling stayed after the sound was lost. Say the word, then picture the silent letter as you write it.",
+    "teaching": "In some words one letter is silent. The k is silent in knee and knock, the w in wrist and wrap, the b in climb, and the g in gnat. Long ago people said these letters aloud, and the spelling stayed after the sound was lost. Say the word, then picture the silent letter as you write it.",
     "words": [
-        _w("knife", "knife", "silent k at the start, a tool for cutting"),
-        _w("knit", "knit", "silent k at the start, to make cloth from wool with needles"),
-        _w("wreck", "wreck", "silent w at the start, to break or ruin something"),
-        _w("lamb", "lamb", "silent b at the end, a young sheep"),
-        _w("gnaw", "gnaw", "silent g at the start, to chew again and again"),
-        _w("design", "design", "silent g in the middle, to plan how something will look"),
+        _w("knee", "knee", "silent k at the start, the joint in your leg"),
+        _w("knock", "knock", "silent k at the start, to tap on a door"),
+        _w("wrist", "wrist", "silent w at the start, the joint by your hand"),
+        _w("wrap", "wrap", "silent w at the start, to cover something"),
+        _w("climb", "climb", "silent b at the end, to go up"),
+        _w("gnat", "gnat", "silent g at the start, a tiny flying insect"),
     ],
     "check": [
-        _c("Which word has a silent w?", ["wreck", "went", "wind"], 0, "The w in wreck is silent."),
-        _c("Which word has a silent g?", ["gum", "gate", "gnaw"], 2, "The g in gnaw is silent."),
+        _c("Which word has a silent w?", ["wrist", "west", "wind"], 0, "The w in wrist is silent."),
+        _c("Which word has a silent b?", ["band", "bring", "climb"], 2, "The b in climb is silent."),
     ],
 }
 LESSON["spelling_focus"] = "Silent letters: kn, wr, mb, gn"
@@ -375,6 +289,6 @@ LESSON["hoard_words"] = list(WORDS)
 
 if __name__ == "__main__":
     assert len(LESSON["quiz"]) == 10 and len(LESSON["word_challenges"]) == 8
-    assert len(LESSON["planner_fields"]) == 4
+    assert all("visual" in s or "visual_before" in s for s in LESSON["teach_steps"][:7])
     assert all(v["svg"].startswith("<svg") and v["svg"].endswith("</svg>") for v in LESSON["worked_visuals"])
     print("W9 L3 ok", LESSON["seed_key"])
