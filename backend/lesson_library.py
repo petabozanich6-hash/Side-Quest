@@ -1,5 +1,5 @@
 # Built-in quests. Bump LESSON_LIBRARY_VERSION whenever lessons are added or changed.
-LESSON_LIBRARY_VERSION = 83
+LESSON_LIBRARY_VERSION = 84
 
 # All previous lessons have been cleared so the library can be rebuilt from scratch.
 # Stage 4 lessons only go live when their module name is listed in S4_LIVE below. Every other
@@ -48,6 +48,8 @@ LESSON_MODULES = (
     "lesson_library_s2_english_w08_l2",
     "lesson_library_s2_english_w08_l3",
     "lesson_library_s2_english_w08_l4",
+    "lesson_library_s2_english_w09_l1",
+    "lesson_library_s2_english_w09_l2",
 )
 
 
