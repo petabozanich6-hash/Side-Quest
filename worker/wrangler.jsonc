@@ -1,0 +1,6 @@
+{
+  "name": "side-quest",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-01",
+  "observability": { "enabled": true }
+}
