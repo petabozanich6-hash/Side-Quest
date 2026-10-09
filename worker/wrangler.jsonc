@@ -2,5 +2,13 @@
   "name": "side-quest",
   "main": "src/index.ts",
   "compatibility_date": "2025-10-01",
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "side-quest-db",
+      "database_id": "1ac15034-9943-436d-bd44-b3fa2ea75646",
+      "migrations_dir": "migrations"
+    }
+  ]
 }
