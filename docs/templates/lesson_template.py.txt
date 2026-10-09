@@ -1,0 +1,133 @@
+"""Stage 2 English, Week <<FILL: N>> Lesson <<FILL: N>>: <<FILL: lesson title>> (<<FILL: strand>>).
+Template copied from W9 L1. Replace every <<FILL ...>> marker. Read docs/PROSE_STYLE.md first.
+<<FILL: 2 to 3 sentences: what the child learns and the example topic>>
+Spelling: <<FILL: pattern>>: <<FILL: six words>>.
+Outcomes: <<FILL: outcome codes>>, checked against lesson_library_s2_english_placeholders.py (Week <<FILL: N>>, Lesson <<FILL: N>>). Wording is the official NESA text held in backend/nsw_outcomes.py, with a short note on this lesson's focus.
+Video status: <<FILL: list verified videos with ids, or say: no video attached>>.
+Facts used: <<FILL: list every fact used in examples; tell parent to check any reused>>.
+"""
+import math
+
+from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _visual, _video
+from spelling_s2_w1 import _w, _c
+
+WORDS = [<<FILL: six spelling words as quoted strings>>]
+
+# <<FILL: constants for any shared data, colours or survey numbers>>
+
+
+def _main_svg():
+    # <<FILL: draw the main picture as SVG with helper code. Real drawing, no placeholders.
+    # Keep label text inside its shape. Return one string starting with <svg and ending with </svg>.>>
+    return "<<FILL: svg string>>"
+
+
+# <<FILL: one _visual(...) per picture. Each has (svg, accurate alt text, one-sentence caption).>>
+V_MAIN = _visual(
+    _main_svg(),
+    "<<FILL: alt text describing exactly what is drawn>>",
+    "<<FILL: one-sentence caption>>",
+)
+
+MODEL = (
+    "<<FILL: the finished model the child checks against, with a heading and any data line>>"
+)
+
+LESSON = build(
+    "<<FILL: seed key e.g. s2-eng-w09-l3-short-name>>",
+    "<<FILL: title>>",
+    "<<FILL: one-sentence summary>>",
+    "<<FILL: strand label e.g. Language: compound and complex sentences>>",
+    [<<FILL: outcome codes as strings>>],
+    {
+        "<<FILL: outcome code>>": "<<FILL: official NESA wording + one sentence on this lesson's focus>>",
+    },
+    "<<FILL: We are learning ... (learning intention)>>",
+    [
+        "<<FILL: 7 success criteria beginning I can ..., last one is the spelling words>>",
+    ],
+    [<<FILL: 8 vocabulary words as strings>>],
+    ["This lesson (everything you need is inside it)", "Paper and a pencil", "<<FILL: any other materials>>"],
+    "<<FILL: prior knowledge, naming the earlier lessons this builds on>>",
+    (
+        "<<FILL: 4 to 6 sentence intro that hooks the child and states why the skill matters>>"
+    ),
+    [
+        # <<FILL: 8 to 9 steps. Last step is the spelling focus. Each step per docs/PROSE_STYLE.md.>>
+        _step(
+            "<<FILL: emoji>>", "<<FILL: step title>>",
+            "<<FILL: 3 paragraphs of flowing prose separated by \\n\\n: hook and definition; how it works; why it matters. 150 to 250 words.>>",
+            "<<FILL: worked example using the lesson topic facts>>",
+            "<<FILL: one-line key idea>>",
+            ("<<FILL: check question>>", ["<<FILL: option A>>", "<<FILL: option B>>", "<<FILL: option C>>"], 0, "<<FILL: one-line explanation>>"),
+            visual=[V_MAIN],
+        ),
+    ],
+    (
+        "<<FILL: I do / We do / You do. I do: think aloud with the real visuals. We do: short questions then answers. You do: hand over and end with MODEL.>>\n\n" + MODEL
+    ),
+    (
+        "<<FILL: guided practice with Part A to Part D, easy to hard, final part is spelling blanks>>"
+    ),
+    (
+        "<<FILL: main task, numbered 1 to 7. At least one paper task. Last item is spelling sentences.>>\n\n" + MODEL
+    ),
+    "<<FILL: reflection question>>",
+    "<<FILL: self-check question starting Did I ...>>",
+    [
+        # <<FILL: exactly 10 _q(...) questions, 4 options each, varied correct positions>>
+        _q("<<FILL: question>>", ["<<FILL: A>>", "<<FILL: B>>", "<<FILL: C>>", "<<FILL: D>>"], 0, "<<FILL: one-line explanation>>"),
+    ],
+    "Type your answers in the practice boxes and in the big box, then submit them.",
+    "<<FILL: extension task for home>>",
+    [("<<FILL: word>", "<<FILL: kid-friendly definition>>")],
+    [
+        # <<FILL: one or two verified videos via _video(title, youtube_id, watch_note, parent_note, (question, options, idx, explanation)). Or leave empty and say no video attached in the docstring.>>
+    ],
+    _sort("<<FILL: sort title>>", "<<FILL: instruction>>", ["<<FILL: category A>>", "<<FILL: category B>>"], [("<<FILL: item>>", 0)]),
+    [
+        # <<FILL: exactly 8 _wc(...): 4 vocabulary, 4 spelling>>
+        _wc("<<FILL: question>>", ["<<FILL: A>>", "<<FILL: B>>", "<<FILL: C>>"], 0, "<<FILL: explanation>>"),
+    ],
+    [
+        {"key": "partA", "label": "Part A: <<FILL>>", "hint": "<<FILL>>"},
+        {"key": "partB", "label": "Part B: <<FILL>>", "hint": "<<FILL>>"},
+        {"key": "partC", "label": "Part C: <<FILL>>", "hint": "<<FILL>>"},
+        {"key": "partD", "label": "Part D: <<FILL>>", "hint": "<<FILL>>"},
+    ],
+    ["<<FILL: 6 common mistakes>>"],
+    ["<<FILL: 2 home practice ideas>>"],
+    "<<FILL: full answer key: practice parts, main task 1 to 7, quiz answers>>",
+    parent_check=(
+        "<<FILL: what the parent checks, with what to accept>>"
+    ),
+    worked_visuals=[V_MAIN],
+)
+
+EXPLICIT_TEACHING = (
+    "<<FILL: about 8 paragraphs for the parent, at least 900 words in total, in the order in docs/PROSE_STYLE.md>>"
+)
+LESSON["explicit_teaching"] = EXPLICIT_TEACHING
+
+LESSON["planner_title"] = "Guided practice answers"
+LESSON["planner_intro"] = "Type your answer to each part of the guided practice. Write at least a few words in every box."
+
+LESSON["spelling"] = {
+    "focus": "<<FILL: spelling focus>>",
+    "teaching": "<<FILL: short teaching text with the reason for the pattern>>",
+    "words": [
+        _w("<<FILL: word>>", "<<FILL: word>>", "<<FILL: meaning and where the tricky letter sits>>"),
+    ],
+    "check": [
+        _c("<<FILL: question>>", ["<<FILL: A>>", "<<FILL: B>>", "<<FILL: C>>"], 0, "<<FILL: explanation>>"),
+        _c("<<FILL: question>>", ["<<FILL: A>>", "<<FILL: B>>", "<<FILL: C>>"], 0, "<<FILL: explanation>>"),
+    ],
+}
+LESSON["spelling_focus"] = "<<FILL: spelling focus>>"
+LESSON["hoard_words"] = list(WORDS)
+
+if __name__ == "__main__":
+    assert len(LESSON["quiz"]) == 10 and len(LESSON["word_challenges"]) == 8
+    assert all("visual" in s or "visual_before" in s for s in LESSON["teach_steps"][:7])
+    assert all(v["svg"].startswith("<svg") and v["svg"].endswith("</svg>") for v in LESSON["worked_visuals"])
+    print("OK", LESSON["seed_key"])
