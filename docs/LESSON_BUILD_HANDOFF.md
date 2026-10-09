@@ -1,68 +1,73 @@
-# Lesson build handoff (Stage 2 English)
+# Lesson build handoff (Stage 2)
 
-Read this file first when the user says "continue building the lessons". Then carry on from NEXT STEPS. Update this file at the end of each work session (change the status table, the next steps and the version number).
+Read this file first when the user says "continue building the lessons". Update it at the end of every work session (status table, next steps, version number).
 
 Last updated: 9 October 2026.
 
+The code wins over this file. If they disagree, trust the code and fix this file.
+
+## The standard
+
+backend/lesson_library_s2_english_w09_l1.py is the approved benchmark. The parent says it is perfect. Never edit, rename, re-register or reformat it. Every other lesson is built or upgraded to match it. Earlier versions of this file named W9 L2 as the model: that is withdrawn.
+
+Copy the build() argument order and the helper signatures from the benchmark file itself. Do not trust any argument list written in a document, including older copies of this one.
+
 ## Where we are
 
-- Subject and stage: Stage 2 English, 50 weeks, 4 lessons a week (200 lessons).
-- Source plan: docs/english_s2_scope_and_sequence.md and backend/lesson_library_s2_english_placeholders.py. The WEEKS table in the placeholders file gives each week's four topics and its spelling focus.
-- Built and registered: Weeks 1 to 8 (all 32 lessons), plus Week 9 Lessons 1 and 2.
-- Library version in backend/lesson_library.py: 84 (registration commit 4f79343).
-- Not yet checked: the deploy log after the last two registrations. Look for a "Lesson module ... not loaded" warning for any of W8 L3, W8 L4, W9 L1, W9 L2. W9 L1 and L2 import _sort, _wc and _video from lesson_library_s2_english_w1_w2, and those names were not confirmed to exist.
+- Subject and stage: Stage 2 English, 50 weeks, 4 lessons a week (200 lessons). Placeholders (not registered) hold the plan for every slot: backend/lesson_library_s2_english_placeholders.py. Source plan: docs/english_s2_scope_and_sequence.md.
+- Registered in backend/lesson_library.py LESSON_MODULES: W1 to W8 (32 lessons), W9 L1 and W9 L2. Library version on main: 88.
+- At standard: W9 L1 only.
+- Built but not yet audited against the standard: W1 L1 to W8 L4 and W9 L2. Quality unknown. Do not call them good or bad until read.
+- Not built: W9 L3, W9 L4, and Weeks 10 to 50 (placeholders only).
+- Stage 2 Maths, other Stage 2 subjects: placeholder files exist (lesson_library_s2_maths_placeholders.py, lesson_library_s2_other_placeholders.py). Not read yet. Stage 4: S4_LIVE is empty, nothing live.
+- Leftover file to ask about before touching: lesson_library_s2_english_w01_l1_full.py. lesson_library_s2_english_w1_w2.py holds the build helpers and must stay.
 
-## Week 9 status (Information reports; spelling: silent letters kn, wr, mb, gn)
+## Front end (verified 9 October 2026, do not redo)
 
-| Lesson | Topic | File | Status |
-|---|---|---|---|
-| L1 | Diagrams, graphs and captions (reading, EN2-RECOM-01) | lesson_library_s2_english_w09_l1.py | Written and registered. Teaching is thinner than the new standard, so it should be rewritten. Spelling words: knee, knock, wrist, wrap, climb, gnat. No video. |
-| L2 | Report with visuals (writing, EN2-CWT-02) | lesson_library_s2_english_w09_l2.py | Written and registered. This is the model for the new teaching standard. Spelling words: knot, know, write, wrong, thumb, sign. No video. |
-| L3 | Compound and complex sentences (language, EN2-VOCAB-01) | not started | NEXT |
-| L4 | Handwriting for labels and captions (oral language and handwriting, EN2-OLC-01 and EN2-HANDW-01) | not started | After L3 |
+ChildLesson.jsx, QuestTeach.jsx and QuestVisual.jsx render step visuals (visual, visual_before), worked_visuals, inline SVG, guided_practice, line breaks, videos with prompt and check. Parent paragraphs that start Parent:, Parent note:, Parent check: or Grown-up: are hidden from the child. Known limits:
+- The planner stage is labelled "Plan your work" unless the lesson sets LESSON["planner_title"] and LESSON["planner_intro"] after build(). Every lesson must set both.
+- Each planner box needs at least 3 characters. Numeric answers need a hint such as "type the number sentence too".
+- Print view omits teach step visuals. Ignored.
+- Pass mark is 0.9 from build(). Do not change it.
 
-After each lesson: register the module in LESSON_MODULES in backend/lesson_library.py and bump LESSON_LIBRARY_VERSION. Registering two lessons in one edit is fine.
+## Registration and keys
+
+- Add a new module to LESSON_MODULES and bump LESSON_LIBRARY_VERSION in the same PR. Without the bump the live database keeps the old copy. Upgrading an existing lesson needs the bump but no new registration.
+- Registration loads any module-level dict with a seed_key, and the first copy of a key wins. A lesson module should expose only its own lesson.
+- Never change a seed_key once a lesson exists. A background cleanup deletes assignments for lessons whose ID disappears.
+- New English lessons use a named key s2-eng-wNN-lN-<topic-words>. Never use the plain placeholder key.
+- Spelling is set inside the lesson after build(). spelling_live.py replaces a lesson's spelling if its seed_key is in SPELLING_W1 or SPELLING_LIVE (only W1 L1 key and the older W1 keys), so check a new key is not in them.
+- BUILT_OUT_WEEKS in the placeholders file only controls which placeholders its generator skips. Leave it alone.
 
 ## NEXT STEPS (in order)
 
-1. Write W9 L3, Compound and Complex Sentences, to the teaching standard below. Spelling focus is the same for the week (silent letters kn, wr, mb, gn), with six new words that are not used in W9 L1 or L2.
-2. Write W9 L4, Handwriting for Labels and Captions. Make the handwriting task offline, with a typed reflection and a parent check, because a child cannot type handwriting.
-3. Rewrite W9 L1 to the L2 teaching pattern (keep the same seed key and file name, bump the version).
-4. Register W9 L3 and L4.
-5. Offer to upgrade W8 L1 to L4 and W7 and earlier to the same standard. Ask the user before starting, because it is a big job.
-6. Then move to Week 10: Synthesising two texts; Edit and publish the report; Punctuation review: commas and apostrophes; Present the report (Fortnight 5 mini exam). Spelling: Review of Weeks 6 to 9. Week 10 is a digital week (EN2-HANDW-02 applies).
+1. Merge the docs PR for this branch (docs only, W9 L1 not touched).
+2. Upgrade W9 L2 in place (same file, same key), then build W9 L3 and W9 L4 (new modules).
+3. Upgrade W1 to W8 in order, in place.
+4. Build Weeks 10 to 50 from the placeholders WEEKS table.
+5. Then Stage 2 Maths, then other Stage 2 subjects. Read the scope docs and placeholder files first (not read yet).
 
-## Teaching standard the user asked for (apply to every lesson)
+The parent may reorder. Follow the latest instruction.
 
-The user wants a high quality, comprehensive learning site, so every lesson needs explicit teaching of a high standard.
+## Teaching standard (match W9 L1)
 
-- Each teaching step gives: the rule, the reason (why it matters), a worked example, a common mistake and its fix, then a check question.
-- The model walkthrough uses I do, We do, You do.
-- The main task has numbered stages and written success criteria, and the parent note says how to check them.
-- Each lesson has a 10-question quiz, a sort activity, 8 word challenges, 4 practice parts, a glossary of about 8 words, and an answer key.
-- Use a continuing topic where sensible (Weeks 7 to 9 use Australian animals: echidna in W7 and W8 and in W9 L1, koala in W9 L2).
-- Invented data (a made-up class survey) must be labelled as made up. Approximate facts must be labelled approximate and flagged to the parent to check.
-- Videos: only attach a video that has been found and checked. If none was verified, attach none and say so in the file docstring and in the reply.
+- Each teaching step: the rule, the reason, a worked example, a common mistake and its fix, then a check question. A visual wherever a picture teaches better than words.
+- Model walkthrough: I do, We do, You do, with worked visuals.
+- Each lesson: 10-question quiz, 1 sort activity, 8 word challenges, 4 typed practice parts, a glossary of about 8 words, answer key, parent check, parent-facing explicit_teaching text.
+- After build() set planner_title, planner_intro, spelling, spelling_focus, hoard_words.
+- Use a continuing topic where it fits (Weeks 7 to 9 use Australian animals). Label invented data as made up. Flag approximate facts.
+- Videos: only attach one that was found and checked from its title and description, and tell the parent to watch it first. Real signature: _video(title, youtube_id, prompt, offline, (question, options, correct_index, explanation)). W9 L1 videos vdyiupgsplI and iCnh6EL1Lmo are unwatched.
+- Novel weeks (21 to 25, 46, 47): write "your class novel", never a title.
 
-## How lesson files are built
+## Working rules
 
-- File name: backend/lesson_library_s2_english_wNN_lN.py, for example lesson_library_s2_english_w09_l3.py.
-- Imports used in W9: from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video; from spelling_s2_w1 import _w, _c.
-- build(seed_key, title, summary, topic, outcome_codes, outcome_notes, learning_intention, success_criteria, vocab, materials, prior_knowledge, teaching_text, steps, model_text, practice_text, main_task_text, reflection_prompt, self_check, quiz, quiz_instructions, extension, glossary, videos, sort_activity, word_challenges, practice_fields, common_mistakes, follow_up, answer_key). Copy the exact argument order from lesson_library_s2_english_w09_l2.py, which is the newest working example.
-- A teaching step is _step(number, title, text, example, key_idea, (check question, options, correct index, explanation)).
-- The spelling block is set after build: LESSON["spelling"] with focus, teaching, words made with _w(...) and check questions made with _c(...); also LESSON["spelling_focus"] and LESSON["hoard_words"].
-- Quiz correct answers should be spread across positions (not all the same index). Check this on every lesson.
-- Outcome codes come from the placeholders file (_codes_for). Outcome wording is the official NESA text with a short note on the lesson's focus.
-- The placeholders file backend/lesson_library_s2_english_placeholders.py is not registered. Its BUILT_OUT_WEEKS set only needs updating if the placeholders are ever registered. Weeks are currently built with their own named seed keys.
-
-## Working rules from this project
-
-- Tool calls are limited each turn, so split work: read first, then write, then register.
-- Do not claim a lesson is tested or deployed unless it has been checked. Say what was and was not verified.
-- Never invent a video or a source.
-- Lesson text for children: Australian spelling, plain language, no emoji.
-- Reply format: say what was done first, then what is inside the lesson, then what still needs checking, then the next step.
+- One branch and one PR per lesson. Never push to main. Read the commit diff after every write. Wait for the parent to say "merge". Merge one PR at a time so version bumps do not conflict.
+- The file tool writes whole files, so read the whole file first. Never rewrite from memory.
+- Tool calls are limited each turn: read, write, diff, PR.
+- Do not claim a lesson is tested, deployed or working unless it was checked. The assistant cannot run code, watch videos or see pages. Give the parent the command python backend/<file>.py and say what to check on the live page.
+- Lesson text for children: Australian spelling, plain language, no emoji, no dashes as punctuation. Never invent a video, source or fact.
+- Reply format: what was done and which slot, what is inside, what the parent still needs to check, the next lesson.
 
 ## Resume prompt
 
-When the user says "continue building the lessons" or "continue": read this file, check the library version in backend/lesson_library.py matches the version above, then start at NEXT STEPS item 1 unless this file has been updated since.
+When the user says "continue building the lessons" or "continue": read this file, check LESSON_LIBRARY_VERSION in backend/lesson_library.py against the version above, then start at NEXT STEPS.
