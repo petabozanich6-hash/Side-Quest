@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { ChoiceSet } from "./QuestActivities";
+import QuestVisual from "./QuestVisual";
 
 const BTN = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
+
+const asList = (v) => (Array.isArray(v) ? v : v ? [v] : []);
 
 export default function TeachStep({ step, onComplete }) {
   const [shown, setShown] = useState(false);
@@ -12,6 +15,10 @@ export default function TeachStep({ step, onComplete }) {
       <div className="whitespace-pre-wrap text-base leading-relaxed">
         {step.explain}
       </div>
+
+      {asList(step.visual_before).map((v, i) => (
+        <QuestVisual key={`vb${i}`} visual={v} />
+      ))}
 
       {!shown && (
         <button
@@ -29,6 +36,10 @@ export default function TeachStep({ step, onComplete }) {
           <div className="text-xs font-mono uppercase text-indigo-700 mb-1">
             Example
           </div>
+
+          {asList(step.visual).map((v, i) => (
+            <QuestVisual key={`v${i}`} visual={v} />
+          ))}
 
           <p className="text-base font-semibold whitespace-pre-wrap">
             {step.example}

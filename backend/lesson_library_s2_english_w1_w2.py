@@ -1,7 +1,13 @@
 """Shared helpers for the Stage 2 English lesson modules.
 
-This module holds only the builder functions used by the w01_l1 to w01_l4 lesson files.
+This module holds only the builder functions used by the Stage 2 English lesson files.
 It contains no lesson data and does not change LESSON_LIBRARY_VERSION.
+
+Optional extras (all old lessons keep working without them):
+  _step(..., visual=..., visual_before=...)  attach a visual (or list of visuals) to a teaching step.
+  build(..., parent_check="", worked_visuals=None)  parent_check is shown to parents only;
+                                                     worked_visuals are shown with the worked example.
+A visual is {"svg": "<svg ...>", "alt": "...", "caption": "..."} or {"src": url, "alt": ..., "caption": ...}.
 """
 
 
@@ -9,10 +15,24 @@ def _q(q, opts, idx, why):
     return {"question": q, "type": "multiple_choice", "options": opts, "correct_index": idx, "explanation": why}
 
 
-def _step(icon, title, explain, example, notice, chk):
+def _visual(svg=None, alt="", caption="", src=None):
+    v = {"alt": alt, "caption": caption}
+    if svg:
+        v["svg"] = svg
+    if src:
+        v["src"] = src
+    return v
+
+
+def _step(icon, title, explain, example, notice, chk, visual=None, visual_before=None):
     q, opts, idx, why = chk
-    return {"icon": icon, "title": title, "explain": explain, "example": example, "notice": notice,
+    step = {"icon": icon, "title": title, "explain": explain, "example": example, "notice": notice,
             "check": {"question": q, "options": opts, "correct_index": idx, "explanation": why}}
+    if visual:
+        step["visual"] = visual
+    if visual_before:
+        step["visual_before"] = visual_before
+    return step
 
 
 def _video(title, vid, prompt, offline, chk):
@@ -37,7 +57,8 @@ def _wc(q, opts, idx, why):
 
 def build(key, title, mission, subject, codes, notes, intention, criteria, vocab, materials, prior,
           teaching, steps, worked, guided, independent, response, selfcheck, quiz, evidence, extension, cards,
-          resources, sort_activity, word_challenges, planner, mistakes, challenges, answer_key):
+          resources, sort_activity, word_challenges, planner, mistakes, challenges, answer_key,
+          parent_check="", worked_visuals=None):
     lesson = {
         "seed_key": key, "library": True, "stage": "S2", "year_level": "Stage 2", "learning_area": "English",
         "subject": subject, "title": title, "child_mission": mission, "duration_minutes": 60, "pass_mark": 0.9,
@@ -67,6 +88,11 @@ def build(key, title, mission, subject, codes, notes, intention, criteria, vocab
         "offline_alternative": "Complete all written tasks on paper and read the questions aloud. Videos can be skipped if the worked example is read aloud.",
         "extension": extension, "follow_up_challenges": challenges,
     }
+    if parent_check:
+        lesson["parent_check"] = parent_check
+        lesson["parent_notes"] = lesson["parent_notes"] + "\n\nParent check:\n" + parent_check
+    if worked_visuals:
+        lesson["worked_visuals"] = worked_visuals
     if planner:
         lesson["planner_fields"] = planner
     return lesson
