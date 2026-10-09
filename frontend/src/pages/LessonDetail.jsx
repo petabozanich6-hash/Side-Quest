@@ -1,6 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { api } from "../lib/api";
+import QuestVisual from "../components/shared/QuestVisual";
+
+const asList = (v) => (Array.isArray(v) ? v : v ? [v] : []);
+
+function Visuals({ items }) {
+  const list = asList(items);
+  if (!list.length) return null;
+  return (
+    <div className="mt-4 space-y-4">
+      {list.map((v, i) => (
+        <QuestVisual key={i} visual={v} />
+      ))}
+    </div>
+  );
+}
 
 export default function LessonDetail() {
   const { id } = useParams();
@@ -56,6 +71,9 @@ export default function LessonDetail() {
       question.type === "multiple_choice" &&
       quizAnswers[index] === question.correct_index
   ).length;
+
+  const teachSteps = lesson.teach_steps || [];
+  const spelling = lesson.spelling;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -147,6 +165,61 @@ export default function LessonDetail() {
           </section>
         )}
 
+        {teachSteps.length > 0 && (
+          <section className="bg-white rounded-xl shadow p-6 mt-6" data-testid="parent-teach-steps">
+            <h2 className="text-xl font-semibold">Teaching steps (what your child sees)</h2>
+
+            <div className="mt-4 space-y-8">
+              {teachSteps.map((step, index) => (
+                <div key={`${step.title}-${index}`} className="border-t border-slate-200 pt-6 first:border-t-0 first:pt-0">
+                  <h3 className="text-lg font-semibold">
+                    {index + 1}. {step.icon} {step.title}
+                  </h3>
+
+                  <p className="mt-3 whitespace-pre-wrap text-slate-700">{step.explain}</p>
+
+                  <Visuals items={step.visual_before} />
+
+                  {step.example && (
+                    <div className="mt-4 rounded-lg bg-slate-50 border border-slate-200 p-4">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Example</div>
+                      <p className="whitespace-pre-wrap text-slate-800">{step.example}</p>
+                    </div>
+                  )}
+
+                  <Visuals items={step.visual} />
+
+                  {step.notice && (
+                    <p className="mt-4 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm text-slate-800">
+                      <strong>Notice:</strong> {step.notice}
+                    </p>
+                  )}
+
+                  {step.check && (
+                    <div className="mt-4 rounded-lg bg-blue-50 border border-blue-200 p-3 text-sm">
+                      <p className="font-medium text-blue-900">Check: {step.check.question}</p>
+                      <ul className="list-disc ml-5 mt-2 space-y-0.5">
+                        {(step.check.options || []).map((opt, oi) => (
+                          <li
+                            key={oi}
+                            className={oi === step.check.correct_index ? "font-semibold text-green-800" : "text-slate-700"}
+                          >
+                            {opt}
+                            {oi === step.check.correct_index ? " (correct)" : ""}
+                          </li>
+                        ))}
+                      </ul>
+                      {step.check.explanation && (
+                        <p className="mt-2 text-slate-700">{step.check.explanation}</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {lesson.explicit_teaching && (
           <section className="bg-white rounded-xl shadow p-6 mt-6">
             <h2 className="text-xl font-semibold">Explicit teaching</h2>
@@ -156,12 +229,15 @@ export default function LessonDetail() {
           </section>
         )}
 
-        {lesson.worked_example && (
+        {(lesson.worked_example || asList(lesson.worked_visuals).length > 0) && (
           <section className="bg-white rounded-xl shadow p-6 mt-6">
             <h2 className="text-xl font-semibold">Worked example</h2>
-            <p className="mt-3 whitespace-pre-wrap text-slate-700">
-              {lesson.worked_example}
-            </p>
+            {lesson.worked_example && (
+              <p className="mt-3 whitespace-pre-wrap text-slate-700">
+                {lesson.worked_example}
+              </p>
+            )}
+            <Visuals items={lesson.worked_visuals} />
           </section>
         )}
 
@@ -186,6 +262,23 @@ export default function LessonDetail() {
                 <strong>Student response prompt:</strong> {lesson.response_prompt}
               </div>
             )}
+          </section>
+        )}
+
+        {spelling && (spelling.words || []).length > 0 && (
+          <section className="bg-white rounded-xl shadow p-6 mt-6">
+            <h2 className="text-xl font-semibold">Spelling: {spelling.focus}</h2>
+            {spelling.teaching && (
+              <p className="mt-3 whitespace-pre-wrap text-slate-700">{spelling.teaching}</p>
+            )}
+            <ul className="list-disc ml-5 mt-3 space-y-1">
+              {spelling.words.map((w, i) => (
+                <li key={i}>
+                  <strong>{w.word || w.text || w.answer || ""}</strong>
+                  {w.hint || w.clue ? ` – ${w.hint || w.clue}` : ""}
+                </li>
+              ))}
+            </ul>
           </section>
         )}
 
