@@ -9,9 +9,14 @@
     "deploy": "npm run build && wrangler deploy",
     "preview": "npm run build && vite preview",
     "cf-typegen": "wrangler types",
-    "postinstall": "wrangler types"
+    "postinstall": "wrangler types",
+    "db:migrate": "wrangler d1 execute sidequest-db --file=server/schema.sql",
+    "db:migrate:local": "wrangler d1 execute sidequest-db --local --file=server/schema.sql",
+    "db:seed": "wrangler d1 execute sidequest-db --file=server/seed.sql",
+    "db:seed:local": "wrangler d1 execute sidequest-db --local --file=server/seed.sql"
   },
   "dependencies": {
+    "hono": "^4.6.0",
     "isbot": "^5.1.36",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
@@ -27,6 +32,7 @@
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
     "vite": "^8.0.3",
+    "vite-tsconfig-paths": "^5.1.0",
     "wrangler": "^4.149.0"
   }
 }
