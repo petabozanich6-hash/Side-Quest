@@ -5,6 +5,8 @@ It contains no lesson data and does not change LESSON_LIBRARY_VERSION.
 
 Optional extras (all old lessons keep working without them):
   _step(..., visual=..., visual_before=...)  attach a visual (or list of visuals) to a teaching step.
+      visual_before shows straight under the explanation. If only visual is given, it is shown there too,
+      so the picture is visible without the child having to click anything.
   build(..., parent_check="", worked_visuals=None)  parent_check is shown to parents only;
                                                      worked_visuals are shown with the worked example.
 A visual is {"svg": "<svg ...>", "alt": "...", "caption": "..."} or {"src": url, "alt": ..., "caption": ...}.
@@ -28,6 +30,9 @@ def _step(icon, title, explain, example, notice, chk, visual=None, visual_before
     q, opts, idx, why = chk
     step = {"icon": icon, "title": title, "explain": explain, "example": example, "notice": notice,
             "check": {"question": q, "options": opts, "correct_index": idx, "explanation": why}}
+    if visual and not visual_before:
+        visual_before = visual
+        visual = None
     if visual:
         step["visual"] = visual
     if visual_before:
