@@ -3,12 +3,12 @@ REWRITTEN with real visuals. The echidna diagram and the bar graphs are drawn as
 The child learns how to read the visual features of an information report: labelled diagrams, captions and simple bar graphs, and how they add information that the main text does not give. The example page is about the echidna, continuing Weeks 7 and 8, with a made-up class survey for the graph.
 Spelling: silent letters kn, wr, mb, gn: knee, knock, wrist, wrap, climb, gnat.
 Outcomes: EN2-RECOM-01 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 9, Lesson 1). Outcome wording is the official NESA text, with a short note on this lesson's focus.
-Video status: no video attached. None was checked for this lesson, so none is listed.
+Resources: three YouTube videos (diagrams and labels; reading bar graphs; bar graph problems with more and total) and two echidna pages (Australian Museum, NSW schools fact sheet). Video IDs were taken from search results and the videos have not been watched in full, so a parent should preview them.
 Facts used: echidnas are egg-laying mammals (monotremes) with spines, a long toothless snout, strong digging claws, and a long sticky tongue for catching ants and termites. Koalas eat eucalyptus (gum) leaves. The class survey numbers are made up.
 """
 import math
 
-from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _visual
+from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _visual, _video, _article
 from spelling_s2_w1 import _w, _c
 
 WORDS = ["knee", "knock", "wrist", "wrap", "climb", "gnat"]
@@ -129,6 +129,32 @@ MODEL = (
     "Caption under the diagram: An echidna's sharp spines and strong claws help to keep it safe.\n\n"
     "Graph title: " + SURVEY_TITLE + "\n" + DATA_LINE
 )
+
+RESOURCES = [
+    _video(
+        "Text features: diagrams and labels",
+        "vdyiupgsplI",
+        "Watch for how the video explains a diagram and its labels. Pause and say what a label line points to. Then look back at the echidna diagram and name its four labels.",
+        "If you cannot watch the video, look at a diagram in a library book or the echidna diagram in this lesson and say what each label names.",
+        ("What does a label on a diagram do?", ["It names one part of the picture", "It tells you who drew it", "It gives the page number"], 0, "A label names a part of the diagram, and its line points to that part."),
+    ),
+    _video(
+        "How to read and interpret a bar graph",
+        "nDaKJBjZszQ",
+        "Watch how the video names the parts of a bar graph: the title, the bottom axis and the side axis. Check each part on the lesson graph afterwards. This video uses small numbers, so it is a gentle start.",
+        "If you cannot watch the video, use the lesson graph and point to the title, the bottom axis, the scale and a bar, saying the name of each.",
+        ("What should you read first on a bar graph?", ["The title, to see what it is about", "The tallest bar", "The colours"], 0, "The title tells you what the graph is about, so read it first."),
+    ),
+    _video(
+        "Bar graph problems: how many more, how many altogether",
+        "iCnh6EL1Lmo",
+        "Watch how the video reads bars, subtracts to find how many more, and adds to find the total. It counts the scale by tens and its graph is about baseball, but the method is exactly what you do with the echidna survey graph.",
+        "If you cannot watch the video, use the lesson graph and write a number sentence for how many more votes the kangaroo got than the koala, and the total of all four animals.",
+        ("To find how many more, what do you do?", ["Subtract the smaller number from the larger", "Add all the numbers", "Count the bars"], 0, "How many more means find the difference, so subtract."),
+    ),
+    _article("Short-beaked echidna (Australian Museum)", "https://australian.museum/learn/animals/mammals/short-beaked-echidna/"),
+    _article("Short-beaked echidna fact sheet (NSW school wildlife site)", "https://fieldofmar-e.schools.nsw.gov.au/fact-sheets/mammals/short-beaked-echidna-fact-sheet"),
+]
 
 LESSON = build(
     "s2-eng-w09-l1-diagrams-graphs-captions",
@@ -304,6 +330,8 @@ LESSON = build(
     worked_visuals=[V_ECHIDNA, V_GRAPH_VALUES],
 )
 
+LESSON["resources"] = RESOURCES
+
 EXPLICIT_TEACHING = (
     "The big idea. Every information report is really two texts working side by side: the words, and the visuals. Children usually learn to read the words long before they learn to read the visuals, so they treat a diagram as decoration and a graph as something to skip. This lesson changes that habit. By the end, your child should treat a diagram, a caption and a bar graph the way a detective treats evidence. Each one holds facts that the paragraph beside it never mentions, and a careful reader goes looking for them.\n\n"
     "How to open the lesson. Start with a question, not a definition. Ask your child to describe an echidna to you using words only, while you try to draw what you hear. Give it thirty seconds, then hold up the diagram in the lesson. The gap between your sketch and the real picture is the whole lesson in one moment. Name it out loud: a visual can carry things that words carry badly, such as where a part sits on a body, what a part is called, or how many of something there are. Once your child has felt that gap for themselves, the vocabulary (diagram, label, caption, scale) has something to attach to.\n\n"
@@ -313,6 +341,7 @@ EXPLICIT_TEACHING = (
     "Teaching comparison. Graphs exist so we can compare, and the words in the question tell you which operation to use. How many more, how many fewer and what is the difference all mean subtract the smaller number from the larger. Altogether and in total mean add. Most and least only ask you to find the tallest or shortest bar. Have your child underline the question word before writing anything, and write the number sentence before the answer, for example 8 - 2 = 6 for kangaroo against wombat, and 8 + 6 + 4 + 2 = 20 for the total. One more trap to watch for: a question about which animal wants a name for its answer, while a question about how many wants a number. Children often give one when the other is asked, and underlining the question words fixes it.\n\n"
     "Putting words and visuals together. When your child reads a report page, teach three questions. Do the words and the visual agree? What does the visual tell me that the words do not? Is this the right kind of visual for the job? A diagram is for parts and their names, a graph is for amounts we want to compare, a photograph is for what something really looks like, and a map is for where something is. The best evidence of understanding is your child saying, unprompted, something like: the text only said spiny, but the diagram shows me the spines are on its back. Praise that sentence when you hear it.\n\n"
     "The spelling work. The silent letters in knee, knock, wrist, wrap, climb and gnat are left over from a time when people pronounced them. Tell your child that story, because a reason makes a spelling easier to remember than a rule does. Then use the silly-voice method: say k-nee, w-rist and clim-b with the silent letter pronounced, write exactly what you said, and then say the word normally. Ten minutes of this beats a long list copied out three times.\n\n"
+    "Videos and reading. Use the videos as a second voice, not a replacement for you. Watch the diagrams and labels video before the diagram work, and the two bar graph videos before the graph work, pausing to ask your child to predict the next step. Read the Australian Museum echidna page together afterwards and see how many of its facts your child could have shown in a diagram, and how many would be better as a graph. Preview each video yourself first, because the graph videos use other examples and some American wording.\n\n"
     "What to watch for and how to fix it. If your child reads only the text, point to the diagram and ask what is in it that the sentence never said. If they read a bar wrongly, go back to the scale and ask what each step counts by. If they add when they should subtract, return to the question word. If a caption sounds like an opinion or a story, ask whether it states a fact about the picture, in the present tense. If a graph is missing its title or axis names, ask whether a stranger could tell what it shows. Keep the pace relaxed. The lesson runs about an hour, and it splits well into two sittings, with the diagram and captions in the first and the graph, comparison and spelling in the second."
 )
 LESSON["explicit_teaching"] = EXPLICIT_TEACHING
@@ -343,4 +372,5 @@ if __name__ == "__main__":
     assert len(LESSON["quiz"]) == 10 and len(LESSON["word_challenges"]) == 8
     assert all("visual" in s or "visual_before" in s for s in LESSON["teach_steps"][:7])
     assert all(v["svg"].startswith("<svg") and v["svg"].endswith("</svg>") for v in LESSON["worked_visuals"])
+    assert len(LESSON["resources"]) == 5 and sum(r["type"] == "video" for r in LESSON["resources"]) == 3
     print("W9 L1 ok")
