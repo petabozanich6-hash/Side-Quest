@@ -1,28 +1,133 @@
 """Stage 2 English, Week 9 Lesson 1: Diagrams, Graphs and Captions (Reading and comprehension).
-The child learns how to read the visual features of an information report: labelled diagrams, captions, and simple bar graphs, and how they add information that the main text does not give. The example page is about the echidna, continuing Weeks 7 and 8, with a made-up class survey for the graph.
+REWRITTEN with real visuals. The echidna diagram and the bar graphs are drawn as SVG by the helper functions below, so the child can actually see what the lesson talks about.
+The child learns how to read the visual features of an information report: labelled diagrams, captions and simple bar graphs, and how they add information that the main text does not give. The example page is about the echidna, continuing Weeks 7 and 8, with a made-up class survey for the graph.
 Spelling: silent letters kn, wr, mb, gn: knee, knock, wrist, wrap, climb, gnat.
-Outcomes: EN2-RECOM-01 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 9, Lesson 1, Diagrams, graphs and captions, reading slot, information reports unit, spelling silent letters kn, wr, mb, gn). Outcome wording is the official NESA text, with a short note on this lesson's focus.
+Outcomes: EN2-RECOM-01 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 9, Lesson 1). Outcome wording is the official NESA text, with a short note on this lesson's focus.
 Video status: no video attached. None was checked for this lesson, so none is listed.
+Facts used: echidnas are egg-laying mammals (monotremes) with spines, a long toothless snout, strong digging claws, and a long sticky tongue for catching ants and termites. Koalas eat eucalyptus (gum) leaves. The class survey numbers are made up.
 """
-from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _video
+import math
+
+from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _visual
 from spelling_s2_w1 import _w, _c
 
 WORDS = ["knee", "knock", "wrist", "wrap", "climb", "gnat"]
 
+SURVEY = [("Kangaroo", 8), ("Koala", 6), ("Echidna", 4), ("Wombat", 2)]
+SURVEY_TITLE = "Favourite Australian animals in Class 3"
+
+
+def _echidna_svg():
+    cx, cy, rx, ry = 290, 180, 120, 62
+    p = [
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 340" font-family="Arial, sans-serif">',
+        '<rect width="560" height="340" fill="#FFFDF6"/>',
+        '<text x="280" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#1F3B2D">An echidna</text>',
+    ]
+    for deg in range(190, 351, 10):
+        a = math.radians(deg)
+        x1, y1 = cx + rx * math.cos(a), cy + ry * math.sin(a)
+        x2, y2 = cx + (rx + 26) * math.cos(a), cy + (ry + 26) * math.sin(a)
+        p.append(f'<line x1="{x1:.0f}" y1="{y1:.0f}" x2="{x2:.0f}" y2="{y2:.0f}" stroke="#3E2A18" stroke-width="4" stroke-linecap="round"/>')
+    p.append(f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="#8B6B4A" stroke="#3E2A18" stroke-width="2"/>')
+    p.append('<path d="M178,160 L78,188 L178,196 Z" fill="#6E5238" stroke="#3E2A18" stroke-width="2"/>')
+    p.append('<circle cx="192" cy="166" r="5" fill="#111"/>')
+    for x in (225, 330):
+        p.append(f'<rect x="{x}" y="225" width="30" height="40" rx="8" fill="#6E5238" stroke="#3E2A18" stroke-width="2"/>')
+        for dx in (3, 15, 27):
+            p.append(f'<line x1="{x + dx}" y1="265" x2="{x + dx - 4}" y2="282" stroke="#222" stroke-width="4" stroke-linecap="round"/>')
+    labels = [
+        ("spines", 430, 70, 365, 106),
+        ("snout", 20, 140, 112, 182),
+        ("claws", 140, 322, 232, 278),
+        ("short legs", 420, 312, 352, 248),
+    ]
+    for text, tx, ty, px, py in labels:
+        sx, sy = (tx + 40, ty - 16) if tx < 100 or (tx < 200 and ty > 300) else (tx - 4, ty - 5)
+        if text == "short legs":
+            sx, sy = tx - 4, ty - 14
+        p.append(f'<line x1="{sx}" y1="{sy}" x2="{px}" y2="{py}" stroke="#C77B5B" stroke-width="2"/>')
+        p.append(f'<circle cx="{px}" cy="{py}" r="4" fill="#C77B5B"/>')
+        p.append(f'<text x="{tx}" y="{ty}" font-size="16" font-weight="bold" fill="#1F3B2D">{text}</text>')
+    p.append('</svg>')
+    return "".join(p)
+
+
+def _bar_svg(items, title=SURVEY_TITLE, ymax=10, step=2, xlabel="Animal", ylabel="Number of votes", values=False, trace=None, notes=None):
+    w, h = 620, 360
+    x0, x1, yb, yt = 70, 470, 270, 50
+    unit = (yb - yt) / ymax
+    slot = (x1 - x0) / len(items)
+    bw = slot * 0.64
+    colours = ["#C77B5B", "#6B8A5B", "#8B6B4A", "#4A6D8C", "#A07CA8"]
+    p = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" font-family="Arial, sans-serif">',
+        f'<rect width="{w}" height="{h}" fill="#FFFDF6"/>',
+        f'<text x="{(x0 + x1) / 2:.0f}" y="30" text-anchor="middle" font-size="15" font-weight="bold" fill="#1F3B2D">{title}</text>',
+    ]
+    for v in range(0, ymax + 1, step):
+        y = yb - v * unit
+        p.append(f'<line x1="{x0}" y1="{y:.0f}" x2="{x1}" y2="{y:.0f}" stroke="#E4DCC4" stroke-width="1"/>')
+        p.append(f'<text x="{x0 - 8}" y="{y + 5:.0f}" text-anchor="end" font-size="13" fill="#333">{v}</text>')
+    p.append(f'<line x1="{x0}" y1="{yt}" x2="{x0}" y2="{yb}" stroke="#333" stroke-width="2"/>')
+    p.append(f'<line x1="{x0}" y1="{yb}" x2="{x1}" y2="{yb}" stroke="#333" stroke-width="2"/>')
+    for i, (name, val) in enumerate(items):
+        cx = x0 + slot * (i + 0.5)
+        top = yb - val * unit
+        p.append(f'<rect x="{cx - bw / 2:.0f}" y="{top:.0f}" width="{bw:.0f}" height="{val * unit:.0f}" fill="{colours[i % len(colours)]}" stroke="#333" stroke-width="1"/>')
+        p.append(f'<text x="{cx:.0f}" y="{yb + 22}" text-anchor="middle" font-size="14" fill="#222">{name}</text>')
+        if values:
+            p.append(f'<text x="{cx:.0f}" y="{top - 6:.0f}" text-anchor="middle" font-size="14" font-weight="bold" fill="#222">{val}</text>')
+        if trace == name:
+            p.append(f'<line x1="{cx:.0f}" y1="{top:.0f}" x2="{x0}" y2="{top:.0f}" stroke="#C0392B" stroke-width="2" stroke-dasharray="6 4"/>')
+            p.append(f'<circle cx="{x0}" cy="{top:.0f}" r="5" fill="#C0392B"/>')
+            p.append(f'<text x="{cx:.0f}" y="{top - 10:.0f}" text-anchor="middle" font-size="13" font-weight="bold" fill="#C0392B">1. top of the bar</text>')
+            p.append(f'<text x="{x0 + 10}" y="{top - 8:.0f}" font-size="13" font-weight="bold" fill="#C0392B">2. go across</text>')
+    p.append(f'<text x="{(x0 + x1) / 2:.0f}" y="318" text-anchor="middle" font-size="14" fill="#333">{xlabel}</text>')
+    p.append(f'<text transform="rotate(-90 18 160)" x="18" y="160" text-anchor="middle" font-size="14" fill="#333">{ylabel}</text>')
+    for text, tx, ty, px, py in (notes or []):
+        sx, sy = (tx + 25, ty - 16) if tx < 100 else (tx - 4, ty - 5)
+        p.append(f'<line x1="{sx}" y1="{sy}" x2="{px}" y2="{py}" stroke="#C0392B" stroke-width="1.5"/>')
+        p.append(f'<circle cx="{px}" cy="{py}" r="4" fill="#C0392B"/>')
+        p.append(f'<text x="{tx}" y="{ty}" font-size="14" font-weight="bold" fill="#C0392B">{text}</text>')
+    p.append('</svg>')
+    return "".join(p)
+
+
+V_ECHIDNA = _visual(
+    _echidna_svg(),
+    "A drawing of an echidna from the side, facing left. Long spines cover its back, it has a long thin snout, short legs and strong claws. Label lines point to the spines, the snout, the claws and the short legs.",
+    "An echidna's sharp spines and strong claws help to keep it safe.",
+)
+V_GRAPH_PLAIN = _visual(
+    _bar_svg(SURVEY),
+    "A bar graph called Favourite Australian animals in Class 3. The bottom axis names four animals. The side axis shows the number of votes from 0 to 10 in steps of 2. The bars reach 8 for kangaroo, 6 for koala, 4 for echidna and 2 for wombat.",
+    "A bar graph from a made-up class survey.",
+)
+V_GRAPH_PARTS = _visual(
+    _bar_svg(SURVEY, notes=[("Title", 505, 30, 430, 24), ("A bar", 505, 120, 352, 184), ("Bottom axis", 505, 300, 462, 288), ("Scale", 20, 345, 58, 205)]),
+    "The same bar graph with four red notes. Title points to the heading, A bar points to a bar, Bottom axis points to the animal names, and Scale points to the numbers up the side.",
+    "The four parts to check on every bar graph: the title, the bars, the bottom axis and the scale.",
+)
+V_GRAPH_TRACE = _visual(
+    _bar_svg(SURVEY, trace="Kangaroo"),
+    "The bar graph with a red dotted line running from the top of the kangaroo bar across to the number 8 on the scale.",
+    "To read a bar: find the top of the bar, then go across to the scale. The kangaroo bar reaches 8.",
+)
+V_GRAPH_VALUES = _visual(
+    _bar_svg(SURVEY, values=True),
+    "The bar graph with the number of votes written above each bar: kangaroo 8, koala 6, echidna 4, wombat 2.",
+    "Kangaroo 8, koala 6, echidna 4, wombat 2. Now we can compare and add.",
+)
+
+DATA_LINE = "Bars in the model graph: Kangaroo 8, Koala 6, Echidna 4, Wombat 2 (scale 0 to 10, going up in steps of 2)."
+
 MODEL = (
     "MODEL PAGE: ECHIDNA FACTS\n\n"
     "Text: Echidnas are small, spiny mammals that live across Australia. They use their long snouts to find food.\n\n"
-    "DIAGRAM (a picture of an echidna with label lines):\n"
-    "Label 1: spines (on its back)\n"
-    "Label 2: snout (long and thin)\n"
-    "Label 3: claws (strong, for digging)\n"
-    "Label 4: short legs\n"
+    "Diagram labels: spines (on its back); snout (long and thin); claws (strong, for digging); short legs.\n"
     "Caption under the diagram: An echidna's sharp spines and strong claws help to keep it safe.\n\n"
-    "BAR GRAPH (from a made-up class survey):\n"
-    "Title: Favourite Australian animals in Class 3\n"
-    "Side axis: number of votes, from 0 to 10, going up in steps of 2\n"
-    "Bottom axis: the animal\n"
-    "Bars: Kangaroo 8, Koala 6, Echidna 4, Wombat 2"
+    "Graph title: " + SURVEY_TITLE + "\n" + DATA_LINE
 )
 
 LESSON = build(
@@ -38,9 +143,9 @@ LESSON = build(
     "We are learning how to read diagrams, graphs and captions to find information, and to spell words with silent letters.",
     [
         "I can explain why a report uses diagrams, graphs and captions.",
-        "I can read the labels on a diagram.",
+        "I can read the labels on a diagram and follow each label line to its part.",
         "I can use a caption to understand a picture.",
-        "I can read the title, axes and bars on a bar graph.",
+        "I can read the title, axes, scale and bars on a bar graph.",
         "I can answer questions using the numbers on a graph.",
         "I can say what a visual tells me that the text does not.",
         "I can spell and use knee, knock, wrist, wrap, climb and gnat.",
@@ -49,57 +154,127 @@ LESSON = build(
     ["This lesson (everything you need is inside it)", "Paper and a pencil", "A ruler (for the main task)"],
     "Child can name text features such as headings, glossary and index (Week 6 Lesson 1), and has read and written about the echidna in Weeks 7 and 8.",
     (
-        "Why this matters. Information reports often use pictures, diagrams and graphs along with words. These visuals can show things that are hard to say in words, such as the parts of an animal or how many of each kind there are. A good reader reads the words and the visuals together.\n\n"
-        "Diagrams and labels. A diagram is a picture that shows the parts of something. A label is a word or short group of words that names a part. A label line points to the part it names. A diagram usually has a title, too.\n\n"
-        "Captions. A caption is a short line of writing near a picture, diagram or graph. It tells the reader what they are looking at, and sometimes adds a fact. Captions are usually written in the present tense, such as An echidna's strong claws help it dig.\n\n"
-        "Bar graphs. A bar graph uses bars to show amounts, so that we can compare them. It has a title that tells what the graph is about, and two axes. One axis names the things being counted, and the other is a scale of numbers. To read a bar, look at the top of the bar and follow across to the scale. The numbers in a graph are called data.\n\n"
-        "Reading the data. Look for the tallest bar, which is the most, and the shortest bar, which is the least. To compare, subtract: if kangaroo has 8 votes and wombat has 2, kangaroo has 6 more votes. To find the total, add all the bars.\n\n"
-        "Reading visuals with the text. Check that the text and the visual agree. Then ask what the visual shows that the text does not. A diagram can show what the parts are called, and a graph can show exact numbers.\n\n"
-        "Choosing the right visual. A diagram shows the parts of something. A graph shows numbers and lets us compare them. A photograph shows what something looks like. A map shows where something is.\n\n"
-        "A link to spelling. This week's spelling focus is silent letters. In some words one letter is not said. The k is silent in knee and knock, the w is silent in wrist and wrap, the b is silent in climb, and the g is silent in gnat. Say the word, then picture the silent letter as you write it."
+        "Diagrams, graphs and captions are the pictures-with-a-purpose of an information report. A diagram shows the parts of something and a label names each part. A caption explains a picture in a short sentence. A bar graph shows amounts with bars so they can be compared. Always read the visual and the words together and ask what the visual adds."
     ),
     [
-        _step("1", "Why reports use visuals", "A report can use diagrams, graphs and captions along with its words.\n\nVisuals show things that are hard to say in words, so a good reader reads both together.", "A diagram shows the parts of an echidna. A graph shows how many people chose each animal.", "Read the words and the visuals together.", ("Why does a report use a diagram?", ["To show the parts of something", "To end the report", "To list the author's name"], 0, "A diagram shows the parts of something.")),
-        _step("2", "Diagrams and labels", "A diagram is a picture that shows parts. A label names a part, and a label line points to it. Most diagrams have a title.\n\nRead each label, then follow its line to the part.", "Label: claws. The line points to the echidna's strong feet.", "Label, line, part.", ("What is a label?", ["A word that names a part of a picture", "The last sentence", "A page number"], 0, "A label names a part, and its line points to it.")),
-        _step("3", "Captions", "A caption is a short line of writing near a picture. It tells what you are looking at and may add a fact.\n\nCaptions are usually in the present tense.", "An echidna's sharp spines and strong claws help to keep it safe.", "A caption explains a picture.", ("What does a caption do?", ["It explains the picture", "It gives a score", "It lists the index"], 0, "A caption tells what the picture shows.")),
-        _step("4", "Parts of a bar graph", "A bar graph has a title, a bottom axis that names the things counted, a side axis with a scale of numbers, and bars.\n\nThe title tells what the graph is about.", "Title: Favourite Australian animals in Class 3. Bottom axis: the animal. Side axis: number of votes.", "Title, axes, scale, bars.", ("What does the title of a graph tell you?", ["What the graph is about", "Who drew it", "How tall the bars are"], 0, "The title tells what the graph is about.")),
-        _step("5", "Reading the bars", "Look at the top of a bar, then follow across to the scale. The tallest bar is the most. The shortest bar is the least.\n\nCheck the scale. It goes up in steps, not always by 1.", "In the model graph, the kangaroo bar reaches 8, so 8 people chose the kangaroo.", "Top of bar, then across to the scale.", ("Which bar is the tallest in the model graph?", ["Wombat", "Echidna", "Kangaroo"], 2, "Kangaroo has 8 votes, the most.")),
-        _step("6", "Comparing the data", "To compare, subtract. To find a total, add.\n\nWrite the number sentence, then the answer.", "Kangaroo 8 and wombat 2: 8 minus 2 is 6, so the kangaroo got 6 more votes. Total votes: 8 plus 6 plus 4 plus 2 is 20.", "Compare by taking away, total by adding.", ("How many more votes did the kangaroo get than the wombat?", ["10", "6", "4"], 1, "8 minus 2 is 6.")),
-        _step("7", "Visuals and the text together", "Check that the text and visual agree. Then ask what the visual shows that the text does not.\n\nThe diagram names the parts, and the graph gives exact numbers.", "The text says echidnas have spines. The diagram shows where the spines are and the label names them.", "What does the visual add?", ("Which visual shows exact numbers so we can compare?", ["A diagram", "A bar graph", "A caption"], 1, "A bar graph shows numbers and lets us compare.")),
-        _step("8", "Spelling focus: silent letters", "In some words one letter is silent. The k is silent in knee and knock, the w in wrist and wrap, the b in climb, and the g in gnat.\n\nSay the word, then picture the silent letter as you write it.", "knee, knock, wrist, wrap, climb, gnat.", "kn, wr, mb, gn: the first or last letter is silent.", ("Which word has a silent k?", ["knee", "keep", "kick"], 0, "The k in knee is silent.")),
+        _step(
+            "🔍", "Why reports use pictures and graphs",
+            "Imagine you had to tell a friend what an echidna looks like, but you were only allowed to use words. You might say it is small, brown and covered in spikes. Your friend could still picture something quite different from the real animal. Now imagine you hold up a drawing. In one glance your friend can see the spiky back, the long thin nose and the strong little feet.\n\n"
+            "That is why the people who write information reports add visuals. A visual is any picture, diagram, photo or graph that goes along with the words. Some things are very hard to explain in words but easy to show, like what the parts of an animal are called and where they are. Other things, like how many people like each animal, are far easier to compare in a graph than in a long sentence full of numbers.\n\n"
+            "The words and the visuals work as a team, and neither one tells you everything. A strong reader uses both, and moves back and forth between them.",
+            "Words only: Echidnas are small, spiny mammals.\n\nWords plus the diagram: now you can see that the spines cover its back, that the nose is long and thin, and that the legs are short with strong claws. The sentence never told you those things.",
+            "Look at the diagram and count what it shows you that the sentence did not say. That is what a visual adds.",
+            ("Why does a report use a diagram?", ["To show the parts of something", "To end the report", "To list the author's name"], 0, "A diagram shows the parts of something and where they are."),
+            visual=[V_ECHIDNA],
+        ),
+        _step(
+            "🏷️", "Diagrams and labels",
+            "A diagram is a drawing made to teach you something. It is different from a photo, because the person who made it leaves out the busy, unimportant bits and keeps only the parts you need to learn.\n\n"
+            "Every good diagram has a title, which tells you what the whole picture shows. It also has labels. A label is a word or a few words that name one part. Each label has a label line, and the line ends on the exact part that the label names, usually with a dot.\n\n"
+            "There is a simple habit that makes diagrams easy to read: read the label, follow its line with your finger, find the part it touches, and say in your own words what that part is. Doing this slowly is much better than glancing at the picture and guessing.",
+            "Read the label claws. Follow the line with your finger. It ends on the feet at the bottom of the echidna, so the claws are on its feet, and the strong shape tells us they are for digging.\n\nRead the label snout. The line ends on the long thin nose at the front, so that is the snout.",
+            "A label only makes sense with its line. Always check where the line ends.",
+            ("What does a label line do?", ["It joins a label to the part it names", "It shows the end of the report", "It tells you the page number"], 0, "The label line ends on the part that the label names."),
+            visual=[V_ECHIDNA],
+        ),
+        _step(
+            "📝", "Captions",
+            "A caption is a short line of writing that sits near a picture, diagram or graph. Your eyes usually go to the picture first, and the caption tells you what you are looking at and what to notice. Sometimes it adds a fact that is not in the main text.\n\n"
+            "A good caption is a full sentence. It is about the picture, it is a fact and not an opinion, and in an information report it is usually written in the present tense, as if it is true now. \"An echidna uses its claws to dig\" is present tense. \"Yesterday I saw an echidna\" is a story about the past, and it belongs in a recount, not a caption.\n\n"
+            "A weak caption such as \"Cute!\" or \"Photo 2\" tells the reader nothing. Before you write a caption, ask yourself what the reader should learn from this picture.",
+            "Weak: Cute!\nWeak: Photo 2\nWeak: Yesterday I saw one.\nStrong: An echidna's sharp spines and strong claws help to keep it safe.\n\nThe strong caption is a present tense sentence, it is a fact, and it adds something: the spines and claws are for staying safe.",
+            "A caption explains the picture, and it adds a fact. Look at the caption under the echidna diagram.",
+            ("Which is the best caption for a photo of an echidna digging?", ["Cute!", "An echidna uses its strong claws to dig into the soil.", "I saw one last week."], 1, "A good caption is a clear present tense fact about the picture."),
+            visual=[V_ECHIDNA],
+        ),
+        _step(
+            "📊", "The parts of a bar graph",
+            "A bar graph turns numbers into towers so your eyes can compare them quickly. The tallest tower has the most, and the shortest has the least. Before you read any bars, check four things in the same order every time.\n\n"
+            "First, read the title. It tells you what the graph is about. Second, read the bottom axis. It names the things that were counted, here the animals. Third, read the scale up the side. These are the numbers, and you must check how they count: here they go up in twos (0, 2, 4, 6, 8, 10). Fourth, look at the bars.\n\n"
+            "The numbers that a graph shows are called data. People collect data by counting or asking questions, for example by asking a class which animal they like best, and then they draw the graph so everyone can understand the answer at a glance.",
+            "Title: Favourite Australian animals in Class 3. So the graph is about which animal this class likes best.\nBottom axis: the animal. Side axis: the number of votes, counting by 2s.\nBars: one for each animal.",
+            "Title, bottom axis, scale, bars. Check the scale first, because it does not always count by 1.",
+            ("What does the scale on a graph show?", ["The numbers, so you can tell how much each bar shows", "Who made the graph", "The colour of the bars"], 0, "The scale is the row of numbers that you use to read the bars."),
+            visual=[V_GRAPH_PARTS],
+        ),
+        _step(
+            "📏", "Reading the bars",
+            "To find out what a bar says, do two things. First, find the top of the bar. Second, slide your finger straight across to the scale and read the number it lines up with. The dotted line in the picture shows exactly how to do it.\n\n"
+            "Sometimes the top of a bar sits between two lines on the scale. If the scale counts by twos and a bar stops halfway between 4 and 6, the number is 5. Always look at how the scale counts before you decide.\n\n"
+            "Once you can read every bar, you can answer questions. The tallest bar is the most and the shortest bar is the least. Bars that are the same height have the same amount.",
+            "The kangaroo bar reaches the line marked 8, so 8 people chose the kangaroo. The wombat bar reaches 2, so only 2 people chose the wombat. The tallest bar is the kangaroo, and the shortest is the wombat.",
+            "Top of the bar first, then straight across to the scale.",
+            ("The top of a bar lines up with 6 on the scale. What does that mean?", ["That bar shows 6", "The bar is 6 centimetres tall", "It is the sixth bar"], 0, "You read the number the top of the bar lines up with."),
+            visual=[V_GRAPH_TRACE],
+        ),
+        _step(
+            "➕", "Comparing the data",
+            "Graphs are made so we can compare. Once the numbers are written out, you can do number sentences with them. Different questions use different operations, and the words in the question are your clue.\n\n"
+            "When a question says how many more, how many fewer or what is the difference, subtract the smaller number from the larger. When it says altogether or in total, add the numbers. When it says which has the most or the least, you only need to look for the tallest or shortest bar.\n\n"
+            "Write the number sentence before you write the answer. It stops mistakes, and it shows your thinking to anyone who checks your work.",
+            "How many more votes did the kangaroo get than the wombat? More means subtract: 8 - 2 = 6, so 6 more.\n\nHow many votes altogether? Altogether means add: 8 + 6 + 4 + 2 = 20 votes.\n\nWhich animal got the fewest votes? The shortest bar is the wombat, with 2.",
+            "The question words are clues: more or fewer means subtract, altogether means add.",
+            ("How many more votes did the kangaroo get than the wombat?", ["10", "6", "4"], 1, "8 - 2 = 6."),
+            visual=[V_GRAPH_VALUES],
+        ),
+        _step(
+            "🧩", "Visuals and words together",
+            "When you read a page with visuals, do not read the words and then skip the pictures. Use three questions. Do the words and the visual agree with each other? What does the visual tell me that the words do not? And is this the right kind of visual for the job?\n\n"
+            "Different visuals do different jobs. A diagram shows the parts of something and what they are called. A graph shows numbers so that we can compare them. A photograph shows what something really looks like. A map shows where something is. A writer picks the visual that fits what they want the reader to understand.\n\n"
+            "If a report says echidnas have spines, the diagram can show exactly where on the body they grow, and the label gives you the proper name. The graph can tell you something the words never could, like how many people in a class like the echidna best.",
+            "The text says: Echidnas are small, spiny mammals.\nThe diagram adds: where the spines are, and the names of the snout, claws and legs.\nThe graph adds: exactly how many people in Class 3 chose the echidna (4), and that more people chose the kangaroo (8).",
+            "Ask what the visual adds that the words do not.",
+            ("Which visual would you use to show how many of each animal was counted?", ["A diagram", "A bar graph", "A caption"], 1, "A bar graph shows numbers and lets us compare them."),
+            visual=[V_ECHIDNA, V_GRAPH_PLAIN],
+        ),
+        _step(
+            "🔤", "Spelling focus: silent letters",
+            "Some words have a letter that you write but do not say. These are called silent letters. Long ago, people really did say them. Knee was said with a k sound at the start, and so was knock. The way we say the words slowly changed, but the spelling stayed the same, so the old letters are still sitting there.\n\n"
+            "This week we have four patterns. The k is silent in kn words: knee and knock. The w is silent in wr words: wrist and wrap. The b is silent after m at the end of climb. The g is silent in gn words: gnat.\n\n"
+            "A good way to remember is to say the word the way it sounds, then say it in a silly way with the silent letter pronounced, like k-nee, and write what you say. That silly voice will help your hand remember the silent letter.",
+            "knee, knock, wrist, wrap, climb, gnat.\n\nSay: k-nee. Write: knee.\nSay: w-rist. Write: wrist.\nSay: clim-b. Write: climb.",
+            "kn, wr, mb, gn: one letter is silent but you still write it.",
+            ("Which word has a silent k?", ["knee", "keep", "kick"], 0, "The k in knee is silent. In keep and kick you can hear the k."),
+        ),
     ],
     (
-        "Let's read a page with visuals together. Here is my page. Echidnas are small, spiny mammals that live across Australia. They use their long snouts to find food. Next is a diagram of an echidna with four labels: spines, snout, claws and short legs. Under it is a caption: An echidna's sharp spines and strong claws help to keep it safe. Last is a bar graph. First, the diagram. The text says echidnas are spiny, but the diagram shows me where the spines are, on its back, and the label names them. The label line for claws points to the strong feet, so I know claws are used for digging. The caption adds a fact the text did not say: the spines and claws help to keep it safe. Now the graph. I read the title first: Favourite Australian animals in Class 3. The bottom axis names the animals, and the side axis counts votes in steps of 2. I look at the top of each bar and go across to the scale. Kangaroo is 8, koala 6, echidna 4, wombat 2. The tallest bar is kangaroo, so it got the most votes, and the wombat got the least. To compare, I subtract: 8 minus 2 is 6, so kangaroo got 6 more votes than wombat. To find the total I add: 8 plus 6 plus 4 plus 2 is 20 votes. Now it is your turn to read the visuals and make some of your own.\n\n" + MODEL
+        "Let's read a page with visuals together, using the echidna diagram and the graph shown above.\n\n"
+        "My page says: Echidnas are small, spiny mammals that live across Australia. They use their long snouts to find food. I read the words first, then I look at the diagram. The text says echidnas are spiny, but the diagram shows me where the spines are, on its back, and the label names them. I follow the label line for claws, and it ends on the strong feet, so I know the claws are on the feet. Then I read the caption: An echidna's sharp spines and strong claws help to keep it safe. The caption adds a fact the text did not say.\n\n"
+        "Now the graph. I read the title first: Favourite Australian animals in Class 3. The bottom axis names the animals, and the side axis counts votes in steps of 2. I look at the top of each bar and go across to the scale. Kangaroo is 8, koala 6, echidna 4, wombat 2. The tallest bar is the kangaroo, so it got the most votes, and the wombat got the fewest. To compare, I subtract: 8 - 2 = 6, so the kangaroo got 6 more votes than the wombat. To find the total I add: 8 + 6 + 4 + 2 = 20 votes.\n\n"
+        "Now it is your turn to read the visuals and make some of your own.\n\n" + MODEL
     ),
     (
-        "Type your answers in the practice boxes. Part A: look at the model diagram and type the four labels. Part B: type a caption for a picture of a koala eating gum leaves. Part C: use the model graph. Type the number of votes for koala; how many more votes the kangaroo got than the echidna; and how many votes the koala and the wombat got altogether. Part D: type the missing silent letters: _nee, _rist, _nock, clim_, _nat. Your parent can check your answers against the answer key."
+        "Here we practise together. Read each part, then type your answers in the boxes on the next stage. You can open the 'Put it all together' stage again at any time to look at the echidna diagram and the graph.\n\n"
+        "Part A: look at the echidna diagram and type its four labels.\n\n"
+        "Part B: type a caption for a picture of a koala eating gum leaves. Make it a full sentence in the present tense.\n\n"
+        "Part C: use the model graph. " + DATA_LINE + " Type three answers: how many votes the koala got; how many more votes the kangaroo got than the echidna; and how many votes the koala and the wombat got altogether. Write the number sentences too.\n\n"
+        "Part D: type the missing silent letters to make five words: _nee, _rist, _nock, clim_, _nat."
     ),
     (
-        "Read the visuals and make your own. Typed answers go in the boxes. Use the model page below to help you.\n\n" + MODEL + "\n\n"
-        "Stage 1 (graph): type the title of the model graph, and say what each axis shows.\n"
-        "Stage 2 (diagram): type two things the diagram shows that the text does not say.\n"
-        "Stage 3 (compare): type the animal with the fewest votes and how many fewer votes it has than the animal with the most.\n"
-        "Stage 4 (caption): type a caption for a picture of an echidna using its sticky tongue to catch ants. Write it as a full sentence in the present tense.\n"
-        "Stage 5 (diagram): on paper, draw an animal you know and add four labels with label lines and a title. Type the four labels and a caption for your diagram.\n"
-        "Stage 6 (survey): ask eight to ten people which of three animals is their favourite. Type the number for each animal. On paper, draw a bar graph with a title, labelled axes and a scale. Type one sentence about what your graph shows.\n"
-        "Stage 7 (spell): type your six spelling words and one sentence for each of knee, wrist and climb.\n\n"
-        "Parent: check that the child names the graph title and axes correctly, and that the child identifies two sensible things that the diagram adds, such as where the spines are or what the parts are called. Check that fewest is wombat with 2 votes, which is 6 fewer than the kangaroo's 8. Check that the captions are full present tense sentences, that the child's diagram has a title, four labels and label lines, and that the survey counts match the bars on the child's graph. Accept any sensible animals and survey results."
+        "Now read the visuals and make your own. Type your answers in the big box, and number each one. You can look back at the echidna diagram and the graph in the 'Put it all together' stage. " + DATA_LINE + "\n\n"
+        "1. Graph: type the title of the model graph, and say what each axis shows.\n\n"
+        "2. Diagram: type two things the diagram shows that the text does not say.\n\n"
+        "3. Compare: type the animal with the fewest votes, and how many fewer votes it has than the animal with the most.\n\n"
+        "4. Caption: type a caption for a picture of an echidna using its sticky tongue to catch ants. Write it as a full sentence in the present tense.\n\n"
+        "5. Your own diagram: on paper, draw an animal you know and add four labels with label lines and a title. Type your four labels and a caption for your diagram.\n\n"
+        "6. Your own survey: ask eight to ten people which of three animals is their favourite. Type the number for each animal. On paper, draw a bar graph with a title, labelled axes and a scale, using a ruler. Type one sentence about what your graph shows.\n\n"
+        "7. Spelling: type your six spelling words, and write one sentence each for knee, wrist and climb."
     ),
     "Which was harder for you: reading the diagram or reading the graph, and what helps you check that you have read it correctly?",
-    "Did I read the labels and captions, read the title and axes of the graph, compare numbers correctly, say what each visual adds, and spell knee, knock, wrist, wrap, climb and gnat correctly?",
+    "Did I read the labels and captions, read the title, scale and bars of the graph, compare numbers correctly, say what each visual adds, and spell knee, knock, wrist, wrap, climb and gnat correctly?",
     [
         _q("What does a caption do?", ["Gives the author's name", "Explains a picture, diagram or graph in a short line", "Lists the glossary", "Gives the page number"], 1, "A caption explains what the visual shows."),
         _q("What are labels on a diagram?", ["Words that name parts, with lines pointing to them", "The title", "Long paragraphs", "Page numbers"], 0, "Labels name the parts, and the lines point to them."),
         _q("Which visual is best for showing how many of each?", ["A heading", "A map", "A bar graph", "A glossary"], 2, "A bar graph shows amounts so we can compare them."),
-        _q("In the model graph, which animal got the most votes?", ["Echidna", "Koala", "Wombat", "Kangaroo"], 3, "The kangaroo bar is the tallest, at 8 votes."),
-        _q("How many more votes did the kangaroo get than the wombat?", ["4", "6", "8", "10"], 1, "8 minus 2 is 6."),
-        _q("How many votes were there altogether in the model graph?", ["20", "18", "22", "16"], 0, "8 plus 6 plus 4 plus 2 is 20."),
+        _q("In the model graph (kangaroo 8, koala 6, echidna 4, wombat 2), which animal got the most votes?", ["Echidna", "Koala", "Wombat", "Kangaroo"], 3, "The kangaroo bar is the tallest, at 8 votes."),
+        _q("In the model graph (kangaroo 8, koala 6, echidna 4, wombat 2), how many more votes did the kangaroo get than the wombat?", ["4", "6", "8", "10"], 1, "8 - 2 = 6."),
+        _q("How many votes were there altogether (kangaroo 8, koala 6, echidna 4, wombat 2)?", ["20", "18", "22", "16"], 0, "8 + 6 + 4 + 2 = 20."),
         _q("What does the title of a graph tell you?", ["Who drew it", "What colour the bars are", "What the graph is about", "Nothing"], 2, "The title tells what the graph is about."),
         _q("Which is the best caption for a picture of an echidna digging?", ["Cute!", "Photo 3", "Yesterday I saw one.", "An echidna uses its strong claws to dig into the soil."], 3, "A good caption is a clear present tense fact about the picture."),
         _q("Which word has a silent k?", ["rock", "knock", "lock", "luck"], 1, "The k in knock is silent."),
         _q("Which word is spelled correctly?", ["clim", "clime", "climb", "cliem"], 2, "Climb has a silent b at the end."),
     ],
-    "Type your answers in the practice boxes and submit them.",
+    "Type your answers in the practice boxes and in the big box, then submit them.",
     "Extension: find a report, a textbook or a website page with a diagram or graph. Write one caption for it, and one question that someone could answer by reading it. Ask a family member to answer your question.",
     [("diagram", "A picture that shows the parts of something"), ("label", "A word that names a part of a picture"), ("caption", "A short line of writing that explains a picture"), ("graph", "A drawing that uses bars or lines to show numbers"), ("scale", "The numbers along a graph's side that show how much"), ("title", "The name of a text or graph that tells what it is about"), ("data", "Facts or numbers that have been collected"), ("compare", "To look at how things are the same or different")],
     [],
@@ -115,26 +290,26 @@ LESSON = build(
         _wc("Which word is spelled correctly?", ["nat", "gnat", "gnatt"], 1, "Gnat has a silent g."),
     ],
     [
-        {"key": "partA", "label": "Part A: diagram labels", "hint": "The four labels on the model diagram."},
-        {"key": "partB", "label": "Part B: a caption", "hint": "A caption for a koala eating gum leaves."},
-        {"key": "partC", "label": "Part C: graph answers", "hint": "Koala votes; kangaroo minus echidna; koala plus wombat."},
-        {"key": "partD", "label": "Part D: silent letters", "hint": "nee, rist, nock, clim, nat."},
-        {"key": "stage1", "label": "Graph title and axes", "hint": "The title and what each axis shows."},
-        {"key": "stage2", "label": "What the diagram adds", "hint": "Two things the text does not say."},
-        {"key": "stage3", "label": "Fewest and most", "hint": "The animal with fewest votes and how many fewer."},
-        {"key": "stage4", "label": "Echidna caption", "hint": "A present tense sentence."},
-        {"key": "stage5", "label": "My diagram", "hint": "Four labels and a caption."},
-        {"key": "stage6", "label": "My survey", "hint": "The counts and one sentence about the result."},
-        {"key": "spelling", "label": "Spelling words", "hint": "Type your six words and a sentence each for knee, wrist and climb."},
+        {"key": "partA", "label": "Part A: diagram labels", "hint": "The four labels on the echidna diagram."},
+        {"key": "partB", "label": "Part B: a caption", "hint": "A present tense caption for a koala eating gum leaves."},
+        {"key": "partC", "label": "Part C: graph answers", "hint": "Koala votes; kangaroo minus echidna; koala plus wombat. Add your number sentences."},
+        {"key": "partD", "label": "Part D: silent letters", "hint": "The five words from _nee, _rist, _nock, clim_, _nat."},
     ],
     ["Ignoring the labels and reading only the text", "Reading the wrong bar or forgetting to check the scale", "Adding when you should subtract to compare", "Writing a caption that is an opinion or a past tense story", "Forgetting the title or axis labels on a graph", "Leaving out the silent letter: nee, rist, clim, nat"],
     ["Find a graph or diagram in a book and read it aloud to someone.", "Practise your six spelling words by writing a sentence for each."],
-    "Part A: spines, snout, claws, short legs. Part B: accept a present tense caption such as A koala feeds on gum leaves. Part C: 6; 4; 8. Part D: knee, wrist, knock, climb, gnat. Main task Stage 1: Favourite Australian animals in Class 3; the bottom axis names the animal and the side axis shows the number of votes. Stage 2: accept two sensible additions, such as where the spines are, what the parts are called, and that claws are strong and used for digging. Stage 3: wombat, 6 fewer votes than the kangaroo (2 compared with 8). Stage 4: accept a present tense sentence such as An echidna uses its sticky tongue to catch ants. Stage 5: accept a diagram with a title, four labels and a present tense caption. Stage 6: accept any sensible counts, a graph with a title, labelled axes and a scale, and a sentence that matches the data. Stage 7: accept six correctly spelled words and sentences. Quiz answers: explains a picture, diagram or graph in a short line; words that name parts, with lines pointing to them; a bar graph; kangaroo; 6; 20; what the graph is about; An echidna uses its strong claws to dig into the soil; knock; climb.",
+    "Part A: spines, snout, claws, short legs. Part B: accept a present tense caption such as A koala feeds on gum leaves. Part C: 6; 4 (8 - 4); 8 (6 + 2). Part D: knee, wrist, knock, climb, gnat. Main task 1: Favourite Australian animals in Class 3; the bottom axis names the animal and the side axis shows the number of votes. 2: accept two sensible additions, such as where the spines are, what the parts are called, and that claws are strong and used for digging. 3: wombat, 6 fewer votes than the kangaroo (2 compared with 8). 4: accept a present tense sentence such as An echidna uses its sticky tongue to catch ants. 5: accept a diagram with a title, four labels and a present tense caption. 6: accept any sensible counts, a graph with a title, labelled axes and a scale, and a sentence that matches the data. 7: accept six correctly spelled words and sentences. Quiz answers: explains a picture, diagram or graph in a short line; words that name parts, with lines pointing to them; a bar graph; kangaroo; 6; 20; what the graph is about; An echidna uses its strong claws to dig into the soil; knock; climb.",
+    parent_check=(
+        "Check that the child names the graph title and axes correctly, and that the child identifies two sensible things that the diagram adds, such as where the spines are or what the parts are called. Check that fewest is wombat with 2 votes, which is 6 fewer than the kangaroo's 8. Check that the captions are full present tense sentences, that the child's diagram has a title, four labels and label lines, and that the survey counts match the bars on the child's graph. Accept any sensible animals and survey results."
+    ),
+    worked_visuals=[V_ECHIDNA, V_GRAPH_VALUES],
 )
+
+LESSON["planner_title"] = "Guided practice answers"
+LESSON["planner_intro"] = "Type your answer to each part of the guided practice. Write at least a few words in every box."
 
 LESSON["spelling"] = {
     "focus": "Silent letters: kn, wr, mb, gn",
-    "teaching": "In some words one letter is silent. The k is silent in knee and knock, the w in wrist and wrap, the b in climb, and the g in gnat. Say the word, then picture the silent letter as you write it.",
+    "teaching": "In some words one letter is silent. The k is silent in knee and knock, the w in wrist and wrap, the b in climb, and the g in gnat. Long ago people said these letters aloud, and the spelling stayed after the sound was lost. Say the word, then picture the silent letter as you write it.",
     "words": [
         _w("knee", "knee", "silent k at the start, the joint in your leg"),
         _w("knock", "knock", "silent k at the start, to tap on a door"),
@@ -153,4 +328,6 @@ LESSON["hoard_words"] = list(WORDS)
 
 if __name__ == "__main__":
     assert len(LESSON["quiz"]) == 10 and len(LESSON["word_challenges"]) == 8
+    assert all("visual" in s or "visual_before" in s for s in LESSON["teach_steps"][:7])
+    assert all(v["svg"].startswith("<svg") and v["svg"].endswith("</svg>") for v in LESSON["worked_visuals"])
     print("ok", LESSON["seed_key"])
