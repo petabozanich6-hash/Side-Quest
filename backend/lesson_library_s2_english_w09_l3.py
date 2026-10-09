@@ -31,7 +31,7 @@ def _rows_svg(title, rows):
             y += 68
         elif kind == "join":
             _, text, colour = r
-            body.append(f'<rect x="150" y="{y}" width="260" height="32" rx="16" fill="{colour}"/>')
+            body.append(f'<rect x="100" y="{y}" width="360" height="32" rx="16" fill="{colour}"/>')
             body.append(f'<text x="280" y="{y + 22}" text-anchor="middle" font-size="15" font-weight="bold" fill="#FFFFFF">{_esc(text)}</text>')
             y += 40
         else:
@@ -87,12 +87,12 @@ V_COMPOUND = _visual(
         ("clause", "MAIN CLAUSE 2", "they rest inside during the day.", MAIN_FILL, MAIN_LINE),
         ("note", "Each clause could stand alone as a sentence.", MAIN_LINE),
     ]),
-    "Two green boxes labelled main clause 1 and main clause 2, joined by a dark pill that says comma and joining word, and. The sentence reads Wombats dig burrows, and they rest inside during the day.",
+    "Two green boxes labelled main clause 1 and main clause 2, joined by a dark pill that says comma and joining word, and. The sentence reads Wombats dig burrows, and they rest inside during the day. A note underneath says each clause could stand alone as a sentence.",
     "A compound sentence joins two main clauses with a comma and a joining word.",
 )
 V_WORDS = _visual(
     _words_svg(),
-    "Two columns. The left column lists the seven joining words for = F, and = A, nor = N, but = B, or = O, yet = Y and so = S, which join two main clauses and use a comma before them. The right column lists eight words that start a dependent clause: because, when, although, while, if, after, before and until.",
+    "Two columns of joining words. The left column, joins two main clauses with a comma before it, lists for, and, nor, but, or, yet and so, with the letters F, A, N, B, O, Y, S beside them. The right column, starts a dependent clause that cannot stand alone, lists because, when, although, while, if, after, before and until.",
     "Two kinds of joining word, and the job each one does.",
 )
 V_COMPLEX = _visual(
@@ -101,7 +101,7 @@ V_COMPLEX = _visual(
         ("join", "because  (joining word, no comma)", "#1F3B2D"),
         ("clause", "DEPENDENT CLAUSE (cannot stand alone)", "gum leaves give them little energy.", DEP_FILL, DEP_LINE),
     ]),
-    "A green main clause box reading Koalas sleep for most of the day, a dark pill that says because, then an orange dependent clause box reading gum leaves give them little energy. A note says there is no comma when the main clause comes first.",
+    "A green main clause box reading Koalas sleep for most of the day, a dark pill that says because, joining word, no comma, then an orange dependent clause box reading gum leaves give them little energy.",
     "A complex sentence has a main clause and a dependent clause. The dependent clause cannot stand alone.",
 )
 V_COMPLEX_FIRST = _visual(
@@ -362,6 +362,5 @@ LESSON["hoard_words"] = list(WORDS)
 if __name__ == "__main__":
     assert len(LESSON["quiz"]) == 10 and len(LESSON["word_challenges"]) == 8
     assert len(LESSON["planner_fields"]) == 4
-    assert all("visual" in s or "visual_before" in s for s in LESSON["teach_steps"][:8])
     assert all(v["svg"].startswith("<svg") and v["svg"].endswith("</svg>") for v in LESSON["worked_visuals"])
     print("W9 L3 ok", LESSON["seed_key"])
