@@ -3,7 +3,7 @@ Built to match the W9 L1 benchmark. The sentence pictures are drawn as SVG by th
 The child revisits clauses and conjunctions (first met in Week 4 Lesson 3) and uses them in report writing: simple, compound and complex sentences, choosing the right joining word, placing the comma, and fixing fragments and run-ons. The practice sentences continue the Australian animals topic of Weeks 7 to 9.
 Spelling: silent letters kn, wr, mb, gn: knife, knit, wreck, lamb, gnaw, design.
 Outcomes: EN2-VOCAB-01 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 9, Lesson 3, Compound and complex sentences, language slot). The EN2-VOCAB-01 wording is the NESA text held in backend/nsw_outcomes.py, with a short note on this lesson's focus.
-Video status: no video attached. None was checked for this lesson, so none is listed.
+Video status: two videos attached. Simple, Compound, Complex Sentences (YouTube smgyeUomfyA) and Fragments and Run-On Sentences (YouTube a30A0a-9mCA). Both were chosen from their titles and descriptions, so please watch each one before relying on it. The first video says independent clause where this lesson says main clause, and uses the word coordinating conjunction for the FANBOYS words. The second is a general grammar video and may mention more than this lesson teaches.
 Facts used: wombats dig burrows and can run quickly over short distances, echidnas curl into a ball when in danger and have spines, koalas sleep a lot and eat gum leaves, which give them little energy. These facts are for practice sentences, so a parent should check any of them the child wants to reuse in a real report.
 """
 from html import escape as _esc
@@ -298,7 +298,20 @@ LESSON = build(
     "Type your answers in the practice boxes and in the big box, then submit them.",
     "Extension: choose a paragraph from a book or website about an animal. Find one compound sentence and one complex sentence in it. Type or write them out, circle the joining word in each, and say how you know which kind each one is. Then rewrite one choppy pair of simple sentences as a single joined sentence.",
     [("clause", "A group of words with a subject and a verb"), ("main clause", "A clause that makes sense on its own"), ("dependent clause", "A clause that cannot stand alone"), ("conjunction", "A joining word, such as and, but or because"), ("compound sentence", "A sentence with two main clauses"), ("complex sentence", "A sentence with a main clause and a dependent clause"), ("fragment", "Words that look like a sentence but have no main clause"), ("run-on", "Two main clauses joined with no joining word")],
-    [],
+    [
+        _video(
+            "Simple, Compound, Complex Sentences", "smgyeUomfyA",
+            "Watch how the video tells the three kinds of sentence apart. It says independent clause for what we call a main clause. Listen for the comma before the joining word in a compound sentence.",
+            "Ask your child to say one compound sentence and one complex sentence about an animal, then tell you which joining word they used.",
+            ("What does a compound sentence join?", ["Two main clauses", "Two titles", "Two pictures"], 0, "A compound sentence joins two main clauses with a comma and a joining word."),
+        ),
+        _video(
+            "Fragments and Run-On Sentences", "a30A0a-9mCA",
+            "Watch for how the video spots a fragment and a run-on, and how it fixes each one. If it mentions anything beyond this lesson, you can skip that part.",
+            "Ask your child to find the mistake in a sentence you make up, name it as a fragment or a run-on, and say how to fix it.",
+            ("What is a fragment?", ["Words that look like a sentence but are missing a main clause", "A very long sentence", "A title"], 0, "A fragment is missing something, so it cannot stand alone as a sentence."),
+        ),
+    ],
     _sort("Simple, compound or complex?", "Sort each sentence by how it is built.", ["Simple", "Compound", "Complex"], [("Koalas climb trees.", 0), ("Koalas climb trees, and they eat gum leaves.", 1), ("Koalas sleep a lot because gum leaves give little energy.", 2), ("Echidnas have spines, but wombats have thick fur.", 1), ("When an echidna feels danger, it curls into a ball.", 2), ("Kookaburras sit in tall gum trees.", 0), ("Wombats dig burrows, so they have shelter.", 1), ("Although wombats look slow, they can run fast.", 2)]),
     [
         _wc("Which is a group of words with a subject and a verb?", ["clause", "comma", "caption"], 0, "A clause has a subject and a verb."),
@@ -332,6 +345,7 @@ EXPLICIT_TEACHING = (
     "Compound sentences. Two main clauses, then a comma and a joining word. The seven joining words are for, and, nor, but, or, yet and so, which spell FANBOYS. Children overuse and, so ask what the second idea does. Does it add, contrast or give a result? That tells them to use and, but or so. The comma goes before the joining word, never after it.\n\n"
     "Complex sentences. A main clause and a dependent clause that begins with a joining word such as because, when, although, while, if, after, before or until. When the main clause comes first, no comma is usually needed. When the dependent clause comes first, a comma follows it. Have your child read the sentence aloud, and listen for the natural pause where the comma belongs.\n\n"
     "Fragments and run-ons. A fragment is a dependent clause standing alone, such as Because gum leaves give them little energy. A run-on pushes two main clauses together with no join. A comma alone between two main clauses (a comma splice) is a common version, so teach that a comma is too weak to join them. For every mistake, ask your child to name it first and then fix it.\n\n"
+    "The videos. Watch each one yourself before you use it. The first video says independent clause where this lesson says main clause, so tell your child the two names mean the same thing. The second video is a general grammar lesson and may go beyond what this lesson teaches, so skip any part that does.\n\n"
     "The spelling work. The silent letters in knife, knit, wreck, lamb, gnaw and design are left over from older pronunciations. Use the silly-voice method: say k-nife, w-reck and lam-b with the silent letter pronounced, write exactly what you said, then say the word normally. Related words help with design, because signal and sign also keep the g.\n\n"
     "Pace and support. The lesson runs about an hour and splits well into two sittings: clauses, compound and complex sentences in the first, and commas, mistakes, the main task and spelling in the second. The pictures are there to look back at, so encourage your child to open the 'Put it all together' stage whenever a rule slips. If your child finds complex sentences hard, spend longer on because and when, and leave although for later."
 )
