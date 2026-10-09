@@ -3,12 +3,12 @@ REWRITTEN with real visuals. The echidna diagram and the bar graphs are drawn as
 The child learns how to read the visual features of an information report: labelled diagrams, captions and simple bar graphs, and how they add information that the main text does not give. The example page is about the echidna, continuing Weeks 7 and 8, with a made-up class survey for the graph.
 Spelling: silent letters kn, wr, mb, gn: knee, knock, wrist, wrap, climb, gnat.
 Outcomes: EN2-RECOM-01 and EN2-SPELL-01, checked against lesson_library_s2_english_placeholders.py (Week 9, Lesson 1). Outcome wording is the official NESA text, with a short note on this lesson's focus.
-Video status: no video attached. None was checked for this lesson, so none is listed.
+Video status: two videos attached. Diagrams and labels (YouTube vdyiupgsplI) and Reading bar graphs, 3rd grade (YouTube iCnh6EL1Lmo). Both were chosen from their titles and descriptions, so please watch each one before relying on it.
 Facts used: echidnas are egg-laying mammals (monotremes) with spines, a long toothless snout, strong digging claws, and a long sticky tongue for catching ants and termites. Koalas eat eucalyptus (gum) leaves. The class survey numbers are made up.
 """
 import math
 
-from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _visual
+from lesson_library_s2_english_w1_w2 import build, _q, _step, _sort, _wc, _visual, _video
 from spelling_s2_w1 import _w, _c
 
 WORDS = ["knee", "knock", "wrist", "wrap", "climb", "gnat"]
@@ -277,7 +277,20 @@ LESSON = build(
     "Type your answers in the practice boxes and in the big box, then submit them.",
     "Extension: find a report, a textbook or a website page with a diagram or graph. Write one caption for it, and one question that someone could answer by reading it. Ask a family member to answer your question.",
     [("diagram", "A picture that shows the parts of something"), ("label", "A word that names a part of a picture"), ("caption", "A short line of writing that explains a picture"), ("graph", "A drawing that uses bars or lines to show numbers"), ("scale", "The numbers along a graph's side that show how much"), ("title", "The name of a text or graph that tells what it is about"), ("data", "Facts or numbers that have been collected"), ("compare", "To look at how things are the same or different")],
-    [],
+    [
+        _video(
+            "Diagrams and labels (text features)", "vdyiupgsplI",
+            "Watch how a label names a part and its line points to it. Pause and find the label line on each picture.",
+            "Ask your child to point to a label, then follow its line to the part.",
+            ("What is a diagram?", ["A picture that shows the parts of something", "A list of words", "A page number"], 0, "A diagram is a picture with labels that name its parts."),
+        ),
+        _video(
+            "Reading bar graphs (3rd grade)", "iCnh6EL1Lmo",
+            "Watch how the title and the scale are read first. Listen for when the video subtracts and when it adds.",
+            "Ask your child how many more one bar is than another, and say the number sentence aloud.",
+            ("To find how many more, what do you do?", ["Subtract", "Add", "Guess"], 0, "More means subtract the smaller number from the larger."),
+        ),
+    ],
     _sort("Diagram or graph?", "Sort each feature into diagram feature or graph feature.", ["Diagram feature", "Graph feature"], [("label lines that point to parts", 0), ("bars of different heights", 1), ("a scale of numbers up the side", 1), ("names of the parts of an animal", 0), ("shows how many of each", 1), ("shows what the parts are called", 0), ("lets us compare amounts", 1), ("shows the parts of a body", 0)]),
     [
         _wc("Which is a picture that shows the parts of something?", ["diagram", "caption", "scale"], 0, "A diagram shows the parts of something."),
@@ -343,4 +356,4 @@ if __name__ == "__main__":
     assert len(LESSON["quiz"]) == 10 and len(LESSON["word_challenges"]) == 8
     assert all("visual" in s or "visual_before" in s for s in LESSON["teach_steps"][:7])
     assert all(v["svg"].startswith("<svg") and v["svg"].endswith("</svg>") for v in LESSON["worked_visuals"])
-    print("W9 L1 ok")
+    print("W9 L1 ok", LESSON["seed_key"])
