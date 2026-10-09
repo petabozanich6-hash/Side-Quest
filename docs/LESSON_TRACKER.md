@@ -2,20 +2,21 @@
 
 Created 9 October 2026. Updated at the end of every work session.
 
-Status values: at standard, built (not yet audited), placeholder only. Built lessons are registered in LESSON_MODULES. Placeholders are not registered and do not appear on the live site.
+Status values: at standard, built (not yet audited), built (below standard), placeholder only. Built lessons are registered in LESSON_MODULES. Placeholders are not registered and do not appear on the live site.
 
-English topics and spelling focuses come from the WEEKS table in backend/lesson_library_s2_english_placeholders.py. Placeholder seed keys are s2-eng-wNN-lN. A built lesson has its own named key with a topic suffix (for example s2-eng-w09-l1-diagrams-graphs-captions). The named keys for W1 to W9 other than those two are TO CHECK: read each module before upgrading it.
+English topics and spelling focuses come from the WEEKS table in backend/lesson_library_s2_english_placeholders.py. Placeholder seed keys are s2-eng-wNN-lN. A built lesson has its own named key with a topic suffix (for example s2-eng-w09-l1-diagrams-graphs-captions). The named keys for W1 to W8 and W9 L2 are TO CHECK: read each module before upgrading it.
 
 Videos verified: no for every lesson until the parent has watched the video. W9 L1 videos vdyiupgsplI and iCnh6EL1Lmo were chosen from titles only.
 
-Library version on main when this was written: 88.
+Library version on main when this was written: 90.
 
 ## Known lessons
 
 | Lesson | File | Status | Videos verified | Notes |
 |---|---|---|---|---|
 | W9 L1 Diagrams, graphs and captions | lesson_library_s2_english_w09_l1.py | at standard (benchmark, approved, do not edit) | no | Key s2-eng-w09-l1-diagrams-graphs-captions |
-| W9 L2 Report with visuals | lesson_library_s2_english_w09_l2.py | built (not yet audited) | no | Next to upgrade |
+| W9 L2 Report with visuals | lesson_library_s2_english_w09_l2.py | built (not yet audited) | no | To upgrade |
+| W9 L3 Compound and complex sentences | lesson_library_s2_english_w09_l3.py | built (below standard) | no | Key s2-eng-w09-l3-compound-complex-sentences. Registered, version 90. Missing explicit_teaching parent guide and videos. Upgrade in place |
 | W1 L1 Reading with expression | lesson_library_s2_english_w01_l1.py | built (not yet audited) | no | Key s2-eng-w01-l1-reading-expression. Has spelling in spelling_live.py |
 | W1 L1 leftover | lesson_library_s2_english_w01_l1_full.py | leftover file | n/a | Not registered. Ask the parent before touching |
 
@@ -31,7 +32,7 @@ Library version on main when this was written: 88.
 | 6 | Text features: headings, glossary, index | Planning a report | Technical words and vocabulary | Listening and note-taking | -tion | built (not yet audited) |
 | 7 | Main idea and key details | Classification paragraph | Pronouns and cohesion | Finding reliable sources | -sion and -ssion | built (not yet audited) |
 | 8 | Fact versus opinion | Description paragraph | Timeless present tense | Oral presentation skills | Plurals: -s, -es, -ves, irregular | built (not yet audited) |
-| 9 | Diagrams, graphs and captions (at standard) | Report with visuals (built, not yet audited) | Compound and complex sentences (placeholder only) | Handwriting for labels and captions (placeholder only) | Silent letters: kn, wr, mb, gn | L1 at standard, L2 built, L3 and L4 not built |
+| 9 | Diagrams, graphs and captions (at standard) | Report with visuals (built, not yet audited) | Compound and complex sentences (built, below standard) | Handwriting for labels and captions (placeholder only) | Silent letters: kn, wr, mb, gn | L1 at standard, L2 and L3 built, L4 not built |
 | 10 | Synthesising two texts | Edit and publish the report | Punctuation review: commas and apostrophes | Present the report (Fortnight 5 mini exam) | Review of Weeks 6 to 9 | placeholder only (digital week) |
 | 11 | What makes a poem: rhyme and rhythm | Writing a rhyming poem | Alliteration and onomatopoeia | Performing poems | ph, ch, gh sounds | placeholder only |
 | 12 | Imagery: simile and metaphor | Simile and metaphor poems | Noun groups with adjectives | Haiku and syllable counting | Syllable patterns and double letters | placeholder only |
