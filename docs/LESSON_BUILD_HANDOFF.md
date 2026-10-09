@@ -19,11 +19,12 @@ Copy build() argument order and helper signatures from the benchmark file, not f
 
 ## Where we are
 
-- Registered in backend/lesson_library.py LESSON_MODULES: W1 to W8 (32 lessons), W9 L1, W9 L2, W9 L3. Library version on main: 90.
+- Registered in backend/lesson_library.py LESSON_MODULES: W1 to W8 (32 lessons), W9 L1, W9 L2, W9 L3, W9 L4. Library version on main: 91.
 - At standard: W9 L1 only.
+- W9 L4 (Handwriting for labels and captions, key s2-eng-w09-l4-handwriting-labels-captions): built from the template and registered at version 91. Not yet checked: tools/check_lesson.py and python backend/lesson_library_s2_english_w09_l4.py have not been run, the pushed file was not read back, and its two videos (YouTube 7bzq1LFqS_A and uuhUOB5UxUI) are unwatched. EN2-HANDW-01 wording comes from nsw_outcomes.py, which calls itself plain language, so check it against NESA. No handwriting video attached, because the ones found were UK cursive. Treat it as unaudited until the parent runs the checks.
 - W9 L3 (Compound and complex sentences, key s2-eng-w09-l3-compound-complex-sentences): built, registered, merged. Below the benchmark: no LESSON["explicit_teaching"] parent guide, no videos, steps use a fixed template shape, and the __main__ assertion on teach_steps was dropped. Upgrade it in place.
 - Built but not yet audited: W1 L1 to W8 L4 and W9 L2. Quality unknown until read.
-- Not built: W9 L4, and Weeks 10 to 50 (placeholders only in backend/lesson_library_s2_english_placeholders.py). Source plan: docs/english_s2_scope_and_sequence.md.
+- Not built: Weeks 10 to 50 (placeholders only in backend/lesson_library_s2_english_placeholders.py). Source plan: docs/english_s2_scope_and_sequence.md. Week 10 starts with What makes a poem: rhyme and rhythm.
 - Stage 2 Maths and other subjects: placeholder files exist, not read yet. Stage 4: S4_LIVE is empty.
 - Leftover file to ask about before touching: lesson_library_s2_english_w01_l1_full.py. lesson_library_s2_english_w1_w2.py holds the build helpers and must stay.
 
@@ -49,6 +50,7 @@ ChildLesson.jsx, QuestTeach.jsx and QuestVisual.jsx render step visuals (visual,
 - Work autonomously. Do not ask questions, do not ask the parent to say "continue", do not wait for approval. Make reasonable decisions from the W9 L1 standard and report them.
 - Push directly to main. No branch, no PR, no waiting for "merge". This replaces the old one-branch-one-PR rule.
 - One lesson per run. Each run uses at most three tool-call turns: (1) one parallel batch of reads, (2) one push_files commit with the lesson, the registration and version bump, and the docs updates, (3) one read-back of the pushed lesson file to catch errors, then the report. Fix any error with a follow-up commit.
+- The first batch must include every file that will be rewritten whole (lesson_library.py, this handoff, docs/LESSON_TRACKER.md). The previous run could not finish in one go because those reads were left for later.
 - The file tool writes whole files, so read the whole file first. Never rewrite from memory.
 - Do not claim a lesson is tested, deployed or working unless it was checked. The assistant cannot run code, watch videos or see pages. Give the parent: python tools/check_lesson.py backend/<file>.py and python backend/<file>.py.
 - Lesson text for children: Australian spelling, plain language, no dashes as punctuation. Emoji step icons are fine (W9 L1 uses them). Never invent a video, source or fact.
@@ -59,11 +61,12 @@ ChildLesson.jsx, QuestTeach.jsx and QuestVisual.jsx render step visuals (visual,
 
 ## NEXT STEPS (in order)
 
-1. Build W9 L4 (Handwriting for labels and captions) from the placeholder, using the template.
-2. Upgrade W9 L3 and W9 L2 in place to the benchmark (same file, same key, version bump).
-3. Upgrade W1 to W8 in order, in place.
-4. Build Weeks 10 to 50 from the placeholders WEEKS table.
-5. Then Stage 2 Maths, then other Stage 2 subjects. Read their scope docs and placeholder files first (not read yet).
+1. Upgrade W9 L3 and W9 L2 in place to the benchmark (same file, same key, version bump).
+2. Upgrade W1 to W8 in order, in place.
+3. Build Weeks 10 to 50 from the placeholders WEEKS table, starting with W10 L1 (What makes a poem: rhyme and rhythm).
+4. Then Stage 2 Maths, then other Stage 2 subjects. Read their scope docs and placeholder files first (not read yet).
+
+Done: W9 L4 built and registered at version 91 (unchecked, see Where we are).
 
 The parent may reorder. Follow the latest instruction.
 
