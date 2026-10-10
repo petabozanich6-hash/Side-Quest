@@ -6,6 +6,7 @@ export type Env = {
   /** Optional R2 bucket for file uploads (bind as BUCKET). */
   BUCKET?: R2Bucket;
   GOOGLE_OAUTH_CLIENT_ID?: string;
+  GOOGLE_OAUTH_CLIENT_SECRET?: string;
   OWNER_PASSWORD?: string;
 };
 export type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
@@ -21,6 +22,6 @@ export type Guards = {
 
 export const nowIso = () => new Date().toISOString();
 export const newId = () => crypto.randomUUID();
-export const parseJson = (s: any, fallback: any) => {
+export const parseJson = <T>(s: string | null | undefined, fallback: T): T => {
   try { return s ? JSON.parse(s) : fallback; } catch { return fallback; }
 };

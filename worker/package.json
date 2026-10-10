@@ -4,11 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev --config ../wrangler.jsonc",
-    "typecheck": "tsc --noEmit",
-    "deploy": "wrangler deploy --config ../wrangler.jsonc",
-    "db:migrate": "wrangler d1 migrations apply DB --remote --config ../wrangler.jsonc",
-    "db:migrate:local": "wrangler d1 migrations apply DB --local --config ../wrangler.jsonc"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "hono": "^4.6.0"

@@ -1,4 +1,5 @@
 {
+  "$schema": "./worker/node_modules/wrangler/config-schema.json",
   "name": "side-quest",
   "main": "./worker/src/index.ts",
   "compatibility_date": "2025-10-01",
@@ -19,4 +20,7 @@
       "migrations_dir": "./worker/migrations"
     }
   ]
+  // File uploads (evidence photos etc.) need an R2 bucket. After running
+  // `npx wrangler r2 bucket create sidequest-files`, uncomment:
+  // ,"r2_buckets": [{ "binding": "BUCKET", "bucket_name": "sidequest-files" }]
 }
