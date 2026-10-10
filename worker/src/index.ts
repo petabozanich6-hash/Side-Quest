@@ -4,6 +4,7 @@ import { sign, verify } from "hono/jwt";
 import type { Context, Next } from "hono";
 import { hashSecret, verifySecret } from "./auth";
 import { registerCore } from "./core";
+import { registerPets } from "./pets";
 
 type Env = { DB: D1Database; JWT_SECRET: string };
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
@@ -142,6 +143,8 @@ app.post("/api/students", requireAuth, requireParent, async (c) => {
   return c.json({ id, name, username, stage, theme });
 });
 
+// Pets must register before core so its XP hooks wrap the submission routes.
+registerPets(app as any, requireAuth as any, requireParent as any);
 registerCore(app as any, requireAuth as any, requireParent as any);
 
 app.notFound((c) => c.json({ error: "Not found" }, 404));

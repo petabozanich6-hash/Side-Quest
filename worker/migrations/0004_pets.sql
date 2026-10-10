@@ -1,0 +1,32 @@
+CREATE TABLE IF NOT EXISTS pets (
+  id TEXT PRIMARY KEY,
+  student_id TEXT NOT NULL UNIQUE,
+  family_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  species TEXT NOT NULL,
+  xp INTEGER NOT NULL DEFAULT 0,
+  happiness INTEGER NOT NULL DEFAULT 80,
+  created_at TEXT NOT NULL,
+  last_fed TEXT,
+  last_played TEXT,
+  hatched INTEGER NOT NULL DEFAULT 0,
+  hatched_at TEXT,
+  next_poop_at TEXT,
+  poop_pending INTEGER NOT NULL DEFAULT 0,
+  poop_since TEXT,
+  egg_care_dates TEXT NOT NULL DEFAULT '[]',
+  care_streak INTEGER NOT NULL DEFAULT 0,
+  best_streak INTEGER NOT NULL DEFAULT 0,
+  last_streak_date TEXT,
+  cleans_total INTEGER NOT NULL DEFAULT 0,
+  play_day TEXT,
+  play_count INTEGER NOT NULL DEFAULT 0,
+  care_paused INTEGER NOT NULL DEFAULT 0,
+  paused_at TEXT,
+  revived_count INTEGER NOT NULL DEFAULT 0,
+  unlocked_accessories TEXT NOT NULL DEFAULT '[]',
+  accessories TEXT NOT NULL DEFAULT '[]',
+  background TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_pets_family ON pets(family_id);
