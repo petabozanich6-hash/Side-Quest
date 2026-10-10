@@ -1,4 +1,5 @@
 {
+  "$schema": "./worker/node_modules/wrangler/config-schema.json",
   "name": "side-quest",
   "main": "./worker/src/index.ts",
   "compatibility_date": "2025-10-01",
@@ -17,6 +18,12 @@
       "database_name": "sidequest-db1",
       "database_id": "d26b63e2-d9e1-4021-b9c5-c494b607aa14",
       "migrations_dir": "./worker/migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "sidequest-files"
     }
   ]
 }
