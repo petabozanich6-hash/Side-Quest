@@ -1,4 +1,5 @@
 import type { Hono, MiddlewareHandler } from "hono";
+import { applySpelling } from "./data/spelling";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
 type Env = { DB: D1Database; JWT_SECRET: string };
@@ -6,14 +7,36 @@ type App = Hono<{ Bindings: Env; Variables: { user: AuthUser } }>;
 
 const nowIso = () => new Date().toISOString();
 const newId = () => crypto.randomUUID();
-const parseJson = (s: any, fallback: any) => {
+const parseJson = <T>(s: string | null | undefined, fallback: T): T => {
   try { return s ? JSON.parse(s) : fallback; } catch { return fallback; }
 };
+const stageInfo: Record<string, { name: string; band: string }> = {
+  ES1: { name: "Early Stage 1", band: "primary" },
+  S1: { name: "Stage 1", band: "primary" },
+  S2: { name: "Stage 2", band: "primary" },
+  S3: { name: "Stage 3", band: "primary" },
+  S4: { name: "Stage 4", band: "secondary" },
+  S5: { name: "Stage 5", band: "secondary" },
+  S6: { name: "Stage 6", band: "senior" },
+};
+function studentOut(r: any) {
+  const extra = parseJson<{ stage_name?: string; band?: string; subject_levels?: Record<string, string>; electives?: any[] }>(r.extra, {});
+  const meta = stageInfo[r.stage] || { name: r.stage, band: "primary" };
+  const { extra: _extra, ...rest } = r;
+  return {
+    ...rest,
+    interests: parseJson(r.interests, []),
+    stage_name: extra.stage_name || meta.name,
+    band: extra.band || meta.band,
+    subject_levels: extra.subject_levels || {},
+    electives: extra.electives || [],
+  };
+}
 
 function lessonOut(r: any) {
   if (!r) return null;
   const { data, ...cols } = r;
-  return { ...parseJson(data, {}), ...cols };
+  return applySpelling({ ...parseJson(data, {}), ...cols });
 }
 function lessonSummary(r: any) {
   const l: any = lessonOut(r);
@@ -46,7 +69,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const count = async (sql: string, ...b: any[]) =>
       (await db.prepare(sql).bind(...b).first<{ n: number }>())?.n ?? 0;
     const { results: students } = await db.prepare(
-      "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at FROM students WHERE family_id = ?"
+      "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, extra FROM students WHERE family_id = ?"
     ).bind(fid).all<any>();
     const out: any = {
       students: [],
@@ -57,8 +80,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     };
     for (const s of students) {
       out.students.push({
-        ...s,
-        interests: parseJson(s.interests, []),
+        ...studentOut(s),
         total_assignments: await count("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ?", fid, s.id),
         completed: await count("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ? AND status IN ('accepted','demonstrated','completed')", fid, s.id),
         awaiting_help: await count("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ? AND status = 'awaiting_help'", fid, s.id),
@@ -90,11 +112,10 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       "SELECT * FROM cheers WHERE student_id = ? AND seen = 0 ORDER BY created_at DESC LIMIT 20"
     ).bind(u.id).all<any>();
     const student = await db.prepare(
-      "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at FROM students WHERE id = ?"
+      "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, extra FROM students WHERE id = ?"
     ).bind(u.id).first<any>();
-    if (student) student.interests = parseJson(student.interests, []);
     return c.json({
-      student: { ...student, role: "child" },
+      student: { ...studentOut(student), role: "child" },
       today: pending.slice(0, 5),
       all_pending: pending,
       feedback,

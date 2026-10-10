@@ -1,15 +1,18 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { sign, verify } from "hono/jwt";
-import type { Context, Next } from "hono";
+import type { MiddlewareHandler } from "hono";
 import { hashSecret, verifySecret } from "./auth";
 import { registerCore } from "./core";
+import { registerFamily, studentOut, studentExtraFromBody, STUDENT_SELECT } from "./family";
+import { registerLearning } from "./learning";
+import { registerPets } from "./pets";
+import { registerWords } from "./words";
+import { registerAccount } from "./account";
 
-type Env = { DB: D1Database; JWT_SECRET: string };
-type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
-type Vars = { user: AuthUser };
+import type { App, Env, Guards, Vars } from "./types";
 
-const app = new Hono<{ Bindings: Env; Variables: Vars }>();
+const app: App = new Hono<{ Bindings: Env; Variables: Vars }>();
 const TOKEN_DAYS = 30;
 
 app.use("/api/*", cors());
@@ -22,7 +25,7 @@ async function makeToken(env: Env, sub: string, role: string, familyId: string) 
   return sign({ sub, role, family_id: familyId, exp }, env.JWT_SECRET);
 }
 
-async function requireAuth(c: Context<{ Bindings: Env; Variables: Vars }>, next: Next) {
+const requireAuth: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = async (c, next) => {
   const header = c.req.header("Authorization") || "";
   if (!header.startsWith("Bearer ")) return c.json({ detail: "Not authenticated" }, 401);
   let payload: any;
@@ -42,12 +45,17 @@ async function requireAuth(c: Context<{ Bindings: Env; Variables: Vars }>, next:
   if (!row) return c.json({ detail: "User not found" }, 401);
   c.set("user", { ...row, role });
   await next();
-}
+};
 
-async function requireParent(c: Context<{ Bindings: Env; Variables: Vars }>, next: Next) {
+const requireParent: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = async (c, next) => {
   if (c.get("user").role !== "parent") return c.json({ detail: "Parent access required" }, 403);
   await next();
-}
+};
+
+const requireChild: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = async (c, next) => {
+  if (c.get("user").role !== "child") return c.json({ detail: "Child access required" }, 403);
+  await next();
+};
 
 app.get("/api", (c) =>
   c.json({ name: "Side Quest Learning API", runtime: "cloudflare-workers", ok: true })
@@ -115,10 +123,9 @@ app.post("/api/auth/child-login", async (c) => {
 app.get("/api/auth/me", requireAuth, (c) => c.json(c.get("user")));
 
 app.get("/api/students", requireAuth, requireParent, async (c) => {
-  const { results } = await c.env.DB.prepare(
-    "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at FROM students WHERE family_id = ?"
-  ).bind(c.get("user").family_id).all<any>();
-  return c.json(results.map((r) => ({ ...r, interests: JSON.parse(r.interests || "[]") })));
+  const { results } = await c.env.DB.prepare(`SELECT ${STUDENT_SELECT} FROM students WHERE family_id = ?`)
+    .bind(c.get("user").family_id).all<any>();
+  return c.json(results.map((r) => studentOut(r)));
 });
 
 app.post("/api/students", requireAuth, requireParent, async (c) => {
@@ -137,13 +144,20 @@ app.post("/api/students", requireAuth, requireParent, async (c) => {
   const id = newId();
   const interests = JSON.stringify(Array.isArray(b.interests) ? b.interests : []);
   await c.env.DB.prepare(
-    "INSERT INTO students (id, family_id, name, username, pin_hash, birth_year, stage, year_level, theme, interests, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-  ).bind(id, c.get("user").family_id, name, username, await hashSecret(pin), b.birth_year ?? null, stage, b.year_level ?? null, theme, interests, b.notes ?? null, nowIso()).run();
-  return c.json({ id, name, username, stage, theme });
+    "INSERT INTO students (id, family_id, name, username, pin_hash, birth_year, stage, year_level, theme, interests, notes, created_at, extra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+  ).bind(id, c.get("user").family_id, name, username, await hashSecret(pin), b.birth_year ?? null, stage, b.year_level ?? null, theme, interests, b.notes ?? null, nowIso(), JSON.stringify(studentExtraFromBody(b, stage))).run();
+  const created = await c.env.DB.prepare(`SELECT ${STUDENT_SELECT} FROM students WHERE id = ?`).bind(id).first<any>();
+  return c.json(studentOut(created));
 });
 
-registerCore(app as any, requireAuth as any, requireParent as any);
+registerCore(app, requireAuth, requireParent);
+const guards: Guards = { auth: requireAuth, parent: requireParent, child: requireChild };
+registerFamily(app, guards);
+registerLearning(app, guards);
+registerPets(app, guards);
+registerWords(app, guards);
+registerAccount(app, guards);
 
-app.notFound((c) => c.json({ error: "Not found" }, 404));
+app.notFound((c) => c.json({ detail: "Not found" }, 404));
 
 export default app;

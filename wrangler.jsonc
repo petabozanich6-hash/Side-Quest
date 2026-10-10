@@ -1,4 +1,5 @@
 {
+  "$schema": "./worker/node_modules/wrangler/config-schema.json",
   "name": "side-quest",
   "main": "./worker/src/index.ts",
   "compatibility_date": "2025-10-01",
@@ -18,5 +19,13 @@
       "database_id": "d26b63e2-d9e1-4021-b9c5-c494b607aa14",
       "migrations_dir": "./worker/migrations"
     }
-  ]
+  ],
+  // Optional file uploads (evidence photos / work samples). Until this is enabled,
+  // POST /api/files/upload returns 501. To enable:
+  //   1. npx wrangler r2 bucket create sidequest-files
+  //   2. uncomment the block below
+  //   3. npm run deploy
+  // "r2_buckets": [
+  //   { "binding": "BUCKET", "bucket_name": "sidequest-files" }
+  // ]
 }
