@@ -4,10 +4,12 @@ import { sign, verify } from "hono/jwt";
 import type { Context, Next } from "hono";
 import { hashSecret, verifySecret } from "./auth";
 import { registerCore } from "./core";
+import { registerFamily } from "./family";
+import { registerLearning } from "./learning";
+import { registerPets } from "./pets";
+import { registerWords } from "./words";
 
-type Env = { DB: D1Database; JWT_SECRET: string };
-type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
-type Vars = { user: AuthUser };
+import type { Env, Vars } from "./types";
 
 const app = new Hono<{ Bindings: Env; Variables: Vars }>();
 const TOKEN_DAYS = 30;
@@ -46,6 +48,11 @@ async function requireAuth(c: Context<{ Bindings: Env; Variables: Vars }>, next:
 
 async function requireParent(c: Context<{ Bindings: Env; Variables: Vars }>, next: Next) {
   if (c.get("user").role !== "parent") return c.json({ detail: "Parent access required" }, 403);
+  await next();
+}
+
+async function requireChild(c: Context<{ Bindings: Env; Variables: Vars }>, next: Next) {
+  if (c.get("user").role !== "child") return c.json({ detail: "Child access required" }, 403);
   await next();
 }
 
@@ -143,6 +150,11 @@ app.post("/api/students", requireAuth, requireParent, async (c) => {
 });
 
 registerCore(app as any, requireAuth as any, requireParent as any);
+const guards = { auth: requireAuth as any, parent: requireParent as any, child: requireChild as any };
+registerFamily(app as any, guards);
+registerLearning(app as any, guards);
+registerPets(app as any, guards);
+registerWords(app as any, guards);
 
 app.notFound((c) => c.json({ error: "Not found" }, 404));
 
