@@ -292,7 +292,7 @@ export function registerFamily(app: App, g: Guards) {
   });
 
   app.post("/api/auth/session", (c) =>
-    c.json({ detail: "Emergent session sign-in is no longer supported. Use email/password or Google." }, 410)
+    c.json({ detail: "Session sign-in is not supported. Use email/password or Google." }, 410)
   );
 
   app.get("/api/curriculum/stages", (c) =>

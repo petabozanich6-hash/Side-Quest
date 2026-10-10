@@ -7,8 +7,8 @@ const UPLOAD_PREFIX = "sidequest/families/";
 const CHUNK = 50;
 
 /**
- * Tables are discovered at run time (like the FastAPI version discovered Mongo
- * collections) so data added by later migrations is erased without listing it.
+ * Tables are discovered at run time, so data added by later migrations is
+ * erased without listing it.
  */
 async function purgeFamily(db: D1Database, bucket: R2Bucket | undefined, familyId: string, userId: string) {
   const { results: studentRows } = await db.prepare("SELECT id FROM students WHERE family_id = ?")

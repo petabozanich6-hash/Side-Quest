@@ -6,8 +6,6 @@ A homeschool planning and learning platform (NSW curriculum aware).
 - `worker/` – Cloudflare Worker API (Hono + D1, TypeScript). Serves everything under `/api/*`.
 - `wrangler.jsonc` (repo root) – the **single** deployment config. The Worker serves the built
   frontend (`frontend/build`) as static assets with SPA fallback, and handles `/api/*` itself.
-- `backend/` – the original FastAPI/MongoDB server. **Legacy reference only**; it is not deployed.
-  See [docs/CLOUDFLARE_MIGRATION.md](docs/CLOUDFLARE_MIGRATION.md) for the endpoint-by-endpoint port.
 
 The frontend always talks to the API on the same origin (`/api`), so no API URL env var is needed.
 
@@ -44,14 +42,12 @@ Prerequisites: Node 20+, a Cloudflare account, and `npm install` run once at the
    npx wrangler secret put GOOGLE_OAUTH_CLIENT_SECRET
    ```
 
-5. **(Optional) enable file uploads** (evidence photos, work samples) with an R2 bucket:
+5. **Create the R2 bucket** for file uploads (evidence photos, work samples). The `BUCKET` binding in
+   `wrangler.jsonc` already points at `sidequest-files`:
 
    ```bash
    npx wrangler r2 bucket create sidequest-files
    ```
-
-   then uncomment the `r2_buckets` entry at the bottom of `wrangler.jsonc`. Without it, everything else
-   works and uploads return a clear "File storage not configured" error.
 
 6. **Deploy** – builds the frontend (`frontend/build`) and uploads the Worker + assets:
 
@@ -72,9 +68,8 @@ Connect the repo in the dashboard, with root directory `/`, build command `npm i
 
 ### First use
 
-Open the site, **Register** a parent account, add children under *Children*, and the parent
-dashboard, lessons, word hoard, pets, achievements, etc. are ready. Data from the old Mongo
-database is not migrated automatically.
+Open the site, **Register** a parent account and add children under *Children*; the dashboard, lessons,
+word hoard, pets, achievements, etc. are ready. Nothing is imported from any earlier database.
 
 ## Local development
 
