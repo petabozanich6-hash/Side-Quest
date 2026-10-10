@@ -1,10 +1,10 @@
 {
   "name": "side-quest",
-  "main": "worker/src/index.ts",
+  "main": "./worker/src/index.ts",
   "compatibility_date": "2025-10-01",
   "observability": { "enabled": true },
   "build": {
-  "command": "npm --prefix worker install && npm --prefix frontend install --legacy-peer-deps && CI=false npm --prefix frontend run build"
+    "command": "npm --prefix worker install && npm --prefix frontend install --legacy-peer-deps && CI=false npm --prefix frontend run build"
   },
   "assets": {
     "directory": "./frontend/build",
@@ -16,7 +16,7 @@
       "binding": "DB",
       "database_name": "sidequest-db1",
       "database_id": "d26b63e2-d9e1-4021-b9c5-c494b607aa14",
-      "migrations_dir": "worker/migrations"
+      "migrations_dir": "./worker/migrations"
     }
   ]
 }
