@@ -4,7 +4,7 @@
   "compatibility_date": "2025-10-01",
   "observability": { "enabled": true },
   "build": {
-    "command": "npm --prefix worker install && yarn --cwd frontend install && yarn --cwd frontend build"
+  "command": "npm --prefix worker install && npm --prefix frontend install --legacy-peer-deps && CI=false npm --prefix frontend run build"
   },
   "assets": {
     "directory": "./frontend/build",
