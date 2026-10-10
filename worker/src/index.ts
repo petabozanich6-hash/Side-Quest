@@ -3,6 +3,7 @@ import { cors } from "hono/cors";
 import { sign, verify } from "hono/jwt";
 import type { Context, Next } from "hono";
 import { hashSecret, verifySecret } from "./auth";
+import { registerCore } from "./core";
 
 type Env = { DB: D1Database; JWT_SECRET: string };
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
@@ -140,6 +141,8 @@ app.post("/api/students", requireAuth, requireParent, async (c) => {
   ).bind(id, c.get("user").family_id, name, username, await hashSecret(pin), b.birth_year ?? null, stage, b.year_level ?? null, theme, interests, b.notes ?? null, nowIso()).run();
   return c.json({ id, name, username, stage, theme });
 });
+
+registerCore(app as any, requireAuth as any, requireParent as any);
 
 app.notFound((c) => c.json({ error: "Not found" }, 404));
 
