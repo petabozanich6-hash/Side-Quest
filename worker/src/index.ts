@@ -158,6 +158,6 @@ registerPets(app, guards);
 registerWords(app, guards);
 registerAccount(app, guards);
 
-app.notFound((c) => c.json({ error: "Not found" }, 404));
+app.notFound((c) => c.json({ detail: "Not found" }, 404));
 
 export default app;

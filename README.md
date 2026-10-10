@@ -37,13 +37,14 @@ Prerequisites: Node 20+, a Cloudflare account, and `npm install` run once at the
 
    ```bash
    npx wrangler secret put JWT_SECRET            # any long random string, e.g. `openssl rand -hex 32`
-   # optional – only if you want Google sign-in:
+   # optional – Google sign-in API (the UI does not currently show a Google button):
    npx wrangler secret put GOOGLE_OAUTH_CLIENT_ID
    npx wrangler secret put GOOGLE_OAUTH_CLIENT_SECRET
    ```
 
-5. **Create the R2 bucket** for file uploads (evidence photos, work samples). The `BUCKET` binding in
-   `wrangler.jsonc` already points at `sidequest-files`:
+5. **(Optional) R2 bucket for file uploads** (evidence photos, work samples). Until enabled,
+   `POST /api/files/upload` returns 501. Create the bucket, then uncomment the `r2_buckets` block in
+   `wrangler.jsonc`:
 
    ```bash
    npx wrangler r2 bucket create sidequest-files

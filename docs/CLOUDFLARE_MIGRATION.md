@@ -60,7 +60,7 @@ pet species, plan builder rules) lives in `worker/src/data/*.ts`. The lesson lib
 - **Google sign-in** (`/auth/google`, `/auth/google/callback`): implemented with `fetch` to Google; needs the
   `GOOGLE_OAUTH_CLIENT_ID` (+ `GOOGLE_OAUTH_CLIENT_SECRET`) secrets. The UI does not currently render a Google button.
   The old hard-coded Render redirect URI was replaced with a same-origin check.
-- **File uploads**: stored in the R2 bucket `sidequest-files` (`BUCKET` binding in `wrangler.jsonc`).
+- **File uploads**: stored in R2 (`BUCKET` binding). The binding is commented out in `wrangler.jsonc` (instructions inline); until it is enabled `POST /api/files/upload` and `GET /api/files/:id` return 501.
 - **LLM calls**: none were present in the backend (pet help was already a fixed message); life-evidence mapping
   suggestions are keyword based.
 - **Startup seeding** (owner account from `OWNER_PASSWORD`, outcome reseed) is replaced by migrations/static data;
@@ -70,6 +70,8 @@ pet species, plan builder rules) lives in `worker/src/data/*.ts`. The lesson lib
 ## Frontend / config changes
 
 - Removed third-party injected scripts, analytics and build-time dependencies from the frontend and `craco.config.js`.
+- Removed the unused shadcn `components/ui` tree, `lib/utils`, `hooks`, `constants/testIds`, `GoogleButton`, `DocumentWriter`, the health-check plugin, the Google OAuth provider wrapper and all npm dependencies only they used.
+- Unknown `/api/*` routes now return `{detail: "Not found"}` (404) like FastAPI.
 - API base is same-origin `/api` (`frontend/src/lib/api.js`), no `REACT_APP_BACKEND_URL`.
 - One deployment config: root `wrangler.jsonc` (worker `worker/src/index.ts`, assets `frontend/build`, SPA fallback,
   `run_worker_first: ["/api/*"]`, D1 `DB` → `sidequest-db1`, `migrations_dir` `worker/migrations`).
@@ -83,3 +85,7 @@ pet species, plan builder rules) lives in `worker/src/data/*.ts`. The lesson lib
 - `worker/test/smoke.mjs` exercises auth, students, dashboards, lessons, assignments/submissions, pets, word hoard,
   reading, life learning, plans, curriculum, audit, role checks and account deletion against `wrangler dev`
   with locally migrated D1 (all green).
+
+## Re-audit (this pass)
+
+Route audit re-run mechanically against the old FastAPI sources (git history, commit `0fe22ee`): all 102 routes exist in the Worker, and every `api.*`/`axios.*` call in `frontend/src` (95 call sites) matches a Worker route. Migrations 0001–0007 apply cleanly in order to a fresh local D1; `worker/test/smoke.mjs` passes against `wrangler dev`.
