@@ -20,7 +20,7 @@
       "bucket_name": "sidequest-files"
     }
   ],
- "ai": {
+  "ai": {
     "binding": "AI"
   },
   "observability": {
