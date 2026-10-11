@@ -24,7 +24,7 @@ export default function LegalPage({ base = "/parent/trust", publicView = false }
         </Link>
         <h1 className="font-display text-3xl font-bold" style={{ color: "#1F3B2D" }}>{page.title}</h1>
         <p className="mt-2 text-stone-600">{page.summary}</p>
-        <p className="mt-1 text-xs text-stone-500">Last updated {LAST_UPDATED} \u00b7 Draft, to be reviewed before launch</p>
+        <p className="mt-1 text-xs text-stone-500">Last updated {LAST_UPDATED}</p>
         <div className="mt-8 space-y-6">
           {page.sections.map((s, i) => (
             <section key={`${s.h}-${i}`}>
