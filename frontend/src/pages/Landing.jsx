@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Fern, Branch, Leaf, Flower, Pet } from "../components/shared/Botanical";
-import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass } from "lucide-react";
+import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass, ArrowRight } from "lucide-react";
 
 const Feature = ({ icon: Icon, title, desc, tint = "#6B8A5B" }) => (
   <div className="paper-card p-6 relative overflow-hidden" data-testid={`feature-${title.replace(/\s+/g,'-').toLowerCase()}`}>
@@ -31,10 +31,10 @@ export default function Landing() {
               <div className="text-[10px] uppercase tracking-widest text-stone-500 font-semibold -mt-0.5">Learning</div>
             </div>
           </div>
-          <nav className="flex items-center gap-4">
-            <Link to="/child-login" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-child-login" style={{color:"#52473A"}}>Student sign in</Link>
-            <Link to="/login" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-login" style={{color:"#52473A"}}>Parent sign in</Link>
-            <Link to="/register" className="rounded-full px-5 py-2 text-sm font-semibold hover:translate-y-[-1px] transition shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="nav-register">Create a family</Link>
+          <nav className="flex items-center gap-3 sm:gap-4">
+            <Link to="/child-login" className="rounded-full px-5 py-2.5 text-sm font-bold hover:translate-y-[-1px] transition shadow-sm" data-testid="nav-child-login" style={{backgroundColor:"#C77B5B", color:"#FFF9EE"}}>Student sign in</Link>
+            <Link to="/login" className="hidden sm:inline text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-login" style={{color:"#52473A"}}>Parent sign in</Link>
+            <Link to="/register" className="rounded-full px-5 py-2.5 text-sm font-semibold hover:translate-y-[-1px] transition shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="nav-register">Create a family</Link>
           </nav>
         </div>
       </header>
@@ -52,10 +52,28 @@ export default function Landing() {
             A gentle, serious homeschool platform for your whole family — Kindergarten through Year 12.
             Parents plan with calm. Children learn with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span> who grows as they do.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link to="/register" className="rounded-full px-7 py-3.5 text-sm font-bold hover:translate-y-[-1px] transition shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="cta-start">Create a family</Link>
-            <Link to="/child-login" className="rounded-full border-2 bg-white/60 px-7 py-3.5 text-sm font-bold hover:translate-y-[-1px] transition" style={{borderColor:"#4A5D3A", color:"#1F3B2D"}} data-testid="cta-child">I'm a student</Link>
+
+          <div className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl" data-testid="who-is-here">
+            <Link to="/child-login" className="group rounded-3xl p-5 flex items-center gap-4 shadow-md hover:translate-y-[-2px] transition focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300" style={{backgroundColor:"#C77B5B", color:"#FFF9EE"}} data-testid="cta-child" aria-label="I'm a student. Sign in with your username and PIN">
+              <div className="shrink-0 rounded-2xl p-1.5" style={{backgroundColor:"#FFF9EE"}}><Pet species="fox" size={64}/></div>
+              <div className="min-w-0">
+                <div className="font-display text-2xl font-bold leading-tight">I'm a student</div>
+                <div className="mt-1 text-sm font-semibold flex items-center gap-1.5">Start your quest <ArrowRight size={16} className="transition group-hover:translate-x-1"/></div>
+              </div>
+            </Link>
+
+            <div className="rounded-3xl p-5 shadow-md" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="cta-parent-card">
+              <div className="flex items-center gap-3">
+                <div className="shrink-0 h-[52px] w-[52px] rounded-2xl grid place-items-center" style={{backgroundColor:"#F5EFE0", color:"#1F3B2D"}}><Users size={26}/></div>
+                <div className="font-display text-2xl font-bold leading-tight">I'm a parent</div>
+              </div>
+              <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+                <Link to="/login" className="rounded-full px-5 py-2 text-sm font-bold hover:translate-y-[-1px] transition" style={{backgroundColor:"#F5EFE0", color:"#1F3B2D"}} data-testid="cta-parent-login">Sign in</Link>
+                <Link to="/register" className="text-sm font-bold underline underline-offset-4 hover:opacity-80" style={{color:"#D4A574"}} data-testid="cta-start">Create a family</Link>
+              </div>
+            </div>
           </div>
+
           <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Free for homeschool families · Optional paid resources can be added later if parents want them.</p>
           <p className="mt-7 text-xs leading-relaxed max-w-xl" style={{color:"#7A6E5D"}}>
             A planning, teaching and record-keeping tool. Parents remain responsible for selecting an appropriate
