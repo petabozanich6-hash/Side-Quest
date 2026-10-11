@@ -9,8 +9,17 @@ let tableReady = false;
 async function ensureTable(env: Env) {
   if (tableReady) return;
   await env.DB.prepare(
-    "CREATE TABLE IF NOT EXISTS help_requests (id TEXT PRIMARY KEY, family_id TEXT NOT NULL, student_id TEXT NOT NULL, created_at TEXT NOT NULL, emailed_at TEXT, resolved_at TEXT)"
+    "CREATE TABLE IF NOT EXISTS help_requests (id TEXT PRIMARY KEY, family_id TEXT NOT NULL, student_id TEXT NOT NULL, created_at TEXT NOT NULL, emailed_at TEXT, resolved_at TEXT, email_status TEXT)"
   ).run();
+  try {
+    await env.DB.prepare("SELECT email_status FROM help_requests LIMIT 1").first();
+  } catch {
+    try {
+      await env.DB.prepare("ALTER TABLE help_requests ADD COLUMN email_status TEXT").run();
+    } catch (error) {
+      if (!/duplicate column/i.test(error instanceof Error ? error.message : String(error))) throw error;
+    }
+  }
   tableReady = true;
 }
 
@@ -82,18 +91,34 @@ export function registerHelpRequests(app: App, g: Guards) {
           const ts = nowIso();
           let id = open?.id;
           if (id) {
-            await c.env.DB.prepare("UPDATE help_requests SET emailed_at = ?, created_at = ? WHERE id = ?").bind(ts, ts, id).run();
+            await c.env.DB.prepare("UPDATE help_requests SET emailed_at = ?, created_at = ?, email_status = NULL WHERE id = ?").bind(ts, ts, id).run();
           } else {
             id = newId();
             await c.env.DB.prepare(
               "INSERT INTO help_requests (id, family_id, student_id, created_at, emailed_at) VALUES (?, ?, ?, ?, ?)"
             ).bind(id, s.family_id, s.id, ts, ts).run();
           }
+          const requestId = id;
           const parents = (await c.env.DB.prepare("SELECT email, name FROM users WHERE family_id = ?")
             .bind(s.family_id).all<{ email: string | null; name: string }>()).results ?? [];
           const job = (async () => {
-            for (const u of parents) {
-              if (u.email) await sendEmail(c.env, helpEmail(u.email, u.name, s.name, s.username));
+            let status = "no_address";
+            if (!c.env.EMAIL) {
+              status = "not_configured";
+            } else {
+              let sent = 0;
+              let tried = 0;
+              for (const u of parents) {
+                if (!u.email) continue;
+                tried++;
+                if (await sendEmail(c.env, helpEmail(u.email, u.name, s.name, s.username))) sent++;
+              }
+              status = tried === 0 ? "no_address" : sent > 0 ? "sent" : "failed";
+            }
+            try {
+              await c.env.DB.prepare("UPDATE help_requests SET email_status = ? WHERE id = ?").bind(status, requestId).run();
+            } catch (error) {
+              console.error("child-help status save failed", error instanceof Error ? error.message : error);
             }
           })();
           try { c.executionCtx.waitUntil(job); } catch { await job; }
@@ -109,7 +134,7 @@ export function registerHelpRequests(app: App, g: Guards) {
     try {
       await ensureTable(c.env);
       const { results } = await c.env.DB.prepare(
-        "SELECT h.id, h.student_id, h.created_at, s.name, s.username FROM help_requests h JOIN students s ON s.id = h.student_id WHERE h.family_id = ? AND h.resolved_at IS NULL ORDER BY h.created_at DESC LIMIT 20"
+        "SELECT h.id, h.student_id, h.created_at, h.email_status, s.name, s.username FROM help_requests h JOIN students s ON s.id = h.student_id WHERE h.family_id = ? AND h.resolved_at IS NULL ORDER BY h.created_at DESC LIMIT 20"
       ).bind(c.get("user").family_id).all();
       return c.json(results ?? []);
     } catch (error) {

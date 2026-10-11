@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Compass, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
+import HelpPopup from "../../components/parent/HelpPopup";
 
 const nav = [
   { to: "/parent", icon: LayoutDashboard, label: "Dashboard", end: true, testid: "nav-dashboard" },
@@ -64,6 +65,7 @@ export default function ParentLayout() {
         <Outlet />
       </main>
       {showDelete && <DeleteAccountDialog onClose={() => setShowDelete(false)} />}
+      <HelpPopup />
     </div>
   );
 }
