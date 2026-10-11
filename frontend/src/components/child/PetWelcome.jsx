@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
 import { Pet } from "../shared/Botanical";
+import { useChildInbox } from "./useChildInbox";
 
 const POOL = [
   { id: "g1", t: (c) => `Hi ${c.name}! I'm so glad you're here.` },
@@ -56,10 +57,22 @@ function pick(ctx, key, exclude) {
   return m;
 }
 
+function speak(item, name) {
+  if (item.kind === "cheer") {
+    return { lead: `${name}, ${item.from_name || "your parent"} sent you a cheer! ${item.emoji || ""}`.trim(), body: item.message, next: "", cta: "Got it!" };
+  }
+  if (item.kind === "revision") {
+    return { lead: `${name}, your parent sent "${item.title}" back for another try.`, body: item.message, next: item.next_step, cta: "Let's go" };
+  }
+  return { lead: `${name}, your parent left feedback on "${item.title}"!`, body: item.message, next: item.next_step, cta: "Got it!" };
+}
+
 export default function PetWelcome({ childId, name, today = 0, overdue = 0, ahead = 0, total = 0 }) {
   const [pet, setPet] = useState(null);
   const [msg, setMsg] = useState(null);
   const started = useRef(false);
+  const nav = useNavigate();
+  const { items, ack } = useChildInbox();
 
   useEffect(() => { api.get("/pet").then(r => { if (!r.data?.needs_pet) setPet(r.data); }).catch(() => {}); }, []);
 
@@ -75,21 +88,44 @@ export default function PetWelcome({ childId, name, today = 0, overdue = 0, ahea
 
   if (!pet || !msg) return null;
   const ctx = ctxOf(pet);
+  const cur = items[0];
+  const say = cur ? speak(cur, ctx.name) : null;
+
+  const respond = async () => {
+    await ack(cur);
+    if (cur.kind === "revision" && cur.assignment_id) nav(`/child/lesson/${cur.assignment_id}`);
+  };
 
   return (
-    <section className="paper-card p-4 flex items-center gap-4" data-testid="pet-welcome">
-      <button onClick={() => setMsg(pick(ctx, key, msg.id))} className="shrink-0" aria-label={`Tap ${pet.name} for another hello`} data-testid="pet-welcome-tap">
+    <section className="paper-card p-4 flex items-center gap-4" style={cur ? { borderColor: "#C77B5B", borderWidth: 2 } : undefined} data-testid="pet-welcome">
+      <button onClick={() => { if (!cur) setMsg(pick(ctx, key, msg.id)); }} className="shrink-0" aria-label={`Tap ${pet.name} for another hello`} data-testid="pet-welcome-tap">
         <Pet species={pet.species} size={96} happy={(pet.happiness ?? 50) > 40} />
       </button>
       <div className="flex-1 min-w-0">
-        <div className="relative rounded-2xl bg-white border px-4 py-3" style={{borderColor:"#D4C8A8"}}>
+        <div className="relative rounded-2xl border px-4 py-3" style={cur ? { borderColor: "#C77B5B", backgroundColor: "#FEF3C7" } : { borderColor: "#D4C8A8", backgroundColor: "#FFFFFF" }}>
           <div className="font-script text-xl" style={{color:"#C77B5B"}}>{pet.name}</div>
-          <p className="text-sm mt-0.5" data-testid="pet-welcome-text">{msg.t(ctx)}</p>
+          {cur ? (
+            <div data-testid="pet-inbox-text">
+              <p className="text-base font-bold mt-0.5" style={{color:"#1F3B2D"}}>{say.lead}</p>
+              {say.body && <p className="text-base font-bold mt-1">"{say.body}"</p>}
+              {say.next && <p className="text-sm font-bold mt-1">Next: {say.next}</p>}
+              {!say.body && cur.kind !== "cheer" && <p className="text-sm font-bold mt-1">{cur.kind === "revision" ? "Have another go when you're ready." : "They're happy with it."}</p>}
+            </div>
+          ) : (
+            <p className="text-sm mt-0.5" data-testid="pet-welcome-text">{msg.t(ctx)}</p>
+          )}
         </div>
-        <div className="mt-1.5 flex items-center gap-3 text-xs">
-          <span className="opacity-50">Tap me for another hello</span>
-          <Link to="/child/room" className="font-semibold underline" data-testid="pet-visit-room">Visit my room</Link>
-        </div>
+        {cur ? (
+          <div className="mt-2 flex items-center gap-3 text-xs">
+            <button onClick={respond} className="rounded-full px-5 py-2 text-sm font-bold" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="pet-inbox-ack">{say.cta}</button>
+            {items.length > 1 && <span className="font-bold opacity-70">1 of {items.length}</span>}
+          </div>
+        ) : (
+          <div className="mt-1.5 flex items-center gap-3 text-xs">
+            <span className="opacity-50">Tap me for another hello</span>
+            <Link to="/child/room" className="font-semibold underline" data-testid="pet-visit-room">Visit my room</Link>
+          </div>
+        )}
       </div>
     </section>
   );
