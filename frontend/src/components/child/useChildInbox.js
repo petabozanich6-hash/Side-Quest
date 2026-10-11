@@ -63,14 +63,13 @@ export function useChildInbox() {
   }, [load]);
 
   const ack = useCallback(async (item) => {
+    const seen = readSeen(uid);
+    try { localStorage.setItem(storeKey(uid), JSON.stringify([...seen, item.key].slice(-200))); } catch { /* ignore */ }
     setItems(cur => cur.filter(i => i.key !== item.key));
-    if (item.kind === "cheer") {
-      try { await api.post(`/cheers/${item.id}/seen`); } catch { /* ignore */ }
-    } else {
-      const seen = readSeen(uid);
-      try { localStorage.setItem(storeKey(uid), JSON.stringify([...seen, item.key].slice(-200))); } catch { /* ignore */ }
-    }
     window.dispatchEvent(new Event(EVT));
+    if (item.kind === "cheer") {
+      try { await api.post(`/cheers/${item.id}/seen`); } catch { /* local record already saved */ }
+    }
   }, [uid]);
 
   return { items, ack };
