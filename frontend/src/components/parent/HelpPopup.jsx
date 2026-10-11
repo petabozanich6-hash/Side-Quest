@@ -18,8 +18,15 @@ export default function HelpPopup() {
   const load = () => api.get("/help-requests").then(r => setItems(Array.isArray(r.data) ? r.data : [])).catch(() => {});
   useEffect(() => {
     load();
-    const t = setInterval(load, 60000);
-    return () => clearInterval(t);
+    const t = setInterval(load, 15000);
+    const onFocus = () => { if (document.visibilityState === "visible") load(); };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onFocus);
+    return () => {
+      clearInterval(t);
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onFocus);
+    };
   }, []);
 
   const visible = items.filter(i => !snoozed.includes(i.id));

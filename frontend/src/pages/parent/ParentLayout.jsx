@@ -5,6 +5,7 @@ import { Compass, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, S
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
+import HelpAlertBar from "../../components/parent/HelpAlertBar";
 
 const nav = [
   { to: "/parent", icon: LayoutDashboard, label: "Dashboard", end: true, testid: "nav-dashboard" },
@@ -62,6 +63,7 @@ export default function ParentLayout() {
         </div>
       </aside>
       <main className="flex-1 min-w-0 relative">
+        <HelpAlertBar />
         <Outlet />
       </main>
       {showDelete && <DeleteAccountDialog onClose={() => setShowDelete(false)} />}
