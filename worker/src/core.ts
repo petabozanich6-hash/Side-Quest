@@ -131,7 +131,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const b: any[] = [c.get("user").family_id];
     if (stage) { sql += " AND stage = ?"; b.push(stage); }
     if (unit) { sql += " AND unit_id = ?"; b.push(unit); }
-    sql += " ORDER BY created_at DESC LIMIT 500";
+    sql += " ORDER BY created_at DESC";
     const { results } = await c.env.DB.prepare(sql).bind(...b).all<any>();
     return c.json(results.map(lessonOut));
   });
@@ -143,7 +143,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const b: any[] = [c.get("user").family_id];
     if (stage) { sql += " AND stage = ?"; b.push(stage); }
     if (unit) { sql += " AND unit_id = ?"; b.push(unit); }
-    sql += " ORDER BY created_at DESC LIMIT 500";
+    sql += " ORDER BY created_at DESC";
     const { results } = await c.env.DB.prepare(sql).bind(...b).all<any>();
     return c.json(results.map(lessonSummary));
   });
