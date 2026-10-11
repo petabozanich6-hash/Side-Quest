@@ -22,6 +22,8 @@ import QuestBanner from "../../components/shared/QuestBanner";
 import QuestQuiz from "../../components/shared/QuestQuiz";
 import TeachStep from "../../components/shared/QuestTeach";
 import QuestVisual from "../../components/shared/QuestVisual";
+import PrintableResource from "../../components/shared/PrintableResource";
+import { lessonPrintHtml } from "../../components/shared/lessonPrint";
 import SpellingSegment from "../../components/shared/SpellingSegment";
 import {
   RevealCards,
@@ -106,6 +108,7 @@ export default function ChildLesson() {
   const [submitted, setSubmitted] = useState(false);
 
   const [quizResult, setQuizResult] = useState(null);
+  const [quizShortAnswers, setQuizShortAnswers] = useState({});
   const [plan, setPlan] = useState({});
   const [done, setDone] = useState({});
   const [skipped, setSkipped] = useState({});
@@ -158,6 +161,7 @@ export default function ChildLesson() {
           setFiles(saved.files || []);
           setNeedsHelp(!!saved.needsHelp);
           setQuizResult(saved.quizResult || null);
+          setQuizShortAnswers(saved.quizShortAnswers || {});
         }
       } catch {
         // ignore unreadable saved progress
@@ -214,7 +218,8 @@ export default function ChildLesson() {
           reflection,
           files,
           needsHelp,
-          quizResult
+          quizResult,
+          quizShortAnswers
         })
       );
     } catch {
@@ -233,7 +238,8 @@ export default function ChildLesson() {
     reflection,
     files,
     needsHelp,
-    quizResult
+    quizResult,
+    quizShortAnswers
   ]);
 
   const mark = (key) => (value) =>
@@ -282,6 +288,10 @@ export default function ChildLesson() {
       ? `[Quiz: ${quizResult.score}/${quizResult.total} (${quizResult.percent}%), attempt ${quizResult.attempt}, PASSED]\n`
       : "";
 
+    const shortAnswerLine = (lesson.quiz || []).map((question, index) =>
+      question.type === "short_answer" ? `\n[Quiz question ${index + 1}: ${question.question}] ${(quizShortAnswers[index] || "").trim()}` : ""
+    ).join("");
+
     const planLine = (lesson.planner_fields || []).length
       ? `[Plan] ${lesson.planner_fields
           .map((f) => `${f.key}: ${(plan[f.key] || "").trim()}`)
@@ -296,7 +306,7 @@ export default function ChildLesson() {
     try {
       await api.post("/submissions", {
         assignment_id: aid,
-        response_text: `${quizLine}${planLine}${response}${answerLine}`,
+        response_text: `${quizLine}${planLine}${response}${answerLine}${shortAnswerLine}`,
         reflection,
         file_ids: files.map((file) => file.id),
         needs_help: needsHelp
@@ -344,91 +354,13 @@ export default function ChildLesson() {
   };
 
   const printLesson = () => {
-    const l = a.lesson;
-    const w = window.open("", "_blank");
-
-    w.document.write(`
-      <html>
-        <head>
-          <title>${l.title}</title>
-          <style>
-            body {
-              font-family: Georgia, serif;
-              max-width: 720px;
-              margin: 40px auto;
-              padding: 0 20px;
-            }
-            h1 { font-size: 22px; }
-            h2 {
-              font-size: 14px;
-              text-transform: uppercase;
-              letter-spacing: 0.05em;
-              color: #555;
-              margin-top: 20px;
-            }
-            p, li { line-height: 1.6; }
-            figure { margin: 12px 0; text-align: center; }
-            figure svg { max-width: 100%; height: auto; }
-            figcaption { font-style: italic; font-size: 13px; }
-          </style>
-        </head>
-        <body>
-          <h1>${l.title}</h1>
-          <p>Stage ${l.stage} · ${l.learning_area}</p>
-
-          <h2>Your mission</h2>
-          <p>${l.child_mission || l.learning_intention || ""}</p>
-
-          <h2>Success criteria</h2>
-          <ul>
-            ${(l.success_criteria || [])
-              .map((criterion) => `<li>${criterion}</li>`)
-              .join("")}
-          </ul>
-
-          <h2>Lesson steps</h2>
-          <ol>
-            ${(l.steps || [])
-              .map(
-                (step) =>
-                  `<li><strong>${cleanStepTitle(step.title)}</strong><br/>${step.detail}</li>`
-              )
-              .join("")}
-          </ol>
-
-          <h2>Explicit teaching</h2>
-          <p>${(l.explicit_teaching || "").replace(/\n/g, "<br/>")}</p>
-
-          <h2>Worked example</h2>
-          ${(l.worked_visuals || [])
-            .map(
-              (v) =>
-                `<figure>${v.svg || (v.src ? `<img src="${v.src}" alt="${v.alt || ""}" />` : "")}<figcaption>${v.caption || ""}</figcaption></figure>`
-            )
-            .join("")}
-          <p>${(l.worked_example || "").replace(/\n/g, "<br/>")}</p>
-
-          <h2>Guided practice</h2>
-          <p>${childText(l.guided_practice).replace(/\n/g, "<br/>")}</p>
-
-          <h2>Independent task</h2>
-          <p>${childText(l.independent_task).replace(/\n/g, "<br/>")}</p>
-
-          <h2>Offline alternative</h2>
-          <p>${l.offline_alternative || ""}</p>
-
-          <br/>
-          <br/>
-          <div style="border-top: 1px dashed #333; padding-top: 10px">
-            My finished work:
-            <br/><br/><br/><br/>
-          </div>
-        </body>
-      </html>
-    `);
-
-    w.document.close();
-    w.print();
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) {
+      toast.error("Allow pop-ups for this site to open the printable lesson");
+      return;
+    }
+    printWindow.document.write(lessonPrintHtml(a.lesson));
+    printWindow.document.close();
   };
 
   if (!a) {
@@ -645,7 +577,7 @@ export default function ChildLesson() {
               <div className="rounded-lg bg-indigo-50 border border-indigo-200 p-4 text-sm">
                 <div className="font-bold mb-1">
                   {teachSteps.length > 0
-                    ? "Here is a whole story with every part. Read it slowly."
+                    ? "Here is a complete worked example. Read it slowly."
                     : "Read this example"}
                 </div>
 
@@ -852,6 +784,8 @@ export default function ChildLesson() {
               </ol>
             </div>
 
+            <PrintableResource resource={l.printable_resource} />
+
             {plannerFields.length > 0 && (
               <div className="rounded-xl bg-stone-50 border border-stone-200 p-3 text-sm">
                 <div className="font-bold mb-1">
@@ -963,6 +897,8 @@ export default function ChildLesson() {
             quiz={l.quiz}
             passMark={l.pass_mark || 0.9}
             onResult={setQuizResult}
+            shortAnswers={quizShortAnswers}
+            onShortAnswers={setQuizShortAnswers}
           />
         );
 

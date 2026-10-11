@@ -1,10 +1,16 @@
 import React from "react";
+import CartoonEpisode from "./CartoonEpisode";
 
 // Shows a lesson visual. A visual is an object:
 //   { svg: "<svg ...>...</svg>", alt: "text description", caption: "short caption" }
-// or { src: "https://...", alt: "...", caption: "..." } for a picture file.
+// or { src: "https://...", alt: "...", caption: "..." } for a picture file
+// or { episode: { title, scenes: [...] } } for an animated cartoon episode (see CartoonEpisode.jsx).
 // The svg text comes from our own lesson files, never from users.
 export default function QuestVisual({ visual }) {
+  if (visual && visual.episode) {
+    return <CartoonEpisode episode={visual.episode} />;
+  }
+
   if (!visual || (!visual.svg && !visual.src)) return null;
 
   return (
@@ -36,3 +42,4 @@ export default function QuestVisual({ visual }) {
     </figure>
   );
 }
+
