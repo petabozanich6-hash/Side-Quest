@@ -26,10 +26,15 @@ export default function LegalPage({ base = "/parent/trust", publicView = false }
         <p className="mt-2 text-stone-600">{page.summary}</p>
         <p className="mt-1 text-xs text-stone-500">Last updated {LAST_UPDATED} \u00b7 Draft, to be reviewed before launch</p>
         <div className="mt-8 space-y-6">
-          {page.sections.map((s) => (
-            <section key={s.h}>
+          {page.sections.map((s, i) => (
+            <section key={`${s.h}-${i}`}>
               <h2 className="font-display text-lg font-bold" style={{ color: "#1F3B2D" }}>{s.h}</h2>
-              <p className="mt-1 text-stone-700 leading-relaxed">{s.p}</p>
+              {s.p && <p className="mt-1 text-stone-700 leading-relaxed">{s.p}</p>}
+              {s.items && (
+                <ul className="mt-2 space-y-1.5 list-disc pl-5 text-stone-700 leading-relaxed">
+                  {s.items.map((it) => <li key={it}>{it}</li>)}
+                </ul>
+              )}
             </section>
           ))}
         </div>
