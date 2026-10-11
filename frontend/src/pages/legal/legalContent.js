@@ -161,6 +161,7 @@ export const PAGES = {
         "AI can be wrong, so a parent reviews anything that matters.",
         "AI does not grade, assess or make decisions about your child.",
         "We aim to send AI only what it needs for the task, without names or identifying details.",
+        "There is no AI on/off setting, but AI features only run when someone uses them, so you can simply choose not to.",
       ] },
       { h: "Where AI is used", items: [
         "Pet hints: when a child is stuck during a lesson, their learning pet can offer a short, encouraging nudge in the right direction.",
@@ -181,9 +182,10 @@ export const PAGES = {
       { h: "What data is sent to AI", p: "AI features run on Cloudflare's platform. We aim to send only the minimum text needed for a task, such as the lesson question for a hint or the topic and year level for a lesson draft, and to leave out names and other identifying details. We do not send photos or work samples to AI. Please avoid typing names, addresses or other personal details into any box that is sent to AI, such as lesson-building requests." },
       { h: "How we handle AI data", p: "We do not use your family's information to advertise to you or to build marketing profiles. We do not sell it. Our AI provider processes requests to produce a response, and its handling of data is covered by its own terms. See the Third-Party Services page and our Privacy Policy. Because Cloudflare operates globally, processing may take place outside Australia." },
       { h: "Your choices", items: [
-        "Review and edit anything AI drafts before your child sees it.",
-        "Choose not to use AI features. Side Quest still works with the ready-made lessons and your own plans.",
-        "Delete AI-drafted lessons or outcome links you don't want.",
+        "There is currently no setting to switch AI off. AI features only run when someone chooses to use them, such as asking the pet for a hint or asking for a lesson to be built.",
+        "If you and your children don't use those features, they aren't triggered. Side Quest works fully with the ready-made lessons and your own plans.",
+        "Let your children know they don't have to ask for hints, and tell them to come to you if something seems off.",
+        "Review and edit anything AI drafts before your child sees it, and delete AI-drafted lessons or outcome links you don't want.",
         "Tell us if something isn't right using Report a Problem.",
       ] },
       { h: "Changes to AI features", p: "AI tools change quickly. We may add, change or remove AI features, or switch the technology behind them, as Side Quest grows. If a change affects how information is used, we will update this page and the Privacy Policy." },
