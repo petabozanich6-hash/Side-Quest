@@ -52,7 +52,7 @@ function buildTopics(l) {
   return topics;
 }
 
-export default function PetCompanion() {
+export default function PetCompanion({ stageKey, stageTitle }) {
   const { aid } = useParams();
   const [lesson, setLesson] = useState(null);
   const [pet, setPet] = useState(null);
@@ -67,8 +67,17 @@ export default function PetCompanion() {
     api.get("/pet").then((r) => { if (!r.data?.needs_pet) setPet(r.data); }).catch(() => {});
   }, [aid]);
 
+  useEffect(() => {
+    setTopic(null);
+    setShown(1);
+  }, [aid, stageKey]);
+
   if (!lesson) return null;
   const topics = buildTopics(lesson);
+  const hints = lesson.stage_hints?.[stageKey];
+  if (Array.isArray(hints) && hints.length === 3 && hints.every((hint) => typeof hint === "string" && hint.trim())) {
+    topics.unshift({ key: "step", label: "Help with this step", tiers: hints.map((text, index) => ({ title: `${stageTitle || "This step"}: hint ${index + 1}`, text })) });
+  }
   const current = topics.find((t) => t.key === topic);
   const name = pet?.name || "Your guide";
 
@@ -165,3 +174,4 @@ export default function PetCompanion() {
     </>
   );
 }
+

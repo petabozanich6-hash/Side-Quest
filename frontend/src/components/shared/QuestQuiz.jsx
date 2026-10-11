@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function QuestQuiz({ quiz = [], passMark = 0.9, onResult }) {
+export default function QuestQuiz({ quiz = [], passMark = 0.9, onResult, shortAnswers = {}, onShortAnswers = () => {} }) {
   const questions = quiz.filter((q) => q.type !== "short_answer");
   const [answers, setAnswers] = useState({});
   const [checked, setChecked] = useState(false);
@@ -12,7 +12,8 @@ export default function QuestQuiz({ quiz = [], passMark = 0.9, onResult }) {
   const needed = Math.ceil(total * passMark - 1e-9);
   const score = questions.filter((q, i) => answers[i] === q.correct_index).length;
   const passed = score >= needed;
-  const complete = questions.every((_, i) => typeof answers[i] === "number");
+  const shortQuestions = quiz.map((question, index) => ({ question, index })).filter(({ question }) => question.type === "short_answer");
+  const complete = questions.every((_, i) => typeof answers[i] === "number") && shortQuestions.every(({ index }) => (shortAnswers[index] || "").trim().length > 0);
   const percent = Math.round((score / total) * 100);
 
   const check = () => {
@@ -30,9 +31,9 @@ export default function QuestQuiz({ quiz = [], passMark = 0.9, onResult }) {
   return (
     <div data-testid="quest-quiz">
       <p className="text-sm text-stone-600 mb-4">
-        Answer all {total} questions. You need {needed} out of {total} (
+        Answer all {quiz.length} questions. You need {needed} out of {total} multiple-choice answers (
         {Math.round(passMark * 100)}%) to clear this part of the quest. You can
-        try again if you miss it.
+        try again if you miss it. {shortQuestions.length > 0 && "Your written answers will be sent with your work for a grown-up to review. They are not automatically scored."}
       </p>
 
       <div className="space-y-4">
@@ -97,6 +98,13 @@ export default function QuestQuiz({ quiz = [], passMark = 0.9, onResult }) {
             </div>
           );
         })}
+        {shortQuestions.map(({ question, index }) => (
+          <div key={`short-${index}`} className="rounded-xl border p-4 bg-white">
+            <label htmlFor={`quiz-short-${index}`} className="font-semibold">{index + 1}. {question.question}</label>
+            <textarea id={`quiz-short-${index}`} rows={3} value={shortAnswers[index] || ""} disabled={checked} onChange={(event) => onShortAnswers({ ...shortAnswers, [index]: event.target.value })} className="mt-3 w-full rounded-lg border p-3" />
+            <p className="mt-2 text-sm text-stone-600">Use your own words. A grown-up will review this answer.</p>
+          </div>
+        ))}
       </div>
 
       {!checked ? (
@@ -141,3 +149,4 @@ export default function QuestQuiz({ quiz = [], passMark = 0.9, onResult }) {
     </div>
   );
 }
+
