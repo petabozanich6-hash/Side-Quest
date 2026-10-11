@@ -301,9 +301,36 @@ export const PAGES = {
   },
   "report-problem": {
     group: "support", title: "Report a Problem", contact: "problem",
-    summary: "Something broken or not right? Tell me.",
+    summary: "Found a bug, a wrong hint or something that just isn't right? Send it to base camp.",
     sections: [
-      { h: "What to include", p: "What you were doing, what you expected, what happened, and the device or browser you used. Please do not include children's full names or sensitive details." },
+      { h: "Spotted something odd?", p: "Every good quest has the odd glitch, and I'd rather hear about it than have you quietly work around it. Tell me what happened and I'll look into it. Reports go straight to the Side Quest inbox and I read every one myself." },
+      { h: "What to include", items: [
+        "What you were trying to do, for example finishing a lesson or adding a child.",
+        "What you expected to happen, and what happened instead.",
+        "Where it happened: the page or screen, and which child area or parent area you were in.",
+        "Your device and browser, for example an iPad using Safari or a laptop using Chrome.",
+        "Roughly when it happened, and whether it happens every time or only sometimes.",
+        "Your child's first name or nickname only, if you need to mention them.",
+      ] },
+      { h: "Different kinds of problem", items: [
+        "Something is broken or won't load: tell me the steps that led to it. Refreshing the page or signing out and back in sometimes clears a glitch, but please still let me know.",
+        "A hint or lesson looks wrong or unsuitable: stop using it and tell me what the question was and what the pet or lesson said. AI can make mistakes and I want to fix them.",
+        "A curriculum outcome or fact looks wrong or out of date: tell me which lesson or outcome, and what you think it should say. Check the official NSW syllabus if it matters for your reporting.",
+        "Trouble signing in: try \"Forgot password?\" on the sign-in page, or the \"Forgot my PIN\" option for children, first. If that doesn't work, tell me what happened.",
+        "Something doesn't look right on the screen: let me know the device and screen size if you can.",
+        "A safety concern: stop using the feature involved and tell me straight away.",
+      ] },
+      { h: "Pack light", p: "Please don't include passwords, your child's PIN, full names, home addresses, ID numbers, health details or photos of children. I will never ask you for a password or PIN. If someone claiming to be Side Quest does, don't share it and let me know." },
+      { h: "Screenshots", p: "A screenshot can help a lot, but please crop or blur names and faces first, and don't send photos of children. If you can describe what you saw in words, that works just as well. I may reply and ask for more detail." },
+      { h: "What happens next", items: [
+        "I'll read your report and reply as soon as I can, usually within a few days. It may take longer when it's busy at home or during school holidays.",
+        "I might ask you a question or two to help track the problem down.",
+        "I can't promise how quickly something will be fixed, or that every report will lead to a change, but each one helps make Side Quest better.",
+        "Please keep your own copies of anything important in the meantime, like photos and records you need for reporting.",
+      ] },
+      { h: "Not a bug?", p: "For questions about how something works, the Help & FAQ page might have the answer. For ideas or general messages, use Contact Us. For data, correction or deletion requests, or a privacy complaint, use the Account & privacy requests pages." },
+      { h: "Grown-ups only, please", p: "This is for parents and guardians. If your child spots a problem, they can tell you and you can send it along." },
+      { h: "For real emergencies", p: "I can't respond to emergencies. If someone is in danger, call 000." },
     ],
   },
   "request-access": {
