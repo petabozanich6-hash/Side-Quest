@@ -6,17 +6,28 @@ import { toast } from "sonner";
 import { Compass } from "lucide-react";
 import { Fern, Pet, Branch } from "../components/shared/Botanical";
 
+const LABELS = ["Mum", "Dad", "Aunty", "Uncle", "Nan", "Pop", "Grandma", "Grandpa"];
+
 export default function Register() {
   const [form, setForm] = useState({ name: "", family_name: "", email: "", password: "" });
+  const [pick, setPick] = useState("");
+  const [other, setOther] = useState("");
   const [loading, setLoading] = useState(false);
   const { setSession } = useAuth();
   const nav = useNavigate();
 
+  const label = (pick === "__other" ? other : pick).trim();
+
   const submit = async (e) => {
-    e.preventDefault(); setLoading(true);
+    e.preventDefault();
+    if (!label) { toast.error("Please tell us what your children call you"); return; }
+    setLoading(true);
     try {
       const { data } = await api.post("/auth/register", form);
       setSession(data.token, { ...data.user, role: "parent" });
+      try {
+        await api.put("/me/child-label", { label }, { headers: { Authorization: `Bearer ${data.token}` } });
+      } catch { /* sign-up still succeeds; the sidebar box lets them set it later */ }
       toast.success("Family account created", {
         description: "We've sent you a welcome email. If you can't see it, check your spam folder and mark it 'Not spam' so help alerts from your children reach you.",
         duration: 12000,
@@ -58,6 +69,15 @@ export default function Register() {
 
           <div className="space-y-3.5">
             <F label="Your name"><input value={form.name} onChange={upd("name")} required className="input" data-testid="reg-name"/></F>
+            <F label="What do your children call you?">
+              <select value={pick} onChange={e => setPick(e.target.value)} required className="input" data-testid="reg-label">
+                <option value="">Choose...</option>
+                {LABELS.map(l => <option key={l} value={l}>{l}</option>)}
+                <option value="__other">Something else...</option>
+              </select>
+              {pick === "__other" && <input value={other} onChange={e => setOther(e.target.value)} maxLength={30} required placeholder="e.g. Mama" className="input mt-2" data-testid="reg-label-other"/>}
+              <p className="text-[11px] text-stone-500 mt-1">Your child's pet will say "{label || "Mum"} sent you a message" instead of using your name.</p>
+            </F>
             <F label="Family name (optional)"><input value={form.family_name} onChange={upd("family_name")} className="input" data-testid="reg-family"/></F>
             <F label="Email"><input value={form.email} onChange={upd("email")} type="email" required className="input" data-testid="reg-email"/></F>
             <F label="Password"><input value={form.password} onChange={upd("password")} type="password" minLength={6} required className="input" data-testid="reg-password"/></F>
