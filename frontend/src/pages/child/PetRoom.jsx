@@ -94,6 +94,24 @@ const PET_CSS = `
 @media (prefers-reduced-motion: reduce){.egg,.zzz{animation:none!important}}
 `;
 
+const XP_SOURCES = [
+  ["Hand in a lesson for review", "+15 XP"],
+  ["Your parent marks it demonstrated", "+50 XP"],
+  ["Your parent marks it accepted", "+25 XP"],
+  ["Your parent says it needs more practice", "+10 XP"],
+  ["Your parent sends it back to try again", "+5 XP"],
+  ["Log a book you read", "+3 XP"],
+  ["Play together (up to 5 times a day)", "+2 XP"],
+];
+
+const GROWTH_STAGES = [
+  ["Hatchling", "60 XP"],
+  ["Youngling", "200 XP"],
+  ["Companion", "500 XP"],
+  ["Hero", "1,000 XP"],
+  ["Legend", "2,000 XP"],
+];
+
 export default function PetRoom() {
   const nav = useNavigate();
   const [pet, setPet] = useState(null);
@@ -297,20 +315,32 @@ export default function PetRoom() {
         </section>
       )}
 
-      <section className="paper-card p-5">
+      <section className="paper-card p-5" data-testid="grow-guide">
         <div className="flex items-center gap-2 mb-3">
           <Sparkles size={16} style={{ color: "#4A5D3A" }} />
           <h2 className="font-display text-lg font-bold" style={{ color: "#1F3B2D" }}>How to grow {pet.name}</h2>
         </div>
-        <ul className="text-sm text-stone-700 space-y-1.5">
-          <li>· Submit a lesson for review (+15 XP)</li>
-          <li>· Earn <strong>accepted</strong> from your parent (+25 XP)</li>
-          <li>· Earn <strong>demonstrated</strong> from your parent (+50 XP)</li>
-          <li>· Log a book you read (+3 XP)</li>
-          <li>· Feed {pet.name} and clean up their mess every day</li>
-          <li>· Play for a little XP (up to 5 times a day)</li>
-        </ul>
-        <div className="mt-4 text-xs text-stone-500">Levels: Egg → Hatchling → Youngling → Companion → Hero → Legend</div>
+        <p className="text-sm text-stone-700 mb-3">{pet.name} has <strong>{pet.xp} XP</strong>{pet.next_xp ? <> and needs {Math.max(0, pet.next_xp - pet.xp)} more to become a {pet.next_level}.</> : <> and has reached the top level!</>}</p>
+        <div className="grid md:grid-cols-2 gap-5">
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1.5">Ways to earn XP</div>
+            <ul className="text-sm text-stone-700 space-y-1">
+              {XP_SOURCES.map(([what, xp]) => (
+                <li key={what} className="flex justify-between gap-3"><span>{what}</span><strong className="whitespace-nowrap">{xp}</strong></li>
+              ))}
+            </ul>
+            <p className="text-xs text-stone-500 mt-2">Feeding, warming and cleaning keep {pet.name} happy and well. XP comes from learning and play.</p>
+          </div>
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1.5">XP needed for each level</div>
+            <ul className="text-sm text-stone-700 space-y-1">
+              {GROWTH_STAGES.map(([name, xp]) => (
+                <li key={name} className="flex justify-between gap-3"><span>{name}</span><strong className="whitespace-nowrap">{xp}</strong></li>
+              ))}
+            </ul>
+            <p className="text-xs text-stone-500 mt-2">To hatch from the egg you need 60 XP and care on 3 different days.</p>
+          </div>
+        </div>
       </section>
     </div>
   );
