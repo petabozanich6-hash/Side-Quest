@@ -2,6 +2,7 @@ import { button, esc, firstName, layout, note, p, sendEmail, SITE_URL, steps } f
 import type { OutgoingEmail } from "./email";
 import type { App, Env, Guards } from "./types";
 import { newId, nowIso } from "./types";
+import { registerChildInbox } from "./childInbox";
 
 const THROTTLE_MINUTES = 10;
 let tableReady = false;
@@ -152,4 +153,6 @@ export function registerHelpRequests(app: App, g: Guards) {
       return c.json({ detail: `Couldn't update that: ${error instanceof Error ? error.message : String(error)}` }, 500);
     }
   });
+
+  registerChildInbox(app, g);
 }

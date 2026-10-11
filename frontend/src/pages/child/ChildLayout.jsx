@@ -5,6 +5,7 @@ import { Compass, Home, FolderOpen, LogOut, Heart, Award, BookOpen, Library } fr
 import { api } from "../../lib/api";
 import PetPicker from "./PetPicker";
 import PetCompanion from "../../components/shared/PetCompanion";
+import ChildInbox from "../../components/child/ChildInbox";
 
 const themeMap = {
   early: { shell:"child-early", accent:"#C77B5B", title:"Early Explorer" },
@@ -51,6 +52,7 @@ export default function ChildLayout() {
           </nav>
         </div>
       </header>
+      <ChildInbox />
       <main className="mx-auto max-w-6xl p-6 pb-28">
         <Outlet />
       </main>
