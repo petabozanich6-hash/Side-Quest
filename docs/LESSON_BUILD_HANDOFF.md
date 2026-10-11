@@ -119,6 +119,28 @@ What the code actually does:
   and checking all ten SVGs parse, carry reduced-motion guards and alt text, and use no clashing
   animation class names. **Not verified in a browser.**
 
+### Lesson 4 built
+
+- **Week 1 Lesson 4, Storytelling aloud and joined handwriting** (`s2-eng-y3-w01-l4`), migration
+  `0044_s2_y3_w01_l4_storytelling_handwriting.sql`. Eight teaching steps with ten original cartoon
+  SVG scenes (including handwriting guide lines and an animated joined "an"), guided practice A to D,
+  a seven part main task that is part spoken and part written, a ten question quiz, eight word
+  challenges, a sort, the week's eight spelling words written in joined letters, a 938 word parent
+  guide, and two videos (Oxford Owl F8k93ylkBPA on storytelling, Mr Hicks UK bk8vgQXO82Y on joined
+  handwriting) that are **unwatched**, and the handwriting video uses UK letter formation.
+- Outcomes EN2-OLC-01 and EN2-HANDW-01, wording taken verbatim from the NESA English K-10 (2022)
+  outcomes page.
+- Week 1 is now complete: all four lessons exist. Tracked upstream in
+  `docs/LESSON_TRACKER.md`, which still needs updating.
+
+### Known gaps to fix later
+
+- Lesson 2 (`s2-eng-y3-w01-l2`) has no `answer_key`, `parent_check` or `self_check` field, because it
+  was built before the frontend field list was checked properly. Lessons 3 and 4 have all three.
+  A short follow-up migration could add them.
+- Nothing built so far has been rendered in a browser or in the signed-in child flow. The visuals were
+  verified by rasterising static frames only.
+
 ### Still open
 
 - Week 1 Lesson 4 (Storytelling aloud and joined handwriting) is the next placeholder in the week.
