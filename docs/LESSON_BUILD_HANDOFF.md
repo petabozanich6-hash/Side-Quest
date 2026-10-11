@@ -81,3 +81,45 @@ The parent may reorder. Follow the latest instruction.
 ## Resume prompt
 
 When the user says "continue" or "build the next lesson": read this file, then follow NEXT STEPS and the working rules above.
+
+## Session note, 11 October 2026: the pipeline is now D1 migrations
+
+This file and `docs/PROSE_STYLE.md` still describe a Python `backend/lesson_library_*.py`
+pipeline. **That code is not in this repository.** There is no `backend/` directory and no
+`lesson_library.py`; the only Python in the repo is `lesson-bank/tools/build_bank.py`. The
+handoff rule says the code wins, so I built against the code that is actually here.
+
+What the code actually does:
+
+- Lessons live in the D1 `lessons` table. `worker/migrations/*.sql` seed them, and each row's
+  `data` column holds the lesson JSON the frontend reads.
+- A coming-soon row is a small `data` object with `coming_soon: true`. Building the lesson means
+  `UPDATE lessons SET data = json_patch(data, '{...}')` and passing `"coming_soon": null` so the
+  flag is removed. Migration 0042 (Week 1 Lesson 2) and 0043 (Week 1 Lesson 3) both do this.
+- The frontend field names are the authority, not the old docs. Verified by reading
+  `frontend/src/pages/child/ChildLesson.jsx` and `frontend/src/components/shared/QuestActivities.jsx`:
+  `teach_steps[].visual` and `.visual_before` (inline SVG, alt, caption), `worked_visuals`,
+  `quiz` and `word_challenges` (question, options, correct_index, explanation),
+  `sort_activity` (instructions, buckets, items with text and answer), `interactive_activities`
+  type `flip_cards` (title, cards with front and back), `spelling` (focus, teaching, words with
+  word/parts/tip, check), `resources` type `video` (title, embed_url, prompt, check),
+  `planner_fields` (key, label, hint), plus glossary, answer_key, parent_check, self_check,
+  common_mistakes, evidence_instructions, offline_alternative and extension.
+- Outcome wording must still be the NESA text. For Lesson 3 I took EN2-SPELL-01 and EN2-VOCAB-01
+  verbatim from the English K-10 Syllabus (2022) outcomes page.
+
+### Built in this session
+
+- **Week 1 Lesson 3, Sounds and syllables** (`s2-eng-y3-w01-l3`), migration
+  `0043_s2_y3_w01_l3_sounds_and_syllables.sql`. Eight teaching steps with ten original cartoon
+  SVG scenes, guided practice A to D, a seven part main task, a ten question quiz, eight word
+  challenges, a sort, eight spelling words with chunks and memory tips, a 933 word parent guide,
+  and two videos (Scratch Garden 9S7DY2lgJlU, Nessy 8NYeMoz9pjI) that are **unwatched** and
+  unchecked for embedding. Verified by applying every migration to SQLite, reading the row back,
+  and checking all ten SVGs parse, carry reduced-motion guards and alt text, and use no clashing
+  animation class names. **Not verified in a browser.**
+
+### Still open
+
+- Week 1 Lesson 4 (Storytelling aloud and joined handwriting) is the next placeholder in the week.
+- The queue order in `docs/lesson-build-queue.md` is still unconfirmed by the parent.
