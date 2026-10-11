@@ -176,10 +176,18 @@ const stagesOf = (l) => {
 // Text a search is matched against. Every word typed must appear somewhere in it.
 const searchTextOf = (l) => [
   l.title, l.learning_area, l.stage, l.year_level, l.learning_intention,
+  l.unit_title, l.spelling_focus,
   (l.outcome_codes || []).join(" "),
   (l.key_vocabulary || []).join(" "),
   l.is_side_quest ? "side quest" : "",
+  l.coming_soon ? "coming soon" : "",
 ].join(" ").toLowerCase();
+
+// Order lessons by year, then week, then lesson number (lessons without those fields keep title order).
+const orderOf = (l) => {
+  const y = Number((String(l.year_level || "").match(/\d+/) || [0])[0]);
+  return y * 10000 + (Number(l.week) || 0) * 10 + (Number(l.lesson_number) || 0);
+};
 
 export default function LessonsPage() {
   const [lessons, setLessons] = useState([]);
@@ -229,6 +237,7 @@ export default function LessonsPage() {
     ? [...sections, { title: "Other learning areas", cards: extraSubjects.map(name => ({ name })) }]
     : sections;
   const visibleLessons = stage && subject ? inStage.filter(l => subjectOf(l) === subject) : [];
+  const sortedLessons = [...visibleLessons].sort((a, b) => orderOf(a) - orderOf(b) || String(a.title || "").localeCompare(String(b.title || "")));
 
   const q = query.trim().toLowerCase();
   const searching = q.length > 0;
@@ -239,7 +248,7 @@ export default function LessonsPage() {
         .sort((a, b) => {
           const ta = String(a.title || "").toLowerCase().includes(q) ? 0 : 1;
           const tb = String(b.title || "").toLowerCase().includes(q) ? 0 : 1;
-          return ta - tb;
+          return ta - tb || orderOf(a) - orderOf(b);
         })
     : [];
 
@@ -252,23 +261,33 @@ export default function LessonsPage() {
       : "Premade lessons aligned to the curriculum outcomes for this stage and subject.";
 
   const lessonCard = (l) => (
-    <div key={l.id} className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col" data-testid={`lesson-${l.id}`}>
+    <div key={l.id} className={`rounded-2xl border p-5 flex flex-col ${l.coming_soon ? "border-dashed border-slate-300 bg-slate-50" : "border-slate-200 bg-white"}`} data-testid={`lesson-${l.id}`}>
       <div className="flex items-start justify-between gap-2">
         <div>
           <div className="font-mono text-[10px] uppercase tracking-wider text-slate-500">{l.stage} · {l.learning_area}{l.is_side_quest ? " · Side Quest" : ""}</div>
+          {l.coming_soon && l.week && (
+            <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400 mt-0.5">{l.year_level} · Week {l.week} · Lesson {l.lesson_number}{l.lesson_role ? ` · ${l.lesson_role}` : ""}</div>
+          )}
           <h3 className="font-display text-lg font-semibold text-slate-900 mt-1 leading-tight">{l.title}</h3>
         </div>
+        {l.coming_soon && (
+          <span className="shrink-0 rounded-full bg-amber-100 text-amber-800 border border-amber-200 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider" data-testid={`coming-soon-${l.id}`}>Coming soon</span>
+        )}
       </div>
-      <p className="mt-3 text-sm text-slate-600 line-clamp-3">{l.learning_intention}</p>
+      <p className="mt-3 text-sm text-slate-600 line-clamp-4">{l.learning_intention}</p>
       <div className="mt-3 flex flex-wrap gap-1">
         {(l.outcome_codes||[]).map(c => <span key={c} className="font-mono text-[10px] px-2 py-0.5 bg-slate-100 rounded border border-slate-200">{c}</span>)}
       </div>
-      <div className="mt-auto pt-4 flex items-center gap-2 flex-wrap">
-        <Link to={`/parent/lessons/${l.id}`} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`view-${l.id}`}><Eye size={12}/> View</Link>
-        <button onClick={()=>printLesson(l)} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`print-${l.id}`}><Printer size={12}/> Print</button>
-        <button onClick={()=>del(l.id)} className="rounded-lg border border-rose-300 text-rose-700 px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`del-lesson-${l.id}`}><Trash2 size={12}/> Delete</button>
-        <button onClick={()=>setAssignOpen(l)} className="ml-auto rounded-lg bg-slate-900 text-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`assign-${l.id}`}><Send size={12}/> Assign</button>
-      </div>
+      {l.coming_soon ? (
+        <div className="mt-auto pt-4 text-xs text-slate-500">This lesson is planned and will be built soon.</div>
+      ) : (
+        <div className="mt-auto pt-4 flex items-center gap-2 flex-wrap">
+          <Link to={`/parent/lessons/${l.id}`} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`view-${l.id}`}><Eye size={12}/> View</Link>
+          <button onClick={()=>printLesson(l)} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`print-${l.id}`}><Printer size={12}/> Print</button>
+          <button onClick={()=>del(l.id)} className="rounded-lg border border-rose-300 text-rose-700 px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`del-lesson-${l.id}`}><Trash2 size={12}/> Delete</button>
+          <button onClick={()=>setAssignOpen(l)} className="ml-auto rounded-lg bg-slate-900 text-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`assign-${l.id}`}><Send size={12}/> Assign</button>
+        </div>
+      )}
     </div>
   );
 
@@ -348,8 +367,19 @@ export default function LessonsPage() {
 
       {!searching && stage && subject && (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {visibleLessons.map(lessonCard)}
-          {visibleLessons.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500">No premade {subject} lessons for {stage} yet.</div>}
+          {sortedLessons.map((l, i) => {
+            const prev = sortedLessons[i - 1];
+            const newYear = !!l.unit_title && (!prev || prev.year_level !== l.year_level);
+            const newUnit = !!l.unit_title && (!prev || prev.unit_title !== l.unit_title || newYear);
+            return (
+              <React.Fragment key={l.id}>
+                {newYear && <h2 className="col-span-full font-display text-2xl font-bold text-slate-900 pt-4" data-testid={`year-heading-${l.year_level}`}>{l.year_level}</h2>}
+                {newUnit && <h3 className="col-span-full text-xs font-semibold uppercase tracking-wider text-slate-500 pt-2">Unit {l.unit_number}: {l.unit_title}</h3>}
+                {lessonCard(l)}
+              </React.Fragment>
+            );
+          })}
+          {sortedLessons.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500">No premade {subject} lessons for {stage} yet.</div>}
         </div>
       )}
 
