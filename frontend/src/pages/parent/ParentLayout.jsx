@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2 } from "lucide-react";
+import { Compass, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 
@@ -19,6 +19,7 @@ const nav = [
   { to: "/parent/resources", icon: Library, label: "Resources", testid: "nav-resources" },
   { to: "/parent/calendar", icon: Calendar, label: "Calendar", testid: "nav-calendar" },
   { to: "/parent/audit", icon: ShieldAlert, label: "Audit", testid: "nav-audit" },
+  { to: "/parent/trust", icon: LifeBuoy, label: "Trust & Support", testid: "nav-trust" },
 ];
 
 export default function ParentLayout() {

@@ -24,6 +24,8 @@ import LearningPlansPage from "./pages/parent/LearningPlans";
 import ReadingLogPage from "./pages/parent/ReadingLog";
 import ChildOverviewPage from "./pages/parent/ChildOverview";
 import ParentWordHoard from "./pages/parent/WordHoard";
+import TrustSupport from "./pages/parent/TrustSupport";
+import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
 import ChildLesson from "./pages/child/ChildLesson";
@@ -36,7 +38,7 @@ import ChildReading from "./pages/child/ChildReading";
 
 function Guard({ role, children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-stone-500">Loading\u2026</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-stone-500">Loading…</div>;
   if (!user) return <Navigate to="/login" replace />;
   if (role && user.role !== role) return <Navigate to={user.role === "child" ? "/child" : "/parent"} replace />;
   return children;
@@ -52,6 +54,7 @@ function Router() {
       <Route path="/register" element={<Register />} />
       <Route path="/child-login" element={<ChildLogin />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
+      <Route path="/legal/:slug" element={<LegalPage publicView />} />
       <Route path="/parent" element={<Guard role="parent"><ParentLayout /></Guard>}>
         <Route index element={<ParentDashboard />} />
         <Route path="children" element={<ChildrenPage />} />
@@ -68,6 +71,8 @@ function Router() {
         <Route path="learning-plans" element={<LearningPlansPage />} />
         <Route path="reading-log" element={<ReadingLogPage />} />
         <Route path="word-hoard" element={<ParentWordHoard />} />
+        <Route path="trust" element={<TrustSupport />} />
+        <Route path="trust/:slug" element={<LegalPage />} />
       </Route>
       <Route path="/child" element={<Guard role="child"><ChildLayout /></Guard>}>
         <Route index element={<ChildHome />} />
