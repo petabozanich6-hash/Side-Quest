@@ -9,6 +9,7 @@ import { registerLearning } from "./learning";
 import { registerPets } from "./pets";
 import { registerWords } from "./words";
 import { registerAccount } from "./account";
+import { registerPasswordReset } from "./passwordReset";
 import { sendEmail, welcomeEmail } from "./email";
 import { handleInbound } from "./inbound";
 import type { InboundMessage } from "./inbound";
@@ -165,6 +166,7 @@ registerLearning(app, guards);
 registerPets(app, guards);
 registerWords(app, guards);
 registerAccount(app, guards);
+registerPasswordReset(app);
 
 app.notFound((c) => c.json({ detail: "Not found" }, 404));
 

@@ -7,6 +7,8 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import ChildLogin from "./pages/ChildLogin";
 import AuthCallback from "./pages/AuthCallback";
 import ParentLayout from "./pages/parent/ParentLayout";
@@ -52,6 +54,8 @@ function Router() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/child-login" element={<ChildLogin />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/legal/:slug" element={<LegalPage publicView />} />
