@@ -4,6 +4,12 @@ This is Step 2 only. No other lesson has been rewritten. Main has not been chang
 
 Read [the complete lesson, stage by stage](GOLD_Y3_ENGLISH_W01_L1_REVIEW.md) first. It includes both episode scripts, diagrams described in words, every quiz question, reviewer answers and all 30 hints.
 
+## Teaching revision after the parent’s first review
+
+The four-step structure and quiz remain unchanged. Each step now teaches the idea, explains why it helps a listener, shows the reading decision in numbered thinking, contrasts useful and unhelpful approaches, and gives a new small oral try with feedback. The lesson also explains quotation marks and narrator/character words before asking the child to read dialogue, models pace, volume and pitch separately, compares different word stresses, and teaches how to identify and fix one reading problem.
+
+The whole-text model now shows every decision, including a fully marked reading. Guided practice moves through five small attempts with comparison suggestions and a final reflection starter. The independent task has four response labels so the child knows what to write. The time estimate is 60 minutes; take breaks and resume saved progress if needed. This is a deeper version of the same gold lesson, not a change to Approved Standard v2.
+
 ## What the technical checks resolved
 
 - Main was at `067e591d335d7593cba0356333f33e76ee9084c7`; highest migration 0042. Open PR #95 uses 0043. Gold uses **0044**.
@@ -31,7 +37,7 @@ These were local checks, not a deployed-app test:
 
 ## Free-tier check
 
-One lesson; **one UPDATE**; SQL file **30,085 bytes**; pretty JSON **29,628 bytes** (compact JSON 26,046 bytes). All three SVGs are below 6 KB each. Two original episodes have estimated caption-play times between 20 and 60 seconds, excluding voluntary pauses. No new dependencies, paid service, external embed, uploaded PDF or AI runtime call.
+One lesson; **one UPDATE**; SQL file **40,146 bytes**; pretty JSON **39,689 bytes** (compact JSON 36,107 bytes). All three SVGs are below 6 KB each. Two original episodes have estimated caption-play times between 20 and 60 seconds, excluding voluntary pauses. No new dependencies, paid service, external embed, uploaded PDF or AI runtime call.
 
 Cloudflare's documented SQL statement maximum is 100,000 bytes: [D1 limits](https://developers.cloudflare.com/d1/platform/limits/). The indexed seed lookup targets at most one row under the repository schema. D1 counts index activity as well as table activity; read the command's actual `rows_read` and `rows_written` output rather than assuming exactly one billed write. Account-wide daily usage and total stored size were not accessible. Your existing limits remain 100,000 row writes/day, 5 million row reads/day and 5 GB total storage. Applying other pending placeholder migrations is not part of this preview.
 

@@ -19,7 +19,7 @@ for identifier in ['shared']:
  assert len(value['teach_steps'])==4 and len(value['quiz'])==10
  assert len(value['stage_hints'])==10
  assert all(key not in value for key in ['coming_soon','spelling','resources','word_challenges','planner_fields'])
- assert value['independent_task'].startswith('Your Voice Detective task')
+ assert value['independent_task'].startswith('YOU DO: Your Voice Detective task')
 assert db.execute("SELECT data FROM lessons WHERE id='other'").fetchone()[0]==before_other
 assert db.execute("SELECT family_id FROM lessons WHERE id='shared'").fetchone()[0] is None
 snapshot=db.execute('SELECT id,data FROM lessons ORDER BY id').fetchall();db.executescript(sql)

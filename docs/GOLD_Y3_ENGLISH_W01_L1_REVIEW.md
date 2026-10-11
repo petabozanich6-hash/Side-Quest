@@ -1,6 +1,6 @@
 # Gold lesson review: Reading with expression: The Voice Detective
 
-**Stage 2 · Year 3 · English · Week 1 · Lesson 1 · 55 minutes**
+**Stage 2 · Year 3 · English · Week 1 · Lesson 1 · 60 minutes**
 
 Seed key: `s2-eng-y3-w01-l1`. Status: unreviewed. Approved Standard v2. This is the complete readable content of migration 0044, including reviewer answers and the three hints at each stage. Review before using it as the model for further lessons.
 
@@ -30,9 +30,17 @@ Become a Voice Detective! Use clues in a short story to choose how your voice so
 
 ## Stage 2 — 🔎 Find the meaning first
 
-Reading with **expression** means using your voice to show what the words mean. First, read the whole sentence quietly. Look for clues about what happens and how someone feels.
+**What is expression?**
+Imagine someone says, “You found it!” Those words could sound pleased or surprised. Expression is the way your voice helps a listener understand the meaning and feeling. You keep the writer’s words, but choose how to say them.
 
-Read the words accurately before changing your voice. If a word stops you, slow down, work through its sounds and reread the sentence. You can practise one line at a time.
+**First understand, then read aloud.**
+Read a whole sentence quietly. Ask, “What happened? How might the speaker feel?” Look for a clue in the words. Sadly, whispered and cheered are clues about a speaker. The events can help too: finding something lost might bring relief.
+
+**Who is speaking?**
+Quotation marks, “ ”, surround a character’s spoken words. The narrator is the storyteller. The narrator’s words outside the quotation marks can tell you who spoke and how. In “I found it,” said Ava happily, Ava says I found it. Happily is the clue about her feeling. You do not say “quotation mark” aloud.
+
+**Keep the words accurate.**
+Read all the words, including the part outside the quotation marks. If a word stops you, look for a part you recognise, work through its sounds and read the sentence again. Practise one sentence before reading a whole story. A clear reading matters more than a dramatic voice.
 
 ### Original in-site episode: Find the feeling: a voice clue
 Estimated caption-play time: 23.3 seconds, excluding the learner’s pause. Local voice timing varies.
@@ -47,11 +55,25 @@ Estimated caption-play time: 23.3 seconds, excluding the learner’s pause. Loca
 
 ### Show me an example
 
+WATCH MY THINKING
 “My kite is stuck,” said Ava sadly.
 
-The word sadly tells me Ava feels unhappy. I read her words in a gentle, disappointed voice. I still say each word clearly.
+1. I find Ava’s spoken words: My kite is stuck.
+2. I read the rest. Sadly tells me Ava feels unhappy.
+3. I choose a gentle, disappointed voice for her spoken words. I say the other words clearly in my usual reading voice.
+4. I reread the whole sentence. I check that I said every word.
 
-**Notice:** A common mistake is choosing an excited voice just because the story has a kite. Use the actual words as clues.
+COMPARE TWO VERSIONS
+Try Ava’s spoken words as if you are cheering. Then try them as if something you wanted has gone wrong. Which version fits sadly? The disappointed version fits the clue; cheering would suggest she is pleased.
+
+TRY A NEW LINE
+“We found it!” said Ben happily.
+Read the whole line quietly. Find the feeling clue, then say Ben’s words with a voice that fits. Think of your answer before reading on.
+
+CHECK YOUR THINKING
+Happily suggests Ben is pleased. A pleased voice fits his spoken words. You do not need to shout. If your voice stays quite gentle, you can still show pleasure.
+
+**Notice:** Do not choose a feeling just because a kite appears in the story. Use sadly as your clue. You can explain a voice choice with “The word ____ tells me ____, so I will sound ____.”
 
 **Check: “I missed the bus,” said Sam sadly. Which reading fits the clue sadly?**
 
@@ -72,21 +94,49 @@ The word sadly tells me Ava feels unhappy. I read her words in a gentle, disappo
 
 ## Stage 3 — ⏸️ Pause without breaking the meaning
 
-A **pause** is a brief stop in your voice. A full stop usually marks the end of a thought, so pause before the next sentence. A comma can suggest a smaller pause. Use the meaning too.
+**Why do we pause?**
+Listeners cannot see where a written sentence finishes. A pause gives them a moment to follow the thought before the next one begins. A pause is a brief stop, not a long wait.
 
-Keep words that belong together in a **phrase**, or meaningful group. Do not stop after every word. In our practice marks, / means a small pause and // means a sentence-end pause. These marks help you practise; they are not new punctuation.
+**Find the sentence ending.**
+A full stop, question mark or exclamation mark ends a sentence. Pause after that sentence, including when it is inside quotation marks. A comma can suggest a smaller pause. Read for meaning too; do not make every comma a long stop.
+
+**Keep a phrase together.**
+A phrase is a meaningful group of words. In After lunch, Ava looked up, After lunch tells us when and Ava looked up tells us what happened. Keeping each group together makes the thought easier to follow. Reading one word, stopping, then reading another can make it sound like a list.
+
+**Mark your practice reading.**
+Use / for a small pause and // for a sentence-end pause. Read the words between marks together. The slashes are your practice notes, not part of the story. Do not say “slash” aloud.
+
+Start with one sentence. Find its ending, find words that belong together, then read it aloud. Notice whether the pause helps the listener follow the meaning.
 
 ### Show me an example
 
+WATCH MY THINKING
+After lunch, Ava looked up. Her kite was caught in a tree.
+
+1. I find two full stops. Each finishes a thought.
+2. After lunch tells me when. I keep those words together and put a small pause after the comma.
+3. Ava looked up is the next thought. I keep those words together, then pause at its full stop.
+4. I read the second sentence smoothly. I keep in a tree together because it tells me where the kite was caught.
+
+MY MARKED READING
 After lunch, / Ava looked up. // Her kite was caught in a tree. //
 
-I keep After lunch together. I pause briefly after the comma and a little longer after each full stop. I keep caught in a tree together.
+TRY AND COMPARE
+Read “Her / kite / was / caught” with a stop at every slash. Then read “Her kite was caught” smoothly. The smoother version joins the words into a thought rather than a list.
+
+YOUR SMALL TRY
+Beside the bench, Ben waited. Ava waved.
+Say where you would pause. Try it before reading the suggestion below.
+
+ONE SENSIBLE READING
+Beside the bench, / Ben waited. // Ava waved. //
+Beside the bench stays together because it tells us where. Each sentence-end pause separates one thought from the next.
 
 **Teaching diagram:** A marked sentence: After lunch, small pause, Ava looked up, sentence-end pause. Each group is read together.
 
 *Use the meaning and punctuation to choose brief pauses.*
 
-**Notice:** A common mistake is reading “Her / kite / was / caught”. Join the words into a thought instead. A pause is brief, not a long wait.
+**Notice:** Do not stop between every word, and do not rush straight through a sentence ending. The goal is a clear thought. Practice marks help you decide where to pause; they do not change the original punctuation.
 
 **Check: Which marked reading keeps words together and pauses at the sentence end?**
 
@@ -107,25 +157,46 @@ I keep After lunch together. I pause briefly after the comma and a little longer
 
 ## Stage 4 — 🎚️ Choose a voice that fits
 
-**Pace** is how fast you read. **Volume** is how loud or quiet your voice is. **Pitch** is how high or low it sounds. Change one tool at a time and notice what it does.
+**Your three voice tools**
+Pace means how fast or slow you read. Volume means how loud or quiet your voice is. Pitch means how high or low your voice sounds. These are different tools. Speaking louder does not automatically mean speaking faster or higher.
 
-A careful moment can use a slower pace. A whispered line can use a quieter volume, still clear enough to hear. A question can use a questioning voice. Your pitch may rise on some questions, but not every question ends the same way. Choose from the meaning, not just the punctuation.
+**Try pace first.**
+Say “Take one careful step” quickly, then at a slower, steady pace. Notice how the slower version gives each word more time. Slow down for a careful moment or an unfamiliar word. An excited line may be a little faster, but keep every word clear.
+
+**Try volume next.**
+Say “Come this way” at your usual speaking volume, then a little quieter. Keep the words audible. Whispered is a clue to a quieter voice. An excited voice can have more energy without being a shout.
+
+**Try pitch last.**
+Say “Oh” with a slightly higher voice, then a slightly lower one. That change is pitch, not loudness. Use a comfortable voice. Try “Is it slipping?” with a questioning sound. Your pitch may rise, but not every question needs a rising ending.
+
+**Let the text choose the tool.**
+Find a clue, choose one change, then try it. Keep the other tools steady while you practise. If the words become unclear, adjust your reading.
 
 ### Show me an example
 
-“Is it slipping?” Ava asked.
+WATCH MY THINKING
+Ben checked the branch carefully. “Pull gently,” he whispered.
 
-I try a questioning voice because Ava wants to know.
+For the first sentence, carefully tells me this is a careful moment. I choose a steady pace rather than rushing.
 
-“Wait,” whispered Ben.
+For Ben’s spoken words, whispered is the clue. I lower my volume while keeping Pull gently clear. I do not make those words faster just because I made them quieter.
 
-I make Ben’s line quieter because whispered is my clue. I do not rush or mumble.
+TRY A QUESTION
+“Can you see it?” Ava asked.
+Say it first as if you are telling someone a fact. Then try a questioning sound, perhaps lifting your pitch a little near the end. The second version can help a listener hear that Ava wants an answer. Your natural questioning voice may sound different; it should still fit the meaning.
+
+YOUR SMALL TRY
+“We did it!” Ben cheered.
+Find the clue and try a voice choice before reading on.
+
+CHECK YOUR THINKING
+Cheered suggests a pleased, energetic voice. You could use more energy or a slightly quicker pace, keeping the words clear. An exclamation mark shows strong feeling; you do not have to shout.
 
 **Teaching diagram:** Three voice tools: pace means fast or slow; volume means loud or quiet; pitch means high or low.
 
 *Change one voice tool at a time.*
 
-**Notice:** An exclamation mark shows strong feeling, but it does not always mean shout. Choose a comfortable voice that fits the words.
+**Notice:** Before reading, finish this thought: “The clue is ____. I will change my pace, volume or pitch by ____.” Change one tool at first so you can hear what it does. Quieter words still need to be clear.
 
 **Check: “Stay here,” whispered Jo. Which volume fits the word whispered?**
 
@@ -146,9 +217,19 @@ I make Ben’s line quieter because whispered is my clue. I do not rush or mumbl
 
 ## Stage 5 — ⭐ Stress a word, then reread
 
-**Stress** means giving an important word a little extra emphasis. You might say it slightly more firmly or slowly. Stress is not the same as shouting.
+**What is word stress?**
+Stress means giving a word a little extra emphasis so a listener notices it. You can say it slightly more firmly or give it a little more time. You do not need a louder voice for the whole sentence.
 
-Read a line once. Then ask, “Did my voice show the meaning?” Choose one change and reread. Keep the words accurate. If a voice choice hides a word, make the word clearer.
+**Choose what matters here.**
+Ask, “What should my listener notice?” In The kite is safe now, safe tells us the danger has passed; now points to this moment. Either word can matter, depending on what you want to show. Choose one and explain your reason.
+
+**Hear the difference.**
+Try “I found the kite” with extra emphasis on I. That draws attention to who found it. Try it again with extra emphasis on kite. That draws attention to what was found. The words stay the same, but the listener notices a different part.
+
+**Reread with a purpose.**
+Read once, then check three things: Did I say every word accurately? Did my pauses keep the thoughts clear? Did my voice fit a clue? Choose one thing to improve and read again. You are practising, so the first attempt does not need to be perfect.
+
+If you cannot decide what to change, start with clarity. Slow a rushed line and say each word clearly. Then choose a voice change.
 
 ### Original in-site episode: One change makes it clearer
 Estimated caption-play time: 22.9 seconds, excluding the learner’s pause. Local voice timing varies.
@@ -163,14 +244,30 @@ Estimated caption-play time: 22.9 seconds, excluding the learner’s pause. Loca
 
 ### Show me an example
 
+WATCH MY THINKING
+The kite is safe now.
+
+FIRST, I CHOOSE EMPHASIS
+The kite is SAFE now.
+I stress safe because I want the listener to notice that the kite is out of trouble.
+
 The kite is safe NOW.
+I stress now because I want the listener to notice that the situation has changed. The capitals show my practice emphasis; I do not need to rewrite the story in capitals.
 
-I stress now because the kite was in trouble before but is safe at this moment. The capitals only show my practice emphasis.
+THEN, I IMPROVE A READING
+First try: I rush and make safe unclear.
+I notice the problem: a listener might miss the most important part.
+My one change: I give the sentence more time.
+Second try: I keep all the same words and say safe clearly.
 
-First try: I rush and swallow the word safe.
-Second try: I slow down and say safe clearly. The listener can follow the change.
+YOUR SMALL TRY
+Ben found the string.
+Read it once, stressing Ben. Read it again, stressing string. What does each version draw attention to? Think before reading on.
 
-**Notice:** Do not stress every word. Choose one that matters, then reread to check whether it helps.
+CHECK YOUR THINKING
+Stressing Ben draws attention to who found it. Stressing string draws attention to what he found. Choose a reason for your emphasis; do not emphasise every word equally.
+
+**Notice:** Rereading means making a useful change, not just repeating the line faster. Say “My first try ____. In my second try I will ____ so the listener can ____.” Keep the story’s words the same.
 
 **Check: What is a useful way to improve a rushed first reading?**
 
@@ -185,11 +282,13 @@ Second try: I slow down and say safe clearly. The listener can follow the change
 
 ### Help with this step
 
-1. Look back at the first and second tries. What went wrong with the unclear word?
+1. Look back at the two versions of the same sentence. Notice what the stressed word makes a listener pay attention to.
 2. Separate the problem from the voice tool. Ask whether the words need more time, more loudness or different emphasis.
 3. Try the practice phrase “beside the bench” twice. Give each word enough time and listen for clarity before choosing a method for the question.
 
 ## Stage 6 — Put it all together
+
+I DO: WATCH ME PREPARE A WHOLE READING
 
 MODEL STORY: A kite rescue
 After lunch, Ava looked up. “My kite is stuck,” she said sadly.
@@ -197,16 +296,28 @@ Ben held the branch steady. “Pull gently,” he whispered.
 Ava tugged the string. The kite slipped free.
 “It is safe now!” Ava cheered.
 
-MY READING PLAN
-1. Meaning: Ava is disappointed at first, then relieved and excited. Sadly and cheered are clues.
-2. Pauses: After lunch, / Ava looked up. // I keep each phrase together and pause at the sentence ends. I do not stop after every word.
-3. Voice: I use a gentle voice for Ava’s first line. I read Ben’s whispered line quietly but clearly. Ava’s last line sounds pleased, without shouting.
-4. Stress and reread: I give now a little extra emphasis because the kite is safe at this moment. I reread, keeping all the words clear.
+1. UNDERSTAND THE STORY
+First I read quietly. Ava’s kite is caught, Ben helps, and the kite comes free. Ava feels disappointed at first and pleased at the end. I know this from sadly and cheered, not from guessing about her name or the picture.
 
-COMMON MISTAKE AND FIX
-My first try rushed “The kite slipped free” and made free hard to hear. I slowed down and reread the same sentence. The words were clearer. Expression helps meaning; it should not hide the words.
+2. MARK THE THOUGHTS
+After lunch, / Ava looked up. // “My kite is stuck,” / she said sadly. //
+Ben held the branch steady. // “Pull gently,” / he whispered. //
+Ava tugged the string. // The kite slipped free. //
+“It is safe now!” // Ava cheered. //
 
-Now read the unmarked story aloud. Then try my plan. You can make another sensible choice if the story gives you a reason.
+I keep After lunch together because it tells me when. I pause briefly before moving from Ava’s words to the part telling me how she spoke. I pause at each sentence ending. These marks are one possible practice plan, not the only sensible reading.
+
+3. CHOOSE MY VOICE
+I read the narrator’s words clearly in my usual voice. For My kite is stuck, I use a disappointed voice because the clue is sadly. For Pull gently, I use a quieter volume because Ben whispered. For It is safe now, I sound pleased because Ava cheered. I keep each change comfortable enough for every word to be clear.
+
+4. CHOOSE ONE WORD TO STRESS
+I give now a little more emphasis in Ava’s last line. I want the listener to notice that the kite was in trouble earlier but is safe at this moment. Another reader might stress safe to highlight the danger being over. Both choices can be explained from the story.
+
+5. FIND A MISTAKE AND FIX IT
+My first try rushed The kite slipped free. The word free was hard to hear. I chose a slower pace for that sentence, kept the words together and reread. The listener could understand that the kite came loose. I did not add new words or shout to fix the problem.
+
+NOW TRY MY METHOD
+Read the original, unmarked story aloud. Use one part of my plan at a time. Then reread, changing one thing you noticed. Your own voice choices can be different if the words give you a reason.
 
 **Teaching diagram:** A reading method: read, choose, try and reread. Find a clue, choose a voice tool, say every word clearly and make one improvement.
 
@@ -225,32 +336,51 @@ Now read the unmarked story aloud. Then try my plan. You can make another sensib
 ### Help with this step
 
 1. Read the model story once before looking at the reading plan.
-2. Follow the plan one part at a time: find a feeling clue, choose pauses, choose a voice, then reread.
+2. Follow the whole model one part at a time: understand the events, mark the thoughts, choose a voice, choose emphasis and reread.
 3. Try just Ava’s opening line. Explain which word guided your voice, then flip one tool card to remind yourself of its meaning.
 
 ## Stage 7 — Try it with help
 
-Try this line with help from the lesson:
-“Wait,” whispered Ben. “The string is caught.”
+WE DO: BUILD A READING TOGETHER
+Work through one part at a time. The lesson will give you a suggestion after each try. Say your thinking aloud or jot a few words on paper. You do not need a grown-up to tell you the rule.
 
-1. Find the clue. Whispered tells you about Ben’s voice. Say what it suggests before you read.
-2. Try the first line. Keep the word Wait clear. Pause at the end of that spoken sentence.
-3. Read the second sentence as one thought. Try emphasising string, because that is the thing that is caught.
-4. Read both lines again. Ask yourself whether every word was clear. Change only one thing if it was rushed or too quiet.
+OUR PRACTICE TEXT
+Beside the bench, Ben held the string. “Will it come free?” Ava asked.
+“Pull gently,” he whispered. Ava waited carefully.
 
-You can say your thinking aloud or jot it on paper. There is more than one sensible reading. Use the words to explain your choice.
+1. UNDERSTAND BEFORE YOU PERFORM
+Read quietly. Who holds the string? Who asks a question? Try answering before reading on.
+Check: Ben holds the string and Ava asks whether it will come free. The words inside the quotation marks are their spoken words. Read the narrator’s words too.
 
-Need a starting sentence? “The clue I noticed is ____. I will change my ____ because ____.”
+2. FIND ONE PAUSE
+Read the first sentence. Keep the words telling us where together. Decide where a brief pause would help.
+One sensible reading: Beside the bench, / Ben held the string. //
+Beside the bench tells us where. The sentence-end pause gives the listener time before Ava’s question. Try that marked reading aloud.
+
+3. CHOOSE ONE VOICE TOOL
+Find the clue about Ben’s voice. Choose pace, volume or pitch and explain why. Use “The clue is ____, so I will change my ____ by ____.”
+Check: whispered suggests a quieter volume. Try Pull gently quietly, then check that both words are clear. You do not have to make a real whisper. Use your usual clear voice for he whispered.
+
+4. TRY THE QUESTION
+Ava wants an answer. Say Will it come free with a questioning sound. You might lift your pitch a little. Compare it with a flat telling voice and decide which better shows she is asking.
+
+5. CHOOSE EMPHASIS AND REREAD
+Choose one word you want a listener to notice. Free could draw attention to what Ava hopes will happen. Gently could draw attention to how Ben wants the string pulled. Say your own reason.
+Read the whole practice text aloud twice. Between readings, choose one change: a clearer word, a better pause or a voice choice that fits a clue.
+
+FINISH THIS THOUGHT
+“In my first reading, ____. I changed ____ in my second reading because ____.”
+If you can name the clue and explain your change, you are ready to try a new story with less help.
 
 ### Help with this step
 
-1. Look back at the four instructions beside Ben’s line.
-2. Begin with the speaking clue, then practise only the first spoken sentence.
-3. Use the starter “The clue I noticed is ____. I will change my ____ because ____.” Fill one gap, try the line, then move to the next gap.
+1. Look back at the practice text and take just the first numbered try. You can compare your thinking with the suggestion after it.
+2. Start by finding who holds the string and who asks a question. Then move to one pause, before choosing a voice tool.
+3. Use “The clue is ____, so I will change my ____ by ____.” Fill the clue gap from the text, name a tool, then try only that line aloud.
 
 ## Stage 8 — Do the task
 
-Your Voice Detective task (about 20 minutes)
+YOU DO: Your Voice Detective task (about 20 minutes)
 
 Read this original story:
 At the park, Mila held her paper boat. “Will it float?” she asked.
@@ -263,7 +393,13 @@ The boat stayed upright. “It is floating now!” she cheered.
 3. Choose two voice changes. For each, write or say the clue, the voice tool and your reason. Use “I will change my ____ because the words ____ show ____.”
 4. Choose one word to stress. Write the word and why it matters here.
 5. Read the whole story aloud twice. After the first try, choose one improvement. Make that change in the second reading. You can practise alone; a recording is optional.
-6. In the big text box, type your pause choices, two voice choices, stress choice and one improvement. If you worked on paper, type a short summary of those choices and keep the paper for a grown-up to review. You do not need an upload to finish.
+6. In the big text box, type your choices under these four labels:
+Pauses: ____
+Voice choices and clues: ____
+Word to stress and reason: ____
+My second-reading improvement: ____
+
+If you worked on paper, type a short summary of those choices and keep the paper for a grown-up to review. You do not need an upload to finish.
 
 Before moving on, check: I kept the story’s words accurate; I used clues to explain my choices; I kept phrases together; I made one improvement. Answer the reflection question in the smaller box.
 
@@ -423,7 +559,7 @@ Submit your finished plan, reflection and written quiz answers for review. The t
 
 Parent: This lesson teaches reading expression through meaning clues, pauses and phrasing, pace, volume, pitch, emphasis and rereading. EN2-REFLU-01 was checked against the NESA English K–10 (2022) outcomes page. It is one lesson contributing to the outcome, not evidence that the whole outcome has been achieved. All stories and episodes are original.
 
-Parent: The lesson guides the child without requiring you to teach the topic. Look for accurate words, meaningful grouping and a reason for voice choices. There is no single correct performance. Do not require a dramatic voice, a particular accent, a whisper or a recording. A child may explain intended expression in writing or use their usual communication support; note what was actually demonstrated.
+Parent: Each teaching step now includes an explanation, a modelled thought process, a contrasting or new practice line and feedback before the scored check. The complete model and guided practice gradually remove that help. The lesson guides the child without requiring you to teach the topic. Look for accurate words, meaningful grouping and a reason for voice choices. There is no single correct performance. Do not require a dramatic voice, a particular accent, a whisper or a recording. A child may explain intended expression in writing or use their usual communication support; note what was actually demonstrated.
 
 Parent: If decoding is the barrier, help with that word or use a shorter line and let the child reread. Do not supply the check or quiz answers. Encourage one small change at a time. Keep volume comfortable and never ask the child to shout. The provided cartoons have readable transcripts, so audio is optional.
 
@@ -432,6 +568,8 @@ Parent: The quest check has eight automatically scored multiple-choice questions
 Parent: Model answer for question 10: “I slowed my pace so I could say upright clearly. That helped a listener understand that the boat was standing up.” Accept a specific change and its effect. Model reflection: “My second reading had a pause after The boat tipped, so the listener could follow the next thought.” These are examples, not scripts to memorise.
 
 Parent: A possible main-task response: “At the park, / Mila held her paper boat. // I used a questioning voice for Will it float because Mila wants to know. I lowered my volume for Wait because whispered is the clue. I stressed now because the boat is floating at this moment. On my second reading I kept stayed upright together rather than stopping between the words.” Other pause marks and choices are valid when they fit the words. Review the oral reading or the explanation separately; a correct quiz alone does not establish expressive reading.
+
+Parent: Guided-practice suggestions are shown to the child after each small attempt so they can compare their own thinking. Accept alternative pauses or voice choices that preserve the words and fit a clue. The time estimate is now 60 minutes, including oral practice and the 20-minute task. If the child needs a slower reading pace, use the saved quest progress to take a break and resume rather than cutting out the teaching.
 
 ## Evidence to collect
 
