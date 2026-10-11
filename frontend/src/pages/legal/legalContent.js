@@ -1,4 +1,5 @@
 // DRAFT COPY - review (ideally with a lawyer) before launch.
+// Anything in [square brackets] or marked TODO must be filled in or confirmed.
 export const CONTACT_EMAIL = "hello@example.com"; // TODO: replace with real support address
 export const PRIVACY_EMAIL = "privacy@example.com"; // TODO: replace with real privacy contact
 export const LAST_UPDATED = "11 October 2026";
@@ -13,16 +14,70 @@ export const GROUPS = [
 export const PAGES = {
   "privacy-policy": {
     group: "legal", title: "Privacy Policy", public: true,
-    summary: "What we collect, why, who sees it, and your rights.",
+    summary: "What we collect, why, who sees it, how long we keep it, and your rights.",
     sections: [
-      { h: "What we collect", p: "Parent account details (name, email), child profiles you create (first name, year level, learning progress, evidence you upload, reading log entries) and basic technical data needed to run the service." },
-      { h: "Why we collect it", p: "To run your family's learning hub, track progress against learning outcomes, and keep the service secure. We do not sell personal information." },
-      { h: "Children's information", p: "Child profiles are created and managed by a parent or guardian. We collect only what is needed for learning features and keep child-facing screens free of advertising." },
-      { h: "AI features", p: "Some features may send short prompts to an AI service to generate hints or lesson ideas. See the AI Use page for detail." },
-      { h: "Who we share it with", p: "Only the service providers we need to operate Side Quest (hosting, storage, email, AI). See Third-Party Services." },
-      { h: "Overseas storage", p: "Some providers may store or process data outside Australia. TODO: confirm regions and list them here." },
-      { h: "Your rights", p: "You can ask to access, correct or delete your information at any time using the Account & privacy requests pages." },
-      { h: "Complaints", p: "If you are unhappy with how we handled your information, contact us first. You can also complain to the Office of the Australian Information Commissioner (oaic.gov.au)." },
+      { h: "In short", items: [
+        "Side Quest is a home learning hub run by parents, for their own children.",
+        "We collect only what is needed to run your family's account and learning features.",
+        "We do not sell personal information and we do not show advertising to children.",
+        "You can see, correct or delete your family's information at any time.",
+      ] },
+      { h: "Who we are", p: "Side Quest is operated by [legal name / sole trader name] [ABN: TODO] (\"Side Quest\", \"we\", \"us\"). We are based in [state], Australia. You can contact our privacy contact at the email address listed at the end of this policy." },
+      { h: "About this policy", p: "This policy explains how we handle personal information in line with the Privacy Act 1988 (Cth) and the Australian Privacy Principles. It applies to the Side Quest website and app, including the parent hub and the child area." },
+      { h: "Information we collect from parents", items: [
+        "Account details: your name, email address and sign-in details.",
+        "Settings and preferences you choose in the parent hub.",
+        "Records you create: lesson plans, learning plans, calendar entries, resources you save and notes.",
+        "Messages you send to us through email or the contact and request pages.",
+      ] },
+      { h: "Information we collect about children", items: [
+        "Profile details a parent enters: first name or nickname, year level and avatar or pet choices.",
+        "Learning information: lessons completed, progress against learning outcomes, achievements, reading log and word hoard entries.",
+        "Evidence a parent uploads, such as photos or work samples, which may show a child or their work.",
+        "Child login details set up by the parent so a child can enter their own area.",
+      ] },
+      { h: "Children's information", p: "Child profiles are created and managed by a parent or guardian, who is responsible for the information entered. We keep the child area free of advertising, public profiles and open messaging. We encourage parents to use first names or nicknames only and to avoid uploading images or details that are not needed for learning. We aim to follow the Children's Online Privacy Code when it applies to us. [TODO: check the current status of the OAIC Children's Online Privacy Code and update this paragraph.]" },
+      { h: "Technical information", p: "When you use Side Quest we and our hosting providers may automatically record technical data such as IP address, browser and device type, pages requested, error logs and the time of requests. We use this to keep the service running, secure and fast, and to fix problems." },
+      { h: "How we collect information", items: [
+        "Directly from you when you register, add a child, upload evidence or contact us.",
+        "From your child's activity in the child area, such as completing a lesson.",
+        "Automatically through our hosting and sign-in systems.",
+        "From a sign-in provider if you choose to sign in with an external account. [TODO: confirm which sign-in methods are offered.]",
+      ] },
+      { h: "Why we use information", items: [
+        "To create and run your account and your children's learning spaces.",
+        "To show progress, build learning plans and keep records you can use for home education reporting.",
+        "To provide features such as lessons, the reading log, life learning records and rewards.",
+        "To provide help and support, and to respond to requests and complaints.",
+        "To keep Side Quest secure, prevent misuse and fix faults.",
+        "To meet our legal obligations.",
+        "To improve the service using general, non-identifying usage patterns.",
+      ] },
+      { h: "We do not sell your information", p: "We do not sell or rent personal information, and we do not use children's information for advertising or marketing profiles. We will not use your information for a purpose that is unrelated to the above unless you consent or the law allows it." },
+      { h: "AI features", p: "Some features use an AI service to give short hints, suggest links between activities and learning outcomes, or draft lesson ideas. We aim to send only the text needed for the task and to leave out names and other identifying details. AI output is a suggestion only and a parent reviews it. See the AI Use page for more. [TODO: confirm exactly what is sent to the AI service once these features are live, and whether the provider keeps or trains on it.]" },
+      { h: "Who we share information with", p: "We share information only with service providers who help us run Side Quest, and only as needed for them to do that work. These currently include:" },
+      { h: "Our service providers", items: [
+        "Cloudflare: hosting, network security and, where used, database, file storage and AI services.",
+        "Sign-in provider: [TODO: name provider, or remove if none].",
+        "Email provider: [TODO: name provider, or remove if none].",
+        "Analytics provider: [TODO: name provider, or state that none is used].",
+      ] },
+      { h: "Other disclosures", p: "We may disclose information if required or authorised by law, to protect someone's safety, or to respond to a lawful request from a court or authority. If our business changes hands, information may transfer to the new operator, who must honour this policy." },
+      { h: "Overseas disclosure", p: "Our providers may store or process information outside Australia, including in the United States and other countries where Cloudflare operates. Before we send information overseas we take reasonable steps to make sure the provider handles it in line with the Australian Privacy Principles. [TODO: confirm the storage regions you have chosen and list the countries.]" },
+      { h: "Cookies and similar technology", p: "We use cookies or similar storage that are needed to keep you signed in and keep the service secure. [TODO: confirm whether any analytics or non-essential cookies are used. If so, describe them and how to opt out.]" },
+      { h: "Storage and security", p: "We take reasonable steps to protect personal information from misuse, interference, loss and unauthorised access. This includes encrypted connections (HTTPS), login protection for accounts, restricting access to the people who need it, and monitoring logs for problems. No online service is completely secure, so please use a strong, unique password and keep it private. [TODO: add specifics, such as encryption at rest, once confirmed.]" },
+      { h: "How long we keep information", items: [
+        "We keep account and child information while your account is active.",
+        "When you delete a child profile or your account, we delete or de-identify the related information, except where we must keep something by law. [TODO: state how long backups and logs are kept.]",
+        "Technical and security logs are kept for a limited time and then deleted. [TODO: state period.]",
+        "Emails you send us are kept as long as needed to deal with your request.",
+      ] },
+      { h: "Data breaches", p: "If a data breach is likely to cause serious harm, we will act quickly to contain it, assess it, and notify affected people and the Office of the Australian Information Commissioner as required under the Notifiable Data Breaches scheme." },
+      { h: "Accessing and correcting your information", p: "You can ask to see the personal information we hold about you and your children, and ask us to correct anything that is wrong, incomplete or out of date. You can also edit most details yourself in the parent hub. Use the Request Your Data and Request a Correction pages, or email us. We will confirm your identity first and respond within a reasonable time, normally within 30 days. We will not charge for making a request." },
+      { h: "Deleting your information", p: "You can delete your account at any time from the Trust & Support page or the sidebar. This removes your account and your children's profiles and learning records." },
+      { h: "Complaints", p: "If you think we have breached the Australian Privacy Principles, contact our privacy contact first so we can investigate and reply in writing. If you are not satisfied, you can complain to the Office of the Australian Information Commissioner at oaic.gov.au or on 1300 363 992." },
+      { h: "Changes to this policy", p: "We may update this policy as Side Quest grows or the law changes. The date at the top shows when it was last updated. If we make an important change we will tell parents through the app or by email." },
+      { h: "Contact us", p: "Privacy contact: [name or role]. Email: privacy@example.com. [TODO: replace with the real address and add a postal address if you wish.]" },
     ],
   },
   "terms": {
