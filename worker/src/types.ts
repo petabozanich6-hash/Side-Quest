@@ -22,6 +22,8 @@ export type Env = {
   EMAIL?: EmailBinding;
   /** Optional sender address override (defaults to no-reply@sidequestlearning.app). */
   EMAIL_FROM?: string;
+  /** Verified Email Routing destination that incoming support mail is forwarded to. */
+  FORWARD_TO?: string;
   GOOGLE_OAUTH_CLIENT_ID?: string;
   GOOGLE_OAUTH_CLIENT_SECRET?: string;
   OWNER_PASSWORD?: string;

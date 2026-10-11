@@ -10,6 +10,8 @@ import { registerPets } from "./pets";
 import { registerWords } from "./words";
 import { registerAccount } from "./account";
 import { sendEmail, welcomeEmail } from "./email";
+import { handleInbound } from "./inbound";
+import type { InboundMessage } from "./inbound";
 
 import type { App, Env, Guards, Vars } from "./types";
 
@@ -166,4 +168,7 @@ registerAccount(app, guards);
 
 app.notFound((c) => c.json({ detail: "Not found" }, 404));
 
-export default app;
+export default {
+  fetch: (req: Request, env: Env, ctx: ExecutionContext) => app.fetch(req, env, ctx),
+  email: (message: InboundMessage, env: Env) => handleInbound(message, env),
+};

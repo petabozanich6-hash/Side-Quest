@@ -9,6 +9,10 @@ export type OutgoingEmail = {
   subject: string;
   text: string;
   html: string;
+  /** Optional sender address override for this message. */
+  from?: string;
+  /** Optional extra headers (e.g. Auto-Submitted for automatic replies). */
+  headers?: Record<string, string>;
 };
 
 /**
@@ -24,11 +28,12 @@ export async function sendEmail(env: Env, msg: OutgoingEmail): Promise<boolean> 
   try {
     await env.EMAIL.send({
       to: msg.to,
-      from: { email: env.EMAIL_FROM || DEFAULT_FROM, name: "Side Quest" },
+      from: { email: msg.from || env.EMAIL_FROM || DEFAULT_FROM, name: "Side Quest" },
       replyTo: SUPPORT_EMAIL,
       subject: msg.subject,
       text: msg.text,
       html: msg.html,
+      ...(msg.headers ? { headers: msg.headers } : {}),
     });
     return true;
   } catch (e: any) {
