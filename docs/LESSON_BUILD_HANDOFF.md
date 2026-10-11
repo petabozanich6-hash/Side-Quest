@@ -133,6 +133,29 @@ What the code actually does:
 - Week 1 is now complete: all four lessons exist. Tracked upstream in
   `docs/LESSON_TRACKER.md`, which still needs updating.
 
+### Lesson 2 top-up and Week 2 started
+
+- **Lesson 2 top-up**, migration `0045_s2_y3_w01_l2_answer_key.sql`: adds the missing `answer_key`,
+  `parent_check` and `self_check` to `s2-eng-y3-w01-l2`. The quiz answer string is generated from the
+  lesson's own quiz data, and questions 9 and 10 are short answer so they are named rather than lettered.
+- **Week 2 Lesson 1, Story elements: character, setting and plot** (`s2-eng-y3-w02-l1`), migration
+  `0046_s2_y3_w02_l1_story_elements.sql`. Reading lesson, outcomes EN2-RECOM-01 and EN2-UARL-01.
+  Eight steps with ten new cartoon scenes (book, magnifying glass, name tags, house, story map),
+  a three bucket sort rather than the usual two because the lesson is about three elements,
+  922 word parent guide, and two unwatched videos (Swick's Classroom m3WHmmYTTeE,
+  Scratch Garden NpWHZJZQDSE).
+- Week 2 lessons 2, 3 and 4 are still placeholders.
+
+### Verifier notes
+
+The verification script now checks, for every lesson: the migration applies and the row reads back,
+`coming_soon` is removed, every narrative field is a single non-empty string, every list field is a
+non-empty list, the quiz has ten questions with four options and answers spread across all four
+positions, the sort has 2 to 3 buckets with all buckets populated, every SVG parses with a
+reduced-motion guard and alt text, and no two visuals in the lesson share an animation class name
+with different rules. Two real bugs were caught this way: a quiz with every answer in position A or B,
+and an `independent_task` that became a tuple because of a stray comma.
+
 ### Known gaps to fix later
 
 - Lesson 2 (`s2-eng-y3-w01-l2`) has no `answer_key`, `parent_check` or `self_check` field, because it
