@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { api } from "../lib/api";
 import QuestVisual from "../components/shared/QuestVisual";
+import PrintableResource from "../components/shared/PrintableResource";
+import LessonText from "../components/shared/LessonText";
 
 const asList = (v) => (Array.isArray(v) ? v : v ? [v] : []);
 
@@ -176,7 +178,7 @@ export default function LessonDetail() {
                     {index + 1}. {step.icon} {step.title}
                   </h3>
 
-                  <p className="mt-3 whitespace-pre-wrap text-slate-700">{step.explain}</p>
+                  <p className="mt-3 whitespace-pre-wrap text-slate-700"><LessonText text={step.explain} /></p>
 
                   <Visuals items={step.visual_before} />
 
@@ -469,6 +471,8 @@ export default function LessonDetail() {
           </section>
         )}
 
+        <div className="mt-6"><PrintableResource resource={lesson.printable_resource} /></div>
+
         {lesson.parent_notes && (
           <section className="bg-white rounded-xl shadow p-6 mt-6">
             <h2 className="text-xl font-semibold">Parent notes</h2>
@@ -502,3 +506,4 @@ export default function LessonDetail() {
     </div>
   );
 }
+

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ChoiceSet } from "./QuestActivities";
 import QuestVisual from "./QuestVisual";
+import LessonText from "./LessonText";
 
 const BTN = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
 
@@ -13,7 +14,7 @@ export default function TeachStep({ step, onComplete }) {
   return (
     <div className="space-y-4">
       <div className="whitespace-pre-wrap text-base leading-relaxed">
-        {step.explain}
+        <LessonText text={step.explain} />
       </div>
 
       {asList(step.visual_before).map((v, i) => (
@@ -76,3 +77,4 @@ export default function TeachStep({ step, onComplete }) {
     </div>
   );
 }
+
