@@ -6,10 +6,15 @@ import { toast } from "sonner";
 import { Compass } from "lucide-react";
 import { Fern, Flower, Pet } from "../components/shared/Botanical";
 
+const LAST_USER_KEY = "sq_child_username";
+
 export default function ChildLogin() {
   const [username, setUsername] = useState("");
   const [pin, setPin] = useState("");
   const [loading, setLoading] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [helpUser, setHelpUser] = useState("");
+  const [helpState, setHelpState] = useState("idle");
   const { setSession } = useAuth();
   const nav = useNavigate();
 
@@ -17,10 +22,32 @@ export default function ChildLogin() {
     e.preventDefault(); setLoading(true);
     try {
       const { data } = await api.post("/auth/child-login", { username, pin });
+      try { localStorage.setItem(LAST_USER_KEY, username.trim().toLowerCase()); } catch { /* ignore */ }
       setSession(data.token, { ...data.student, role: "child" });
       toast.success(`Hi ${data.student.name}!`); nav("/child");
     } catch (err) { toast.error(err.response?.data?.detail || "Can't sign in"); }
     finally { setLoading(false); }
+  };
+
+  const openHelp = () => {
+    let saved = "";
+    try { saved = localStorage.getItem(LAST_USER_KEY) || ""; } catch { /* ignore */ }
+    setHelpUser(username || saved);
+    setHelpState("idle");
+    setHelpOpen(true);
+  };
+
+  const sendHelp = async (e) => {
+    e.preventDefault();
+    if (!helpUser.trim()) return;
+    setHelpState("sending");
+    try {
+      await api.post("/auth/child-help", { username: helpUser });
+      setHelpState("sent");
+    } catch (err) {
+      toast.error(err.response?.data?.detail || "That didn't send. Try again?");
+      setHelpState("idle");
+    }
   };
 
   return (
@@ -30,6 +57,30 @@ export default function ChildLogin() {
       <Flower className="absolute top-20 right-24" size={32} color="#D4857A"/>
       <Flower className="absolute bottom-32 left-24" size={28} color="#C77B5B"/>
 
+      {helpOpen ? (
+        <form onSubmit={sendHelp} className="w-full max-w-md paper-card p-10 relative z-10" data-testid="child-help-form">
+          <div className="flex justify-center mb-2"><Pet species="fox" size={100}/></div>
+          {helpState === "sent" ? (
+            <div className="text-center" data-testid="child-help-sent">
+              <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Message sent!</h1>
+              <p className="mt-3 text-base" style={{color:"#1F3B2D"}}>Your grown-up knows you need a hand. Hang tight, adventurer. The key will be found soon.</p>
+              <button type="button" onClick={() => setHelpOpen(false)} className="mt-7 w-full rounded-full py-3.5 text-base font-bold" style={{backgroundColor:"#C77B5B", color:"#FBF7EC"}} data-testid="child-help-back">Back to the door</button>
+            </div>
+          ) : (
+            <>
+              <h1 className="font-display text-3xl font-bold text-center" style={{color:"#1F3B2D"}}>Lost your key?</h1>
+              <p className="text-center text-sm mt-2" style={{color:"#1F3B2D"}}>No worries, adventurer! Tell us your username and we'll send a message to your grown-up so they can help you back in.</p>
+              <div className="mt-6">
+                <label className="text-sm font-bold" style={{color:"#1F3B2D"}}>My username</label>
+                <input value={helpUser} onChange={e=>setHelpUser(e.target.value)} required autoFocus className="mt-1 w-full rounded-2xl border-2 px-4 py-3 text-lg bg-white" style={{borderColor:"#D4C8A8"}} data-testid="child-help-username"/>
+              </div>
+              <p className="mt-3 text-xs text-stone-500">Can't remember your username either? Just tell your grown-up. They can find it on their Children page.</p>
+              <button disabled={helpState === "sending"} className="mt-6 w-full rounded-full py-3.5 text-base font-bold hover:translate-y-[-1px] transition disabled:opacity-50" style={{backgroundColor:"#C77B5B", color:"#FBF7EC"}} data-testid="child-help-submit">{helpState === "sending" ? "Sending a message…" : "Ask my grown-up for help"}</button>
+              <button type="button" onClick={() => setHelpOpen(false)} className="mt-4 w-full text-center text-sm font-bold" style={{color:"#4A5D3A"}} data-testid="child-help-cancel">Back to the door</button>
+            </>
+          )}
+        </form>
+      ) : (
       <form onSubmit={submit} className="w-full max-w-md paper-card p-10 relative z-10" data-testid="child-login-form">
         <div className="flex justify-center mb-2"><Pet species="fox" size={100}/></div>
         <h1 className="font-display text-4xl font-bold text-center" style={{color:"#1F3B2D"}}>Hello, learner</h1>
@@ -45,9 +96,11 @@ export default function ChildLogin() {
           </div>
         </div>
         <button disabled={loading} className="mt-7 w-full rounded-full py-3.5 text-base font-bold hover:translate-y-[-1px] transition disabled:opacity-50" style={{backgroundColor:"#C77B5B", color:"#FBF7EC"}} data-testid="child-login-submit">{loading ? "Opening the door…" : "Let's go"}</button>
+        <button type="button" onClick={openHelp} className="mt-4 w-full flex items-center justify-center gap-1.5 text-sm font-bold" style={{color:"#4A5D3A"}} data-testid="child-forgot"><Compass size={15}/> I lost my key</button>
         <p className="mt-6 text-center text-xs text-stone-500">Are you a parent? <Link to="/login" className="font-bold" style={{color:"#4A5D3A"}}>Sign in here</Link></p>
         <p className="mt-5 pt-4 border-t text-center text-[11px] leading-relaxed text-stone-500" style={{borderColor:"#E4DAC0"}} data-testid="acknowledgement-of-country">Side Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
       </form>
+      )}
     </div>
   );
 }

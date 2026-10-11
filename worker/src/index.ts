@@ -11,6 +11,7 @@ import { registerWords } from "./words";
 import { registerAccount } from "./account";
 import { registerPasswordReset } from "./passwordReset";
 import { registerStudentCredentials } from "./studentCredentials";
+import { registerHelpRequests } from "./helpRequests";
 import { sendEmail, welcomeEmail } from "./email";
 import { handleInbound } from "./inbound";
 import type { InboundMessage } from "./inbound";
@@ -169,6 +170,7 @@ registerWords(app, guards);
 registerAccount(app, guards);
 registerPasswordReset(app);
 registerStudentCredentials(app, guards);
+registerHelpRequests(app, guards);
 
 app.notFound((c) => c.json({ detail: "Not found" }, 404));
 

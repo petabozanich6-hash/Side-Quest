@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { Plus, Trash2, X, Check, Pencil, Eye, EyeOff, Lock } from "lucide-react";
+import HelpRequests from "./HelpRequests";
 
 const STAGES = [
   { code: "ES1", name: "Early Stage 1 (Kindergarten)", theme: "early", years: ["K"] },
@@ -283,6 +284,8 @@ export default function ChildrenPage() {
         </div>
         <button onClick={() => setOpen(true)} className="rounded-full px-4 py-2 text-sm font-bold flex items-center gap-1.5" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="add-student-btn"><Plus size={14}/> Add student</button>
       </div>
+
+      <HelpRequests students={students} onView={setCreds} />
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {students.map(s => (
