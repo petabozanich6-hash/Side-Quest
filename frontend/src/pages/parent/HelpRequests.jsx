@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Compass } from "lucide-react";
 
 const EMAIL_NOTE = {
-  sent: "Email sent to you.",
+  sent: "Email sent to you. Can't find it? Check your spam folder and mark it \"Not spam\".",
   failed: "The email couldn't be sent. Check your email service settings.",
   not_configured: "Email isn't set up on the server yet, so no email was sent.",
   no_address: "No parent email address was found, so no email was sent.",

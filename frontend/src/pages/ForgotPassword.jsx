@@ -28,7 +28,7 @@ export default function ForgotPassword() {
           <div data-testid="forgot-sent">
             <div className="flex items-center gap-2"><Mail size={22} style={{color:"#4A5D3A"}}/><h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Check your email</h1></div>
             <p className="text-sm text-stone-600 mt-3 leading-relaxed">If an account exists for <strong>{email}</strong>, we've sent a link to choose a new password. It works once and expires in 1 hour.</p>
-            <p className="text-sm text-stone-500 mt-3 leading-relaxed">It can take a few minutes to arrive. Check your spam folder too.</p>
+            <p className="text-sm text-stone-500 mt-3 leading-relaxed">It can take a few minutes to arrive. If you can't see it, check your spam folder, and mark it "Not spam" so future emails reach your inbox.</p>
             <Link to="/login" className="mt-6 inline-block text-xs font-bold hover:underline" style={{color:"#4A5D3A"}}>Back to sign in</Link>
           </div>
         ) : (

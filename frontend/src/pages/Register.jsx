@@ -17,7 +17,11 @@ export default function Register() {
     try {
       const { data } = await api.post("/auth/register", form);
       setSession(data.token, { ...data.user, role: "parent" });
-      toast.success("Family account created"); nav("/parent");
+      toast.success("Family account created", {
+        description: "We've sent you a welcome email. If you can't see it, check your spam folder and mark it 'Not spam' so help alerts from your children reach you.",
+        duration: 12000,
+      });
+      nav("/parent");
     } catch (err) { toast.error(err.response?.data?.detail || "Registration failed"); }
     finally { setLoading(false); }
   };
@@ -57,6 +61,9 @@ export default function Register() {
             <F label="Family name (optional)"><input value={form.family_name} onChange={upd("family_name")} className="input" data-testid="reg-family"/></F>
             <F label="Email"><input value={form.email} onChange={upd("email")} type="email" required className="input" data-testid="reg-email"/></F>
             <F label="Password"><input value={form.password} onChange={upd("password")} type="password" minLength={6} required className="input" data-testid="reg-password"/></F>
+          </div>
+          <div className="mt-4 rounded-xl p-3 text-xs leading-relaxed" style={{backgroundColor:"#F5EFE0", borderLeft:"4px solid #D4A574", color:"#1F3B2D"}} data-testid="reg-spam-note">
+            <strong>Heads up:</strong> we'll email you from <span className="font-mono">no-reply@sidequestlearning.app</span> with your welcome note, password resets, and alerts when a child asks for help. New senders often land in spam, so please check your spam folder and mark us "Not spam".
           </div>
           <button disabled={loading} className="mt-6 w-full rounded-full py-3 text-sm font-bold hover:translate-y-[-1px] transition disabled:opacity-50" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="reg-submit">{loading ? "Creating…" : "Create account"}</button>
           <p className="mt-5 text-center text-xs text-stone-500">Already have an account? <Link to="/login" className="font-bold" style={{color:"#4A5D3A"}} data-testid="reg-to-login">Sign in</Link></p>
