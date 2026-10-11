@@ -24,7 +24,7 @@ export const PAGES = {
       { h: "Who I am", p: "Side Quest (sidequestlearning.app) is a personal project run by one parent in Australia, who is also homeschooling. It began as a tool for my own children and is not a registered business or company. In this policy, \"Side Quest\", \"I\", \"me\" and \"my\" mean the parent who runs sidequestlearning.app. You can contact me at support@sidequestlearning.app." },
       { h: "About this policy", p: "I handle personal information in line with the spirit of the Privacy Act 1988 (Cth) and the Australian Privacy Principles, even where the law may not strictly require it of a personal project. This policy applies to the Side Quest website and app, including the parent hub and the child area." },
       { h: "Information I collect from parents", items: [
-        "Account details: your name, your email address and your sign-in credentials.",
+        "Account details: your name, your email address and your sign-in credentials. Your email address is also used to help you get back into your account if you forget your password.",
         "Settings and preferences you choose in the parent hub.",
         "Records you create: lesson plans, learning plans, calendar entries, resources you save and notes.",
         "Messages you send me by email or through the contact and request pages.",
@@ -32,6 +32,7 @@ export const PAGES = {
       { h: "Information I collect about children", items: [
         "Profile details a parent enters: first name or nickname, year level and avatar or pet choices.",
         "A username and PIN code set up by the parent so the child can enter their own area.",
+        "PIN requests: if a child forgets their PIN and asks for help, a request is recorded with the time and the child's profile, and shown to their parent on the parent dashboard.",
         "Learning information: lessons completed, progress against learning outcomes, achievements, reading log and word hoard entries.",
         "Evidence a parent uploads, such as photos or work samples, which may show a child or their work.",
       ] },
@@ -39,13 +40,14 @@ export const PAGES = {
       { h: "Technical information", p: "When you use Side Quest, Cloudflare, the hosting provider, may automatically record technical data such as IP address, browser and device type, pages requested, error logs and the time of requests. This is used to keep the service running, secure and fast, and to fix problems." },
       { h: "How I collect information", items: [
         "Directly from you when you create an account, add a child, upload evidence or contact me.",
-        "From your child's activity in the child area, such as completing a lesson.",
+        "From your child's activity in the child area, such as completing a lesson or asking for help with their PIN.",
         "Automatically through the hosting systems.",
       ] },
       { h: "Why I use information", items: [
         "To create and run your account and your children's learning spaces.",
         "To show progress, build learning plans and keep records you can use for home education reporting.",
         "To provide features such as lessons, the reading log, life learning records and rewards.",
+        "To help you and your children get back into their accounts if a password or PIN is forgotten.",
         "To provide help and support, and to respond to requests and complaints.",
         "To keep Side Quest secure, prevent misuse and fix faults.",
         "To meet my legal obligations.",
@@ -64,6 +66,7 @@ export const PAGES = {
       { h: "Storage and security", p: "I take reasonable steps to protect personal information from misuse, loss and unauthorised access. This includes encrypted connections (HTTPS), login protection for parent accounts and PIN protection for child access, restricting access to the site, and monitoring logs for problems. No online service is completely secure, so please use a strong, unique password and keep it private." },
       { h: "How long I keep information", items: [
         "I keep account and child information while your account is active.",
+        "PIN requests are kept while the account is active, and are removed when the child's profile or the account is deleted.",
         "When you delete a child profile or your account, I delete the related information, except where I must keep something by law. The hosting provider may keep short-term backups for a limited time before they are removed.",
         "Technical and security logs are kept only for the short period the hosting provider retains them, then deleted.",
         "Emails you send me are kept as long as needed to deal with your request.",
@@ -224,7 +227,7 @@ export const PAGES = {
       { h: "Welcome, adventurer", p: "Side Quest turns home learning into a quest: lessons to complete, a learning pet to look after, and a place for you to keep track of it all. Here are the answers to the questions I get asked most. If yours isn't here, send it to base camp on the Contact Us page." },
       { h: "Setting up camp", items: [
         "Add a child: go to Children in the sidebar and choose to add a new child profile. You can use a first name or nickname.",
-        "Choose a username and PIN for them. Pick a PIN that isn't used anywhere else.",
+        "Choose a username and PIN for them. Pick a PIN that isn't used anywhere else. You can change it later from the parent dashboard.",
         "Children sign in on the child login page with that username and PIN. They don't need an email address.",
         "Each family gets its own account. Please don't share one account between families.",
       ] },
@@ -242,7 +245,8 @@ export const PAGES = {
       { h: "Is it safe for my child?", p: "Children only reach their own area, which you set up and manage. There are no ads, no public profiles, and no messaging between users. Read more on the Safety Overview page. You're still the one in charge, so keep an eye on how they're getting on." },
       { h: "Can I use it if I'm outside NSW?", p: "You can, but the outcomes and requirements are for NSW, and other states and territories differ. Treat the outcome links as a general guide, not as your state's curriculum." },
       { h: "Something's broken", p: "Tell me through Report a Problem. What you were trying to do, what you expected, what happened, and the device or browser you used all help me find it quickly." },
-      { h: "Forgot your password or locked out?", p: "Email me at support@sidequestlearning.app from the address on your account and I'll help you out. I'll never ask for your password or your child's PIN." },
+      { h: "I forgot my password", p: "On the main sign-in page, choose \"Forgot password?\" and follow the steps. If it doesn't work for you, email me at support@sidequestlearning.app from the address on your account and I'll help. I'll never ask for your password or your child's PIN." },
+      { h: "My child forgot their PIN", p: "On the child sign-in page, your child can choose \"Forgot my PIN\". This sends a prompt to your parent dashboard. Open the \"View\" area to see the details and set a new PIN for them. Pick one that isn't used anywhere else, and let your child know. The request only goes to you, and children can't use it to message anyone else." },
       { h: "Your information", items: [
         "Want a copy of what's held about your family? Use Request Your Data.",
         "Something wrong or out of date that you can't edit yourself? Use Request a Correction.",
@@ -306,6 +310,7 @@ export const PAGES = {
     sections: [
       { h: "Parent in charge", p: "Children can only reach content within their own profile, set up and managed by a parent. They sign in with a username and PIN, not an email address." },
       { h: "No open chat", p: "Side Quest has no public profiles and no messaging between users." },
+      { h: "PIN requests", p: "If a child forgets their PIN, they can send a prompt to their own parent's dashboard. It only reaches the parent who set up their profile. It is not a message between users, it carries no typed text from the child, and it does not let children contact anyone else. The parent decides whether to set a new PIN." },
       { h: "Reporting", p: "If something concerns you, use Report a Problem and I will look into it promptly." },
     ],
   },
