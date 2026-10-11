@@ -203,7 +203,6 @@ export const PAGES = {
         "Feedback, ideas and requests for new features.",
         "Problems with your account, such as sign-in trouble or a missing child profile.",
         "Questions about our policies, including privacy, AI use and the Terms of Use.",
-        "Asking to join, if you're a homeschooling family who'd like access.",
       ] },
       { h: "Use the right page for faster help", items: [
         "Something broken or not working: use Report a Problem.",
