@@ -1,7 +1,7 @@
-// DRAFT COPY - review (ideally with a lawyer) before launch.
+// DRAFT COPY - review before launch.
 // Anything in [square brackets] or marked TODO must be filled in or confirmed.
-export const CONTACT_EMAIL = "hello@example.com"; // TODO: replace with real support address
-export const PRIVACY_EMAIL = "privacy@example.com"; // TODO: replace with real privacy contact
+export const CONTACT_EMAIL = "support@sidequestlearning.app";
+export const PRIVACY_EMAIL = "support@sidequestlearning.app";
 export const LAST_UPDATED = "11 October 2026";
 
 export const GROUPS = [
@@ -17,18 +17,18 @@ export const PAGES = {
     summary: "What we collect, why, who sees it, how long we keep it, and your rights.",
     sections: [
       { h: "In short", items: [
-        "Side Quest is a home learning hub run by parents, for their own children.",
+        "Side Quest is a home learning hub built by a parent for their own children, and shared with other families.",
         "We collect only what is needed to run your family's account and learning features.",
         "We do not sell personal information and we do not show advertising to children.",
         "You can see, correct or delete your family's information at any time.",
       ] },
-      { h: "Who we are", p: "Side Quest is operated by [legal name / sole trader name] [ABN: TODO] (\"Side Quest\", \"we\", \"us\"). We are based in [state], Australia. You can contact our privacy contact at the email address listed at the end of this policy." },
-      { h: "About this policy", p: "This policy explains how we handle personal information in line with the Privacy Act 1988 (Cth) and the Australian Privacy Principles. It applies to the Side Quest website and app, including the parent hub and the child area." },
+      { h: "Who we are", p: "Side Quest (sidequestlearning.app) is a personal project run by [your full name], a parent in Australia. It began as a tool for my own children. It is not a registered business or company. In this policy, \"Side Quest\", \"we\" and \"us\" mean the person running the project. You can contact us at support@sidequestlearning.app." },
+      { h: "About this policy", p: "We handle personal information in line with the spirit of the Privacy Act 1988 (Cth) and the Australian Privacy Principles, even where the law may not strictly require it of a personal project. This policy applies to the Side Quest website and app, including the parent hub and the child area." },
       { h: "Information we collect from parents", items: [
         "Account details: your name, email address and sign-in details.",
         "Settings and preferences you choose in the parent hub.",
         "Records you create: lesson plans, learning plans, calendar entries, resources you save and notes.",
-        "Messages you send to us through email or the contact and request pages.",
+        "Messages you send to us by email or through the contact and request pages.",
       ] },
       { h: "Information we collect about children", items: [
         "Profile details a parent enters: first name or nickname, year level and avatar or pet choices.",
@@ -36,8 +36,8 @@ export const PAGES = {
         "Evidence a parent uploads, such as photos or work samples, which may show a child or their work.",
         "Child login details set up by the parent so a child can enter their own area.",
       ] },
-      { h: "Children's information", p: "Child profiles are created and managed by a parent or guardian, who is responsible for the information entered. We keep the child area free of advertising, public profiles and open messaging. We encourage parents to use first names or nicknames only and to avoid uploading images or details that are not needed for learning. We aim to follow the Children's Online Privacy Code when it applies to us. [TODO: check the current status of the OAIC Children's Online Privacy Code and update this paragraph.]" },
-      { h: "Technical information", p: "When you use Side Quest we and our hosting providers may automatically record technical data such as IP address, browser and device type, pages requested, error logs and the time of requests. We use this to keep the service running, secure and fast, and to fix problems." },
+      { h: "Children's information", p: "Child profiles are created and managed by a parent or guardian, who is responsible for the information entered. The child area has no advertising, no public profiles and no open messaging. We encourage parents to use first names or nicknames only and to avoid uploading images or details that are not needed for learning." },
+      { h: "Technical information", p: "When you use Side Quest, our hosting provider may automatically record technical data such as IP address, browser and device type, pages requested, error logs and the time of requests. We use this to keep the service running, secure and fast, and to fix problems." },
       { h: "How we collect information", items: [
         "Directly from you when you register, add a child, upload evidence or contact us.",
         "From your child's activity in the child area, such as completing a lesson.",
@@ -53,43 +53,44 @@ export const PAGES = {
         "To meet our legal obligations.",
         "To improve the service using general, non-identifying usage patterns.",
       ] },
-      { h: "We do not sell your information", p: "We do not sell or rent personal information, and we do not use children's information for advertising or marketing profiles. We will not use your information for a purpose that is unrelated to the above unless you consent or the law allows it." },
+      { h: "We do not sell your information", p: "We do not sell or rent personal information, and we do not use children's information for advertising or marketing profiles. We will not use your information for an unrelated purpose unless you consent or the law allows it." },
       { h: "AI features", p: "Some features use an AI service to give short hints, suggest links between activities and learning outcomes, or draft lesson ideas. We aim to send only the text needed for the task and to leave out names and other identifying details. AI output is a suggestion only and a parent reviews it. See the AI Use page for more. [TODO: confirm exactly what is sent to the AI service once these features are live, and whether the provider keeps or trains on it.]" },
-      { h: "Who we share information with", p: "We share information only with service providers who help us run Side Quest, and only as needed for them to do that work. These currently include:" },
+      { h: "Who we share information with", p: "We share information only with service providers who help run Side Quest, and only as needed for them to do that work." },
       { h: "Our service providers", items: [
-        "Cloudflare: hosting, network security and, where used, database, file storage and AI services.",
+        "Cloudflare: hosting, network security, and the database, file storage and any AI services that run on its platform.",
         "Sign-in provider: [TODO: name provider, or remove if none].",
-        "Email provider: [TODO: name provider, or remove if none].",
-        "Analytics provider: [TODO: name provider, or state that none is used].",
+        "Email: support@sidequestlearning.app is handled through [TODO: e.g. Cloudflare Email Routing and your own mailbox provider].",
+        "Analytics: [TODO: name provider, or state that none is used].",
       ] },
-      { h: "Other disclosures", p: "We may disclose information if required or authorised by law, to protect someone's safety, or to respond to a lawful request from a court or authority. If our business changes hands, information may transfer to the new operator, who must honour this policy." },
-      { h: "Overseas disclosure", p: "Our providers may store or process information outside Australia, including in the United States and other countries where Cloudflare operates. Before we send information overseas we take reasonable steps to make sure the provider handles it in line with the Australian Privacy Principles. [TODO: confirm the storage regions you have chosen and list the countries.]" },
+      { h: "Other disclosures", p: "We may disclose information if required or authorised by law, to protect someone's safety, or to respond to a lawful request from a court or authority." },
+      { h: "Overseas disclosure", p: "Cloudflare operates a global network, so information may be stored or processed outside Australia, including in the United States and other countries. We choose providers that publish security and privacy commitments. [TODO: if you have set a specific storage region, name it here.]" },
       { h: "Cookies and similar technology", p: "We use cookies or similar storage that are needed to keep you signed in and keep the service secure. [TODO: confirm whether any analytics or non-essential cookies are used. If so, describe them and how to opt out.]" },
-      { h: "Storage and security", p: "We take reasonable steps to protect personal information from misuse, interference, loss and unauthorised access. This includes encrypted connections (HTTPS), login protection for accounts, restricting access to the people who need it, and monitoring logs for problems. No online service is completely secure, so please use a strong, unique password and keep it private. [TODO: add specifics, such as encryption at rest, once confirmed.]" },
+      { h: "Storage and security", p: "We take reasonable steps to protect personal information from misuse, loss and unauthorised access. This includes encrypted connections (HTTPS), login protection for accounts, restricting access to the site, and monitoring logs for problems. No online service is completely secure, so please use a strong, unique password and keep it private." },
       { h: "How long we keep information", items: [
         "We keep account and child information while your account is active.",
-        "When you delete a child profile or your account, we delete or de-identify the related information, except where we must keep something by law. [TODO: state how long backups and logs are kept.]",
-        "Technical and security logs are kept for a limited time and then deleted. [TODO: state period.]",
+        "When you delete a child profile or your account, we delete the related information, except where we must keep something by law. [TODO: state how long backups are kept, if any.]",
+        "Technical and security logs are kept for a limited time and then deleted. [TODO: state period; Cloudflare log retention is limited by your plan.]",
         "Emails you send us are kept as long as needed to deal with your request.",
       ] },
-      { h: "Data breaches", p: "If a data breach is likely to cause serious harm, we will act quickly to contain it, assess it, and notify affected people and the Office of the Australian Information Commissioner as required under the Notifiable Data Breaches scheme." },
-      { h: "Accessing and correcting your information", p: "You can ask to see the personal information we hold about you and your children, and ask us to correct anything that is wrong, incomplete or out of date. You can also edit most details yourself in the parent hub. Use the Request Your Data and Request a Correction pages, or email us. We will confirm your identity first and respond within a reasonable time, normally within 30 days. We will not charge for making a request." },
+      { h: "Data breaches", p: "If a data breach is likely to cause serious harm, we will act quickly to contain it and will tell affected families, and the Office of the Australian Information Commissioner where required." },
+      { h: "Accessing and correcting your information", p: "You can ask to see the personal information we hold about you and your children, and ask us to correct anything that is wrong, incomplete or out of date. You can also edit most details yourself in the parent hub. Use the Request Your Data and Request a Correction pages, or email support@sidequestlearning.app. We will confirm your identity first and aim to respond within 30 days. There is no charge for making a request." },
       { h: "Deleting your information", p: "You can delete your account at any time from the Trust & Support page or the sidebar. This removes your account and your children's profiles and learning records." },
-      { h: "Complaints", p: "If you think we have breached the Australian Privacy Principles, contact our privacy contact first so we can investigate and reply in writing. If you are not satisfied, you can complain to the Office of the Australian Information Commissioner at oaic.gov.au or on 1300 363 992." },
-      { h: "Changes to this policy", p: "We may update this policy as Side Quest grows or the law changes. The date at the top shows when it was last updated. If we make an important change we will tell parents through the app or by email." },
-      { h: "Contact us", p: "Privacy contact: [name or role]. Email: privacy@example.com. [TODO: replace with the real address and add a postal address if you wish.]" },
+      { h: "Complaints", p: "If you are unhappy with how your information has been handled, email support@sidequestlearning.app and we will look into it and reply in writing. You may also contact the Office of the Australian Information Commissioner at oaic.gov.au." },
+      { h: "Changes to this policy", p: "We may update this policy as Side Quest grows or the law changes. The date at the top shows when it was last updated. If we make an important change we will let families know through the app or by email." },
+      { h: "Contact us", p: "Email: support@sidequestlearning.app" },
     ],
   },
   "terms": {
     group: "legal", title: "Terms of Use", public: true,
     summary: "The agreement between you and Side Quest.",
     sections: [
+      { h: "What Side Quest is", p: "Side Quest is a personal project built by a parent for home learning. It is provided as is, and features may change or be removed." },
       { h: "Who can use Side Quest", p: "Accounts are for parents and guardians. Children use the service under the supervision of the parent who created their profile." },
       { h: "Your content", p: "You own what you upload (photos, notes, evidence). You give us permission to store and display it to you and your children so the service works." },
       { h: "Acceptable use", p: "Do not upload unlawful, harmful or other people's private content, and do not attempt to break or overload the service." },
-      { h: "Availability", p: "We aim to keep Side Quest running but cannot guarantee uninterrupted access. Features may change." },
+      { h: "Availability", p: "We aim to keep Side Quest running but cannot guarantee uninterrupted access. Please keep your own copies of anything important." },
       { h: "Ending your account", p: "You can delete your account at any time. We may suspend accounts that breach these terms." },
-      { h: "Australian Consumer Law", p: "Nothing here limits rights you have under the Australian Consumer Law. TODO: legal review of liability wording." },
+      { h: "Australian Consumer Law", p: "Nothing here limits rights you have under the Australian Consumer Law. TODO: legal review of liability wording, especially if you ever charge for Side Quest." },
     ],
   },
   "disclaimer": {
@@ -115,7 +116,7 @@ export const PAGES = {
     group: "support", title: "Contact Us", contact: "general",
     summary: "Questions, feedback or ideas. We'd love to hear from you.",
     sections: [
-      { h: "Email", p: "Send us a message and we'll reply as soon as we can. TODO: add expected response time." },
+      { h: "Email", p: "Send a message to support@sidequestlearning.app and we'll reply as soon as we can. Side Quest is run by one parent, so replies may take a few days." },
     ],
   },
   "help": {
@@ -140,7 +141,7 @@ export const PAGES = {
     group: "privacy", title: "Request Your Data", contact: "access",
     summary: "Ask for a copy of the information we hold about your family.",
     sections: [
-      { h: "How it works", p: "Send a request from your account email. We will confirm your identity and respond within a reasonable time. TODO: confirm response timeframe (aim for 30 days or less)." },
+      { h: "How it works", p: "Send a request from your account email. We will confirm your identity and aim to respond within 30 days." },
     ],
   },
   "request-correction": {
@@ -155,7 +156,7 @@ export const PAGES = {
     summary: "Concerned about how your information was handled?",
     sections: [
       { h: "Contact us first", p: "Tell us what happened and we will investigate and reply in writing." },
-      { h: "Still not resolved?", p: "You can complain to the Office of the Australian Information Commissioner at oaic.gov.au." },
+      { h: "Still not resolved?", p: "You may also contact the Office of the Australian Information Commissioner at oaic.gov.au." },
     ],
   },
   "data-handling": {
@@ -165,16 +166,16 @@ export const PAGES = {
       { h: "Minimal by design", p: "We collect what the learning features need and no more." },
       { h: "Parent controlled", p: "Parents create child profiles and can delete them or the whole account." },
       { h: "No ads, no selling", p: "We do not sell personal information or show advertising to children." },
-      { h: "Security", p: "Data is transmitted over HTTPS and access to accounts is protected by login. TODO: add specifics once confirmed." },
+      { h: "Security", p: "Data is transmitted over HTTPS, hosted on Cloudflare, and access to accounts is protected by login." },
     ],
   },
   "third-parties": {
     group: "trust", title: "Third-Party Services", public: true,
     summary: "The providers that help us run Side Quest.",
     sections: [
-      { h: "Hosting & infrastructure", p: "Cloudflare (hosting, edge network, and AI/storage services where used)." },
+      { h: "Hosting & infrastructure", p: "Cloudflare (hosting, network, and database, storage and AI services where used)." },
       { h: "Sign-in", p: "TODO: list authentication provider(s) in use." },
-      { h: "Email", p: "TODO: list email provider if used." },
+      { h: "Email", p: "TODO: name the service handling support@sidequestlearning.app." },
       { h: "Analytics", p: "TODO: state whether any analytics are used." },
     ],
   },
