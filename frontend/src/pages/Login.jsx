@@ -66,6 +66,7 @@ export default function Login() {
             <Link to="/register" className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-register">Create account</Link>
             <Link to="/child-login" className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-child">Student sign in</Link>
           </div>
+          <p className="mt-6 pt-4 border-t text-center text-[11px] leading-relaxed text-stone-500" style={{borderColor:"#E4DAC0"}} data-testid="acknowledgement-of-country">Side Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
         </form>
       </div>
     </div>

@@ -601,4 +601,22 @@ export const PAGES = {
       { h: "Other pages", p: "For the full detail, see the Privacy Policy, How I Handle Data, Third-Party Services and AI Use & Limitations. The Help & FAQ page answers common questions. If something here doesn't match what you see, use Request a Correction." },
     ],
   },
+  "acknowledgement": {
+    group: "trust", title: "Acknowledgement of Country", public: true,
+    summary: "Whose Country Side Quest is made on, and why that matters to me.",
+    sections: [
+      { h: "Acknowledging Country", p: "Side Quest is made in Tamworth, on the traditional lands of the Kamilaroi/Gamilaroi/Gomeroi people. I acknowledge them as the Traditional Custodians of this Country, recognise their continuing connection to land, waters and community, and pay my respects to Elders past and present." },
+      { h: "All communities", p: "Families use Side Quest from all over Australia. I also acknowledge the Traditional Custodians of the many Countries where our learners live and learn, and extend that respect to all Aboriginal and Torres Strait Islander peoples, including the children and families who are part of this community." },
+      { h: "Why it's here", p: "Side Quest is about learning at home, and part of learning is understanding whose Country we are on. The history of this land stretches back tens of thousands of years, and it did not begin with the lessons in any curriculum. Side Quest is built by a parent, and acknowledging Country is a small, ongoing way of showing respect. I don't want it to be a box ticked once." },
+      { h: "A starting point", p: "Words matter most when they're followed by action. For families, that might mean finding out whose Country you live on, reading stories and books by Aboriginal and Torres Strait Islander authors, and talking with your children about local history and culture. I'd like Side Quest to support that kind of learning more over time." },
+      { h: "Finding your Country", items: [
+        "Look at the AIATSIS Map of Indigenous Australia, which shows the broad language, social or nation groups across the country.",
+        "Contact your local Aboriginal Land Council or community organisation, who can say how they would like their Country acknowledged.",
+        "Check how your local council or library acknowledges Country, and the names and spellings they use.",
+        "Listen to Aboriginal and Torres Strait Islander people from your area when they tell you about their Country, language and history.",
+      ] },
+      { h: "Names and spellings", p: "Kamilaroi, Gamilaroi and Gomeroi are all used by local people and organisations in the Tamworth area, and spellings can vary. I've used all three in the way local organisations do, and I'm happy to change this if I'm told there's a better way." },
+      { h: "Feedback and corrections", p: "I'm not an expert, and I'm still learning. If you're an Aboriginal or Torres Strait Islander person and something here could be better, or something is wrong, please tell me through Request a Correction. I will listen and I will fix it." },
+    ],
+  },
 };

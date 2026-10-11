@@ -46,6 +46,7 @@ export default function ChildLogin() {
         </div>
         <button disabled={loading} className="mt-7 w-full rounded-full py-3.5 text-base font-bold hover:translate-y-[-1px] transition disabled:opacity-50" style={{backgroundColor:"#C77B5B", color:"#FBF7EC"}} data-testid="child-login-submit">{loading ? "Opening the door…" : "Let's go"}</button>
         <p className="mt-6 text-center text-xs text-stone-500">Are you a parent? <Link to="/login" className="font-bold" style={{color:"#4A5D3A"}}>Sign in here</Link></p>
+        <p className="mt-5 pt-4 border-t text-center text-[11px] leading-relaxed text-stone-500" style={{borderColor:"#E4DAC0"}} data-testid="acknowledgement-of-country">Side Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
       </form>
     </div>
   );
