@@ -10,6 +10,7 @@ import { registerPets } from "./pets";
 import { registerWords } from "./words";
 import { registerAccount } from "./account";
 import { registerPasswordReset } from "./passwordReset";
+import { registerStudentCredentials } from "./studentCredentials";
 import { sendEmail, welcomeEmail } from "./email";
 import { handleInbound } from "./inbound";
 import type { InboundMessage } from "./inbound";
@@ -125,7 +126,7 @@ app.post("/api/auth/child-login", async (c) => {
     return c.json({ detail: "Invalid username or PIN" }, 401);
   }
   const token = await makeToken(c.env, s.id, "child", s.family_id);
-  const { pin_hash, ...safe } = s;
+  const { pin_hash, pin_enc, ...safe } = s;
   return c.json({ token, student: { ...safe, interests: JSON.parse(s.interests || "[]"), role: "child" } });
 });
 
@@ -167,6 +168,7 @@ registerPets(app, guards);
 registerWords(app, guards);
 registerAccount(app, guards);
 registerPasswordReset(app);
+registerStudentCredentials(app, guards);
 
 app.notFound((c) => c.json({ detail: "Not found" }, 404));
 
