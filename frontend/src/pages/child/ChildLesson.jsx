@@ -1402,7 +1402,7 @@ export default function ChildLesson() {
         </div>
       )}
 
-      <PetCompanion lessonId={l.id} />
+      <PetCompanion lessonId={l.id} stageKey={stages[open >= 0 ? open : current]?.key} stageTitle={stages[open >= 0 ? open : current]?.title} />
     </div>
   );
 }
@@ -1437,3 +1437,4 @@ const FilePreview = ({ file }) => {
     </div>
   );
 };
+
