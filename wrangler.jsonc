@@ -20,6 +20,10 @@
       "migrations_dir": "./worker/migrations"
     }
   ],
+  // Outgoing email (welcome email, and later password reset etc.).
+  // Needs sidequestlearning.app onboarded under Compute > Email Service > Email Sending
+  // in the Cloudflare dashboard. Until then sending fails quietly and the app carries on.
+  "send_email": [{ "name": "EMAIL" }],
   // Optional file uploads (evidence photos / work samples). Until this is enabled,
   // POST /api/files/upload returns 501. To enable:
   //   1. npx wrangler r2 bucket create sidequest-files

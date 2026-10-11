@@ -9,6 +9,7 @@ import { registerLearning } from "./learning";
 import { registerPets } from "./pets";
 import { registerWords } from "./words";
 import { registerAccount } from "./account";
+import { sendEmail, welcomeEmail } from "./email";
 
 import type { App, Env, Guards, Vars } from "./types";
 
@@ -85,6 +86,11 @@ app.post("/api/auth/register", async (c) => {
     ).bind(userId, familyId, email, await hashSecret(password), name, ts),
   ]);
   const token = await makeToken(c.env, userId, "parent", familyId);
+
+  // Welcome email: sent in the background, and never blocks or breaks sign up.
+  const sending = sendEmail(c.env, welcomeEmail(email, name));
+  try { c.executionCtx.waitUntil(sending); } catch { /* no execution context (tests) */ }
+
   return c.json({
     token,
     user: { id: userId, email, name, family_id: familyId, role: "parent" },
