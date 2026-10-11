@@ -7,8 +7,9 @@ export default function ChildInbox() {
   const { items } = useChildInbox();
   const { pathname } = useLocation();
   if (!items.length || pathname === "/child") return null;
+  const who = items[0].who;
   const hasRevision = items.some(i => i.kind === "revision");
-  const text = hasRevision ? "Your pet has news: some work was sent back to try again" : items.length === 1 ? "Your pet has a message from your parent" : `Your pet has ${items.length} messages from your parent`;
+  const text = hasRevision ? `Your pet has news: ${who} sent some work back to try again` : items.length === 1 ? `Your pet has a message from ${who}` : `Your pet has ${items.length} messages from ${who}`;
   return (
     <div className="mx-auto max-w-6xl px-5 pt-4">
       <div className="flex flex-wrap items-center gap-3 rounded-2xl px-5 py-3" style={{backgroundColor:"#C77B5B", color:"#FBF7EC"}} role="alert" data-testid="child-inbox-bar">

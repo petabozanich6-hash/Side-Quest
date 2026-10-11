@@ -6,6 +6,7 @@ import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
 import HelpAlertBar from "../../components/parent/HelpAlertBar";
+import ParentLabel from "../../components/parent/ParentLabel";
 
 const nav = [
   { to: "/parent", icon: LayoutDashboard, label: "Dashboard", end: true, testid: "nav-dashboard" },
@@ -49,6 +50,7 @@ export default function ParentLayout() {
             </NavLink>
           ))}
         </nav>
+        <ParentLabel />
         <div className="p-3 border-t relative z-10" style={{borderColor:"#D4C8A8"}}>
           <div className="px-3 pb-2">
             <div className="text-xs font-bold truncate" style={{color:"#1F3B2D"}}>{user?.name}</div>

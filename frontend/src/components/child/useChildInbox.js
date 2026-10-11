@@ -4,12 +4,13 @@ import { useAuth } from "../../context/AuthContext";
 
 const EVT = "sq-inbox-changed";
 const RECENT_MS = 14 * 86400000;
+const FALLBACK = "your parent";
 const storeKey = (id) => `sq-inbox-seen-${id || "child"}`;
 const readSeen = (id) => {
   try { return JSON.parse(localStorage.getItem(storeKey(id)) || "[]"); } catch { return []; }
 };
 
-export function buildItems(data, seen) {
+export function buildItems(data, seen, labels = {}) {
   const returned = new Set((data.all_pending || []).filter(a => a.status === "needs_revision").map(a => a.id));
   const items = [];
   for (const f of data.feedback || []) {
@@ -23,6 +24,7 @@ export function buildItems(data, seen) {
       kind,
       id: f.id,
       assignment_id: f.assignment_id,
+      who: labels[f.reviewed_by] || FALLBACK,
       title: f.lesson?.title || "your work",
       message: f.parent_feedback || "",
       next_step: f.next_step || "",
@@ -30,7 +32,7 @@ export function buildItems(data, seen) {
     });
   }
   for (const c of data.cheers || []) {
-    items.push({ key: `cheer:${c.id}`, kind: "cheer", id: c.id, from_name: c.from_name, message: c.message, emoji: c.emoji, created_at: c.created_at });
+    items.push({ key: `cheer:${c.id}`, kind: "cheer", id: c.id, who: labels[c.from_user_id] || FALLBACK, message: c.message, emoji: c.emoji, created_at: c.created_at });
   }
   const rank = (k) => (k === "revision" ? 0 : k === "feedback" ? 1 : 2);
   return items
@@ -44,7 +46,10 @@ export function useChildInbox() {
   const [items, setItems] = useState([]);
 
   const load = useCallback(() => (
-    api.get("/dashboard/child").then(r => setItems(buildItems(r.data || {}, readSeen(uid)))).catch(() => {})
+    Promise.all([
+      api.get("/dashboard/child"),
+      api.get("/child/parent-labels").then(r => r.data || {}).catch(() => ({})),
+    ]).then(([d, labels]) => setItems(buildItems(d.data || {}, readSeen(uid), labels))).catch(() => {})
   ), [uid]);
 
   useEffect(() => {

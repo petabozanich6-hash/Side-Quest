@@ -59,12 +59,12 @@ function pick(ctx, key, exclude) {
 
 function speak(item, name) {
   if (item.kind === "cheer") {
-    return { lead: `${name}, ${item.from_name || "your parent"} sent you a cheer! ${item.emoji || ""}`.trim(), body: item.message, next: "", cta: "Got it!" };
+    return { lead: `${name}, ${item.who} sent you a cheer! ${item.emoji || ""}`.trim(), body: item.message, next: "", cta: "Got it!" };
   }
   if (item.kind === "revision") {
-    return { lead: `${name}, your parent sent "${item.title}" back for another try.`, body: item.message, next: item.next_step, cta: "Let's go" };
+    return { lead: `${name}, ${item.who} sent "${item.title}" back for another try.`, body: item.message, next: item.next_step, cta: "Let's go" };
   }
-  return { lead: `${name}, your parent left feedback on "${item.title}"!`, body: item.message, next: item.next_step, cta: "Got it!" };
+  return { lead: `${name}, ${item.who} left feedback on "${item.title}"!`, body: item.message, next: item.next_step, cta: "Got it!" };
 }
 
 export default function PetWelcome({ childId, name, today = 0, overdue = 0, ahead = 0, total = 0 }) {

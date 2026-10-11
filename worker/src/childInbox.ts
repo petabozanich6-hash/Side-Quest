@@ -3,6 +3,7 @@ import { nowIso } from "./types";
 
 const RECENT_DAYS = 14;
 let columnReady = false;
+let labelReady = false;
 
 async function ensureColumn(env: Env) {
   if (columnReady) return;
@@ -18,7 +19,56 @@ async function ensureColumn(env: Env) {
   columnReady = true;
 }
 
+async function ensureLabelColumn(env: Env) {
+  if (labelReady) return;
+  try {
+    await env.DB.prepare("SELECT child_label FROM users LIMIT 1").first();
+  } catch {
+    try {
+      await env.DB.prepare("ALTER TABLE users ADD COLUMN child_label TEXT").run();
+    } catch (error) {
+      if (!/duplicate column/i.test(error instanceof Error ? error.message : String(error))) throw error;
+    }
+  }
+  labelReady = true;
+}
+
 export function registerChildInbox(app: App, g: Guards) {
+  app.get("/api/me/child-label", g.auth, g.parent, async (c) => {
+    try {
+      await ensureLabelColumn(c.env);
+      const row = await c.env.DB.prepare("SELECT child_label FROM users WHERE id = ?").bind(c.get("user").id).first<{ child_label: string | null }>();
+      return c.json({ label: row?.child_label || "" });
+    } catch (error) {
+      return c.json({ detail: `Couldn't load that: ${error instanceof Error ? error.message : String(error)}` }, 500);
+    }
+  });
+
+  app.put("/api/me/child-label", g.auth, g.parent, async (c) => {
+    try {
+      await ensureLabelColumn(c.env);
+      const body: any = await c.req.json().catch(() => ({}));
+      const label = String(body.label || "").trim().slice(0, 30);
+      await c.env.DB.prepare("UPDATE users SET child_label = ? WHERE id = ?").bind(label || null, c.get("user").id).run();
+      return c.json({ ok: true, label });
+    } catch (error) {
+      return c.json({ detail: `Couldn't save that: ${error instanceof Error ? error.message : String(error)}` }, 500);
+    }
+  });
+
+  app.get("/api/child/parent-labels", g.auth, g.child, async (c) => {
+    try {
+      await ensureLabelColumn(c.env);
+      const rows = (await c.env.DB.prepare("SELECT id, child_label FROM users WHERE family_id = ? AND child_label IS NOT NULL")
+        .bind(c.get("user").family_id).all<{ id: string; child_label: string }>()).results ?? [];
+      const out: Record<string, string> = {};
+      for (const r of rows) if (r.child_label) out[r.id] = r.child_label;
+      return c.json(out);
+    } catch (error) {
+      return c.json({ detail: `Couldn't load that: ${error instanceof Error ? error.message : String(error)}` }, 500);
+    }
+  });
+
   app.get("/api/child/inbox", g.auth, g.child, async (c) => {
     try {
       await ensureColumn(c.env);
