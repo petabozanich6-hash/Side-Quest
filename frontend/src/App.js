@@ -25,7 +25,6 @@ import ReadingLogPage from "./pages/parent/ReadingLog";
 import ChildOverviewPage from "./pages/parent/ChildOverview";
 import ParentWordHoard from "./pages/parent/WordHoard";
 import TrustSupport from "./pages/parent/TrustSupport";
-import RequestData from "./pages/parent/RequestData";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
@@ -73,7 +72,6 @@ function Router() {
         <Route path="reading-log" element={<ReadingLogPage />} />
         <Route path="word-hoard" element={<ParentWordHoard />} />
         <Route path="trust" element={<TrustSupport />} />
-        <Route path="trust/request-data" element={<RequestData />} />
         <Route path="trust/:slug" element={<LegalPage />} />
       </Route>
       <Route path="/child" element={<Guard role="child"><ChildLayout /></Guard>}>
