@@ -41,7 +41,7 @@ import ChildReading from "./pages/child/ChildReading";
 function Guard({ role, children }) {
   const { user, loading } = useAuth();
   if (loading) return <div className="min-h-screen flex items-center justify-center text-stone-500">Loading…</div>;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/" replace />;
   if (role && user.role !== role) return <Navigate to={user.role === "child" ? "/child" : "/parent"} replace />;
   return children;
 }
