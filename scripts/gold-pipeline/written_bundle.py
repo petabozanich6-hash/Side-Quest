@@ -1,11 +1,13 @@
 """Shared D1 Written Core bundle assembler for Stage 2 program lessons."""
 from episode_support import room_episode
+from assessment_quiz import build_skill_quiz, shuffle_teach_check
 
 CURRICULUM_SOURCE = {
     'english': 'https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes',
     'mathematics': 'https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes',
     'science': 'https://curriculum.nsw.edu.au/learning-areas/science/science-and-technology-k-6-2024/outcomes',
     'hsie': 'https://curriculum.nsw.edu.au/learning-areas/hsie/hsie-k-6-2024/outcomes',
+    'pdhpe': 'https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes',
 }
 
 
@@ -49,6 +51,28 @@ def expand_stages(rule, model, prompt, answer, pitfall, subject='english'):
              'Solve one fresh problem that uses the same skill and write a short reason for your answer.',
              'The new problem should use the same method as the model, but contain different numbers.',
              'Repeating the worked example cannot show transfer to new numbers.'),
+        ]
+    if subject == 'pdhpe':
+        return [
+            ('Understand and demonstrate', rule, model, prompt, answer, pitfall),
+            ('Show the reasoning',
+             'Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.',
+             model + ' Look at each cue, rule or choice that carries the idea.',
+             'List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.',
+             'The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as "good".',
+             'Writing only a final label without a reason does not show PDHPE thinking.'),
+            ('Test a misconception',
+             'Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.',
+             pitfall + ' Here is a more helpful example: ' + model,
+             'Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.',
+             answer,
+             'Changing the wording without changing the choice does not fix the error. ' + pitfall),
+            ('Transfer to a new situation',
+             'Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.',
+             rule + ' Now choose a different situation to show you can transfer the idea.',
+             'Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.',
+             'The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.',
+             'Repeating the worked example cannot show transfer to a new situation.'),
         ]
     if subject in ('science', 'hsie'):
         idea_word = 'science' if subject == 'science' else 'HSIE'
@@ -126,6 +150,8 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
         vocab = spec.get('vocab') or ['observation', 'evidence', 'test', 'accuracy']
     elif subject == 'hsie':
         vocab = spec.get('vocab') or ['community', 'source', 'place', 'respect']
+    elif subject == 'pdhpe':
+        vocab = spec.get('vocab') or ['movement', 'health', 'safety', 'respect']
     else:
         vocab = spec.get('vocab') or ['this skill', 'evidence', 'transfer', 'revision']
     stages = expand_stages(rule, model, prompt, answer, pitfall, subject=subject)
@@ -146,6 +172,10 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
         materials = ['Paper or typed answer space', 'Pencil', 'Optional: safe everyday objects for observation']
     elif subject == 'hsie':
         materials = ['Paper or typed answer space', 'Pencil', 'Optional: local map, photo or interview notes']
+    elif subject == 'pdhpe':
+        materials = ['Paper or typed answer space', 'Pencil',
+                     'Clear, safe movement space with an adult nearby for any physical activity',
+                     'Optional: soft ball, cushion or water bottle']
     else:
         materials = ['Paper or typed answer space', 'Pencil']
     if subject == 'mathematics':
@@ -157,6 +187,10 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
     elif subject == 'hsie':
         source_note = ('Proposed Stage 2 NESA HSIE alignment using catalogue outcome codes (HS2-*); '
                        'content-point mapping and local First Nations protocols remain pending human review.')
+    elif subject == 'pdhpe':
+        source_note = ('Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); '
+                       'content-point mapping remains pending human review. Physical activities are optional, '
+                       'adult-supervised and adaptable; no child is required to share personal details.')
     else:
         source_note = 'Proposed Stage 2 NESA alignment; verify content points before acceptance.'
     l.update(
@@ -223,6 +257,24 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
                 ('pip', 'I will try the prompt myself, then compare with the feedback.'),
                 ('juno', 'Pause here. Use this model: ' + model[:120] + ' Then write your own evidence.', True),
             ]
+        elif subject == 'pdhpe':
+            why = ('This helps the learner make safe, healthy and respectful choices using clear cues and reasons, '
+                   'rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.')
+            how = (
+                'Read the worked example and name the cues, rules or choices that carry the idea. '
+                'Before looking at the correction, make your own attempt using the exact question provided. '
+                'For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level '
+                'and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. '
+                'One deliberate, reasoned change is more useful than a longer answer.')
+            wrong_opts = ['A choice unrelated to safety, health or respect.', 'An answer copied without understanding.',
+                          'A guess with no reason.']
+            fix = 'Change the choice or strategy, not just the wording.'
+            ep = [
+                ('pip', 'I can see the example, but I am not sure which cue or rule matters most.'),
+                ('juno', 'Name the cues, rules or choices that keep everyone safe and included before you decide.'),
+                ('pip', 'I will try the prompt myself, then compare with the feedback.'),
+                ('juno', 'Pause here. Use this example: ' + model[:120] + ' Then write your own reasons.', True),
+            ]
         else:
             why = ('This helps the learner make decisions based on specific language evidence, '
                    'rather than guess or copy someone else. Keep the meaning accurate and explain the choice.')
@@ -242,22 +294,23 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
                 ('juno', 'Pause here. Use this model: ' + model[:120] + ' Then write your own attempt.', True),
             ]
         explain = idea + '\n\nWHY IT MATTERS\n' + why + '\n\nHOW TO WORK\n' + how
+        check_expl = idea + (
+            ' Supported working follows the actual numbers and purpose of the task.'
+            if subject == 'mathematics' else
+            ' Supported records follow the actual observations and purpose of the task.'
+            if subject == 'science' else
+            ' Supported records follow the actual sources and purpose of the task.'
+            if subject == 'hsie' else
+            ' Supported choices follow the actual cues, rules and purpose of the task.'
+            if subject == 'pdhpe' else
+            ' A supported explanation follows the actual words and purpose of the task.')
         teach.append(dict(
             title=heading, icon='📖', explain=explain,
             example='WORKED MODEL\n' + demonstration + '\n\nTRY FIRST\n' + attempt + '\n\nFEEDBACK\n' + fb,
             notice=error + ' ' + fix,
-            check=dict(
-                question='What should you demonstrate in this teaching stage?',
-                options=[idea, *wrong_opts],
-                correct_index=0,
-                explanation=idea + (
-                    ' Supported working follows the actual numbers and purpose of the task.'
-                    if subject == 'mathematics' else
-                    ' Supported records follow the actual observations and purpose of the task.'
-                    if subject == 'science' else
-                    ' Supported records follow the actual sources and purpose of the task.'
-                    if subject == 'hsie' else
-                    ' A supported explanation follows the actual words and purpose of the task.'))))
+            check=shuffle_teach_check(
+                f'Which choice best shows accurate use of this idea about {vocab[0]}?',
+                idea, wrong_opts, check_expl, spec['seed_key'], i)))
         evidence.append(dict(
             rule=idea, why=why, model=demonstration, misconception=error,
             fix=fix, guided_attempt=attempt, feedback=fb))
@@ -409,6 +462,53 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
              'Make sure the final evidence matches the lesson purpose.'),
         ]
         extension = 'Apply the same HSIE idea to a new place or source, then compare two pieces of evidence for strength.'
+    elif subject == 'pdhpe':
+        l['worked_example'] = 'WORK THROUGH THIS\n' + model + '\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.'
+        l['guided_practice'] = 'PRACTISE BEFORE READING THE FEEDBACK\n' + prompt + '\n\nFEEDBACK\n' + answer + '\n\nWATCH FOR\n' + pitfall
+        l['independent_task'] = 'INDEPENDENT EVIDENCE\n' + task + '\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.'
+        l['response_prompt'] = 'Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.'
+        distractors = [
+            'Ignore the safety rule because the first idea looked exciting.',
+            'Copy the example and call that independent work.',
+            'Treat a skipped permission or safety step as if it did not matter.',
+            'Leave someone out because the game felt easier that way.']
+        sa1_q = 'Describe or practise a fresh situation that uses the central skill. Name the cues, rules or choices that keep everyone safe and included.'
+        sa2_q = 'Name one likely misconception or unsafe choice for this topic, correct it and say why the correction is safer, healthier or more respectful.'
+        sa1_guide = 'Require independently produced relevant evidence with accurate reasoning and named cues, rules or choices.'
+        sa2_guide = 'Require an actual misconception plus a corrected choice and a reason linked to safety, health or respect.'
+        hint_set = [
+            ('Today you will practise ' + vocab[0] + '.',
+             'Read the mission before you start moving or deciding.',
+             'Keep your own safety and everyone\'s inclusion in view.'),
+            ('Read the stage title and find the worked example.',
+             'Name one exact cue, rule or choice before you decide.',
+             'Think through the small prompt before opening the comparison.'),
+            ('Return to the example and list the key cues.',
+             'Say what each cue does for safety, health or friendship.',
+             'A final label alone is weaker than a stated reason.'),
+            ('Compare an unsafe or unkind choice with a better one.',
+             'Change the choice or strategy, not only the words.',
+             'Name the mistake you are repairing.'),
+            ('Choose a fresh place, game or situation that still uses the same skill.',
+             'Write one reason in your own words.',
+             'Do not retype the worked example as your answer.'),
+            ('Study how the first demonstration is built.',
+             'Point to the cue or rule that carries the idea.',
+             'Then write the reason without copying every sentence.'),
+            ('Attempt the guided prompt without looking ahead.',
+             'Afterwards, compare your reasons with the feedback.',
+             'Adjust anything that does not keep everyone safe and included.'),
+            ('Follow every part of the independent instructions.',
+             'Include original reasons and a short reflection.',
+             'Save work that shows the skill in a new situation.'),
+            ('Read every option before you choose.',
+             'Eliminate answers that ignore safety, consent or inclusion.',
+             'Prefer a reasoned, respectful choice over one that merely looks fun.'),
+            ('Confirm that your reasons and reflection are both present.',
+             'Proofread names, steps and safety words.',
+             'Make sure the final evidence matches the lesson purpose.'),
+        ]
+        extension = 'Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.'
     else:
         l['worked_example'] = 'WORK THROUGH THIS\n' + model + '\n\nExplain what makes this example accurate and effective, identifying its specific wording.'
         l['guided_practice'] = 'PRACTISE BEFORE READING THE FEEDBACK\n' + prompt + '\n\nFEEDBACK\n' + answer + '\n\nCHECK\n' + pitfall
@@ -457,43 +557,18 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
         ]
         extension = 'Apply the same strategy to an unfamiliar topic or audience, then compare the effect of two different choices.'
 
-    q = []
-    for i, st in enumerate(stages):
-        q.append(dict(
-            type='multiple_choice',
-            question=f'Which idea is taught in the stage "{st[0]}"?',
-            options=[st[1], st[5], distractors[i % 4], distractors[(i + 1) % 4]],
-            correct_index=0,
-            explanation=st[1] + ' The other choices avoid explaining the actual strategy.'))
-    for i, st in enumerate(stages):
-        q.append(dict(
-            type='multiple_choice',
-            question=f'After trying "{st[3][:80]}", which feedback is most useful?',
-            options=[st[4], st[5], 'Any answer is equally supported.', 'There is no need to compare your attempt.'],
-            correct_index=0,
-            explanation=st[4] + (
-                ' Useful feedback uses the original numbers and method.'
-                if subject == 'mathematics' else
-                ' Useful feedback uses the original observations and method.'
-                if subject == 'science' else
-                ' Useful feedback uses the original sources and method.'
-                if subject == 'hsie' else
-                ' Useful feedback uses the original evidence or language point.')))
-    sample1 = 'Original demonstration: ' + model
-    sample2 = 'Common error: ' + pitfall + ' Correction: ' + answer
-    q += [
-        dict(type='short_answer', question=sa1_q, sample_answer=sample1,
-             marking_guide=sa1_guide,
-             explanation='Independent evidence, not repetition of the worked model, demonstrates the skill.'),
-        dict(type='short_answer', question=sa2_q, sample_answer=sample2,
-             marking_guide=sa2_guide,
-             explanation=(
-                 'A correction needs to change value or method, not just make the working longer.'
-                 if subject == 'mathematics' else
-                 'A correction needs to change the claim or evidence, not just make the notes longer.'
-                 if subject in ('science', 'hsie') else
-                 'A correction needs to change meaning or accuracy, not just make the text longer.')),
-    ]
+    # Prefer author-supplied assessment items when present; otherwise build skill quizzes.
+    if isinstance(spec.get('assessment'), list) and len(spec['assessment']) >= 10:
+        q = list(spec['assessment'])
+    else:
+        q = build_skill_quiz(
+            spec['seed_key'], subject, rule, model, prompt, answer, pitfall, task, vocab,
+            distractors, stages=stages)
+    # Keep sa1_q/sa2_q locals available for parent notes even when quiz is rebuilt.
+    sa_items = [item for item in q if item.get('type') == 'short_answer']
+    sample1 = sa_items[0]['sample_answer'] if sa_items else ('Original demonstration: ' + model)
+    sample2 = sa_items[1]['sample_answer'] if len(sa_items) > 1 else (
+        'Common error: ' + pitfall + ' Correction: ' + answer)
     l['quiz'] = q
     l['parent_notes'] = (
         'Parent: Marking guidance for the independent task: ' + task[:220] +
@@ -501,7 +576,11 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
         'Parent: Written model 1: ' + sample1 + '\n\n'
         'Parent: Written model 2: ' + sample2 + '\n\n'
         'Parent: Likely misconception: ' + pitfall +
-        ' Keep sample answers out of the child role.')
+        ' Keep sample answers out of the child role.'
+        '\n\nParent: Short-answer focus 1: ' + (sa_items[0]['question'] if sa_items else sa1_q) +
+        '\n\nParent: Short-answer focus 2: ' + (sa_items[1]['question'] if len(sa_items) > 1 else sa2_q) +
+        '\n\nParent: Marking notes: ' + (sa_items[0].get('marking_guide') if sa_items else sa1_guide) +
+        ' / ' + (sa_items[1].get('marking_guide') if len(sa_items) > 1 else sa2_guide) + '.')
     l['evidence_instructions'] = 'Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.'
     l['offline_alternative'] = 'Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.'
     l['extension'] = extension

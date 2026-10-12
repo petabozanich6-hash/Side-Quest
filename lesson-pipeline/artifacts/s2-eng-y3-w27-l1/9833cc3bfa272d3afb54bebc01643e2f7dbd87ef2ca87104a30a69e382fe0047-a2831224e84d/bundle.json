@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-RECOM-01",
+      "lesson_evidence": "Cause-and-effect reading finds what makes something happen and what results from it in an explanation text.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Cause-and-effect reading finds what makes something happen and what results from it in an explanation text.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same strategy to an unfamiliar topic or audience, then compare the effect of two different choices.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nMark cause and effect: \"The soil dried out, so the seedlings wilted.\"\n\nFEEDBACK\nCause: soil dried out. Effect: seedlings wilted.\n\nCHECK\nTwo events next to each other are not always cause and effect.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nRead two short explanation paragraphs. For each, list two cause–effect pairs and one sentence that only describes without causing. Quote the signal words you used.\n\nWrite a short reflection describing one specific revision you made and why.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Cause-and-effect reading finds what makes something happen and what results from it in an explanation text.",
+    "lesson_number": 1,
+    "lesson_role": "Reading",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "EN2-RECOM-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Read two short explanation paragraphs. For each, list two cause–effect pairs and one sentence that only describes without causing. Quote the signal words you used. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Cause: soil dried out. Effect: seedlings wilted. Reasoning: I used cause by attending to effect and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Two events next to each other are not always cause and effect. Correction: Cause: soil dried out. Effect: seedlings wilted. Why: the correction restores accurate use of cause.\n\nParent: Likely misconception: Two events next to each other are not always cause and effect. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating cause on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with cause, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 2,
+        "explanation": "Cause: soil dried out. Effect: seedlings wilted. This matches the lesson skill for cause.",
+        "options": [
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "Cause: soil dried out. Effect: seedlings wilted.",
+          "Two events next to each other are not always cause and effect."
+        ],
+        "question": "Mark cause and effect: \"The soil dried out, so the seedlings wilted.\" Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Two events next to each other are not always cause and effect. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Cause-and-effect reading finds what makes something happen and what results from it in an explanation text.",
+          "Cause: soil dried out. Effect: seedlings wilted.",
+          "Careful use of effect and explain why it matters with clear evidence.",
+          "Two events next to each other are not always cause and effect."
+        ],
+        "question": "Which statement is a common mistake when practising cause?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and named effect and explain why it matters, not by copying the model.",
+        "options": [
+          "Apply the idea with new evidence and name the effect and explain why it matters used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact."
+        ],
+        "question": "A learner is practising cause. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries cause.",
+        "options": [
+          "Two events next to each other are not always cause and effect.",
+          "Point to exact words in the sentence that show cause and say what they do.",
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words."
+        ],
+        "question": "Read: \"At dawn, Mina whispered to her goat as frost glittered on the fence.\" Which choice best uses cause from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "options": [
+          "Two events next to each other are not always cause and effect.",
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "Cause: soil dried out. Effect: seedlings wilted."
+        ],
+        "question": "Which statement correctly applies the lesson idea about cause?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "options": [
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Treat a missing detail as a proven fact.",
+          "Locate a specific word, phrase or structural clue before deciding."
+        ],
+        "question": "In a new text, what should you do first to practise effect and explain why it matters?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "options": [
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
+        ],
+        "question": "Which revision actually repairs meaning?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "Change fonts and claim the work is new.",
+          "Two events next to each other are not always cause and effect.",
+          "Use a fresh sentence or text and explain one precise choice about cause.",
+          "Retype the worked model as the final answer."
+        ],
+        "question": "Which response shows transfer of cause to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating cause on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Cause: soil dried out. Effect: seedlings wilted. Reasoning: I used cause by attending to effect and explain why it matters rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with cause, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Two events next to each other are not always cause and effect. Correction: Cause: soil dried out. Effect: seedlings wilted. Why: the correction restores accurate use of cause.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent task and reflection, with explanations where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w27-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; verify content points before acceptance.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise cause.",
+        "Read the mission before you start writing or speaking.",
+        "Keep the audience and purpose in mind as you work."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reason with the feedback.",
+        "Adjust anything that does not match the evidence."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the wording that carries the meaning.",
+        "Then explain the choice without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore the example.",
+        "Prefer evidence over wording that merely sounds clever."
+      ],
+      "submit": [
+        "Check that your response and reason are both present.",
+        "Proofread names, sequence and punctuation.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact word or action before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and underline one useful detail.",
+        "Say what that detail helps a reader understand.",
+        "A vague compliment is weaker than quoted evidence."
+      ],
+      "teach2": [
+        "Compare a weak attempt with a stronger revision.",
+        "Change meaning or accuracy, not only length.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh topic that still uses the same skill.",
+        "Explain one decision in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include an original response and a short reason.",
+        "Save work that shows the skill on new content."
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use cause with a specific example from this lesson.",
+      "I can identify effect and explain why it matters.",
+      "I can practise because independently on a new prompt.",
+      "I can notice result needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Cause-and-effect reading finds what makes something happen and what results from it in an explanation text. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no explanation.",
+            "Cause-and-effect reading finds what makes something happen and what results from it in an explanation text.",
+            "A claim unrelated to the text."
+          ],
+          "question": "Which choice best shows accurate use of this idea about cause?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\n\"Because the sun heats the puddle, the water evaporates.\" Cause: sun heats. Effect: water evaporates.\n\nTRY FIRST\nMark cause and effect: \"The soil dried out, so the seedlings wilted.\"\n\nFEEDBACK\nCause: soil dried out. Effect: seedlings wilted.",
+        "explain": "Cause-and-effect reading finds what makes something happen and what results from it in an explanation text.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Two events next to each other are not always cause and effect. Correct the meaning, not just the appearance.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Cause paired with its effect in an explanation.",
+            "caption": "Find what makes the result happen.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Cause</text><text x=\"28\" y=\"78\">sun heats puddle</text><text x=\"358\" y=\"42\">Effect</text><text x=\"358\" y=\"78\">water evaporates</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or actions that carry the meaning before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: \"Because the sun heats the puddle, the water evaporates.\" Cause: sun heats. Effect: water evaporates. Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which detail matters most.\nJuno: Name the exact words or actions that carry the meaning before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: \"Because the sun heats the puddle, the water evaporates.\" Cause: sun heats. Effect: water evaporates. Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A claim unrelated to the text.",
+            "An answer copied without understanding.",
+            "A guess with no explanation.",
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader."
+          ],
+          "question": "Which choice best shows accurate use of this idea about cause?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\n\"Because the sun heats the puddle, the water evaporates.\" Cause: sun heats. Effect: water evaporates. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
+        "explain": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Saying a choice is good without naming the actual detail does not show understanding. Correct the meaning, not just the appearance.",
+        "title": "Explain the evidence",
+        "visual": [
+          {
+            "alt": "Causal signals contrasted with unrelated neighbours.",
+            "caption": "Neighbour events need a real link.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Signal</text><text x=\"28\" y=\"78\">so / because</text><text x=\"358\" y=\"42\">Not always causal</text><text x=\"358\" y=\"78\">two events merely side by side</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A guess with no explanation.",
+            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
+            "A claim unrelated to the text.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about cause?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nTwo events next to each other are not always cause and effect. Here is a more productive model: \"Because the sun heats the puddle, the water evaporates.\" Cause: sun heats. Effect: water evaporates.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nCause: soil dried out. Effect: seedlings wilted.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "A superficial change in length or appearance does not repair meaning. Two events next to each other are not always cause and effect. Correct the meaning, not just the appearance.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
+            "A claim unrelated to the text.",
+            "An answer copied without understanding.",
+            "A guess with no explanation."
+          ],
+          "question": "Which choice best shows accurate use of this idea about cause?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nCause-and-effect reading finds what makes something happen and what results from it in an explanation text. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",
+        "explain": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new content. Correct the meaning, not just the appearance.",
+        "title": "Transfer to an independent example"
+      }
+    ],
+    "title": "Year 3, Week 27, Lesson 1: Cause and effect in explanations",
+    "unit_number": 6,
+    "unit_title": "Procedures and explanations",
+    "week": 27,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\n\"Because the sun heats the puddle, the water evaporates.\" Cause: sun heats. Effect: water evaporates.\n\nExplain what makes this example accurate and effective, identifying its specific wording.",
+    "worked_visuals": [
+      {
+        "alt": "Cause paired with its effect in an explanation.",
+        "caption": "Find what makes the result happen.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Cause</text><text x=\"28\" y=\"78\">sun heats puddle</text><text x=\"358\" y=\"42\">Effect</text><text x=\"358\" y=\"78\">water evaporates</text></g></svg>"
+      },
+      {
+        "alt": "Causal signals contrasted with unrelated neighbours.",
+        "caption": "Neighbour events need a real link.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Signal</text><text x=\"28\" y=\"78\">so / because</text><text x=\"358\" y=\"42\">Not always causal</text><text x=\"358\" y=\"78\">two events merely side by side</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Mark cause and effect: \"The soil dried out, so the seedlings wilted.\""
+      ],
+      "independent_inputs": [
+        "Read two short explanation paragraphs. For each, list two cause–effect pairs and one sentence that only describes without causing. Quote the signal words you used."
+      ],
+      "model_inputs": [
+        "\"Because the sun heats the puddle, the water evaporates.\" Cause: sun heats. Effect: water evaporates."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Cause: soil dried out. Effect: seedlings wilted.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Mark cause and effect: \"The soil dried out, so the seedlings wilted.\"",
+        "misconception": "Two events next to each other are not always cause and effect.",
+        "model": "\"Because the sun heats the puddle, the water evaporates.\" Cause: sun heats. Effect: water evaporates.",
+        "rule": "Cause-and-effect reading finds what makes something happen and what results from it in an explanation text.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "The most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Underline or quote one precise detail in the model and explain its effect.",
+        "misconception": "Saying a choice is good without naming the actual detail does not show understanding.",
+        "model": "\"Because the sun heats the puddle, the water evaporates.\" Cause: sun heats. Effect: water evaporates. Think about how this word or relationship creates meaning.",
+        "rule": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "Cause: soil dried out. Effect: seedlings wilted.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Describe why the warned-against approach would weaken your work, then write a corrected version.",
+        "misconception": "A superficial change in length or appearance does not repair meaning. Two events next to each other are not always cause and effect.",
+        "model": "Two events next to each other are not always cause and effect. Here is a more productive model: \"Because the sun heats the puddle, the water evaporates.\" Cause: sun heats. Effect: water evaporates.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "The new example should meet the same purpose as the model, but contain original material.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Make one fresh example demonstrating the skill and explain your main choice.",
+        "misconception": "Repeating the worked example cannot show transfer to new content.",
+        "model": "Cause-and-effect reading finds what makes something happen and what results from it in an explanation text. Now choose different people, facts or text to show you can transfer the idea.",
+        "rule": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Cause paired with its effect in an explanation.",
+        "teaches": "Find what makes the result happen."
+      },
+      {
+        "alt": "Causal signals contrasted with unrelated neighbours.",
+        "teaches": "Neighbour events need a real link."
+      }
+    ]
+  }
+}

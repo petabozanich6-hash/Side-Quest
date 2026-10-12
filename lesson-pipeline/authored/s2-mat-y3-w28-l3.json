@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-NSM-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Solve eight mixed mass/capacity problems (totals, differences, conversions, enough/not enough). Label the attribute (mass or capacity) for each. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original demonstration: Two juice cartons of 250 mL total 500 mL. Three bags of 200 g flour total 600 g = 0.6 kg. Compare 1.5 L and 1200 mL → 1.5 L is greater.\n\nParent: Written model 2: Common error: Adding millilitres to grams without noticing different attributes is meaningless. Correction: 1200 mL=1.2 L; 750 g = 0.75 kg.\n\nParent: Likely misconception: Adding millilitres to grams without noticing different attributes is meaningless. Keep sample answers out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Solve eight mixed mass/capacity problems (totals, differences, conversions, enough/not enough). Label the attribute (mass or capacity) for each. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: 1200 mL=1.2 L; 750 g = 0.75 kg. Reasoning: I used mass by attending to capacity and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Adding millilitres to grams without noticing different attributes is meaningless. Correction: 1200 mL=1.2 L; 750 g = 0.75 kg. Why: the correction restores accurate use of mass.\n\nParent: Likely misconception: Adding millilitres to grams without noticing different attributes is meaningless. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses mass with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with mass, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -43,113 +43,113 @@
     "printable_resource": null,
     "quiz": [
       {
-        "correct_index": 0,
-        "explanation": "Mass and capacity problems combine reading quantities, converting units and deciding totals or comparisons in context. The other choices avoid explaining the actual strategy.",
+        "correct_index": 2,
+        "explanation": "1200 mL=1.2 L; 750 g = 0.75 kg. This matches the lesson skill for mass.",
         "options": [
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "1200 mL=1.2 L; 750 g = 0.75 kg.",
+          "Adding millilitres to grams without noticing different attributes is meaningless."
+        ],
+        "question": "Solve: 4×300 mL drinks; total mass of 5×150 g snack packs in kg and g. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Adding millilitres to grams without noticing different attributes is meaningless. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Adding millilitres to grams without noticing different attributes is meaningless.",
           "Mass and capacity problems combine reading quantities, converting units and deciding totals or comparisons in context.",
-          "Adding millilitres to grams without noticing different attributes is meaningless.",
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work."
-        ],
-        "question": "Which idea is taught in the stage \"Understand and model\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. The other choices avoid explaining the actual strategy.",
-        "options": [
-          "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-          "Writing only the final answer without working does not show the method.",
-          "Copy the model numbers and call that independent work.",
-          "Treat a missing zero as if it does not change the value."
-        ],
-        "question": "Which idea is taught in the stage \"Show the working\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. The other choices avoid explaining the actual strategy.",
-        "options": [
-          "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-          "Changing the answer without repairing the method does not fix the error. Adding millilitres to grams without noticing different attributes is meaningless.",
-          "Treat a missing zero as if it does not change the value.",
-          "Skip the working because the first guess looked neat."
-        ],
-        "question": "Which idea is taught in the stage \"Test a misconception\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. The other choices avoid explaining the actual strategy.",
-        "options": [
-          "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-          "Repeating the worked example cannot show transfer to new numbers.",
-          "Skip the working because the first guess looked neat.",
-          "Ignore place value and read digits from left to right as ones only."
-        ],
-        "question": "Which idea is taught in the stage \"Transfer to a new problem\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "1200 mL=1.2 L; 750 g = 0.75 kg. Useful feedback uses the original numbers and method.",
-        "options": [
           "1200 mL=1.2 L; 750 g = 0.75 kg.",
+          "Careful use of capacity and explain why it matters with clear evidence."
+        ],
+        "question": "Which statement is a common mistake when practising mass?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and named capacity and explain why it matters, not by copying the model.",
+        "options": [
+          "Apply the idea with new evidence and name the capacity and explain why it matters used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact."
+        ],
+        "question": "A learner is practising mass. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "options": [
+          "Write only a final number with no working.",
+          "Change digits to look neater without checking place value.",
           "Adding millilitres to grams without noticing different attributes is meaningless.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Show the places, values or steps and say why each step is valid."
         ],
-        "question": "After trying \"Solve: 4×300 mL drinks; total mass of 5×150 g snack packs in kg and g.\", which feedback is most useful?",
+        "question": "Which working note best supports a mathematics answer about mass?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "The most useful working names the quantities and the reason for each step, not only the final answer. Useful feedback uses the original numbers and method.",
+        "correct_index": 2,
+        "explanation": "The correct statement applies the method; the others break it.",
         "options": [
-          "The most useful working names the quantities and the reason for each step, not only the final answer.",
-          "Writing only the final answer without working does not show the method.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
-        ],
-        "question": "After trying \"Write the key numbers from the model and say what each one represents in the met\", which feedback is most useful?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "1200 mL=1.2 L; 750 g = 0.75 kg. Useful feedback uses the original numbers and method.",
-        "options": [
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
           "1200 mL=1.2 L; 750 g = 0.75 kg.",
-          "Changing the answer without repairing the method does not fix the error. Adding millilitres to grams without noticing different attributes is meaningless.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Adding millilitres to grams without noticing different attributes is meaningless."
         ],
-        "question": "After trying \"Describe why the warned-against approach gives the wrong value or meaning, then \", which feedback is most useful?",
+        "question": "Using this lesson idea — Mass and capacity problems combine reading quantities, converting units and deciding totals or comparisons… — which statement is true?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "The new problem should use the same method as the model, but contain different numbers. Useful feedback uses the original numbers and method.",
+        "correct_index": 1,
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
         "options": [
-          "The new problem should use the same method as the model, but contain different numbers.",
-          "Repeating the worked example cannot show transfer to new numbers.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Average the two answers without checking either.",
+          "Recheck places, operations and whether the question asked for the quantity you computed.",
+          "Pick the longer-looking working automatically.",
+          "Delete units so the answers appear to match."
         ],
-        "question": "After trying \"Solve one fresh problem that uses the same skill and write a short reason for yo\", which feedback is most useful?",
+        "question": "Which error should you repair first if two methods disagree?",
         "type": "multiple_choice"
       },
       {
-        "explanation": "Independent evidence, not repetition of the worked model, demonstrates the skill.",
-        "marking_guide": "Require independently produced relevant working with accurate reasoning and named places or values.",
-        "question": "Solve a fresh problem that uses the central skill. Show working and name the places or values that matter.",
-        "sample_answer": "Original demonstration: Two juice cartons of 250 mL total 500 mL. Three bags of 200 g flour total 600 g = 0.6 kg. Compare 1.5 L and 1200 mL → 1.5 L is greater.",
+        "correct_index": 1,
+        "explanation": "Transfer requires new numbers with the same method.",
+        "options": [
+          "Copy the worked example and call it independent work.",
+          "Solve a fresh problem with different numbers and explain the method.",
+          "Retype the worked model numbers as the answer.",
+          "Change only handwriting and keep the same numbers."
+        ],
+        "question": "Which practice choice shows transfer of mass?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "options": [
+          "Just add more digits until it looks longer.",
+          "Name the exact place or step that failed, then show corrected working for mass.",
+          "Praise neat handwriting even when the places are wrong.",
+          "Tell the learner to skip working and only keep the final digits."
+        ],
+        "question": "Which feedback comment is most useful after a mistake?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "question": "Solve one fresh problem that uses mass with different numbers from the worked model. Show working and name the places or values that matter.",
+        "sample_answer": "Original response on new material: 1200 mL=1.2 L; 750 g = 0.75 kg. Reasoning: I used mass by attending to capacity and explain why it matters rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "A correction needs to change value or method, not just make the working longer.",
-        "marking_guide": "Require an actual misconception plus corrected working and a method-linked reason.",
-        "question": "Name one likely calculation or place-value error, correct it and say why the correction works.",
-        "sample_answer": "Common error: Adding millilitres to grams without noticing different attributes is meaningless. Correction: 1200 mL=1.2 L; 750 g = 0.75 kg.",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "question": "Describe one likely mistake with mass, show corrected working, and say why the correction works.",
+        "sample_answer": "Common error: Adding millilitres to grams without noticing different attributes is meaningless. Correction: 1200 mL=1.2 L; 750 g = 0.75 kg. Why: the correction restores accurate use of mass.",
         "type": "short_answer"
       }
     ],
@@ -225,15 +225,16 @@
     "teach_steps": [
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "Mass and capacity problems combine reading quantities, converting units and deciding totals or comparisons in context. Supported working follows the actual numbers and purpose of the task.",
+          "correct_index": 1,
+          "explanation": "Mass and capacity problems combine reading quantities, converting units and deciding totals or comparisons in context. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
           "options": [
+            "A guess with no working.",
             "Mass and capacity problems combine reading quantities, converting units and deciding totals or comparisons in context.",
             "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "An answer copied without understanding."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about mass?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTwo juice cartons of 250 mL total 500 mL. Three bags of 200 g flour total 600 g = 0.6 kg. Compare 1.5 L and 1200 mL → 1.5 L is greater.\n\nTRY FIRST\nSolve: 4×300 mL drinks; total mass of 5×150 g snack packs in kg and g.\n\nFEEDBACK\n1200 mL=1.2 L; 750 g = 0.75 kg.",
         "explain": "Mass and capacity problems combine reading quantities, converting units and deciding totals or comparisons in context.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
@@ -282,15 +283,16 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task.",
+          "correct_index": 2,
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
           "options": [
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given.",
             "An answer copied without understanding.",
-            "A guess with no working."
+            "A guess with no working.",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+            "A calculation unrelated to the numbers given."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about mass?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTwo juice cartons of 250 mL total 500 mL. Three bags of 200 g flour total 600 g = 0.6 kg. Compare 1.5 L and 1200 mL → 1.5 L is greater. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
         "explain": "Make the method visible: name the values, places or steps you used and say why that step is valid.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
@@ -307,15 +309,16 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task.",
+          "correct_index": 1,
+          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
           "options": [
+            "A guess with no working.",
             "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
             "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "An answer copied without understanding."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about mass?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAdding millilitres to grams without noticing different attributes is meaningless. Here is a more productive model: Two juice cartons of 250 mL total 500 mL. Three bags of 200 g flour total 600 g = 0.6 kg. Compare 1.5 L and 1200 mL → 1.5 L is greater.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\n1200 mL=1.2 L; 750 g = 0.75 kg.",
         "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
@@ -325,15 +328,16 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task.",
+          "correct_index": 3,
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
           "options": [
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
             "A calculation unrelated to the numbers given.",
             "An answer copied without understanding.",
-            "A guess with no working."
+            "A guess with no working.",
+            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about mass?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nMass and capacity problems combine reading quantities, converting units and deciding totals or comparisons in context. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",
         "explain": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",

@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-CWT-02",
+      "lesson_evidence": "Write a classification paragraph that names a category, shared feature and examples.",
+      "scope_limit": "Individual Written Core lesson contributes partial evidence; independently verify syllabus content-point alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Write a classification paragraph that names a category, shared feature and examples.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Keep the independent response and two written check responses; record oral retelling or performance where required by the task.",
+    "explicit_teaching": null,
+    "extension": "Create a new example using a completely different character or setting, show the same skill, then explain to another person how you checked its accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "WE DO — attempt each prompt before comparing to the feedback.\n1. Write a topic sentence that classifies frogs as amphibians.\nCOMPARE: \"Frogs are amphibians that generally begin life in water and change form as they grow.\"\n2. Add a shared feature to: \"Birds are animals. Emus and magpies are examples.\"\nCOMPARE: Example: birds are animals that have feathers and lay eggs.\n3. Choose two examples for reptiles that live in Australia.\nCOMPARE: Blue-tongue lizards and saltwater crocodiles can work if the feature fits; check facts.\n4. Write a closing sentence for a paragraph classifying deciduous trees.\nCOMPARE: The ending should link back to the category purpose, not start a new topic.",
+    "hoard_words": null,
+    "independent_task": "YOU DO — complete the following substantial original task, not a copied model.\nWrite a factual 100–130 word paragraph classifying two kinds of Australian animals or rocks. Include a category statement, defining feature, two examples and a final explanatory sentence.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Write a classification paragraph that names a category, shared feature and examples.",
+    "lesson_number": 2,
+    "lesson_role": "Writing",
+    "materials": [
+      "Paper or typing area",
+      "Pencil for optional evidence"
+    ],
+    "offline_alternative": "Use paper to copy only the original independent prompt; have the child respond in writing or orally as required. Save a photograph or brief parent observation for the learning record.",
+    "outcome_codes": [
+      "EN2-CWT-02"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Write a factual 100–130 word paragraph classifying two kinds of Australian animals or rocks. Include a category statement, defining feature, two examples and a final explanatory sentence. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: \"Frogs are amphibians that generally begin life in water and change form as they grow.\" Reasoning: I used category by attending to feature and point to the words or events rather than copying the worked model.\n\nParent: Written model 2: Common error: A list of examples without a category does not explain classification. Correction: \"Frogs are amphibians that generally begin life in water and change form as they grow.\" Why: the correction restores accurate use of category.\n\nParent: Likely misconception: A list of examples without a category does not explain classification. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating category on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with category, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "\"Frogs are amphibians that generally begin life in water and change form as they grow.\" This matches the lesson skill for category.",
+        "options": [
+          "A list of examples without a category does not explain classification.",
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "\"Frogs are amphibians that generally begin life in water and change form as they grow.\""
+        ],
+        "question": "Add a shared feature to: \"Birds are animals. Emus and magpies are examples.\" Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "A list of examples without a category does not explain classification. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Write a classification paragraph that names a category, shared feature and examples.",
+          "\"Frogs are amphibians that generally begin life in water and change form as they grow.\"",
+          "Careful use of feature and point to the words or events with clear evidence.",
+          "A list of examples without a category does not explain classification."
+        ],
+        "question": "Which statement is a common mistake when practising category?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and named feature and point to the words or events, not by copying the model.",
+        "options": [
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the feature and point to the words or events used.",
+          "Repeat the worked example wording with no new evidence."
+        ],
+        "question": "A learner is practising category. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries category.",
+        "options": [
+          "Say the writing is good without naming any words.",
+          "A list of examples without a category does not explain classification.",
+          "Point to exact words in the sentence that show category and say what they do.",
+          "Ignore the sentence and invent a more exciting event."
+        ],
+        "question": "Read: \"Under the pier, Sam found a locked tin and a dripping map.\" Which choice best uses category from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "options": [
+          "A list of examples without a category does not explain classification.",
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "\"Frogs are amphibians that generally begin life in water and change form as they grow.\""
+        ],
+        "question": "Which statement correctly applies the lesson idea about category?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "options": [
+          "Copy a model sentence from another story unchanged.",
+          "Treat a missing detail as a proven fact.",
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue."
+        ],
+        "question": "In a new text, what should you do first to practise feature and point to the words or events?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "options": [
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea.",
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess."
+        ],
+        "question": "Which revision actually repairs meaning?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "A list of examples without a category does not explain classification.",
+          "Use a fresh sentence or text and explain one precise choice about category.",
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new."
+        ],
+        "question": "Which response shows transfer of category to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating category on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: \"Frogs are amphibians that generally begin life in water and change form as they grow.\" Reasoning: I used category by attending to feature and point to the words or events rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with category, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: A list of examples without a category does not explain classification. Correction: \"Frogs are amphibians that generally begin life in water and change form as they grow.\" Why: the correction restores accurate use of category.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Submit your original independent work and your brief explanation of the key choices you made.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w07-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; compare the existing Coming Soon card and official syllabus content points before marking verified.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise category.",
+        "Read the mission before you start writing or speaking.",
+        "Your goal is: Write a classification paragraph that names a category, shared feature and examples."
+      ],
+      "guided": [
+        "Attempt each guided prompt without looking ahead.",
+        "Compare your attempt with the supplied specific feedback.",
+        "Guided comparison: Example: birds are animals that have feathers and lay eggs."
+      ],
+      "learn": [
+        "Study the first worked demonstration carefully.",
+        "Name the exact words or events that make it work.",
+        "Demonstration: \"Marsupials are mammals whose young usually develop in a pouch. Kangaroos and koalas are examples.\" The category comes first."
+      ],
+      "quiz": [
+        "Read the whole question and eliminate misconceptions.",
+        "Prefer the option that quotes or uses actual evidence.",
+        "Likely trap: An example that breaks the defining feature weakens the paragraph."
+      ],
+      "submit": [
+        "Include your own response and a short reason.",
+        "Proofread names, sequence and punctuation before sending.",
+        "Success looks like: Write a classification paragraph that names a category, shared feature and examples."
+      ],
+      "teach0": [
+        "Focus on start with the category.",
+        "Hold this teaching point: A classification paragraph names the group before listing members.",
+        "Worked comparison: \"Frogs are amphibians that generally begin life in water and change form as they grow.\""
+      ],
+      "teach1": [
+        "Focus on name the shared feature.",
+        "Hold this teaching point: State what members of the group have in common.",
+        "Worked comparison: Example: birds are animals that have feathers and lay eggs."
+      ],
+      "teach2": [
+        "Focus on give clear examples.",
+        "Hold this teaching point: Choose examples that truly fit the category and feature.",
+        "Worked comparison: Blue-tongue lizards and saltwater crocodiles can work if the feature fits; check facts."
+      ],
+      "teach3": [
+        "Focus on finish with an explanatory sentence.",
+        "Hold this teaching point: End by reminding the reader what the classification helps us understand.",
+        "Worked comparison: The ending should link back to the category purpose, not start a new topic."
+      ],
+      "write": [
+        "Use the independent instructions, not the model words.",
+        "Give an original response and the reason behind it.",
+        "Independent reminder: Write a factual 100–130 word paragraph classifying two kinds of Australian animals or rocks. Include a category statement, defining feature, two examples and a "
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use category with a specific example from this lesson.",
+      "I can identify feature and point to the words or events that support it.",
+      "I can practise example independently on a new prompt.",
+      "I can notice classify needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying category independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which choice best shows accurate use of this idea about category?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\n\"Marsupials are mammals whose young usually develop in a pouch. Kangaroos and koalas are examples.\" The category comes first.\n\nYOUR SMALL TRY\nWrite a topic sentence that classifies frogs as amphibians.\n\nCOMPARE AND CORRECT\n\"Frogs are amphibians that generally begin life in water and change form as they grow.\"",
+        "explain": "A classification paragraph names the group before listing members.\n\nA classification paragraph names the group before listing members. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nA list of examples without a category does not explain classification. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Start with the category",
+        "visual": [
+          {
+            "alt": "Classification category marsupials with shared pouch feature.",
+            "caption": "Name the group and the shared feature before examples.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Category</text><text x=\"28\" y=\"78\">marsupials</text><text x=\"358\" y=\"42\">Feature</text><text x=\"358\" y=\"78\">young usually in a pouch</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I read the first example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or events that carry the meaning before you copy a conclusion.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "So I should try the small prompt myself, then compare it with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: \"Marsupials are mammals whose young usually develop in a pouch. Kangaroos and koalas are examples.\" The category comes f Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I read the first example, but I am not sure which detail matters most.\nJuno: Name the exact words or events that carry the meaning before you copy a conclusion.\nPip: So I should try the small prompt myself, then compare it with the feedback.\nJuno: Pause here. Use this model: \"Marsupials are mammals whose young usually develop in a pouch. Kangaroos and koalas are examples.\" The category comes f Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying feature independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which choice best shows accurate use of this idea about category?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nMarsupials share young that usually develop in a pouch; that feature defines the group in this paragraph.\n\nYOUR SMALL TRY\nAdd a shared feature to: \"Birds are animals. Emus and magpies are examples.\"\n\nCOMPARE AND CORRECT\nExample: birds are animals that have feathers and lay eggs.",
+        "explain": "State what members of the group have in common.\n\nState what members of the group have in common. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nExamples alone do not tell the reader why they belong together. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Name the shared feature",
+        "visual": [
+          {
+            "alt": "Examples kangaroo and koala with a closing purpose sentence.",
+            "caption": "Examples must fit the feature; the ending states the purpose.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Examples</text><text x=\"28\" y=\"78\">kangaroo, koala</text><text x=\"358\" y=\"42\">Closing</text><text x=\"358\" y=\"78\">helps readers compare young</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying example independently.",
+            "Copy every sentence exactly without explaining it."
+          ],
+          "question": "Which choice best shows accurate use of this idea about category?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nKangaroos and koalas fit marsupials; a crocodile would not.\n\nYOUR SMALL TRY\nChoose two examples for reptiles that live in Australia.\n\nCOMPARE AND CORRECT\nBlue-tongue lizards and saltwater crocodiles can work if the feature fits; check facts.",
+        "explain": "Choose examples that truly fit the category and feature.\n\nChoose examples that truly fit the category and feature. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nAn example that breaks the defining feature weakens the paragraph. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Give clear examples"
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying classify independently."
+          ],
+          "question": "Which choice best shows accurate use of this idea about category?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\n\"Grouping animals this way helps readers compare how young are raised.\"\n\nYOUR SMALL TRY\nWrite a closing sentence for a paragraph classifying deciduous trees.\n\nCOMPARE AND CORRECT\nThe ending should link back to the category purpose, not start a new topic.",
+        "explain": "End by reminding the reader what the classification helps us understand.\n\nEnd by reminding the reader what the classification helps us understand. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nStopping after examples can leave the purpose unclear. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Finish with an explanatory sentence"
+      }
+    ],
+    "title": "Year 3, Week 7, Lesson 2: Writing a classification paragraph",
+    "unit_number": 2,
+    "unit_title": "Information reports",
+    "week": 7,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "I DO — \"Marsupials are mammals whose young usually develop in a pouch. Kangaroos and koalas are examples.\" The category comes first.\n\nNow look for the exact evidence in the words or actions. Marsupials share young that usually develop in a pouch; that feature defines the group in this paragraph.",
+    "worked_visuals": [
+      {
+        "alt": "Classification category marsupials with shared pouch feature.",
+        "caption": "Name the group and the shared feature before examples.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Category</text><text x=\"28\" y=\"78\">marsupials</text><text x=\"358\" y=\"42\">Feature</text><text x=\"358\" y=\"78\">young usually in a pouch</text></g></svg>"
+      },
+      {
+        "alt": "Examples kangaroo and koala with a closing purpose sentence.",
+        "caption": "Examples must fit the feature; the ending states the purpose.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Examples</text><text x=\"28\" y=\"78\">kangaroo, koala</text><text x=\"358\" y=\"42\">Closing</text><text x=\"358\" y=\"78\">helps readers compare young</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Add a shared feature to: \"Birds are animals. Emus and magpies are examples.\""
+      ],
+      "independent_inputs": [
+        "Write a factual 100–130 word paragraph classifying two kinds of Australian animals or rocks. Include a category statement, defining feature, two examples and a final explanatory sentence."
+      ],
+      "model_inputs": [
+        "\"Marsupials are mammals whose young usually develop in a pouch. Kangaroos and koalas are examples.\" The category comes first."
+      ]
+    },
+    "review_questions": [
+      "Verify original Coming Soon outcome and syllabus content point against NESA English K–10 2022.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "\"Frogs are amphibians that generally begin life in water and change form as they grow.\"",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Write a topic sentence that classifies frogs as amphibians.",
+        "misconception": "A list of examples without a category does not explain classification.",
+        "model": "\"Marsupials are mammals whose young usually develop in a pouch. Kangaroos and koalas are examples.\" The category comes first.",
+        "rule": "A classification paragraph names the group before listing members.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Example: birds are animals that have feathers and lay eggs.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Add a shared feature to: \"Birds are animals. Emus and magpies are examples.\"",
+        "misconception": "Examples alone do not tell the reader why they belong together.",
+        "model": "Marsupials share young that usually develop in a pouch; that feature defines the group in this paragraph.",
+        "rule": "State what members of the group have in common.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Blue-tongue lizards and saltwater crocodiles can work if the feature fits; check facts.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Choose two examples for reptiles that live in Australia.",
+        "misconception": "An example that breaks the defining feature weakens the paragraph.",
+        "model": "Kangaroos and koalas fit marsupials; a crocodile would not.",
+        "rule": "Choose examples that truly fit the category and feature.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "The ending should link back to the category purpose, not start a new topic.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Write a closing sentence for a paragraph classifying deciduous trees.",
+        "misconception": "Stopping after examples can leave the purpose unclear.",
+        "model": "\"Grouping animals this way helps readers compare how young are raised.\"",
+        "rule": "End by reminding the reader what the classification helps us understand.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Classification category marsupials with shared pouch feature.",
+        "teaches": "Name the group and the shared feature before examples."
+      },
+      {
+        "alt": "Examples kangaroo and koala with a closing purpose sentence.",
+        "teaches": "Examples must fit the feature; the ending states the purpose."
+      }
+    ]
+  }
+}

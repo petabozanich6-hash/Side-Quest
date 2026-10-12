@@ -1,0 +1,323 @@
+{
+  "child_mission": "Become a Number Investigator! Use place groups to solve whole-number fluency with reasons tasks and explain how you checked.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep the whole-number fluency with reasons answers, two worked decisions, checking note, reflection and written quiz responses.",
+  "extension": "Choose a new number below 10,000. Represent it in words and two partitions, then explain how it compares with 4,518.",
+  "guided_practice": "WE DO: Prepare a second record using 4,026.\n1. Label the columns and insert the digits. Read it before comparing with “four thousand and twenty-six”.\n2. Find the hundreds digit and its contribution. Compare after your attempt: 0.\n3. Partition it. Check against 4,000 + 20 + 6, then add those terms back.\n4. Compare 4,026 with 4,518; name the first unequal place rather than choosing by the final digit.\n5. Make one different partition by setting aside a hundred. Check: 3,926 + 100.\n6. Explain one check you used. If you made an error, repair only the mismatched place and read the result again.\nYou can draw the chart or describe it in text. The explanation matters more than decorative layout.",
+  "independent_task": "YOU DO: Whole-number fluency with reasons record (about 20 minutes).\nUse these numbers: 4,721; 4,136; 4,506; 4,006.\n1. Say what each part of the task asks before answering: numeral, words, place value, partition or order.\n2. For each value, give its words and expanded form. Order the set, then choose one answer to check through a different representation.\n3. Show working for at least two decisions with a labelled chart, equation or comparison reason.\n4. Check those decisions by rebuilding a total, reading words back or comparing neighbouring values.\n5. Explain one improvement or one check that confirmed a correct answer.\nWork on paper or in the big box. If using paper, type the answers and a clear working summary. Check: correct range and places; zeroes preserved; complete requested representations; a specific reason and a check. An upload is optional.",
+  "learning_area": "Mathematics",
+  "learning_intention": "We are learning to whole-number fluency with reasons within the range to 10,000.",
+  "lesson_number": 4,
+  "lesson_role": "Fluency and review",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Copy the four task numbers and draw place columns on paper. Complete the whole-number fluency with reasons record and check it, then type your evidence later.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches whole-number fluency with reasons to 10,000, with explicit digit/value and zero-place distinctions. Original content follows the repository’s topic sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of complete syllabus coverage.\n\nParent: Look for the requested representation and the reasoning behind it, not speed. Standard and flexible partitions both preserve value. The lesson itself supplies the teaching and feedback. Your role is access support and reviewing the evidence.\n\nParent: Task models: 4,721: four thousand seven hundred and twenty-one; 4,000 + 700 + 20 + 1; next 4,722, 4,723; 4,136: four thousand one hundred and thirty-six; 4,000 + 100 + 30 + 6; next 4,137, 4,138; 4,506: four thousand five hundred and six; 4,000 + 500 + 6; next 4,507, 4,508; 4,006: four thousand and six; 4,000 + 6; next 4,007, 4,008. Ascending order: 4,006, 4,136, 4,506, 4,721. Accept other correct partitions and specific checks.\n\nParent: Eight scored choices use the unchanged 90% threshold, requiring 8/8. Two written responses are manually reviewed. Models: 4,418 + 100 = 4,518. The parts add back to the target. Compare matching columns from the left. The first unequal place has a larger value in the first numeral.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 2,
+      "explanation": "Four thousand five hundred and eighteen matches the thousands part and the remaining hundreds, tens and ones. The other readings change a digit’s value.",
+      "options": [
+        "four thousand six hundred and eighteen",
+        "four thousand four hundred and eighteen",
+        "four thousand five hundred and eighteen",
+        "four thousand five hundred and twenty-eight"
+      ],
+      "question": "Which words correctly read 4,518?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "A standard expanded term gives the contribution of a place, so the terms add back to the original number.",
+      "options": [
+        "Only the face digit with no place value",
+        "The number of letters in the word",
+        "The value contributed by its place",
+        "A new unrelated count"
+      ],
+      "question": "What must a standard expanded-form term show?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The largest place carries the greatest unit value. Compare it first, then move right only if it matches.",
+      "options": [
+        "At whichever digit is brightest",
+        "At the largest place on the left",
+        "At the ones every time",
+        "At the number of commas"
+      ],
+      "question": "For equal-length positive whole numbers, where should comparison start?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "A partition is valid when its parts add to the original total. Its visual length does not settle correctness.",
+      "options": [
+        "Count its plus signs only",
+        "Add the parts and compare with the target",
+        "Remove every zero",
+        "Choose the longest expression"
+      ],
+      "question": "Which check confirms a partition?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Counting by one adds exactly one unit.",
+      "options": [
+        "4528",
+        "4519",
+        "4618",
+        "4517"
+      ],
+      "question": "What is one more than 4,518?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The two parts rebuild the original total.",
+      "options": [
+        "4428",
+        "4618",
+        "4518",
+        "4418"
+      ],
+      "question": "What is 4,418 + 100?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "The tens place counts groups of ten.",
+      "options": [
+        "10",
+        "1",
+        "100",
+        "1000"
+      ],
+      "question": "What is the value of the tens digit in 4,518?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The values increase from least to greatest; every neighbouring pair is in the correct direction.",
+      "options": [
+        "4,618, 4,518, 4,026",
+        "4,518, 4,026, 4,618",
+        "4,026, 4,618, 4,518",
+        "4,026, 4,518, 4,618"
+      ],
+      "question": "Which list is ascending?",
+      "type": "multiple_choice"
+    },
+    {
+      "explanation": "The partition must preserve the whole value.",
+      "marking_guide": "Accept any correct non-standard two-part partition with a total check.",
+      "question": "Write a different two-part partition of 4,518 and check it.",
+      "sample_answer": "4,418 + 100 = 4,518. The parts add back to the target.",
+      "type": "short_answer"
+    },
+    {
+      "explanation": "A value relationship supports the comparison, rather than the final digit alone.",
+      "marking_guide": "Accept the actual first unequal place or a correct positive-difference reason.",
+      "question": "Explain why 4,518 is greater than 4,026.",
+      "sample_answer": "Compare matching columns from the left. The first unequal place has a larger value in the first numeral.",
+      "type": "short_answer"
+    }
+  ],
+  "response_prompt": "Which place-group or representation check helped most in your whole-number fluency with reasons record?",
+  "review_status": "unreviewed",
+  "seed_key": "s2-mat-y3-w01-l4",
+  "stage": "S2",
+  "stage_hints": {
+    "accept": [
+      "Read the mission about whole-number fluency with reasons.",
+      "You will practise whole-number fluency with reasons through models before making your own response.",
+      "Begin with the first explanation of whole-number fluency with reasons; the examples remain available while you work."
+    ],
+    "guided": [
+      "Begin by labelling the second numeral’s columns.",
+      "Complete one representation before comparing it with the suggestion.",
+      "Read the words back into a chart and check that every digit returns to its intended place."
+    ],
+    "learn": [
+      "Read the numeral and expanded form together.",
+      "Match each part of the sum to its place column.",
+      "Rebuild the same total, then use matching place values to check the comparison."
+    ],
+    "quiz": [
+      "Return to the step for the representation named in the question.",
+      "Distinguish a face digit, a value, a partition and an order statement.",
+      "Use the matching column or total check before selecting an option; explain the value relationship for a written response."
+    ],
+    "submit": [
+      "Check that your whole-number fluency with reasons task and working are present.",
+      "Include the whole-number fluency with reasons reflection and any written reasoning you produced.",
+      "Send your whole-number fluency with reasons evidence for review; type a clear record if you used paper."
+    ],
+    "teach0": [
+      "Look at how the thousands chunk and final digits are read.",
+      "Point to the matching place while saying each number-word part.",
+      "Read the large group first, then the remaining hundreds, tens and ones; match the result back to the chart."
+    ],
+    "teach1": [
+      "Look at each expanded term beside its place column.",
+      "Write the value of each non-empty group instead of only its digit.",
+      "Add the terms back and check that the original numeral returns."
+    ],
+    "teach2": [
+      "Look at the first unequal place from the left.",
+      "Line up matching places and move right only while they match.",
+      "Compare the two group values at the first difference; later smaller places cannot reverse it."
+    ],
+    "teach3": [
+      "Look at the task’s requested representation.",
+      "Choose a different way to test the same total or relationship.",
+      "Add a partition back, read words into a numeral or reverse a comparison to check its meaning."
+    ],
+    "write": [
+      "Start by copying the first task numeral accurately.",
+      "Begin “This numeral has ____ groups of ____.”",
+      "A partial record begins “For my first number, the largest place is ____. I checked it by ____.” Add your own values and working."
+    ]
+  },
+  "subject": "Number and Algebra",
+  "success_criteria": [
+    "I can read a numeral through its place groups.",
+    "I can match a digit to its value.",
+    "I can show a correct partition or comparison.",
+    "I can check an answer and explain my reason."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "Four thousand five hundred and eighteen matches the thousands part and the remaining hundreds, tens and ones. The other readings change a digit’s value.",
+        "options": [
+          "four thousand six hundred and eighteen",
+          "four thousand four hundred and eighteen",
+          "four thousand five hundred and eighteen",
+          "four thousand five hundred and twenty-eight"
+        ],
+        "question": "Which words correctly read 4,518?"
+      },
+      "example": "I DO:\n4,518 = 4,000 + 500 + 10 + 8.\nWords: four thousand five hundred and eighteen.\nI match each spoken group with its column, then read the whole count once.\n\nYOU TRY:\nRead 4,026 using the columns. Try before comparing.\n\nCHECK:\nIt is four thousand and twenty-six. The zero column contributes no groups of that size, but still holds its place.",
+      "explain": "**Digit and value are different.**\nA digit is a written symbol from zero to nine. Its value depends on the place. A four in the hundreds column means four hundreds; in the ones column it means four ones.\n\n**Read a useful chunk.**\nIn 4,518, separate the thousands part from the final three digits. Read the thousands part, then the hundreds, tens and ones that follow. A space or comma can help group digits; it does not mean a decimal point.\n\n**Say the number in words.**\nOur model is “four thousand five hundred and eighteen”. Say the number, point to each matching part and check that you did not turn a digit into the wrong-sized group.\n\nThe same method works with fewer or more non-zero places. The number of digits gives a starting clue, but the position of each digit settles its value.",
+      "icon": "📖",
+      "notice": "Do not read every digit as a separate number name when the task asks for the whole number.",
+      "title": "Read the digits through their places",
+      "visual": [
+        {
+          "alt": "A place-value chart for 4,518. Thousands: digit 4, value 4,000, Hundreds: digit 5, value 500, Tens: digit 1, value 10, Ones: digit 8, value 8.",
+          "caption": "A digit’s column gives its value.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 450 190\"><rect width=\"450\" height=\"190\" fill=\"#f5faf7\"/><rect x=\"0.0\" y=\"10\" width=\"112.5\" height=\"160\" fill=\"none\" stroke=\"#254c3c\"/><text x=\"56.25\" y=\"39\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">Thousands</text><text x=\"56.25\" y=\"108\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"30\" fill=\"#173c2c\">4</text><text x=\"56.25\" y=\"145\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" fill=\"#173c2c\">4,000</text><rect x=\"112.5\" y=\"10\" width=\"112.5\" height=\"160\" fill=\"none\" stroke=\"#254c3c\"/><text x=\"168.75\" y=\"39\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">Hundreds</text><text x=\"168.75\" y=\"108\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"30\" fill=\"#173c2c\">5</text><text x=\"168.75\" y=\"145\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" fill=\"#173c2c\">500</text><rect x=\"225.0\" y=\"10\" width=\"112.5\" height=\"160\" fill=\"none\" stroke=\"#254c3c\"/><text x=\"281.25\" y=\"39\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">Tens</text><text x=\"281.25\" y=\"108\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"30\" fill=\"#173c2c\">1</text><text x=\"281.25\" y=\"145\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" fill=\"#173c2c\">10</text><rect x=\"337.5\" y=\"10\" width=\"112.5\" height=\"160\" fill=\"none\" stroke=\"#254c3c\"/><text x=\"393.75\" y=\"39\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">Ones</text><text x=\"393.75\" y=\"108\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"30\" fill=\"#173c2c\">8</text><text x=\"393.75\" y=\"145\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" fill=\"#173c2c\">8</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "A standard expanded term gives the contribution of a place, so the terms add back to the original number.",
+        "options": [
+          "Only the face digit with no place value",
+          "The number of letters in the word",
+          "The value contributed by its place",
+          "A new unrelated count"
+        ],
+        "question": "What must a standard expanded-form term show?"
+      },
+      "example": "I DO:\nI split 4,518 into its non-zero place values: 4,000 + 500 + 10 + 8.\nI put each part back into a chart and recover 4,518.\n\nYOU TRY:\nPartition 4,026. Include the value of every non-zero digit.\n\nCHECK:\n4,000 + 20 + 6 adds to 4,026. A zero place contributes nothing to this sum but remains in the numeral.",
+      "explain": "**Partition means split a whole into parts.**\nIn standard expanded form, split a numeral into the value contributed by each non-zero place. Add those contributions to reconstruct the same total.\n\n**Match each term to a column.**\nA term such as five hundred describes the value of a digit in the hundreds place. Writing five instead would lose the unit size. Use addition signs because the parts combine into one total.\n\n**Show the full model.**\n4,518 = 4,000 + 500 + 10 + 8. Read each part, then check the sum. You have represented the same number another way, not made a smaller number.\n\nZero-valued terms can be left out of the addition, but do not shift other digits in the numeral. Keep those two representations distinct.",
+      "icon": "📖",
+      "notice": "An expanded term includes its unit value. Listing the face digits alone is not standard expanded form.",
+      "title": "Partition without changing the total"
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "The largest place carries the greatest unit value. Compare it first, then move right only if it matches.",
+        "options": [
+          "At whichever digit is brightest",
+          "At the largest place on the left",
+          "At the ones every time",
+          "At the number of commas"
+        ],
+        "question": "For equal-length positive whole numbers, where should comparison start?"
+      },
+      "example": "I DO:\nCompare 4,518 with 4,026. I line up the columns, move from the left and locate the first difference. 4,518 is greater.\n\nYOU TRY:\nCompare 4,517 and 4,518. Which first unequal column decides it?\n\nCHECK:\n4,518 is greater by one. Most leading places match, so the difference is near the right; begin from the left anyway.",
+      "explain": "**Comparison asks which whole is larger.**\nFor positive whole numbers, first check how many places are needed. A number with an additional leading non-zero place is larger. For equal-length numerals, compare their highest places first.\n\n**Find the first difference from the left.**\nIf the highest digits match, move one column right. Stop at the first unequal pair. That larger place outweighs all the lower places that follow.\n\n**Use the pair 4,518 and 4,026.**\nThe first unequal digits from the left determine the comparison. A larger final ones digit cannot overcome a smaller earlier thousands or hundreds digit. Think about group size, not just digit size.\n\nLine up matching columns. Leading zeroes do not create a larger positive value; the first non-zero place matters.",
+      "icon": "📖",
+      "notice": "Compare the first unequal place, not whichever single digit catches your eye.",
+      "title": "Compare equal-sized groups first",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "I am practising how to compare equal-sized groups first. I need to track the value, not just copy digits.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Comparison asks which whole is larger.\nFor positive whole numbers, first check how many places are needed. A number with an additional leading non-zero place is larger. For equal-length numerals, compare their highest places first.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "Compare 4,518 with 4,026. I line up the columns, move from the left and locate the first difference. 4,518 is greater.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try a fresh example with the same check. Explain what stays unchanged or which value relationship settles the result.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Whole-number fluency with reasons in action",
+            "transcript": "Pip: I am practising how to compare equal-sized groups first. I need to track the value, not just copy digits.\nJuno: Comparison asks which whole is larger.\nFor positive whole numbers, first check how many places are needed. A number with an additional leading non-zero place is larger. For equal-length numerals, compare their highest places first.\nPip: Compare 4,518 with 4,026. I line up the columns, move from the left and locate the first difference. 4,518 is greater.\nJuno: Pause and try a fresh example with the same check. Explain what stays unchanged or which value relationship settles the result."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "A partition is valid when its parts add to the original total. Its visual length does not settle correctness.",
+        "options": [
+          "Count its plus signs only",
+          "Add the parts and compare with the target",
+          "Remove every zero",
+          "Choose the longest expression"
+        ],
+        "question": "Which check confirms a partition?"
+      },
+      "example": "I DO:\nAttempt: 4,518 = 4,418 + 10.\nI add the parts and get 4,428, not 4,518. I repair the last part to 100 and check the total again.\n\nYOU TRY:\nCheck the statement 4,518 = 4,508 + 10 using the total.\n\nCHECK:\nIt is correct: the two parts add to 4,518. Accuracy comes from the value check, not the length of the expression.",
+      "explain": "**Fluency includes accuracy and useful method choice.**\nIt is not just finishing quickly. Read what a task asks: number words, a digit value, a partition or a comparison. Choosing the wrong operation quickly does not help.\n\n**Predict a sensible answer.**\nA count should keep its group sizes. A partition should sum to the same whole. A comparison should agree with the first unequal place. Use these expectations to catch a misplaced zero or a wrong-sized change.\n\n**Check with another representation.**\nRead a numeral back from words; rebuild it from a partition; reverse a comparison statement and read its sign. This compares meanings rather than simply repeating the same writing.\n\nKeep a before-and-after note if you repair an error. If your first answer was correct, describe the check that confirmed it. You do not need to invent a mistake.",
+      "icon": "📖",
+      "notice": "Use a check suited to the task. Recopying the same unexamined answer does not confirm it.",
+      "title": "Choose a check before speed"
+    }
+  ],
+  "title": "Year 3: Whole-number fluency with reasons",
+  "unit_number": 1,
+  "unit_title": "Whole numbers and place value",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Complete a connected whole-number fluency with reasons record.\nTarget numeral: 4,518. Words: four thousand five hundred and eighteen.\nStandard partition: 4,000 + 500 + 10 + 8.\nHundreds digit: 5; value: 500.\nAnother partition: 4,418 + 100 = 4,518.\nComparison: 4,518 > 4,026. I compare matching places from the left; the first unequal place decides. The difference is 492.\nAscending set: 4,026, 4,518, 4,618.\n\nWHY THE REPRESENTATIONS AGREE\nThe written numeral, words and expanded sum describe the same place groups. The non-standard partition also returns the same total. Comparing uses those group values, not only the shape of a single digit.\n\nCOMMON MISTAKE AND FIX\nWriting the hundreds digit’s value as 5 loses its unit size. I change the value label to 500. Another possible error is deleting the zero in 4,026; I keep its column and reread the whole count.\n\nCHECK\nI rebuild the numeral from its non-zero terms and read the comparison in both directions. If a check disagrees, I revisit the relevant column before changing unrelated digits.",
+  "worked_visuals": [
+    {
+      "alt": "A place-value chart for 4,026. Thousands: digit 4, value 4,000, Hundreds: digit 0, value 0, Tens: digit 2, value 20, Ones: digit 6, value 6.",
+      "caption": "A digit’s column gives its value.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 450 190\"><rect width=\"450\" height=\"190\" fill=\"#f5faf7\"/><rect x=\"0.0\" y=\"10\" width=\"112.5\" height=\"160\" fill=\"none\" stroke=\"#254c3c\"/><text x=\"56.25\" y=\"39\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">Thousands</text><text x=\"56.25\" y=\"108\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"30\" fill=\"#173c2c\">4</text><text x=\"56.25\" y=\"145\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" fill=\"#173c2c\">4,000</text><rect x=\"112.5\" y=\"10\" width=\"112.5\" height=\"160\" fill=\"none\" stroke=\"#254c3c\"/><text x=\"168.75\" y=\"39\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">Hundreds</text><text x=\"168.75\" y=\"108\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"30\" fill=\"#173c2c\">0</text><text x=\"168.75\" y=\"145\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" fill=\"#173c2c\">0</text><rect x=\"225.0\" y=\"10\" width=\"112.5\" height=\"160\" fill=\"none\" stroke=\"#254c3c\"/><text x=\"281.25\" y=\"39\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">Tens</text><text x=\"281.25\" y=\"108\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"30\" fill=\"#173c2c\">2</text><text x=\"281.25\" y=\"145\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" fill=\"#173c2c\">20</text><rect x=\"337.5\" y=\"10\" width=\"112.5\" height=\"160\" fill=\"none\" stroke=\"#254c3c\"/><text x=\"393.75\" y=\"39\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">Ones</text><text x=\"393.75\" y=\"108\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"30\" fill=\"#173c2c\">6</text><text x=\"393.75\" y=\"145\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" fill=\"#173c2c\">6</text></svg>"
+    }
+  ],
+  "year_level": "Year 3"
+}

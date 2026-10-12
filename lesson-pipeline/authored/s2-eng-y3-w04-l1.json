@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-RECOM-01"
     ],
-    "parent_notes": "Parent: Marking guidance: Accept cautious supported inferences (nervous, excited, preparing to speak or receive an award), but do not treat an unstated event as confirmed. Require a quotation or exact clue each time. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: Text: \"Nia wiped her muddy shoes before entering.\" Fact: shoes were muddy and she wiped them. Inference: she wanted to avoid making the floor dirty. The text does not directly state that reason.\n\nParent: Written model 2: Common error: Avoid quoting a clue that does not actually support the conclusion. Correction: Conclusion: shop is closing or closed. Evidence: sign and lights, not a guess about the worker's mood.\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Read: \"The hall was silent. Theo clutched a folded paper, glanced at the stage and took a long breath. When his name was called, he stood up.\" Write three inferences about Theo or the situation, quote a specific clue for Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper. Reasoning: I used fact by attending to inference and point to the words or even rather than copying the worked model.\n\nParent: Written model 2: Common error: Do not call an inferred feeling a stated fact when the text never names it. Correction: Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper. Why: the correction restores accurate use of fact.\n\nParent: Likely misconception: Do not call an inferred feeling a stated fact when the text never names it. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating fact on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with fact, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -42,113 +42,113 @@
     "printable_resource": null,
     "quiz": [
       {
-        "correct_index": 0,
-        "explanation": "A statement gives a fact directly; an inference is a reasonable conclusion based on clues. State both, so a reader can see your reasoning. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "correct_index": 3,
+        "explanation": "Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper. This matches the lesson skill for fact.",
         "options": [
-          "A statement gives a fact directly; an inference is a reasonable conclusion based on clues. State both, so a reader can see your reasoning.",
           "Do not call an inferred feeling a stated fact when the text never names it.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper."
         ],
-        "question": "Which idea is taught in the stage \"Separate what the text says from what you infer\"?",
+        "question": "What might \"Suri checked the road twice and kept holding her envelope\" suggest?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Good inferences become stronger when several clues point towards the same idea; one clue may have different explanations. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Good inferences become stronger when several clues point towards the same idea; one clue may have different explanations.",
-          "Do not turn one vague clue into a certain explanation.",
-          "Copy the model word-for-word and call that independent work.",
-          "Treat a missing detail as a stated fact."
-        ],
-        "question": "Which idea is taught in the stage \"Gather more than one useful clue\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "A strong answer follows: I infer __ because the text says __ and I know __. That final step is reasoning, not an invented quote. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "A strong answer follows: I infer __ because the text says __ and I know __. That final step is reasoning, not an invented quote.",
-          "Avoid quoting a clue that does not actually support the conclusion.",
-          "Treat a missing detail as a stated fact.",
-          "Skip the prompt because the first idea sounded good."
-        ],
-        "question": "Which idea is taught in the stage \"Explain the bridge between evidence and conclusion\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Two explanations can fit one clue. Look for confirming details and admit what you cannot tell yet. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Two explanations can fit one clue. Look for confirming details and admit what you cannot tell yet.",
-          "A confident answer is not automatically accurate when details are missing.",
-          "Skip the prompt because the first idea sounded good.",
-          "Ignore the words and invent a more exciting event."
-        ],
-        "question": "Which idea is taught in the stage \"Revise or limit an inference when evidence is weak\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 2,
+        "explanation": "Do not call an inferred feeling a stated fact when the text never names it. That misconception weakens accuracy; the other choices align with the lesson idea.",
         "options": [
           "Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper.",
+          "Careful use of inference and point to the words or even with clear evidence.",
           "Do not call an inferred feeling a stated fact when the text never names it.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Infer unstated meaning by combining textual clues with careful reasoning."
         ],
-        "question": "After trying \"Infer why \"Ari reached for a jumper when the wind grew sharp\".\", which feedback is most useful?",
+        "question": "Which statement is a common mistake when practising fact?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "She may be anxious about delivering something or waiting for someone. Both behaviours suggest concern, but the text is not specific. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "Understanding is shown by new evidence and named inference and point to the words or even, not by copying the model.",
         "options": [
-          "She may be anxious about delivering something or waiting for someone. Both behaviours suggest concern, but the text is not specific.",
-          "Do not turn one vague clue into a certain explanation.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Apply the idea with new evidence and name the inference and point to the words or even used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact."
         ],
-        "question": "After trying \"What might \"Suri checked the road twice and kept holding her envelope\" suggest?\", which feedback is most useful?",
+        "question": "A learner is practising fact. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries fact.",
+        "options": [
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "Do not call an inferred feeling a stated fact when the text never names it.",
+          "Point to exact words in the sentence that show fact and say what they do."
+        ],
+        "question": "Read: \"After the blackout, Tess lit a candle and read the crumpled note.\" Which choice best uses fact from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "options": [
+          "Do not call an inferred feeling a stated fact when the text never names it.",
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper."
+        ],
+        "question": "Which statement correctly applies the lesson idea about fact?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Conclusion: shop is closing or closed. Evidence: sign and lights, not a guess about the worker's mood. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "Start from a specific textual clue, then explain its effect.",
         "options": [
-          "Conclusion: shop is closing or closed. Evidence: sign and lights, not a guess about the worker's mood.",
-          "Avoid quoting a clue that does not actually support the conclusion.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Treat a missing detail as a proven fact."
         ],
-        "question": "After trying \"Complete: \"I think the shop is closing because the sign says CLOSED and the work\", which feedback is most useful?",
+        "question": "In a new text, what should you do first to practise inference and point to the words or even?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Pride or amusement are plausible; reading the note or seeing the child's next action would help. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
         "options": [
-          "Pride or amusement are plausible; reading the note or seeing the child's next action would help.",
-          "A confident answer is not automatically accurate when details are missing.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
         ],
-        "question": "After trying \"A child smiles at a note. Name two possible feelings and what extra clue would h\", which feedback is most useful?",
+        "question": "Which revision actually repairs meaning?",
         "type": "multiple_choice"
       },
       {
-        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
-        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
-        "question": "Use your own example to demonstrate fact and explain the evidence supporting your choice.",
-        "sample_answer": "Original demonstration: Text: \"Nia wiped her muddy shoes before entering.\" Fact: shoes were muddy and she wiped them. Inference: she wanted to avoid making the floor dirty. The text does not directly state that reason.",
+        "correct_index": 1,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "Do not call an inferred feeling a stated fact when the text never names it.",
+          "Use a fresh sentence or text and explain one precise choice about fact.",
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new."
+        ],
+        "question": "Which response shows transfer of fact to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating fact on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper. Reasoning: I used fact by attending to inference and point to the words or even rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
-        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
-        "question": "Identify and correct a common mistake relating to evidence in this lesson.",
-        "sample_answer": "Common error: Avoid quoting a clue that does not actually support the conclusion. Correction: Conclusion: shop is closing or closed. Evidence: sign and lights, not a guess about the worker's mood.",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with fact, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Do not call an inferred feeling a stated fact when the text never names it. Correction: Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper. Why: the correction restores accurate use of fact.",
         "type": "short_answer"
       }
     ],
@@ -224,15 +224,15 @@
     "teach_steps": [
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying fact independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying fact independently."
           ],
-          "question": "Which is the strongest next step when learning to separate what the text says from what you infer?",
+          "question": "Which choice best shows accurate use of this idea about fact?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nText: \"Nia wiped her muddy shoes before entering.\" Fact: shoes were muddy and she wiped them. Inference: she wanted to avoid making the floor dirty. The text does not directly state that reason.\n\nYOUR SMALL TRY\nInfer why \"Ari reached for a jumper when the wind grew sharp\".\n\nCOMPARE AND CORRECT\nAri likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper.",
@@ -282,15 +282,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying inference independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying inference independently."
           ],
-          "question": "Which is the strongest next step when learning to gather more than one useful clue?",
+          "question": "Which choice best shows accurate use of this idea about fact?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"The empty lunchbox rattled. Jax looked at the clock and sighed.\" I infer Jax is hungry or disappointed. An empty box, clock-check and sigh together support the idea.\n\nYOUR SMALL TRY\nWhat might \"Suri checked the road twice and kept holding her envelope\" suggest?\n\nCOMPARE AND CORRECT\nShe may be anxious about delivering something or waiting for someone. Both behaviours suggest concern, but the text is not specific.",
@@ -309,14 +309,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
             "Use the example and explain the clue or language choice before trying evidence independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
             "Ignore the task and choose an unrelated detail."
           ],
-          "question": "Which is the strongest next step when learning to explain the bridge between evidence and conclusion?",
+          "question": "Which choice best shows accurate use of this idea about fact?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"The grass glittered white at dawn.\" I infer frost is possible because white glitter on early morning grass often comes from ice crystals in cold weather. But it could be another source; I need more context.\n\nYOUR SMALL TRY\nComplete: \"I think the shop is closing because the sign says CLOSED and the worker turns the lights off.\"\n\nCOMPARE AND CORRECT\nConclusion: shop is closing or closed. Evidence: sign and lights, not a guess about the worker's mood.",
@@ -327,15 +327,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying interpretation independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to revise or limit an inference when evidence is weak?",
+          "question": "Which choice best shows accurate use of this idea about fact?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"The puppy hid under a chair.\" It may be frightened, tired or playing. If the next line mentions thunder, fear becomes a stronger inference.\n\nYOUR SMALL TRY\nA child smiles at a note. Name two possible feelings and what extra clue would help decide.\n\nCOMPARE AND CORRECT\nPride or amusement are plausible; reading the note or seeing the child's next action would help.",

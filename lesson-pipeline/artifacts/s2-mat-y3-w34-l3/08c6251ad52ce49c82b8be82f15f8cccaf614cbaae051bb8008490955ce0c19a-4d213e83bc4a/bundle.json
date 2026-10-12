@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "MA2-3DS-01",
+      "lesson_evidence": "A net is a flat arrangement of faces that can fold into a 3D object without overlaps. Cube nets use six squares in allowed arrangements.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "A net is a flat arrangement of faces that can fold into a 3D object without overlaps. Cube nets use six squares in allowed arrangements.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same method to a larger number or a new context, then compare two solution paths for accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nDecide which of two given nets could fold to a cube (teacher/book diagrams). Sketch one valid cube net of your own.\n\nFEEDBACK\nValid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces.\n\nWATCH FOR\nAny arrangement of six squares is not automatically a cube net.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nSort eight nets into possible/impossible for a cube. Draw two different valid cube nets and one rectangular-prism net. Cut and fold one if materials allow.\n\nWrite a short reflection naming one step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Mathematics",
+    "learning_intention": "A net is a flat arrangement of faces that can fold into a 3D object without overlaps. Cube nets use six squares in allowed arrangements.",
+    "lesson_number": 3,
+    "lesson_role": "Problem solving",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: place-value chart or number line"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "MA2-3DS-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Sort eight nets into possible/impossible for a cube. Draw two different valid cube nets and one rectangular-prism net. Cut and fold one if materials allow. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Valid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces. Reasoning: I used net by attending to fold and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Any arrangement of six squares is not automatically a cube net. Correction: Valid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces. Why: the correction restores accurate use of net.\n\nParent: Likely misconception: Any arrangement of six squares is not automatically a cube net. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses net with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with net, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "Valid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces. This matches the lesson skill for net.",
+        "options": [
+          "Valid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces.",
+          "Any arrangement of six squares is not automatically a cube net.",
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work."
+        ],
+        "question": "Decide which of two given nets could fold to a cube (teacher/book diagrams). Sketch one valid cube net of your own. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Any arrangement of six squares is not automatically a cube net. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "A net is a flat arrangement of faces that can fold into a 3D object without overlaps. Cube nets use six squares in allowed arrangements.",
+          "Valid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces.",
+          "Careful use of fold and explain why it matters with clear evidence.",
+          "Any arrangement of six squares is not automatically a cube net."
+        ],
+        "question": "Which statement is a common mistake when practising net?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and named fold and explain why it matters, not by copying the model.",
+        "options": [
+          "Apply the idea with new evidence and name the fold and explain why it matters used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact."
+        ],
+        "question": "A learner is practising net. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "options": [
+          "Any arrangement of six squares is not automatically a cube net.",
+          "Show the places, values or steps and say why each step is valid.",
+          "Write only a final number with no working.",
+          "Change digits to look neater without checking place value."
+        ],
+        "question": "Which working note best supports a mathematics answer about net?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The correct statement applies the method; the others break it.",
+        "options": [
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "Valid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces.",
+          "Any arrangement of six squares is not automatically a cube net."
+        ],
+        "question": "Using this lesson idea — A net is a flat arrangement of faces that can fold into a 3D object without overlaps. Cube nets use six… — which statement is true?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "options": [
+          "Average the two answers without checking either.",
+          "Recheck places, operations and whether the question asked for the quantity you computed.",
+          "Pick the longer-looking working automatically.",
+          "Delete units so the answers appear to match."
+        ],
+        "question": "Which error should you repair first if two methods disagree?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Transfer requires new numbers with the same method.",
+        "options": [
+          "Retype the worked model numbers as the answer.",
+          "Change only handwriting and keep the same numbers.",
+          "Copy the worked example and call it independent work.",
+          "Solve a fresh problem with different numbers and explain the method."
+        ],
+        "question": "Which practice choice shows transfer of net?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "options": [
+          "Just add more digits until it looks longer.",
+          "Name the exact place or step that failed, then show corrected working for net.",
+          "Praise neat handwriting even when the places are wrong.",
+          "Tell the learner to skip working and only keep the final digits."
+        ],
+        "question": "Which feedback comment is most useful after a mistake?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "question": "Solve one fresh problem that uses net with different numbers from the worked model. Show working and name the places or values that matter.",
+        "sample_answer": "Original response on new material: Valid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces. Reasoning: I used net by attending to fold and explain why it matters rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "question": "Describe one likely mistake with net, show corrected working, and say why the correction works.",
+        "sample_answer": "Common error: Any arrangement of six squares is not automatically a cube net. Correction: Valid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces. Why: the correction restores accurate use of net.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent working and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-mat-y3-w34-l3",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA mathematics alignment using verified outcome code wording where recorded in lesson-pipeline/sources; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise net.",
+        "Read the mission before you start calculating.",
+        "Keep the place or unit you are working with in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your working with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the place or distance that carries the method.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore place value or working.",
+        "Prefer accurate method over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your working and reason are both present.",
+        "Proofread digits, places and operation signs.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact place, value or distance before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key numbers.",
+        "Say what each number represents in the method.",
+        "A final answer alone is weaker than labelled working."
+      ],
+      "teach2": [
+        "Compare a weak attempt with stronger working.",
+        "Change the value or method, not only how neat it looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose fresh numbers that still use the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original working and a short reason.",
+        "Save work that shows the skill on new numbers."
+      ]
+    },
+    "subject": "Measurement and Space",
+    "success_criteria": [
+      "I can use net with a specific example from this lesson.",
+      "I can identify fold and explain why it matters.",
+      "I can practise cube independently on a new prompt.",
+      "I can notice prism needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "A net is a flat arrangement of faces that can fold into a 3D object without overlaps. Cube nets use six squares in allowed arrangements. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A net is a flat arrangement of faces that can fold into a 3D object without overlaps. Cube nets use six squares in allowed arrangements.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding.",
+            "A guess with no working."
+          ],
+          "question": "Which choice best shows accurate use of this idea about net?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nA row of six squares cannot fold into a cube (it wraps with gaps/overlaps). A cross of five squares with one attached to the side can work as a cube net.\n\nTRY FIRST\nDecide which of two given nets could fold to a cube (teacher/book diagrams). Sketch one valid cube net of your own.\n\nFEEDBACK\nValid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces.",
+        "explain": "A net is a flat arrangement of faces that can fold into a 3D object without overlaps. Cube nets use six squares in allowed arrangements.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Any arrangement of six squares is not automatically a cube net. Correct the value or method, not just the appearance of the digits.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Net idea for a cube.",
+            "caption": "Not every six-square layout works.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Net</text><text x=\"28\" y=\"78\">flat faces ready to fold</text><text x=\"358\" y=\"42\">Cube</text><text x=\"358\" y=\"78\">six squares allowed ways</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which number or place matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the places, values or distances that carry the method before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: A row of six squares cannot fold into a cube (it wraps with gaps/overlaps). A cross of five squares with one attached to Then write your own working.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which number or place matters most.\nJuno: Name the places, values or distances that carry the method before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: A row of six squares cannot fold into a cube (it wraps with gaps/overlaps). A cross of five squares with one attached to Then write your own working."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding.",
+            "A guess with no working."
+          ],
+          "question": "Which choice best shows accurate use of this idea about net?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nA row of six squares cannot fold into a cube (it wraps with gaps/overlaps). A cross of five squares with one attached to the side can work as a cube net. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
+        "explain": "Make the method visible: name the values, places or steps you used and say why that step is valid.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only the final answer without working does not show the method. Correct the value or method, not just the appearance of the digits.",
+        "title": "Show the working",
+        "visual": [
+          {
+            "alt": "Possible vs impossible cube nets.",
+            "caption": "Fold to test when you can.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Valid</text><text x=\"28\" y=\"78\">cross-style net</text><text x=\"358\" y=\"42\">Invalid</text><text x=\"358\" y=\"78\">long row of six</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A guess with no working.",
+            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about net?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nAny arrangement of six squares is not automatically a cube net. Here is a more productive model: A row of six squares cannot fold into a cube (it wraps with gaps/overlaps). A cross of five squares with one attached to the side can work as a cube net.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nValid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the answer without repairing the method does not fix the error. Any arrangement of six squares is not automatically a cube net. Correct the value or method, not just the appearance of the digits.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A guess with no working.",
+            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about net?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nA net is a flat arrangement of faces that can fold into a 3D object without overlaps. Cube nets use six squares in allowed arrangements. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",
+        "explain": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new numbers. Correct the value or method, not just the appearance of the digits.",
+        "title": "Transfer to a new problem"
+      }
+    ],
+    "title": "Year 3, Week 34, Lesson 3: Nets of cubes and prisms",
+    "unit_number": 9,
+    "unit_title": "Shapes, objects, angles and position",
+    "week": 34,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nA row of six squares cannot fold into a cube (it wraps with gaps/overlaps). A cross of five squares with one attached to the side can work as a cube net.\n\nWrite what makes this example accurate, naming the places, values or distances used.",
+    "worked_visuals": [
+      {
+        "alt": "Net idea for a cube.",
+        "caption": "Not every six-square layout works.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Net</text><text x=\"28\" y=\"78\">flat faces ready to fold</text><text x=\"358\" y=\"42\">Cube</text><text x=\"358\" y=\"78\">six squares allowed ways</text></g></svg>"
+      },
+      {
+        "alt": "Possible vs impossible cube nets.",
+        "caption": "Fold to test when you can.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Valid</text><text x=\"28\" y=\"78\">cross-style net</text><text x=\"358\" y=\"42\">Invalid</text><text x=\"358\" y=\"78\">long row of six</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Decide which of two given nets could fold to a cube (teacher/book diagrams). Sketch one valid cube net of your own."
+      ],
+      "independent_inputs": [
+        "Sort eight nets into possible/impossible for a cube. Draw two different valid cube nets and one rectangular-prism net. Cut and fold one if materials allow."
+      ],
+      "model_inputs": [
+        "A row of six squares cannot fold into a cube (it wraps with gaps/overlaps). A cross of five squares with one attached to the side can work as a cube net."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Valid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Decide which of two given nets could fold to a cube (teacher/book diagrams). Sketch one valid cube net of your own.",
+        "misconception": "Any arrangement of six squares is not automatically a cube net.",
+        "model": "A row of six squares cannot fold into a cube (it wraps with gaps/overlaps). A cross of five squares with one attached to the side can work as a cube net.",
+        "rule": "A net is a flat arrangement of faces that can fold into a 3D object without overlaps. Cube nets use six squares in allowed arrangements.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The most useful working names the quantities and the reason for each step, not only the final answer.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Write the key numbers from the model and say what each one represents in the method.",
+        "misconception": "Writing only the final answer without working does not show the method.",
+        "model": "A row of six squares cannot fold into a cube (it wraps with gaps/overlaps). A cross of five squares with one attached to the side can work as a cube net. Look at each number, place or distance that carries the method.",
+        "rule": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "Valid nets fold to six faces meeting correctly; invalid ones leave overlaps or missing faces.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Describe why the warned-against approach gives the wrong value or meaning, then write corrected working.",
+        "misconception": "Changing the answer without repairing the method does not fix the error. Any arrangement of six squares is not automatically a cube net.",
+        "model": "Any arrangement of six squares is not automatically a cube net. Here is a more productive model: A row of six squares cannot fold into a cube (it wraps with gaps/overlaps). A cross of five squares with one attached to the side can work as a cube net.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The new problem should use the same method as the model, but contain different numbers.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Solve one fresh problem that uses the same skill and write a short reason for your answer.",
+        "misconception": "Repeating the worked example cannot show transfer to new numbers.",
+        "model": "A net is a flat arrangement of faces that can fold into a 3D object without overlaps. Cube nets use six squares in allowed arrangements. Now choose different numbers to show you can transfer the method.",
+        "rule": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Net idea for a cube.",
+        "teaches": "Not every six-square layout works."
+      },
+      {
+        "alt": "Possible vs impossible cube nets.",
+        "teaches": "Fold to test when you can."
+      }
+    ]
+  }
+}

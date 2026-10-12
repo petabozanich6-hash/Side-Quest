@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-OLC-01"
     ],
-    "parent_notes": "Parent: Marking guidance: Check the retell keeps Ruby, wet notebook, response and return. Record oral performance where possible; spelling in notes is not the oral-language target. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: Original: \"Luca carried a bag of apples. A handle broke on the bridge. Luca gathered the apples with a friend and tied the bag.\" Retell: \"Luca dropped apples when his bag broke, then fixed it with help.\"\n\nParent: Written model 2: Common error: Do not add details the original never gave, such as naming a stranger who did not appear. Correction: Example: \"When it began raining, the children rushed somewhere dry.\" The meaning remains.\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Read this passage twice: \"In the afternoon, Ruby found a wet notebook on the bus seat. She dried it at home and recognised a name on the cover. The next morning, she returned it to its owner at school.\" Write four cue wo Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: The broken bag creates the problem and leads to the actions; the shoe colour does not explain the plot. Reasoning: I used retell by attending to sequence and point to the words or event rather than copying the worked model.\n\nParent: Written model 2: Common error: Retelling is not copying every sentence word-for-word. Correction: The broken bag creates the problem and leads to the actions; the shoe colour does not explain the plot. Why: the correction restores accurate use of retell.\n\nParent: Likely misconception: Retelling is not copying every sentence word-for-word. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating retell on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with retell, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -42,113 +42,113 @@
     "printable_resource": null,
     "quiz": [
       {
-        "correct_index": 0,
-        "explanation": "A retell keeps the main character, problem, important actions and outcome. It does not need every decorative detail. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "correct_index": 1,
+        "explanation": "The broken bag creates the problem and leads to the actions; the shoe colour does not explain the plot. This matches the lesson skill for retell.",
         "options": [
-          "A retell keeps the main character, problem, important actions and outcome. It does not need every decorative detail.",
-          "Retelling is not copying every sentence word-for-word.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
-        ],
-        "question": "Which idea is taught in the stage \"Listen for the important events\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Use first, next, then and finally only when they match what happened. A wrong order changes meaning. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Use first, next, then and finally only when they match what happened. A wrong order changes meaning.",
-          "Do not begin a retell with the resolution and leave the listener wondering why.",
-          "Copy the model word-for-word and call that independent work.",
-          "Treat a missing detail as a stated fact."
-        ],
-        "question": "Which idea is taught in the stage \"Put the events in logical sequence\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Paraphrasing shows understanding. Keep the same meaning while changing how you explain it. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Paraphrasing shows understanding. Keep the same meaning while changing how you explain it.",
-          "Do not add details the original never gave, such as naming a stranger who did not appear.",
-          "Treat a missing detail as a stated fact.",
-          "Skip the prompt because the first idea sounded good."
-        ],
-        "question": "Which idea is taught in the stage \"Speak in your own words\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Adjust pace, volume and emphasis to show the important parts; then ask the listener whether your retell made sense. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Adjust pace, volume and emphasis to show the important parts; then ask the listener whether your retell made sense.",
-          "A loud voice is not automatically clear; pace and meaningful pauses help comprehension.",
-          "Skip the prompt because the first idea sounded good.",
-          "Ignore the words and invent a more exciting event."
-        ],
-        "question": "Which idea is taught in the stage \"Use expression and check listener understanding\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "The broken bag creates the problem and leads to the actions; the shoe colour does not explain the plot. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
-        "options": [
+          "Copy the worked example and call it independent work.",
           "The broken bag creates the problem and leads to the actions; the shoe colour does not explain the plot.",
           "Retelling is not copying every sentence word-for-word.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Ignore the task and invent an unrelated answer."
         ],
-        "question": "After trying \"Which matters more: the colour of Luca's shoes or the broken bag? Explain.\", which feedback is most useful?",
+        "question": "Order: \"The map was found; Priya looked under the bed; Priya lost the map.\" Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Priya lost the map; looked under the bed; found it. The search responds to the loss. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "Retelling is not copying every sentence word-for-word. That misconception weakens accuracy; the other choices align with the lesson idea.",
         "options": [
-          "Priya lost the map; looked under the bed; found it. The search responds to the loss.",
-          "Do not begin a retell with the resolution and leave the listener wondering why.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Retelling is not copying every sentence word-for-word.",
+          "Retell a story aloud using essential events, connecting words and a clear voice.",
+          "The broken bag creates the problem and leads to the actions; the shoe colour does not explain the plot.",
+          "Careful use of sequence and point to the words or event with clear evidence."
         ],
-        "question": "After trying \"Order: \"The map was found; Priya looked under the bed; Priya lost the map.\"\", which feedback is most useful?",
+        "question": "Which statement is a common mistake when practising retell?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and named sequence and point to the words or event, not by copying the model.",
+        "options": [
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the sequence and point to the words or event used."
+        ],
+        "question": "A learner is practising retell. Which approach best shows understanding?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Example: \"When it began raining, the children rushed somewhere dry.\" The meaning remains. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries retell.",
         "options": [
-          "Example: \"When it began raining, the children rushed somewhere dry.\" The meaning remains.",
-          "Do not add details the original never gave, such as naming a stranger who did not appear.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Point to exact words in the sentence that show retell and say what they do.",
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "Retelling is not copying every sentence word-for-word."
         ],
-        "question": "After trying \"Retell \"The children hurried towards shelter when rain started\" in your own word\", which feedback is most useful?",
+        "question": "Read: \"In the dusty shed, Lila oiled the bike chain before the race.\" Which choice best uses retell from this lesson?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Pause after introducing the broken handle and before the solution. State the problem and outcome clearly. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 1,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
         "options": [
-          "Pause after introducing the broken handle and before the solution. State the problem and outcome clearly.",
-          "A loud voice is not automatically clear; pace and meaningful pauses help comprehension.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Copy the worked example and call it independent work.",
+          "The broken bag creates the problem and leads to the actions; the shoe colour does not explain the plot.",
+          "Retelling is not copying every sentence word-for-word.",
+          "Ignore the task and invent an unrelated answer."
         ],
-        "question": "After trying \"Retell the apple story in three sentences and choose where to pause for a listen\", which feedback is most useful?",
+        "question": "Which statement correctly applies the lesson idea about retell?",
         "type": "multiple_choice"
       },
       {
-        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
-        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
-        "question": "Use your own example to demonstrate retell and explain the evidence supporting your choice.",
-        "sample_answer": "Original demonstration: Original: \"Luca carried a bag of apples. A handle broke on the bridge. Luca gathered the apples with a friend and tied the bag.\" Retell: \"Luca dropped apples when his bag broke, then fixed it with help.\"",
+        "correct_index": 2,
+        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "options": [
+          "Copy a model sentence from another story unchanged.",
+          "Treat a missing detail as a proven fact.",
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue."
+        ],
+        "question": "In a new text, what should you do first to practise sequence and point to the words or event?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "options": [
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
+        ],
+        "question": "Which revision actually repairs meaning?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "Change fonts and claim the work is new.",
+          "Retelling is not copying every sentence word-for-word.",
+          "Use a fresh sentence or text and explain one precise choice about retell.",
+          "Retype the worked model as the final answer."
+        ],
+        "question": "Which response shows transfer of retell to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating retell on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: The broken bag creates the problem and leads to the actions; the shoe colour does not explain the plot. Reasoning: I used retell by attending to sequence and point to the words or event rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
-        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
-        "question": "Identify and correct a common mistake relating to paraphrase in this lesson.",
-        "sample_answer": "Common error: Do not add details the original never gave, such as naming a stranger who did not appear. Correction: Example: \"When it began raining, the children rushed somewhere dry.\" The meaning remains.",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with retell, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Retelling is not copying every sentence word-for-word. Correction: The broken bag creates the problem and leads to the actions; the shoe colour does not explain the plot. Why: the correction restores accurate use of retell.",
         "type": "short_answer"
       }
     ],
@@ -224,15 +224,15 @@
     "teach_steps": [
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying retell independently.",
-            "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying retell independently.",
+            "Copy every sentence exactly without explaining it."
           ],
-          "question": "Which is the strongest next step when learning to listen for the important events?",
+          "question": "Which choice best shows accurate use of this idea about retell?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nOriginal: \"Luca carried a bag of apples. A handle broke on the bridge. Luca gathered the apples with a friend and tied the bag.\" Retell: \"Luca dropped apples when his bag broke, then fixed it with help.\"\n\nYOUR SMALL TRY\nWhich matters more: the colour of Luca's shoes or the broken bag? Explain.\n\nCOMPARE AND CORRECT\nThe broken bag creates the problem and leads to the actions; the shoe colour does not explain the plot.",
@@ -283,14 +283,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
             "Use the example and explain the clue or language choice before trying sequence independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
             "Ignore the task and choose an unrelated detail."
           ],
-          "question": "Which is the strongest next step when learning to put the events in logical sequence?",
+          "question": "Which choice best shows accurate use of this idea about retell?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nFirst the handle breaks. Next apples scatter. Then Luca and a friend collect them. Finally they repair the bag. If the repair came first, it would not explain the problem.\n\nYOUR SMALL TRY\nOrder: \"The map was found; Priya looked under the bed; Priya lost the map.\"\n\nCOMPARE AND CORRECT\nPriya lost the map; looked under the bed; found it. The search responds to the loss.",
@@ -308,15 +308,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying paraphrase independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to speak in your own words?",
+          "question": "Which choice best shows accurate use of this idea about retell?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nText: \"The frightened kitten squeezed beneath the veranda.\" My retell: \"The scared kitten hid under the veranda.\" The same event remains true.\n\nYOUR SMALL TRY\nRetell \"The children hurried towards shelter when rain started\" in your own words.\n\nCOMPARE AND CORRECT\nExample: \"When it began raining, the children rushed somewhere dry.\" The meaning remains.",
@@ -327,15 +327,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying expression independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to use expression and check listener understanding?",
+          "question": "Which choice best shows accurate use of this idea about retell?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nI slow down at \"the bag broke\", pause, then say what Luca did. I ask \"What was Luca's problem?\" If the listener cannot answer, I include the missing detail.\n\nYOUR SMALL TRY\nRetell the apple story in three sentences and choose where to pause for a listener.\n\nCOMPARE AND CORRECT\nPause after introducing the broken handle and before the solution. State the problem and outcome clearly.",

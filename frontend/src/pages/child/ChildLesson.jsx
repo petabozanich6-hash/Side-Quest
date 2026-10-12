@@ -242,8 +242,12 @@ export default function ChildLesson() {
     quizShortAnswers
   ]);
 
-  const mark = (key) => (value) =>
+  // Only persist boolean stage completion. Ignore React synthetic events if a
+  // caller accidentally passes onClick={mark("x")} instead of () => mark("x")(true).
+  const mark = (key) => (value) => {
+    if (value !== true && value !== false) return;
     setDone((d) => (d[key] === value ? d : { ...d, [key]: value }));
+  };
 
   const uploadFile = async (file, setter) => {
     setUploading(true);

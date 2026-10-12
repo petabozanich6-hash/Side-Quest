@@ -34,7 +34,7 @@
     "outcome_codes": [
       "HS2-HIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose one day of significance. Read two sources with different views and record who said what. Write a respectful summary and one question you still have. Ask an adult to read it. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original demonstration: Example: on a day of significance, one source says it is a day of celebration for a community group. Another source from a First Nations organisation says it is a day of mourning. The student records both with sources and writes \"Some people... while others...\" without judging either.\n\nParent: Written model 2: Common error: Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking. Correction: For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\"\n\nParent: Likely misconception: Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking. Keep sample answers out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose one day of significance. Read two sources with different views and record who said what. Write a respectful summary and one question you still have. Ask an adult to read it. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\" Reasoning: I used perspective by attending to listen and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking. Correction: For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\" Why: the correction restores accurate use of perspective.\n\nParent: Likely misconception: Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating perspective on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with perspective, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -43,113 +43,113 @@
     "printable_resource": null,
     "quiz": [
       {
-        "correct_index": 0,
-        "explanation": "A perspective is how a person sees an event based on their experiences. The same day can mean different things to different people. To explore perspectives respectfully, listen, use evidence from different sources, avoid saying one view is simply wrong and say when you need to learn more. The other choices avoid explaining the actual strategy.",
+        "correct_index": 3,
+        "explanation": "For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\" This matches the lesson skill for perspective.",
         "options": [
-          "A perspective is how a person sees an event based on their experiences. The same day can mean different things to different people. To explore perspectives respectfully, listen, use evidence from different sources, avoid saying one view is simply wrong and say when you need to learn more.",
           "Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking.",
-          "Ignore the source and invent a more exciting story.",
-          "Copy the model places and call that independent work."
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\""
         ],
-        "question": "Which idea is taught in the stage \"Understand and model\"?",
+        "question": "Write one sentence with \"Some people believe... while others believe...\" for an event with more than one view. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. The other choices avoid explaining the actual strategy.",
+        "correct_index": 1,
+        "explanation": "Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking. That misconception weakens accuracy; the other choices align with the lesson idea.",
         "options": [
-          "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
-          "Writing only a final label without evidence does not show HSIE thinking.",
-          "Copy the model places and call that independent work.",
-          "Treat a missing fact as if it were recorded in a source."
+          "Careful use of listen and explain why it matters with clear evidence.",
+          "Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking.",
+          "A perspective is how a person sees an event based on their experiences. The same day can mean different things to different people. To explore perspectives…",
+          "For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\""
         ],
-        "question": "Which idea is taught in the stage \"Show the evidence\"?",
+        "question": "Which statement is a common mistake when practising perspective?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. The other choices avoid explaining the actual strategy.",
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and named listen and explain why it matters, not by copying the model.",
         "options": [
-          "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
-          "Changing the wording without repairing the evidence does not fix the error. Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking.",
-          "Treat a missing fact as if it were recorded in a source.",
-          "Skip respectful protocols because the first idea looked neat."
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the listen and explain why it matters used.",
+          "Repeat the worked example wording with no new evidence."
         ],
-        "question": "Which idea is taught in the stage \"Test a misconception\"?",
+        "question": "A learner is practising perspective. Which approach best shows understanding?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. The other choices avoid explaining the actual strategy.",
-        "options": [
-          "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-          "Repeating the worked example cannot show transfer to new evidence.",
-          "Skip respectful protocols because the first idea looked neat.",
-          "Ignore the source and invent a more exciting story."
-        ],
-        "question": "Which idea is taught in the stage \"Transfer to a new inquiry\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\" Useful feedback uses the original sources and method.",
+        "explanation": "For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\" uses sources and places appropriately for this lesson.",
         "options": [
           "For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\"",
           "Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work."
         ],
-        "question": "After trying \"Write one sentence with \"Some people believe... while others believe...\" for an \", which feedback is most useful?",
+        "question": "Which response best shows careful thinking about perspective?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Strong answers name specific evidence and what it shows.",
+        "options": [
+          "Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking.",
+          "Name a specific source, cue or example and say what it shows about perspective.",
+          "Make a bigger claim without naming any source or cue.",
+          "Copy a classmate’s sentence with no local detail."
+        ],
+        "question": "Which habit strengthens evidence about listen and explain why it matters?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "options": [
+          "Treat a missing detail as a proven fact.",
+          "Ignore the task and invent an unrelated answer.",
+          "Example: on a day of significance, one source says it is a day of celebration for a community group. Another source from a First Nations…",
+          "Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking."
+        ],
+        "question": "Using this lesson idea — A perspective is how a person sees an event based on their experiences. The same day can mean different… — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The most useful record names the evidence and the reason it supports the claim, not only a label. Useful feedback uses the original sources and method.",
+        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
         "options": [
-          "The most useful record names the evidence and the reason it supports the claim, not only a label.",
-          "Writing only a final label without evidence does not show HSIE thinking.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Invent missing details to make the answer sound complete.",
+          "Ignore safety or cultural protocols to finish faster.",
+          "Treat every online claim as equally reliable."
         ],
-        "question": "After trying \"List the key observations, sources or steps from the model and say what each one\", which feedback is most useful?",
+        "question": "Which action shows respect and accuracy together?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\" Useful feedback uses the original sources and method.",
+        "correct_index": 1,
+        "explanation": "Independence requires a new example that still uses the skill.",
         "options": [
-          "For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\"",
-          "Changing the wording without repairing the evidence does not fix the error. Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking.",
+          "Choose one day of significance. Read two sources with different views and record who said what. Write a respectful summary and one question you…",
+          "Retype the worked example with no new example.",
+          "Copy the worked example and call it independent work."
         ],
-        "question": "After trying \"Describe why the warned-against claim fails, then write a corrected claim with e\", which feedback is most useful?",
+        "question": "Which task best shows independent use of perspective?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "The new example should use the same HSIE idea as the model, but contain different evidence. Useful feedback uses the original sources and method.",
-        "options": [
-          "The new example should use the same HSIE idea as the model, but contain different evidence.",
-          "Repeating the worked example cannot show transfer to new evidence.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
-        ],
-        "question": "After trying \"Inquire into or describe one fresh example that uses the same skill and write a \", which feedback is most useful?",
-        "type": "multiple_choice"
-      },
-      {
-        "explanation": "Independent evidence, not repetition of the worked model, demonstrates the skill.",
-        "marking_guide": "Require independently produced relevant evidence with accurate reasoning and named sources or places.",
-        "question": "Inquire into or describe a fresh example that uses the central skill. Show evidence and name the sources or places that matter.",
-        "sample_answer": "Original demonstration: Example: on a day of significance, one source says it is a day of celebration for a community group. Another source from a First Nations organisation says it is a day of mourning. The student records both with sources and writes \"Some people... while others...\" without judging either.",
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating perspective on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\" Reasoning: I used perspective by attending to listen and explain why it matters rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "A correction needs to change the claim or evidence, not just make the notes longer.",
-        "marking_guide": "Require an actual misconception plus corrected claim and an evidence-linked reason.",
-        "question": "Name one likely misconception for this HSIE topic, correct it and say why the correction works.",
-        "sample_answer": "Common error: Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking. Correction: For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\"",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with perspective, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Choosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking. Correction: For example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\" Why: the correction restores accurate use of perspective.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,15 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "A perspective is how a person sees an event based on their experiences. The same day can mean different things to different people. To explore perspectives respectfully, listen, use evidence from different sources, avoid saying one view is simply wrong and say when you need to learn more. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "A perspective is how a person sees an event based on their experiences. The same day can mean different things to different people. To explore perspectives respectfully, listen, use evidence from different sources, avoid saying one view is simply wrong and say when you need to…",
           "options": [
             "A perspective is how a person sees an event based on their experiences. The same day can mean different things to different people. To explore perspectives respectfully, listen, use evidence from different sources, avoid saying one view is simply wrong and say when you need to learn more.",
             "A claim unrelated to the source or place.",
             "An answer copied without understanding.",
             "A guess with no evidence."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about perspective?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: on a day of significance, one source says it is a day of celebration for a community group. Another source from a First Nations organisation says it is a day of mourning. The student records both with sources and writes \"Some people... while others...\" without judging either.\n\nTRY FIRST\nWrite one sentence with \"Some people believe... while others believe...\" for an event with more than one view.\n\nFEEDBACK\nFor example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\"",
         "explain": "A perspective is how a person sees an event based on their experiences. The same day can mean different things to different people. To explore perspectives respectfully, listen, use evidence from different sources, avoid saying one view is simply wrong and say when you need to learn more.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
@@ -282,15 +283,16 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task.",
+          "correct_index": 1,
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
           "options": [
+            "A guess with no evidence.",
             "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
             "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "An answer copied without understanding."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about perspective?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: on a day of significance, one source says it is a day of celebration for a community group. Another source from a First Nations organisation says it is a day of mourning. The student records both with sources and writes \"Some people... while others...\" without judging either. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
         "explain": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
@@ -307,15 +309,16 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task.",
+          "correct_index": 3,
+          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
           "options": [
-            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
             "A claim unrelated to the source or place.",
             "An answer copied without understanding.",
-            "A guess with no evidence."
+            "A guess with no evidence.",
+            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about perspective?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nChoosing a side with no evidence, or treating one group's view as the only one, is not respectful historical thinking. Here is a more productive model: Example: on a day of significance, one source says it is a day of celebration for a community group. Another source from a First Nations organisation says it is a day of mourning. The student records both with sources and writes \"Some people... while others...\" without judging either.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nFor example: \"Some people celebrate 26 January as a national day, while others see it as a day to remember loss.\"",
         "explain": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
@@ -326,14 +329,15 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
           "options": [
             "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
             "A claim unrelated to the source or place.",
             "An answer copied without understanding.",
             "A guess with no evidence."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about perspective?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA perspective is how a person sees an event based on their experiences. The same day can mean different things to different people. To explore perspectives respectfully, listen, use evidence from different sources, avoid saying one view is simply wrong and say when you need to learn more. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",
         "explain": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",

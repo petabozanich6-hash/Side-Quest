@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-RECOM-01"
     ],
-    "parent_notes": "Parent: Marking guidance: Require accurate learner-friendly definitions, true examples, clear non-examples and a source note. Accept reasonable synonym choices if explained. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: \"The wombat digs a burrow\" is clearer than \"The animal makes a hole.\" Burrow means an underground shelter made or used by an animal.\n\nParent: Written model 2: Common error: A non-example helps prevent overgeneralising the term. Correction: Example: bee colony structure; non-example: a dog kennel.\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create a six-word glossary for a habitat report. For three of the words, write a plain-English definition, a correct example sentence and a non-example; note where you checked each meaning. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Hive (or nest, if carefully defined) names the structure; explain the term. Reasoning: I used technical by attending to definition and point to the words or eve rather than copying the worked model.\n\nParent: Written model 2: Common error: A complicated word is not automatically accurate. Correction: Hive (or nest, if carefully defined) names the structure; explain the term. Why: the correction restores accurate use of technical.\n\nParent: Likely misconception: A complicated word is not automatically accurate. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating technical on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with technical, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -43,112 +43,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "A precise subject word carries more information than a general placeholder. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "A precise subject word carries more information than a general placeholder.",
-          "A complicated word is not automatically accurate.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
-        ],
-        "question": "Which idea is taught in the stage \"Replace vague wording with an exact term\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Give a plain-English definition so a reader can follow the sentence. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Give a plain-English definition so a reader can follow the sentence.",
-          "Using a technical word without explanation can block understanding.",
-          "Copy the model word-for-word and call that independent work.",
-          "Treat a missing detail as a stated fact."
-        ],
-        "question": "Which idea is taught in the stage \"Define before you rely on the word\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "An example shows correct use; a non-example shows a misuse. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "An example shows correct use; a non-example shows a misuse.",
-          "A non-example helps prevent overgeneralising the term.",
-          "Treat a missing detail as a stated fact.",
-          "Skip the prompt because the first idea sounded good."
-        ],
-        "question": "Which idea is taught in the stage \"Give an example and a non-example\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Confirm that your definition matches a reliable information source. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Confirm that your definition matches a reliable information source.",
-          "Copying a wrong definition spreads the error.",
-          "Skip the prompt because the first idea sounded good.",
-          "Ignore the words and invent a more exciting event."
-        ],
-        "question": "Which idea is taught in the stage \"Check the term against a source\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Hive (or nest, if carefully defined) names the structure; explain the term. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "Hive (or nest, if carefully defined) names the structure; explain the term. This matches the lesson skill for technical.",
         "options": [
           "Hive (or nest, if carefully defined) names the structure; explain the term.",
           "A complicated word is not automatically accurate.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work."
         ],
-        "question": "After trying \"Replace \"thing the animal lives in\" when describing bees.\", which feedback is most useful?",
+        "question": "Define habitat in one short sentence for a Year 3 reader. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Example: Habitat is the place where a living thing usually lives and finds what it needs. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "A complicated word is not automatically accurate. That misconception weakens accuracy; the other choices align with the lesson idea.",
         "options": [
-          "Example: Habitat is the place where a living thing usually lives and finds what it needs.",
-          "Using a technical word without explanation can block understanding.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "A complicated word is not automatically accurate.",
+          "Use precise technical words and explain them in reader-friendly language.",
+          "Hive (or nest, if carefully defined) names the structure; explain the term.",
+          "Careful use of definition and point to the words or eve with clear evidence."
         ],
-        "question": "After trying \"Define habitat in one short sentence for a Year 3 reader.\", which feedback is most useful?",
+        "question": "Which statement is a common mistake when practising technical?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Example: bee colony structure; non-example: a dog kennel. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and named definition and point to the words or eve, not by copying the model.",
         "options": [
-          "Example: bee colony structure; non-example: a dog kennel.",
-          "A non-example helps prevent overgeneralising the term.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the definition and point to the words or eve used."
         ],
-        "question": "After trying \"Give an example and non-example for hive.\", which feedback is most useful?",
+        "question": "A learner is practising technical. Which approach best shows understanding?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "A glossary, museum fact sheet or approved dictionary can help. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 3,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries technical.",
         "options": [
-          "A glossary, museum fact sheet or approved dictionary can help.",
-          "Copying a wrong definition spreads the error.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "A complicated word is not automatically accurate.",
+          "Point to exact words in the sentence that show technical and say what they do."
         ],
-        "question": "After trying \"Name one place you could check the meaning of nocturnal.\", which feedback is most useful?",
+        "question": "Read: \"Under the pier, Sam found a locked tin and a dripping map.\" Which choice best uses technical from this lesson?",
         "type": "multiple_choice"
       },
       {
-        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
-        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
-        "question": "Use your own example to demonstrate technical and explain the evidence supporting your choice.",
-        "sample_answer": "Original demonstration: \"The wombat digs a burrow\" is clearer than \"The animal makes a hole.\" Burrow means an underground shelter made or used by an animal.",
+        "correct_index": 1,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "options": [
+          "Copy the worked example and call it independent work.",
+          "Hive (or nest, if carefully defined) names the structure; explain the term.",
+          "A complicated word is not automatically accurate.",
+          "Ignore the task and invent an unrelated answer."
+        ],
+        "question": "Which statement correctly applies the lesson idea about technical?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "options": [
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Treat a missing detail as a proven fact.",
+          "Locate a specific word, phrase or structural clue before deciding."
+        ],
+        "question": "In a new text, what should you do first to practise definition and point to the words or eve?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "options": [
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
+        ],
+        "question": "Which revision actually repairs meaning?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "Change fonts and claim the work is new.",
+          "A complicated word is not automatically accurate.",
+          "Use a fresh sentence or text and explain one precise choice about technical.",
+          "Retype the worked model as the final answer."
+        ],
+        "question": "Which response shows transfer of technical to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating technical on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Hive (or nest, if carefully defined) names the structure; explain the term. Reasoning: I used technical by attending to definition and point to the words or eve rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
-        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
-        "question": "Identify and correct a common mistake relating to example in this lesson.",
-        "sample_answer": "Common error: A non-example helps prevent overgeneralising the term. Correction: Example: bee colony structure; non-example: a dog kennel.",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with technical, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: A complicated word is not automatically accurate. Correction: Hive (or nest, if carefully defined) names the structure; explain the term. Why: the correction restores accurate use of technical.",
         "type": "short_answer"
       }
     ],
@@ -224,15 +224,15 @@
     "teach_steps": [
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying technical independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying technical independently."
           ],
-          "question": "Which is the strongest next step when learning to replace vague wording with an exact term?",
+          "question": "Which choice best shows accurate use of this idea about technical?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"The wombat digs a burrow\" is clearer than \"The animal makes a hole.\" Burrow means an underground shelter made or used by an animal.\n\nYOUR SMALL TRY\nReplace \"thing the animal lives in\" when describing bees.\n\nCOMPARE AND CORRECT\nHive (or nest, if carefully defined) names the structure; explain the term.",
@@ -282,15 +282,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying definition independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying definition independently."
           ],
-          "question": "Which is the strongest next step when learning to define before you rely on the word?",
+          "question": "Which choice best shows accurate use of this idea about technical?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"A burrow is an underground shelter. Wombats dig burrows for safety.\" Definition first, then use.\n\nYOUR SMALL TRY\nDefine habitat in one short sentence for a Year 3 reader.\n\nCOMPARE AND CORRECT\nExample: Habitat is the place where a living thing usually lives and finds what it needs.",
@@ -308,15 +308,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying example independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to give an example and a non-example?",
+          "question": "Which choice best shows accurate use of this idea about technical?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nExample: \"The bilby rests in a burrow.\" Non-example: calling a bird's high nest a burrow.\n\nYOUR SMALL TRY\nGive an example and non-example for hive.\n\nCOMPARE AND CORRECT\nExample: bee colony structure; non-example: a dog kennel.",
@@ -327,15 +327,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying glossary independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying glossary independently."
           ],
-          "question": "Which is the strongest next step when learning to check the term against a source?",
+          "question": "Which choice best shows accurate use of this idea about technical?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nI check burrow against a wildlife glossary before I lock the definition into my report.\n\nYOUR SMALL TRY\nName one place you could check the meaning of nocturnal.\n\nCOMPARE AND CORRECT\nA glossary, museum fact sheet or approved dictionary can help.",

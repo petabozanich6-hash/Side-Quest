@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-OLC-01"
     ],
-    "parent_notes": "Parent: Marking guidance: Assess cue brevity, oral reconstruction and accuracy check. Spelling in notes is not the target. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: Speaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs.\n\nParent: Written model 2: Common error: If you cannot rebuild the idea, your cues are too thin or unclear. Correction: \"Rain fills the creek and water flows towards the river.\"\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Ask an adult to read a new 100–150 word factual passage twice. Take 6–8 cue notes; deliver a 45-second oral summary; compare it with the passage and record one missing or inaccurate detail. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Topic: rainwater moving from creek towards river. Reasoning: I used listen by attending to cue and point to the words or events tha rather than copying the worked model.\n\nParent: Written model 2: Common error: Trying to write every word usually means missing the next idea. Correction: Topic: rainwater moving from creek towards river. Why: the correction restores accurate use of listen.\n\nParent: Likely misconception: Trying to write every word usually means missing the next idea. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating listen on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with listen, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -42,113 +42,113 @@
     "printable_resource": null,
     "quiz": [
       {
-        "correct_index": 0,
-        "explanation": "Good notes record the main subject and important steps or facts, not a full transcript. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "correct_index": 3,
+        "explanation": "Topic: rainwater moving from creek towards river. This matches the lesson skill for listen.",
         "options": [
-          "Good notes record the main subject and important steps or facts, not a full transcript.",
           "Trying to write every word usually means missing the next idea.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "Topic: rainwater moving from creek towards river."
         ],
-        "question": "Which idea is taught in the stage \"Catch the topic and a few key facts\"?",
+        "question": "Reduce this sentence to five cue words or fewer: \"Storm clouds gathered above the oval before the match.\" Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Cue notes are memory prompts. Spelling and full sentences are not required in the notes themselves. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "explanation": "Trying to write every word usually means missing the next idea. That misconception weakens accuracy; the other choices align with the lesson idea.",
         "options": [
-          "Cue notes are memory prompts. Spelling and full sentences are not required in the notes themselves.",
-          "Notes that look like a finished paragraph may be too slow for listening.",
-          "Copy the model word-for-word and call that independent work.",
-          "Treat a missing detail as a stated fact."
+          "Trying to write every word usually means missing the next idea.",
+          "Listen for the main topic and jot cue notes rather than copying every word.",
+          "Topic: rainwater moving from creek towards river.",
+          "Careful use of cue and point to the words or events tha with clear evidence."
         ],
-        "question": "Which idea is taught in the stage \"Use short cue words\"?",
+        "question": "Which statement is a common mistake when practising listen?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and named cue and point to the words or events tha, not by copying the model.",
+        "options": [
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the cue and point to the words or events tha used.",
+          "Repeat the worked example wording with no new evidence."
+        ],
+        "question": "A learner is practising listen. Which approach best shows understanding?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "After noting cues, say the ideas back in complete sentences to check understanding. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries listen.",
         "options": [
-          "After noting cues, say the ideas back in complete sentences to check understanding.",
-          "If you cannot rebuild the idea, your cues are too thin or unclear.",
-          "Treat a missing detail as a stated fact.",
-          "Skip the prompt because the first idea sounded good."
+          "Point to exact words in the sentence that show listen and say what they do.",
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "Trying to write every word usually means missing the next idea."
         ],
-        "question": "Which idea is taught in the stage \"Rebuild the meaning aloud\"?",
+        "question": "Read: \"After the blackout, Tess lit a candle and read the crumpled note.\" Which choice best uses listen from this lesson?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Check one detail you might have missed or changed after the oral summary. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "correct_index": 1,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
         "options": [
-          "Check one detail you might have missed or changed after the oral summary.",
-          "A confident summary can still contain an inaccurate detail.",
-          "Skip the prompt because the first idea sounded good.",
-          "Ignore the words and invent a more exciting event."
-        ],
-        "question": "Which idea is taught in the stage \"Compare with the original for accuracy\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Topic: rainwater moving from creek towards river. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
-        "options": [
+          "Copy the worked example and call it independent work.",
           "Topic: rainwater moving from creek towards river.",
           "Trying to write every word usually means missing the next idea.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Ignore the task and invent an unrelated answer."
         ],
-        "question": "After trying \"Listen for the topic in: \"Rain fills the creek; water flows downhill towards the\", which feedback is most useful?",
+        "question": "Which statement correctly applies the lesson idea about listen?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Example: storm clouds—oval—before match. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "Start from a specific textual clue, then explain its effect.",
         "options": [
-          "Example: storm clouds—oval—before match.",
-          "Notes that look like a finished paragraph may be too slow for listening.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Treat a missing detail as a proven fact."
         ],
-        "question": "After trying \"Reduce this sentence to five cue words or fewer: \"Storm clouds gathered above th\", which feedback is most useful?",
+        "question": "In a new text, what should you do first to practise cue and point to the words or events tha?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "\"Rain fills the creek and water flows towards the river.\" This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 1,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
         "options": [
-          "\"Rain fills the creek and water flows towards the river.\"",
-          "If you cannot rebuild the idea, your cues are too thin or unclear.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea.",
+          "Make the answer longer while keeping the same mistake."
         ],
-        "question": "After trying \"Rebuild a spoken sentence from the cues rain—creek—river.\", which feedback is most useful?",
+        "question": "Which revision actually repairs meaning?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Listen again for a number, order word or name you might have altered. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 3,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
         "options": [
-          "Listen again for a number, order word or name you might have altered.",
-          "A confident summary can still contain an inaccurate detail.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new.",
+          "Trying to write every word usually means missing the next idea.",
+          "Use a fresh sentence or text and explain one precise choice about listen."
         ],
-        "question": "After trying \"After a 45-second summary, name one check you will make against the passage.\", which feedback is most useful?",
+        "question": "Which response shows transfer of listen to new material?",
         "type": "multiple_choice"
       },
       {
-        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
-        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
-        "question": "Use your own example to demonstrate listen and explain the evidence supporting your choice.",
-        "sample_answer": "Original demonstration: Speaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs.",
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating listen on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Topic: rainwater moving from creek towards river. Reasoning: I used listen by attending to cue and point to the words or events tha rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
-        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
-        "question": "Identify and correct a common mistake relating to summary in this lesson.",
-        "sample_answer": "Common error: If you cannot rebuild the idea, your cues are too thin or unclear. Correction: \"Rain fills the creek and water flows towards the river.\"",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with listen, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Trying to write every word usually means missing the next idea. Correction: Topic: rainwater moving from creek towards river. Why: the correction restores accurate use of listen.",
         "type": "short_answer"
       }
     ],
@@ -224,15 +224,15 @@
     "teach_steps": [
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying listen independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to catch the topic and a few key facts?",
+          "question": "Which choice best shows accurate use of this idea about listen?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nSpeaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs.\n\nYOUR SMALL TRY\nListen for the topic in: \"Rain fills the creek; water flows downhill towards the river.\"\n\nCOMPARE AND CORRECT\nTopic: rainwater moving from creek towards river.",
@@ -282,15 +282,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying cue independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying cue independently."
           ],
-          "question": "Which is the strongest next step when learning to use short cue words?",
+          "question": "Which choice best shows accurate use of this idea about listen?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nI write \"rain—creek fills—downhill—river\" instead of copying the whole speech.\n\nYOUR SMALL TRY\nReduce this sentence to five cue words or fewer: \"Storm clouds gathered above the oval before the match.\"\n\nCOMPARE AND CORRECT\nExample: storm clouds—oval—before match.",
@@ -308,15 +308,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying summary independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying summary independently."
           ],
-          "question": "Which is the strongest next step when learning to rebuild the meaning aloud?",
+          "question": "Which choice best shows accurate use of this idea about listen?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nFrom eggs → tadpoles → legs I can say: \"Frogs start as eggs, become tadpoles and then grow legs.\"\n\nYOUR SMALL TRY\nRebuild a spoken sentence from the cues rain—creek—river.\n\nCOMPARE AND CORRECT\n\"Rain fills the creek and water flows towards the river.\"",
@@ -327,15 +327,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying accuracy independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to compare with the original for accuracy?",
+          "question": "Which choice best shows accurate use of this idea about listen?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nI notice I said \"instantly grow legs\" but the speaker said \"later develop legs,\" so I correct the timing.\n\nYOUR SMALL TRY\nAfter a 45-second summary, name one check you will make against the passage.\n\nCOMPARE AND CORRECT\nListen again for a number, order word or name you might have altered.",

@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-CWT-02"
     ],
-    "parent_notes": "Parent: Marking guidance: Require three headings, six checkable facts with sources named at title level, and a preview introduction. Full paragraphs are not required in this planning lesson. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: For a koala report I plan: classification, habitat, food and adaptations. Each heading holds related facts.\n\nParent: Written model 2: Common error: An introduction is not a full copy of every fact. Correction: The sentence should name the topics the headings will cover.\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose a NSW native animal. Plan three factual headings, list two verifiable facts per section with source titles, and draft an introduction stating what the report will explain. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Food; adaptations; habitat. Some overlap can be explained. Reasoning: I used heading by attending to fact and point to the words or events th rather than copying the worked model.\n\nParent: Written model 2: Common error: A report presents checked information, not an invented adventure. Correction: Food; adaptations; habitat. Some overlap can be explained. Why: the correction restores accurate use of heading.\n\nParent: Likely misconception: A report presents checked information, not an invented adventure. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating heading on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with heading, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -42,113 +42,113 @@
     "printable_resource": null,
     "quiz": [
       {
-        "correct_index": 0,
-        "explanation": "Report plans group related facts under headings such as habitat, food or adaptations. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "correct_index": 1,
+        "explanation": "Food; adaptations; habitat. Some overlap can be explained. This matches the lesson skill for heading.",
         "options": [
-          "Report plans group related facts under headings such as habitat, food or adaptations.",
+          "Copy the worked example and call it independent work.",
+          "Food; adaptations; habitat. Some overlap can be explained.",
           "A report presents checked information, not an invented adventure.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
+          "Ignore the task and invent an unrelated answer."
         ],
-        "question": "Which idea is taught in the stage \"Choose factual categories\"?",
+        "question": "Add one verifiable fact and a source title under Habitat for a wombat. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Under each heading, note facts you can check in a reliable source, with the source title. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "explanation": "A report presents checked information, not an invented adventure. That misconception weakens accuracy; the other choices align with the lesson idea.",
         "options": [
-          "Under each heading, note facts you can check in a reliable source, with the source title.",
-          "Unsupported claims do not belong in the plan.",
-          "Copy the model word-for-word and call that independent work.",
-          "Treat a missing detail as a stated fact."
+          "A report presents checked information, not an invented adventure.",
+          "Plan an information report by grouping facts under clear headings before drafting.",
+          "Food; adaptations; habitat. Some overlap can be explained.",
+          "Careful use of fact and point to the words or events th with clear evidence."
         ],
-        "question": "Which idea is taught in the stage \"List facts you can verify\"?",
+        "question": "Which statement is a common mistake when practising heading?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "The opening states what the report will explain without telling the whole content. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and named fact and point to the words or events th, not by copying the model.",
         "options": [
-          "The opening states what the report will explain without telling the whole content.",
-          "An introduction is not a full copy of every fact.",
-          "Treat a missing detail as a stated fact.",
-          "Skip the prompt because the first idea sounded good."
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the fact and point to the words or events th used.",
+          "Repeat the worked example wording with no new evidence."
         ],
-        "question": "Which idea is taught in the stage \"Draft an introduction that previews the report\"?",
+        "question": "A learner is practising heading. Which approach best shows understanding?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "If a fact sounds like a story event, move it out of the report plan. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "correct_index": 2,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries heading.",
         "options": [
-          "If a fact sounds like a story event, move it out of the report plan.",
-          "Reports and narratives have different jobs.",
-          "Skip the prompt because the first idea sounded good.",
-          "Ignore the words and invent a more exciting event."
+          "Say the writing is good without naming any words.",
+          "A report presents checked information, not an invented adventure.",
+          "Point to exact words in the sentence that show heading and say what they do.",
+          "Ignore the sentence and invent a more exciting event."
         ],
-        "question": "Which idea is taught in the stage \"Keep imagination out of the plan\"?",
+        "question": "Read: \"Beside the oval, Kai practised bowling until the sun slipped low.\" Which choice best uses heading from this lesson?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Food; adaptations; habitat. Some overlap can be explained. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
         "options": [
           "Food; adaptations; habitat. Some overlap can be explained.",
           "A report presents checked information, not an invented adventure.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work."
         ],
-        "question": "After trying \"Sort: eats eucalyptus; has sharp claws; lives in trees.\", which feedback is most useful?",
+        "question": "Which statement correctly applies the lesson idea about heading?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Example: lives in burrows — wildlife organisation page title. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 1,
+        "explanation": "Start from a specific textual clue, then explain its effect.",
         "options": [
-          "Example: lives in burrows — wildlife organisation page title.",
-          "Unsupported claims do not belong in the plan.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Treat a missing detail as a proven fact.",
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged."
         ],
-        "question": "After trying \"Add one verifiable fact and a source title under Habitat for a wombat.\", which feedback is most useful?",
+        "question": "In a new text, what should you do first to practise fact and point to the words or events th?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "The sentence should name the topics the headings will cover. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
         "options": [
-          "The sentence should name the topics the headings will cover.",
-          "An introduction is not a full copy of every fact.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
         ],
-        "question": "After trying \"Write a one-sentence introduction for a platypus report with three planned headi\", which feedback is most useful?",
+        "question": "Which revision actually repairs meaning?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Flew to the moon does not belong in a factual plan. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 3,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
         "options": [
-          "Flew to the moon does not belong in a factual plan.",
-          "Reports and narratives have different jobs.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new.",
+          "A report presents checked information, not an invented adventure.",
+          "Use a fresh sentence or text and explain one precise choice about heading."
         ],
-        "question": "After trying \"Remove the non-factual item from: mammal; eucalypt diet; flew to the moon.\", which feedback is most useful?",
+        "question": "Which response shows transfer of heading to new material?",
         "type": "multiple_choice"
       },
       {
-        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
-        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
-        "question": "Use your own example to demonstrate heading and explain the evidence supporting your choice.",
-        "sample_answer": "Original demonstration: For a koala report I plan: classification, habitat, food and adaptations. Each heading holds related facts.",
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating heading on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Food; adaptations; habitat. Some overlap can be explained. Reasoning: I used heading by attending to fact and point to the words or events th rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
-        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
-        "question": "Identify and correct a common mistake relating to source in this lesson.",
-        "sample_answer": "Common error: An introduction is not a full copy of every fact. Correction: The sentence should name the topics the headings will cover.",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with heading, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: A report presents checked information, not an invented adventure. Correction: Food; adaptations; habitat. Some overlap can be explained. Why: the correction restores accurate use of heading.",
         "type": "short_answer"
       }
     ],
@@ -224,15 +224,15 @@
     "teach_steps": [
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying heading independently.",
-            "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying heading independently.",
+            "Copy every sentence exactly without explaining it."
           ],
-          "question": "Which is the strongest next step when learning to choose factual categories?",
+          "question": "Which choice best shows accurate use of this idea about heading?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nFor a koala report I plan: classification, habitat, food and adaptations. Each heading holds related facts.\n\nYOUR SMALL TRY\nSort: eats eucalyptus; has sharp claws; lives in trees.\n\nCOMPARE AND CORRECT\nFood; adaptations; habitat. Some overlap can be explained.",
@@ -282,15 +282,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying fact independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying fact independently."
           ],
-          "question": "Which is the strongest next step when learning to list facts you can verify?",
+          "question": "Which choice best shows accurate use of this idea about heading?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nI write \"eats eucalypt leaves — Australian Museum fact sheet\" under Food.\n\nYOUR SMALL TRY\nAdd one verifiable fact and a source title under Habitat for a wombat.\n\nCOMPARE AND CORRECT\nExample: lives in burrows — wildlife organisation page title.",
@@ -308,15 +308,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying source independently.",
-            "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying source independently.",
+            "Copy every sentence exactly without explaining it."
           ],
-          "question": "Which is the strongest next step when learning to draft an introduction that previews the report?",
+          "question": "Which choice best shows accurate use of this idea about heading?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"This report explains where koalas live, what they eat and how their bodies help them survive.\"\n\nYOUR SMALL TRY\nWrite a one-sentence introduction for a platypus report with three planned headings.\n\nCOMPARE AND CORRECT\nThe sentence should name the topics the headings will cover.",
@@ -328,14 +328,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
             "Use the example and explain the clue or language choice before trying plan independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
             "Ignore the task and choose an unrelated detail."
           ],
-          "question": "Which is the strongest next step when learning to keep imagination out of the plan?",
+          "question": "Which choice best shows accurate use of this idea about heading?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"The koala made friends with a bird\" is narrative, not a factual heading note.\n\nYOUR SMALL TRY\nRemove the non-factual item from: mammal; eucalypt diet; flew to the moon.\n\nCOMPARE AND CORRECT\nFlew to the moon does not belong in a factual plan.",

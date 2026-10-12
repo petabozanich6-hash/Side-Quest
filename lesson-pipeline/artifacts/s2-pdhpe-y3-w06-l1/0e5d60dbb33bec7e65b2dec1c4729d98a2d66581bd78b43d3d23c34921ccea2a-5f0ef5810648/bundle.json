@@ -1,0 +1,435 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "PH2-MSP-01",
+      "lesson_evidence": "Running, jumping and landing are fundamental movement skills. Good running has bent arms swinging opposite to the legs, eyes forward and landing on the balls of the feet. For a safe jump, swing the arms, push off with both feet and land softly with bent knees, feet about shoulder-width apart and arms forward for balance. Warm up first, choose a clear, flat space and stop if anything hurts.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Running, jumping and landing are fundamental movement skills. Good running has bent arms swinging opposite to the legs, eyes forward and landing on the balls of the feet. For a safe jump, swing the arms, push off with both feet and land softly with bent knees, feet about shoulder-width apart and arms forward for balance. Warm up first, choose a clear, flat space and stop if anything hurts.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nMei jumps over a line, lands with straight legs and falls backwards. Write two cues that would fix her landing and say why they protect her body.\n\nFEEDBACK\nCues: 'bend your knees' and 'land with feet apart and arms forward'. Bent knees absorb the force like springs, and wide feet and forward arms keep balance. Stiff, straight legs send the impact into the knees and back.\n\nWATCH FOR\nThinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nSet up a safe, clear space with a start line. Practise ten standing jumps and a short run using your own cue words. Use a recording sheet to rate your technique (arms, knees, landing) from 1 to 3 and set one goal. Skip jumping if you have any pain.\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.",
+    "interactive_activities": null,
+    "learning_area": "PDHPE",
+    "learning_intention": "Running, jumping and landing are fundamental movement skills. Good running has bent arms swinging opposite to the legs, eyes forward and landing on the balls of the feet. For a safe jump, swing the arms, push off with both feet and land softly with bent knees, feet about shoulder-width apart and arms forward for balance. Warm up first, choose a clear, flat space and stop if anything hurts.",
+    "lesson_number": 1,
+    "lesson_role": "Learn and discuss",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Clear, safe movement space with an adult nearby for any physical activity",
+      "Optional: soft ball, cushion or water bottle"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "PH2-MSP-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Set up a safe, clear space with a start line. Practise ten standing jumps and a short run using your own cue words. Use a recording sheet to rate your technique (arms, knees, landing) from 1 to 3 and set one goal. Skip j Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original demonstration: Example cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apart, arms forward, hold still for two seconds'. Sasha jumps a chalk line, measures 90 cm and lands steadily with bent knees.\n\nParent: Written model 2: Common error: Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice. Correction: Cues: 'bend your knees' and 'land with feet apart and arms forward'. Bent knees absorb the force like springs, and wide feet and forward arms keep balance. Stiff, straight legs send the impact into the knees and back.\n\nParent: Likely misconception: Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice. Keep sample answers out of the child role.",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "Running, jumping and landing are fundamental movement skills. Good running has bent arms swinging opposite to the legs, eyes forward and landing on the balls of the feet. For a safe jump, swing the arms, push off with both feet and land softly with bent knees, feet about shoulder-width apart and arms forward for balance. Warm up first, choose a clear, flat space and stop if anything hurts. The other choices avoid explaining the actual strategy.",
+        "options": [
+          "Running, jumping and landing are fundamental movement skills. Good running has bent arms swinging opposite to the legs, eyes forward and landing on the balls of the feet. For a safe jump, swing the arms, push off with both feet and land softly with bent knees, feet about shoulder-width apart and arms forward for balance. Warm up first, choose a clear, flat space and stop if anything hurts.",
+          "Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice.",
+          "Ignore the safety rule because the first idea looked exciting.",
+          "Copy the example and call that independent work."
+        ],
+        "question": "Which idea is taught in the stage \"Understand and demonstrate\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. The other choices avoid explaining the actual strategy.",
+        "options": [
+          "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+          "Writing only a final label without a reason does not show PDHPE thinking.",
+          "Copy the example and call that independent work.",
+          "Treat a skipped permission or safety step as if it did not matter."
+        ],
+        "question": "Which idea is taught in the stage \"Show the reasoning\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. The other choices avoid explaining the actual strategy.",
+        "options": [
+          "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+          "Changing the wording without changing the choice does not fix the error. Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice.",
+          "Treat a skipped permission or safety step as if it did not matter.",
+          "Leave someone out because the game felt easier that way."
+        ],
+        "question": "Which idea is taught in the stage \"Test a misconception\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. The other choices avoid explaining the actual strategy.",
+        "options": [
+          "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+          "Repeating the worked example cannot show transfer to a new situation.",
+          "Leave someone out because the game felt easier that way.",
+          "Ignore the safety rule because the first idea looked exciting."
+        ],
+        "question": "Which idea is taught in the stage \"Transfer to a new situation\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Cues: 'bend your knees' and 'land with feet apart and arms forward'. Bent knees absorb the force like springs, and wide feet and forward arms keep balance. Stiff, straight legs send the impact into the knees and back. Useful feedback uses the original cues, rules and reasons.",
+        "options": [
+          "Cues: 'bend your knees' and 'land with feet apart and arms forward'. Bent knees absorb the force like springs, and wide feet and forward arms keep balance. Stiff, straight legs send the impact into the knees and back.",
+          "Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Mei jumps over a line, lands with straight legs and falls backwards. Write two c\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\". Useful feedback uses the original cues, rules and reasons.",
+        "options": [
+          "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+          "Writing only a final label without a reason does not show PDHPE thinking.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"List the key cues, rules or choices from the example and say what each one does \", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Cues: 'bend your knees' and 'land with feet apart and arms forward'. Bent knees absorb the force like springs, and wide feet and forward arms keep balance. Stiff, straight legs send the impact into the knees and back. Useful feedback uses the original cues, rules and reasons.",
+        "options": [
+          "Cues: 'bend your knees' and 'land with feet apart and arms forward'. Bent knees absorb the force like springs, and wide feet and forward arms keep balance. Stiff, straight legs send the impact into the knees and back.",
+          "Changing the wording without changing the choice does not fix the error. Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Describe why the warned-against choice does not work, then write a safer, kinder\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people. Useful feedback uses the original cues, rules and reasons.",
+        "options": [
+          "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+          "Repeating the worked example cannot show transfer to a new situation.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Describe or practise one fresh situation that uses the same skill and write a sh\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence, not repetition of the worked model, demonstrates the skill.",
+        "marking_guide": "Require independently produced relevant evidence with accurate reasoning and named cues, rules or choices.",
+        "question": "Describe or practise a fresh situation that uses the central skill. Name the cues, rules or choices that keep everyone safe and included.",
+        "sample_answer": "Original demonstration: Example cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apart, arms forward, hold still for two seconds'. Sasha jumps a chalk line, measures 90 cm and lands steadily with bent knees.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A correction needs to change the choice or strategy, not just make the answer longer.",
+        "marking_guide": "Require an actual misconception plus a corrected choice and a reason linked to safety, health or respect.",
+        "question": "Name one likely misconception or unsafe choice for this topic, correct it and say why the correction is safer, healthier or more respectful.",
+        "sample_answer": "Common error: Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice. Correction: Cues: 'bend your knees' and 'land with feet apart and arms forward'. Bent knees absorb the force like springs, and wide feet and forward arms keep balance. Stiff, straight legs send the impact into the knees and back.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-pdhpe-y3-w06-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending human review. Physical activities are optional, adult-supervised and adaptable; no child is required to share personal details.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise running technique.",
+        "Read the mission before you start moving or deciding.",
+        "Keep your own safety and everyone's inclusion in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not keep everyone safe and included."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the cue or rule that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore safety, consent or inclusion.",
+        "Prefer a reasoned, respectful choice over one that merely looks fun."
+      ],
+      "submit": [
+        "Confirm that your reasons and reflection are both present.",
+        "Proofread names, steps and safety words.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact cue, rule or choice before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key cues.",
+        "Say what each cue does for safety, health or friendship.",
+        "A final label alone is weaker than a stated reason."
+      ],
+      "teach2": [
+        "Compare an unsafe or unkind choice with a better one.",
+        "Change the choice or strategy, not only the words.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, game or situation that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original reasons and a short reflection.",
+        "Save work that shows the skill in a new situation."
+      ]
+    },
+    "subject": "Movement Skill and Performance",
+    "success_criteria": [
+      "I can use running technique with a specific example from this lesson.",
+      "I can identify jumping and explain why it matters.",
+      "I can practise a soft landing independently on a new prompt.",
+      "I can notice a safe space needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Running, jumping and landing are fundamental movement skills. Good running has bent arms swinging opposite to the legs, eyes forward and landing on the balls of the feet. For a safe jump, swing the arms, push off with both feet and land softly with bent knees, feet about shoulder-width apart and arms forward for balance. Warm up first, choose a clear, flat space and stop if anything hurts. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "Running, jumping and landing are fundamental movement skills. Good running has bent arms swinging opposite to the legs, eyes forward and landing on the balls of the feet. For a safe jump, swing the arms, push off with both feet and land softly with bent knees, feet about shoulder-width apart and arms forward for balance. Warm up first, choose a clear, flat space and stop if anything hurts.",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nExample cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apart, arms forward, hold still for two seconds'. Sasha jumps a chalk line, measures 90 cm and lands steadily with bent knees.\n\nTRY FIRST\nMei jumps over a line, lands with straight legs and falls backwards. Write two cues that would fix her landing and say why they protect her body.\n\nFEEDBACK\nCues: 'bend your knees' and 'land with feet apart and arms forward'. Bent knees absorb the force like springs, and wide feet and forward arms keep balance. Stiff, straight legs send the impact into the knees and back.",
+        "explain": "Running, jumping and landing are fundamental movement skills. Good running has bent arms swinging opposite to the legs, eyes forward and landing on the balls of the feet. For a safe jump, swing the arms, push off with both feet and land softly with bent knees, feet about shoulder-width apart and arms forward for balance. Warm up first, choose a clear, flat space and stop if anything hurts.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice. Change the choice or strategy, not just the wording.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "Running and landing cues.",
+            "caption": "Cues keep you balanced.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Run</text><text x=\"28\" y=\"78\">bent arms, eyes ahead</text><text x=\"358\" y=\"42\">Land</text><text x=\"358\" y=\"78\">soft knees, arms forward</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which cue or rule matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the cues, rules or choices that keep everyone safe and included before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apa Then write your own reasons.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which cue or rule matters most.\nJuno: Name the cues, rules or choices that keep everyone safe and included before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apa Then write your own reasons."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nExample cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apart, arms forward, hold still for two seconds'. Sasha jumps a chalk line, measures 90 cm and lands steadily with bent knees. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "explain": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without a reason does not show PDHPE thinking. Change the choice or strategy, not just the wording.",
+        "title": "Show the reasoning",
+        "visual": [
+          {
+            "alt": "Soft and stiff landings.",
+            "caption": "Bend the knees.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Soft</text><text x=\"28\" y=\"78\">bent knees absorb force</text><text x=\"358\" y=\"42\">Stiff</text><text x=\"358\" y=\"78\">straight legs jar the body</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nThinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice. Here is a more helpful example: Example cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apart, arms forward, hold still for two seconds'. Sasha jumps a chalk line, measures 90 cm and lands steadily with bent knees.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nCues: 'bend your knees' and 'land with feet apart and arms forward'. Bent knees absorb the force like springs, and wide feet and forward arms keep balance. Stiff, straight legs send the impact into the knees and back.",
+        "explain": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without changing the choice does not fix the error. Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice. Change the choice or strategy, not just the wording.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nRunning, jumping and landing are fundamental movement skills. Good running has bent arms swinging opposite to the legs, eyes forward and landing on the balls of the feet. For a safe jump, swing the arms, push off with both feet and land softly with bent knees, feet about shoulder-width apart and arms forward for balance. Warm up first, choose a clear, flat space and stop if anything hurts. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "explain": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new situation. Change the choice or strategy, not just the wording.",
+        "title": "Transfer to a new situation"
+      }
+    ],
+    "title": "Year 3, Week 6, Lesson 1: Running, jumping and landing",
+    "unit_number": 2,
+    "unit_title": "Fundamental movement skills",
+    "week": 6,
+    "week_in_unit": 1,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apart, arms forward, hold still for two seconds'. Sasha jumps a chalk line, measures 90 cm and lands steadily with bent knees.\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.",
+    "worked_visuals": [
+      {
+        "alt": "Running and landing cues.",
+        "caption": "Cues keep you balanced.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Run</text><text x=\"28\" y=\"78\">bent arms, eyes ahead</text><text x=\"358\" y=\"42\">Land</text><text x=\"358\" y=\"78\">soft knees, arms forward</text></g></svg>"
+      },
+      {
+        "alt": "Soft and stiff landings.",
+        "caption": "Bend the knees.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Soft</text><text x=\"28\" y=\"78\">bent knees absorb force</text><text x=\"358\" y=\"42\">Stiff</text><text x=\"358\" y=\"78\">straight legs jar the body</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Mei jumps over a line, lands with straight legs and falls backwards. Write two cues that would fix her landing and say why they protect her body."
+      ],
+      "independent_inputs": [
+        "Set up a safe, clear space with a start line. Practise ten standing jumps and a short run using your own cue words. Use a recording sheet to rate your technique (arms, knees, landing) from 1 to 3 and set one goal. Skip jumping if you have any pain."
+      ],
+      "model_inputs": [
+        "Example cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apart, arms forward, hold still for two seconds'. Sasha jumps a chalk line, measures 90 cm and lands steadily with bent knees."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Cues: 'bend your knees' and 'land with feet apart and arms forward'. Bent knees absorb the force like springs, and wide feet and forward arms keep balance. Stiff, straight legs send the impact into the knees and back.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Mei jumps over a line, lands with straight legs and falls backwards. Write two cues that would fix her landing and say why they protect her body.",
+        "misconception": "Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice.",
+        "model": "Example cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apart, arms forward, hold still for two seconds'. Sasha jumps a chalk line, measures 90 cm and lands steadily with bent knees.",
+        "rule": "Running, jumping and landing are fundamental movement skills. Good running has bent arms swinging opposite to the legs, eyes forward and landing on the balls of the feet. For a safe jump, swing the arms, push off with both feet and land softly with bent knees, feet about shoulder-width apart and arms forward for balance. Warm up first, choose a clear, flat space and stop if anything hurts.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.",
+        "misconception": "Writing only a final label without a reason does not show PDHPE thinking.",
+        "model": "Example cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apart, arms forward, hold still for two seconds'. Sasha jumps a chalk line, measures 90 cm and lands steadily with bent knees. Look at each cue, rule or choice that carries the idea.",
+        "rule": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "Cues: 'bend your knees' and 'land with feet apart and arms forward'. Bent knees absorb the force like springs, and wide feet and forward arms keep balance. Stiff, straight legs send the impact into the knees and back.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.",
+        "misconception": "Changing the wording without changing the choice does not fix the error. Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice.",
+        "model": "Thinking the farthest jump is the best jump. A strong jump has good technique and a balanced landing; distance improves with practice. Here is a more helpful example: Example cues. RUN: 'bend arms, pump arms, look ahead'. JUMP: 'knees bend, arms swing, push'. LAND: 'soft knees, feet apart, arms forward, hold still for two seconds'. Sasha jumps a chalk line, measures 90 cm and lands steadily with bent knees.",
+        "rule": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new situation.",
+        "model": "Running, jumping and landing are fundamental movement skills. Good running has bent arms swinging opposite to the legs, eyes forward and landing on the balls of the feet. For a safe jump, swing the arms, push off with both feet and land softly with bent knees, feet about shoulder-width apart and arms forward for balance. Warm up first, choose a clear, flat space and stop if anything hurts. Now choose a different situation to show you can transfer the idea.",
+        "rule": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Running and landing cues.",
+        "teaches": "Cues keep you balanced."
+      },
+      {
+        "alt": "Soft and stiff landings.",
+        "teaches": "Bend the knees."
+      }
+    ]
+  }
+}

@@ -53,6 +53,43 @@ export function validateBundle(bundle, baseline) {
   const qs=l.quiz.map(q=>norm(q.question));
   need(new Set(qs).size===qs.length,'Repeated quiz prompt');
   need(l.quiz.every(q=>q.explanation.length>=50),'Quiz reasoning required');
+  // Assessment quality gates (structural). Educational approval remains a separate human gate.
+  const mc=l.quiz.filter(q=>q.type==='multiple_choice');
+  const written=l.quiz.filter(q=>q.type==='short_answer');
+  need(mc.length>=8,'At least eight multiple-choice items required');
+  need(written.length>=2,'At least two written reasoning items required');
+  const bannedStem=/which idea is taught|which feedback is most useful|which statement appeared|what should you demonstrate in this teaching stage/i;
+  for(const q of mc){
+    need(!bannedStem.test(q.question),`Meta recall stem banned: ${q.question.slice(0,80)}`);
+    need(Array.isArray(q.options)&&q.options.length===4,'MC requires four options');
+    // Exact option text must differ; punctuation-only differences can be pedagogically real.
+    need(new Set(q.options.map(o=>String(o).trim().toLowerCase())).size===4,'Repeated answer choices in one item');
+    need(Number.isInteger(q.correct_index)&&q.correct_index>=0&&q.correct_index<4,'correct_index out of range');
+    need(!q.options.some(o=>/any answer is equally supported|there is no need to compare your attempt/i.test(o)),
+      'Implausible filler distractor');
+    need(!q.explanation||!/the other choices avoid explaining the actual strategy/i.test(q.explanation),
+      'Generic quiz feedback');
+  }
+  const positionCounts=[0,0,0,0];
+  for(const q of mc) positionCounts[q.correct_index]+=1;
+  need(Math.max(...positionCounts)<=Math.ceil(mc.length/2),
+    `Correct answers overly concentrated: ${JSON.stringify(positionCounts)}`);
+  need(positionCounts.filter(c=>c>0).length>=2,'Correct-answer positions must vary');
+  // Near-duplicate stems (share a long normalised prefix)
+  const mcStems=mc.map(q=>norm(q.question));
+  for(let i=0;i<mcStems.length;i+=1){
+    for(let j=i+1;j<mcStems.length;j+=1){
+      const a=mcStems[i];
+      const b=mcStems[j];
+      need(!(a.length>40&&b.length>40&&(a.startsWith(b.slice(0,40))||b.startsWith(a.slice(0,40)))),
+        'Near-duplicate quiz prompts');
+    }
+  }
+  for(const q of written){
+    need(text(q.sample_answer)&&text(q.marking_guide),'Written items need sample and marking guide');
+    need(!/original demonstration:\s*$/i.test(q.sample_answer),'Empty written model');
+  }
+  // Independent practice inputs must differ from model/guided (existing rule below).
   const practice=r.practice;
   for(const key of ['model_inputs','guided_inputs','independent_inputs']) {
     need(Array.isArray(practice?.[key]) && practice[key].length && practice[key].every(text),`${key} required`);

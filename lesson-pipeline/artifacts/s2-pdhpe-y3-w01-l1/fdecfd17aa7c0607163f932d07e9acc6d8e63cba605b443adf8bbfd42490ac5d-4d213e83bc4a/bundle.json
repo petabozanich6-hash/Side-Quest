@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "PH2-IHW-01",
+      "lesson_evidence": "Feelings are the emotions we notice in our body and thoughts, such as happy, worried, frustrated or proud. Naming a feeling precisely, and saying how strong it is from 1 to 5, helps us understand it and tell other people. Body clues (a fast heartbeat, tight shoulders, a hot face) and the situation both give clues to the feeling. All feelings are normal; what we do next is the choice.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Feelings are the emotions we notice in our body and thoughts, such as happy, worried, frustrated or proud. Naming a feeling precisely, and saying how strong it is from 1 to 5, helps us understand it and tell other people. Body clues (a fast heartbeat, tight shoulders, a hot face) and the situation both give clues to the feeling. All feelings are normal; what we do next is the choice.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nRavi hears his name called for a school award. His heart beats fast, he smiles and his hands shake a little. Choose a feeling word, give it a strength from 1 to 5, and name one body clue and one situation clue.\n\nFEEDBACK\nStrong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and the number shows how big the feeling is.\n\nWATCH FOR\nBelieving there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives information; only actions can be unkind or unsafe.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nThink of three different times this week (a happy one, a tricky one and an ordinary one). For each, write a precise feeling word, a strength from 1 to 5, one body clue and one situation clue. Share only what you are comfortable sharing.\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.",
+    "interactive_activities": null,
+    "learning_area": "PDHPE",
+    "learning_intention": "Feelings are the emotions we notice in our body and thoughts, such as happy, worried, frustrated or proud. Naming a feeling precisely, and saying how strong it is from 1 to 5, helps us understand it and tell other people. Body clues (a fast heartbeat, tight shoulders, a hot face) and the situation both give clues to the feeling. All feelings are normal; what we do next is the choice.",
+    "lesson_number": 1,
+    "lesson_role": "Learn and discuss",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Clear, safe movement space with an adult nearby for any physical activity",
+      "Optional: soft ball, cushion or water bottle"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "PH2-IHW-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Think of three different times this week (a happy one, a tricky one and an ordinary one). For each, write a precise feeling word, a strength from 1 to 5, one body clue and one situation clue. Share only what you are comf Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and the number shows how big the feeling is. Reasoning: I used a feeling word by attending to a body clue rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives… Correction: Strong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and… Why: the correction restores accurate use of a feeling word.\n\nParent: Likely misconception: Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives information; only actions can be unkind or unsafe. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a feeling word on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a feeling word, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "Strong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and… This matches the lesson skill for a feeling word.",
+        "options": [
+          "Strong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and…",
+          "Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives…",
+          "Ignore the safety rule because the first idea looked exciting.",
+          "Copy the example and call that independent work."
+        ],
+        "question": "Ravi hears his name called for a school award. His heart beats fast, he smiles and his hands shake a little. Choose a feeling word, give it a strength from 1 to 5, and name one body clue and one situation clue. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Careful use of a body clue with clear evidence.",
+          "Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives…",
+          "Feelings are the emotions we notice in our body and thoughts, such as happy, worried, frustrated or proud. Naming a feeling precisely, and saying how strong…",
+          "Strong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and…"
+        ],
+        "question": "Which statement is a common mistake when practising a feeling word?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and named a body clue, not by copying the model.",
+        "options": [
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a skipped permission or safety step as if it did not matter.",
+          "Apply the idea with new evidence and name the a body clue used."
+        ],
+        "question": "A learner is practising a feeling word. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Strong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "options": [
+          "Ignore the safety rule because the first idea looked exciting.",
+          "Copy the example and call that independent work.",
+          "Strong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and…",
+          "Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives…"
+        ],
+        "question": "Which response best shows careful thinking about a feeling word?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Strong answers name specific evidence and what it shows.",
+        "options": [
+          "Name a specific source, cue or example and say what it shows about a feeling word.",
+          "Make a bigger claim without naming any source or cue.",
+          "Copy a classmate’s sentence with no local detail.",
+          "Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives…"
+        ],
+        "question": "Which habit strengthens evidence about a body clue?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "options": [
+          "Ignore the safety rule because the first idea looked exciting.",
+          "Example: Mia's team lost a game. Body clues: tight stomach and hot face. Situation clue: she really wanted to win. Feeling word:…",
+          "Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives…",
+          "Treat a skipped permission or safety step as if it did not matter."
+        ],
+        "question": "Using this lesson idea — Feelings are the emotions we notice in our body and thoughts, such as happy, worried, frustrated or proud.… — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "options": [
+          "Invent missing details to make the answer sound complete.",
+          "Ignore safety or cultural protocols to finish faster.",
+          "Treat every online claim as equally reliable.",
+          "Check facts/cues, acknowledge limits, and avoid inventing details."
+        ],
+        "question": "Which action shows respect and accuracy together?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Independence requires a new example that still uses the skill.",
+        "options": [
+          "Think of three different times this week (a happy one, a tricky one and an ordinary one). For each, write a precise feeling word, a strength from 1…",
+          "Retype the worked example with no new example.",
+          "Copy the example and call that independent work.",
+          "Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives…"
+        ],
+        "question": "Which task best shows independent use of a feeling word?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating a feeling word on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Strong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and the number shows how big the feeling is. Reasoning: I used a feeling word by attending to a body clue rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with a feeling word, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives… Correction: Strong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and… Why: the correction restores accurate use of a feeling word.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-pdhpe-y3-w01-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending human review. Physical activities are optional, adult-supervised and adaptable; no child is required to share personal details.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise a feeling word.",
+        "Read the mission before you start moving or deciding.",
+        "Keep your own safety and everyone's inclusion in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not keep everyone safe and included."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the cue or rule that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore safety, consent or inclusion.",
+        "Prefer a reasoned, respectful choice over one that merely looks fun."
+      ],
+      "submit": [
+        "Confirm that your reasons and reflection are both present.",
+        "Proofread names, steps and safety words.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact cue, rule or choice before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key cues.",
+        "Say what each cue does for safety, health or friendship.",
+        "A final label alone is weaker than a stated reason."
+      ],
+      "teach2": [
+        "Compare an unsafe or unkind choice with a better one.",
+        "Change the choice or strategy, not only the words.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, game or situation that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original reasons and a short reflection.",
+        "Save work that shows the skill in a new situation."
+      ]
+    },
+    "subject": "Health, Wellbeing and Relationships",
+    "success_criteria": [
+      "I can use a feeling word with a specific example from this lesson.",
+      "I can identify a body clue and explain why it matters.",
+      "I can practise strength of feeling independently on a new prompt.",
+      "I can notice a situation clue needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Feelings are the emotions we notice in our body and thoughts, such as happy, worried, frustrated or proud. Naming a feeling precisely, and saying how strong it is from 1 to 5, helps us understand it and tell other people. Body clues (a fast heartbeat, tight shoulders, a hot…",
+          "options": [
+            "Feelings are the emotions we notice in our body and thoughts, such as happy, worried, frustrated or proud. Naming a feeling precisely, and saying how strong it is from 1 to 5, helps us understand it and tell other people. Body clues (a fast heartbeat, tight shoulders, a hot face) and the situation both give clues to the feeling. All feelings are normal; what we do next is the choice.",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a feeling word?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Mia's team lost a game. Body clues: tight stomach and hot face. Situation clue: she really wanted to win. Feeling word: 'disappointed', strength 3 out of 5. She says, 'I feel disappointed, about a 3, because we lost.' The word 'furious' would not match her clues.\n\nTRY FIRST\nRavi hears his name called for a school award. His heart beats fast, he smiles and his hands shake a little. Choose a feeling word, give it a strength from 1 to 5, and name one body clue and one situation clue.\n\nFEEDBACK\nStrong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and the number shows how big the feeling is.",
+        "explain": "Feelings are the emotions we notice in our body and thoughts, such as happy, worried, frustrated or proud. Naming a feeling precisely, and saying how strong it is from 1 to 5, helps us understand it and tell other people. Body clues (a fast heartbeat, tight shoulders, a hot face) and the situation both give clues to the feeling. All feelings are normal; what we do next is the choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives information; only actions can be unkind or unsafe. Change the choice or strategy, not just the wording.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "Body clues beside a precise feeling word.",
+            "caption": "Clues point to a feeling.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Body clue</text><text x=\"28\" y=\"78\">fast heart, tight stomach</text><text x=\"358\" y=\"42\">Feeling word</text><text x=\"358\" y=\"78\">nervous, strength 4 of 5</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which cue or rule matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the cues, rules or choices that keep everyone safe and included before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example: Mia's team lost a game. Body clues: tight stomach and hot face. Situation clue: she really wanted to win. Feeli Then write your own reasons.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which cue or rule matters most.\nJuno: Name the cues, rules or choices that keep everyone safe and included before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example: Mia's team lost a game. Body clues: tight stomach and hot face. Situation clue: she really wanted to win. Feeli Then write your own reasons."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a feeling word?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Mia's team lost a game. Body clues: tight stomach and hot face. Situation clue: she really wanted to win. Feeling word: 'disappointed', strength 3 out of 5. She says, 'I feel disappointed, about a 3, because we lost.' The word 'furious' would not match her clues. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "explain": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without a reason does not show PDHPE thinking. Change the choice or strategy, not just the wording.",
+        "title": "Show the reasoning",
+        "visual": [
+          {
+            "alt": "A vague and a precise feeling word.",
+            "caption": "Precise words help others.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Vague</text><text x=\"28\" y=\"78\">bad</text><text x=\"358\" y=\"42\">Precise</text><text x=\"358\" y=\"78\">disappointed, 3 of 5</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "A guess with no reason.",
+            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a feeling word?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nBelieving there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives information; only actions can be unkind or unsafe. Here is a more helpful example: Example: Mia's team lost a game. Body clues: tight stomach and hot face. Situation clue: she really wanted to win. Feeling word: 'disappointed', strength 3 out of 5. She says, 'I feel disappointed, about a 3, because we lost.' The word 'furious' would not match her clues.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nStrong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and the number shows how big the feeling is.",
+        "explain": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without changing the choice does not fix the error. Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives information; only actions can be unkind or unsafe. Change the choice or strategy, not just the wording.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "A guess with no reason.",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a feeling word?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nFeelings are the emotions we notice in our body and thoughts, such as happy, worried, frustrated or proud. Naming a feeling precisely, and saying how strong it is from 1 to 5, helps us understand it and tell other people. Body clues (a fast heartbeat, tight shoulders, a hot face) and the situation both give clues to the feeling. All feelings are normal; what we do next is the choice. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "explain": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new situation. Change the choice or strategy, not just the wording.",
+        "title": "Transfer to a new situation"
+      }
+    ],
+    "title": "Year 3, Week 1, Lesson 1: Naming and describing feelings",
+    "unit_number": 1,
+    "unit_title": "Feelings and wellbeing",
+    "week": 1,
+    "week_in_unit": 1,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample: Mia's team lost a game. Body clues: tight stomach and hot face. Situation clue: she really wanted to win. Feeling word: 'disappointed', strength 3 out of 5. She says, 'I feel disappointed, about a 3, because we lost.' The word 'furious' would not match her clues.\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.",
+    "worked_visuals": [
+      {
+        "alt": "Body clues beside a precise feeling word.",
+        "caption": "Clues point to a feeling.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Body clue</text><text x=\"28\" y=\"78\">fast heart, tight stomach</text><text x=\"358\" y=\"42\">Feeling word</text><text x=\"358\" y=\"78\">nervous, strength 4 of 5</text></g></svg>"
+      },
+      {
+        "alt": "A vague and a precise feeling word.",
+        "caption": "Precise words help others.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Vague</text><text x=\"28\" y=\"78\">bad</text><text x=\"358\" y=\"42\">Precise</text><text x=\"358\" y=\"78\">disappointed, 3 of 5</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Ravi hears his name called for a school award. His heart beats fast, he smiles and his hands shake a little. Choose a feeling word, give it a strength from 1 to 5, and name one body clue and one situation clue."
+      ],
+      "independent_inputs": [
+        "Think of three different times this week (a happy one, a tricky one and an ordinary one). For each, write a precise feeling word, a strength from 1 to 5, one body clue and one situation clue. Share only what you are comfortable sharing."
+      ],
+      "model_inputs": [
+        "Example: Mia's team lost a game. Body clues: tight stomach and hot face. Situation clue: she really wanted to win. Feeling word: 'disappointed', strength 3 out of 5. She says, 'I feel disappointed, about a 3, because we lost.' The word 'furious' would not match her clues."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Strong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and the number shows how big the feeling is.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Ravi hears his name called for a school award. His heart beats fast, he smiles and his hands shake a little. Choose a feeling word, give it a strength from 1 to 5, and name one body clue and one situation clue.",
+        "misconception": "Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives information; only actions can be unkind or unsafe.",
+        "model": "Example: Mia's team lost a game. Body clues: tight stomach and hot face. Situation clue: she really wanted to win. Feeling word: 'disappointed', strength 3 out of 5. She says, 'I feel disappointed, about a 3, because we lost.' The word 'furious' would not match her clues.",
+        "rule": "Feelings are the emotions we notice in our body and thoughts, such as happy, worried, frustrated or proud. Naming a feeling precisely, and saying how strong it is from 1 to 5, helps us understand it and tell other people. Body clues (a fast heartbeat, tight shoulders, a hot face) and the situation both give clues to the feeling. All feelings are normal; what we do next is the choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.",
+        "misconception": "Writing only a final label without a reason does not show PDHPE thinking.",
+        "model": "Example: Mia's team lost a game. Body clues: tight stomach and hot face. Situation clue: she really wanted to win. Feeling word: 'disappointed', strength 3 out of 5. She says, 'I feel disappointed, about a 3, because we lost.' The word 'furious' would not match her clues. Look at each cue, rule or choice that carries the idea.",
+        "rule": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "Strong answer: 'Excited and a little nervous, about 4, because my heart beat fast and my name was called in front of everyone.' Mixed feelings are normal, and the number shows how big the feeling is.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.",
+        "misconception": "Changing the wording without changing the choice does not fix the error. Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives information; only actions can be unkind or unsafe.",
+        "model": "Believing there are good feelings and bad feelings, or that you must hide uncomfortable ones, makes feelings harder to understand. Every feeling gives information; only actions can be unkind or unsafe. Here is a more helpful example: Example: Mia's team lost a game. Body clues: tight stomach and hot face. Situation clue: she really wanted to win. Feeling word: 'disappointed', strength 3 out of 5. She says, 'I feel disappointed, about a 3, because we lost.' The word 'furious' would not match her clues.",
+        "rule": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new situation.",
+        "model": "Feelings are the emotions we notice in our body and thoughts, such as happy, worried, frustrated or proud. Naming a feeling precisely, and saying how strong it is from 1 to 5, helps us understand it and tell other people. Body clues (a fast heartbeat, tight shoulders, a hot face) and the situation both give clues to the feeling. All feelings are normal; what we do next is the choice. Now choose a different situation to show you can transfer the idea.",
+        "rule": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Body clues beside a precise feeling word.",
+        "teaches": "Clues point to a feeling."
+      },
+      {
+        "alt": "A vague and a precise feeling word.",
+        "teaches": "Precise words help others."
+      }
+    ]
+  }
+}

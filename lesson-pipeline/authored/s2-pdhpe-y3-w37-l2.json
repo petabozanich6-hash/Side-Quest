@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "PH2-MSP-01",
+      "lesson_evidence": "A fitness challenge circuit builds strength, stamina and flexibility using stations such as step-ups, wall push-ups, chair squats, skipping and stretching. Warm up first, work at your own pace for 30 to 40 seconds per station, rest briefly and cool down with gentle stretches. Challenge yourself, not others, by comparing with your own earlier results. Stop if you feel pain or dizziness and keep water close.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "A fitness challenge circuit builds strength, stamina and flexibility using stations such as step-ups, wall push-ups, chair squats, skipping and stretching. Warm up first, work at your own pace for 30 to 40 seconds per station, rest briefly and cool down with gentle stretches. Challenge yourself, not others, by comparing with your own earlier results. Stop if you feel pain or dizziness and keep water close.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nA circuit has no warm-up and no water break. Write one change for each and say why.\n\nFEEDBACK\nAdd 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and water breaks keep the body safe.\n\nWATCH FOR\nBelieving you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nDesign a five-station fitness circuit using household items, with a warm-up, a cool-down, timings and easier and harder choices. Do it with family, record your counts at each station, repeat in a week and compare with your own results. Stop if you feel unwell.\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.",
+    "interactive_activities": null,
+    "learning_area": "PDHPE",
+    "learning_intention": "A fitness challenge circuit builds strength, stamina and flexibility using stations such as step-ups, wall push-ups, chair squats, skipping and stretching. Warm up first, work at your own pace for 30 to 40 seconds per station, rest briefly and cool down with gentle stretches. Challenge yourself, not others, by comparing with your own earlier results. Stop if you feel pain or dizziness and keep water close.",
+    "lesson_number": 2,
+    "lesson_role": "Practise and apply",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Clear, safe movement space with an adult nearby for any physical activity",
+      "Optional: soft ball, cushion or water bottle"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "PH2-MSP-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Design a five-station fitness circuit using household items, with a warm-up, a cool-down, timings and easier and harder choices. Do it with family, record your counts at each station, repeat in a week and compare with yo Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Add 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and water breaks keep the body safe. Reasoning: I used a fitness circuit by attending to warm-up and cool-down rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain. Correction: Add 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and… Why: the correction restores accurate use of a fitness circuit.\n\nParent: Likely misconception: Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a fitness circuit on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a fitness circuit, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 2,
+        "explanation": "Add 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and… This matches the lesson skill for a fitness circuit.",
+        "options": [
+          "Ignore the safety rule because the first idea looked exciting.",
+          "Copy the example and call that independent work.",
+          "Add 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and…",
+          "Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain."
+        ],
+        "question": "A circuit has no warm-up and no water break. Write one change for each and say why. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain.",
+          "A fitness challenge circuit builds strength, stamina and flexibility using stations such as step-ups, wall push-ups, chair squats, skipping and stretching.…",
+          "Add 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and…",
+          "Careful use of warm-up and cool-down with clear evidence."
+        ],
+        "question": "Which statement is a common mistake when practising a fitness circuit?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and named warm-up and cool-down, not by copying the model.",
+        "options": [
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a skipped permission or safety step as if it did not matter.",
+          "Apply the idea with new evidence and name the warm-up and cool-down used."
+        ],
+        "question": "A learner is practising a fitness circuit. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Add 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "options": [
+          "Copy the example and call that independent work.",
+          "Add 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and…",
+          "Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain.",
+          "Ignore the safety rule because the first idea looked exciting."
+        ],
+        "question": "Which response best shows careful thinking about a fitness circuit?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Strong answers name specific evidence and what it shows.",
+        "options": [
+          "Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain.",
+          "Name a specific source, cue or example and say what it shows about a fitness circuit.",
+          "Make a bigger claim without naming any source or cue.",
+          "Copy a classmate’s sentence with no local detail."
+        ],
+        "question": "Which habit strengthens evidence about warm-up and cool-down?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "options": [
+          "Example circuit. 1 Step-ups on a low step. 2 Wall push-ups. 3 Chair squats (sit down to a chair and stand up). 4 Skipping. 5 Balance on…",
+          "Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain.",
+          "Treat a skipped permission or safety step as if it did not matter.",
+          "Ignore the safety rule because the first idea looked exciting."
+        ],
+        "question": "Using this lesson idea — A fitness challenge circuit builds strength, stamina and flexibility using stations such as step-ups, wall… — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "options": [
+          "Invent missing details to make the answer sound complete.",
+          "Ignore safety or cultural protocols to finish faster.",
+          "Treat every online claim as equally reliable.",
+          "Check facts/cues, acknowledge limits, and avoid inventing details."
+        ],
+        "question": "Which action shows respect and accuracy together?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Independence requires a new example that still uses the skill.",
+        "options": [
+          "Retype the worked example with no new example.",
+          "Copy the example and call that independent work.",
+          "Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain.",
+          "Design a five-station fitness circuit using household items, with a warm-up, a cool-down, timings and easier and harder choices. Do it with family,…"
+        ],
+        "question": "Which task best shows independent use of a fitness circuit?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating a fitness circuit on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Add 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and water breaks keep the body safe. Reasoning: I used a fitness circuit by attending to warm-up and cool-down rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with a fitness circuit, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain. Correction: Add 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and… Why: the correction restores accurate use of a fitness circuit.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-pdhpe-y3-w37-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending human review. Physical activities are optional, adult-supervised and adaptable; no child is required to share personal details.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise a fitness circuit.",
+        "Read the mission before you start moving or deciding.",
+        "Keep your own safety and everyone's inclusion in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not keep everyone safe and included."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the cue or rule that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore safety, consent or inclusion.",
+        "Prefer a reasoned, respectful choice over one that merely looks fun."
+      ],
+      "submit": [
+        "Confirm that your reasons and reflection are both present.",
+        "Proofread names, steps and safety words.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact cue, rule or choice before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key cues.",
+        "Say what each cue does for safety, health or friendship.",
+        "A final label alone is weaker than a stated reason."
+      ],
+      "teach2": [
+        "Compare an unsafe or unkind choice with a better one.",
+        "Change the choice or strategy, not only the words.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, game or situation that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original reasons and a short reflection.",
+        "Save work that shows the skill in a new situation."
+      ]
+    },
+    "subject": "Healthy, Safe and Active Lifestyles",
+    "success_criteria": [
+      "I can use a fitness circuit with a specific example from this lesson.",
+      "I can identify warm-up and cool-down and explain why it matters.",
+      "I can practise your own results independently on a new prompt.",
+      "I can notice stopping if unwell needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "A fitness challenge circuit builds strength, stamina and flexibility using stations such as step-ups, wall push-ups, chair squats, skipping and stretching. Warm up first, work at your own pace for 30 to 40 seconds per station, rest briefly and cool down with gentle stretches.…",
+          "options": [
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "A fitness challenge circuit builds strength, stamina and flexibility using stations such as step-ups, wall push-ups, chair squats, skipping and stretching. Warm up first, work at your own pace for 30 to 40 seconds per station, rest briefly and cool down with gentle stretches. Challenge yourself, not others, by comparing with your own earlier results. Stop if you feel pain or dizziness and keep water close."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a fitness circuit?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample circuit. 1 Step-ups on a low step. 2 Wall push-ups. 3 Chair squats (sit down to a chair and stand up). 4 Skipping. 5 Balance on one foot. 30 seconds each, 15 seconds rest. Warm-up: march on the spot for 2 minutes. Cool-down: gentle arm and leg stretches. Sara records 12 chair squats, then 15 the next week.\n\nTRY FIRST\nA circuit has no warm-up and no water break. Write one change for each and say why.\n\nFEEDBACK\nAdd 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and water breaks keep the body safe.",
+        "explain": "A fitness challenge circuit builds strength, stamina and flexibility using stations such as step-ups, wall push-ups, chair squats, skipping and stretching. Warm up first, work at your own pace for 30 to 40 seconds per station, rest briefly and cool down with gentle stretches. Challenge yourself, not others, by comparing with your own earlier results. Stop if you feel pain or dizziness and keep water close.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain. Change the choice or strategy, not just the wording.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "A fitness circuit.",
+            "caption": "Rotate and rest.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Stations</text><text x=\"28\" y=\"78\">step-ups, squats, skipping</text><text x=\"358\" y=\"42\">Time</text><text x=\"358\" y=\"78\">30 seconds, 15 rest</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which cue or rule matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the cues, rules or choices that keep everyone safe and included before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example circuit. 1 Step-ups on a low step. 2 Wall push-ups. 3 Chair squats (sit down to a chair and stand up). 4 Skippin Then write your own reasons.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which cue or rule matters most.\nJuno: Name the cues, rules or choices that keep everyone safe and included before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example circuit. 1 Step-ups on a low step. 2 Wall push-ups. 3 Chair squats (sit down to a chair and stand up). 4 Skippin Then write your own reasons."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a fitness circuit?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample circuit. 1 Step-ups on a low step. 2 Wall push-ups. 3 Chair squats (sit down to a chair and stand up). 4 Skipping. 5 Balance on one foot. 30 seconds each, 15 seconds rest. Warm-up: march on the spot for 2 minutes. Cool-down: gentle arm and leg stretches. Sara records 12 chair squats, then 15 the next week. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "explain": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without a reason does not show PDHPE thinking. Change the choice or strategy, not just the wording.",
+        "title": "Show the reasoning",
+        "visual": [
+          {
+            "alt": "Warm-up and cool-down.",
+            "caption": "Start and end gently.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Warm-up</text><text x=\"28\" y=\"78\">march, arm circles</text><text x=\"358\" y=\"42\">Cool-down</text><text x=\"358\" y=\"78\">gentle stretches</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+            "A choice unrelated to safety, health or respect."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a fitness circuit?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nBelieving you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain. Here is a more helpful example: Example circuit. 1 Step-ups on a low step. 2 Wall push-ups. 3 Chair squats (sit down to a chair and stand up). 4 Skipping. 5 Balance on one foot. 30 seconds each, 15 seconds rest. Warm-up: march on the spot for 2 minutes. Cool-down: gentle arm and leg stretches. Sara records 12 chair squats, then 15 the next week.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nAdd 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and water breaks keep the body safe.",
+        "explain": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without changing the choice does not fix the error. Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain. Change the choice or strategy, not just the wording.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "A guess with no reason.",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a fitness circuit?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nA fitness challenge circuit builds strength, stamina and flexibility using stations such as step-ups, wall push-ups, chair squats, skipping and stretching. Warm up first, work at your own pace for 30 to 40 seconds per station, rest briefly and cool down with gentle stretches. Challenge yourself, not others, by comparing with your own earlier results. Stop if you feel pain or dizziness and keep water close. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "explain": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new situation. Change the choice or strategy, not just the wording.",
+        "title": "Transfer to a new situation"
+      }
+    ],
+    "title": "Year 3, Week 37, Lesson 2: Fitness challenge circuits",
+    "unit_number": 8,
+    "unit_title": "Healthy habits",
+    "week": 37,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample circuit. 1 Step-ups on a low step. 2 Wall push-ups. 3 Chair squats (sit down to a chair and stand up). 4 Skipping. 5 Balance on one foot. 30 seconds each, 15 seconds rest. Warm-up: march on the spot for 2 minutes. Cool-down: gentle arm and leg stretches. Sara records 12 chair squats, then 15 the next week.\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.",
+    "worked_visuals": [
+      {
+        "alt": "A fitness circuit.",
+        "caption": "Rotate and rest.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Stations</text><text x=\"28\" y=\"78\">step-ups, squats, skipping</text><text x=\"358\" y=\"42\">Time</text><text x=\"358\" y=\"78\">30 seconds, 15 rest</text></g></svg>"
+      },
+      {
+        "alt": "Warm-up and cool-down.",
+        "caption": "Start and end gently.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Warm-up</text><text x=\"28\" y=\"78\">march, arm circles</text><text x=\"358\" y=\"42\">Cool-down</text><text x=\"358\" y=\"78\">gentle stretches</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "A circuit has no warm-up and no water break. Write one change for each and say why."
+      ],
+      "independent_inputs": [
+        "Design a five-station fitness circuit using household items, with a warm-up, a cool-down, timings and easier and harder choices. Do it with family, record your counts at each station, repeat in a week and compare with your own results. Stop if you feel unwell."
+      ],
+      "model_inputs": [
+        "Example circuit. 1 Step-ups on a low step. 2 Wall push-ups. 3 Chair squats (sit down to a chair and stand up). 4 Skipping. 5 Balance on one foot. 30 seconds each, 15 seconds rest. Warm-up: march on the spot for 2 minutes. Cool-down: gentle arm and leg stretches. Sara records 12 chair squats, then 15 the next week."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Add 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and water breaks keep the body safe.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "A circuit has no warm-up and no water break. Write one change for each and say why.",
+        "misconception": "Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain.",
+        "model": "Example circuit. 1 Step-ups on a low step. 2 Wall push-ups. 3 Chair squats (sit down to a chair and stand up). 4 Skipping. 5 Balance on one foot. 30 seconds each, 15 seconds rest. Warm-up: march on the spot for 2 minutes. Cool-down: gentle arm and leg stretches. Sara records 12 chair squats, then 15 the next week.",
+        "rule": "A fitness challenge circuit builds strength, stamina and flexibility using stations such as step-ups, wall push-ups, chair squats, skipping and stretching. Warm up first, work at your own pace for 30 to 40 seconds per station, rest briefly and cool down with gentle stretches. Challenge yourself, not others, by comparing with your own earlier results. Stop if you feel pain or dizziness and keep water close.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.",
+        "misconception": "Writing only a final label without a reason does not show PDHPE thinking.",
+        "model": "Example circuit. 1 Step-ups on a low step. 2 Wall push-ups. 3 Chair squats (sit down to a chair and stand up). 4 Skipping. 5 Balance on one foot. 30 seconds each, 15 seconds rest. Warm-up: march on the spot for 2 minutes. Cool-down: gentle arm and leg stretches. Sara records 12 chair squats, then 15 the next week. Look at each cue, rule or choice that carries the idea.",
+        "rule": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "Add 2 minutes of marching and arm circles first to prepare the muscles, and a water break after each round to replace fluid. Warm-ups help prevent injury and water breaks keep the body safe.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.",
+        "misconception": "Changing the wording without changing the choice does not fix the error. Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain.",
+        "model": "Believing you should push through pain. Stop if anything hurts or you feel unwell; feeling puffed from effort is different from pain. Here is a more helpful example: Example circuit. 1 Step-ups on a low step. 2 Wall push-ups. 3 Chair squats (sit down to a chair and stand up). 4 Skipping. 5 Balance on one foot. 30 seconds each, 15 seconds rest. Warm-up: march on the spot for 2 minutes. Cool-down: gentle arm and leg stretches. Sara records 12 chair squats, then 15 the next week.",
+        "rule": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new situation.",
+        "model": "A fitness challenge circuit builds strength, stamina and flexibility using stations such as step-ups, wall push-ups, chair squats, skipping and stretching. Warm up first, work at your own pace for 30 to 40 seconds per station, rest briefly and cool down with gentle stretches. Challenge yourself, not others, by comparing with your own earlier results. Stop if you feel pain or dizziness and keep water close. Now choose a different situation to show you can transfer the idea.",
+        "rule": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "A fitness circuit.",
+        "teaches": "Rotate and rest."
+      },
+      {
+        "alt": "Warm-up and cool-down.",
+        "teaches": "Start and end gently."
+      }
+    ]
+  }
+}

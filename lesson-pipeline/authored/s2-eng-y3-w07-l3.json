@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-CWT-01"
     ],
-    "parent_notes": "Parent: Marking guidance: Require selective pronoun use, two accurate reference explanations and one ambiguity repair. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: \"Leah found a map. She folded it.\" She refers to Leah; it refers to the map.\n\nParent: Written model 2: Common error: Replacing every noun with a pronoun can erase clarity. Correction: Use pronouns for some repeats; keep the name when a second person appears.\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Revise a six-sentence paragraph with repeated character names. Use pronouns selectively, explain two references, and rewrite one ambiguous sentence so its meaning is clear. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: \"The ranger opened the gate. She checked the latch.\" (or they, if appropriate). Reasoning: I used pronoun by attending to reference and point to the words or even rather than copying the worked model.\n\nParent: Written model 2: Common error: Too many pronouns create confusion when two people are nearby. Correction: \"The ranger opened the gate. She checked the latch.\" (or they, if appropriate). Why: the correction restores accurate use of pronoun.\n\nParent: Likely misconception: Too many pronouns create confusion when two people are nearby. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating pronoun on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with pronoun, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -42,113 +42,113 @@
     "printable_resource": null,
     "quiz": [
       {
-        "correct_index": 0,
-        "explanation": "A pronoun can replace a noun already named when the reference is clear. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "correct_index": 1,
+        "explanation": "\"The ranger opened the gate. She checked the latch.\" (or they, if appropriate). This matches the lesson skill for pronoun.",
         "options": [
-          "A pronoun can replace a noun already named when the reference is clear.",
-          "Too many pronouns create confusion when two people are nearby.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
-        ],
-        "question": "Which idea is taught in the stage \"Replace a repeated noun carefully\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "If two people could match the pronoun, keep the name or rewrite. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "If two people could match the pronoun, keep the name or rewrite.",
-          "A short sentence can still be unclear if two nouns compete.",
-          "Copy the model word-for-word and call that independent work.",
-          "Treat a missing detail as a stated fact."
-        ],
-        "question": "Which idea is taught in the stage \"Watch for ambiguous she/he/they\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Mix names and pronouns so the writing is smooth but trackable. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Mix names and pronouns so the writing is smooth but trackable.",
-          "Replacing every noun with a pronoun can erase clarity.",
-          "Treat a missing detail as a stated fact.",
-          "Skip the prompt because the first idea sounded good."
-        ],
-        "question": "Which idea is taught in the stage \"Keep cohesion across a short paragraph\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Show that you can identify what each pronoun stands for. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Show that you can identify what each pronoun stands for.",
-          "If you cannot name the noun, the pronoun is not clear enough.",
-          "Skip the prompt because the first idea sounded good.",
-          "Ignore the words and invent a more exciting event."
-        ],
-        "question": "Which idea is taught in the stage \"Explain two references\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "\"The ranger opened the gate. She checked the latch.\" (or they, if appropriate). This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
-        "options": [
+          "Copy the worked example and call it independent work.",
           "\"The ranger opened the gate. She checked the latch.\" (or they, if appropriate).",
           "Too many pronouns create confusion when two people are nearby.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Ignore the task and invent an unrelated answer."
         ],
-        "question": "After trying \"Repair: \"The ranger opened the gate. The ranger checked the latch.\"\", which feedback is most useful?",
+        "question": "Repair the ambiguity in \"Sam gave Alex his book.\" Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Too many pronouns create confusion when two people are nearby. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Use pronouns for cohesion only when a reader can tell who or what they mean.",
+          "\"The ranger opened the gate. She checked the latch.\" (or they, if appropriate).",
+          "Careful use of reference and point to the words or even with clear evidence.",
+          "Too many pronouns create confusion when two people are nearby."
+        ],
+        "question": "Which statement is a common mistake when practising pronoun?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Example: \"Sam gave Alex Sam's book\" or \"Sam lent the book to Alex.\" This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "Understanding is shown by new evidence and named reference and point to the words or even, not by copying the model.",
         "options": [
-          "Example: \"Sam gave Alex Sam's book\" or \"Sam lent the book to Alex.\"",
-          "A short sentence can still be unclear if two nouns compete.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Apply the idea with new evidence and name the reference and point to the words or even used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact."
         ],
-        "question": "After trying \"Repair the ambiguity in \"Sam gave Alex his book.\"\", which feedback is most useful?",
+        "question": "A learner is practising pronoun. Which approach best shows understanding?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Use pronouns for some repeats; keep the name when a second person appears. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries pronoun.",
         "options": [
-          "Use pronouns for some repeats; keep the name when a second person appears.",
-          "Replacing every noun with a pronoun can erase clarity.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Point to exact words in the sentence that show pronoun and say what they do.",
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "Too many pronouns create confusion when two people are nearby."
         ],
-        "question": "After trying \"Revise a six-sentence paragraph that repeats a character name every sentence.\", which feedback is most useful?",
+        "question": "Read: \"In the dusty shed, Lila oiled the bike chain before the race.\" Which choice best uses pronoun from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "options": [
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "\"The ranger opened the gate. She checked the latch.\" (or they, if appropriate).",
+          "Too many pronouns create confusion when two people are nearby."
+        ],
+        "question": "Which statement correctly applies the lesson idea about pronoun?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Each explanation should name the noun the pronoun replaces. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "Start from a specific textual clue, then explain its effect.",
         "options": [
-          "Each explanation should name the noun the pronoun replaces.",
-          "If you cannot name the noun, the pronoun is not clear enough.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Treat a missing detail as a proven fact."
         ],
-        "question": "After trying \"After revising, explain two pronoun references in your paragraph.\", which feedback is most useful?",
+        "question": "In a new text, what should you do first to practise reference and point to the words or even?",
         "type": "multiple_choice"
       },
       {
-        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
-        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
-        "question": "Use your own example to demonstrate pronoun and explain the evidence supporting your choice.",
-        "sample_answer": "Original demonstration: \"Leah found a map. She folded it.\" She refers to Leah; it refers to the map.",
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "options": [
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
+        ],
+        "question": "Which revision actually repairs meaning?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "Change fonts and claim the work is new.",
+          "Too many pronouns create confusion when two people are nearby.",
+          "Use a fresh sentence or text and explain one precise choice about pronoun.",
+          "Retype the worked model as the final answer."
+        ],
+        "question": "Which response shows transfer of pronoun to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating pronoun on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: \"The ranger opened the gate. She checked the latch.\" (or they, if appropriate). Reasoning: I used pronoun by attending to reference and point to the words or even rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
-        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
-        "question": "Identify and correct a common mistake relating to cohesion in this lesson.",
-        "sample_answer": "Common error: Replacing every noun with a pronoun can erase clarity. Correction: Use pronouns for some repeats; keep the name when a second person appears.",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with pronoun, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Too many pronouns create confusion when two people are nearby. Correction: \"The ranger opened the gate. She checked the latch.\" (or they, if appropriate). Why: the correction restores accurate use of pronoun.",
         "type": "short_answer"
       }
     ],
@@ -224,15 +224,15 @@
     "teach_steps": [
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying pronoun independently.",
-            "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying pronoun independently.",
+            "Copy every sentence exactly without explaining it."
           ],
-          "question": "Which is the strongest next step when learning to replace a repeated noun carefully?",
+          "question": "Which choice best shows accurate use of this idea about pronoun?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"Leah found a map. She folded it.\" She refers to Leah; it refers to the map.\n\nYOUR SMALL TRY\nRepair: \"The ranger opened the gate. The ranger checked the latch.\"\n\nCOMPARE AND CORRECT\n\"The ranger opened the gate. She checked the latch.\" (or they, if appropriate).",
@@ -282,15 +282,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying reference independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to watch for ambiguous she/he/they?",
+          "question": "Which choice best shows accurate use of this idea about pronoun?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"Leah told Mia she was late\" is unclear: who was late? Rewrite to name the person.\n\nYOUR SMALL TRY\nRepair the ambiguity in \"Sam gave Alex his book.\"\n\nCOMPARE AND CORRECT\nExample: \"Sam gave Alex Sam's book\" or \"Sam lent the book to Alex.\"",
@@ -308,15 +308,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying cohesion independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying cohesion independently."
           ],
-          "question": "Which is the strongest next step when learning to keep cohesion across a short paragraph?",
+          "question": "Which choice best shows accurate use of this idea about pronoun?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"Mina packed a torch. She checked the batteries, then Mina called her sister.\" Alternating can help when a new character appears.\n\nYOUR SMALL TRY\nRevise a six-sentence paragraph that repeats a character name every sentence.\n\nCOMPARE AND CORRECT\nUse pronouns for some repeats; keep the name when a second person appears.",
@@ -327,15 +327,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying ambiguous independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to explain two references?",
+          "question": "Which choice best shows accurate use of this idea about pronoun?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nIn my revision, she = Mina and it = the torch.\n\nYOUR SMALL TRY\nAfter revising, explain two pronoun references in your paragraph.\n\nCOMPARE AND CORRECT\nEach explanation should name the noun the pronoun replaces.",

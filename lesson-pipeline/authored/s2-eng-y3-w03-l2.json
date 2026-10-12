@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-CWT-01"
     ],
-    "parent_notes": "Parent: Marking guidance: Look for a concrete character, setting and caused problem. Do not demand a complete ending because this lesson assesses the opening. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: \"Before breakfast, Asha arranged shells on the veranda.\" The reader knows the character, location and time. There is not yet a problem.\n\nParent: Written model 2: Common error: Do not add events that happen near the character but change nothing about their goal. Correction: The spill damages the artwork or materials, so the artist needs to repair the damage before finishing.\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write an original narrative opening of two paragraphs, five to eight sentences total: introduce a child arriving somewhere unfamiliar, then introduce a practical problem connected to that place. Underline the orientation Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: \"After school, Milan waited at the bus stop\" establishes time and place without introducing a complication. Reasoning: I used orientation by attending to complication and point to the words or e rather than copying the worked model.\n\nParent: Written model 2: Common error: Opening with pronouns without names can hide important information. Correction: \"After school, Milan waited at the bus stop\" establishes time and place without introducing a complication. Why: the correction restores accurate use of orientation.\n\nParent: Likely misconception: Opening with pronouns without names can hide important information. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating orientation on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with orientation, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -42,113 +42,113 @@
     "printable_resource": null,
     "quiz": [
       {
-        "correct_index": 0,
-        "explanation": "An orientation introduces who, where and often when. It creates an ordinary situation that can later change. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "correct_index": 3,
+        "explanation": "\"After school, Milan waited at the bus stop\" establishes time and place without introducing a complication. This matches the lesson skill for orientation.",
         "options": [
-          "An orientation introduces who, where and often when. It creates an ordinary situation that can later change.",
           "Opening with pronouns without names can hide important information.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "\"After school, Milan waited at the bus stop\" establishes time and place without introducing a complication."
         ],
-        "question": "Which idea is taught in the stage \"Start with the situation before the problem\"?",
+        "question": "Add a problem that belongs after \"At the bakery, Niko carried a tray of buns\". Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "A complication upsets an expectation or gives the character something to solve. Show the concrete event. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "explanation": "Opening with pronouns without names can hide important information. That misconception weakens accuracy; the other choices align with the lesson idea.",
         "options": [
-          "A complication upsets an expectation or gives the character something to solve. Show the concrete event.",
-          "An unrelated dragon appearing without context can make the problem feel disconnected.",
-          "Copy the model word-for-word and call that independent work.",
-          "Treat a missing detail as a stated fact."
-        ],
-        "question": "Which idea is taught in the stage \"Show a complication rather than announce one\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "The complication should matter to the character introduced in the orientation. Connect it through what the character wants or is doing. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "The complication should matter to the character introduced in the orientation. Connect it through what the character wants or is doing.",
-          "Do not add events that happen near the character but change nothing about their goal.",
-          "Treat a missing detail as a stated fact.",
-          "Skip the prompt because the first idea sounded good."
-        ],
-        "question": "Which idea is taught in the stage \"Connect cause and effect\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "An effective opening makes a reader wonder how the character will respond, without giving away the entire resolution. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "An effective opening makes a reader wonder how the character will respond, without giving away the entire resolution.",
-          "Do not solve the problem immediately if the task is to practise orientation and complication only.",
-          "Skip the prompt because the first idea sounded good.",
-          "Ignore the words and invent a more exciting event."
-        ],
-        "question": "Which idea is taught in the stage \"Leave a meaningful question for the next paragraph\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "\"After school, Milan waited at the bus stop\" establishes time and place without introducing a complication. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
-        "options": [
+          "Opening with pronouns without names can hide important information.",
+          "Write a clear story orientation and complication that belong together.",
           "\"After school, Milan waited at the bus stop\" establishes time and place without introducing a complication.",
+          "Careful use of complication and point to the words or e with clear evidence."
+        ],
+        "question": "Which statement is a common mistake when practising orientation?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and named complication and point to the words or e, not by copying the model.",
+        "options": [
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the complication and point to the words or e used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right."
+        ],
+        "question": "A learner is practising orientation. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries orientation.",
+        "options": [
           "Opening with pronouns without names can hide important information.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Point to exact words in the sentence that show orientation and say what they do.",
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words."
         ],
-        "question": "After trying \"Extend \"Milan waited\" to include a meaningful place and time.\", which feedback is most useful?",
+        "question": "Read: \"At dawn, Mina whispered to her goat as frost glittered on the fence.\" Which choice best uses orientation from this lesson?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Example: \"The tray tipped when the shop door swung open.\" The action creates a concrete difficulty. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 3,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
         "options": [
-          "Example: \"The tray tipped when the shop door swung open.\" The action creates a concrete difficulty.",
-          "An unrelated dragon appearing without context can make the problem feel disconnected.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Opening with pronouns without names can hide important information.",
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "\"After school, Milan waited at the bus stop\" establishes time and place without introducing a complication."
         ],
-        "question": "After trying \"Add a problem that belongs after \"At the bakery, Niko carried a tray of buns\".\", which feedback is most useful?",
+        "question": "Which statement correctly applies the lesson idea about orientation?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "The spill damages the artwork or materials, so the artist needs to repair the damage before finishing. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 1,
+        "explanation": "Start from a specific textual clue, then explain its effect.",
         "options": [
-          "The spill damages the artwork or materials, so the artist needs to repair the damage before finishing.",
-          "Do not add events that happen near the character but change nothing about their goal.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Treat a missing detail as a proven fact.",
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged."
         ],
-        "question": "After trying \"Explain the cause-and-effect connection between a spilled paint pot and an artis\", which feedback is most useful?",
+        "question": "In a new text, what should you do first to practise complication and point to the words or e?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Example: \"Jules checked the empty drawer. The invitation had vanished, and the party began in an hour.\" The response can come next. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
         "options": [
-          "Example: \"Jules checked the empty drawer. The invitation had vanished, and the party began in an hour.\" The response can come next.",
-          "Do not solve the problem immediately if the task is to practise orientation and complication only.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
         ],
-        "question": "After trying \"Write an opening about a misplaced invitation, stopping just before the characte\", which feedback is most useful?",
+        "question": "Which revision actually repairs meaning?",
         "type": "multiple_choice"
       },
       {
-        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
-        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
-        "question": "Use your own example to demonstrate orientation and explain the evidence supporting your choice.",
-        "sample_answer": "Original demonstration: \"Before breakfast, Asha arranged shells on the veranda.\" The reader knows the character, location and time. There is not yet a problem.",
+        "correct_index": 3,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new.",
+          "Opening with pronouns without names can hide important information.",
+          "Use a fresh sentence or text and explain one precise choice about orientation."
+        ],
+        "question": "Which response shows transfer of orientation to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating orientation on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: \"After school, Milan waited at the bus stop\" establishes time and place without introducing a complication. Reasoning: I used orientation by attending to complication and point to the words or e rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
-        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
-        "question": "Identify and correct a common mistake relating to cause in this lesson.",
-        "sample_answer": "Common error: Do not add events that happen near the character but change nothing about their goal. Correction: The spill damages the artwork or materials, so the artist needs to repair the damage before finishing.",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with orientation, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Opening with pronouns without names can hide important information. Correction: \"After school, Milan waited at the bus stop\" establishes time and place without introducing a complication. Why: the correction restores accurate use of orientation.",
         "type": "short_answer"
       }
     ],
@@ -225,14 +225,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
             "Use the example and explain the clue or language choice before trying orientation independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
             "Ignore the task and choose an unrelated detail."
           ],
-          "question": "Which is the strongest next step when learning to start with the situation before the problem?",
+          "question": "Which choice best shows accurate use of this idea about orientation?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"Before breakfast, Asha arranged shells on the veranda.\" The reader knows the character, location and time. There is not yet a problem.\n\nYOUR SMALL TRY\nExtend \"Milan waited\" to include a meaningful place and time.\n\nCOMPARE AND CORRECT\n\"After school, Milan waited at the bus stop\" establishes time and place without introducing a complication.",
@@ -282,15 +282,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying complication independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying complication independently."
           ],
-          "question": "Which is the strongest next step when learning to show a complication rather than announce one?",
+          "question": "Which choice best shows accurate use of this idea about orientation?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"A sudden gust scattered Asha's shells into the garden.\" The disruption grows from what she was doing. \"Then there was a problem\" would hide it.\n\nYOUR SMALL TRY\nAdd a problem that belongs after \"At the bakery, Niko carried a tray of buns\".\n\nCOMPARE AND CORRECT\nExample: \"The tray tipped when the shop door swung open.\" The action creates a concrete difficulty.",
@@ -308,15 +308,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying cause independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to connect cause and effect?",
+          "question": "Which choice best shows accurate use of this idea about orientation?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nAsha wanted to sort her shells. The gust scatters them. She must recover and sort them again; the complication interrupts her goal.\n\nYOUR SMALL TRY\nExplain the cause-and-effect connection between a spilled paint pot and an artist's interrupted picture.\n\nCOMPARE AND CORRECT\nThe spill damages the artwork or materials, so the artist needs to repair the damage before finishing.",
@@ -327,15 +327,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying hook independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying hook independently."
           ],
-          "question": "Which is the strongest next step when learning to leave a meaningful question for the next paragraph?",
+          "question": "Which choice best shows accurate use of this idea about orientation?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"Asha spotted one special shell caught on the top branch. How could she reach it safely?\" Now the story can continue with an attempt to solve the challenge.\n\nYOUR SMALL TRY\nWrite an opening about a misplaced invitation, stopping just before the character decides what to do.\n\nCOMPARE AND CORRECT\nExample: \"Jules checked the empty drawer. The invitation had vanished, and the party began in an hour.\" The response can come next.",

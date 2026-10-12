@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-CWT-01"
     ],
-    "parent_notes": "Parent: Marking guidance: Require a problem-linked resolution plus explicit revision/edit labels. Accept varied map-story settings. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: Opening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next week.\"\n\nParent: Written model 2: Common error: Editing before revising can polish a broken ending. Correction: \"Dad fixed the latch. The puppy was safe.\"\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write a six-sentence story ending for a lost map. First revise the solution's logic and clarity, then edit punctuation and spelling. Identify one revision and one edit. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause. Reasoning: I used resolution by attending to revise and point to the words or events  rather than copying the worked model.\n\nParent: Written model 2: Common error: An unrelated miracle ending ignores the story's problem. Correction: Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause. Why: the correction restores accurate use of resolution.\n\nParent: Likely misconception: An unrelated miracle ending ignores the story's problem. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating resolution on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with resolution, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -43,112 +43,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "A resolution shows how the main difficulty is addressed. It should connect to the earlier problem. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "A resolution shows how the main difficulty is addressed. It should connect to the earlier problem.",
-          "An unrelated miracle ending ignores the story's problem.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
-        ],
-        "question": "Which idea is taught in the stage \"Solve the central problem\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Revising meaning comes before fixing capitals. Ask whether the ending answers the problem. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Revising meaning comes before fixing capitals. Ask whether the ending answers the problem.",
-          "Editing spelling cannot repair a disconnected plot.",
-          "Copy the model word-for-word and call that independent work.",
-          "Treat a missing detail as a stated fact."
-        ],
-        "question": "Which idea is taught in the stage \"Revise for logic and clarity first\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "After meaning is sound, check capitals, full stops and spelling. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "After meaning is sound, check capitals, full stops and spelling.",
-          "Editing before revising can polish a broken ending.",
-          "Treat a missing detail as a stated fact.",
-          "Skip the prompt because the first idea sounded good."
-        ],
-        "question": "Which idea is taught in the stage \"Edit surface features second\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Show that you understand the difference between changing ideas and fixing conventions. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Show that you understand the difference between changing ideas and fixing conventions.",
-          "Calling every change an edit hides the revision step.",
-          "Skip the prompt because the first idea sounded good.",
-          "Ignore the words and invent a more exciting event."
-        ],
-        "question": "Which idea is taught in the stage \"Name one revision and one edit\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause. This matches the lesson skill for resolution.",
         "options": [
           "Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause.",
           "An unrelated miracle ending ignores the story's problem.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work."
         ],
-        "question": "After trying \"Complete an ending after \"The puppy escaped through a loose gate.\"\", which feedback is most useful?",
+        "question": "Revise an ending where a lost map is found by a dragon with no earlier clue. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "An unrelated miracle ending ignores the story's problem. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause.",
+          "Careful use of revise and point to the words or events with clear evidence.",
+          "An unrelated miracle ending ignores the story's problem.",
+          "Write a resolution that solves the problem, then revise meaning before editing surface errors."
+        ],
+        "question": "Which statement is a common mistake when practising resolution?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and named revise and point to the words or events , not by copying the model.",
+        "options": [
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the revise and point to the words or events used."
+        ],
+        "question": "A learner is practising resolution. Which approach best shows understanding?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Connect the finding to earlier actions, such as retracing steps or asking a ranger. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries resolution.",
         "options": [
-          "Connect the finding to earlier actions, such as retracing steps or asking a ranger.",
-          "Editing spelling cannot repair a disconnected plot.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Point to exact words in the sentence that show resolution and say what they do.",
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "An unrelated miracle ending ignores the story's problem."
         ],
-        "question": "After trying \"Revise an ending where a lost map is found by a dragon with no earlier clue.\", which feedback is most useful?",
+        "question": "Read: \"Under the pier, Sam found a locked tin and a dripping map.\" Which choice best uses resolution from this lesson?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "\"Dad fixed the latch. The puppy was safe.\" This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 1,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
         "options": [
-          "\"Dad fixed the latch. The puppy was safe.\"",
-          "Editing before revising can polish a broken ending.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Copy the worked example and call it independent work.",
+          "Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause.",
+          "An unrelated miracle ending ignores the story's problem.",
+          "Ignore the task and invent an unrelated answer."
         ],
-        "question": "After trying \"Edit: \"dad fixed the latch. the puppy was safe\"\", which feedback is most useful?",
+        "question": "Which statement correctly applies the lesson idea about resolution?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "The meaning change should affect the solution; the edit should affect spelling or punctuation. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 1,
+        "explanation": "Start from a specific textual clue, then explain its effect.",
         "options": [
-          "The meaning change should affect the solution; the edit should affect spelling or punctuation.",
-          "Calling every change an edit hides the revision step.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Treat a missing detail as a proven fact.",
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged."
         ],
-        "question": "After trying \"Identify one meaning change and one punctuation fix in your lost-map ending.\", which feedback is most useful?",
+        "question": "In a new text, what should you do first to practise revise and point to the words or events ?",
         "type": "multiple_choice"
       },
       {
-        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
-        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
-        "question": "Use your own example to demonstrate resolution and explain the evidence supporting your choice.",
-        "sample_answer": "Original demonstration: Opening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next week.\"",
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "options": [
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
+        ],
+        "question": "Which revision actually repairs meaning?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "An unrelated miracle ending ignores the story's problem.",
+          "Use a fresh sentence or text and explain one precise choice about resolution.",
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new."
+        ],
+        "question": "Which response shows transfer of resolution to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating resolution on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause. Reasoning: I used resolution by attending to revise and point to the words or events  rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
-        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
-        "question": "Identify and correct a common mistake relating to edit in this lesson.",
-        "sample_answer": "Common error: Editing before revising can polish a broken ending. Correction: \"Dad fixed the latch. The puppy was safe.\"",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with resolution, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: An unrelated miracle ending ignores the story's problem. Correction: Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause. Why: the correction restores accurate use of resolution.",
         "type": "short_answer"
       }
     ],
@@ -224,15 +224,15 @@
     "teach_steps": [
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying resolution independently.",
             "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying resolution independently."
           ],
-          "question": "Which is the strongest next step when learning to solve the central problem?",
+          "question": "Which choice best shows accurate use of this idea about resolution?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nOpening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next week.\"\n\nYOUR SMALL TRY\nComplete an ending after \"The puppy escaped through a loose gate.\"\n\nCOMPARE AND CORRECT\nExample: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause.",
@@ -282,15 +282,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying revise independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to revise for logic and clarity first?",
+          "question": "Which choice best shows accurate use of this idea about resolution?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nI check that watering explains why the plant recovers; then I improve a vague pronoun.\n\nYOUR SMALL TRY\nRevise an ending where a lost map is found by a dragon with no earlier clue.\n\nCOMPARE AND CORRECT\nConnect the finding to earlier actions, such as retracing steps or asking a ranger.",
@@ -308,15 +308,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying edit independently.",
-            "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying edit independently.",
+            "Copy every sentence exactly without explaining it."
           ],
-          "question": "Which is the strongest next step when learning to edit surface features second?",
+          "question": "Which choice best shows accurate use of this idea about resolution?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nI capitalise sentence starts and correct \"leaved\" to \"leaves\" once the ending makes sense.\n\nYOUR SMALL TRY\nEdit: \"dad fixed the latch. the puppy was safe\"\n\nCOMPARE AND CORRECT\n\"Dad fixed the latch. The puppy was safe.\"",
@@ -327,15 +327,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying ending independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to name one revision and one edit?",
+          "question": "Which choice best shows accurate use of this idea about resolution?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nRevision: I linked the latch repair to the escape. Edit: I capitalised Dad.\n\nYOUR SMALL TRY\nIdentify one meaning change and one punctuation fix in your lost-map ending.\n\nCOMPARE AND CORRECT\nThe meaning change should affect the solution; the edit should affect spelling or punctuation.",

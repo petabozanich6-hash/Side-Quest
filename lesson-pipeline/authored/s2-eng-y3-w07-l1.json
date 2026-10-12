@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-RECOM-01"
     ],
-    "parent_notes": "Parent: Marking guidance: Require distinct main ideas, relevant supports and a clear rejection of an unrelated detail. Accept varied ecosystem topics. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: \"Mangroves grow in salty coastal places. Their roots trap mud and shelter small fish.\" Main idea: mangroves support coastal habitats.\n\nParent: Written model 2: Common error: Keeping every interesting fact creates a cluttered paragraph. Correction: Sharks hunt seals is unrelated.\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Read two short factual paragraphs about ecosystems. Give each a 6–10 word main idea sentence and two supporting details; explain why one interesting but unrelated detail does not belong. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Different roles in ant colonies; workers and queens are supporting examples. Reasoning: I used main idea by attending to detail and point to the words or events  rather than copying the worked model.\n\nParent: Written model 2: Common error: The main idea is narrower than \"nature\" and broader than one isolated fact. Correction: Different roles in ant colonies; workers and queens are supporting examples. Why: the correction restores accurate use of main idea.\n\nParent: Likely misconception: The main idea is narrower than \"nature\" and broader than one isolated fact. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating main idea on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with main idea, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -42,113 +42,113 @@
     "printable_resource": null,
     "quiz": [
       {
-        "correct_index": 0,
-        "explanation": "The main idea is the broad point of the paragraph, not one tiny fact alone. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "correct_index": 1,
+        "explanation": "Different roles in ant colonies; workers and queens are supporting examples. This matches the lesson skill for main idea.",
         "options": [
-          "The main idea is the broad point of the paragraph, not one tiny fact alone.",
-          "The main idea is narrower than \"nature\" and broader than one isolated fact.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
-        ],
-        "question": "Which idea is taught in the stage \"Ask what the whole paragraph is mainly about\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Supporting details prove, explain or exemplify the main idea. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Supporting details prove, explain or exemplify the main idea.",
-          "An interesting detail about an unrelated animal does not support this paragraph's idea.",
-          "Copy the model word-for-word and call that independent work.",
-          "Treat a missing detail as a stated fact."
-        ],
-        "question": "Which idea is taught in the stage \"Select details that support the main idea\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "A fact can be true and still not belong under this main idea. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "A fact can be true and still not belong under this main idea.",
-          "Keeping every interesting fact creates a cluttered paragraph.",
-          "Treat a missing detail as a stated fact.",
-          "Skip the prompt because the first idea sounded good."
-        ],
-        "question": "Which idea is taught in the stage \"Reject unrelated details\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Sum up the paragraph in about 6–10 words without listing every detail. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
-        "options": [
-          "Sum up the paragraph in about 6–10 words without listing every detail.",
-          "Copying the first sentence unchanged is not always the best main idea.",
-          "Skip the prompt because the first idea sounded good.",
-          "Ignore the words and invent a more exciting event."
-        ],
-        "question": "Which idea is taught in the stage \"Write a short main-idea sentence\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Different roles in ant colonies; workers and queens are supporting examples. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
-        "options": [
+          "Copy the worked example and call it independent work.",
           "Different roles in ant colonies; workers and queens are supporting examples.",
           "The main idea is narrower than \"nature\" and broader than one isolated fact.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Ignore the task and invent an unrelated answer."
         ],
-        "question": "After trying \"What is the main idea of \"Ants live in colonies. Workers gather food, and queens\", which feedback is most useful?",
+        "question": "Name two supporting details for a paragraph about bee roles in a hive. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The main idea is narrower than \"nature\" and broader than one isolated fact. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Different roles in ant colonies; workers and queens are supporting examples.",
+          "Careful use of detail and point to the words or events with clear evidence.",
+          "The main idea is narrower than \"nature\" and broader than one isolated fact.",
+          "Identify the main idea of an information paragraph and the details that support it."
+        ],
+        "question": "Which statement is a common mistake when practising main idea?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and named detail and point to the words or events , not by copying the model.",
+        "options": [
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the detail and point to the words or events used."
+        ],
+        "question": "A learner is practising main idea. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries main idea.",
+        "options": [
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "The main idea is narrower than \"nature\" and broader than one isolated fact.",
+          "Point to exact words in the sentence that show main idea and say what they do."
+        ],
+        "question": "Read: \"In the dusty shed, Lila oiled the bike chain before the race.\" Which choice best uses main idea from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "options": [
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "Different roles in ant colonies; workers and queens are supporting examples.",
+          "The main idea is narrower than \"nature\" and broader than one isolated fact."
+        ],
+        "question": "Which statement correctly applies the lesson idea about main idea?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Workers gathering food and a queen laying eggs can support colony roles. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "explanation": "Start from a specific textual clue, then explain its effect.",
         "options": [
-          "Workers gathering food and a queen laying eggs can support colony roles.",
-          "An interesting detail about an unrelated animal does not support this paragraph's idea.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Treat a missing detail as a proven fact."
         ],
-        "question": "After trying \"Name two supporting details for a paragraph about bee roles in a hive.\", which feedback is most useful?",
+        "question": "In a new text, what should you do first to practise detail and point to the words or events ?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Sharks hunt seals is unrelated. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
         "options": [
-          "Sharks hunt seals is unrelated.",
-          "Keeping every interesting fact creates a cluttered paragraph.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
         ],
-        "question": "After trying \"Which detail does not belong with ant colony roles: workers forage; queens lay e\", which feedback is most useful?",
+        "question": "Which revision actually repairs meaning?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "Example: \"Ant colonies have different important roles.\" This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "correct_index": 3,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
         "options": [
-          "Example: \"Ant colonies have different important roles.\"",
-          "Copying the first sentence unchanged is not always the best main idea.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new.",
+          "The main idea is narrower than \"nature\" and broader than one isolated fact.",
+          "Use a fresh sentence or text and explain one precise choice about main idea."
         ],
-        "question": "After trying \"Write a 6–10 word main idea for the ant paragraph.\", which feedback is most useful?",
+        "question": "Which response shows transfer of main idea to new material?",
         "type": "multiple_choice"
       },
       {
-        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
-        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
-        "question": "Use your own example to demonstrate main idea and explain the evidence supporting your choice.",
-        "sample_answer": "Original demonstration: \"Mangroves grow in salty coastal places. Their roots trap mud and shelter small fish.\" Main idea: mangroves support coastal habitats.",
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating main idea on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Different roles in ant colonies; workers and queens are supporting examples. Reasoning: I used main idea by attending to detail and point to the words or events  rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
-        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
-        "question": "Identify and correct a common mistake relating to support in this lesson.",
-        "sample_answer": "Common error: Keeping every interesting fact creates a cluttered paragraph. Correction: Sharks hunt seals is unrelated.",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with main idea, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: The main idea is narrower than \"nature\" and broader than one isolated fact. Correction: Different roles in ant colonies; workers and queens are supporting examples. Why: the correction restores accurate use of main idea.",
         "type": "short_answer"
       }
     ],
@@ -224,15 +224,15 @@
     "teach_steps": [
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying main idea independently.",
-            "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying main idea independently.",
+            "Copy every sentence exactly without explaining it."
           ],
-          "question": "Which is the strongest next step when learning to ask what the whole paragraph is mainly about?",
+          "question": "Which choice best shows accurate use of this idea about main idea?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"Mangroves grow in salty coastal places. Their roots trap mud and shelter small fish.\" Main idea: mangroves support coastal habitats.\n\nYOUR SMALL TRY\nWhat is the main idea of \"Ants live in colonies. Workers gather food, and queens lay eggs\"?\n\nCOMPARE AND CORRECT\nDifferent roles in ant colonies; workers and queens are supporting examples.",
@@ -282,15 +282,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying detail independently.",
-            "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying detail independently.",
+            "Copy every sentence exactly without explaining it."
           ],
-          "question": "Which is the strongest next step when learning to select details that support the main idea?",
+          "question": "Which choice best shows accurate use of this idea about main idea?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nRoots trapping mud and sheltering fish support the habitat idea.\n\nYOUR SMALL TRY\nName two supporting details for a paragraph about bee roles in a hive.\n\nCOMPARE AND CORRECT\nWorkers gathering food and a queen laying eggs can support colony roles.",
@@ -308,15 +308,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
+            "Ignore the task and choose an unrelated detail.",
             "Use the example and explain the clue or language choice before trying support independently.",
             "Copy every sentence exactly without explaining it.",
-            "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Add a made-up event and describe it as a fact."
           ],
-          "question": "Which is the strongest next step when learning to reject unrelated details?",
+          "question": "Which choice best shows accurate use of this idea about main idea?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\nA sentence about desert lizards does not support a mangrove habitat paragraph.\n\nYOUR SMALL TRY\nWhich detail does not belong with ant colony roles: workers forage; queens lay eggs; sharks hunt seals?\n\nCOMPARE AND CORRECT\nSharks hunt seals is unrelated.",
@@ -327,15 +327,15 @@
       },
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
           "options": [
-            "Use the example and explain the clue or language choice before trying unrelated independently.",
-            "Copy every sentence exactly without explaining it.",
             "Add a made-up event and describe it as a fact.",
-            "Ignore the task and choose an unrelated detail."
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying unrelated independently.",
+            "Copy every sentence exactly without explaining it."
           ],
-          "question": "Which is the strongest next step when learning to write a short main-idea sentence?",
+          "question": "Which choice best shows accurate use of this idea about main idea?",
           "type": "multiple_choice"
         },
         "example": "WATCH MY THINKING\n\"Mangroves help coastal habitats in salty places.\"\n\nYOUR SMALL TRY\nWrite a 6–10 word main idea for the ant paragraph.\n\nCOMPARE AND CORRECT\nExample: \"Ant colonies have different important roles.\"",

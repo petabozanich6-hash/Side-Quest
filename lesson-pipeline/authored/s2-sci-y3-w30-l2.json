@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-DDT-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 12-item digital tech review. Include one mini algorithm you improve. List two next goals. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original demonstration: Review path: data definition → algorithm steps → loop efficiency → debug habit → safety rule.\n\nParent: Written model 2: Common error: Review without safety is incomplete for this unit. Correction: e.g. scores; wrong order fails task; loop shorter; do not share address.\n\nParent: Likely misconception: Review without safety is incomplete for this unit. Keep sample answers out of the child role.",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 12-item digital tech review. Include one mini algorithm you improve. List two next goals. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: e.g. scores; wrong order fails task; loop shorter; do not share address. Reasoning: I used review by attending to data and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Review without safety is incomplete for this unit. Correction: e.g. scores; wrong order fails task; loop shorter; do not share address. Why: the correction restores accurate use of review.\n\nParent: Likely misconception: Review without safety is incomplete for this unit. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses review. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about review, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -43,113 +43,113 @@
     "printable_resource": null,
     "quiz": [
       {
-        "correct_index": 0,
-        "explanation": "Digital technologies review connects data, algorithms, block coding, loops, debugging and online safety. The other choices avoid explaining the actual strategy.",
+        "correct_index": 3,
+        "explanation": "e.g. scores; wrong order fails task; loop shorter; do not share address. This matches the lesson skill for review.",
         "options": [
+          "Review without safety is incomplete for this unit.",
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "e.g. scores; wrong order fails task; loop shorter; do not share address."
+        ],
+        "question": "Mini: example of data; why order matters; loop vs copy; one personal-info rule. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Review without safety is incomplete for this unit. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Review without safety is incomplete for this unit.",
           "Digital technologies review connects data, algorithms, block coding, loops, debugging and online safety.",
-          "Review without safety is incomplete for this unit.",
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work."
-        ],
-        "question": "Which idea is taught in the stage \"Understand and model\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. The other choices avoid explaining the actual strategy.",
-        "options": [
-          "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
-          "Writing only a final label without evidence does not show scientific thinking.",
-          "Copy the model objects and call that independent work.",
-          "Treat a missing measurement as if it were recorded."
-        ],
-        "question": "Which idea is taught in the stage \"Show the evidence\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. The other choices avoid explaining the actual strategy.",
-        "options": [
-          "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-          "Changing the wording without repairing the evidence does not fix the error. Review without safety is incomplete for this unit.",
-          "Treat a missing measurement as if it were recorded.",
-          "Skip the fair-test idea because the first guess looked neat."
-        ],
-        "question": "Which idea is taught in the stage \"Test a misconception\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. The other choices avoid explaining the actual strategy.",
-        "options": [
-          "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
-          "Repeating the worked example cannot show transfer to new evidence.",
-          "Skip the fair-test idea because the first guess looked neat.",
-          "Ignore the observation and invent a more exciting result."
-        ],
-        "question": "Which idea is taught in the stage \"Transfer to a new investigation\"?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "e.g. scores; wrong order fails task; loop shorter; do not share address. Useful feedback uses the original observations and method.",
-        "options": [
           "e.g. scores; wrong order fails task; loop shorter; do not share address.",
+          "Careful use of data and explain why it matters with clear evidence."
+        ],
+        "question": "Which statement is a common mistake when practising review?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and named data and explain why it matters, not by copying the model.",
+        "options": [
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the data and explain why it matters used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right."
+        ],
+        "question": "A learner is practising review. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "options": [
+          "Decide from which object looks most exciting.",
+          "Copy a label from the lesson title with no observation.",
           "Review without safety is incomplete for this unit.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Use observable features or measurements as evidence, not appearance alone."
         ],
-        "question": "After trying \"Mini: example of data; why order matters; loop vs copy; one personal-info rule.\", which feedback is most useful?",
+        "question": "New examples: a charging phone, a nesting bird, glass marble, fallen dry leaf. Which habit makes a scientific sort or claim trustworthy?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "The most useful record names the evidence and the reason it supports the claim, not only a label. Useful feedback uses the original observations and method.",
+        "correct_index": 2,
+        "explanation": "Science claims need named observations linked to the claim.",
         "options": [
-          "The most useful record names the evidence and the reason it supports the claim, not only a label.",
-          "Writing only a final label without evidence does not show scientific thinking.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "A label copied from the title with no evidence.",
+          "Review without safety is incomplete for this unit.",
+          "Named observation plus how it supports the claim.",
+          "A longer story with no observation."
         ],
-        "question": "After trying \"List the key observations or steps from the model and say what each one shows.\", which feedback is most useful?",
+        "question": "Which record best supports a science claim about review?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "e.g. scores; wrong order fails task; loop shorter; do not share address. Useful feedback uses the original observations and method.",
+        "correct_index": 2,
+        "explanation": "e.g. scores; wrong order fails task; loop shorter; do not share address. applies the science idea with evidence.",
         "options": [
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
           "e.g. scores; wrong order fails task; loop shorter; do not share address.",
-          "Changing the wording without repairing the evidence does not fix the error. Review without safety is incomplete for this unit.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Review without safety is incomplete for this unit."
         ],
-        "question": "After trying \"Describe why the warned-against claim fails, then write a corrected claim with e\", which feedback is most useful?",
+        "question": "Using this idea — Digital technologies review connects data, algorithms, block coding, loops, debugging and online… — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
-        "correct_index": 0,
-        "explanation": "The new example should use the same science idea as the model, but contain different objects or data. Useful feedback uses the original observations and method.",
+        "correct_index": 3,
+        "explanation": "Fair tests change one variable and control the rest.",
         "options": [
-          "The new example should use the same science idea as the model, but contain different objects or data.",
-          "Repeating the worked example cannot show transfer to new evidence.",
-          "Any answer is equally supported.",
-          "There is no need to compare your attempt."
+          "Change several conditions at once so something happens faster.",
+          "Stop early when you like the first result.",
+          "Ignore measurements and decide by which looks nicer.",
+          "Change one variable and keep the other conditions the same."
         ],
-        "question": "After trying \"Investigate or describe one fresh example that uses the same skill and write a s\", which feedback is most useful?",
+        "question": "Which investigation habit keeps a comparison fair?",
         "type": "multiple_choice"
       },
       {
-        "explanation": "Independent evidence, not repetition of the worked model, demonstrates the skill.",
-        "marking_guide": "Require independently produced relevant evidence with accurate reasoning and named observations.",
-        "question": "Investigate or describe a fresh example that uses the central skill. Show evidence and name the observations that matter.",
-        "sample_answer": "Original demonstration: Review path: data definition → algorithm steps → loop efficiency → debug habit → safety rule.",
+        "correct_index": 2,
+        "explanation": "Transfer needs a new object or context with evidence.",
+        "options": [
+          "Invent a dramatic result with no observation.",
+          "Copy the worked example and call it independent work.",
+          "Test or describe a new object or context and cite fresh evidence.",
+          "Repeat the worked example objects unchanged."
+        ],
+        "question": "Which next step best shows transfer of review?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "question": "Investigate or describe a fresh example (not the worked objects) that uses review. Record evidence and explain how it supports your claim.",
+        "sample_answer": "Original response on new material: e.g. scores; wrong order fails task; loop shorter; do not share address. Reasoning: I used review by attending to data and explain why it matters rather than copying the worked model.",
         "type": "short_answer"
       },
       {
-        "explanation": "A correction needs to change the claim or evidence, not just make the notes longer.",
-        "marking_guide": "Require an actual misconception plus corrected claim and an evidence-linked reason.",
-        "question": "Name one likely science misconception for this topic, correct it and say why the correction works.",
-        "sample_answer": "Common error: Review without safety is incomplete for this unit. Correction: e.g. scores; wrong order fails task; loop shorter; do not share address.",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "question": "Name one science misconception about review, correct it with evidence, and say why the correction works.",
+        "sample_answer": "Common error: Review without safety is incomplete for this unit. Correction: e.g. scores; wrong order fails task; loop shorter; do not share address. Why: the correction restores accurate use of review.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,15 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Digital technologies review connects data, algorithms, block coding, loops, debugging and online safety. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Digital technologies review connects data, algorithms, block coding, loops, debugging and online safety. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
           "options": [
             "Digital technologies review connects data, algorithms, block coding, loops, debugging and online safety.",
             "A claim unrelated to the observation or test.",
             "An answer copied without understanding.",
             "A guess with no evidence."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about review?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview path: data definition → algorithm steps → loop efficiency → debug habit → safety rule.\n\nTRY FIRST\nMini: example of data; why order matters; loop vs copy; one personal-info rule.\n\nFEEDBACK\ne.g. scores; wrong order fails task; loop shorter; do not share address.",
         "explain": "Digital technologies review connects data, algorithms, block coding, loops, debugging and online safety.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
@@ -283,14 +284,15 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
           "options": [
             "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
             "A claim unrelated to the observation or test.",
             "An answer copied without understanding.",
             "A guess with no evidence."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about review?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview path: data definition → algorithm steps → loop efficiency → debug habit → safety rule. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
         "explain": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
@@ -308,14 +310,15 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
           "options": [
             "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
             "A claim unrelated to the observation or test.",
             "An answer copied without understanding.",
             "A guess with no evidence."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about review?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview without safety is incomplete for this unit. Here is a more productive model: Review path: data definition → algorithm steps → loop efficiency → debug habit → safety rule.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\ne.g. scores; wrong order fails task; loop shorter; do not share address.",
         "explain": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
@@ -326,14 +329,15 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
           "options": [
             "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
             "A claim unrelated to the observation or test.",
             "An answer copied without understanding.",
             "A guess with no evidence."
           ],
-          "question": "What should you demonstrate in this teaching stage?"
+          "question": "Which choice best shows accurate use of this idea about review?",
+          "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDigital technologies review connects data, algorithms, block coding, loops, debugging and online safety. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",
         "explain": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",

@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-CWT-01",
+      "lesson_evidence": "Prepare a clean final narrative for a real reader and explain presentation choices.",
+      "scope_limit": "Individual Written Core lesson contributes partial evidence; independently verify syllabus content-point alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Prepare a clean final narrative for a real reader and explain presentation choices.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Keep the independent response and two written check responses; record oral retelling or performance where required by the task.",
+    "explicit_teaching": null,
+    "extension": "Create a new example using a completely different character or setting, show the same skill, then explain to another person how you checked its accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "WE DO — attempt each prompt before comparing to the feedback.\n1. Choose a title for a story about a missing bicycle and explain why it fits.\nCOMPARE: \"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\".\n2. Mark where a new paragraph should start in a three-event search story.\nCOMPARE: A shift to a new place or time is a common paragraph break.\n3. List three proofreading checks you will use before publishing.\nCOMPARE: Capitals, end marks and whether every sentence is complete are useful checks.\n4. Write one sentence explaining a revision you made for a reader.\nCOMPARE: The note should name a specific change, not only \"I improved it.\"",
+    "hoard_words": null,
+    "independent_task": "YOU DO — complete the following substantial original task, not a copied model.\nPublish a 150–250 word original narrative with a title and paragraphs. Add a short author's note identifying two revisions and one response to possible reader feedback.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Prepare a clean final narrative for a real reader and explain presentation choices.",
+    "lesson_number": 4,
+    "lesson_role": "Speaking and handwriting",
+    "materials": [
+      "Paper or typing area",
+      "Pencil for optional evidence"
+    ],
+    "offline_alternative": "Use paper to copy only the original independent prompt; have the child respond in writing or orally as required. Save a photograph or brief parent observation for the learning record.",
+    "outcome_codes": [
+      "EN2-CWT-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Publish a 150–250 word original narrative with a title and paragraphs. Add a short author's note identifying two revisions and one response to possible reader feedback. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: \"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\". Reasoning: I used title by attending to paragraph and point to the words or even rather than copying the worked model.\n\nParent: Written model 2: Common error: A vague title does not help a reader know what the piece is about. Correction: \"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\". Why: the correction restores accurate use of title.\n\nParent: Likely misconception: A vague title does not help a reader know what the piece is about. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating title on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with title, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 1,
+        "explanation": "\"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\". This matches the lesson skill for title.",
+        "options": [
+          "Copy the worked example and call it independent work.",
+          "\"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\".",
+          "A vague title does not help a reader know what the piece is about.",
+          "Ignore the task and invent an unrelated answer."
+        ],
+        "question": "Mark where a new paragraph should start in a three-event search story. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "A vague title does not help a reader know what the piece is about. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Careful use of paragraph and point to the words or even with clear evidence.",
+          "A vague title does not help a reader know what the piece is about.",
+          "Prepare a clean final narrative for a real reader and explain presentation choices.",
+          "\"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\"."
+        ],
+        "question": "Which statement is a common mistake when practising title?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and named paragraph and point to the words or even, not by copying the model.",
+        "options": [
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the paragraph and point to the words or even used.",
+          "Repeat the worked example wording with no new evidence."
+        ],
+        "question": "A learner is practising title. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries title.",
+        "options": [
+          "Point to exact words in the sentence that show title and say what they do.",
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "A vague title does not help a reader know what the piece is about."
+        ],
+        "question": "Read: \"Beside the oval, Kai practised bowling until the sun slipped low.\" Which choice best uses title from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "options": [
+          "\"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\".",
+          "A vague title does not help a reader know what the piece is about.",
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work."
+        ],
+        "question": "Which statement correctly applies the lesson idea about title?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "options": [
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Treat a missing detail as a proven fact.",
+          "Locate a specific word, phrase or structural clue before deciding."
+        ],
+        "question": "In a new text, what should you do first to practise paragraph and point to the words or even?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "options": [
+          "Add adjectives without fixing the wrong idea.",
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length."
+        ],
+        "question": "Which revision actually repairs meaning?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new.",
+          "A vague title does not help a reader know what the piece is about.",
+          "Use a fresh sentence or text and explain one precise choice about title."
+        ],
+        "question": "Which response shows transfer of title to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating title on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: \"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\". Reasoning: I used title by attending to paragraph and point to the words or even rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with title, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: A vague title does not help a reader know what the piece is about. Correction: \"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\". Why: the correction restores accurate use of title.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Submit your original independent work and your brief explanation of the key choices you made.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w05-l4",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; compare the existing Coming Soon card and official syllabus content points before marking verified.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise title.",
+        "Read the mission before you start writing or speaking.",
+        "Your goal is: Prepare a clean final narrative for a real reader and explain presentation choices."
+      ],
+      "guided": [
+        "Attempt each guided prompt without looking ahead.",
+        "Compare your attempt with the supplied specific feedback.",
+        "Guided comparison: A shift to a new place or time is a common paragraph break."
+      ],
+      "learn": [
+        "Study the first worked demonstration carefully.",
+        "Name the exact words or events that make it work.",
+        "Demonstration: I change \"Story\" to \"The Lost Lantern\" so a reader anticipates a missing light and a search."
+      ],
+      "quiz": [
+        "Read the whole question and eliminate misconceptions.",
+        "Prefer the option that quotes or uses actual evidence.",
+        "Likely trap: Publishing is not only making text pretty; meaning comes first."
+      ],
+      "submit": [
+        "Include your own response and a short reason.",
+        "Proofread names, sequence and punctuation before sending.",
+        "Success looks like: Prepare a clean final narrative for a real reader and explain presentation choices."
+      ],
+      "teach0": [
+        "Focus on choose a title that fits the story.",
+        "Hold this teaching point: A useful title hints at character, setting or problem without spoiling every event.",
+        "Worked comparison: \"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\"."
+      ],
+      "teach1": [
+        "Focus on use paragraphs when the action changes.",
+        "Hold this teaching point: Paragraphs group related sentences. Start a new paragraph when time, place or focus shifts.",
+        "Worked comparison: A shift to a new place or time is a common paragraph break."
+      ],
+      "teach2": [
+        "Focus on proofread before sharing.",
+        "Hold this teaching point: Read slowly for missing words, capitals and full stops after the story meaning is clear.",
+        "Worked comparison: Capitals, end marks and whether every sentence is complete are useful checks."
+      ],
+      "teach3": [
+        "Focus on explain one revision to a reader.",
+        "Hold this teaching point: An author's note can name a change made for clarity or audience.",
+        "Worked comparison: The note should name a specific change, not only \"I improved it.\""
+      ],
+      "write": [
+        "Use the independent instructions, not the model words.",
+        "Give an original response and the reason behind it.",
+        "Independent reminder: Publish a 150–250 word original narrative with a title and paragraphs. Add a short author's note identifying two revisions and one response to possible reader f"
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use title with a specific example from this lesson.",
+      "I can identify paragraph and point to the words or events that support it.",
+      "I can practise proofread independently on a new prompt.",
+      "I can notice publish needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying title independently.",
+            "Copy every sentence exactly without explaining it."
+          ],
+          "question": "Which choice best shows accurate use of this idea about title?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI change \"Story\" to \"The Lost Lantern\" so a reader anticipates a missing light and a search.\n\nYOUR SMALL TRY\nChoose a title for a story about a missing bicycle and explain why it fits.\n\nCOMPARE AND CORRECT\n\"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\".",
+        "explain": "A useful title hints at character, setting or problem without spoiling every event.\n\nA useful title hints at character, setting or problem without spoiling every event. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nA vague title does not help a reader know what the piece is about. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Choose a title that fits the story",
+        "visual": [
+          {
+            "alt": "Vague title Story improved to The Lost Lantern.",
+            "caption": "A title should hint at the story focus for a reader.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Weak title</text><text x=\"28\" y=\"78\">Story</text><text x=\"358\" y=\"42\">Stronger title</text><text x=\"358\" y=\"78\">The Lost Lantern</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I read the first example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or events that carry the meaning before you copy a conclusion.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "So I should try the small prompt myself, then compare it with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: I change \"Story\" to \"The Lost Lantern\" so a reader anticipates a missing light and a search. Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I read the first example, but I am not sure which detail matters most.\nJuno: Name the exact words or events that carry the meaning before you copy a conclusion.\nPip: So I should try the small prompt myself, then compare it with the feedback.\nJuno: Pause here. Use this model: I change \"Story\" to \"The Lost Lantern\" so a reader anticipates a missing light and a search. Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying paragraph independently.",
+            "Copy every sentence exactly without explaining it."
+          ],
+          "question": "Which choice best shows accurate use of this idea about title?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nWhen the search moves from the shed to the creek, I begin a new paragraph.\n\nYOUR SMALL TRY\nMark where a new paragraph should start in a three-event search story.\n\nCOMPARE AND CORRECT\nA shift to a new place or time is a common paragraph break.",
+        "explain": "Paragraphs group related sentences. Start a new paragraph when time, place or focus shifts.\n\nParagraphs group related sentences. Start a new paragraph when time, place or focus shifts. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nOne giant block of text makes the story harder to follow. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Use paragraphs when the action changes",
+        "visual": [
+          {
+            "alt": "Single draft block versus paragraphs at action changes for publishing.",
+            "caption": "Paragraphing and proofreading help a real reader.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Draft block</text><text x=\"28\" y=\"78\">one long paragraph</text><text x=\"358\" y=\"42\">Published</text><text x=\"358\" y=\"78\">paragraphs at action changes</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying proofread independently.",
+            "Copy every sentence exactly without explaining it."
+          ],
+          "question": "Which choice best shows accurate use of this idea about title?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI read aloud and catch a missing full stop before I share the story with my family.\n\nYOUR SMALL TRY\nList three proofreading checks you will use before publishing.\n\nCOMPARE AND CORRECT\nCapitals, end marks and whether every sentence is complete are useful checks.",
+        "explain": "Read slowly for missing words, capitals and full stops after the story meaning is clear.\n\nRead slowly for missing words, capitals and full stops after the story meaning is clear. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nPublishing is not only making text pretty; meaning comes first. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Proofread before sharing"
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying publish independently.",
+            "Copy every sentence exactly without explaining it."
+          ],
+          "question": "Which choice best shows accurate use of this idea about title?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI note that I added a clearer ending so the reader knows the lantern was returned.\n\nYOUR SMALL TRY\nWrite one sentence explaining a revision you made for a reader.\n\nCOMPARE AND CORRECT\nThe note should name a specific change, not only \"I improved it.\"",
+        "explain": "An author's note can name a change made for clarity or audience.\n\nAn author's note can name a change made for clarity or audience. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nA decoration change alone is weaker evidence than a meaning revision. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Explain one revision to a reader"
+      }
+    ],
+    "title": "Year 3, Week 5, Lesson 4: Publishing and sharing your story",
+    "unit_number": 1,
+    "unit_title": "Narrative: story elements and planning",
+    "week": 5,
+    "week_in_unit": 5,
+    "word_challenges": null,
+    "worked_example": "I DO — I change \"Story\" to \"The Lost Lantern\" so a reader anticipates a missing light and a search.\n\nNow look for the exact evidence in the words or actions. When the search moves from the shed to the creek, I begin a new paragraph.",
+    "worked_visuals": [
+      {
+        "alt": "Vague title Story improved to The Lost Lantern.",
+        "caption": "A title should hint at the story focus for a reader.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Weak title</text><text x=\"28\" y=\"78\">Story</text><text x=\"358\" y=\"42\">Stronger title</text><text x=\"358\" y=\"78\">The Lost Lantern</text></g></svg>"
+      },
+      {
+        "alt": "Single draft block versus paragraphs at action changes for publishing.",
+        "caption": "Paragraphing and proofreading help a real reader.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Draft block</text><text x=\"28\" y=\"78\">one long paragraph</text><text x=\"358\" y=\"42\">Published</text><text x=\"358\" y=\"78\">paragraphs at action changes</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Mark where a new paragraph should start in a three-event search story."
+      ],
+      "independent_inputs": [
+        "Publish a 150–250 word original narrative with a title and paragraphs. Add a short author's note identifying two revisions and one response to possible reader feedback."
+      ],
+      "model_inputs": [
+        "I change \"Story\" to \"The Lost Lantern\" so a reader anticipates a missing light and a search."
+      ]
+    },
+    "review_questions": [
+      "Verify original Coming Soon outcome and syllabus content point against NESA English K–10 2022.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "\"The Bicycle at the Creek\" suggests setting and problem better than \"My Work\".",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Choose a title for a story about a missing bicycle and explain why it fits.",
+        "misconception": "A vague title does not help a reader know what the piece is about.",
+        "model": "I change \"Story\" to \"The Lost Lantern\" so a reader anticipates a missing light and a search.",
+        "rule": "A useful title hints at character, setting or problem without spoiling every event.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "A shift to a new place or time is a common paragraph break.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Mark where a new paragraph should start in a three-event search story.",
+        "misconception": "One giant block of text makes the story harder to follow.",
+        "model": "When the search moves from the shed to the creek, I begin a new paragraph.",
+        "rule": "Paragraphs group related sentences. Start a new paragraph when time, place or focus shifts.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Capitals, end marks and whether every sentence is complete are useful checks.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "List three proofreading checks you will use before publishing.",
+        "misconception": "Publishing is not only making text pretty; meaning comes first.",
+        "model": "I read aloud and catch a missing full stop before I share the story with my family.",
+        "rule": "Read slowly for missing words, capitals and full stops after the story meaning is clear.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "The note should name a specific change, not only \"I improved it.\"",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Write one sentence explaining a revision you made for a reader.",
+        "misconception": "A decoration change alone is weaker evidence than a meaning revision.",
+        "model": "I note that I added a clearer ending so the reader knows the lantern was returned.",
+        "rule": "An author's note can name a change made for clarity or audience.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Vague title Story improved to The Lost Lantern.",
+        "teaches": "A title should hint at the story focus for a reader."
+      },
+      {
+        "alt": "Single draft block versus paragraphs at action changes for publishing.",
+        "teaches": "Paragraphing and proofreading help a real reader."
+      }
+    ]
+  }
+}

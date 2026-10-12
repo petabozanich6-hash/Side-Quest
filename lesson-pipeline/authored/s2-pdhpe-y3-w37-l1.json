@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "PH2-MSP-01",
+      "lesson_evidence": "The Australian 24-Hour Movement Guidelines recommend at least 60 minutes of moderate to vigorous physical activity every day for children aged 5 to 13, plus several hours of light activity, and no more than 2 hours of recreational screen time. Moderate activity makes you breathe harder, like brisk walking; vigorous activity makes you puff, like running. Activity can be split into short bursts and done in many ways, including play, sport, walking to school and dancing.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "The Australian 24-Hour Movement Guidelines recommend at least 60 minutes of moderate to vigorous physical activity every day for children aged 5 to 13, plus several hours of light activity, and no more than 2 hours of recreational screen time. Moderate activity makes you breathe harder, like brisk walking; vigorous activity makes you puff, like running. Activity can be split into short bursts and done in many ways, including play, sport, walking to school and dancing.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nLayla did 25 minutes of active play at lunch, 15 minutes of walking and 10 minutes of dancing. Add the minutes and say whether she reached 60.\n\nFEEDBACK\n25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that add up.\n\nWATCH FOR\nThinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nKeep a one-day activity log with each activity, the minutes and the effort level (moderate or vigorous). Add the total and compare it with 60 minutes. Plan two new ways to add activity that suit your family and space, including an indoor option for wet days.\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.",
+    "interactive_activities": null,
+    "learning_area": "PDHPE",
+    "learning_intention": "The Australian 24-Hour Movement Guidelines recommend at least 60 minutes of moderate to vigorous physical activity every day for children aged 5 to 13, plus several hours of light activity, and no more than 2 hours of recreational screen time. Moderate activity makes you breathe harder, like brisk walking; vigorous activity makes you puff, like running. Activity can be split into short bursts and done in many ways, including play, sport, walking to school and dancing.",
+    "lesson_number": 1,
+    "lesson_role": "Learn and discuss",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Clear, safe movement space with an adult nearby for any physical activity",
+      "Optional: soft ball, cushion or water bottle"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "PH2-MSP-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Keep a one-day activity log with each activity, the minutes and the effort level (moderate or vigorous). Add the total and compare it with 60 minutes. Plan two new ways to add activity that suit your family and space, in Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: 25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that add up. Reasoning: I used daily activity by attending to moderate and vigorous rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count. Correction: 25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that… Why: the correction restores accurate use of daily activity.\n\nParent: Likely misconception: Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating daily activity on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with daily activity, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 2,
+        "explanation": "25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that… This matches the lesson skill for daily activity.",
+        "options": [
+          "Ignore the safety rule because the first idea looked exciting.",
+          "Copy the example and call that independent work.",
+          "25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that…",
+          "Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count."
+        ],
+        "question": "Layla did 25 minutes of active play at lunch, 15 minutes of walking and 10 minutes of dancing. Add the minutes and say whether she reached 60. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "The Australian 24-Hour Movement Guidelines recommend at least 60 minutes of moderate to vigorous physical activity every day for children aged 5 to 13, plus…",
+          "25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that…",
+          "Careful use of moderate and vigorous with clear evidence.",
+          "Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count."
+        ],
+        "question": "Which statement is a common mistake when practising daily activity?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and named moderate and vigorous, not by copying the model.",
+        "options": [
+          "Treat a skipped permission or safety step as if it did not matter.",
+          "Apply the idea with new evidence and name the moderate and vigorous used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right."
+        ],
+        "question": "A learner is practising daily activity. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "options": [
+          "Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count.",
+          "Ignore the safety rule because the first idea looked exciting.",
+          "Copy the example and call that independent work.",
+          "25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that…"
+        ],
+        "question": "Which response best shows careful thinking about daily activity?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Strong answers name specific evidence and what it shows.",
+        "options": [
+          "Name a specific source, cue or example and say what it shows about daily activity.",
+          "Make a bigger claim without naming any source or cue.",
+          "Copy a classmate’s sentence with no local detail.",
+          "Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count."
+        ],
+        "question": "Which habit strengthens evidence about moderate and vigorous?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "options": [
+          "Example: Aiden's day. Walk to school: 15 minutes (moderate). Playground tag: 20 minutes (vigorous). PE: 20 minutes (moderate to vigorous).…",
+          "Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count.",
+          "Treat a skipped permission or safety step as if it did not matter.",
+          "Ignore the safety rule because the first idea looked exciting."
+        ],
+        "question": "Using this lesson idea — The Australian 24-Hour Movement Guidelines recommend at least 60 minutes of moderate to vigorous physical… — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "options": [
+          "Treat every online claim as equally reliable.",
+          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Invent missing details to make the answer sound complete.",
+          "Ignore safety or cultural protocols to finish faster."
+        ],
+        "question": "Which action shows respect and accuracy together?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Independence requires a new example that still uses the skill.",
+        "options": [
+          "Copy the example and call that independent work.",
+          "Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count.",
+          "Keep a one-day activity log with each activity, the minutes and the effort level (moderate or vigorous). Add the total and compare it with 60…",
+          "Retype the worked example with no new example."
+        ],
+        "question": "Which task best shows independent use of daily activity?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating daily activity on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: 25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that add up. Reasoning: I used daily activity by attending to moderate and vigorous rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with daily activity, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count. Correction: 25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that… Why: the correction restores accurate use of daily activity.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-pdhpe-y3-w37-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending human review. Physical activities are optional, adult-supervised and adaptable; no child is required to share personal details.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise daily activity.",
+        "Read the mission before you start moving or deciding.",
+        "Keep your own safety and everyone's inclusion in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not keep everyone safe and included."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the cue or rule that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore safety, consent or inclusion.",
+        "Prefer a reasoned, respectful choice over one that merely looks fun."
+      ],
+      "submit": [
+        "Confirm that your reasons and reflection are both present.",
+        "Proofread names, steps and safety words.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact cue, rule or choice before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key cues.",
+        "Say what each cue does for safety, health or friendship.",
+        "A final label alone is weaker than a stated reason."
+      ],
+      "teach2": [
+        "Compare an unsafe or unkind choice with a better one.",
+        "Change the choice or strategy, not only the words.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, game or situation that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original reasons and a short reflection.",
+        "Save work that shows the skill in a new situation."
+      ]
+    },
+    "subject": "Healthy, Safe and Active Lifestyles",
+    "success_criteria": [
+      "I can use daily activity with a specific example from this lesson.",
+      "I can identify moderate and vigorous and explain why it matters.",
+      "I can practise 60 minutes independently on a new prompt.",
+      "I can notice an activity log needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "The Australian 24-Hour Movement Guidelines recommend at least 60 minutes of moderate to vigorous physical activity every day for children aged 5 to 13, plus several hours of light activity, and no more than 2 hours of recreational screen time. Moderate activity makes you…",
+          "options": [
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "The Australian 24-Hour Movement Guidelines recommend at least 60 minutes of moderate to vigorous physical activity every day for children aged 5 to 13, plus several hours of light activity, and no more than 2 hours of recreational screen time. Moderate activity makes you breathe harder, like brisk walking; vigorous activity makes you puff, like running. Activity can be split into short bursts and done in many ways, including play, sport, walking to school and dancing."
+          ],
+          "question": "Which choice best shows accurate use of this idea about daily activity?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Aiden's day. Walk to school: 15 minutes (moderate). Playground tag: 20 minutes (vigorous). PE: 20 minutes (moderate to vigorous). Bike ride after school: 15 minutes. Total: 70 minutes. He rates effort: walking 3 out of 5, tag 5 out of 5. He keeps recreational screen time to 1 hour.\n\nTRY FIRST\nLayla did 25 minutes of active play at lunch, 15 minutes of walking and 10 minutes of dancing. Add the minutes and say whether she reached 60.\n\nFEEDBACK\n25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that add up.",
+        "explain": "The Australian 24-Hour Movement Guidelines recommend at least 60 minutes of moderate to vigorous physical activity every day for children aged 5 to 13, plus several hours of light activity, and no more than 2 hours of recreational screen time. Moderate activity makes you breathe harder, like brisk walking; vigorous activity makes you puff, like running. Activity can be split into short bursts and done in many ways, including play, sport, walking to school and dancing.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count. Change the choice or strategy, not just the wording.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "Moderate and vigorous activity.",
+            "caption": "Both count.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Moderate</text><text x=\"28\" y=\"78\">brisk walk, breathe harder</text><text x=\"358\" y=\"42\">Vigorous</text><text x=\"358\" y=\"78\">running, puffing</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which cue or rule matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the cues, rules or choices that keep everyone safe and included before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example: Aiden's day. Walk to school: 15 minutes (moderate). Playground tag: 20 minutes (vigorous). PE: 20 minutes (mode Then write your own reasons.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which cue or rule matters most.\nJuno: Name the cues, rules or choices that keep everyone safe and included before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example: Aiden's day. Walk to school: 15 minutes (moderate). Playground tag: 20 minutes (vigorous). PE: 20 minutes (mode Then write your own reasons."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+            "A choice unrelated to safety, health or respect."
+          ],
+          "question": "Which choice best shows accurate use of this idea about daily activity?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Aiden's day. Walk to school: 15 minutes (moderate). Playground tag: 20 minutes (vigorous). PE: 20 minutes (moderate to vigorous). Bike ride after school: 15 minutes. Total: 70 minutes. He rates effort: walking 3 out of 5, tag 5 out of 5. He keeps recreational screen time to 1 hour. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "explain": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without a reason does not show PDHPE thinking. Change the choice or strategy, not just the wording.",
+        "title": "Show the reasoning",
+        "visual": [
+          {
+            "alt": "Adding minutes of activity.",
+            "caption": "Add the bursts up.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Total</text><text x=\"28\" y=\"78\">25 + 15 + 10 = 50</text><text x=\"358\" y=\"42\">Goal</text><text x=\"358\" y=\"78\">60 minutes a day</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason."
+          ],
+          "question": "Which choice best shows accurate use of this idea about daily activity?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nThinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count. Here is a more helpful example: Example: Aiden's day. Walk to school: 15 minutes (moderate). Playground tag: 20 minutes (vigorous). PE: 20 minutes (moderate to vigorous). Bike ride after school: 15 minutes. Total: 70 minutes. He rates effort: walking 3 out of 5, tag 5 out of 5. He keeps recreational screen time to 1 hour.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\n25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that add up.",
+        "explain": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without changing the choice does not fix the error. Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count. Change the choice or strategy, not just the wording.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason."
+          ],
+          "question": "Which choice best shows accurate use of this idea about daily activity?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nThe Australian 24-Hour Movement Guidelines recommend at least 60 minutes of moderate to vigorous physical activity every day for children aged 5 to 13, plus several hours of light activity, and no more than 2 hours of recreational screen time. Moderate activity makes you breathe harder, like brisk walking; vigorous activity makes you puff, like running. Activity can be split into short bursts and done in many ways, including play, sport, walking to school and dancing. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "explain": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new situation. Change the choice or strategy, not just the wording.",
+        "title": "Transfer to a new situation"
+      }
+    ],
+    "title": "Year 3, Week 37, Lesson 1: Being active every day",
+    "unit_number": 8,
+    "unit_title": "Healthy habits",
+    "week": 37,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample: Aiden's day. Walk to school: 15 minutes (moderate). Playground tag: 20 minutes (vigorous). PE: 20 minutes (moderate to vigorous). Bike ride after school: 15 minutes. Total: 70 minutes. He rates effort: walking 3 out of 5, tag 5 out of 5. He keeps recreational screen time to 1 hour.\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.",
+    "worked_visuals": [
+      {
+        "alt": "Moderate and vigorous activity.",
+        "caption": "Both count.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Moderate</text><text x=\"28\" y=\"78\">brisk walk, breathe harder</text><text x=\"358\" y=\"42\">Vigorous</text><text x=\"358\" y=\"78\">running, puffing</text></g></svg>"
+      },
+      {
+        "alt": "Adding minutes of activity.",
+        "caption": "Add the bursts up.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Total</text><text x=\"28\" y=\"78\">25 + 15 + 10 = 50</text><text x=\"358\" y=\"42\">Goal</text><text x=\"358\" y=\"78\">60 minutes a day</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Layla did 25 minutes of active play at lunch, 15 minutes of walking and 10 minutes of dancing. Add the minutes and say whether she reached 60."
+      ],
+      "independent_inputs": [
+        "Keep a one-day activity log with each activity, the minutes and the effort level (moderate or vigorous). Add the total and compare it with 60 minutes. Plan two new ways to add activity that suit your family and space, including an indoor option for wet days."
+      ],
+      "model_inputs": [
+        "Example: Aiden's day. Walk to school: 15 minutes (moderate). Playground tag: 20 minutes (vigorous). PE: 20 minutes (moderate to vigorous). Bike ride after school: 15 minutes. Total: 70 minutes. He rates effort: walking 3 out of 5, tag 5 out of 5. He keeps recreational screen time to 1 hour."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that add up.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Layla did 25 minutes of active play at lunch, 15 minutes of walking and 10 minutes of dancing. Add the minutes and say whether she reached 60.",
+        "misconception": "Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count.",
+        "model": "Example: Aiden's day. Walk to school: 15 minutes (moderate). Playground tag: 20 minutes (vigorous). PE: 20 minutes (moderate to vigorous). Bike ride after school: 15 minutes. Total: 70 minutes. He rates effort: walking 3 out of 5, tag 5 out of 5. He keeps recreational screen time to 1 hour.",
+        "rule": "The Australian 24-Hour Movement Guidelines recommend at least 60 minutes of moderate to vigorous physical activity every day for children aged 5 to 13, plus several hours of light activity, and no more than 2 hours of recreational screen time. Moderate activity makes you breathe harder, like brisk walking; vigorous activity makes you puff, like running. Activity can be split into short bursts and done in many ways, including play, sport, walking to school and dancing.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.",
+        "misconception": "Writing only a final label without a reason does not show PDHPE thinking.",
+        "model": "Example: Aiden's day. Walk to school: 15 minutes (moderate). Playground tag: 20 minutes (vigorous). PE: 20 minutes (moderate to vigorous). Bike ride after school: 15 minutes. Total: 70 minutes. He rates effort: walking 3 out of 5, tag 5 out of 5. He keeps recreational screen time to 1 hour. Look at each cue, rule or choice that carries the idea.",
+        "rule": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "25 + 15 + 10 = 50 minutes. She is 10 minutes short, so she could add a short bike ride or a game after school. Activity can be split into smaller bursts that add up.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.",
+        "misconception": "Changing the wording without changing the choice does not fix the error. Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count.",
+        "model": "Thinking activity only counts if it is organised sport. Walking, playing, dancing and helping with chores can all count. Here is a more helpful example: Example: Aiden's day. Walk to school: 15 minutes (moderate). Playground tag: 20 minutes (vigorous). PE: 20 minutes (moderate to vigorous). Bike ride after school: 15 minutes. Total: 70 minutes. He rates effort: walking 3 out of 5, tag 5 out of 5. He keeps recreational screen time to 1 hour.",
+        "rule": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new situation.",
+        "model": "The Australian 24-Hour Movement Guidelines recommend at least 60 minutes of moderate to vigorous physical activity every day for children aged 5 to 13, plus several hours of light activity, and no more than 2 hours of recreational screen time. Moderate activity makes you breathe harder, like brisk walking; vigorous activity makes you puff, like running. Activity can be split into short bursts and done in many ways, including play, sport, walking to school and dancing. Now choose a different situation to show you can transfer the idea.",
+        "rule": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Moderate and vigorous activity.",
+        "teaches": "Both count."
+      },
+      {
+        "alt": "Adding minutes of activity.",
+        "teaches": "Add the bursts up."
+      }
+    ]
+  }
+}
