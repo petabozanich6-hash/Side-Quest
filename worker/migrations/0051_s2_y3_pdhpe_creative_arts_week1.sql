@@ -603,9 +603,9 @@ UPDATE lessons SET title='Year 3: Feelings charades and role play', data=json_pa
   }
 }'), updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE seed_key='s2-pdhpe-y3-w01-l2';
 
--- s2-art-y3-w01-l1
+-- s2-arts-y3-w01-l1
 UPDATE lessons SET title='Year 3: Line, shape and colour in artworks', data=json_patch(data, '{
-  "seed_key": "s2-art-y3-w01-l1",
+  "seed_key": "s2-arts-y3-w01-l1",
   "title": "Year 3: Line, shape and colour in artworks",
   "stage": "S2",
   "learning_area": "Creative Arts",
@@ -902,11 +902,11 @@ UPDATE lessons SET title='Year 3: Line, shape and colour in artworks', data=json
       "Try a sentence starter: \"I chose ____ because ____.\" Explain the reasoning without copying an answer."
     ]
   }
-}'), updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE seed_key='s2-art-y3-w01-l1';
+}'), updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE seed_key='s2-arts-y3-w01-l1';
 
--- s2-art-y3-w01-l2
+-- s2-arts-y3-w01-l2
 UPDATE lessons SET title='Year 3: Drawing with different lines', data=json_patch(data, '{
-  "seed_key": "s2-art-y3-w01-l2",
+  "seed_key": "s2-arts-y3-w01-l2",
   "title": "Year 3: Drawing with different lines",
   "stage": "S2",
   "learning_area": "Creative Arts",
@@ -1203,4 +1203,4 @@ UPDATE lessons SET title='Year 3: Drawing with different lines', data=json_patch
       "Try a sentence starter: \"I chose ____ because ____.\" Explain the reasoning without copying an answer."
     ]
   }
-}'), updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE seed_key='s2-art-y3-w01-l2';
+}'), updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE seed_key='s2-arts-y3-w01-l2';
