@@ -26,9 +26,9 @@ The validator now checks **each SQL statement**, not the whole file, against the
 Free-tier check:
 
 - 4 lessons; **4 UPDATE statements**, one per lesson.
-- File: **116,792 bytes**.
-- Individual UPDATE statements (excluding initial comments): **29,140, 28,789, 29,502, 29,035 bytes**.
-- Compact JSON per lesson: **26,254, 25,759, 26,196, 26,158 bytes**.
+- File: **116,820 bytes**.
+- Individual UPDATE statements (excluding initial comments): **29,147, 28,796, 29,509, 29,042 bytes**.
+- Compact JSON per lesson: **26,261, 25,766, 26,203, 26,165 bytes**.
 - One original in-site episode per lesson; small original SVG diagrams, each under 6 KB.
 - No added dependencies, external embeds, paid services, uploaded PDFs or AI runtime calls.
 - Existing indexed, unique seed keys are used. Actual D1 rows_read/rows_written and account-wide daily storage/usage have not been observed.

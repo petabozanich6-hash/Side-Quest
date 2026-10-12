@@ -71,7 +71,7 @@ export function validateLesson(l,{media=true}={}) {
   ensure(Array.isArray(l.outcome_codes),'outcome_codes must be array; manually verify codes with NESA');
   ensure(l.success_criteria.length>=3 && l.success_criteria.length<=5 && l.success_criteria.every(v=>v.startsWith('I can')),'3–5 I can criteria required');
   ensure(Array.isArray(l.materials) && l.materials.length>0,'materials required');
-  const year=Number(l.year_level); ensure(Number.isInteger(year) && year>=0 && year<=12,'year_level required');
+  const year=Number(String(l.year_level).match(/\d+/)?.[0]); ensure(Number.isInteger(year) && year>=0 && year<=12,'year_level required');
   const early=year<=2; const options=early?3:4;
   const stepCounts=early?[3]:year<=6?[4]:year<=10?[4,5]:[5];
   ensure(stepCounts.includes(l.teach_steps.length),'wrong teach-step count');
