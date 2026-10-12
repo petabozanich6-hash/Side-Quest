@@ -1,3 +1,5 @@
+> Current lesson rebuilding follows Approved Lesson Standard v2 and [the paid-plan usage policy](LESSON_USAGE_POLICY.md). Older backend instructions below do not override that standard or impose cost limits.
+
 # Lesson Build Guide
 
 > **READ FIRST (note added 9 October 2026).** Where this guide disagrees with `docs/LESSON_BUILD_HANDOFF.md` or with the code, the handoff and the code win. The body below is unchanged from the original, so these points are superseded:
@@ -198,7 +200,7 @@ Once, at the very end:
 
 5. **Bump `LESSON_LIBRARY_VERSION`** in `backend/lesson_library.py` by one. Without this the live database keeps the old copy.
 6. Open a pull request from `lesson-build` into `main`, check the diff, then merge. Render redeploys automatically.
-7. Wait for the backend deploy to say **Live**. After a version bump the free plan can take about 10 minutes or more, and the new backend may log "No open ports detected" until the lessons finish loading. A very large library may take longer.
+7. Wait for the backend deploy to say **Live**. Deployment timing depends on the backend and library size; inspect deployment logs until the service is ready.
 8. Hard refresh the site (Ctrl+Shift+R, or Cmd+Shift+R on a Mac).
 9. In the backend logs, look for `Lesson module ... added N lessons` and `Spelling segment attached to N lessons`.
 

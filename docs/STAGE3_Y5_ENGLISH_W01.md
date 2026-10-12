@@ -21,18 +21,11 @@ The source validator's pure functions were run in tool JavaScript. Four lessons 
 
 **Not run:** Node CLI commands, SQLite/D1 execution, the full React build, real browser render, audio-device tests, live row count, live quota usage or end-to-end submission. The execution container was unavailable. Existing frontend support was already merged in #96; this batch changes lesson data, validation and documentation, not the player or helper.
 
-The validator now checks **each SQL statement**, not the whole file, against the 95 KB authoring budget. A multi-lesson file can be larger than the D1 per-statement maximum while every statement remains within it. Added checks also validate spelling checks and flip-card structure.
+The validator now checks **each SQL statement**, not the whole file, against the 100,000-byte statement limit. A multi-lesson file can be larger than the D1 per-statement maximum while every statement remains within it. Added checks also validate spelling checks and flip-card structure.
 
-Free-tier check:
+## Usage check
 
-- 4 lessons; **4 UPDATE statements**, one per lesson.
-- File: **116,820 bytes**.
-- Individual UPDATE statements (excluding initial comments): **29,147, 28,796, 29,509, 29,042 bytes**.
-- Compact JSON per lesson: **26,261, 25,766, 26,203, 26,165 bytes**.
-- One original in-site episode per lesson; small original SVG diagrams, each under 6 KB.
-- No added dependencies, external embeds, paid services, uploaded PDFs or AI runtime calls.
-- Existing indexed, unique seed keys are used. Actual D1 rows_read/rows_written and account-wide daily storage/usage have not been observed.
-- Parent's D1 budgets remain 100,000 writes/day, 5 million reads/day and 5 GB total storage. The full rebuild is not applied in this batch.
+Estimated rows written: **4**. Largest SQL statement: **29,510 bytes**.
 
 ## Commands, one at a time
 
@@ -117,6 +110,8 @@ Check a new assignment for each lesson so previous local progress does not obscu
 - Print one lesson and check that parent model answers are excluded.
 
 ## Undo
+
+Paid-plan Time Travel provides **30 days** of point-in-time recovery.
 
 Reverting code does not revert lesson rows. Use the pre-change recovery bookmark if a database restore is required:
 

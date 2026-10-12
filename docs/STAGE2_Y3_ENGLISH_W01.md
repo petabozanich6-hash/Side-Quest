@@ -24,11 +24,9 @@ Each new lesson has four substantial teaching steps, modelled thinking, small tr
 
 **Not checked:** production React build, live D1 state or quotas, actual child submission flow, real-device audio, visual rendering of the new diagrams or live Stuck helper interaction. No remote database mutation or deployment was performed. Merging files does not by itself apply their SQL.
 
-## Free-tier check
+## Usage check
 
-Migration **0046** contains **3 UPDATEs**, one per lesson. File: **76,859 bytes**. Individual statements including their adjacent comments are approximately **24,180**, **26,007** and **26,671 bytes**; each is below the per-statement budget. Compact JSON sizes: **21,109**, **22,694** and **23,765 bytes**. All SVGs are under 6 KB.
-
-No new dependencies, paid services, external embeds, uploaded PDFs or AI runtime calls. Existing unique seed keys preserve identity. Actual Cloudflare account usage was not available; read the command's rows_read/rows_written output when applying. The parent's daily write/read and storage limits remain unchanged. The every-stage rebuild is not bulk-applied in this batch.
+Estimated rows written: **3**. Largest SQL statement: **26,671 bytes**.
 
 ## Commands, one at a time
 
@@ -111,6 +109,8 @@ Direct execute does not register migration history. A later normal migrations ap
 - Print a lesson and confirm parent model answers are excluded.
 
 ## Undo
+
+Paid-plan Time Travel provides **30 days** of point-in-time recovery.
 
 If database recovery is required, use the pre-change bookmark:
 

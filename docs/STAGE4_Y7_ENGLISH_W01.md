@@ -26,11 +26,9 @@ Exact outcome codes are empty pending verified Stage 4 mapping. The content foll
 
 **Not verified:** production React build, visual rendering of the new SVGs, phone layout, actual browser/device audio, live D1 data or quota usage, end-to-end submissions or live helper behaviour. No remote database mutation or deployment was run.
 
-## Free-tier check
+## Usage check
 
-Migration **0047**, four lessons and **four UPDATE statements**, one per lesson. File **116,441 bytes**. Statements including adjacent comments: approximately **29,720**, **29,000**, **27,349**, **30,371 bytes**. Compact JSON: **26,532**, **25,900**, **24,365**, **27,399 bytes**. Every statement is below the authoring budget; the total multi-statement file may be larger than a single-statement limit. Each SVG is below 6 KB.
-
-No new dependencies, paid services, uploaded PDFs, external embeds or runtime AI. Existing unique indexed seed keys are retained. Actual rows_read/rows_written and account-wide daily usage still need checking remotely. The full rebuild is not applied as one operation.
+Estimated rows written: **4**. Largest SQL statement: **30,371 bytes**.
 
 ## Commands — repository root, one at a time
 
@@ -110,6 +108,8 @@ Direct execute does not record migration history. A later normal migration apply
 - Print one lesson and check the text/transcripts are present while parent model guidance is excluded.
 
 ## Undo
+
+Paid-plan Time Travel provides **30 days** of point-in-time recovery.
 
 If database recovery is needed, use the saved pre-change bookmark:
 

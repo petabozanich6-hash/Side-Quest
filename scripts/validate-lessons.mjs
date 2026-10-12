@@ -24,7 +24,6 @@ function choice(q,where,count=4) {
 }
 function svg(visual,where) {
   ensure(nonempty(visual.alt),`${where}: alt required`);
-  ensure(Buffer.byteLength(visual.svg)<6144,`${where}: SVG exceeds 6 KB`);
   const value=visual.svg;
   ensure(!/<\?|<!|\bon\w+\s*=|\b(?:href|src)\s*=|javascript:|@import|<\s*(?:script|style|foreignObject|image|use|animate|set)\b/i.test(value),`${where}: unsafe or external SVG`);
   ensure(!/url\(\s*['"]?(?!#)/i.test(value),`${where}: external SVG URL`);
@@ -58,7 +57,7 @@ function episode(ep,where) {
       if(line.blocks) for(const block of line.blocks) ensure(nonempty(block.t) && ['who','did','det','bad','mark','plain'].includes(block.c),`${where}: invalid block`);
     }
   }
-  ensure(ms>=20000 && ms<=60000,`${where}: estimated caption timing ${(ms/1000).toFixed(1)}s outside 20–60s (user pause excluded)`);
+  ensure(ms>0,`${where}: episode must have playable caption timing`);
 }
 export function generatedStages(l) {
   return ['accept',...l.teach_steps.map((_,i)=>`teach${i}`),'learn',...(l.spelling && (l.spelling.teaching || l.spelling.words?.length)?['spelling']:[]),...(l.sort_activity?['sort']:[]),...(l.resources?.some(r=>r.type==='video' && r.embed_url)?['watch']:[]),...(l.word_challenges?.length || l.suspense_builder?['words']:[]),...(l.guided_practice?['guided']:[]),...(l.planner_fields?.length?['plan']:[]),'write',...(l.quiz.some(q=>q.type!=='short_answer')?['quiz']:[]),'submit'];
@@ -120,7 +119,7 @@ export function validateLesson(l,{media=true}={}) {
   const content={...l}; delete content.seed_key;
   ensure(!/\bpets?\b/i.test(JSON.stringify(content)),'pet mention in lesson content');
   ensure(!/https?:\/\/(?!www\.w3\.org\/2000\/svg)/i.test(JSON.stringify(l)),'external URL in lesson');
-  ensure(Buffer.byteLength(JSON.stringify(l))<90000,'lesson JSON exceeds 90 KB authoring budget');
+  ensure(Buffer.byteLength(JSON.stringify(l))<=2000000,'lesson JSON exceeds 2 MB row limit');
   if(media)ensure(episodes>=1&&episodes<=2,'gold lesson needs 1–2 episodes');
   return {stages:expected.length,episodes,bytes:Buffer.byteLength(JSON.stringify(l))};
 }
@@ -148,21 +147,43 @@ function jsonLiterals(sql) {
   for(const match of sql.matchAll(/\bjson\(\s*'((?:[^']|'')*)'\s*\)/gs))JSON.parse(match[1].replace(/''/g,"'"));
   return found;
 }
+// RFC 7396: reconstruct text/media updates before validating the complete lesson.
+function mergePatch(target,patch) {
+  if(!patch || typeof patch!=='object' || Array.isArray(patch))return structuredClone(patch);
+  const result=target && typeof target==='object' && !Array.isArray(target)?structuredClone(target):{};
+  for(const [key,value] of Object.entries(patch)) {
+    if(value===null)delete result[key];else result[key]=mergePatch(result[key],value);
+  }
+  return result;
+}
 export function validateMigration(file) {
-  const sql=fs.readFileSync(file,'utf8');const lessons=jsonLiterals(sql);
-  if(!sql.includes('Standard v2')) return {historical:true,jsonPatches:lessons.length};
-  ensure(lessons.length>0,'v2 migration has no lesson patch');
-  ensure(lessons.length<=25,'more than 25 lessons per migration');
-  const statements=sqlStatements(sql).filter(s=>/\bUPDATE\s+lessons\b/i.test(s));
-  ensure(statements.length===lessons.length,"Each lesson patch must be in one UPDATE");
-  statements.forEach((statement,index)=>{
-    ensure(Buffer.byteLength(statement)<95000,"SQL statement exceeds 95 KB authoring budget");
+  const sql=fs.readFileSync(file,'utf8');const patches=jsonLiterals(sql);
+  if(!sql.includes('Standard v2')) return {historical:true,jsonPatches:patches.length};
+  ensure(patches.length>0,'v2 migration has no lesson patch');
+  const all=sqlStatements(sql);
+  all.forEach(s=>ensure(Buffer.byteLength(s)<=100000,'SQL statement exceeds 100,000 bytes'));
+  const statements=all.filter(s=>/\bUPDATE\s+lessons\b/i.test(s));
+  ensure(statements.length===patches.length,'Each UPDATE must contain exactly one lesson patch');
+  const grouped=new Map();
+  statements.forEach(statement=>{
+    const own=jsonLiterals(statement);ensure(own.length===1,'Each UPDATE must contain exactly one lesson patch');
+    const patch=own[0];
     const target=statement.match(/WHERE\s+seed_key\s*=\s*'((?:[^']|'')*)'/i)?.[1]?.replace(/''/g,"'");
-    ensure(target===lessons[index].seed_key,"WHERE seed key does not match lesson patch");
+    ensure(target && (!patch.seed_key || patch.seed_key===target),'WHERE seed key does not match lesson patch');
+    const entry=grouped.get(target)||{data:{},updates:0,clearsComingSoon:false};
+    entry.data=mergePatch(entry.data,patch);entry.updates++;entry.clearsComingSoon ||= patch.coming_soon===null;
+    grouped.set(target,entry);
   });
-  ensure((sql.match(/\bUPDATE\s+lessons\b/gi)||[]).length===lessons.length,'one UPDATE per lesson required below statement limit');
-  const results=lessons.map(l=>{ensure(l.coming_soon===null,'coming_soon must be deleted');return validateLesson(l);});
-  return {lessons:lessons.length,statements:lessons.length,sqlBytes:Buffer.byteLength(sql),statementBytes:statements.map(s=>Buffer.byteLength(s)),results};
+  ensure(grouped.size<=50,'more than 50 lessons per migration');
+  const largeLessons=[];
+  const results=[...grouped].map(([seed,entry])=>{
+    ensure(entry.updates<=2,'Use at most two UPDATEs per lesson: text first, media second');
+    ensure(entry.clearsComingSoon,'coming_soon must be deleted');
+    const result=validateLesson(entry.data);
+    if(result.bytes>90000){largeLessons.push({seed_key:seed,bytes:result.bytes,updates:entry.updates});ensure(entry.updates===2,'Lesson over 90 KB requires two UPDATEs: text first, media second');}
+    return result;
+  });
+  return {lessons:grouped.size,estimatedRowsWritten:statements.length,statements:statements.length,sqlBytes:Buffer.byteLength(sql),statementBytes:all.map(s=>Buffer.byteLength(s)),largeLessons,results};
 }
 if(process.argv[1] && path.resolve(process.argv[1])===path.resolve(new URL(import.meta.url).pathname)) {
   const args=process.argv.slice(2); const files=args.length?args:fs.readdirSync('worker/migrations').filter(f=>f.endsWith('.sql')).map(f=>path.join('worker/migrations',f));

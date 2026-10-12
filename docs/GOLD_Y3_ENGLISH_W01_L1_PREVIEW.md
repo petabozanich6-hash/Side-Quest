@@ -33,13 +33,11 @@ These were local checks, not a deployed-app test:
 - Actual player logic under simulated timers: speech watchdog cleared on completion, seeking pauses safely, pause points resume, remote voices rejected: passed.
 - Print content: teaching and transcripts present, parent answers absent, injected titles escaped: passed.
 
-**Not verified:** production React build, real DOM rendering, phone layout, real speech timing/voice availability, live D1 row contents, full application submission flow, live free-tier usage or the helper on an actual signed-in child account. No deployment or remote database mutation was performed.
+**Not verified:** production React build, real DOM rendering, phone layout, real speech timing/voice availability, live D1 row contents, full application submission flow, live usage or the helper on an actual signed-in child account. No deployment or remote database mutation was performed.
 
-## Free-tier check
+## Usage check
 
-One lesson; **one UPDATE**; SQL file **40,146 bytes**; pretty JSON **39,689 bytes** (compact JSON 36,107 bytes). All three SVGs are below 6 KB each. Two original episodes have estimated caption-play times between 20 and 60 seconds, excluding voluntary pauses. No new dependencies, paid service, external embed, uploaded PDF or AI runtime call.
-
-Cloudflare's documented SQL statement maximum is 100,000 bytes: [D1 limits](https://developers.cloudflare.com/d1/platform/limits/). The indexed seed lookup targets at most one row under the repository schema. D1 counts index activity as well as table activity; read the command's actual `rows_read` and `rows_written` output rather than assuming exactly one billed write. Account-wide daily usage and total stored size were not accessible. Your existing limits remain 100,000 row writes/day, 5 million row reads/day and 5 GB total storage. Applying other pending placeholder migrations is not part of this preview.
+Estimated rows written: **1**. Largest SQL statement: **40,145 bytes**.
 
 ## Before opening the app
 
@@ -167,6 +165,6 @@ Reverting the frontend PR does not undo D1 lesson data. For database recovery, u
 npx wrangler d1 time-travel restore sidequest-db1 --bookmark YOUR_SAVED_BOOKMARK
 ```
 
-Replace the last part with the real bookmark saved before applying the lesson. Time Travel restores the **whole database** to that point, including unrelated changes made since then, so review the command's confirmation carefully. See [Cloudflare Time Travel](https://developers.cloudflare.com/d1/reference/time-travel/). Free-plan recovery history is limited; keep `backup.sql` as the durable backup. Do not blindly import a full export over an existing populated database. If using the export instead, restore it to a separate empty database first and recover the lesson row from there.
+Replace the last part with the real bookmark saved before applying the lesson. Time Travel restores the **whole database** to that point, including unrelated changes made since then, so review the command's confirmation carefully. See [Cloudflare Time Travel](https://developers.cloudflare.com/d1/reference/time-travel/). Paid-plan Time Travel provides **30 days** of point-in-time recovery; keep `backup.sql` as the durable backup. Do not blindly import a full export over an existing populated database. If using the export instead, restore it to a separate empty database first and recover the lesson row from there.
 
 Stop here for the parent's gold-lesson approval. No Week 1 Lesson 2 or later lesson should be authored until this lesson is approved.
