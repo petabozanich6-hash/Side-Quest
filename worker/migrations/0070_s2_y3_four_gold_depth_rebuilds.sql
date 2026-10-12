@@ -102,7 +102,7 @@ UPDATE lessons SET title='Number Line Expedition: Skip Counting',data=json_patch
         {
           "episode": {
             "title": "A clue for Number Line Expedition: Skip Counting",
-            "transcript": "Pip: The stops read 120,125,130. Are the gaps one?\nJuno: Look at the labels. Each equal jump changes the number by five.\nPip: Three jumps from 120 go to 135!\nJuno: Now pause and imagine the same three jumps of ten.",
+            "transcript": "Pip: The stops read 120,125,130. Are the gaps one?\nJuno: Look at the labels. Each equal jump changes the number by five.\nPip: Three jumps from 120 go to 135!\nJuno: Now pause and imagine the same three jumps of ten. Check the interval between two labelled points before adding each jump.",
             "scenes": [
               {
                 "bg": "room",
@@ -121,7 +121,7 @@ UPDATE lessons SET title='Number Line Expedition: Skip Counting',data=json_patch
                   },
                   {
                     "who": "juno",
-                    "text": "Now pause and imagine the same three jumps of ten.",
+                    "text": "Now pause and imagine the same three jumps of ten. Check the interval between two labelled points before adding each jump.",
                     "pause_after": true
                   }
                 ]
@@ -469,7 +469,7 @@ UPDATE lessons SET title='Pattern Lab: Find the Rule',data=json_patch(data,'{
         {
           "episode": {
             "title": "A clue for Pattern Lab: Find the Rule",
-            "transcript": "Pip: I see 14,21,28,35. Maybe we double each time?\nJuno: Subtract neighbours. Each difference is seven.\nPip: So the next term must be 42.\nJuno: Pause and test the same rule across every gap.",
+            "transcript": "Pip: I see 14,21,28,35. Maybe we double each time?\nJuno: Subtract neighbours. Each difference is seven.\nPip: So the next term must be 42.\nJuno: Pause and test the same rule across every gap. Check the difference between every neighbouring pair, not just the first two.",
             "scenes": [
               {
                 "bg": "room",
@@ -488,7 +488,7 @@ UPDATE lessons SET title='Pattern Lab: Find the Rule',data=json_patch(data,'{
                   },
                   {
                     "who": "juno",
-                    "text": "Pause and test the same rule across every gap.",
+                    "text": "Pause and test the same rule across every gap. Check the difference between every neighbouring pair, not just the first two.",
                     "pause_after": true
                   }
                 ]
