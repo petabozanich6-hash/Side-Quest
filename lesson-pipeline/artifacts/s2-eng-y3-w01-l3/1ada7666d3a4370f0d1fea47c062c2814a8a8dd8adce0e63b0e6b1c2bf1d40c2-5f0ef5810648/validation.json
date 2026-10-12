@@ -1,0 +1,4 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: Independent material leaked into model/practice\n    at need (file:///Users/petab/Side-Quest/scripts/gold-pipeline/validate.mjs:10:34)\n    at file:///Users/petab/Side-Quest/scripts/gold-pipeline/validate.mjs:66:5\n    at Array.forEach (<anonymous>)\n    at validateBundle (file:///Users/petab/Side-Quest/scripts/gold-pipeline/validate.mjs:65:31)\n    at file:///Users/petab/Side-Quest/scripts/gold-pipeline/validate.mjs:86:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)\n    at async node:internal/modules/esm/loader:647:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)",
+  "passed": false
+}

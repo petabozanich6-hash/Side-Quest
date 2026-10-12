@@ -1,0 +1,444 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-CWT-01",
+      "lesson_evidence": "Compose, identify and revise grammatically complete sentences using specific subjects, precise verbs and punctuation.",
+      "scope_limit": "One sentence construction lesson is a contribution to composition, not evidence of the complete syllabus outcome.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Build clear, complete sentences that tell a reader who did what, and improve them with precise details.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the four independent sentences and their explanations, plus two written quiz answers. Parent may record an oral reasoning explanation where appropriate.",
+    "explicit_teaching": null,
+    "extension": "Write a three-sentence description of an unusual animal encounter. Use one vivid verb in each sentence, then explain why each sentence stands alone.",
+    "follow_up_challenges": null,
+    "guided_practice": "WE DO — try before comparing:\n1. Repair \"At the edge of the playground.\" Name what is missing, then write a full thought. Compare: \"Three children waited at the edge of the playground.\" A place alone cannot say what happened.\n2. Improve \"The animal ran.\" by choosing a precise animal and action. Compare: \"The dingo sprinted across the sand.\" The subject and action have become more informative.\n3. Correct \"the gate creaked the wind grew stronger\". Compare: \"The gate creaked. The wind grew stronger.\" Check both capitals and both full stops. If yours differs, explain how you separated complete thoughts.",
+    "hoard_words": null,
+    "independent_task": "YOU DO — produce four new pieces of evidence.\n1. Repair the fragment \"Under the fallen gum tree.\" Include a subject, a verb and punctuation. Explain what was missing.\n2. Write one simple complete sentence about an object in your home, then replace one vague noun or verb with a precise word. Explain the change.\n3. Identify subject and verb in \"The curious echidna searched beneath the log.\" Then write a fresh sentence with a different subject and action.\n4. Rewrite \"a storm rolled in our game stopped\" into two correctly punctuated complete sentences. Explain where the first thought ends. These are your own answers, not copied models.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Learn to recognise a complete thought, organise the subject and verb, and improve sentence meaning without making it confusing.",
+    "lesson_number": 2,
+    "lesson_role": "Writing",
+    "materials": [
+      "Paper or the typing area",
+      "Pencil for optional handwritten draft"
+    ],
+    "offline_alternative": "Read the teaching aloud together, rewrite each prompt on paper and underline subjects and verbs. Keep the page as evidence and type a brief summary later.",
+    "outcome_codes": [
+      "EN2-CWT-01"
+    ],
+    "parent_notes": "Parent: Independent examples are not a single required wording. Task 1: \"A beetle hid under the fallen gum tree.\" It needed a subject and action. Task 2: accept a meaningful original sentence followed by a genuine precision revision. Task 3: subject \"The curious echidna\"; verb \"searched\", followed by a fresh grammatical sentence. Task 4: \"A storm rolled in. Our game stopped.\" Capitalisation and sentence boundaries matter.\n\nParent: Written model 1: The turtle rested beside the creek. Subject: the turtle. Verb: rested.\n\nParent: Written model 2: The wombat shuffled into its burrow. I named a particular animal and chose shuffled to show its movement.\n\nParent: Look for independent meaningful sentences, correct identification of subject/verb and justified revisions. Do not assess vocabulary sophistication alone; accept oral explanation recorded by the parent if writing limits demonstration. Keep sample answers out of the child role.",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 2,
+        "explanation": "The fish darted away names a subject and what it did, so it stands alone as a statement.",
+        "options": [
+          "In the deep water.",
+          "The large silver fish.",
+          "The fish darted away.",
+          "Along the river bank."
+        ],
+        "question": "Which is a complete sentence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The phrase establishes when, but it does not tell what happened during or after that time.",
+        "options": [
+          "A longer adjective",
+          "A full action or main thought",
+          "A number",
+          "A question mark"
+        ],
+        "question": "What is missing from \"Before the noisy parade\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The young gardener names who performed the action; watered is the action word.",
+        "options": [
+          "watered",
+          "roses",
+          "young",
+          "The young gardener"
+        ],
+        "question": "Choose the subject in \"The young gardener watered roses\".",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Climbed tells the action performed by the possum; the fence is where it climbed.",
+        "options": [
+          "fence",
+          "A",
+          "climbed",
+          "possum"
+        ],
+        "question": "Find the action verb: \"A possum climbed the fence\".",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Hurried tells us how she moved and gives a clearer picture than the general verbs went or moved.",
+        "options": [
+          "The girl went along the path.",
+          "The girl moved somewhere.",
+          "The girl hurried along the path.",
+          "The girl was there."
+        ],
+        "question": "Which sentence uses a more precise verb?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The lantern glowed beside the tent is specific and readable, with no repeated description of brightness.",
+        "options": [
+          "The bright shiny glowing lamp shone brightly.",
+          "The lantern glowed beside the tent.",
+          "The shiny bright lantern was very shiny.",
+          "The lamp lamp shone."
+        ],
+        "question": "Which revision avoids unnecessary repetition?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "A complete written statement starts with a capital letter, so birds should become Birds.",
+        "options": [
+          "The tide rose.",
+          "Rain fell.",
+          "birds called.",
+          "The sand cooled."
+        ],
+        "question": "Which needs a capital letter at the beginning?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The two complete statements each need a capital letter and a full stop; the first ends after lunch.",
+        "options": [
+          "We ate lunch. The bell rang.",
+          "We ate lunch the. Bell rang.",
+          "we ate lunch, the bell rang.",
+          "We ate lunch the bell. Rang."
+        ],
+        "question": "Which fixes \"we ate lunch the bell rang\" correctly?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "A phrase naming a location and subject still needs a verb to express a complete thought.",
+        "marking_guide": "Accept any complete grammatical sentence retaining the creek context. Require correctly labelled subject and main verb plus sentence punctuation.",
+        "question": "Rewrite \"beside the creek the turtle\" as a complete sentence, then name its subject and action verb.",
+        "sample_answer": "The turtle rested beside the creek. Subject: the turtle. Verb: rested.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "Precision comes from identifying an exact noun and useful verb, not from adding many interchangeable describing words.",
+        "marking_guide": "Accept plausible original revisions with a clear subject, precise action and two relevant explanations. Do not award full credit for strings of repetitive adjectives.",
+        "question": "Improve \"The creature moved.\" into a vivid but clear sentence and explain two choices you made.",
+        "sample_answer": "The wombat shuffled into its burrow. I named a particular animal and chose shuffled to show its movement.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Type four labelled independent answers. Include the original and revised sentence for task 2, and an explanation for task 4.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w01-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 composing-written-text alignment; confirm the specific NESA content points against the original Coming Soon mapping before approval.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Look for complete statements in ordinary writing.",
+        "Ask what a reader knows and still needs to know.",
+        "You will repair fragments, choose precise words and punctuate clear thoughts."
+      ],
+      "guided": [
+        "Try rewriting each prompt before reading the comparison.",
+        "Ask whether you are repairing a fragment, improving precision or dividing thoughts.",
+        "For the final guided prompt, the first statement ends after creaked."
+      ],
+      "learn": [
+        "Study the unfinished duck phrase before the repair.",
+        "Notice how the writer adds the missing action before extra detail.",
+        "In the full example the duck paddles; the location can be refined later."
+      ],
+      "quiz": [
+        "Find the subject and action before you pick an option.",
+        "Eliminate options that stop after a place or time phrase.",
+        "The strongest revision usually has a precise verb without repeated synonyms."
+      ],
+      "submit": [
+        "Check that all four independent tasks are present.",
+        "Read each sentence to catch missing capitals, verbs or full stops.",
+        "Make sure your two written quiz responses include both the revision and reasoning requested."
+      ],
+      "teach0": [
+        "Say the words aloud and notice whether they feel unfinished.",
+        "Ask who did what before adding a full stop.",
+        "\"Behind the shed\" needs someone doing something, such as \"A lizard hid behind the shed.\""
+      ],
+      "teach1": [
+        "Identify who or what the statement focuses on.",
+        "Find the verb that says what that subject does.",
+        "In \"Two magpies guarded the nest\", \"Two magpies\" is the subject and \"guarded\" is the verb."
+      ],
+      "teach2": [
+        "Choose one word that makes the idea more exact.",
+        "Swap a vague verb like went for an accurate action.",
+        "\"The wallaby bounded into the scrub\" communicates more precisely than \"The animal went away.\""
+      ],
+      "teach3": [
+        "Read each thought slowly and listen for a natural stop.",
+        "Check every new sentence has its own subject, action, capital and full stop.",
+        "\"The lantern flickered. We looked for batteries.\" separates two complete thoughts."
+      ],
+      "write": [
+        "Use four separately numbered answers so your evidence is clear.",
+        "Show a before-and-after revision and explain your change.",
+        "For task 3 identify \"The curious echidna\" and the verb \"searched\" before inventing a new sentence."
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can tell a complete sentence from a fragment.",
+      "I can identify who or what a sentence is about and what happens.",
+      "I can revise a sentence by choosing details that help a reader.",
+      "I can explain how punctuation and word order affect meaning."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "The students entered the library names who acted and what happened. The other options leave a reader waiting for information.",
+          "options": [
+            "Beside the library.",
+            "The shiny bicycle.",
+            "After the bell rang.",
+            "The students entered the library."
+          ],
+          "question": "Which group expresses a complete thought?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI read \"Across the muddy oval.\" I can imagine a place, but I still do not know what happened there. I add a subject and action: \"Mia raced across the muddy oval.\" Now the reader knows who acted and what Mia did.\n\nYOUR SMALL TRY\nImprove \"Behind the old shed.\" into a complete sentence with a named character and action.\n\nCOMPARE AFTER TRYING\nOne possible sentence is \"A blue lizard hid behind the old shed.\" Other complete thoughts also work when the subject and action are clear.",
+        "explain": "A complete sentence tells the reader something that makes sense on its own.\n\nA reader should not have to guess what action happened or who the sentence refers to.\n\nCompare \"The noisy cockatoo\" with \"The noisy cockatoo landed on the fence.\" The first gives us a subject but stops before saying what happened. It sounds as if someone is waiting for the rest. The second supplies an action and can stand alone. A sentence can be short: \"Rain fell.\" It does not need several describing words. Say it aloud and ask whether it makes a complete thought.",
+        "icon": "✏️",
+        "notice": "A common mistake is treating every capitalised group of words as a complete sentence. Read for meaning and supply a missing action or subject before you worry about its length.",
+        "title": "A sentence tells a complete thought",
+        "visual": [
+          {
+            "alt": "Compare incomplete place phrase Behind the shed with the complete sentence A lizard hid behind the shed.",
+            "caption": "A location alone is incomplete; the second sentence names a subject and action.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 130\"><rect x=\"8\" y=\"10\" width=\"305\" height=\"105\" rx=\"14\" fill=\"#fff2e8\" stroke=\"#b87445\"/><rect x=\"345\" y=\"10\" width=\"305\" height=\"105\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"19\" fill=\"#263948\"><text x=\"24\" y=\"44\">Fragment</text><text x=\"24\" y=\"83\">Behind the shed.</text><text x=\"361\" y=\"44\">Complete thought</text><text x=\"361\" y=\"83\">A lizard hid behind the shed.</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "The words say behind the old shed. That has a capital letter. Is it finished?",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Ask who did what. Behind the old shed names a place, but nothing happens yet.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will add a subject and an action: A blue lizard hid behind the old shed.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Now a reader knows who acted and what happened. Pause here. Repair a place phrase of your own.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Is a place phrase a complete sentence?",
+              "transcript": "Pip: The words say behind the old shed. That has a capital letter. Is it finished?\nJuno: Ask who did what. Behind the old shed names a place, but nothing happens yet.\nPip: I will add a subject and an action: A blue lizard hid behind the old shed.\nJuno: Now a reader knows who acted and what happened. Pause here. Repair a place phrase of your own."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "\"Shook\" describes what the puppy did. \"Wet\" describes the puppy, while \"fur\" names a thing.",
+          "options": [
+            "puppy",
+            "wet",
+            "shook",
+            "fur"
+          ],
+          "question": "What is the action verb in \"The wet puppy shook its fur\"?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nFor \"Our neighbour planted sunflowers\", I underline \"our neighbour\" as the subject and \"planted\" as the verb. I check that \"planted\" really tells what the neighbour did; \"sunflowers\" tells what was planted.\n\nYOUR SMALL TRY\nIn \"Two magpies guarded the nest\", identify the subject and the verb before comparing.\n\nCOMPARE AFTER TRYING\nThe subject is \"Two magpies\"; the action verb is \"guarded\". \"Nest\" is what they guarded, not what performed the action.",
+        "explain": "In a simple statement, the subject identifies who or what; the verb explains an action or a state.\n\nRecognising these parts makes it easier to find missing meaning and repair awkward word order.\n\nIn \"The tiny crab scuttled under a rock\", \"the tiny crab\" is who the sentence is about, while \"scuttled\" tells its action. Some verbs describe states, such as \"is\", \"seems\" or \"belongs\". A sentence can have more than one word in its subject. Ask two questions: Who or what? What happened or is true? Do not decide that the longest word must be the verb.",
+        "icon": "✏️",
+        "notice": "A common mistake is calling a describing word, such as \"neighbour\", the action. Look for what someone actually does, then check the sentence by asking who carried it out.",
+        "title": "Find the subject and what it does",
+        "visual": [
+          {
+            "alt": "Sentence split into subject Two magpies and predicate guarded the nest with action verb guarded.",
+            "caption": "The subject tells who or what; the verb guarded identifies the action.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 160\"><rect x=\"12\" y=\"36\" width=\"300\" height=\"79\" rx=\"12\" fill=\"#e9f2fb\" stroke=\"#316994\"/><rect x=\"345\" y=\"36\" width=\"300\" height=\"79\" rx=\"12\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"19\" fill=\"#263948\"><text x=\"33\" y=\"27\">Subject: who or what?</text><text x=\"367\" y=\"27\">Verb: what happened?</text><text x=\"42\" y=\"80\">Two magpies</text><text x=\"375\" y=\"80\">guarded the nest.</text></g><path d=\"M311 75H343\" stroke=\"#263948\" stroke-width=\"3\"/></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "\"The terrier dashed through the gate\" identifies the animal, gives a precise action and adds a useful location without repetition.",
+          "options": [
+            "The thing did stuff.",
+            "The dog moved.",
+            "The terrier dashed through the gate.",
+            "The fast speedy quick dog ran fast quickly."
+          ],
+          "question": "Which revision is most specific and still clear?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI change \"A person went somewhere\" into \"The ranger hurried along the bush track.\" \"Ranger\" names the subject more precisely, \"hurried\" improves the verb and \"along the bush track\" gives a useful place.\n\nYOUR SMALL TRY\nImprove \"The animal went away\" with a specific animal and a stronger action verb.\n\nCOMPARE AFTER TRYING\n\"The wallaby bounded into the scrub\" is one possible answer. Notice how \"bounded\" tells the reader more than \"went\"; a shorter clear sentence is better than repeated decoration.",
+        "explain": "Choose a specific verb or a useful describing detail to make a clear sentence more informative.\n\nSpecific details help the reader imagine exactly what is happening without turning one sentence into a confusing list.\n\nStart with \"The bird moved.\" That is complete but vague. \"The kookaburra swooped towards the branch\" gives a particular animal and action. Adding \"quickly, suddenly, rapidly\" all together repeats the same idea rather than sharpening it. A good revision changes one piece at a time and then tests whether the complete sentence remains easy to read. Not every sentence needs an adjective.",
+        "icon": "✏️",
+        "notice": "A common mistake is adding many adjectives instead of choosing one precise word. Replace a vague noun or verb first; include a describing phrase only when it helps a reader understand.",
+        "title": "Add details that help rather than crowd"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "A full stop separates the two complete thoughts. Each sentence has a subject and verb and starts with a capital letter.",
+          "options": [
+            "The cat stretched it yawned.",
+            "The cat stretched. It yawned.",
+            "The cat. Stretched it yawned.",
+            "The cat stretched, it yawned."
+          ],
+          "question": "Which version separates two complete thoughts correctly?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI review \"my brother found a feather it had bright blue edges\". I separate two complete thoughts: \"My brother found a feather. It had bright blue edges.\" Each sentence has a subject and verb, and each begins and ends correctly.\n\nYOUR SMALL TRY\nRewrite \"the lantern flickered we looked for fresh batteries\" as two complete sentences.\n\nCOMPARE AFTER TRYING\n\"The lantern flickered. We looked for fresh batteries.\" Both thoughts are complete, properly capitalised and separated.",
+        "explain": "A statement usually begins with a capital letter and ends with a full stop; reread it to check meaning.\n\nPunctuation and careful rereading help a reader see where a complete thought begins and ends.\n\nLook at \"we spotted three dolphins they swam beside the boat\". It contains two separate thoughts, but the reader is given no clear boundary. Write \"We spotted three dolphins. They swam beside the boat.\" Check capital letters and full stops after separating the thoughts. If the ideas belong together you may join them with a suitable word, but do not use a comma alone to hold two complete sentences together. Read slowly, pause where the thought ends, and ask whether any word is missing.",
+        "icon": "✏️",
+        "notice": "A common mistake is adding a full stop without checking whether the words before it make sense on their own. First locate each complete thought; then capitalise its beginning and mark its end.",
+        "title": "Punctuate, read back and revise"
+      }
+    ],
+    "title": "Year 3: Build a clear sentence",
+    "unit_number": 1,
+    "unit_title": "Narrative: story elements and planning",
+    "week": 1,
+    "week_in_unit": 1,
+    "word_challenges": null,
+    "worked_example": "I DO: Repair and improve \"near the pond the duck\". First I ask, \"Who or what?\" — the duck. Then I ask, \"What happened?\" — missing. I supply a precise verb: \"The duck paddled near the pond.\" Now I check that the capital T begins the sentence and the full stop finishes it. I could make the location clearer: \"The duck paddled through the reeds at the pond.\" The subject remains the duck; the action remains paddled. I stop when the detail improves meaning.",
+    "worked_visuals": [
+      {
+        "alt": "Compare incomplete place phrase Behind the shed with the complete sentence A lizard hid behind the shed.",
+        "caption": "A location alone is incomplete; the second sentence names a subject and action.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 130\"><rect x=\"8\" y=\"10\" width=\"305\" height=\"105\" rx=\"14\" fill=\"#fff2e8\" stroke=\"#b87445\"/><rect x=\"345\" y=\"10\" width=\"305\" height=\"105\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"19\" fill=\"#263948\"><text x=\"24\" y=\"44\">Fragment</text><text x=\"24\" y=\"83\">Behind the shed.</text><text x=\"361\" y=\"44\">Complete thought</text><text x=\"361\" y=\"83\">A lizard hid behind the shed.</text></g></svg>"
+      },
+      {
+        "alt": "Sentence split into subject Two magpies and predicate guarded the nest with action verb guarded.",
+        "caption": "The subject tells who or what; the verb guarded identifies the action.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 160\"><rect x=\"12\" y=\"36\" width=\"300\" height=\"79\" rx=\"12\" fill=\"#e9f2fb\" stroke=\"#316994\"/><rect x=\"345\" y=\"36\" width=\"300\" height=\"79\" rx=\"12\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"19\" fill=\"#263948\"><text x=\"33\" y=\"27\">Subject: who or what?</text><text x=\"367\" y=\"27\">Verb: what happened?</text><text x=\"42\" y=\"80\">Two magpies</text><text x=\"375\" y=\"80\">guarded the nest.</text></g><path d=\"M311 75H343\" stroke=\"#263948\" stroke-width=\"3\"/></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Three children waited",
+        "The dingo sprinted",
+        "The gate creaked"
+      ],
+      "independent_inputs": [
+        "Under the fallen gum tree",
+        "object in your home",
+        "The curious echidna",
+        "a storm rolled in"
+      ],
+      "model_inputs": [
+        "The duck paddled",
+        "The duck paddled through"
+      ]
+    },
+    "review_questions": [
+      "Confirm actual Coming Soon NESA code and content point.",
+      "Check every answer independently for grammatical accuracy.",
+      "Review Year 3 vocabulary and the amount of direct instruction.",
+      "Verify that child API does not expose parent answers.",
+      "Ensure written progress saves across reloads.",
+      "Check the assessment genuinely requires independently composed text."
+    ],
+    "teaching": [
+      {
+        "feedback": "One possible sentence is \"A blue lizard hid behind the old shed.\" Other complete thoughts also work when the subject and action are clear.",
+        "fix": "Read for meaning and supply a missing action or subject before you worry about its length.",
+        "guided_attempt": "Improve \"Behind the old shed.\" into a complete sentence with a named character and action.",
+        "misconception": "A common mistake is treating every capitalised group of words as a complete sentence.",
+        "model": "I read \"Across the muddy oval.\" I can imagine a place, but I still do not know what happened there. I add a subject and action: \"Mia raced across the muddy oval.\" Now the reader knows who acted and what Mia did.",
+        "rule": "A complete sentence tells the reader something that makes sense on its own.",
+        "why": "A reader should not have to guess what action happened or who the sentence refers to."
+      },
+      {
+        "feedback": "The subject is \"Two magpies\"; the action verb is \"guarded\". \"Nest\" is what they guarded, not what performed the action.",
+        "fix": "Look for what someone actually does, then check the sentence by asking who carried it out.",
+        "guided_attempt": "In \"Two magpies guarded the nest\", identify the subject and the verb before comparing.",
+        "misconception": "A common mistake is calling a describing word, such as \"neighbour\", the action.",
+        "model": "For \"Our neighbour planted sunflowers\", I underline \"our neighbour\" as the subject and \"planted\" as the verb. I check that \"planted\" really tells what the neighbour did; \"sunflowers\" tells what was planted.",
+        "rule": "In a simple statement, the subject identifies who or what; the verb explains an action or a state.",
+        "why": "Recognising these parts makes it easier to find missing meaning and repair awkward word order."
+      },
+      {
+        "feedback": "\"The wallaby bounded into the scrub\" is one possible answer. Notice how \"bounded\" tells the reader more than \"went\"; a shorter clear sentence is better than repeated decoration.",
+        "fix": "Replace a vague noun or verb first; include a describing phrase only when it helps a reader understand.",
+        "guided_attempt": "Improve \"The animal went away\" with a specific animal and a stronger action verb.",
+        "misconception": "A common mistake is adding many adjectives instead of choosing one precise word.",
+        "model": "I change \"A person went somewhere\" into \"The ranger hurried along the bush track.\" \"Ranger\" names the subject more precisely, \"hurried\" improves the verb and \"along the bush track\" gives a useful place.",
+        "rule": "Choose a specific verb or a useful describing detail to make a clear sentence more informative.",
+        "why": "Specific details help the reader imagine exactly what is happening without turning one sentence into a confusing list."
+      },
+      {
+        "feedback": "\"The lantern flickered. We looked for fresh batteries.\" Both thoughts are complete, properly capitalised and separated.",
+        "fix": "First locate each complete thought; then capitalise its beginning and mark its end.",
+        "guided_attempt": "Rewrite \"the lantern flickered we looked for fresh batteries\" as two complete sentences.",
+        "misconception": "A common mistake is adding a full stop without checking whether the words before it make sense on their own.",
+        "model": "I review \"my brother found a feather it had bright blue edges\". I separate two complete thoughts: \"My brother found a feather. It had bright blue edges.\" Each sentence has a subject and verb, and each begins and ends correctly.",
+        "rule": "A statement usually begins with a capital letter and ends with a full stop; reread it to check meaning.",
+        "why": "Punctuation and careful rereading help a reader see where a complete thought begins and ends."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Compare incomplete place phrase Behind the shed with the complete sentence A lizard hid behind the shed.",
+        "teaches": "Contrast a place fragment with a full subject-action sentence"
+      },
+      {
+        "alt": "Sentence split into subject Two magpies and predicate guarded the nest with action verb guarded.",
+        "teaches": "Locate the subject and action verb in a sentence"
+      }
+    ]
+  }
+}
