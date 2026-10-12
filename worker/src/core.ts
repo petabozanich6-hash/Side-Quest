@@ -38,6 +38,32 @@ function lessonOut(r: any) {
   const { data, ...cols } = r;
   return applySpelling({ ...parseJson(data, {}), ...cols });
 }
+// Child API payloads must not contain parent-only instructional or answer material.
+// Apply on the server: concealing fields in React does not prevent network access.
+const childPrivateFields = new Set([
+  "parent_notes", "parent_note", "parent_guidance", "parent_instructions",
+  "parent_only", "teacher_notes", "teacher_guide", "answer_key",
+  "sample_answer", "model_answer", "marking_guide", "mark_scheme",
+  "marking_rubric", "expected_answer", "suggested_answer",
+]);
+function forChild<T>(value: T): T {
+  if (Array.isArray(value)) return value.map((entry) => forChild(entry)) as T;
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).filter(([key]) => !childPrivateFields.has(key.toLowerCase()))
+        .map(([key, entry]) => [key, forChild(entry)])
+    ) as T;
+  }
+  return value;
+}
+function lessonForRole(r: any, role: AuthUser["role"]) {
+  const lesson = lessonOut(r);
+  return role === "child" ? forChild(lesson) : lesson;
+}
+function lessonSummaryForRole(r: any, role: AuthUser["role"]) {
+  const lesson = lessonSummary(r);
+  return role === "child" ? forChild(lesson) : lesson;
+}
 function lessonSummary(r: any) {
   const l: any = lessonOut(r);
   if (!l) return null;
@@ -97,7 +123,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       "SELECT * FROM assignments WHERE student_id = ? AND status IN ('not_started','opened','in_progress','awaiting_help','needs_revision') ORDER BY created_at DESC LIMIT 50"
     ).bind(u.id).all<any>();
     for (const a of pending) {
-      a.lesson = lessonSummary(await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first());
+      a.lesson = lessonSummaryForRole(await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first(), u.role);
     }
     const { results: fb } = await db.prepare(
       "SELECT * FROM submissions WHERE student_id = ? AND parent_feedback IS NOT NULL ORDER BY reviewed_at DESC LIMIT 5"
@@ -105,7 +131,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const feedback = [];
     for (const f of fb) {
       const o: any = subOut(f);
-      o.lesson = lessonSummary(await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(f.lesson_id).first());
+      o.lesson = lessonSummaryForRole(await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(f.lesson_id).first(), u.role);
       feedback.push(o);
     }
     const { results: ch } = await db.prepare(
@@ -164,7 +190,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   app.get("/api/lessons/:id", auth, async (c) => {
     const l = await getLesson(c, c.req.param("id"));
     if (!l) return c.json({ detail: "Lesson not found" }, 404);
-    return c.json(lessonOut(l));
+    return c.json(lessonForRole(l, c.get("user").role));
   });
 
   app.delete("/api/lessons/:id", auth, parent, async (c) => {
@@ -185,7 +211,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     sql += " ORDER BY created_at DESC LIMIT 500";
     const { results } = await c.env.DB.prepare(sql).bind(...b).all<any>();
     for (const a of results) {
-      a.lesson = lessonOut(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first());
+      a.lesson = lessonForRole(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first(), u.role);
     }
     return c.json(results);
   });
@@ -210,7 +236,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     if (u.role === "child") { sql += " AND student_id = ?"; b.push(u.id); }
     const a: any = await c.env.DB.prepare(sql).bind(...b).first();
     if (!a) return c.json({ detail: "Not found" }, 404);
-    a.lesson = lessonOut(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first());
+    a.lesson = lessonForRole(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first(), u.role);
     const { results } = await c.env.DB.prepare("SELECT * FROM submissions WHERE assignment_id = ? ORDER BY submitted_at DESC LIMIT 50").bind(a.id).all<any>();
     a.submissions = results.map(subOut);
     return c.json(a);
@@ -264,7 +290,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const out = [];
     for (const r of results) {
       const s: any = subOut(r);
-      s.lesson = lessonSummary(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first());
+      s.lesson = lessonSummaryForRole(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first(), u.role);
       const st: any = await c.env.DB.prepare("SELECT id, name, username, stage, year_level, theme FROM students WHERE id = ?").bind(r.student_id).first();
       s.student = st;
       out.push(s);
@@ -280,7 +306,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const r: any = await c.env.DB.prepare(sql).bind(...b).first();
     if (!r) return c.json({ detail: "Not found" }, 404);
     const s: any = subOut(r);
-    s.lesson = lessonOut(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first());
+    s.lesson = lessonForRole(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first(), u.role);
     s.student = await c.env.DB.prepare("SELECT id, name, username, stage, year_level, theme FROM students WHERE id = ?").bind(r.student_id).first();
     s.files = [];
     return c.json(s);
