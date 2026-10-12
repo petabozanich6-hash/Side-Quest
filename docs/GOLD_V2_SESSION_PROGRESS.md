@@ -8,10 +8,10 @@ Machine-readable tracker: `lesson-pipeline/completion-manifest.json`.
 
 | Gate | Count |
 |---|---|
-| Automatically validated (pipeline) | **943** |
+| Automatically validated (pipeline) | **955** |
 | Human gates | **0** |
 
 ## Year 4 Mathematics
 
-- **144 / 160** auto-validated
-- Next resume: `s2-mat-y4-w37-l1`
+- **156 / 160** auto-validated
+- Next resume: `s2-mat-y4-w40-l1`
