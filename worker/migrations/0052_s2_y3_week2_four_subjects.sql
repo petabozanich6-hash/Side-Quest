@@ -134,54 +134,27 @@ UPDATE lessons SET title='Year 3: Classifying plants and animals',data=json_patc
   "quiz": [
     {
       "type": "multiple_choice",
-      "question": "W",
+      "question": "Which pair are plants?",
       "options": [
-        "h",
-        "i"
+        "Fern and gum tree",
+        "Butterfly and magpie",
+        "Fern and magpie",
+        "Gum tree and butterfly"
       ],
       "correct_index": 0,
-      "explanation": "h. Living things can be grouped by observable shared features, not personal preference."
+      "explanation": "Fern and gum tree. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
-      "question": "F",
+      "question": "What feature can identify a bird?",
       "options": [
-        "r",
-        "e"
+        "Feathers",
+        "Roots",
+        "Flower petals",
+        "Green colouring"
       ],
-      "correct_index": 3,
-      "explanation": "e. Plants usually make their own food using light; animals obtain food by eating other organisms."
-    },
-    {
-      "type": "multiple_choice",
-      "question": "Butterfly and magpie",
-      "options": [
-        "u",
-        "m",
-        " ",
-        "t",
-        "r",
-        "e",
-        "e",
-        " ",
-        "a",
-        "n",
-        "d",
-        " ",
-        "b",
-        "u",
-        "t",
-        "t",
-        "e",
-        "r",
-        "f",
-        "l",
-        "y",
-        "Fern and magpie",
-        "G"
-      ],
-      "correct_index": 2,
-      "explanation": "Fern and magpie. A fern and a gum tree are plants despite their different appearance. Butterfly and magpie are animals despite one having feathers."
+      "correct_index": 0,
+      "explanation": "Feathers. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
@@ -462,56 +435,27 @@ UPDATE lessons SET title='Year 3: Making a classification key',data=json_patch(d
   "quiz": [
     {
       "type": "multiple_choice",
-      "question": "W",
+      "question": "What does a classification key use?",
       "options": [
-        "h",
-        "a"
+        "A sequence of questions about observable features",
+        "Favourite colours",
+        "Random guessing",
+        "A list without decisions"
       ],
       "correct_index": 0,
-      "explanation": "h. A classification key uses questions about observable features to guide an identification."
+      "explanation": "A sequence of questions about observable features. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
-      "question": "O",
+      "question": "What should happen when a key misidentifies an example?",
       "options": [
-        "s",
-        "b"
+        "Revise the misleading question",
+        "Ignore the mistake",
+        "Rename the example",
+        "Remove all questions"
       ],
-      "correct_index": 3,
-      "explanation": "b. Each two-choice question needs alternatives that do not overlap for the examples being classified."
-    },
-    {
-      "type": "multiple_choice",
-      "question": "Random guessing",
-      "options": [
-        " ",
-        "l",
-        "i",
-        "s",
-        "t",
-        " ",
-        "w",
-        "i",
-        "t",
-        "h",
-        " ",
-        "n",
-        "o",
-        " ",
-        "d",
-        "e",
-        "c",
-        "i",
-        "s",
-        "i",
-        "o",
-        "n",
-        "s",
-        "Questions about favourite colours",
-        "A"
-      ],
-      "correct_index": 2,
-      "explanation": "Questions about favourite colours. Begin with a broad division such as plants and animals; follow with a useful more specific trait."
+      "correct_index": 0,
+      "explanation": "Revise the misleading question. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
@@ -792,52 +736,27 @@ UPDATE lessons SET title='Year 3: How our community has changed',data=json_patch
   "quiz": [
     {
       "type": "multiple_choice",
-      "question": "W",
+      "question": "What is continuity in history?",
       "options": [
-        "h",
-        "a"
+        "Something that remains similar over time",
+        "Every building changing",
+        "A guessed cause",
+        "A map without a date"
       ],
       "correct_index": 0,
-      "explanation": "h. Change means a feature becomes different over time; continuity means a feature remains."
+      "explanation": "Something that remains similar over time. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
-      "question": "S",
+      "question": "How can a photograph''s date be checked?",
       "options": [
-        "m",
-        "o"
+        "Find reliable source information",
+        "Choose by brightness",
+        "Guess from size",
+        "Ignore its origin"
       ],
-      "correct_index": 3,
-      "explanation": "o. A historical claim needs evidence such as dated photos, maps, objects or accounts."
-    },
-    {
-      "type": "multiple_choice",
-      "question": "Every building disappearing",
-      "options": [
-        " ",
-        "m",
-        "a",
-        "p",
-        " ",
-        "w",
-        "i",
-        "t",
-        "h",
-        "o",
-        "u",
-        "t",
-        " ",
-        "a",
-        " ",
-        "d",
-        "a",
-        "t",
-        "e",
-        "A guessed explanation",
-        "A"
-      ],
-      "correct_index": 2,
-      "explanation": "A guessed explanation. A single drawing can show differences but cannot prove why a change occurred."
+      "correct_index": 0,
+      "explanation": "Find reliable source information. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
@@ -1118,51 +1037,27 @@ UPDATE lessons SET title='Year 3: Interviewing someone about the past',data=json
   "quiz": [
     {
       "type": "multiple_choice",
-      "question": "W",
+      "question": "Which is an open interview question?",
       "options": [
-        "h",
-        "i"
+        "What do you remember about the old shops?",
+        "Was everything better then?",
+        "You liked it, didn''t you?",
+        "Is your answer yes?"
       ],
       "correct_index": 0,
-      "explanation": "h. An oral history records what a person remembers, often providing details unavailable in official records."
+      "explanation": "What do you remember about the old shops?. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
-      "question": "W",
+      "question": "What should you do before recording an interview?",
       "options": [
-        "a",
-        "h"
+        "Ask for permission",
+        "Record secretly",
+        "Require every answer",
+        "Share a home address"
       ],
-      "correct_index": 3,
-      "explanation": "h. Prepare open questions that invite explanation rather than leading a person toward an answer."
-    },
-    {
-      "type": "multiple_choice",
-      "question": "Was everything better then?",
-      "options": [
-        "s",
-        " ",
-        "y",
-        "o",
-        "u",
-        "r",
-        " ",
-        "a",
-        "n",
-        "s",
-        "w",
-        "e",
-        "r",
-        " ",
-        "y",
-        "e",
-        "s",
-        "?",
-        "You loved the bakery, didn''t you?",
-        "I"
-      ],
-      "correct_index": 2,
-      "explanation": "You loved the bakery, didn''t you?. Ask permission, allow someone to skip a question and avoid sharing identifying details without consent."
+      "correct_index": 0,
+      "explanation": "Ask for permission. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
@@ -1443,56 +1338,27 @@ UPDATE lessons SET title='Year 3: What helps us feel calm',data=json_patch(data,
   "quiz": [
     {
       "type": "multiple_choice",
-      "question": "W",
+      "question": "Which response respects someone''s feelings?",
       "options": [
-        "h",
-        "i"
+        "Offer a quiet pause and ask what helps",
+        "Mock their worry",
+        "Demand they ignore it",
+        "Force an exercise"
       ],
       "correct_index": 0,
-      "explanation": "h. Feeling calm does not require pretending difficult emotions have disappeared."
+      "explanation": "Offer a quiet pause and ask what helps. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
-      "question": "O",
+      "question": "What if a calming strategy feels unpleasant?",
       "options": [
-        "f",
-        "f"
+        "Stop and choose another safe option",
+        "Carry on regardless",
+        "Hide the discomfort",
+        "Blame a friend"
       ],
-      "correct_index": 3,
-      "explanation": "f. Notice your own physical clues and choose a safe action appropriate to the situation."
-    },
-    {
-      "type": "multiple_choice",
-      "question": "Tell her she is silly",
-      "options": [
-        "r",
-        "e",
-        "t",
-        "e",
-        "n",
-        "d",
-        " ",
-        "s",
-        "h",
-        "e",
-        " ",
-        "s",
-        "a",
-        "i",
-        "d",
-        " ",
-        "n",
-        "o",
-        "t",
-        "h",
-        "i",
-        "n",
-        "g",
-        "Force rapid breathing",
-        "P"
-      ],
-      "correct_index": 2,
-      "explanation": "Force rapid breathing. Helpful options can include a quiet pause, gentle movement, talking to a trusted person or slow comfortable breathing."
+      "correct_index": 0,
+      "explanation": "Stop and choose another safe option. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
@@ -1773,43 +1639,27 @@ UPDATE lessons SET title='Year 3: Calming strategies: breathing and stretching',
   "quiz": [
     {
       "type": "multiple_choice",
-      "question": "H",
+      "question": "How should breathing be practised?",
       "options": [
-        "o",
-        "w"
+        "Comfortably without forcing breaths",
+        "As rapidly as possible",
+        "While holding the breath",
+        "Until feeling dizzy"
       ],
       "correct_index": 0,
-      "explanation": "o. Choose a safe comfortable position and pause if any activity causes pain or dizziness."
+      "explanation": "Comfortably without forcing breaths. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
-      "question": "N",
+      "question": "When should a stretch be stopped?",
       "options": [
-        "t",
-        "a"
+        "When it hurts or feels uncomfortable",
+        "Never",
+        "Only after a competition",
+        "When someone else insists"
       ],
-      "correct_index": 3,
-      "explanation": "a. Comfortable unforced breaths may help attention; do not hold breath or force deep or rapid breathing."
-    },
-    {
-      "type": "multiple_choice",
-      "question": "As fast as possible",
-      "options": [
-        "n",
-        "t",
-        "i",
-        "l",
-        " ",
-        "d",
-        "i",
-        "z",
-        "z",
-        "y",
-        "By holding breath for a long time",
-        "U"
-      ],
-      "correct_index": 2,
-      "explanation": "By holding breath for a long time. Gentle shoulder rolls and slow reaches should stay within a comfortable range."
+      "correct_index": 0,
+      "explanation": "When it hurts or feels uncomfortable. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
@@ -2090,37 +1940,27 @@ UPDATE lessons SET title='Year 3: Primary and secondary colours',data=json_patch
   "quiz": [
     {
       "type": "multiple_choice",
-      "question": "I",
+      "question": "What colour do yellow and blue commonly make in school paint mixing?",
       "options": [
-        "n",
-        " "
+        "Green",
+        "Purple",
+        "Orange",
+        "Black"
       ],
       "correct_index": 0,
-      "explanation": "n. In traditional school paint mixing, red, yellow and blue are often taught as primary colours."
+      "explanation": "Green. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
-      "question": "G",
+      "question": "What influences a mixed paint colour?",
       "options": [
-        "e",
-        "r"
+        "Pigments and their proportions",
+        "The artist''s name",
+        "The paper title",
+        "The day of the week"
       ],
-      "correct_index": 3,
-      "explanation": "r. Mixing red and yellow usually creates orange; yellow and blue usually create green."
-    },
-    {
-      "type": "multiple_choice",
-      "question": "Purple",
-      "options": [
-        "l",
-        "a",
-        "c",
-        "k",
-        "Orange",
-        "B"
-      ],
-      "correct_index": 2,
-      "explanation": "Orange. Paint pigments behave differently across brands, and colour results depend on the materials and proportions."
+      "correct_index": 0,
+      "explanation": "Pigments and their proportions. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
@@ -2401,48 +2241,27 @@ UPDATE lessons SET title='Year 3: Painting with mixed colours',data=json_patch(d
   "quiz": [
     {
       "type": "multiple_choice",
-      "question": "W",
+      "question": "What is a colour swatch?",
       "options": [
-        "h",
-        "a"
+        "A small colour test sample",
+        "A musical note",
+        "A compass direction",
+        "A complete essay"
       ],
       "correct_index": 0,
-      "explanation": "h. A colour plan begins with deciding where attention should go."
+      "explanation": "A small colour test sample. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
-      "question": "A",
+      "question": "What is a purposeful revision?",
       "options": [
-        "s",
-        " "
+        "Changing a mixture to improve the intended effect",
+        "Changing randomly",
+        "Ignoring the design",
+        "Adding every colour"
       ],
-      "correct_index": 3,
-      "explanation": " . Mix small quantities and compare test swatches before using a colour across the artwork."
-    },
-    {
-      "type": "multiple_choice",
-      "question": "A musical note",
-      "options": [
-        " ",
-        "f",
-        "i",
-        "n",
-        "i",
-        "s",
-        "h",
-        "e",
-        "d",
-        " ",
-        "e",
-        "s",
-        "s",
-        "a",
-        "y",
-        "A compass point",
-        "A"
-      ],
-      "correct_index": 2,
-      "explanation": "A compass point. Warm and cool colour relationships can change the mood, but meanings depend on the viewer and context."
+      "correct_index": 0,
+      "explanation": "Changing a mixture to improve the intended effect. Review the related teaching step to explain why."
     },
     {
       "type": "multiple_choice",
