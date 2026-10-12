@@ -148,9 +148,14 @@ function jsonLiterals(sql) {
   for(const match of sql.matchAll(/\bjson\(\s*'((?:[^']|'')*)'\s*\)/gs))JSON.parse(match[1].replace(/''/g,"'"));
   return found;
 }
-export function validateMigration(file) {
+export function validateMigration(file,{strict:forceStrict=false}={}) {
   const sql=fs.readFileSync(file,'utf8');const lessons=jsonLiterals(sql);
-  if(!sql.includes('Standard v2')) return {historical:true,jsonPatches:lessons.length};
+  // Migration 0068 onward contains the Year 3 rebuild and must never bypass v2
+  // validation merely because an author omitted the optional marker string.
+  const migrationNumber=Number(path.basename(file).match(/^(\d{4})_/)?.[1] ?? 0);
+  const isYear3Rebuild=lessons.some(l => /^s2-(?:eng|mat)-y3-w\d{2}-l\d+$/.test(l.seed_key||''));
+  const strict=forceStrict || sql.includes('Standard v2') || (migrationNumber >= 68 && isYear3Rebuild);
+  if(!strict) return {historical:true,jsonPatches:lessons.length};
   ensure(lessons.length>0,'v2 migration has no lesson patch');
   ensure(lessons.length<=25,'more than 25 lessons per migration');
   const statements=sqlStatements(sql).filter(s=>/\bUPDATE\s+lessons\b/i.test(s));
@@ -165,8 +170,8 @@ export function validateMigration(file) {
   return {lessons:lessons.length,statements:lessons.length,sqlBytes:Buffer.byteLength(sql),statementBytes:statements.map(s=>Buffer.byteLength(s)),results};
 }
 if(process.argv[1] && path.resolve(process.argv[1])===path.resolve(new URL(import.meta.url).pathname)) {
-  const args=process.argv.slice(2); const files=args.length?args:fs.readdirSync('worker/migrations').filter(f=>f.endsWith('.sql')).map(f=>path.join('worker/migrations',f));
+  const args=process.argv.slice(2); const strict=args.includes('--strict'); const paths=args.filter(a=>a!=='--strict'); const files=paths.length?paths:fs.readdirSync('worker/migrations').filter(f=>f.endsWith('.sql')).map(f=>path.join('worker/migrations',f));
   let failures=0;
-  for(const file of files)try{console.log(`${file}: ${JSON.stringify(validateMigration(file))}`);}catch(error){failures++;console.error(`${file}: FAIL ${error.message}`);}
+  for(const file of files)try{console.log(`${file}: ${JSON.stringify(validateMigration(file,{strict}))}`);}catch(error){failures++;console.error(`${file}: FAIL ${error.message}`);}
   if(failures)process.exitCode=1;
 }

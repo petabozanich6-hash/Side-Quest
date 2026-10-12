@@ -1,0 +1,31 @@
+test_approval_requires_all_gates (__main__.PipelineTests.test_approval_requires_all_gates) ... ok
+test_artifact_tampering_blocks_resume (__main__.PipelineTests.test_artifact_tampering_blocks_resume) ... ok
+test_atomic_save_preserves_old_file_on_failure (__main__.PipelineTests.test_atomic_save_preserves_old_file_on_failure) ... ok
+test_automated_agent_cannot_self_signoff (__main__.PipelineTests.test_automated_agent_cannot_self_signoff) ... ok
+test_batch_limit_enforced (__main__.PipelineTests.test_batch_limit_enforced) ... ok
+test_candidate_identity_mismatch_fails (__main__.PipelineTests.test_candidate_identity_mismatch_fails) ... ok
+test_changed_invalid_input_revokes_prior_gates (__main__.PipelineTests.test_changed_invalid_input_revokes_prior_gates) ... ok
+test_complete_inventory_and_current_stage_priority (__main__.PipelineTests.test_complete_inventory_and_current_stage_priority) ... ok
+test_failed_input_skipped_until_repaired (__main__.PipelineTests.test_failed_input_skipped_until_repaired) ... ok
+test_human_review_does_not_imply_nesa_or_approval (__main__.PipelineTests.test_human_review_does_not_imply_nesa_or_approval) ... ok
+test_init_cannot_reset_existing_checkpoint (__main__.PipelineTests.test_init_cannot_reset_existing_checkpoint) ... ok
+test_interruption_after_claim_recovers (__main__.PipelineTests.test_interruption_after_claim_recovers) ... ok
+test_inventory_tampering_blocks_resume (__main__.PipelineTests.test_inventory_tampering_blocks_resume) ... ok
+test_lock_excludes_concurrent_writer (__main__.PipelineTests.test_lock_excludes_concurrent_writer) ... ok
+test_manually_toggled_gate_without_attestation_is_rejected (__main__.PipelineTests.test_manually_toggled_gate_without_attestation_is_rejected) ... ok
+test_migration_drift_blocks_resume (__main__.PipelineTests.test_migration_drift_blocks_resume) ... ok
+test_missing_authored_content_stays_queued (__main__.PipelineTests.test_missing_authored_content_stays_queued) ... ok
+test_nesa_requires_exact_official_mapping (__main__.PipelineTests.test_nesa_requires_exact_official_mapping) ... ok
+test_protected_reference_cannot_be_selected (__main__.PipelineTests.test_protected_reference_cannot_be_selected) ... ok
+test_real_pilot_validates_without_self_approval (__main__.PipelineTests.test_real_pilot_validates_without_self_approval) ... ok
+test_resume_is_noop_and_retains_checkpoint_bytes (__main__.PipelineTests.test_resume_is_noop_and_retains_checkpoint_bytes) ... ok
+test_review_bound_to_content_revision (__main__.PipelineTests.test_review_bound_to_content_revision) ... ok
+test_sql_simulation_preserves_existing_assignment_and_owner_metadata (__main__.PipelineTests.test_sql_simulation_preserves_existing_assignment_and_owner_metadata) ... ok
+test_stale_validation_is_not_counted_as_passed (__main__.PipelineTests.test_stale_validation_is_not_counted_as_passed) ... ok
+test_unknown_selected_key_rejected (__main__.PipelineTests.test_unknown_selected_key_rejected) ... ok
+test_validator_change_revalidates_instead_of_skipping (__main__.PipelineTests.test_validator_change_revalidates_instead_of_skipping) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 13.636s
+
+OK

@@ -1,0 +1,31 @@
+✔ original authored pilot passes structural/static checks with reviews pending (11.699784ms)
+✔ wrong architecture (1.45139ms)
+✔ moved lesson (0.474348ms)
+✔ missing NESA proposal (2.146393ms)
+✔ nonofficial syllabus source (3.093681ms)
+✔ self-certified syllabus (1.675595ms)
+✔ missing explicit teaching reason (2.815307ms)
+✔ invented evidence not in rendered teaching (1.641627ms)
+✔ duplicated hint across stages (1.879018ms)
+✔ independent task exposed in teaching (2.156191ms)
+✔ assessment reused from model (1.826814ms)
+✔ repeated quiz prompt (3.092791ms)
+✔ short unsupported quiz explanation (1.200333ms)
+✔ missing topic visual evidence (1.686005ms)
+✔ unrendered visual (1.308736ms)
+✔ child-visible parent label (0.567651ms)
+✔ explicit strict mode rejects marker-free non-Year-3 content at any path (1.434015ms)
+✔ strict Gold v2 validation cannot be bypassed by omitting marker (2.802608ms)
+✔ older unmarked historical migration remains historical (1.367651ms)
+Gold validation and 15 invalid-content regression cases passed.
+✔ scripts/validate-lessons.test.mjs (69.500846ms)
+Stage 3 four-lesson batch, per-statement budgets, spelling checks and hint regression checks passed.
+✔ scripts/validate-stage3-batch.test.mjs (78.194769ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 156.302582

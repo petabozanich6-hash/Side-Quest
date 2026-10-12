@@ -19,3 +19,8 @@ npm-debug.log*
 .DS_Store
 .idea/
 .vscode/
+
+# Local pipeline locks and atomic-write temporaries; checkpoints/artifacts are tracked.
+lesson-pipeline/.pipeline.lock
+lesson-pipeline/**/.checkpoint-*.tmp
+scripts/gold-pipeline/__pycache__/
