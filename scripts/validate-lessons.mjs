@@ -71,7 +71,7 @@ export function validateLesson(l,{media=true}={}) {
   ensure(Array.isArray(l.outcome_codes),'outcome_codes must be array; manually verify codes with NESA');
   ensure(l.success_criteria.length>=3 && l.success_criteria.length<=5 && l.success_criteria.every(v=>v.startsWith('I can')),'3–5 I can criteria required');
   ensure(Array.isArray(l.materials) && l.materials.length>0,'materials required');
-  const year=Number(l.year_level); ensure(Number.isInteger(year) && year>=0 && year<=12,'year_level required');
+  const year=Number(String(l.year_level).match(/\d+/)?.[0]); ensure(Number.isInteger(year) && year>=0 && year<=12,'year_level required');
   const early=year<=2; const options=early?3:4;
   const stepCounts=early?[3]:year<=6?[4]:year<=10?[4,5]:[5];
   ensure(stepCounts.includes(l.teach_steps.length),'wrong teach-step count');
@@ -98,6 +98,16 @@ export function validateLesson(l,{media=true}={}) {
   if(l.planner_fields?.length){ensure(nonempty(l.planner_title)&&nonempty(l.planner_intro),'planner title and intro required');ensure(new Set(l.planner_fields.map(f=>f.key)).size===l.planner_fields.length,'duplicate planner keys');l.planner_fields.forEach(f=>['key','label','hint'].forEach(k=>ensure(nonempty(f[k]),`planner ${k} required`)));}
   if(l.follow_up_challenges){ensure(l.follow_up_challenges.length===3,'3 follow-ups needed');ensure(l.follow_up_challenges.map(c=>c.difficulty).join('|')==='easy|medium|stretch','follow-up difficulties');l.follow_up_challenges.forEach(c=>['title','description','evidence_type'].forEach(k=>ensure(nonempty(c[k]),`challenge ${k} needed`)));}
   if(l.printable_resource){const p=l.printable_resource;['title','instructions','passage'].forEach(k=>ensure(nonempty(p[k]),`printable ${k} needed`));ensure(Array.isArray(p.prompts)&&p.prompts.length>0,'printable prompts needed');}
+  if(l.spelling){
+    ensure(l.learning_area==="English","spelling must be English-only");
+    ensure(nonempty(l.spelling.focus)&&nonempty(l.spelling.teaching),"spelling teaching required");
+    ensure(Array.isArray(l.spelling.words)&&l.spelling.words.length>0,"spelling words required");
+    l.spelling.words.forEach(w=>["word","parts","tip"].forEach(k=>ensure(nonempty(w[k]),"spelling word "+k+" required")));
+    (l.spelling.check || []).forEach((q,i)=>choice(q,"spelling check "+i,options));
+  }
+  if(l.interactive_activities)l.interactive_activities.forEach(a=>{
+    if(a.type==="flip_cards")ensure(nonempty(a.title)&&Array.isArray(a.cards)&&a.cards.length>0&&a.cards.every(c=>nonempty(c.front)&&nonempty(c.back)),"flip-card title/front/back required");
+  });
   let episodes=0;
   function scan(v,where='lesson') {
     if(!v || typeof v!=='object')return;
@@ -114,6 +124,24 @@ export function validateLesson(l,{media=true}={}) {
   if(media)ensure(episodes>=1&&episodes<=2,'gold lesson needs 1–2 episodes');
   return {stages:expected.length,episodes,bytes:Buffer.byteLength(JSON.stringify(l))};
 }
+// SQL limits apply to each statement, not the whole migration file.
+function sqlStatements(sql) {
+  const out=[]; let start=0; let quote=false; let lineComment=false; let blockComment=false;
+  for(let i=0;i<sql.length;i++) {
+    const char=sql[i], next=sql[i+1];
+    if(lineComment) { if(char==="\n")lineComment=false; continue; }
+    if(blockComment) { if(char==="*"&&next==="/"){blockComment=false;i++;} continue; }
+    if(quote) { if(char==="'"){if(next==="'")i++;else quote=false;} continue; }
+    if(char==="-"&&next==="-"){lineComment=true;i++;continue;}
+    if(char==="/"&&next==="*"){blockComment=true;i++;continue;}
+    if(char==="'"){quote=true;continue;}
+    if(char===";"){out.push(sql.slice(start,i+1));start=i+1;}
+  }
+  ensure(!quote && !blockComment,"Unterminated SQL string or comment");
+  const tail=sql.slice(start).trim();
+  if(tail && tail.replace(/--[^\n]*/g,"").trim())out.push(tail);
+  return out;
+}
 function jsonLiterals(sql) {
   const found=[];
   for(const match of sql.matchAll(/json_patch\(\s*data\s*,\s*'((?:[^']|'')*)'\s*\)/gs))found.push(JSON.parse(match[1].replace(/''/g,"'")));
@@ -125,10 +153,16 @@ export function validateMigration(file) {
   if(!sql.includes('Standard v2')) return {historical:true,jsonPatches:lessons.length};
   ensure(lessons.length>0,'v2 migration has no lesson patch');
   ensure(lessons.length<=25,'more than 25 lessons per migration');
-  ensure(Buffer.byteLength(sql)<95000,'SQL exceeds 95 KB statement budget');
+  const statements=sqlStatements(sql).filter(s=>/\bUPDATE\s+lessons\b/i.test(s));
+  ensure(statements.length===lessons.length,"Each lesson patch must be in one UPDATE");
+  statements.forEach((statement,index)=>{
+    ensure(Buffer.byteLength(statement)<95000,"SQL statement exceeds 95 KB authoring budget");
+    const target=statement.match(/WHERE\s+seed_key\s*=\s*'((?:[^']|'')*)'/i)?.[1]?.replace(/''/g,"'");
+    ensure(target===lessons[index].seed_key,"WHERE seed key does not match lesson patch");
+  });
   ensure((sql.match(/\bUPDATE\s+lessons\b/gi)||[]).length===lessons.length,'one UPDATE per lesson required below statement limit');
   const results=lessons.map(l=>{ensure(l.coming_soon===null,'coming_soon must be deleted');return validateLesson(l);});
-  return {lessons:lessons.length,statements:lessons.length,sqlBytes:Buffer.byteLength(sql),results};
+  return {lessons:lessons.length,statements:lessons.length,sqlBytes:Buffer.byteLength(sql),statementBytes:statements.map(s=>Buffer.byteLength(s)),results};
 }
 if(process.argv[1] && path.resolve(process.argv[1])===path.resolve(new URL(import.meta.url).pathname)) {
   const args=process.argv.slice(2); const files=args.length?args:fs.readdirSync('worker/migrations').filter(f=>f.endsWith('.sql')).map(f=>path.join('worker/migrations',f));
