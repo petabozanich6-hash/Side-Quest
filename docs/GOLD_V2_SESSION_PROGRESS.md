@@ -6,7 +6,7 @@ Resume from `feature/gold-v2-resumable-pipeline`. Do not merge, deploy, or apply
 
 | Gate | Count |
 |---|---|
-| Automatically validated (pipeline) | **1303** |
+| Automatically validated (pipeline) | **1315** |
 | Human gates | **0** |
 
 ## Year 4
@@ -15,5 +15,5 @@ Resume from `feature/gold-v2-resumable-pipeline`. Do not merge, deploy, or apply
 
 ## Year 7 English (Stage 4)
 
-- **24 / 160** auto-validated (batch 02)
-- Next resume: `s4-eng-y7-w07-l1`
+- **36 / 160** auto-validated (batch 03)
+- Next resume: `s4-eng-y7-w10-l1`
