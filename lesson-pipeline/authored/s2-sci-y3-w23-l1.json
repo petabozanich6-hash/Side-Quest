@@ -1,0 +1,434 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "ST2-SCI-01",
+      "lesson_evidence": "Seasons are yearly patterns of weather and day length. A useful Stage 2 model links seasons to Earth’s yearly path and tilt (keep language age-right: tilt means parts of Earth lean toward/away from Sun across the year).",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/science/science-and-technology-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Seasons are yearly patterns of weather and day length. A useful Stage 2 model links seasons to Earth’s yearly path and tilt (keep language age-right: tilt means parts of Earth lean toward/away from Sun across the year).",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same science idea to a new object or material, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nSort typical NSW: beach weather and long daylight; frost mornings and early dark — which seasons?\n\nFEEDBACK\nSummer-like; winter-like.\n\nWATCH FOR\nThinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nMake a seasons poster for your place: typical weather, day length idea and two living-thing changes per season. State Australia/NSW context.\n\nWrite a short reflection naming one observation or step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Science and Technology",
+    "learning_intention": "Seasons are yearly patterns of weather and day length. A useful Stage 2 model links seasons to Earth’s yearly path and tilt (keep language age-right: tilt means parts of Earth lean toward/away from Sun across the year).",
+    "lesson_number": 1,
+    "lesson_role": "Investigate",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: safe everyday objects for observation"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "ST2-SCI-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Make a seasons poster for your place: typical weather, day length idea and two living-thing changes per season. State Australia/NSW context. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original demonstration: In Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between northern and southern hemispheres.\n\nParent: Written model 2: Common error: Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model. Correction: Summer-like; winter-like.\n\nParent: Likely misconception: Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model. Keep sample answers out of the child role.",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "Seasons are yearly patterns of weather and day length. A useful Stage 2 model links seasons to Earth’s yearly path and tilt (keep language age-right: tilt means parts of Earth lean toward/away from Sun across the year). The other choices avoid explaining the actual strategy.",
+        "options": [
+          "Seasons are yearly patterns of weather and day length. A useful Stage 2 model links seasons to Earth’s yearly path and tilt (keep language age-right: tilt means parts of Earth lean toward/away from Sun across the year).",
+          "Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model.",
+          "Ignore the observation and invent a more exciting result.",
+          "Copy the model objects and call that independent work."
+        ],
+        "question": "Which idea is taught in the stage \"Understand and model\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. The other choices avoid explaining the actual strategy.",
+        "options": [
+          "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
+          "Writing only a final label without evidence does not show scientific thinking.",
+          "Copy the model objects and call that independent work.",
+          "Treat a missing measurement as if it were recorded."
+        ],
+        "question": "Which idea is taught in the stage \"Show the evidence\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. The other choices avoid explaining the actual strategy.",
+        "options": [
+          "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
+          "Changing the wording without repairing the evidence does not fix the error. Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model.",
+          "Treat a missing measurement as if it were recorded.",
+          "Skip the fair-test idea because the first guess looked neat."
+        ],
+        "question": "Which idea is taught in the stage \"Test a misconception\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. The other choices avoid explaining the actual strategy.",
+        "options": [
+          "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
+          "Repeating the worked example cannot show transfer to new evidence.",
+          "Skip the fair-test idea because the first guess looked neat.",
+          "Ignore the observation and invent a more exciting result."
+        ],
+        "question": "Which idea is taught in the stage \"Transfer to a new investigation\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Summer-like; winter-like. Useful feedback uses the original observations and method.",
+        "options": [
+          "Summer-like; winter-like.",
+          "Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Sort typical NSW: beach weather and long daylight; frost mornings and early dark\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The most useful record names the evidence and the reason it supports the claim, not only a label. Useful feedback uses the original observations and method.",
+        "options": [
+          "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+          "Writing only a final label without evidence does not show scientific thinking.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"List the key observations or steps from the model and say what each one shows.\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Summer-like; winter-like. Useful feedback uses the original observations and method.",
+        "options": [
+          "Summer-like; winter-like.",
+          "Changing the wording without repairing the evidence does not fix the error. Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Describe why the warned-against claim fails, then write a corrected claim with e\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The new example should use the same science idea as the model, but contain different objects or data. Useful feedback uses the original observations and method.",
+        "options": [
+          "The new example should use the same science idea as the model, but contain different objects or data.",
+          "Repeating the worked example cannot show transfer to new evidence.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Investigate or describe one fresh example that uses the same skill and write a s\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence, not repetition of the worked model, demonstrates the skill.",
+        "marking_guide": "Require independently produced relevant evidence with accurate reasoning and named observations.",
+        "question": "Investigate or describe a fresh example that uses the central skill. Show evidence and name the observations that matter.",
+        "sample_answer": "Original demonstration: In Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between northern and southern hemispheres.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A correction needs to change the claim or evidence, not just make the notes longer.",
+        "marking_guide": "Require an actual misconception plus corrected claim and an evidence-linked reason.",
+        "question": "Name one likely science misconception for this topic, correct it and say why the correction works.",
+        "sample_answer": "Common error: Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model. Correction: Summer-like; winter-like.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-sci-y3-w23-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA Science and Technology alignment using catalogue outcome codes; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise season.",
+        "Read the mission before you start observing or testing.",
+        "Keep the property or variable you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the observation or step that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore observations or fair tests.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread labels, measurements and sequence of steps.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact observation or test step before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key observations.",
+        "Say what each observation shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or method, not only how neat the drawing looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh object or context that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new objects or data."
+      ]
+    },
+    "subject": "Earth and Space",
+    "success_criteria": [
+      "I can use season with a specific example from this lesson.",
+      "I can identify tilt and explain why it matters.",
+      "I can practise year independently on a new prompt.",
+      "I can notice pattern needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Seasons are yearly patterns of weather and day length. A useful Stage 2 model links seasons to Earth’s yearly path and tilt (keep language age-right: tilt means parts of Earth lean toward/away from Sun across the year). Supported records follow the actual observations and purpose of the task.",
+          "options": [
+            "Seasons are yearly patterns of weather and day length. A useful Stage 2 model links seasons to Earth’s yearly path and tilt (keep language age-right: tilt means parts of Earth lean toward/away from Sun across the year).",
+            "A claim unrelated to the observation or test.",
+            "An answer copied without understanding.",
+            "A guess with no evidence."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nIn Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between northern and southern hemispheres.\n\nTRY FIRST\nSort typical NSW: beach weather and long daylight; frost mornings and early dark — which seasons?\n\nFEEDBACK\nSummer-like; winter-like.",
+        "explain": "Seasons are yearly patterns of weather and day length. A useful Stage 2 model links seasons to Earth’s yearly path and tilt (keep language age-right: tilt means parts of Earth lean toward/away from Sun across the year).\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Seasons in context.",
+            "caption": "Tilt/day length matter.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Season</text><text x=\"28\" y=\"78\">yearly pattern</text><text x=\"358\" y=\"42\">Australia</text><text x=\"358\" y=\"78\">summer longer days</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which observation matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the observations, properties or test steps that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: In Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between north Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which observation matters most.\nJuno: Name the observations, properties or test steps that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: In Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between north Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "options": [
+            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
+            "A claim unrelated to the observation or test.",
+            "An answer copied without understanding.",
+            "A guess with no evidence."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nIn Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between northern and southern hemispheres. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show scientific thinking. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "Season contrasts.",
+            "caption": "NSW examples on poster.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Summer</text><text x=\"28\" y=\"78\">warmer longer light</text><text x=\"358\" y=\"42\">Winter</text><text x=\"358\" y=\"78\">cooler shorter light</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "options": [
+            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
+            "A claim unrelated to the observation or test.",
+            "An answer copied without understanding.",
+            "A guess with no evidence."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nThinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model. Here is a more productive model: In Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between northern and southern hemispheres.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nSummer-like; winter-like.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task.",
+          "options": [
+            "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
+            "A claim unrelated to the observation or test.",
+            "An answer copied without understanding.",
+            "A guess with no evidence."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nSeasons are yearly patterns of weather and day length. A useful Stage 2 model links seasons to Earth’s yearly path and tilt (keep language age-right: tilt means parts of Earth lean toward/away from Sun across the year). Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",
+        "explain": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Transfer to a new investigation"
+      }
+    ],
+    "title": "Year 3, Week 23, Lesson 1: Seasons",
+    "unit_number": 5,
+    "unit_title": "Earth, Sun and Moon",
+    "week": 23,
+    "week_in_unit": 3,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nIn Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between northern and southern hemispheres.\n\nWrite what makes this example accurate, naming the observations, properties or test steps used.",
+    "worked_visuals": [
+      {
+        "alt": "Seasons in context.",
+        "caption": "Tilt/day length matter.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Season</text><text x=\"28\" y=\"78\">yearly pattern</text><text x=\"358\" y=\"42\">Australia</text><text x=\"358\" y=\"78\">summer longer days</text></g></svg>"
+      },
+      {
+        "alt": "Season contrasts.",
+        "caption": "NSW examples on poster.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Summer</text><text x=\"28\" y=\"78\">warmer longer light</text><text x=\"358\" y=\"42\">Winter</text><text x=\"358\" y=\"78\">cooler shorter light</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Sort typical NSW: beach weather and long daylight; frost mornings and early dark — which seasons?"
+      ],
+      "independent_inputs": [
+        "Make a seasons poster for your place: typical weather, day length idea and two living-thing changes per season. State Australia/NSW context."
+      ],
+      "model_inputs": [
+        "In Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between northern and southern hemispheres."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Summer-like; winter-like.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Sort typical NSW: beach weather and long daylight; frost mornings and early dark — which seasons?",
+        "misconception": "Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model.",
+        "model": "In Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between northern and southern hemispheres.",
+        "rule": "Seasons are yearly patterns of weather and day length. A useful Stage 2 model links seasons to Earth’s yearly path and tilt (keep language age-right: tilt means parts of Earth lean toward/away from Sun across the year).",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "List the key observations or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show scientific thinking.",
+        "model": "In Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between northern and southern hemispheres. Look at each observation, variable or design choice that carries the idea.",
+        "rule": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "Summer-like; winter-like.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model.",
+        "model": "Thinking Earth is closer to the Sun in summer (only) is a common mix-up; tilt/day length ideas matter more in the school model. Here is a more productive model: In Australia, summer tends to be warmer with longer days; winter cooler with shorter days. Seasons reverse between northern and southern hemispheres.",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "The new example should use the same science idea as the model, but contain different objects or data.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Investigate or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "Seasons are yearly patterns of weather and day length. A useful Stage 2 model links seasons to Earth’s yearly path and tilt (keep language age-right: tilt means parts of Earth lean toward/away from Sun across the year). Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Seasons in context.",
+        "teaches": "Tilt/day length matter."
+      },
+      {
+        "alt": "Season contrasts.",
+        "teaches": "NSW examples on poster."
+      }
+    ]
+  }
+}

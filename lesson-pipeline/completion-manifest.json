@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-13",
   "phase": "PHASE_1_WRITTEN_CORE",
-  "pipeline_auto_validated": 256,
+  "pipeline_auto_validated": 399,
   "human_gates": {
     "educationally_reviewed": 0,
     "nesa_verified": 0,
@@ -10,7 +10,10 @@
   },
   "y3_english_written_core_auto_validated": 159,
   "y3_english_complete_auto": true,
-  "y3_maths_written_core_auto_validated": 97,
-  "next_resume": "s2-mat-y3-w25-l2",
-  "note": "Y3 English auto-complete. Y3 Maths through w25-l1 auto-validated. Human gates closed. No remote D1."
+  "y3_maths_written_core_auto_validated": 160,
+  "y3_maths_complete_auto": true,
+  "y3_science_written_core_auto_validated": 80,
+  "y3_science_complete_auto": true,
+  "next_resume": "s2-hsie-y3-w01-l1",
+  "note": "Y3 English, Maths, Science Written Core auto-validated (human gates closed). Next: Y3 HSIE. No remote D1."
 }

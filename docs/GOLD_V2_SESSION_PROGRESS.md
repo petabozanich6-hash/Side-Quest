@@ -23,7 +23,7 @@ Binding owner order: finish **all Stage 2 then all Stage 4 Written Core** (4,902
 
 | Gate | Count |
 |---|---|
-| Automated validation passed (pipeline) | 220 |
+| Automated validation passed (pipeline) | 399 |
 | Educationally reviewed | 0 |
 | NESA verified | 0 |
 | Browser verified | 0 |
@@ -31,20 +31,23 @@ Binding owner order: finish **all Stage 2 then all Stage 4 Written Core** (4,902
 
 Protected gold reference on main: `s2-eng-y3-w01-l1` (not counted as pipeline completion).
 
-### Year 3 English Written Core
+### Year 3 Written Core auto-validated
 
-**COMPLETE for Phase 1 automated validation:** `s2-eng-y3-w01-l2` through `s2-eng-y3-w40-l4` (159 program lessons + protected `w01-l1` on main). Batches 01–13.
-
-### Year 3 Mathematics Written Core (in progress)
-
-Auto-validated through `s2-mat-y3-w16-l1` (61 lessons including prior pilot `w02-l1`). Maths batches 01–05. Next resume: `s2-mat-y3-w16-l2`.
+| Subject | Count | Status |
+|---|---|---|
+| English | 159 (+ protected w01-l1) | Complete (auto) |
+| Mathematics | 160 | Complete (auto) |
+| Science and Technology | 80 | Complete (auto) |
+| HSIE | 0 / 80 | Next: `s2-hsie-y3-w01-l1` |
+| PDHPE | 0 / 80 | Queued after HSIE |
+| Creative Arts | 0 / 80 | Queued after PDHPE |
 
 **Not Gold Standard full approval.** Human educational / NESA / browser gates remain closed. Do not apply draft SQL to remote D1.
 
 ## Next resume point
 
-1. Continue Y3 Maths Written Core from `s2-mat-y3-w16-l2`.
-2. Keep coherent 12-lesson batches; do not start Phase 2 media.
+1. Continue Y3 HSIE Written Core from `s2-hsie-y3-w01-l1`.
+2. Keep coherent batches; do not start Phase 2 media.
 3. Preserve draft PR; no merge/deploy without owner authorisation.
 
 ```sh
@@ -56,4 +59,6 @@ python3 -c "import json;print(json.load(open('lesson-pipeline/completion-manifes
 
 - Validator still requires 1–2 existing Pip/Juno `CartoonEpisode` payloads for Gold-shaped JSON.
 - Avoid banned visual process words in SVG/captions (`explain`, `check`, `model`, `try`, `learn`, `notice`, `verify`, `apply`, step-one phrasing).
+- Avoid `\bpets?\b` anywhere in lesson JSON (validator ban).
+- First Nations HSIE content must stay protocol-aware; do not invent Dreaming stories or Nation-specific claims without verified sources.
 - Automation must remain subject-specific; do not lower validator thresholds.
