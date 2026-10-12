@@ -640,10 +640,10 @@ s2-hsie-y4-w39-l1,S2,Year 4,HSIE,"Year 4, Week 39, Lesson 1: Practising the pres
 s2-hsie-y4-w39-l2,S2,Year 4,HSIE,"Year 4, Week 39, Lesson 2: Presenting our inquiry",1,queued
 s2-hsie-y4-w40-l1,S2,Year 4,HSIE,"Year 4, Week 40, Lesson 1: Stage 2 HSIE reflection",1,queued
 s2-hsie-y4-w40-l2,S2,Year 4,HSIE,"Year 4, Week 40, Lesson 2: Reflection and celebration",1,queued
-s2-mat-y3-w01-l1,S2,Year 3,Mathematics,"Year 3, Week 1, Lesson 1: Counting and reading numbers to 10 000",1,queued
-s2-mat-y3-w01-l2,S2,Year 3,Mathematics,"Year 3, Week 1, Lesson 2: Place value: thousands, hundreds, tens and ones",1,queued
-s2-mat-y3-w01-l3,S2,Year 3,Mathematics,"Year 3, Week 1, Lesson 3: Comparing and ordering numbers",1,queued
-s2-mat-y3-w01-l4,S2,Year 3,Mathematics,"Year 3, Week 1, Lesson 4: Number sense warm-ups and fluency",1,queued
+s2-mat-y3-w01-l1,S2,Year 3,Mathematics,Year 3: Read and count whole numbers,1,authored_in_repository_unreviewed
+s2-mat-y3-w01-l2,S2,Year 3,Mathematics,Year 3: Explain place value and partitions,1,authored_in_repository_unreviewed
+s2-mat-y3-w01-l3,S2,Year 3,Mathematics,Year 3: Compare and order whole numbers,1,authored_in_repository_unreviewed
+s2-mat-y3-w01-l4,S2,Year 3,Mathematics,Year 3: Whole-number fluency with reasons,1,authored_in_repository_unreviewed
 s2-mat-y3-w02-l1,S2,Year 3,Mathematics,"Year 3, Week 2, Lesson 1: Rounding to the nearest ten and hundred",1,queued
 s2-mat-y3-w02-l2,S2,Year 3,Mathematics,"Year 3, Week 2, Lesson 2: Number lines and skip counting",1,queued
 s2-mat-y3-w02-l3,S2,Year 3,Mathematics,"Year 3, Week 2, Lesson 3: Number patterns and sequences",1,queued
@@ -800,10 +800,10 @@ s2-mat-y3-w40-l1,S2,Year 3,Mathematics,"Year 3, Week 40, Lesson 1: Year 3 invest
 s2-mat-y3-w40-l2,S2,Year 3,Mathematics,"Year 3, Week 40, Lesson 2: Year 3 investigation: carrying it out and presenting",1,queued
 s2-mat-y3-w40-l3,S2,Year 3,Mathematics,"Year 3, Week 40, Lesson 3: Year 3 skills check",1,queued
 s2-mat-y3-w40-l4,S2,Year 3,Mathematics,"Year 3, Week 40, Lesson 4: Reflection and celebration",1,queued
-s2-mat-y4-w01-l1,S2,Year 4,Mathematics,"Year 4, Week 1, Lesson 1: Reading and writing numbers to 100 000",1,queued
-s2-mat-y4-w01-l2,S2,Year 4,Mathematics,"Year 4, Week 1, Lesson 2: Place value to ten thousands",1,queued
-s2-mat-y4-w01-l3,S2,Year 4,Mathematics,"Year 4, Week 1, Lesson 3: Comparing and ordering larger numbers",1,queued
-s2-mat-y4-w01-l4,S2,Year 4,Mathematics,"Year 4, Week 1, Lesson 4: Number sense warm-ups and fluency",1,queued
+s2-mat-y4-w01-l1,S2,Year 4,Mathematics,Year 4: Read and count whole numbers,1,authored_in_repository_unreviewed
+s2-mat-y4-w01-l2,S2,Year 4,Mathematics,Year 4: Explain place value and partitions,1,authored_in_repository_unreviewed
+s2-mat-y4-w01-l3,S2,Year 4,Mathematics,Year 4: Compare and order whole numbers,1,authored_in_repository_unreviewed
+s2-mat-y4-w01-l4,S2,Year 4,Mathematics,Year 4: Whole-number fluency with reasons,1,authored_in_repository_unreviewed
 s2-mat-y4-w02-l1,S2,Year 4,Mathematics,"Year 4, Week 2, Lesson 1: Rounding to the nearest ten, hundred and thousand",1,queued
 s2-mat-y4-w02-l2,S2,Year 4,Mathematics,"Year 4, Week 2, Lesson 2: Number lines and large number patterns",1,queued
 s2-mat-y4-w02-l3,S2,Year 4,Mathematics,"Year 4, Week 2, Lesson 3: Odd and even numbers and number patterns",1,queued

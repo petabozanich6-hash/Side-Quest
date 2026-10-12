@@ -35,28 +35,29 @@ The coming_soon flag is not a quality certificate. Earlier apparently finished c
 - Stage 3 Year 5 English Week 1: four new-standard lessons, migration 0045, merged in PR #98. They remain authored/unreviewed; no claim that database content has been applied or reviewed.
 - First priority batch: Stage 2 Year 3 English Week 1 Lessons 2–4 are authored in migration 0046 and merged through PR #99. Remote database application is not verified. Together with the approved Lesson 1, the whole week is written.
 - Stage 4 Year 7 English Week 1: four lessons are authored in migration 0047 and merged through PR #100. Remote application is not verified.
-- Stage 2 Year 4 English Week 1: four lessons are authored in migration 0048, pending review/application.
-- Sixteen rows now have new-standard authored content in repository sources: one approved gold, four preserved Stage 3 lessons, seven other Stage 2 lessons and four Stage 4 lessons. The remaining 19,186 rows remain queued. This does not mean sixteen lessons have been deployed or reviewed.
+- Stage 2 Year 4 English Week 1: four lessons are authored in migration 0048 and merged through PR #102. Remote application is not verified.
+- Larger priority batch: migration 0049 authors four Year 8 English lessons and sixteen Mathematics lessons across Years 3, 4, 7 and 8. Pending PR review/application.
+- Thirty-six rows now have new-standard authored content in repository sources. The remaining 19,166 rows remain queued. This is an authoring count, not a deployment or approval count.
 - No gold lesson or Stage 3 batch is discarded by the priority change.
 
 The stage-specific register and inventory remain available for reference. This master register controls the authoring priority from now on.
 
 ## Priority queue
 
-Alternate subject-week batches between Stage 2 and Stage 4 so both receive work before lower-priority stages. Begin with the early years in each stage, then include the other year:
+Combine several subject-weeks in each larger review package while retaining Stage 2 and Stage 4 priority. Within a package, preserve the agreed year alternation and topic sequence. No approval gate is required after each week; review can follow authoring. Begin with the early years in each stage, then include the other year:
 
 1. Stage 2, Year 3 English Week 1: Lessons 2–4 authored in this PR beside the approved Lesson 1.
 2. Stage 4, Year 7 English Week 1: four lessons authored in this PR.
 3. Stage 2, Year 4 English Week 1: four lessons authored in migration 0048.
-4. **Next: Stage 4, Year 8 English Week 1.**
-5. Stage 2/4 Mathematics Week 1 in the same year alternation.
-6. Continue through each priority stage's other subjects and electives, then later weeks. Read the actual subject plan before writing; not every subject has the same lesson count or sequence.
+4. Stage 4, Year 8 English Week 1: authored in migration 0049.
+5. Stage 2/4 Mathematics Week 1: all four years authored in migration 0049.
+6. **Next: larger batches across the priority stages’ remaining Week 1 subjects and electives**, then later weeks. Read the actual subject plan before writing; not every subject has the same lesson count or sequence.
 
 This is the default order, not a reduction of the all-stage scope. The parent may steer the order. No new scope approval is needed to continue the already-authorised rebuild.
 
 ## Branches, migrations and review
 
-Each new PR targets **main directly** and covers one subject-week. Never commit to main or merge/deploy on the parent's behalf without their instruction. Check main and open PRs before allocating numbers. At this batch’s creation, main ends at 0047 and open PR #95 reserves 0043; this batch uses 0048. The paid-policy PR #101 has no migration. Recheck numbering before the Year 8 batch.
+Each new PR targets **main directly** and can combine multiple subject-weeks. Aim for up to 50 lessons per migration, with multiple numbered migrations in a PR where appropriate. Never commit to main or merge/deploy on the parent's behalf without their instruction. Check main and open PRs before allocating numbers. At this batch’s creation, main ends at 0048 and open PR #95 reserves 0043; the larger batch uses 0049. The paid-policy PR #101 has no migration. Recheck main and open PRs before numbering the next larger batch.
 
 Aim for up to 50 lessons per migration, fewer when statements are large. Use one UPDATE per lesson or split lessons over about 90 KB into two UPDATEs, text first and media second; never cut content. Each statement must be at most 100,000 bytes. Supply complete arrays and delete obsolete fields with JSON merge-patch nulls. Preserve IDs, keys, ownership and assignments. A content patch and a frontend deployment are distinct from applying remote D1 content.
 
