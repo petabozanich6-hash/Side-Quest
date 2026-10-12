@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-13",
   "phase": "PHASE_1_WRITTEN_CORE",
-  "pipeline_auto_validated": 160,
+  "pipeline_auto_validated": 184,
   "human_gates": {
     "educationally_reviewed": 0,
     "nesa_verified": 0,
@@ -11,21 +11,7 @@
   "y3_english_written_core_auto_validated": 159,
   "y3_english_through": "s2-eng-y3-w40-l4",
   "y3_english_complete_auto": true,
-  "next_resume": "s2-arts-y3-w01-l1",
-  "batches": [
-    "batch01",
-    "batch02",
-    "batch03",
-    "batch04",
-    "batch05",
-    "batch06",
-    "batch07",
-    "batch08",
-    "batch09",
-    "batch10",
-    "batch11",
-    "batch12",
-    "batch13"
-  ],
-  "note": "Y3 English Written Core auto-validated through w40-l4. Not Gold Standard full approval. No remote D1 apply."
+  "y3_maths_written_core_auto_validated": 25,
+  "next_resume": "s2-mat-y3-w07-l2",
+  "note": "Y3 English Written Core auto-complete. Y3 Maths through batch02 auto-validated. Human gates closed. No remote D1."
 }
