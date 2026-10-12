@@ -6,10 +6,10 @@ Resume from `feature/gold-v2-resumable-pipeline`. Do not merge, deploy, or apply
 
 | Gate | Count |
 |---|---|
-| Automatically validated (pipeline) | **1463** |
+| Automatically validated (pipeline) | **1475** |
 | Human gates | **0** |
 
 ## Y4 six subjects | complete
 ## Y7 English | 160/160 complete
-## Y7 Mathematics | **24/160**
-## Next resume | `s4-mat-y7-w07-l1`
+## Y7 Mathematics | **36/160**
+## Next resume | `s4-mat-y7-w10-l1`
