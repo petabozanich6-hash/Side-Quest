@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "MA2-MR-01",
+      "lesson_evidence": "Division facts link to multiplication: if 4×6=24, then 24÷6=4 and 24÷4=6. Fact families hold the same three numbers.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Division facts link to multiplication: if 4×6=24, then 24÷6=4 and 24÷4=6. Fact families hold the same three numbers.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same method to a larger number or a new context, then compare two solution paths for accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nWrite the fact family for 5, 8 and 40.\n\nFEEDBACK\n5×8=40; 8×5=40; 40÷5=8; 40÷8=5.\n\nWATCH FOR\nTreating division as unrelated to multiplication makes missing facts harder to rebuild.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nBuild ten multiplication/division fact families. For four of them write a division word sentence using sharing or grouping language.\n\nWrite a short reflection naming one step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Mathematics",
+    "learning_intention": "Division facts link to multiplication: if 4×6=24, then 24÷6=4 and 24÷4=6. Fact families hold the same three numbers.",
+    "lesson_number": 2,
+    "lesson_role": "Strategies",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: place-value chart or number line"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "MA2-MR-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Build ten multiplication/division fact families. For four of them write a division word sentence using sharing or grouping language. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: 5×8=40; 8×5=40; 40÷5=8; 40÷8=5. Reasoning: I used fact family by attending to inverse and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Treating division as unrelated to multiplication makes missing facts harder to rebuild. Correction: 5×8=40; 8×5=40; 40÷5=8; 40÷8=5. Why: the correction restores accurate use of fact family.\n\nParent: Likely misconception: Treating division as unrelated to multiplication makes missing facts harder to rebuild. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses fact family with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with fact family, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 2,
+        "explanation": "5×8=40; 8×5=40; 40÷5=8; 40÷8=5. This matches the lesson skill for fact family.",
+        "options": [
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "5×8=40; 8×5=40; 40÷5=8; 40÷8=5.",
+          "Treating division as unrelated to multiplication makes missing facts harder to rebuild."
+        ],
+        "question": "Write the fact family for 5, 8 and 40. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Treating division as unrelated to multiplication makes missing facts harder to rebuild. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Careful use of inverse and explain why it matters with clear evidence.",
+          "Treating division as unrelated to multiplication makes missing facts harder to rebuild.",
+          "Division facts link to multiplication: if 4×6=24, then 24÷6=4 and 24÷4=6. Fact families hold the same three numbers.",
+          "5×8=40; 8×5=40; 40÷5=8; 40÷8=5."
+        ],
+        "question": "Which statement is a common mistake when practising fact family?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and named inverse and explain why it matters, not by copying the model.",
+        "options": [
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the inverse and explain why it matters used."
+        ],
+        "question": "A learner is practising fact family. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "options": [
+          "Show the places, values or steps and say why each step is valid.",
+          "Write only a final number with no working.",
+          "Change digits to look neater without checking place value.",
+          "Treating division as unrelated to multiplication makes missing facts harder to rebuild."
+        ],
+        "question": "Which working note best supports a mathematics answer about fact family?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The correct statement applies the method; the others break it.",
+        "options": [
+          "Treating division as unrelated to multiplication makes missing facts harder to rebuild.",
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "5×8=40; 8×5=40; 40÷5=8; 40÷8=5."
+        ],
+        "question": "Using this lesson idea — Division facts link to multiplication: if 4×6=24, then 24÷6=4 and 24÷4=6. Fact families hold the same three… — which statement is true?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "options": [
+          "Average the two answers without checking either.",
+          "Recheck places, operations and whether the question asked for the quantity you computed.",
+          "Pick the longer-looking working automatically.",
+          "Delete units so the answers appear to match."
+        ],
+        "question": "Which error should you repair first if two methods disagree?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Transfer requires new numbers with the same method.",
+        "options": [
+          "Change only handwriting and keep the same numbers.",
+          "Copy the worked example and call it independent work.",
+          "Solve a fresh problem with different numbers and explain the method.",
+          "Retype the worked model numbers as the answer."
+        ],
+        "question": "Which practice choice shows transfer of fact family?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "options": [
+          "Just add more digits until it looks longer.",
+          "Name the exact place or step that failed, then show corrected working for fact family.",
+          "Praise neat handwriting even when the places are wrong.",
+          "Tell the learner to skip working and only keep the final digits."
+        ],
+        "question": "Which feedback comment is most useful after a mistake?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "question": "Solve one fresh problem that uses fact family with different numbers from the worked model. Show working and name the places or values that matter.",
+        "sample_answer": "Original response on new material: 5×8=40; 8×5=40; 40÷5=8; 40÷8=5. Reasoning: I used fact family by attending to inverse and explain why it matters rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "question": "Describe one likely mistake with fact family, show corrected working, and say why the correction works.",
+        "sample_answer": "Common error: Treating division as unrelated to multiplication makes missing facts harder to rebuild. Correction: 5×8=40; 8×5=40; 40÷5=8; 40÷8=5. Why: the correction restores accurate use of fact family.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent working and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-mat-y3-w11-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA mathematics alignment using verified outcome code wording where recorded in lesson-pipeline/sources; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise fact family.",
+        "Read the mission before you start calculating.",
+        "Keep the place or unit you are working with in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your working with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the place or distance that carries the method.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore place value or working.",
+        "Prefer accurate method over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your working and reason are both present.",
+        "Proofread digits, places and operation signs.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact place, value or distance before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key numbers.",
+        "Say what each number represents in the method.",
+        "A final answer alone is weaker than labelled working."
+      ],
+      "teach2": [
+        "Compare a weak attempt with stronger working.",
+        "Change the value or method, not only how neat it looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose fresh numbers that still use the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original working and a short reason.",
+        "Save work that shows the skill on new numbers."
+      ]
+    },
+    "subject": "Number and Algebra",
+    "success_criteria": [
+      "I can use fact family with a specific example from this lesson.",
+      "I can identify inverse and explain why it matters.",
+      "I can practise quotient independently on a new prompt.",
+      "I can notice product needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Division facts link to multiplication: if 4×6=24, then 24÷6=4 and 24÷4=6. Fact families hold the same three numbers. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A guess with no working.",
+            "Division facts link to multiplication: if 4×6=24, then 24÷6=4 and 24÷4=6. Fact families hold the same three numbers.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about fact family?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nFamily for 3, 7, 21: 3×7=21; 7×3=21; 21÷3=7; 21÷7=3.\n\nTRY FIRST\nWrite the fact family for 5, 8 and 40.\n\nFEEDBACK\n5×8=40; 8×5=40; 40÷5=8; 40÷8=5.",
+        "explain": "Division facts link to multiplication: if 4×6=24, then 24÷6=4 and 24÷4=6. Fact families hold the same three numbers.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Treating division as unrelated to multiplication makes missing facts harder to rebuild. Correct the value or method, not just the appearance of the digits.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Fact family linking × and ÷.",
+            "caption": "Rebuild a blank from the other facts.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Family</text><text x=\"28\" y=\"78\">3×7=21; 21÷3=7</text><text x=\"358\" y=\"42\">Link</text><text x=\"358\" y=\"78\">division undoes multiplication</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which number or place matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the places, values or distances that carry the method before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Family for 3, 7, 21: 3×7=21; 7×3=21; 21÷3=7; 21÷7=3. Then write your own working.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which number or place matters most.\nJuno: Name the places, values or distances that carry the method before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Family for 3, 7, 21: 3×7=21; 7×3=21; 21÷3=7; 21÷7=3. Then write your own working."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no working.",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+            "A calculation unrelated to the numbers given."
+          ],
+          "question": "Which choice best shows accurate use of this idea about fact family?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nFamily for 3, 7, 21: 3×7=21; 7×3=21; 21÷3=7; 21÷7=3. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
+        "explain": "Make the method visible: name the values, places or steps you used and say why that step is valid.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only the final answer without working does not show the method. Correct the value or method, not just the appearance of the digits.",
+        "title": "Show the working",
+        "visual": [
+          {
+            "alt": "Family for five, eight and forty.",
+            "caption": "Do not mix in an unrelated fourth number.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">5, 8, 40</text><text x=\"28\" y=\"78\">four related facts</text><text x=\"358\" y=\"42\">Same three numbers</text><text x=\"358\" y=\"78\">held together</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A guess with no working.",
+            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about fact family?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nTreating division as unrelated to multiplication makes missing facts harder to rebuild. Here is a more productive model: Family for 3, 7, 21: 3×7=21; 7×3=21; 21÷3=7; 21÷7=3.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\n5×8=40; 8×5=40; 40÷5=8; 40÷8=5.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the answer without repairing the method does not fix the error. Treating division as unrelated to multiplication makes missing facts harder to rebuild. Correct the value or method, not just the appearance of the digits.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A guess with no working.",
+            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about fact family?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nDivision facts link to multiplication: if 4×6=24, then 24÷6=4 and 24÷4=6. Fact families hold the same three numbers. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",
+        "explain": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new numbers. Correct the value or method, not just the appearance of the digits.",
+        "title": "Transfer to a new problem"
+      }
+    ],
+    "title": "Year 3, Week 11, Lesson 2: Division facts and the link to multiplication",
+    "unit_number": 3,
+    "unit_title": "Multiplication and division",
+    "week": 11,
+    "week_in_unit": 3,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nFamily for 3, 7, 21: 3×7=21; 7×3=21; 21÷3=7; 21÷7=3.\n\nWrite what makes this example accurate, naming the places, values or distances used.",
+    "worked_visuals": [
+      {
+        "alt": "Fact family linking × and ÷.",
+        "caption": "Rebuild a blank from the other facts.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Family</text><text x=\"28\" y=\"78\">3×7=21; 21÷3=7</text><text x=\"358\" y=\"42\">Link</text><text x=\"358\" y=\"78\">division undoes multiplication</text></g></svg>"
+      },
+      {
+        "alt": "Family for five, eight and forty.",
+        "caption": "Do not mix in an unrelated fourth number.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">5, 8, 40</text><text x=\"28\" y=\"78\">four related facts</text><text x=\"358\" y=\"42\">Same three numbers</text><text x=\"358\" y=\"78\">held together</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Write the fact family for 5, 8 and 40."
+      ],
+      "independent_inputs": [
+        "Build ten multiplication/division fact families. For four of them write a division word sentence using sharing or grouping language."
+      ],
+      "model_inputs": [
+        "Family for 3, 7, 21: 3×7=21; 7×3=21; 21÷3=7; 21÷7=3."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "5×8=40; 8×5=40; 40÷5=8; 40÷8=5.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Write the fact family for 5, 8 and 40.",
+        "misconception": "Treating division as unrelated to multiplication makes missing facts harder to rebuild.",
+        "model": "Family for 3, 7, 21: 3×7=21; 7×3=21; 21÷3=7; 21÷7=3.",
+        "rule": "Division facts link to multiplication: if 4×6=24, then 24÷6=4 and 24÷4=6. Fact families hold the same three numbers.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The most useful working names the quantities and the reason for each step, not only the final answer.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Write the key numbers from the model and say what each one represents in the method.",
+        "misconception": "Writing only the final answer without working does not show the method.",
+        "model": "Family for 3, 7, 21: 3×7=21; 7×3=21; 21÷3=7; 21÷7=3. Look at each number, place or distance that carries the method.",
+        "rule": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "5×8=40; 8×5=40; 40÷5=8; 40÷8=5.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Describe why the warned-against approach gives the wrong value or meaning, then write corrected working.",
+        "misconception": "Changing the answer without repairing the method does not fix the error. Treating division as unrelated to multiplication makes missing facts harder to rebuild.",
+        "model": "Treating division as unrelated to multiplication makes missing facts harder to rebuild. Here is a more productive model: Family for 3, 7, 21: 3×7=21; 7×3=21; 21÷3=7; 21÷7=3.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The new problem should use the same method as the model, but contain different numbers.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Solve one fresh problem that uses the same skill and write a short reason for your answer.",
+        "misconception": "Repeating the worked example cannot show transfer to new numbers.",
+        "model": "Division facts link to multiplication: if 4×6=24, then 24÷6=4 and 24÷4=6. Fact families hold the same three numbers. Now choose different numbers to show you can transfer the method.",
+        "rule": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Fact family linking × and ÷.",
+        "teaches": "Rebuild a blank from the other facts."
+      },
+      {
+        "alt": "Family for five, eight and forty.",
+        "teaches": "Do not mix in an unrelated fourth number."
+      }
+    ]
+  }
+}
