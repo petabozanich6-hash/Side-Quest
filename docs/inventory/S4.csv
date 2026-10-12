@@ -159,10 +159,10 @@ s4-eng-y7-w40-l1,S4,Year 7,English,"Year 7, Week 40, Lesson 1: Year 7 reading re
 s4-eng-y7-w40-l2,S4,Year 7,English,"Year 7, Week 40, Lesson 2: Portfolio selection and reflection",1,queued
 s4-eng-y7-w40-l3,S4,Year 7,English,"Year 7, Week 40, Lesson 3: Year 7 language and spelling check",1,queued
 s4-eng-y7-w40-l4,S4,Year 7,English,"Year 7, Week 40, Lesson 4: Reflection and celebration",1,queued
-s4-eng-y8-w01-l1,S4,Year 8,English,"Year 8, Week 1, Lesson 1: Reading narratives with unreliable narrators",1,queued
-s4-eng-y8-w01-l2,S4,Year 8,English,"Year 8, Week 1, Lesson 2: Writing from a different perspective",1,queued
-s4-eng-y8-w01-l3,S4,Year 8,English,"Year 8, Week 1, Lesson 3: Complex sentences and clauses",1,queued
-s4-eng-y8-w01-l4,S4,Year 8,English,"Year 8, Week 1, Lesson 4: Oral storytelling",1,queued
+s4-eng-y8-w01-l1,S4,Year 8,English,Year 8: Evaluate a narrator’s reliability,1,authored_in_repository_unreviewed
+s4-eng-y8-w01-l2,S4,Year 8,English,Year 8: Rewrite a scene from another perspective,1,authored_in_repository_unreviewed
+s4-eng-y8-w01-l3,S4,Year 8,English,Year 8: Control complex sentences and clauses,1,authored_in_repository_unreviewed
+s4-eng-y8-w01-l4,S4,Year 8,English,Year 8: Tell a story with deliberate perspective,1,authored_in_repository_unreviewed
 s4-eng-y8-w02-l1,S4,Year 8,English,"Year 8, Week 2, Lesson 1: Theme and symbolism",1,queued
 s4-eng-y8-w02-l2,S4,Year 8,English,"Year 8, Week 2, Lesson 2: Crafting a setting and mood",1,queued
 s4-eng-y8-w02-l3,S4,Year 8,English,"Year 8, Week 2, Lesson 3: Descriptive language and figurative devices",1,queued
@@ -479,10 +479,10 @@ s4-hsie-y8-w39-l1,S4,Year 8,HSIE Inquiry,"Year 8, Week 39, Lesson 1: Practising 
 s4-hsie-y8-w39-l2,S4,Year 8,HSIE Inquiry,"Year 8, Week 39, Lesson 2: Presenting the inquiry",1,queued
 s4-hsie-y8-w40-l1,S4,Year 8,HSIE Inquiry,"Year 8, Week 40, Lesson 1: Stage 4 HSIE reflection",1,queued
 s4-hsie-y8-w40-l2,S4,Year 8,HSIE Inquiry,"Year 8, Week 40, Lesson 2: Reflection and celebration",1,queued
-s4-mat-y7-w01-l1,S4,Year 7,Mathematics,"Year 7, Week 1, Lesson 1: Positive and negative numbers",1,queued
-s4-mat-y7-w01-l2,S4,Year 7,Mathematics,"Year 7, Week 1, Lesson 2: Ordering integers",1,queued
-s4-mat-y7-w01-l3,S4,Year 7,Mathematics,"Year 7, Week 1, Lesson 3: Adding integers",1,queued
-s4-mat-y7-w01-l4,S4,Year 7,Mathematics,"Year 7, Week 1, Lesson 4: Fluency with integers",1,queued
+s4-mat-y7-w01-l1,S4,Year 7,Mathematics,Year 7: Represent positive and negative integers,1,authored_in_repository_unreviewed
+s4-mat-y7-w01-l2,S4,Year 7,Mathematics,Year 7: Order integers and justify comparisons,1,authored_in_repository_unreviewed
+s4-mat-y7-w01-l3,S4,Year 7,Mathematics,Year 7: Add integers as signed changes,1,authored_in_repository_unreviewed
+s4-mat-y7-w01-l4,S4,Year 7,Mathematics,Year 7: Integer fluency with checks,1,authored_in_repository_unreviewed
 s4-mat-y7-w02-l1,S4,Year 7,Mathematics,"Year 7, Week 2, Lesson 1: Subtracting integers",1,queued
 s4-mat-y7-w02-l2,S4,Year 7,Mathematics,"Year 7, Week 2, Lesson 2: Multiplying integers",1,queued
 s4-mat-y7-w02-l3,S4,Year 7,Mathematics,"Year 7, Week 2, Lesson 3: Dividing integers",1,queued
@@ -639,10 +639,10 @@ s4-mat-y7-w40-l1,S4,Year 7,Mathematics,"Year 7, Week 40, Lesson 1: Year 7 review
 s4-mat-y7-w40-l2,S4,Year 7,Mathematics,"Year 7, Week 40, Lesson 2: Portfolio reflection",1,queued
 s4-mat-y7-w40-l3,S4,Year 7,Mathematics,"Year 7, Week 40, Lesson 3: Year 7 assessment preparation",1,queued
 s4-mat-y7-w40-l4,S4,Year 7,Mathematics,"Year 7, Week 40, Lesson 4: Reflection and celebration",1,queued
-s4-mat-y8-w01-l1,S4,Year 8,Mathematics,"Year 8, Week 1, Lesson 1: Rational and irrational numbers",1,queued
-s4-mat-y8-w01-l2,S4,Year 8,Mathematics,"Year 8, Week 1, Lesson 2: Square roots",1,queued
-s4-mat-y8-w01-l3,S4,Year 8,Mathematics,"Year 8, Week 1, Lesson 3: Scientific notation",1,queued
-s4-mat-y8-w01-l4,S4,Year 8,Mathematics,"Year 8, Week 1, Lesson 4: Number fluency",1,queued
+s4-mat-y8-w01-l1,S4,Year 8,Mathematics,Year 8: Classify rational and irrational numbers,1,authored_in_repository_unreviewed
+s4-mat-y8-w01-l2,S4,Year 8,Mathematics,Year 8: Explain and estimate square roots,1,authored_in_repository_unreviewed
+s4-mat-y8-w01-l3,S4,Year 8,Mathematics,Year 8: Use scientific notation accurately,1,authored_in_repository_unreviewed
+s4-mat-y8-w01-l4,S4,Year 8,Mathematics,Year 8: Real-number fluency with checks,1,authored_in_repository_unreviewed
 s4-mat-y8-w02-l1,S4,Year 8,Mathematics,"Year 8, Week 2, Lesson 1: Index laws revision",1,queued
 s4-mat-y8-w02-l2,S4,Year 8,Mathematics,"Year 8, Week 2, Lesson 2: Negative indices",1,queued
 s4-mat-y8-w02-l3,S4,Year 8,Mathematics,"Year 8, Week 2, Lesson 3: Calculator and scientific notation",1,queued
