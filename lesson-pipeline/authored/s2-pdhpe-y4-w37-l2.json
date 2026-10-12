@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "PH2-IHW-01",
+      "lesson_evidence": "Measuring heart rate in activities compares work and recovery; cool-downs help heart rate ease toward rest.",
+      "scope_limit": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Measuring heart rate in activities compares work and recovery; cool-downs help heart rate ease toward rest.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nWhy include a cool-down after hard effort?\n\nFEEDBACK\nHelps body recover gradually and can feel better/safer.\n\nWATCH FOR\nStopping suddenly forever without cool-down can feel awful for some people.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nComplete a work/cool/rest pulse log for three activities. Note recovery observation.\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.",
+    "interactive_activities": null,
+    "learning_area": "PDHPE",
+    "learning_intention": "Measuring heart rate in activities compares work and recovery; cool-downs help heart rate ease toward rest.",
+    "lesson_number": 2,
+    "lesson_role": "Practise and apply",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Clear, safe movement space with an adult nearby for any physical activity",
+      "Optional: soft ball, cushion or water bottle"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "PH2-IHW-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a work/cool/rest pulse log for three activities. Note recovery observation. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Helps body recover gradually and can feel better/safer. Reasoning: I used measure by attending to compare rather than copying the worked model.\n\nParent: Written model 2: Common error: Stopping suddenly forever without cool-down can feel awful for some people. Correction: Helps body recover gradually and can feel better/safer. Why: the correction restores accurate use of measure.\n\nParent: Likely misconception: Stopping suddenly forever without cool-down can feel awful for some people. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating measure on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with measure, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 2,
+        "explanation": "Helps body recover gradually and can feel better/safer. This matches the lesson skill for measure.",
+        "options": [
+          "Ignore the safety rule because the first idea looked exciting.",
+          "Copy the example and call that independent work.",
+          "Helps body recover gradually and can feel better/safer.",
+          "Stopping suddenly forever without cool-down can feel awful for some people."
+        ],
+        "question": "Why include a cool-down after hard effort?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Stopping suddenly forever without cool-down can feel awful for some people. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Stopping suddenly forever without cool-down can feel awful for some people.",
+          "Measuring heart rate in activities compares work and recovery; cool-downs help heart rate ease toward rest.",
+          "Helps body recover gradually and can feel better/safer.",
+          "Careful use of compare with clear evidence."
+        ],
+        "question": "Which statement is a common mistake when practising measure?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and named compare, not by copying the model.",
+        "options": [
+          "Apply the idea with new evidence and name the compare used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a skipped permission or safety step as if it did not matter."
+        ],
+        "question": "A learner is practising measure. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Helps body recover gradually and can feel better/safer. uses safe, healthy, respectful choices appropriately for this lesson.",
+        "options": [
+          "Stopping suddenly forever without cool-down can feel awful for some people.",
+          "Ignore the safety rule because the first idea looked exciting.",
+          "Copy the example and call that independent work.",
+          "Helps body recover gradually and can feel better/safer."
+        ],
+        "question": "Which response best shows careful thinking about measure?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Strong answers name specific evidence and what it shows.",
+        "options": [
+          "Make a bigger claim without naming any source or cue.",
+          "Copy a classmate’s sentence with no local detail.",
+          "Stopping suddenly forever without cool-down can feel awful for some people.",
+          "Name a specific source, cue or example and say what it shows about measure."
+        ],
+        "question": "Which habit strengthens evidence about compare?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "options": [
+          "Stopping suddenly forever without cool-down can feel awful for some people.",
+          "Treat a skipped permission or safety step as if it did not matter.",
+          "Ignore the safety rule because the first idea looked exciting.",
+          "Example: work set → 1-minute walk cool → pulse closer to rest."
+        ],
+        "question": "Using this lesson idea — Measuring heart rate in activities compares work and recovery; cool-downs help heart rate ease toward rest. — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "options": [
+          "Ignore safety or cultural protocols to finish faster.",
+          "Treat every online claim as equally reliable.",
+          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Invent missing details to make the answer sound complete."
+        ],
+        "question": "Which action shows respect and accuracy together?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Independence requires a new example that still uses the skill.",
+        "options": [
+          "Stopping suddenly forever without cool-down can feel awful for some people.",
+          "Complete a work/cool/rest pulse log for three activities. Note recovery observation.",
+          "Retype the worked example with no new example.",
+          "Copy the example and call that independent work."
+        ],
+        "question": "Which task best shows independent use of measure?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating measure on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Helps body recover gradually and can feel better/safer. Reasoning: I used measure by attending to compare rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with measure, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Stopping suddenly forever without cool-down can feel awful for some people. Correction: Helps body recover gradually and can feel better/safer. Why: the correction restores accurate use of measure.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-pdhpe-y4-w37-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending human review. Physical activities are optional, adult-supervised and adaptable; no child is required to share personal details.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise measure.",
+        "Read the mission before you start moving or deciding.",
+        "Keep your own safety and everyone's inclusion in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not keep everyone safe and included."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the cue or rule that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore safety, consent or inclusion.",
+        "Prefer a reasoned, respectful choice over one that merely looks fun."
+      ],
+      "submit": [
+        "Confirm that your reasons and reflection are both present.",
+        "Proofread names, steps and safety words.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact cue, rule or choice before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key cues.",
+        "Say what each cue does for safety, health or friendship.",
+        "A final label alone is weaker than a stated reason."
+      ],
+      "teach2": [
+        "Compare an unsafe or unkind choice with a better one.",
+        "Change the choice or strategy, not only the words.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, game or situation that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original reasons and a short reflection.",
+        "Save work that shows the skill in a new situation."
+      ]
+    },
+    "subject": "Healthy, Safe and Active Lifestyles",
+    "success_criteria": [
+      "I can use measure with a specific example from this lesson.",
+      "I can identify compare and explain why it matters.",
+      "I can practise recover independently on a new prompt.",
+      "I can notice cool down needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Measuring heart rate in activities compares work and recovery; cool-downs help heart rate ease toward rest. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "Measuring heart rate in activities compares work and recovery; cool-downs help heart rate ease toward rest."
+          ],
+          "question": "Which choice best shows accurate use of this idea about measure?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: work set → 1-minute walk cool → pulse closer to rest.\n\nTRY FIRST\nWhy include a cool-down after hard effort?\n\nFEEDBACK\nHelps body recover gradually and can feel better/safer.",
+        "explain": "Measuring heart rate in activities compares work and recovery; cool-downs help heart rate ease toward rest.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Stopping suddenly forever without cool-down can feel awful for some people. Change the choice or strategy, not just the wording.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "Heart rate activities.",
+            "caption": "Cool-down helps.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Work</text><text x=\"28\" y=\"78\">then cool</text><text x=\"358\" y=\"42\">Recover</text><text x=\"358\" y=\"78\">toward rest</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which cue or rule matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the cues, rules or choices that keep everyone safe and included before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example: work set → 1-minute walk cool → pulse closer to rest. Then write your own reasons.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which cue or rule matters most.\nJuno: Name the cues, rules or choices that keep everyone safe and included before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example: work set → 1-minute walk cool → pulse closer to rest. Then write your own reasons."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others."
+          ],
+          "question": "Which choice best shows accurate use of this idea about measure?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: work set → 1-minute walk cool → pulse closer to rest. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "explain": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without a reason does not show PDHPE thinking. Change the choice or strategy, not just the wording.",
+        "title": "Show the reasoning",
+        "visual": [
+          {
+            "alt": "Work/cool log.",
+            "caption": "Observe recover.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Log three</text><text x=\"28\" y=\"78\">recovery note</text><text x=\"358\" y=\"42\">Risk</text><text x=\"358\" y=\"78\">stop dead always</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice."
+          ],
+          "question": "Which choice best shows accurate use of this idea about measure?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nStopping suddenly forever without cool-down can feel awful for some people. Here is a more helpful example: Example: work set → 1-minute walk cool → pulse closer to rest.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nHelps body recover gradually and can feel better/safer.",
+        "explain": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without changing the choice does not fix the error. Stopping suddenly forever without cool-down can feel awful for some people. Change the choice or strategy, not just the wording.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+            "A choice unrelated to safety, health or respect."
+          ],
+          "question": "Which choice best shows accurate use of this idea about measure?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nMeasuring heart rate in activities compares work and recovery; cool-downs help heart rate ease toward rest. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "explain": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new situation. Change the choice or strategy, not just the wording.",
+        "title": "Transfer to a new situation"
+      }
+    ],
+    "title": "Year 4, Week 37, Lesson 2: Measuring heart rate in activities",
+    "unit_number": 8,
+    "unit_title": "Healthy active lifestyles",
+    "week": 37,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample: work set → 1-minute walk cool → pulse closer to rest.\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.",
+    "worked_visuals": [
+      {
+        "alt": "Heart rate activities.",
+        "caption": "Cool-down helps.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Work</text><text x=\"28\" y=\"78\">then cool</text><text x=\"358\" y=\"42\">Recover</text><text x=\"358\" y=\"78\">toward rest</text></g></svg>"
+      },
+      {
+        "alt": "Work/cool log.",
+        "caption": "Observe recover.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Log three</text><text x=\"28\" y=\"78\">recovery note</text><text x=\"358\" y=\"42\">Risk</text><text x=\"358\" y=\"78\">stop dead always</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 4"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Why include a cool-down after hard effort?"
+      ],
+      "independent_inputs": [
+        "Complete a work/cool/rest pulse log for three activities. Note recovery observation."
+      ],
+      "model_inputs": [
+        "Example: work set → 1-minute walk cool → pulse closer to rest."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Helps body recover gradually and can feel better/safer.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Why include a cool-down after hard effort?",
+        "misconception": "Stopping suddenly forever without cool-down can feel awful for some people.",
+        "model": "Example: work set → 1-minute walk cool → pulse closer to rest.",
+        "rule": "Measuring heart rate in activities compares work and recovery; cool-downs help heart rate ease toward rest.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.",
+        "misconception": "Writing only a final label without a reason does not show PDHPE thinking.",
+        "model": "Example: work set → 1-minute walk cool → pulse closer to rest. Look at each cue, rule or choice that carries the idea.",
+        "rule": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "Helps body recover gradually and can feel better/safer.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.",
+        "misconception": "Changing the wording without changing the choice does not fix the error. Stopping suddenly forever without cool-down can feel awful for some people.",
+        "model": "Stopping suddenly forever without cool-down can feel awful for some people. Here is a more helpful example: Example: work set → 1-minute walk cool → pulse closer to rest.",
+        "rule": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new situation.",
+        "model": "Measuring heart rate in activities compares work and recovery; cool-downs help heart rate ease toward rest. Now choose a different situation to show you can transfer the idea.",
+        "rule": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Heart rate activities.",
+        "teaches": "Cool-down helps."
+      },
+      {
+        "alt": "Work/cool log.",
+        "teaches": "Observe recover."
+      }
+    ]
+  }
+}
