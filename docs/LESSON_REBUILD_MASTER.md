@@ -8,7 +8,7 @@ A beginner at the lesson's year level should learn from the lesson itself: expla
 
 Adapt vocabulary, explanations, concepts, tasks and assessment to the age band. Do not copy Year 3 teaching unchanged into Kindergarten or senior subjects. Use the approved age-band step counts, quiz types and pass marks. Do not alter the approved standard without asking the parent.
 
-Original internal text, episodes and small SVG diagrams remain required where they teach usefully. Include three specific hints for every generated stage, appropriate parent/evidence notes, a screen-free alternative and a stretch idea. No runtime AI, paid services, external embeds or copied teaching materials. Verify outcome codes or leave them empty; follow the expert-review rules for uncertain specialist and cultural content.
+Original internal text, episodes and SVG diagrams remain required where they teach usefully. Include three specific hints for every generated stage, appropriate parent/evidence notes, a screen-free alternative and a stretch idea. No runtime AI, external embeds or copied teaching materials. Propose any new paid service with its approximate cost and benefit, and obtain the owner’s approval before use. Verify outcome codes or leave them empty; follow the expert-review rules for uncertain specialist and cultural content.
 
 ## Repository inventory
 
@@ -34,8 +34,9 @@ The coming_soon flag is not a quality certificate. Earlier apparently finished c
 - Approved gold: `s2-eng-y3-w01-l1`, migration 0044, on main.
 - Stage 3 Year 5 English Week 1: four new-standard lessons, migration 0045, merged in PR #98. They remain authored/unreviewed; no claim that database content has been applied or reviewed.
 - First priority batch: Stage 2 Year 3 English Week 1 Lessons 2–4 are authored in migration 0046 and merged through PR #99. Remote database application is not verified. Together with the approved Lesson 1, the whole week is written.
-- Stage 4 Year 7 English Week 1: four lessons are authored in migration 0047, pending PR review/application.
-- Twelve rows now have new-standard authored content in repository sources: one approved gold, four preserved Stage 3 lessons, three Stage 2 lessons and four Stage 4 lessons. The remaining 19,190 rows remain queued. This does not mean twelve lessons have been deployed or reviewed.
+- Stage 4 Year 7 English Week 1: four lessons are authored in migration 0047 and merged through PR #100. Remote application is not verified.
+- Stage 2 Year 4 English Week 1: four lessons are authored in migration 0048, pending review/application.
+- Sixteen rows now have new-standard authored content in repository sources: one approved gold, four preserved Stage 3 lessons, seven other Stage 2 lessons and four Stage 4 lessons. The remaining 19,186 rows remain queued. This does not mean sixteen lessons have been deployed or reviewed.
 - No gold lesson or Stage 3 batch is discarded by the priority change.
 
 The stage-specific register and inventory remain available for reference. This master register controls the authoring priority from now on.
@@ -46,8 +47,8 @@ Alternate subject-week batches between Stage 2 and Stage 4 so both receive work 
 
 1. Stage 2, Year 3 English Week 1: Lessons 2–4 authored in this PR beside the approved Lesson 1.
 2. Stage 4, Year 7 English Week 1: four lessons authored in this PR.
-3. **Next: Stage 2, Year 4 English Week 1.**
-4. Stage 4, Year 8 English Week 1.
+3. Stage 2, Year 4 English Week 1: four lessons authored in migration 0048.
+4. **Next: Stage 4, Year 8 English Week 1.**
 5. Stage 2/4 Mathematics Week 1 in the same year alternation.
 6. Continue through each priority stage's other subjects and electives, then later weeks. Read the actual subject plan before writing; not every subject has the same lesson count or sequence.
 
@@ -55,11 +56,11 @@ This is the default order, not a reduction of the all-stage scope. The parent ma
 
 ## Branches, migrations and review
 
-Each new PR targets **main directly** and covers one subject-week. Never commit to main or merge/deploy on the parent's behalf without their instruction. Check main and open PRs before allocating numbers. At this batch’s creation, main ends at 0046 and open PR #95 reserves 0043; this batch uses 0047. Recheck the next number before authoring the Year 4 batch.
+Each new PR targets **main directly** and covers one subject-week. Never commit to main or merge/deploy on the parent's behalf without their instruction. Check main and open PRs before allocating numbers. At this batch’s creation, main ends at 0047 and open PR #95 reserves 0043; this batch uses 0048. The paid-policy PR #101 has no migration. Recheck numbering before the Year 8 batch.
 
-At most 25 lessons per migration, normally one UPDATE per lesson below the statement limit. Supply complete arrays and delete obsolete fields with JSON merge-patch nulls. Preserve IDs, keys, ownership and assignments. A content patch and a frontend deployment are distinct from applying remote D1 content.
+Aim for up to 50 lessons per migration, fewer when statements are large. Use one UPDATE per lesson or split lessons over about 90 KB into two UPDATEs, text first and media second; never cut content. Each statement must be at most 100,000 bytes. Supply complete arrays and delete obsolete fields with JSON merge-patch nulls. Preserve IDs, keys, ownership and assignments. A content patch and a frontend deployment are distinct from applying remote D1 content.
 
-Every PR must include readable lesson reviews, actual validation results and limitations, statement/data sizes, and beginner backup/apply/site-check/undo instructions. Check each SQL statement's budget rather than the entire multi-lesson file. Respect the parent's free-tier limits.
+Every PR must include readable lesson reviews, actual validation results and limitations, a brief Usage check (estimated rows written and largest statement size), and beginner backup/apply/site-check/undo instructions. Check each SQL statement's budget rather than the entire multi-lesson file. Follow [the paid-plan usage policy](LESSON_USAGE_POLICY.md). Review capacity sets the pace, with no daily lesson quota.
 
 ## Reproducing the inventory
 
