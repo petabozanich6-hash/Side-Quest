@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "CA2-DAN-01",
+      "lesson_evidence": "Exploring movement means trying many different ways to move before choosing the best ones. Choose a movement idea such as stretch, twist, shake or spin, and explore it at high, middle and low levels, in different directions, and at fast and slow times. Then choose the version that best shows your idea. Make sure there is plenty of room, no slippery socks and an adult nearby. Always move at a level that is comfortable for your body, and you can explore the same idea using only your arms or hands.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/creative-arts-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Exploring movement means trying many different ways to move before choosing the best ones. Choose a movement idea such as stretch, twist, shake or spin, and explore it at high, middle and low levels, in different directions, and at fast and slow times. Then choose the version that best shows your idea. Make sure there is plenty of room, no slippery socks and an adult nearby. Always move at a level that is comfortable for your body, and you can explore the same idea using only your arms or hands.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same arts idea to a new artwork or performance, then compare two choices for clarity of effect.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nExplore the idea 'stretch' in three ways: a level, a direction and a speed. Say which one you would keep for a dance about a plant growing and why.\n\nFEEDBACK\nStrong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing from several options and giving a reason shows exploring, not just copying.\n\nWATCH FOR\nBelieving that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nPick three movement words (such as swing, curl and jump) and explore each at three levels and two speeds. Write which version you chose for each and why. Show a family member your favourite, or draw stick figures if movement is not possible.\n\nWrite a short reflection naming one artistic choice you changed and why. Movement or instrument work is optional, adult-supervised and can be described instead.",
+    "interactive_activities": null,
+    "learning_area": "Creative Arts",
+    "learning_intention": "Exploring movement means trying many different ways to move before choosing the best ones. Choose a movement idea such as stretch, twist, shake or spin, and explore it at high, middle and low levels, in different directions, and at fast and slow times. Then choose the version that best shows your idea. Make sure there is plenty of room, no slippery socks and an adult nearby. Always move at a level that is comfortable for your body, and you can explore the same idea using only your arms or hands.",
+    "lesson_number": 2,
+    "lesson_role": "Create and perform",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: scrap paper, crayons, safe classroom instruments or clear movement space with an adult nearby"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "CA2-DAN-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Pick three movement words (such as swing, curl and jump) and explore each at three levels and two speeds. Write which version you chose for each and why. Show a family member your favourite, or draw stick figures if move Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing from several options and giving a… Reasoning: I used a level by attending to a direction rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting. Correction: Strong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing… Why: the correction restores accurate use of a level.\n\nParent: Likely misconception: Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a level on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a level, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "Strong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing… This matches the lesson skill for a level.",
+        "options": [
+          "Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting.",
+          "Say it looks nice with no element or technique named.",
+          "Copy the example artwork or script and call that independent work.",
+          "Strong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing…"
+        ],
+        "question": "Explore the idea 'stretch' in three ways: a level, a direction and a speed. Say which one you would keep for a dance about a plant growing and why. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Strong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing…",
+          "Careful use of a direction with clear evidence.",
+          "Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting.",
+          "Exploring movement means trying many different ways to move before choosing the best ones. Choose a movement idea such as stretch, twist, shake or spin, and…"
+        ],
+        "question": "Which statement is a common mistake when practising a level?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and named a direction, not by copying the model.",
+        "options": [
+          "Apply the idea with new evidence and name the a direction used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Invent a sacred First Nations design without permission or guidance."
+        ],
+        "question": "A learner is practising a level. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Strong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing… uses elements, techniques and audience effect appropriately for this lesson.",
+        "options": [
+          "Strong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing…",
+          "Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting.",
+          "Say it looks nice with no element or technique named.",
+          "Copy the example artwork or script and call that independent work."
+        ],
+        "question": "Which response best shows careful thinking about a level?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Strong answers name specific evidence and what it shows.",
+        "options": [
+          "Make a bigger claim without naming any source or cue.",
+          "Copy a classmate’s sentence with no local detail.",
+          "Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting.",
+          "Name a specific source, cue or example and say what it shows about a level."
+        ],
+        "question": "Which habit strengthens evidence about a direction?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "options": [
+          "Example: Jo explores 'twist'. High: twist the upper body with arms overhead. Low: twist while crouching. Forward: twist and step ahead.…",
+          "Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting.",
+          "Invent a sacred First Nations design without permission or guidance.",
+          "Say it looks nice with no element or technique named."
+        ],
+        "question": "Using this lesson idea — Exploring movement means trying many different ways to move before choosing the best ones. Choose a movement… — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "options": [
+          "Ignore safety or cultural protocols to finish faster.",
+          "Treat every online claim as equally reliable.",
+          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Invent missing details to make the answer sound complete."
+        ],
+        "question": "Which action shows respect and accuracy together?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Independence requires a new example that still uses the skill.",
+        "options": [
+          "Retype the worked example with no new example.",
+          "Copy the example artwork or script and call that independent work.",
+          "Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting.",
+          "Pick three movement words (such as swing, curl and jump) and explore each at three levels and two speeds. Write which version you chose for each and…"
+        ],
+        "question": "Which task best shows independent use of a level?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating a level on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Strong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing from several options and giving a… Reasoning: I used a level by attending to a direction rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with a level, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting. Correction: Strong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing… Why: the correction restores accurate use of a level.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent artwork or performance notes and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-arts-y3-w16-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA Creative Arts alignment using catalogue outcome codes (CA2-*); content-point mapping remains pending. First Nations arts content requires local Aboriginal educator or Custodian guidance before acceptance; do not invent sacred designs.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise a level.",
+        "Read the mission before you start making or performing.",
+        "Keep the audience effect of your choice in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not name an effect clearly."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the element or technique that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore elements, safety or respectful practice.",
+        "Prefer a named artistic reason over a guess that merely looks colourful."
+      ],
+      "submit": [
+        "Confirm that your choice and reason are both present.",
+        "Proofread element names and safety notes.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact element, technique or cue before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key artistic choices.",
+        "Say what each choice does for the artwork or audience.",
+        "A final praise word alone is weaker than a named effect."
+      ],
+      "teach2": [
+        "Compare a weak choice with a stronger one.",
+        "Change the element or technique, not only the decoration.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh subject or piece that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original work notes and a short reflection.",
+        "Save work that shows the skill on new material."
+      ]
+    },
+    "subject": "Dance",
+    "success_criteria": [
+      "I can use a level with a specific example from this lesson.",
+      "I can identify a direction and explain why it matters.",
+      "I can practise a movement idea independently on a new prompt.",
+      "I can notice exploring needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Exploring movement means trying many different ways to move before choosing the best ones. Choose a movement idea such as stretch, twist, shake or spin, and explore it at high, middle and low levels, in different directions, and at fast and slow times. Then choose the version…",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no artistic reason.",
+            "Exploring movement means trying many different ways to move before choosing the best ones. Choose a movement idea such as stretch, twist, shake or spin, and explore it at high, middle and low levels, in different directions, and at fast and slow times. Then choose the version that best shows your idea. Make sure there is plenty of room, no slippery socks and an adult nearby. Always move at a level that is comfortable for your body, and you can explore the same idea using only your arms or hands.",
+            "A comment that only says it looks nice with no element named."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a level?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Jo explores 'twist'. High: twist the upper body with arms overhead. Low: twist while crouching. Forward: twist and step ahead. Slow: twist as if moving through honey. Quick: twist as if shaking off water. She chooses the low slow twist because it looks like a vine growing, which is her idea for the dance.\n\nTRY FIRST\nExplore the idea 'stretch' in three ways: a level, a direction and a speed. Say which one you would keep for a dance about a plant growing and why.\n\nFEEDBACK\nStrong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing from several options and giving a reason shows exploring, not just copying.",
+        "explain": "Exploring movement means trying many different ways to move before choosing the best ones. Choose a movement idea such as stretch, twist, shake or spin, and explore it at high, middle and low levels, in different directions, and at fast and slow times. Then choose the version that best shows your idea. Make sure there is plenty of room, no slippery socks and an adult nearby. Always move at a level that is comfortable for your body, and you can explore the same idea using only your arms or hands.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting. Name the element or technique and its effect, not just decoration.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "Levels and directions.",
+            "caption": "Explore many options.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Level</text><text x=\"28\" y=\"78\">high, middle, low</text><text x=\"358\" y=\"42\">Direction</text><text x=\"358\" y=\"78\">forward, back, sideways</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which artistic choice matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the element, technique or performance choice and the effect it creates before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example: Jo explores 'twist'. High: twist the upper body with arms overhead. Low: twist while crouching. Forward: twist  Then write your own artistic reason.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which artistic choice matters most.\nJuno: Name the element, technique or performance choice and the effect it creates before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example: Jo explores 'twist'. High: twist the upper body with arms overhead. Low: twist while crouching. Forward: twist  Then write your own artistic reason."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no artistic reason.",
+            "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
+            "A comment that only says it looks nice with no element named."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a level?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Jo explores 'twist'. High: twist the upper body with arms overhead. Low: twist while crouching. Forward: twist and step ahead. Slow: twist as if moving through honey. Quick: twist as if shaking off water. She chooses the low slow twist because it looks like a vine growing, which is her idea for the dance. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
+        "explain": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "Writing only a final praise word without naming a choice does not show arts thinking. Name the element or technique and its effect, not just decoration.",
+        "title": "Show the artistic choice",
+        "visual": [
+          {
+            "alt": "Choosing a movement.",
+            "caption": "Choose with a reason.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Choose</text><text x=\"28\" y=\"78\">keep the best version</text><text x=\"358\" y=\"42\">Reason</text><text x=\"358\" y=\"78\">it shows my idea</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "options": [
+            "A comment that only says it looks nice with no element named.",
+            "An answer copied without understanding.",
+            "A guess with no artistic reason.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a level?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nBelieving that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting. Here is a more helpful example: Example: Jo explores 'twist'. High: twist the upper body with arms overhead. Low: twist while crouching. Forward: twist and step ahead. Slow: twist as if moving through honey. Quick: twist as if shaking off water. She chooses the low slow twist because it looks like a vine growing, which is her idea for the dance.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing from several options and giving a reason shows exploring, not just copying.",
+        "explain": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "Changing the decoration without changing the artistic idea does not fix the error. Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting. Name the element or technique and its effect, not just decoration.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "options": [
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "A comment that only says it looks nice with no element named.",
+            "An answer copied without understanding.",
+            "A guess with no artistic reason."
+          ],
+          "question": "Which choice best shows accurate use of this idea about a level?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExploring movement means trying many different ways to move before choosing the best ones. Choose a movement idea such as stretch, twist, shake or spin, and explore it at high, middle and low levels, in different directions, and at fast and slow times. Then choose the version that best shows your idea. Make sure there is plenty of room, no slippery socks and an adult nearby. Always move at a level that is comfortable for your body, and you can explore the same idea using only your arms or hands. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",
+        "explain": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new artwork or performance. Name the element or technique and its effect, not just decoration.",
+        "title": "Transfer to a new artwork or performance"
+      }
+    ],
+    "title": "Year 3, Week 16, Lesson 2: Exploring movement",
+    "unit_number": 4,
+    "unit_title": "Elements of dance and movement",
+    "week": 16,
+    "week_in_unit": 1,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample: Jo explores 'twist'. High: twist the upper body with arms overhead. Low: twist while crouching. Forward: twist and step ahead. Slow: twist as if moving through honey. Quick: twist as if shaking off water. She chooses the low slow twist because it looks like a vine growing, which is her idea for the dance.\n\nWrite what makes this example effective, naming the element, technique or performance choice and its effect.",
+    "worked_visuals": [
+      {
+        "alt": "Levels and directions.",
+        "caption": "Explore many options.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Level</text><text x=\"28\" y=\"78\">high, middle, low</text><text x=\"358\" y=\"42\">Direction</text><text x=\"358\" y=\"78\">forward, back, sideways</text></g></svg>"
+      },
+      {
+        "alt": "Choosing a movement.",
+        "caption": "Choose with a reason.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Choose</text><text x=\"28\" y=\"78\">keep the best version</text><text x=\"358\" y=\"42\">Reason</text><text x=\"358\" y=\"78\">it shows my idea</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Explore the idea 'stretch' in three ways: a level, a direction and a speed. Say which one you would keep for a dance about a plant growing and why."
+      ],
+      "independent_inputs": [
+        "Pick three movement words (such as swing, curl and jump) and explore each at three levels and two speeds. Write which version you chose for each and why. Show a family member your favourite, or draw stick figures if movement is not possible."
+      ],
+      "model_inputs": [
+        "Example: Jo explores 'twist'. High: twist the upper body with arms overhead. Low: twist while crouching. Forward: twist and step ahead. Slow: twist as if moving through honey. Quick: twist as if shaking off water. She chooses the low slow twist because it looks like a vine growing, which is her idea for the dance."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Strong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing from several options and giving a reason shows exploring, not just copying.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "Explore the idea 'stretch' in three ways: a level, a direction and a speed. Say which one you would keep for a dance about a plant growing and why.",
+        "misconception": "Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting.",
+        "model": "Example: Jo explores 'twist'. High: twist the upper body with arms overhead. Low: twist while crouching. Forward: twist and step ahead. Slow: twist as if moving through honey. Quick: twist as if shaking off water. She chooses the low slow twist because it looks like a vine growing, which is her idea for the dance.",
+        "rule": "Exploring movement means trying many different ways to move before choosing the best ones. Choose a movement idea such as stretch, twist, shake or spin, and explore it at high, middle and low levels, in different directions, and at fast and slow times. Then choose the version that best shows your idea. Make sure there is plenty of room, no slippery socks and an adult nearby. Always move at a level that is comfortable for your body, and you can explore the same idea using only your arms or hands.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      },
+      {
+        "feedback": "The most useful response names the element or technique and its effect, not only “it looks nice”.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "List the key artistic choices from the example and say what each one does for the audience or artwork.",
+        "misconception": "Writing only a final praise word without naming a choice does not show arts thinking.",
+        "model": "Example: Jo explores 'twist'. High: twist the upper body with arms overhead. Low: twist while crouching. Forward: twist and step ahead. Slow: twist as if moving through honey. Quick: twist as if shaking off water. She chooses the low slow twist because it looks like a vine growing, which is her idea for the dance. Look at each line, sound, movement or role choice that carries the idea.",
+        "rule": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      },
+      {
+        "feedback": "Strong answer: 'Stretch high, stretch sideways and stretch slowly. For a plant I would keep high and slow, because plants grow upward and gradually.' Choosing from several options and giving a reason shows exploring, not just copying.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "Describe why the warned-against choice weakens the work, then write a stronger choice with a reason.",
+        "misconception": "Changing the decoration without changing the artistic idea does not fix the error. Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting.",
+        "model": "Believing that the first movement idea is always the best. Dancers explore many ideas first, and often the third or fourth idea is the most interesting. Here is a more helpful example: Example: Jo explores 'twist'. High: twist the upper body with arms overhead. Low: twist while crouching. Forward: twist and step ahead. Slow: twist as if moving through honey. Quick: twist as if shaking off water. She chooses the low slow twist because it looks like a vine growing, which is her idea for the dance.",
+        "rule": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      },
+      {
+        "feedback": "The new example should use the same arts idea as the model, but with different content or material.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "Make or describe one fresh example that uses the same skill and write a short reason for your main choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new artwork or performance.",
+        "model": "Exploring movement means trying many different ways to move before choosing the best ones. Choose a movement idea such as stretch, twist, shake or spin, and explore it at high, middle and low levels, in different directions, and at fast and slow times. Then choose the version that best shows your idea. Make sure there is plenty of room, no slippery socks and an adult nearby. Always move at a level that is comfortable for your body, and you can explore the same idea using only your arms or hands. Now choose a different subject or piece to show you can transfer the idea.",
+        "rule": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Levels and directions.",
+        "teaches": "Explore many options."
+      },
+      {
+        "alt": "Choosing a movement.",
+        "teaches": "Choose with a reason."
+      }
+    ]
+  }
+}
