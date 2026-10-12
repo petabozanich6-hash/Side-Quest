@@ -1,54 +1,79 @@
 #!/usr/bin/env python3
-"""Repair quiz/teach-check assessments in authored Written Core bundles in place.
+"""Repair quiz/teach-check assessments in authored Written Core bundles.
+
+SAFE USE (owner coordination):
+  Operate on an explicit --authored-dir path (copy, offline inventory, or worktree),
+  never on another agent's live working tree unless that agent has paused and
+  handed off the path.
 
 Preserves teaching content, visuals, identity and curriculum fields. Rebuilds only
-assessment surfaces that failed the Gold assessment-quality gate.
+assessment surfaces that fail the Gold assessment-quality gate.
 """
 from __future__ import annotations
 
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
 
-from assessment_quiz import build_skill_quiz, shuffle_teach_check
-from pipeline import ROOT, atomic_json
+from assessment_quiz import BANNED_STEM, ELLIPSIS, FILLER_OPTION, build_skill_quiz, shuffle_teach_check
+from pipeline import atomic_json
 
-AUTHORED = ROOT / 'lesson-pipeline' / 'authored'
-BANNED = re.compile(
-    r'which idea is taught|which feedback is most useful|which statement appeared'
-    r'|what should you demonstrate in this teaching stage',
-    re.I,
+HERE = Path(__file__).resolve().parent
+DEFAULT_ROOT = HERE.parents[1]
+LIVE_AUTHORED_HINTS = (
+    str(Path('/Users/petab/Side-Quest/lesson-pipeline/authored')),
+    str(Path('/workspace/Side-Quest/lesson-pipeline/authored')),
 )
 
 
 def detect_subject(lesson: dict) -> str:
     area = (lesson.get('learning_area') or lesson.get('subject') or '').lower()
     seed = lesson.get('seed_key') or ''
-    if 'math' in area or seed.startswith('s2-mat-'):
+    code = ''
+    m = re.match(r's[24]-([a-z]+)-', seed)
+    if m:
+        code = m.group(1)
+    if 'math' in area or code == 'mat':
         return 'mathematics'
-    if 'science' in area or seed.startswith('s2-sci-'):
+    if 'science' in area or code == 'sci':
         return 'science'
-    if 'hsie' in area or seed.startswith('s2-hsie-'):
+    if 'hsie' in area or code == 'hsie':
         return 'hsie'
-    if 'pdhpe' in area or seed.startswith('s2-pdhpe-'):
+    if 'pdhpe' in area or code == 'pdhpe':
         return 'pdhpe'
-    if 'creative' in area or 'arts' in area or seed.startswith('s2-arts-'):
+    if 'creative' in area or 'arts' in area or code == 'arts':
         return 'arts'
+    if 'english' in area or code == 'eng':
+        return 'english'
     return 'english'
 
 
 def quiz_is_weak(lesson: dict) -> bool:
     mc = [q for q in lesson.get('quiz') or [] if q.get('type') == 'multiple_choice']
-    if len(mc) < 8:
+    sa = [q for q in lesson.get('quiz') or [] if q.get('type') == 'short_answer']
+    if len(mc) < 8 or len(sa) < 2:
         return True
-    if any(BANNED.search(q.get('question') or '') for q in mc):
+    if any(BANNED_STEM.search(q.get('question') or '') for q in mc):
+        return True
+    if any(ELLIPSIS.search(o or '') for q in mc for o in (q.get('options') or [])):
+        return True
+    if any(FILLER_OPTION.search(o or '') for q in mc for o in (q.get('options') or [])):
         return True
     from collections import Counter
     counts = Counter(q.get('correct_index', 0) for q in mc)
     if max(counts.values()) > max(3, len(mc) // 2):
         return True
     if len(counts) < 2:
+        return True
+    if any(re.match(r'^Require (new|a real|independently)\b', q.get('marking_guide') or '') for q in sa):
+        return True
+    study = re.compile(
+        r'practising |shows understanding|shows transfer|independent use of|feedback comment',
+        re.I,
+    )
+    if sum(1 for q in mc if study.search(q.get('question') or '')) > 1:
         return True
     return False
 
@@ -64,11 +89,10 @@ def extract_fields(bundle: dict) -> dict:
     answer = (teaching[0].get('feedback') if teaching else '') or ''
     pitfall = (teaching[0].get('misconception') if teaching else '') or ''
     task = (practice.get('independent_inputs') or [''])[0]
-    # Prefer vocab-like success criteria fragments when present.
     criteria = lesson.get('success_criteria') or []
     vocab = []
     for line in criteria[:4]:
-        m = re.search(r'I can (?:use|identify|practise|notice) ([^.]+)', line or '', re.I)
+        m = re.search(r'I can (?:use|identify|practise|notice|round|solve|describe) ([^.]+)', line or '', re.I)
         vocab.append((m.group(1).split(' with')[0].strip() if m else 'this skill')[:40])
     while len(vocab) < 4:
         vocab.append('this skill')
@@ -88,17 +112,19 @@ def extract_fields(bundle: dict) -> dict:
 
 def repair_bundle(bundle: dict) -> bool:
     lesson = bundle['lesson']
-    if not quiz_is_weak(lesson) and not any(
-        BANNED.search((s.get('check') or {}).get('question') or '') for s in lesson.get('teach_steps') or []
-    ):
+    teach_meta = any(
+        BANNED_STEM.search((s.get('check') or {}).get('question') or '')
+        for s in lesson.get('teach_steps') or []
+    )
+    if not quiz_is_weak(lesson) and not teach_meta:
         return False
     subject = detect_subject(lesson)
     fields = extract_fields(bundle)
     distractors = [
-        'Ignore the task and invent an unrelated answer.',
-        'Copy the worked example and call it independent work.',
-        'Treat a missing detail as a proven fact.',
-        'Skip reasoning because the first guess looked neat.',
+        'A claim that names no evidence from the lesson material.',
+        'A method that skips the key step taught in this lesson.',
+        'A label that sounds complete but does not match the asked quantity or idea.',
+        'An answer that mixes two different ideas from the lesson.',
     ]
     quiz = build_skill_quiz(
         lesson['seed_key'], subject, fields['rule'], fields['model'], fields['prompt'],
@@ -122,7 +148,7 @@ def repair_bundle(bundle: dict) -> bool:
         correct = opts[check.get('correct_index', 0)] if opts else fields['rule']
         wrongs = [o for j, o in enumerate(opts) if j != check.get('correct_index', 0)] or distractors[:3]
         step['check'] = shuffle_teach_check(
-            f'Which choice best shows accurate use of this idea about {fields["vocab"][0]}?',
+            f'Which choice best applies this lesson idea about {fields["vocab"][0]} with clear evidence?',
             correct, wrongs,
             (check.get('explanation') or correct) + ' Apply the lesson idea with evidence.',
             lesson['seed_key'], i)
@@ -130,25 +156,62 @@ def repair_bundle(bundle: dict) -> bool:
     return True
 
 
+def _resolve_paths(authored_dir: Path, seeds: list[str], glob_pat: str) -> list[Path]:
+    if seeds:
+        return [authored_dir / f'{s}.json' for s in seeds]
+    return sorted(authored_dir.glob(glob_pat))
+
+
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--authored-dir', type=Path, default=None,
+                        help='Directory of authored JSON bundles (required for bulk repair).')
     parser.add_argument('--seed', action='append', default=[])
+    parser.add_argument('--glob', default='*.json', help='Glob under authored-dir when not using --seed.')
     parser.add_argument('--limit', type=int, default=0)
-    parser.add_argument('--all-weak', action='store_true')
+    parser.add_argument('--all-weak', action='store_true',
+                        help='Repair every weak quiz under authored-dir.')
+    parser.add_argument('--dry-run', action='store_true')
+    parser.add_argument('--allow-live-authored', action='store_true',
+                        help='Permit writing into a known live authoring authored/ path.')
     args = parser.parse_args()
-    paths = []
-    if args.seed:
-        paths = [AUTHORED / f'{s}.json' for s in args.seed]
-    else:
-        paths = sorted(AUTHORED.glob('s2-*-y3-*.json'))
-    repaired, skipped, missing = [], [], []
+
+    authored = (args.authored_dir or (DEFAULT_ROOT / 'lesson-pipeline' / 'authored')).resolve()
+    if not authored.is_dir():
+        print(json.dumps({'error': f'authored dir missing: {authored}'}), file=sys.stderr)
+        sys.exit(2)
+
+    authored_s = str(authored)
+    if any(authored_s == hint or authored_s.startswith(hint + '/') for hint in LIVE_AUTHORED_HINTS):
+        if not args.allow_live_authored:
+            print(json.dumps({
+                'error': 'Refusing to modify a live authoring authored/ path. '
+                         'Copy offline, use another worktree, or pass --allow-live-authored after handoff.',
+                'authored_dir': authored_s,
+            }, indent=2), file=sys.stderr)
+            sys.exit(3)
+
+    paths = _resolve_paths(authored, args.seed, args.glob)
+    repaired, skipped, missing, would = [], [], [], []
     for path in paths:
         if not path.exists():
             missing.append(path.name)
             continue
         bundle = json.loads(path.read_text())
-        if not args.seed and not args.all_weak and not quiz_is_weak(bundle['lesson']):
+        lesson = bundle.get('lesson') or {}
+        if not args.seed and not args.all_weak and not quiz_is_weak(lesson):
             skipped.append(path.stem)
+            continue
+        if not quiz_is_weak(lesson) and not any(
+            BANNED_STEM.search((s.get('check') or {}).get('question') or '')
+            for s in lesson.get('teach_steps') or []
+        ):
+            skipped.append(path.stem)
+            continue
+        if args.dry_run:
+            would.append(path.stem)
+            if args.limit and len(would) >= args.limit:
+                break
             continue
         if repair_bundle(bundle):
             atomic_json(path, bundle)
@@ -158,10 +221,13 @@ def main():
         if args.limit and len(repaired) >= args.limit:
             break
     print(json.dumps({
+        'authored_dir': authored_s,
+        'dry_run': args.dry_run,
         'repaired': len(repaired),
+        'would_repair': len(would),
         'skipped': len(skipped),
         'missing': missing,
-        'sample_repaired': repaired[:12],
+        'sample_repaired': (would or repaired)[:12],
     }, indent=2))
 
 

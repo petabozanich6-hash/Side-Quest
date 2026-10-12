@@ -24,3 +24,6 @@ npm-debug.log*
 lesson-pipeline/.pipeline.lock
 lesson-pipeline/**/.checkpoint-*.tmp
 scripts/gold-pipeline/__pycache__/
+
+# Local agent worktrees (sibling checkouts under repo)
+.worktrees/

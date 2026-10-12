@@ -52,23 +52,45 @@ export function validateBundle(bundle, baseline) {
   }
   const qs=l.quiz.map(q=>norm(q.question));
   need(new Set(qs).size===qs.length,'Repeated quiz prompt');
-  need(l.quiz.every(q=>q.explanation.length>=50),'Quiz reasoning required');
-  // Assessment quality gates (structural). Educational approval remains a separate human gate.
+  need(l.quiz.every(q=>q.explanation&&q.explanation.length>=50),'Quiz reasoning required');
+  // Assessment quality gates (structural + anti-template). Educational approval remains a separate human gate.
   const mc=l.quiz.filter(q=>q.type==='multiple_choice');
   const written=l.quiz.filter(q=>q.type==='short_answer');
   need(mc.length>=8,'At least eight multiple-choice items required');
   need(written.length>=2,'At least two written reasoning items required');
-  const bannedStem=/which idea is taught|which feedback is most useful|which statement appeared|what should you demonstrate in this teaching stage/i;
+  const bannedStem=/which idea is taught|which feedback is most useful|which statement appeared|what should you demonstrate in this teaching stage|a learner is practising|which approach best shows understanding|which practice choice shows transfer|which response shows transfer|which next step best shows transfer|which task best shows independent use|which habit strengthens evidence|which action shows respect and accuracy|which revision actually repairs|which feedback comment is most useful|which working note best supports a mathematics|which investigation habit keeps a comparison fair/i;
+  const fillerOpt=/any answer is equally supported|there is no need to compare your attempt|unrelated response that does not use the lesson skill|ignore the task and invent|copy the worked example and call it|copy the model numbers and call|copy the model word-for-word|skip reasoning because|choose randomly because any option|treat a missing detail as a (proven|stated) fact/i;
+  const genericFb=/the other choices avoid explaining the actual strategy|the correct choice applies the lesson skill; the others use a common mistake/i;
+  const seed=String(l.seed_key||'');
+  const area=String(l.learning_area||l.subject||'').toLowerCase();
+  const subjCode=(seed.match(/^s[24]-([a-z]+)-/)||[])[1]||'';
+  const areaExpect={eng:['english'],mat:['math'],sci:['science'],hsie:['hsie','human'],pdhpe:['pdhpe','personal'],arts:['art','creative']};
+  if(subjCode&&areaExpect[subjCode]){
+    need(areaExpect[subjCode].some(tok=>area.includes(tok)),
+      `Learning area metadata mismatches seed subject: ${seed} / ${area}`);
+  }
+  const teachBlob=[l.worked_example,l.guided_practice,...(l.teach_steps||[]).map(s=>s.example||'')].join('\n');
   for(const q of mc){
-    need(!bannedStem.test(q.question),`Meta recall stem banned: ${q.question.slice(0,80)}`);
+    need(!bannedStem.test(q.question),`Meta/study-behaviour stem banned: ${q.question.slice(0,80)}`);
     need(Array.isArray(q.options)&&q.options.length===4,'MC requires four options');
     // Exact option text must differ; punctuation-only differences can be pedagogically real.
     need(new Set(q.options.map(o=>String(o).trim().toLowerCase())).size===4,'Repeated answer choices in one item');
     need(Number.isInteger(q.correct_index)&&q.correct_index>=0&&q.correct_index<4,'correct_index out of range');
-    need(!q.options.some(o=>/any answer is equally supported|there is no need to compare your attempt/i.test(o)),
-      'Implausible filler distractor');
-    need(!q.explanation||!/the other choices avoid explaining the actual strategy/i.test(q.explanation),
-      'Generic quiz feedback');
+    need(!q.options.some(o=>fillerOpt.test(o)),'Implausible filler distractor');
+    need(!q.options.some(o=>/[…]|(\.\.\.)$/.test(String(o).trim())),'Truncated MC option (ellipsis)');
+    need(!q.explanation||!genericFb.test(q.explanation),'Generic quiz feedback');
+    const correct=String(q.options[q.correct_index]||'');
+    const expl=String(q.explanation||'');
+    const corrNorm=norm(correct);
+    const explNorm=norm(expl);
+    if(corrNorm.length>24&&explNorm.startsWith(corrNorm)&&explNorm.length<corrNorm.length+8){
+      need(false,'Circular quiz explanation restates only the correct option');
+    }
+    // Correct option should not be a verbatim dump of the worked example opening.
+    const modelHead=norm(String(l.worked_example||'').slice(0,120));
+    if(modelHead.length>40&&norm(correct).includes(modelHead.slice(0,40))){
+      need(false,'MC correct option copies worked-example text');
+    }
   }
   const positionCounts=[0,0,0,0];
   for(const q of mc) positionCounts[q.correct_index]+=1;
@@ -85,9 +107,19 @@ export function validateBundle(bundle, baseline) {
         'Near-duplicate quiz prompts');
     }
   }
+  // Repeated generator template density: more than two study-meta stems fails even if wording varies.
+  const studyMeta=/practising |shows understanding|shows transfer|independent use of|feedback comment|respect and accuracy together/i;
+  need(mc.filter(q=>studyMeta.test(q.question)).length<=1,'Repeated study-behaviour assessment templates');
   for(const q of written){
     need(text(q.sample_answer)&&text(q.marking_guide),'Written items need sample and marking guide');
     need(!/original demonstration:\s*$/i.test(q.sample_answer),'Empty written model');
+    need(!/^Require (new|a real|independently)\b/i.test(q.marking_guide),
+      'Mechanical short-answer marking guide');
+    const sampleNorm=norm(q.sample_answer);
+    const teachNorm=norm(teachBlob).slice(0,180);
+    if(teachNorm.length>50&&sampleNorm.includes(teachNorm.slice(0,50))){
+      need(false,'Short-answer sample copies teaching example text');
+    }
   }
   // Independent practice inputs must differ from model/guided (existing rule below).
   const practice=r.practice;
