@@ -1,0 +1,333 @@
+{
+  "child_mission": "Investigate order integers and justify comparisons. Use a representation, show each decision and check the result.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep the order integers and justify comparisons task working, explanation, checking record, reflection and quiz result.",
+  "extension": "Choose a new pair of signed integers and explain two different questions about them, such as order and distance. State the question before the answer.",
+  "guided_practice": "WE DO: Work one supported example at a time.\n1. Mark zero and one-unit spacing. Locate −3 and 2 before checking: −3 is three left; 2 is two right.\n2. Compare their positions. Feedback: −3 < 2 because −3 lies left of 2.\n3. Explain the relevant sign, position or remaining contribution in your own words.\n4. Try a second example with −4 and 1 using the same method.\n5. Check after your attempt: −4 < 1.\n6. Describe one check that confirmed the answer or a change that repaired an error. A diagram or a clear written explanation is acceptable.",
+  "independent_task": "YOU DO: Order integers and justify comparisons investigation (about 25–30 minutes).\n1. Order −6, 0, 4 and −2 in both directions. Record two true inequalities and justify one by position. Explain which of −6 °C and −2 °C is warmer.\n2. Show each requested representation or calculation clearly; keep negative signs attached to values.\n3. Write a reason for two decisions using the taught reference, position or signed-change model.\n4. Check one result with a second representation and explain the agreement.\n5. State one improvement or confirmed check in your reflection.\nWork on paper or in the big box. Type a working summary if using paper; upload is optional.\nSuccess checklist: correct signs; labelled scale where used; requested results; two explanations; independent check; honest evidence record.",
+  "learning_area": "Mathematics",
+  "learning_intention": "We are learning to explain and apply order integers and justify comparisons.",
+  "lesson_number": 2,
+  "lesson_role": "Strategies",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Copy the included examples and task prompts onto paper. Use the diagrams and models to complete the order integers and justify comparisons working without a service, then type an evidence summary later.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches order integers and justify comparisons from definitions to explanation and application. Original content follows the repository’s topic sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of complete syllabus coverage.\n\nParent: Look for explicit working and a check of signs, scale, notation or units as appropriate. A correct guess without a method is weaker evidence than an explained calculation. The lesson itself supplies the teaching and feedback. Your role is access support and reviewing the evidence.\n\nParent: Model task answers: Ascending: −6, −2, 0, 4. Descending: 4, 0, −2, −6. −6 < −2 and 0 < 4. Of −6 °C and −2 °C, −2 °C is warmer because it is the greater reading.\n\nParent: Ten scored choices use the unchanged 90% threshold, requiring 9/10. The independent task and reflection supply written reasoning for manual review.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 1,
+      "explanation": "Negative two lies farther right than negative five on the number line, so it is greater.",
+      "options": [
+        "−5 > −2",
+        "−2 > −5",
+        "−2 = −5",
+        "Every negative integer exceeds zero"
+      ],
+      "question": "Which statement is true?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "Reversing the two unequal signed values reverses the comparison direction while preserving the relationship.",
+      "options": [
+        "−1 < −4",
+        "4 < 1",
+        "−4 = −1",
+        "−1 > −4"
+      ],
+      "question": "Which reversed statement agrees with −4 < −1?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The signed values move from farthest left to farthest right: −5, −2, 0, 3.",
+      "options": [
+        "3, 0, −2, −5",
+        "−2, −5, 0, 3",
+        "−5, −2, 0, 3",
+        "0, −5, 3, −2"
+      ],
+      "question": "Which list is ascending?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Negative two is the greater reading, so it is warmer on the same Celsius scale.",
+      "options": [
+        "−2 °C rather than −5 °C",
+        "−5 °C because five exceeds two",
+        "Both must mean the same temperature",
+        "Any negative reading is impossible"
+      ],
+      "question": "Which reading is warmer on the same Celsius scale?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Negative six lies farthest left.",
+      "options": [
+        "0",
+        "−6",
+        "−2",
+        "4"
+      ],
+      "question": "Which value is least?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Four lies farther right than the other signed values.",
+      "options": [
+        "−6",
+        "−2",
+        "4",
+        "0"
+      ],
+      "question": "Which is greatest?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Negative one lies farther right than negative four.",
+      "options": [
+        "−1 > −4",
+        "−4 > −1",
+        "0 < −4",
+        "−1 = −4"
+      ],
+      "question": "Which comparison is true?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The values move from greatest to least.",
+      "options": [
+        "−6, −2, 0, 4",
+        "0, 4, −2, −6",
+        "4, −6, 0, −2",
+        "4, 0, −2, −6"
+      ],
+      "question": "Which list is descending?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Negative six is the lower reading on the same scale.",
+      "options": [
+        "−2 °C rather than −6 °C",
+        "−6 °C rather than −2 °C",
+        "Both must be equal",
+        "Neither can be a temperature"
+      ],
+      "question": "Which reading is colder?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Position on the same scale gives signed order.",
+      "options": [
+        "The size of the unsigned digit only",
+        "The number of minus signs",
+        "The positions on the same number line",
+        "The colour of the writing"
+      ],
+      "question": "What supports an integer comparison?",
+      "type": "multiple_choice"
+    }
+  ],
+  "response_prompt": "Which representation or check changed your understanding of order integers and justify comparisons, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s4-mat-y7-w01-l2",
+  "stage": "S4",
+  "stage_hints": {
+    "accept": [
+      "Read the mission about order integers and justify comparisons.",
+      "You will practise order integers and justify comparisons through models before making your own response.",
+      "Begin with the first explanation of order integers and justify comparisons; the examples remain available while you work."
+    ],
+    "guided": [
+      "Begin the first supported example with rightward and leftward signed-value positions.",
+      "Write a short label for the requested direction of the sorted list before calculating.",
+      "Locate both signed values, record their relationship and check each neighbouring comparison. Compare with the feedback only after your attempt."
+    ],
+    "learn": [
+      "Look at how the complete model uses rightward and leftward signed-value positions.",
+      "Track the requested direction of the sorted list rather than treating every number question alike.",
+      "Locate both signed values, record their relationship and check each neighbouring comparison."
+    ],
+    "quiz": [
+      "Return to the step about rightward and leftward signed-value positions.",
+      "Check the requested direction of the sorted list before considering the options.",
+      "Locate both signed values, record their relationship and check each neighbouring comparison."
+    ],
+    "submit": [
+      "Check that your order integers and justify comparisons task and working are present.",
+      "Include the order integers and justify comparisons reflection and any written reasoning you produced.",
+      "Send your order integers and justify comparisons evidence for review; type a clear record if you used paper."
+    ],
+    "teach0": [
+      "Look at the two points relative to zero.",
+      "Locate the value farther right before choosing a symbol.",
+      "Use number-line position as the reason; keep distance from zero separate."
+    ],
+    "teach1": [
+      "Read the original statement in words.",
+      "Keep each number’s negative sign attached when swapping positions.",
+      "Write the reverse order and check that its relationship says the same thing."
+    ],
+    "teach2": [
+      "Look at the requested direction before arranging the set.",
+      "Choose the least or greatest remaining value one at a time.",
+      "Check each neighbouring pair against its number-line position."
+    ],
+    "teach3": [
+      "Identify the common scale and unit.",
+      "Write the signed comparison before using the context word.",
+      "Explain whether the rightward or leftward value matches the requested meaning."
+    ],
+    "write": [
+      "Copy the first order integers and justify comparisons task and label its quantities.",
+      "Begin “The given information is ____. I will use ____ because ____.”",
+      "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
+    ]
+  },
+  "subject": "Number",
+  "success_criteria": [
+    "I can explain the key number idea with an example.",
+    "I can use the taught representation or calculation method.",
+    "I can show a reason for my result.",
+    "I can check a result and interpret it accurately."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "Negative two lies farther right than negative five on the number line, so it is greater.",
+        "options": [
+          "−5 > −2",
+          "−2 > −5",
+          "−2 = −5",
+          "Every negative integer exceeds zero"
+        ],
+        "question": "Which statement is true?"
+      },
+      "example": "I DO:\n−2 > −5 because −2 lies to the right of −5.\n−5 < 1 because −5 is left of zero and 1 is right of zero.\n\nYOU TRY:\nCompare −4 and −1 on a number line.\n\nCHECK:\n−4 < −1. Negative one is nearer zero and farther right, so it is the greater signed value.",
+      "explain": "**Greater values lie farther right.**\nThis rule includes negative integers, zero and positive integers. On the line, negative two lies right of negative five, so negative two is greater. The numeral five being larger than two does not reverse their signed positions.\n\n**Compare across zero first.**\nA positive integer is greater than zero; zero is greater than a negative integer. If the two values lie on opposite sides, their positions already determine the comparison.\n\n**Compare two negatives carefully.**\nThe one closer to zero lies farther right and is greater. The one with a larger distance from zero lies farther left and is smaller. That statement concerns two negative values, not all possible numbers.\n\nLocate both points or sketch the relevant interval before recording a sign. Explain position as evidence.",
+      "icon": "🔎",
+      "notice": "A larger absolute value does not mean a larger signed value.",
+      "title": "Order by position, not digit size",
+      "visual": [
+        {
+          "alt": "A number line from -6 to 6, with equal one-unit intervals. -3 is highlighted. Values increase to the right.",
+          "caption": "Position and distance from zero answer different questions.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 450 165\"><rect width=\"450\" height=\"165\" fill=\"#f5faf7\"/><line x1=\"25\" y1=\"80\" x2=\"425\" y2=\"80\" stroke=\"#173c2c\" stroke-width=\"3\"/><line x1=\"25.0\" y1=\"73\" x2=\"25.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"25.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-6</text><line x1=\"58.333333333333336\" y1=\"73\" x2=\"58.333333333333336\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"58.333333333333336\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-5</text><line x1=\"91.66666666666667\" y1=\"73\" x2=\"91.66666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"91.66666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-4</text><line x1=\"125.0\" y1=\"73\" x2=\"125.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"125.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-3</text><line x1=\"158.33333333333334\" y1=\"73\" x2=\"158.33333333333334\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"158.33333333333334\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-2</text><line x1=\"191.66666666666669\" y1=\"73\" x2=\"191.66666666666669\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"191.66666666666669\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-1</text><line x1=\"225.0\" y1=\"73\" x2=\"225.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"225.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">0</text><line x1=\"258.33333333333337\" y1=\"73\" x2=\"258.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"258.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">1</text><line x1=\"291.6666666666667\" y1=\"73\" x2=\"291.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"291.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">2</text><line x1=\"325.0\" y1=\"73\" x2=\"325.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"325.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">3</text><line x1=\"358.33333333333337\" y1=\"73\" x2=\"358.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"358.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">4</text><line x1=\"391.6666666666667\" y1=\"73\" x2=\"391.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"391.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">5</text><line x1=\"425.0\" y1=\"73\" x2=\"425.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"425.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">6</text><circle cx=\"125.0\" cy=\"80\" r=\"7\" fill=\"#9d3a19\"/><text x=\"225\" y=\"35\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"22\" fill=\"#173c2c\">Highlighted position: -3</text><text x=\"225\" y=\"148\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"20\" fill=\"#173c2c\">Left: smaller. Right: greater.</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "Reversing the two unequal signed values reverses the comparison direction while preserving the relationship.",
+        "options": [
+          "−1 < −4",
+          "4 < 1",
+          "−4 = −1",
+          "−1 > −4"
+        ],
+        "question": "Which reversed statement agrees with −4 < −1?"
+      },
+      "example": "I DO:\n−4 < −1 reads negative four is less than negative one.\nReverse: −1 > −4.\n\nYOU TRY:\nRecord a comparison between zero and negative six in both writing orders.\n\nCHECK:\n0 > −6 and −6 < 0. The negative value remains negative when its writing position changes.",
+      "explain": "**Read the complete comparison aloud.**\nThe symbol < says is less than; > says is greater than; = says is equal to. Treat the statement as a relationship, not a picture to memorise independently of the values.\n\n**The sign’s open side faces the greater value.**\nDecide which signed value is greater first. Then check the symbol’s direction. Negative signs belong to the numbers and must not be dropped when reading the comparison.\n\n**Reversing unequal values reverses the symbol.**\nIf negative four is less than negative one, then negative one is greater than negative four. Both statements preserve the same relationship.\n\nDo not confuse the comparison sign with a minus sign. One records a relationship between two values; the other marks a negative value or an operation in a different context.",
+      "icon": "🔎",
+      "notice": "Read the signs together with the numbers. A comparison of unsigned digits answers a different question.",
+      "title": "Use signs that match a spoken relationship"
+    },
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "The signed values move from farthest left to farthest right: −5, −2, 0, 3.",
+        "options": [
+          "3, 0, −2, −5",
+          "−2, −5, 0, 3",
+          "−5, −2, 0, 3",
+          "0, −5, 3, −2"
+        ],
+        "question": "Which list is ascending?"
+      },
+      "example": "I DO:\nSet: 3, −5, 0, −2.\nAscending: −5, −2, 0, 3.\nChecks: −5 < −2, −2 < 0, 0 < 3.\n\nYOU TRY:\nWrite 2, −4, −1, 0 in descending order.\n\nCHECK:\n2, 0, −1, −4. Every next value lies farther left.",
+      "explain": "**Ascending order goes from least to greatest.**\nFor integers, begin at the farthest-left value and move right. Descending order moves the other way. A set can contain values on both sides of zero.\n\n**Choose one extreme at a time.**\nFor ascending order, find the least remaining value, record it and remove it from the remaining set. Repeat until all values are used. This avoids sorting only the negative and positive parts without connecting them.\n\n**Check neighbouring comparisons.**\nEvery value must be no greater than the next in an ascending list. One misplaced negative value can make the middle wrong even when the endpoints are correct.\n\nUse a quick line sketch to verify position. Do not put a negative value later just because its unsigned numeral is larger.",
+      "icon": "🔎",
+      "notice": "Sorting requires every value once and the requested direction.",
+      "title": "Sort a set and check every neighbour",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "I am working on order integers and justify comparisons. I need to know what the notation asks.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Greater values lie farther right.\nThis rule includes negative integers, zero and positive integers. On the line, negative two lies right of negative five, so negative two is greater. The numeral five being larger than two does not reverse their signed positions.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "−2 > −5 because −2 lies to the right of −5.\n−5 < 1 because −5 is left of zero and 1 is right of zero.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try a fresh example with this method. Check it against the representation before continuing.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Check the method for order integers and justify comparisons",
+            "transcript": "Pip: I am working on order integers and justify comparisons. I need to know what the notation asks.\nJuno: Greater values lie farther right.\nThis rule includes negative integers, zero and positive integers. On the line, negative two lies right of negative five, so negative two is greater. The numeral five being larger than two does not reverse their signed positions.\nPip: −2 > −5 because −2 lies to the right of −5.\n−5 < 1 because −5 is left of zero and 1 is right of zero.\nJuno: Pause and try a fresh example with this method. Check it against the representation before continuing."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "Negative two is the greater reading, so it is warmer on the same Celsius scale.",
+        "options": [
+          "−2 °C rather than −5 °C",
+          "−5 °C because five exceeds two",
+          "Both must mean the same temperature",
+          "Any negative reading is impossible"
+        ],
+        "question": "Which reading is warmer on the same Celsius scale?"
+      },
+      "example": "I DO:\n−2 °C > −5 °C. The −2 °C reading is warmer by three degrees on this scale.\nI distinguish that conclusion from distance below zero: −5 °C is farther below zero.\n\nYOU TRY:\nWhich is colder, −1 °C or −4 °C? Give a value reason.\n\nCHECK:\n−4 °C is colder because it is the lower reading on the same temperature scale.",
+      "explain": "**Value and size language need a reference.**\nIn temperatures, negative two degrees Celsius is warmer than negative five degrees Celsius because its value is greater on the same scale. The reading farther below zero is colder, not warmer.\n\n**Do not compare different units as though they are one scale.**\nA signed temperature and a signed height are different measurements. Integer order can compare their numerals abstractly, but a claim such as warmer requires temperature readings on the same scale.\n\n**State a numerical and contextual conclusion.**\nWrite the inequality, then explain what it means for the supplied context. A correct numerical sign without the interpretation may leave the actual question unanswered.\n\nCheck whether words such as higher, colder or below refer to value or distance. Use the stated unit and reference, rather than assuming every larger magnitude is a larger reading.",
+      "icon": "🔎",
+      "notice": "A contextual word must agree with the scale, not only with the size of the unsigned numeral.",
+      "title": "Interpret the comparison in context"
+    }
+  ],
+  "title": "Year 7: Order integers and justify comparisons",
+  "unit_number": 1,
+  "unit_title": "Integers and index laws",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: A complete order integers and justify comparisons response.\nUse a one-unit number line with zero as reference. Values: −6, 0, 4 and −2.\nAscending: −6, −2, 0, 4. Descending: 4, 0, −2, −6. −6 < −2 and 0 < 4. Of −6 °C and −2 °C, −2 °C is warmer because it is the greater reading.\n\nWHY THE METHOD WORKS\nPosition represents signed value; distance from zero answers a different question. For ordering, the farther-right value is greater. Check every neighbouring pair in a sorted list.\n\nCOMMON MISTAKE AND FIX\nCalling −6 greater than −2 because six exceeds two confuses distance with signed value. Locate the points and use the one farther right as the greater value.\n\nCHECK\nRebuild the requested representation and read the conclusion in the supplied context. Use only the methods taught in this lesson, not an operation rule borrowed from a different topic.",
+  "worked_visuals": [
+    {
+      "alt": "A number line from -6 to 6, with equal one-unit intervals. -3 is highlighted. Values increase to the right.",
+      "caption": "Position and distance from zero answer different questions.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 450 165\"><rect width=\"450\" height=\"165\" fill=\"#f5faf7\"/><line x1=\"25\" y1=\"80\" x2=\"425\" y2=\"80\" stroke=\"#173c2c\" stroke-width=\"3\"/><line x1=\"25.0\" y1=\"73\" x2=\"25.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"25.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-6</text><line x1=\"58.333333333333336\" y1=\"73\" x2=\"58.333333333333336\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"58.333333333333336\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-5</text><line x1=\"91.66666666666667\" y1=\"73\" x2=\"91.66666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"91.66666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-4</text><line x1=\"125.0\" y1=\"73\" x2=\"125.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"125.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-3</text><line x1=\"158.33333333333334\" y1=\"73\" x2=\"158.33333333333334\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"158.33333333333334\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-2</text><line x1=\"191.66666666666669\" y1=\"73\" x2=\"191.66666666666669\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"191.66666666666669\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-1</text><line x1=\"225.0\" y1=\"73\" x2=\"225.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"225.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">0</text><line x1=\"258.33333333333337\" y1=\"73\" x2=\"258.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"258.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">1</text><line x1=\"291.6666666666667\" y1=\"73\" x2=\"291.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"291.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">2</text><line x1=\"325.0\" y1=\"73\" x2=\"325.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"325.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">3</text><line x1=\"358.33333333333337\" y1=\"73\" x2=\"358.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"358.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">4</text><line x1=\"391.6666666666667\" y1=\"73\" x2=\"391.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"391.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">5</text><line x1=\"425.0\" y1=\"73\" x2=\"425.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"425.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">6</text><circle cx=\"125.0\" cy=\"80\" r=\"7\" fill=\"#9d3a19\"/><text x=\"225\" y=\"35\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"22\" fill=\"#173c2c\">Highlighted position: -3</text><text x=\"225\" y=\"148\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"20\" fill=\"#173c2c\">Left: smaller. Right: greater.</text></svg>"
+    }
+  ],
+  "year_level": "Year 7"
+}

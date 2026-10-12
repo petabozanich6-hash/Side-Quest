@@ -1,0 +1,333 @@
+{
+  "child_mission": "Investigate represent positive and negative integers. Use a representation, show each decision and check the result.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep the represent positive and negative integers task working, explanation, checking record, reflection and quiz result.",
+  "extension": "Choose a new pair of signed integers and explain two different questions about them, such as order and distance. State the question before the answer.",
+  "guided_practice": "WE DO: Work one supported example at a time.\n1. Mark zero and one-unit spacing. Locate −3 and 2 before checking: −3 is three left; 2 is two right.\n2. Find their distances and opposites. Feedback: distances 3 and 2; opposites 3 and −2.\n3. Explain the relevant sign, position or remaining contribution in your own words.\n4. Try a second example with −4 and 1 using the same method.\n5. Check after your attempt: distances 4 and 1; opposites 4 and −1.\n6. Describe one check that confirmed the answer or a change that repaired an error. A diagram or a clear written explanation is acceptable.",
+  "independent_task": "YOU DO: Represent positive and negative integers investigation (about 25–30 minutes).\n1. Place −6, 0, 4 and −2 on a labelled one-unit number line. Give each distance from zero and opposite, with separate labels. Model a point five metres below a stated zero marker.\n2. Show each requested representation or calculation clearly; keep negative signs attached to values.\n3. Write a reason for two decisions using the taught reference, position or signed-change model.\n4. Check one result with a second representation and explain the agreement.\n5. State one improvement or confirmed check in your reflection.\nWork on paper or in the big box. Type a working summary if using paper; upload is optional.\nSuccess checklist: correct signs; labelled scale where used; requested results; two explanations; independent check; honest evidence record.",
+  "learning_area": "Mathematics",
+  "learning_intention": "We are learning to explain and apply represent positive and negative integers.",
+  "lesson_number": 1,
+  "lesson_role": "Concept",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Copy the included examples and task prompts onto paper. Use the diagrams and models to complete the represent positive and negative integers working without a service, then type an evidence summary later.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches represent positive and negative integers from definitions to explanation and application. Original content follows the repository’s topic sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of complete syllabus coverage.\n\nParent: Look for explicit working and a check of signs, scale, notation or units as appropriate. A correct guess without a method is weaker evidence than an explained calculation. The lesson itself supplies the teaching and feedback. Your role is access support and reviewing the evidence.\n\nParent: Model task answers: Task values: −6, 0, 4, −2. Points are six left, zero, four right and two left of zero. Distances: 6, 0, 4, 2. Opposites: 6, 0, −4, 2. A position five metres below the chosen marker is −5 m.\n\nParent: Ten scored choices use the unchanged 90% threshold, requiring 9/10. The independent task and reflection supply written reasoning for manual review.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 2,
+      "explanation": "Zero belongs to the integers but is neither positive nor negative; it is the reference between the two directions.",
+      "options": [
+        "It is always positive",
+        "It is always negative",
+        "It is an integer that is neither positive nor negative",
+        "It is not a number"
+      ],
+      "question": "Which statement correctly describes zero?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "A negative position lies left of zero, and the magnitude three gives three one-unit intervals.",
+      "options": [
+        "Three intervals right",
+        "At the zero tick",
+        "Six intervals right",
+        "Three intervals left"
+      ],
+      "question": "On a one-unit number line, how is −3 located from zero?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Absolute value gives the non-negative distance from zero, which is five units for −5.",
+      "options": [
+        "A signed value smaller than −5",
+        "A distance of five units from zero",
+        "A rule that −5 is greater than 2",
+        "A fractional interval"
+      ],
+      "question": "What does |−5| describe?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The reference and unit explain what the signed value measures and how its position is interpreted.",
+      "options": [
+        "Only the number of letters",
+        "An invented reference",
+        "Its reference and unit",
+        "A statement that negative is impossible"
+      ],
+      "question": "What should accompany a signed measurement explanation?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Opposites are equally far from zero on different sides.",
+      "options": [
+        "-4",
+        "4",
+        "0",
+        "8"
+      ],
+      "question": "Which value is opposite to −4?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Absolute value gives the non-negative distance from zero.",
+      "options": [
+        "-6",
+        "0",
+        "6",
+        "12"
+      ],
+      "question": "What is |−6|?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Negative seven is a signed whole-number value; the other displayed values contain fractional parts.",
+      "options": [
+        "−7",
+        "1/2",
+        "2.5",
+        "0.25"
+      ],
+      "question": "Which is an integer?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "Reflecting five across zero gives negative five.",
+      "options": [
+        "5",
+        "0",
+        "10",
+        "-5"
+      ],
+      "question": "What is the opposite of 5?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "A position three metres below the stated reference has signed value negative three metres.",
+      "options": [
+        "3 m",
+        "−3 m",
+        "0 m",
+        "30 m"
+      ],
+      "question": "Which measurement means three metres below the chosen zero?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Four is four units from zero.",
+      "options": [
+        "-4",
+        "0",
+        "4",
+        "8"
+      ],
+      "question": "What is |4|?",
+      "type": "multiple_choice"
+    }
+  ],
+  "response_prompt": "Which representation or check changed your understanding of represent positive and negative integers, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s4-mat-y7-w01-l1",
+  "stage": "S4",
+  "stage_hints": {
+    "accept": [
+      "Read the mission about represent positive and negative integers.",
+      "You will practise represent positive and negative integers through models before making your own response.",
+      "Begin with the first explanation of represent positive and negative integers; the examples remain available while you work."
+    ],
+    "guided": [
+      "Begin the first supported example with signed positions around a stated zero.",
+      "Write a short label for value, distance and opposite as separate labels before calculating.",
+      "Place the signed point, then answer only the position, distance or reflection question requested. Compare with the feedback only after your attempt."
+    ],
+    "learn": [
+      "Look at how the complete model uses signed positions around a stated zero.",
+      "Track value, distance and opposite as separate labels rather than treating every number question alike.",
+      "Place the signed point, then answer only the position, distance or reflection question requested."
+    ],
+    "quiz": [
+      "Return to the step about signed positions around a stated zero.",
+      "Check value, distance and opposite as separate labels before considering the options.",
+      "Place the signed point, then answer only the position, distance or reflection question requested."
+    ],
+    "submit": [
+      "Check that your represent positive and negative integers task and working are present.",
+      "Include the represent positive and negative integers reflection and any written reasoning you produced.",
+      "Send your represent positive and negative integers evidence for review; type a clear record if you used paper."
+    ],
+    "teach0": [
+      "Look back at the reference used to interpret the sign.",
+      "Decide whether the position is above, at or below the chosen zero.",
+      "State the reference, direction and number of units before writing a signed value."
+    ],
+    "teach1": [
+      "Look at the line’s unit intervals and zero label.",
+      "Count movements from the reference rather than counting the starting tick.",
+      "Use the sign for direction and the numeral for the number of equal units."
+    ],
+    "teach2": [
+      "Find the signed point before thinking about distance.",
+      "Separate the labels value, distance and opposite.",
+      "Count to zero for distance; reflect across zero for the opposite."
+    ],
+    "teach3": [
+      "Reread the reference named in the scenario.",
+      "Identify the direction and measurement unit separately.",
+      "Write a signed value, then explain its position relative to that same reference."
+    ],
+    "write": [
+      "Copy the first represent positive and negative integers task and label its quantities.",
+      "Begin “The given information is ____. I will use ____ because ____.”",
+      "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
+    ]
+  },
+  "subject": "Number",
+  "success_criteria": [
+    "I can explain the key number idea with an example.",
+    "I can use the taught representation or calculation method.",
+    "I can show a reason for my result.",
+    "I can check a result and interpret it accurately."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "Zero belongs to the integers but is neither positive nor negative; it is the reference between the two directions.",
+        "options": [
+          "It is always positive",
+          "It is always negative",
+          "It is an integer that is neither positive nor negative",
+          "It is not a number"
+        ],
+        "question": "Which statement correctly describes zero?"
+      },
+      "example": "I DO:\nI use ground level as zero. A position two levels below it is −2; three levels above it is +3, usually written 3. A ground-level position is 0.\nTemperature example: −4 °C is four degrees below zero, not a count of negative objects.\n\nYOU TRY:\nWith sea level defined as zero, describe a point five metres below it.\n\nCHECK:\nThe signed height is −5 m. State the reference because a different zero would change the description.",
+      "explain": "**An integer is a whole-number value with a sign when needed.**\nThe integers include negative whole numbers, zero and positive whole numbers: for example, negative three, zero and four. Fractions such as one half are not integers. The word whole in this explanation concerns the size of the unit, not a rule that the sign must be positive.\n\n**Zero is a reference point.**\nA signed value describes a position relative to zero. On a temperature scale, a negative reading is below zero degrees Celsius. In a floor model, negative levels can be below the ground reference. Choose and state the reference before interpreting the sign.\n\n**Positive and negative are directions from the reference.**\nA plus sign can be written for a positive value, but it is often omitted. A minus sign attached to a numeral marks a negative value. Zero is neither positive nor negative.\n\nDo not assume that negative means physically impossible or that it always means bad. Its meaning depends on the chosen reference and context.",
+      "icon": "🔎",
+      "notice": "A negative position is not a fractional unit. Separate the sign from the kind of number.",
+      "title": "Define integers and the reference zero",
+      "visual": [
+        {
+          "alt": "A number line from -6 to 6, with equal one-unit intervals. -3 is highlighted. Values increase to the right.",
+          "caption": "Position and distance from zero answer different questions.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 450 165\"><rect width=\"450\" height=\"165\" fill=\"#f5faf7\"/><line x1=\"25\" y1=\"80\" x2=\"425\" y2=\"80\" stroke=\"#173c2c\" stroke-width=\"3\"/><line x1=\"25.0\" y1=\"73\" x2=\"25.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"25.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-6</text><line x1=\"58.333333333333336\" y1=\"73\" x2=\"58.333333333333336\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"58.333333333333336\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-5</text><line x1=\"91.66666666666667\" y1=\"73\" x2=\"91.66666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"91.66666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-4</text><line x1=\"125.0\" y1=\"73\" x2=\"125.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"125.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-3</text><line x1=\"158.33333333333334\" y1=\"73\" x2=\"158.33333333333334\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"158.33333333333334\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-2</text><line x1=\"191.66666666666669\" y1=\"73\" x2=\"191.66666666666669\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"191.66666666666669\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-1</text><line x1=\"225.0\" y1=\"73\" x2=\"225.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"225.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">0</text><line x1=\"258.33333333333337\" y1=\"73\" x2=\"258.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"258.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">1</text><line x1=\"291.6666666666667\" y1=\"73\" x2=\"291.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"291.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">2</text><line x1=\"325.0\" y1=\"73\" x2=\"325.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"325.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">3</text><line x1=\"358.33333333333337\" y1=\"73\" x2=\"358.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"358.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">4</text><line x1=\"391.6666666666667\" y1=\"73\" x2=\"391.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"391.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">5</text><line x1=\"425.0\" y1=\"73\" x2=\"425.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"425.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">6</text><circle cx=\"125.0\" cy=\"80\" r=\"7\" fill=\"#9d3a19\"/><text x=\"225\" y=\"35\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"22\" fill=\"#173c2c\">Highlighted position: -3</text><text x=\"225\" y=\"148\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"20\" fill=\"#173c2c\">Left: smaller. Right: greater.</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "A negative position lies left of zero, and the magnitude three gives three one-unit intervals.",
+        "options": [
+          "Three intervals right",
+          "At the zero tick",
+          "Six intervals right",
+          "Three intervals left"
+        ],
+        "question": "On a one-unit number line, how is −3 located from zero?"
+      },
+      "example": "I DO:\nStart at 0. One interval left reaches −1; a second reaches −2; a third reaches −3.\nTo place 4, start again at 0 and move four intervals right.\n\nYOU TRY:\nPlace −2 on a line with one-unit intervals and explain the direction.\n\nCHECK:\nIt is two intervals left of zero. Counting the starting tick as the first unit would place it incorrectly.",
+      "explain": "**Equal spacing represents equal differences.**\nOn this line, each interval is one unit. Zero separates positive positions on the right from negative positions on the left. Read the labels and scale before placing a point.\n\n**Position gives the value.**\nTo place negative three, start at zero and count three equal intervals left. To place positive three, count three intervals right. Both are equally far from zero, but they have different values because they are on different sides.\n\n**Do not count a starting tick as a movement.**\nStarting at zero, the first interval left ends at negative one. Count intervals travelled, not the number of tick marks you see including the start.\n\nIf a line uses steps of two or five, the same number of intervals represents a different distance. The scale must match the values you assign.",
+      "icon": "🔎",
+      "notice": "Read the scale first. A drawing without labelled units is not enough to determine a value.",
+      "title": "Place signed values on a number line"
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "Absolute value gives the non-negative distance from zero, which is five units for −5.",
+        "options": [
+          "A signed value smaller than −5",
+          "A distance of five units from zero",
+          "A rule that −5 is greater than 2",
+          "A fractional interval"
+        ],
+        "question": "What does |−5| describe?"
+      },
+      "example": "I DO:\nValue: −5. Distance from zero: |−5| = 5. Opposite: 5.\nFor 2, the distance is 2 and the opposite is −2.\n\nYOU TRY:\nFind the distance and opposite for −4. Give the two answers separate labels.\n\nCHECK:\nDistance: 4. Opposite: 4. These happen to have the same numeral in this example, but they are answers to different questions. For positive four, distance stays four while its opposite is negative four.",
+      "explain": "**Absolute value measures distance from zero.**\nDistance is non-negative. The notation |−3| means the distance of negative three from zero, which is three. Similarly, |3| is three. The bars here are absolute-value notation, not brackets telling you to change every sign in an expression.\n\n**Opposites have equal distance and opposite sides.**\nThree and negative three are opposites. Their number-line points mirror each other across zero. Zero is its own opposite.\n\n**Distance does not decide ordinary order.**\nNegative five is farther from zero than negative two, but it lies farther left and is a smaller value. Ask whether the task concerns signed value, distance or an opposite before answering.\n\nUse the number line when the notation is unfamiliar. First identify the point, then count its distance to zero.",
+      "icon": "🔎",
+      "notice": "Absolute value is distance. It does not mean that negative values are larger in ordinary order.",
+      "title": "Separate value from distance",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "I am working on represent positive and negative integers. I need to know what the notation asks.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "An integer is a whole-number value with a sign when needed.\nThe integers include negative whole numbers, zero and positive whole numbers: for example, negative three, zero and four. Fractions such as one half are not integers. The word whole in this explanation concerns the size of the unit, not a rule that the sign must be positive.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "I use ground level as zero. A position two levels below it is −2; three levels above it is +3, usually written 3. A ground-level position is 0.\nTemperature example: −4 °C is four degrees below zero, not a count of negative objects.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try a fresh example with this method. Check it against the representation before continuing.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Check the method for represent positive and negative integers",
+            "transcript": "Pip: I am working on represent positive and negative integers. I need to know what the notation asks.\nJuno: An integer is a whole-number value with a sign when needed.\nThe integers include negative whole numbers, zero and positive whole numbers: for example, negative three, zero and four. Fractions such as one half are not integers. The word whole in this explanation concerns the size of the unit, not a rule that the sign must be positive.\nPip: I use ground level as zero. A position two levels below it is −2; three levels above it is +3, usually written 3. A ground-level position is 0.\nTemperature example: −4 °C is four degrees below zero, not a count of negative objects.\nJuno: Pause and try a fresh example with this method. Check it against the representation before continuing."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "The reference and unit explain what the signed value measures and how its position is interpreted.",
+        "options": [
+          "Only the number of letters",
+          "An invented reference",
+          "Its reference and unit",
+          "A statement that negative is impossible"
+        ],
+        "question": "What should accompany a signed measurement explanation?"
+      },
+      "example": "I DO:\nA marker is the zero on a depth display. A reading −3 m means three metres below that marker. I do not claim it is below sea level unless that is the actual reference.\n\nYOU TRY:\nA platform is two metres above a marked zero. Write the value and explain it.\n\nCHECK:\n+2 m, or 2 m, is two metres above the stated marker. Both positive notations preserve the meaning.",
+      "explain": "**A signed model needs a consistent zero.**\nIf a water-level chart uses a marked line as zero, below that mark is negative and above it is positive. Keep that reference for every reading in the same comparison.\n\n**Write units with the value.**\nA signed height in metres and a temperature in degrees Celsius describe different measurements. The same integer can appear in both, but the unit and reference supply the interpretation.\n\n**Check the words against the sign.**\n“Below” and “above” often suggest directions, but only after you know the reference. A statement five metres below a roof is not automatically five metres below sea level.\n\nExplain your model in one sentence: reference, position and unit. This makes a signed answer meaningful and checkable.",
+      "icon": "🔎",
+      "notice": "Keep the same reference throughout. A minus sign alone cannot tell the entire context.",
+      "title": "Translate a context without changing its reference"
+    }
+  ],
+  "title": "Year 7: Represent positive and negative integers",
+  "unit_number": 1,
+  "unit_title": "Integers and index laws",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: A complete represent positive and negative integers response.\nUse a one-unit number line with zero as reference. Values: −6, 0, 4 and −2.\nTask values: −6, 0, 4, −2. Points are six left, zero, four right and two left of zero. Distances: 6, 0, 4, 2. Opposites: 6, 0, −4, 2. A position five metres below the chosen marker is −5 m.\n\nWHY THE METHOD WORKS\nPosition represents signed value; distance from zero answers a different question. The opposite is a reflected value, while absolute value is a distance. State which one the task asks for.\n\nCOMMON MISTAKE AND FIX\nDeleting a negative sign changes the value. Keep it attached and interpret it using the stated zero before continuing.\n\nCHECK\nRebuild the requested representation and read the conclusion in the supplied context. Use only the methods taught in this lesson, not an operation rule borrowed from a different topic.",
+  "worked_visuals": [
+    {
+      "alt": "A number line from -6 to 6, with equal one-unit intervals. -3 is highlighted. Values increase to the right.",
+      "caption": "Position and distance from zero answer different questions.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 450 165\"><rect width=\"450\" height=\"165\" fill=\"#f5faf7\"/><line x1=\"25\" y1=\"80\" x2=\"425\" y2=\"80\" stroke=\"#173c2c\" stroke-width=\"3\"/><line x1=\"25.0\" y1=\"73\" x2=\"25.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"25.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-6</text><line x1=\"58.333333333333336\" y1=\"73\" x2=\"58.333333333333336\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"58.333333333333336\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-5</text><line x1=\"91.66666666666667\" y1=\"73\" x2=\"91.66666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"91.66666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-4</text><line x1=\"125.0\" y1=\"73\" x2=\"125.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"125.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-3</text><line x1=\"158.33333333333334\" y1=\"73\" x2=\"158.33333333333334\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"158.33333333333334\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-2</text><line x1=\"191.66666666666669\" y1=\"73\" x2=\"191.66666666666669\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"191.66666666666669\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-1</text><line x1=\"225.0\" y1=\"73\" x2=\"225.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"225.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">0</text><line x1=\"258.33333333333337\" y1=\"73\" x2=\"258.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"258.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">1</text><line x1=\"291.6666666666667\" y1=\"73\" x2=\"291.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"291.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">2</text><line x1=\"325.0\" y1=\"73\" x2=\"325.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"325.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">3</text><line x1=\"358.33333333333337\" y1=\"73\" x2=\"358.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"358.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">4</text><line x1=\"391.6666666666667\" y1=\"73\" x2=\"391.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"391.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">5</text><line x1=\"425.0\" y1=\"73\" x2=\"425.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"425.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">6</text><circle cx=\"125.0\" cy=\"80\" r=\"7\" fill=\"#9d3a19\"/><text x=\"225\" y=\"35\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"22\" fill=\"#173c2c\">Highlighted position: -3</text><text x=\"225\" y=\"148\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"20\" fill=\"#173c2c\">Left: smaller. Right: greater.</text></svg>"
+    }
+  ],
+  "year_level": "Year 7"
+}

@@ -1,0 +1,356 @@
+{
+  "child_mission": "Investigate integer fluency with checks. Use a representation, show each decision and check the result.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep the integer fluency with checks task working, explanation, checking record, reflection and quiz result.",
+  "extension": "Choose a new pair of signed integers and explain two different questions about them, such as order and distance. State the question before the answer.",
+  "guided_practice": "WE DO: Work one supported example at a time.\n1. Mark zero and one-unit spacing. Locate −3 and 2 before checking: −3 is three left; 2 is two right.\n2. Add −3 and 2 using movement or cancellation. Feedback: −3 + 2 = −1.\n3. Explain the relevant sign, position or remaining contribution in your own words.\n4. Try a second example with −4 and 1 using the same method.\n5. Check after your attempt: −4 + 1 = −3.\n6. Describe one check that confirmed the answer or a change that repaired an error. A diagram or a clear written explanation is acceptable.",
+  "independent_task": "YOU DO: Integer fluency with checks investigation (about 25–30 minutes).\n1. Give the distances of −6, 0, 4 and −2, then order their signed values. Calculate −6 + 4 and −2 + (−6). Explain why distance and signed order can produce different comparisons.\n2. Show each requested representation or calculation clearly; keep negative signs attached to values.\n3. Write a reason for two decisions using the taught reference, position or signed-change model.\n4. Check one result with a second representation and explain the agreement.\n5. State one improvement or confirmed check in your reflection.\nWork on paper or in the big box. Type a working summary if using paper; upload is optional.\nSuccess checklist: correct signs; labelled scale where used; requested results; two explanations; independent check; honest evidence record.",
+  "learning_area": "Mathematics",
+  "learning_intention": "We are learning to explain and apply integer fluency with checks.",
+  "lesson_number": 4,
+  "lesson_role": "Fluency and review",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Copy the included examples and task prompts onto paper. Use the diagrams and models to complete the integer fluency with checks working without a service, then type an evidence summary later.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches integer fluency with checks from definitions to explanation and application. Original content follows the repository’s topic sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of complete syllabus coverage.\n\nParent: Look for explicit working and a check of signs, scale, notation or units as appropriate. A correct guess without a method is weaker evidence than an explained calculation. The lesson itself supplies the teaching and feedback. Your role is access support and reviewing the evidence.\n\nParent: Model task answers: Distances: 6, 0, 4, 2. Ascending: −6, −2, 0, 4. Sums: −6 + 4 = −2 and −2 + (−6) = −8. The larger distance of −6 does not make it greater than −2.\n\nParent: Ten scored choices use the unchanged 90% threshold, requiring 9/10. The independent task and reflection supply written reasoning for manual review.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 2,
+      "explanation": "Zero belongs to the integers but is neither positive nor negative; it is the reference between the two directions.",
+      "options": [
+        "It is always positive",
+        "It is always negative",
+        "It is an integer that is neither positive nor negative",
+        "It is not a number"
+      ],
+      "question": "Which statement correctly describes zero?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Absolute value gives the non-negative distance from zero, which is five units for −5.",
+      "options": [
+        "A signed value smaller than −5",
+        "A distance of five units from zero",
+        "A rule that −5 is greater than 2",
+        "A fractional interval"
+      ],
+      "question": "What does |−5| describe?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Negative two lies farther right than negative five on the number line, so it is greater.",
+      "options": [
+        "−5 > −2",
+        "−2 > −5",
+        "−2 = −5",
+        "Every negative integer exceeds zero"
+      ],
+      "question": "Which statement is true?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Adding positive five moves five units right from negative three to two.",
+      "options": [
+        "-8",
+        "2",
+        "-2",
+        "8"
+      ],
+      "question": "What is −3 + 5?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Three opposite pairs cancel, leaving four negative units.",
+      "options": [
+        "-4",
+        "4",
+        "-10",
+        "10"
+      ],
+      "question": "What is −7 + 3?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Opposites are equally far from zero on different sides.",
+      "options": [
+        "-4",
+        "4",
+        "0",
+        "8"
+      ],
+      "question": "Which value is opposite to −4?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Absolute value gives the non-negative distance from zero.",
+      "options": [
+        "-6",
+        "0",
+        "6",
+        "12"
+      ],
+      "question": "What is |−6|?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Negative one lies farther right than negative four.",
+      "options": [
+        "−1 > −4",
+        "−4 > −1",
+        "0 < −4",
+        "−1 = −4"
+      ],
+      "question": "Which comparison is true?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "Adding positive three moves right from negative two to one.",
+      "options": [
+        "-5",
+        "5",
+        "-1",
+        "1"
+      ],
+      "question": "What is −2 + 3?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Both addends point left, giving five negative units.",
+      "options": [
+        "5",
+        "-5",
+        "1",
+        "-1"
+      ],
+      "question": "What is −3 + (−2)?",
+      "type": "multiple_choice"
+    }
+  ],
+  "response_prompt": "Which representation or check changed your understanding of integer fluency with checks, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s4-mat-y7-w01-l4",
+  "stage": "S4",
+  "stage_hints": {
+    "accept": [
+      "Read the mission about integer fluency with checks.",
+      "You will practise integer fluency with checks through models before making your own response.",
+      "Begin with the first explanation of integer fluency with checks; the examples remain available while you work."
+    ],
+    "guided": [
+      "Begin the first supported example with separate position, distance, order and change questions.",
+      "Write a short label for the different roles of signed value and distance before calculating.",
+      "Choose the requested representation first, then check it without silently switching the question. Compare with the feedback only after your attempt."
+    ],
+    "learn": [
+      "Look at how the complete model uses separate position, distance, order and change questions.",
+      "Track the different roles of signed value and distance rather than treating every number question alike.",
+      "Choose the requested representation first, then check it without silently switching the question."
+    ],
+    "quiz": [
+      "Return to the step about separate position, distance, order and change questions.",
+      "Check the different roles of signed value and distance before considering the options.",
+      "Choose the requested representation first, then check it without silently switching the question."
+    ],
+    "submit": [
+      "Check that your integer fluency with checks task and working are present.",
+      "Include the integer fluency with checks reflection and any written reasoning you produced.",
+      "Send your integer fluency with checks evidence for review; type a clear record if you used paper."
+    ],
+    "teach0": [
+      "Look back at the reference used to interpret the sign.",
+      "Decide whether the position is above, at or below the chosen zero.",
+      "State the reference, direction and number of units before writing a signed value."
+    ],
+    "teach1": [
+      "Find the signed point before thinking about distance.",
+      "Separate the labels value, distance and opposite.",
+      "Count to zero for distance; reflect across zero for the opposite."
+    ],
+    "teach2": [
+      "Look at the two points relative to zero.",
+      "Locate the value farther right before choosing a symbol.",
+      "Use number-line position as the reason; keep distance from zero separate."
+    ],
+    "teach3": [
+      "Find the starting point and added change separately.",
+      "Use the added sign to decide the movement direction.",
+      "Count equal intervals from the start and record the landing value."
+    ],
+    "teach4": [
+      "Compare the opposite-direction contributions.",
+      "Pair equal positive and negative units until one direction remains.",
+      "Use the unpaired direction for the sign and its distance for the size."
+    ],
+    "write": [
+      "Copy the first integer fluency with checks task and label its quantities.",
+      "Begin “The given information is ____. I will use ____ because ____.”",
+      "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
+    ]
+  },
+  "subject": "Number",
+  "success_criteria": [
+    "I can explain the key number idea with an example.",
+    "I can use the taught representation or calculation method.",
+    "I can show a reason for my result.",
+    "I can check a result and interpret it accurately."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "Zero belongs to the integers but is neither positive nor negative; it is the reference between the two directions.",
+        "options": [
+          "It is always positive",
+          "It is always negative",
+          "It is an integer that is neither positive nor negative",
+          "It is not a number"
+        ],
+        "question": "Which statement correctly describes zero?"
+      },
+      "example": "I DO:\nI use ground level as zero. A position two levels below it is −2; three levels above it is +3, usually written 3. A ground-level position is 0.\nTemperature example: −4 °C is four degrees below zero, not a count of negative objects.\n\nYOU TRY:\nWith sea level defined as zero, describe a point five metres below it.\n\nCHECK:\nThe signed height is −5 m. State the reference because a different zero would change the description.",
+      "explain": "**An integer is a whole-number value with a sign when needed.**\nThe integers include negative whole numbers, zero and positive whole numbers: for example, negative three, zero and four. Fractions such as one half are not integers. The word whole in this explanation concerns the size of the unit, not a rule that the sign must be positive.\n\n**Zero is a reference point.**\nA signed value describes a position relative to zero. On a temperature scale, a negative reading is below zero degrees Celsius. In a floor model, negative levels can be below the ground reference. Choose and state the reference before interpreting the sign.\n\n**Positive and negative are directions from the reference.**\nA plus sign can be written for a positive value, but it is often omitted. A minus sign attached to a numeral marks a negative value. Zero is neither positive nor negative.\n\nDo not assume that negative means physically impossible or that it always means bad. Its meaning depends on the chosen reference and context.",
+      "icon": "🔎",
+      "notice": "A negative position is not a fractional unit. Separate the sign from the kind of number.",
+      "title": "Define integers and the reference zero",
+      "visual": [
+        {
+          "alt": "A number line from -6 to 6, with equal one-unit intervals. -3 is highlighted. Values increase to the right.",
+          "caption": "Position and distance from zero answer different questions.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 450 165\"><rect width=\"450\" height=\"165\" fill=\"#f5faf7\"/><line x1=\"25\" y1=\"80\" x2=\"425\" y2=\"80\" stroke=\"#173c2c\" stroke-width=\"3\"/><line x1=\"25.0\" y1=\"73\" x2=\"25.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"25.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-6</text><line x1=\"58.333333333333336\" y1=\"73\" x2=\"58.333333333333336\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"58.333333333333336\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-5</text><line x1=\"91.66666666666667\" y1=\"73\" x2=\"91.66666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"91.66666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-4</text><line x1=\"125.0\" y1=\"73\" x2=\"125.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"125.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-3</text><line x1=\"158.33333333333334\" y1=\"73\" x2=\"158.33333333333334\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"158.33333333333334\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-2</text><line x1=\"191.66666666666669\" y1=\"73\" x2=\"191.66666666666669\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"191.66666666666669\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-1</text><line x1=\"225.0\" y1=\"73\" x2=\"225.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"225.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">0</text><line x1=\"258.33333333333337\" y1=\"73\" x2=\"258.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"258.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">1</text><line x1=\"291.6666666666667\" y1=\"73\" x2=\"291.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"291.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">2</text><line x1=\"325.0\" y1=\"73\" x2=\"325.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"325.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">3</text><line x1=\"358.33333333333337\" y1=\"73\" x2=\"358.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"358.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">4</text><line x1=\"391.6666666666667\" y1=\"73\" x2=\"391.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"391.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">5</text><line x1=\"425.0\" y1=\"73\" x2=\"425.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"425.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">6</text><circle cx=\"125.0\" cy=\"80\" r=\"7\" fill=\"#9d3a19\"/><text x=\"225\" y=\"35\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"22\" fill=\"#173c2c\">Highlighted position: -3</text><text x=\"225\" y=\"148\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"20\" fill=\"#173c2c\">Left: smaller. Right: greater.</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "Absolute value gives the non-negative distance from zero, which is five units for −5.",
+        "options": [
+          "A signed value smaller than −5",
+          "A distance of five units from zero",
+          "A rule that −5 is greater than 2",
+          "A fractional interval"
+        ],
+        "question": "What does |−5| describe?"
+      },
+      "example": "I DO:\nValue: −5. Distance from zero: |−5| = 5. Opposite: 5.\nFor 2, the distance is 2 and the opposite is −2.\n\nYOU TRY:\nFind the distance and opposite for −4. Give the two answers separate labels.\n\nCHECK:\nDistance: 4. Opposite: 4. These happen to have the same numeral in this example, but they are answers to different questions. For positive four, distance stays four while its opposite is negative four.",
+      "explain": "**Absolute value measures distance from zero.**\nDistance is non-negative. The notation |−3| means the distance of negative three from zero, which is three. Similarly, |3| is three. The bars here are absolute-value notation, not brackets telling you to change every sign in an expression.\n\n**Opposites have equal distance and opposite sides.**\nThree and negative three are opposites. Their number-line points mirror each other across zero. Zero is its own opposite.\n\n**Distance does not decide ordinary order.**\nNegative five is farther from zero than negative two, but it lies farther left and is a smaller value. Ask whether the task concerns signed value, distance or an opposite before answering.\n\nUse the number line when the notation is unfamiliar. First identify the point, then count its distance to zero.",
+      "icon": "🔎",
+      "notice": "Absolute value is distance. It does not mean that negative values are larger in ordinary order.",
+      "title": "Separate value from distance"
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "Negative two lies farther right than negative five on the number line, so it is greater.",
+        "options": [
+          "−5 > −2",
+          "−2 > −5",
+          "−2 = −5",
+          "Every negative integer exceeds zero"
+        ],
+        "question": "Which statement is true?"
+      },
+      "example": "I DO:\n−2 > −5 because −2 lies to the right of −5.\n−5 < 1 because −5 is left of zero and 1 is right of zero.\n\nYOU TRY:\nCompare −4 and −1 on a number line.\n\nCHECK:\n−4 < −1. Negative one is nearer zero and farther right, so it is the greater signed value.",
+      "explain": "**Greater values lie farther right.**\nThis rule includes negative integers, zero and positive integers. On the line, negative two lies right of negative five, so negative two is greater. The numeral five being larger than two does not reverse their signed positions.\n\n**Compare across zero first.**\nA positive integer is greater than zero; zero is greater than a negative integer. If the two values lie on opposite sides, their positions already determine the comparison.\n\n**Compare two negatives carefully.**\nThe one closer to zero lies farther right and is greater. The one with a larger distance from zero lies farther left and is smaller. That statement concerns two negative values, not all possible numbers.\n\nLocate both points or sketch the relevant interval before recording a sign. Explain position as evidence.",
+      "icon": "🔎",
+      "notice": "A larger absolute value does not mean a larger signed value.",
+      "title": "Order by position, not digit size",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "I am working on integer fluency with checks. I need to know what the notation asks.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "An integer is a whole-number value with a sign when needed.\nThe integers include negative whole numbers, zero and positive whole numbers: for example, negative three, zero and four. Fractions such as one half are not integers. The word whole in this explanation concerns the size of the unit, not a rule that the sign must be positive.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "I use ground level as zero. A position two levels below it is −2; three levels above it is +3, usually written 3. A ground-level position is 0.\nTemperature example: −4 °C is four degrees below zero, not a count of negative objects.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try a fresh example with this method. Check it against the representation before continuing.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Check the method for integer fluency with checks",
+            "transcript": "Pip: I am working on integer fluency with checks. I need to know what the notation asks.\nJuno: An integer is a whole-number value with a sign when needed.\nThe integers include negative whole numbers, zero and positive whole numbers: for example, negative three, zero and four. Fractions such as one half are not integers. The word whole in this explanation concerns the size of the unit, not a rule that the sign must be positive.\nPip: I use ground level as zero. A position two levels below it is −2; three levels above it is +3, usually written 3. A ground-level position is 0.\nTemperature example: −4 °C is four degrees below zero, not a count of negative objects.\nJuno: Pause and try a fresh example with this method. Check it against the representation before continuing."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "Adding positive five moves five units right from negative three to two.",
+        "options": [
+          "-8",
+          "2",
+          "-2",
+          "8"
+        ],
+        "question": "What is −3 + 5?"
+      },
+      "example": "I DO:\n−3 + 5 = 2. Start at −3 and move five units right.\n2 + (−4) = −2. Start at 2 and move four units left.\n\nYOU TRY:\nStart at −2 and add 3. Count the movements.\n\nCHECK:\n−2 + 3 = 1. You pass through −1, 0 and 1.",
+      "explain": "**The starting value and added change have different jobs.**\nIn negative three plus five, negative three is the start and positive five is the change. Begin at the starting point, then apply the added value. Do not always begin at zero.\n\n**An added positive value moves right.**\nAn added negative value moves left. The numeral gives the distance. This movement model explains addition; it is not yet a rule for subtracting negatives.\n\n**Count equal intervals.**\nFrom negative three, five steps right pass through negative two, negative one, zero, one and two. Count movements rather than including the starting tick as an extra step.\n\nRecord the equation and movement in words so the result can be checked. A negative starting value can lead to a positive result when the rightward change is large enough.",
+      "icon": "🔎",
+      "notice": "Use the added value for direction. The starting sign does not decide every movement.",
+      "title": "Treat addition as a signed change"
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "Three opposite pairs cancel, leaving four negative units.",
+        "options": [
+          "-4",
+          "4",
+          "-10",
+          "10"
+        ],
+        "question": "What is −7 + 3?"
+      },
+      "example": "I DO:\n−7 + 3 = −4: three positive units cancel three of the seven negative units.\n−3 + 7 = 4: three negative units cancel three positive units.\n\nYOU TRY:\nFind −6 + 4 using cancellation or a line movement.\n\nCHECK:\n−2. Four opposite pairs cancel and two negative units remain.",
+      "explain": "**Opposite contributions can cancel in pairs.**\nOne positive unit and one negative unit sum to zero. Pair as many opposite units as possible; the unpaired contribution determines the result.\n\n**Compare distances when signs differ.**\nFor negative seven plus three, three pairs cancel and four negative units remain. The result is negative four. For negative three plus seven, four positive units remain instead.\n\n**Equal opposite values give zero.**\nNegative five plus five equals zero. Zero is a valid result, not a missing answer. This also provides a useful check for opposites.\n\nSay which contribution remains before writing the sign. Subtracting the distances without explaining the remaining direction can produce the correct size with the wrong sign.",
+      "icon": "🔎",
+      "notice": "The remaining direction gives the sign. Merely taking the difference of magnitudes is incomplete.",
+      "title": "Balance opposite-direction changes"
+    }
+  ],
+  "title": "Year 7: Integer fluency with checks",
+  "unit_number": 1,
+  "unit_title": "Integers and index laws",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: A complete integer fluency with checks response.\nUse a one-unit number line with zero as reference. Values: −6, 0, 4 and −2.\nDistances: 6, 0, 4, 2. Ascending: −6, −2, 0, 4. Sums: −6 + 4 = −2 and −2 + (−6) = −8. The larger distance of −6 does not make it greater than −2.\n\nWHY THE METHOD WORKS\nPosition represents signed value; distance from zero answers a different question. For addition, the first value is the starting position and the second is a signed change. Keep these roles separate whenever they occur in the task.\n\nCOMMON MISTAKE AND FIX\nCalling −6 greater than −2 because six exceeds two confuses distance with signed value. Locate the points and use the one farther right as the greater value.\n\nCHECK\nRebuild the requested representation and read the conclusion in the supplied context. Use only the methods taught in this lesson, not an operation rule borrowed from a different topic.",
+  "worked_visuals": [
+    {
+      "alt": "A number line from -6 to 6, with equal one-unit intervals. -3 is highlighted. Values increase to the right.",
+      "caption": "Position and distance from zero answer different questions.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 450 165\"><rect width=\"450\" height=\"165\" fill=\"#f5faf7\"/><line x1=\"25\" y1=\"80\" x2=\"425\" y2=\"80\" stroke=\"#173c2c\" stroke-width=\"3\"/><line x1=\"25.0\" y1=\"73\" x2=\"25.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"25.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-6</text><line x1=\"58.333333333333336\" y1=\"73\" x2=\"58.333333333333336\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"58.333333333333336\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-5</text><line x1=\"91.66666666666667\" y1=\"73\" x2=\"91.66666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"91.66666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-4</text><line x1=\"125.0\" y1=\"73\" x2=\"125.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"125.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-3</text><line x1=\"158.33333333333334\" y1=\"73\" x2=\"158.33333333333334\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"158.33333333333334\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-2</text><line x1=\"191.66666666666669\" y1=\"73\" x2=\"191.66666666666669\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"191.66666666666669\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">-1</text><line x1=\"225.0\" y1=\"73\" x2=\"225.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"225.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">0</text><line x1=\"258.33333333333337\" y1=\"73\" x2=\"258.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"258.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">1</text><line x1=\"291.6666666666667\" y1=\"73\" x2=\"291.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"291.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">2</text><line x1=\"325.0\" y1=\"73\" x2=\"325.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"325.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">3</text><line x1=\"358.33333333333337\" y1=\"73\" x2=\"358.33333333333337\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"358.33333333333337\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">4</text><line x1=\"391.6666666666667\" y1=\"73\" x2=\"391.6666666666667\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"391.6666666666667\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">5</text><line x1=\"425.0\" y1=\"73\" x2=\"425.0\" y2=\"87\" stroke=\"#173c2c\"/><text x=\"425.0\" y=\"115\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"19\" fill=\"#173c2c\">6</text><circle cx=\"125.0\" cy=\"80\" r=\"7\" fill=\"#9d3a19\"/><text x=\"225\" y=\"35\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"22\" fill=\"#173c2c\">Highlighted position: -3</text><text x=\"225\" y=\"148\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"20\" fill=\"#173c2c\">Left: smaller. Right: greater.</text></svg>"
+    }
+  ],
+  "year_level": "Year 7"
+}

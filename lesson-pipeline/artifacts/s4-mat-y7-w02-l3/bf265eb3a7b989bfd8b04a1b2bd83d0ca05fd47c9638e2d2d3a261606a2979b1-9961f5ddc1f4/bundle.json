@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "MA4-ARI-C-01",
+      "lesson_evidence": "Division of integers undoes multiplication: magnitudes divide, signs follow the same rules as multiplication. Division by zero is undefined.",
+      "scope_limit": "Proposed Stage 4 NESA Mathematics alignment using catalogue outcome codes (MA4-*-C-01); content-point mapping and independent NESA verification remain pending.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Division of integers undoes multiplication: magnitudes divide, signs follow the same rules as multiplication. Division by zero is undefined.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same method to a larger number or a new context, then compare two solution paths for accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nEvaluate (−20)÷5 and (−20)÷(−4); explain one using a multiplication check.\n\nFEEDBACK\nStrong answer: −4 and 5; check multiplies back correctly.\n\nWATCH FOR\nWriting a number for division by zero. State undefined instead.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nSolve sixteen divisions including two undefined cases; prove eight answers with multiplication checks.\n\nWrite a short reflection naming one step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Mathematics",
+    "learning_intention": "Division of integers undoes multiplication: magnitudes divide, signs follow the same rules as multiplication. Division by zero is undefined.",
+    "lesson_number": 3,
+    "lesson_role": "Problem solving",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: place-value chart or number line"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "MA4-ARI-C-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Solve sixteen divisions including two undefined cases; prove eight answers with multiplication checks. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: −4 and 5; check multiplies back correctly. Reasoning: I used division by attending to inverse of multiply rather than copying the worked model.\n\nParent: Written model 2: Common error: Writing a number for division by zero. State undefined instead. Correction: Strong answer: −4 and 5; check multiplies back correctly. Why: the correction restores accurate use of division.\n\nParent: Likely misconception: Writing a number for division by zero. State undefined instead. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses division with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with division, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "Strong answer: −4 and 5; check multiplies back correctly. This matches the lesson skill for division.",
+        "options": [
+          "Writing a number for division by zero. State undefined instead.",
+          "Ignore place value and read digits from left to right as ones only.",
+          "Copy the model numbers and call that independent work.",
+          "Strong answer: −4 and 5; check multiplies back correctly."
+        ],
+        "question": "Evaluate (−20)÷5 and (−20)÷(−4); explain one using a multiplication check. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Writing a number for division by zero. State undefined instead. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Writing a number for division by zero. State undefined instead.",
+          "Division of integers undoes multiplication: magnitudes divide, signs follow the same rules as multiplication. Division by zero is undefined.",
+          "Strong answer: −4 and 5; check multiplies back correctly.",
+          "Careful use of inverse of multiply with clear evidence."
+        ],
+        "question": "Which statement is a common mistake when practising division?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and named inverse of multiply, not by copying the model.",
+        "options": [
+          "Treat a missing zero as if it does not change the value.",
+          "Apply the idea with new evidence and name the inverse of multiply used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right."
+        ],
+        "question": "A learner is practising division. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "options": [
+          "Write only a final number with no working.",
+          "Change digits to look neater without checking place value.",
+          "Writing a number for division by zero. State undefined instead.",
+          "Show the places, values or steps and say why each step is valid."
+        ],
+        "question": "Which working note best supports a mathematics answer about division?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The correct statement applies the method; the others break it.",
+        "options": [
+          "Ignore place value and read digits from left to right as ones only.",
+          "Copy the model numbers and call that independent work.",
+          "Strong answer: −4 and 5; check multiplies back correctly.",
+          "Writing a number for division by zero. State undefined instead."
+        ],
+        "question": "Using this lesson idea — Division of integers undoes multiplication: magnitudes divide, signs follow the same rules as… — which statement is true?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "options": [
+          "Delete units so the answers appear to match.",
+          "Average the two answers without checking either.",
+          "Recheck places, operations and whether the question asked for the quantity you computed.",
+          "Pick the longer-looking working automatically."
+        ],
+        "question": "Which error should you repair first if two methods disagree?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Transfer requires new numbers with the same method.",
+        "options": [
+          "Copy the model numbers and call that independent work.",
+          "Solve a fresh problem with different numbers and explain the method.",
+          "Retype the worked model numbers as the answer.",
+          "Change only handwriting and keep the same numbers."
+        ],
+        "question": "Which practice choice shows transfer of division?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "options": [
+          "Tell the learner to skip working and only keep the final digits.",
+          "Just add more digits until it looks longer.",
+          "Name the exact place or step that failed, then show corrected working for division.",
+          "Praise neat handwriting even when the places are wrong."
+        ],
+        "question": "Which feedback comment is most useful after a mistake?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "question": "Solve one fresh problem that uses division with different numbers from the worked model. Show working and name the places or values that matter.",
+        "sample_answer": "Original response on new material: Strong answer: −4 and 5; check multiplies back correctly. Reasoning: I used division by attending to inverse of multiply rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "question": "Describe one likely mistake with division, show corrected working, and say why the correction works.",
+        "sample_answer": "Common error: Writing a number for division by zero. State undefined instead. Correction: Strong answer: −4 and 5; check multiplies back correctly. Why: the correction restores accurate use of division.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent working and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s4-mat-y7-w02-l3",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA mathematics alignment using verified outcome code wording where recorded in lesson-pipeline/sources; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S4",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise division.",
+        "Read the mission before you start calculating.",
+        "Keep the place or unit you are working with in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your working with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the place or distance that carries the method.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore place value or working.",
+        "Prefer accurate method over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your working and reason are both present.",
+        "Proofread digits, places and operation signs.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact place, value or distance before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key numbers.",
+        "Say what each number represents in the method.",
+        "A final answer alone is weaker than labelled working."
+      ],
+      "teach2": [
+        "Compare a weak attempt with stronger working.",
+        "Change the value or method, not only how neat it looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose fresh numbers that still use the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original working and a short reason.",
+        "Save work that shows the skill on new numbers."
+      ]
+    },
+    "subject": "Number",
+    "success_criteria": [
+      "I can use division with a specific example from this lesson.",
+      "I can identify inverse of multiply and explain why it matters.",
+      "I can practise sign rule independently on a new prompt.",
+      "I can notice undefined by zero needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Division of integers undoes multiplication: magnitudes divide, signs follow the same rules as multiplication. Division by zero is undefined. Supported working follows the actual numbers and purpose of the task.",
+          "options": [
+            "Division of integers undoes multiplication: magnitudes divide, signs follow the same rules as multiplication. Division by zero is undefined.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding.",
+            "A guess with no working."
+          ],
+          "question": "Which choice best shows accurate use of this idea about division?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\n(−12)÷3 = −4 because 3×(−4)=−12. (−12)÷(−3)=4. 12÷(−3)=−4. 5÷0 undefined.\n\nTRY FIRST\nEvaluate (−20)÷5 and (−20)÷(−4); explain one using a multiplication check.\n\nFEEDBACK\nStrong answer: −4 and 5; check multiplies back correctly.",
+        "explain": "Division of integers undoes multiplication: magnitudes divide, signs follow the same rules as multiplication. Division by zero is undefined.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing a number for division by zero. State undefined instead. Correct the value or method, not just the appearance of the digits.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Integer division.",
+            "caption": "Check by multiplying.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Divide</text><text x=\"28\" y=\"78\">undo multiply</text><text x=\"358\" y=\"42\">Signs</text><text x=\"358\" y=\"78\">same as ×</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which number or place matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the places, values or distances that carry the method before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: (−12)÷3 = −4 because 3×(−4)=−12. (−12)÷(−3)=4. 12÷(−3)=−4. 5÷0 undefined. Then write your own working.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which number or place matters most.\nJuno: Name the places, values or distances that carry the method before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: (−12)÷3 = −4 because 3×(−4)=−12. (−12)÷(−3)=4. 12÷(−3)=−4. 5÷0 undefined. Then write your own working."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no working.",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+            "A calculation unrelated to the numbers given."
+          ],
+          "question": "Which choice best shows accurate use of this idea about division?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\n(−12)÷3 = −4 because 3×(−4)=−12. (−12)÷(−3)=4. 12÷(−3)=−4. 5÷0 undefined. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
+        "explain": "Make the method visible: name the values, places or steps you used and say why that step is valid.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only the final answer without working does not show the method. Correct the value or method, not just the appearance of the digits.",
+        "title": "Show the working",
+        "visual": [
+          {
+            "alt": "Zero divisor.",
+            "caption": "State undefined.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">÷0</text><text x=\"28\" y=\"78\">undefined</text><text x=\"358\" y=\"42\">Never</text><text x=\"358\" y=\"78\">write a number</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task.",
+          "options": [
+            "A guess with no working.",
+            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about division?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nWriting a number for division by zero. State undefined instead. Here is a more productive model: (−12)÷3 = −4 because 3×(−4)=−12. (−12)÷(−3)=4. 12÷(−3)=−4. 5÷0 undefined.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nStrong answer: −4 and 5; check multiplies back correctly.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the answer without repairing the method does not fix the error. Writing a number for division by zero. State undefined instead. Correct the value or method, not just the appearance of the digits.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task.",
+          "options": [
+            "A guess with no working.",
+            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about division?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nDivision of integers undoes multiplication: magnitudes divide, signs follow the same rules as multiplication. Division by zero is undefined. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",
+        "explain": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new numbers. Correct the value or method, not just the appearance of the digits.",
+        "title": "Transfer to a new problem"
+      }
+    ],
+    "title": "Year 7, Week 2, Lesson 3: Dividing integers",
+    "unit_number": 1,
+    "unit_title": "Integers and index laws",
+    "week": 2,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\n(−12)÷3 = −4 because 3×(−4)=−12. (−12)÷(−3)=4. 12÷(−3)=−4. 5÷0 undefined.\n\nWrite what makes this example accurate, naming the places, values or distances used.",
+    "worked_visuals": [
+      {
+        "alt": "Integer division.",
+        "caption": "Check by multiplying.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Divide</text><text x=\"28\" y=\"78\">undo multiply</text><text x=\"358\" y=\"42\">Signs</text><text x=\"358\" y=\"78\">same as ×</text></g></svg>"
+      },
+      {
+        "alt": "Zero divisor.",
+        "caption": "State undefined.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">÷0</text><text x=\"28\" y=\"78\">undefined</text><text x=\"358\" y=\"42\">Never</text><text x=\"358\" y=\"78\">write a number</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 7"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Evaluate (−20)÷5 and (−20)÷(−4); explain one using a multiplication check."
+      ],
+      "independent_inputs": [
+        "Solve sixteen divisions including two undefined cases; prove eight answers with multiplication checks."
+      ],
+      "model_inputs": [
+        "(−12)÷3 = −4 because 3×(−4)=−12. (−12)÷(−3)=4. 12÷(−3)=−4. 5÷0 undefined."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Strong answer: −4 and 5; check multiplies back correctly.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Evaluate (−20)÷5 and (−20)÷(−4); explain one using a multiplication check.",
+        "misconception": "Writing a number for division by zero. State undefined instead.",
+        "model": "(−12)÷3 = −4 because 3×(−4)=−12. (−12)÷(−3)=4. 12÷(−3)=−4. 5÷0 undefined.",
+        "rule": "Division of integers undoes multiplication: magnitudes divide, signs follow the same rules as multiplication. Division by zero is undefined.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The most useful working names the quantities and the reason for each step, not only the final answer.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Write the key numbers from the model and say what each one represents in the method.",
+        "misconception": "Writing only the final answer without working does not show the method.",
+        "model": "(−12)÷3 = −4 because 3×(−4)=−12. (−12)÷(−3)=4. 12÷(−3)=−4. 5÷0 undefined. Look at each number, place or distance that carries the method.",
+        "rule": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "Strong answer: −4 and 5; check multiplies back correctly.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Describe why the warned-against approach gives the wrong value or meaning, then write corrected working.",
+        "misconception": "Changing the answer without repairing the method does not fix the error. Writing a number for division by zero. State undefined instead.",
+        "model": "Writing a number for division by zero. State undefined instead. Here is a more productive model: (−12)÷3 = −4 because 3×(−4)=−12. (−12)÷(−3)=4. 12÷(−3)=−4. 5÷0 undefined.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The new problem should use the same method as the model, but contain different numbers.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Solve one fresh problem that uses the same skill and write a short reason for your answer.",
+        "misconception": "Repeating the worked example cannot show transfer to new numbers.",
+        "model": "Division of integers undoes multiplication: magnitudes divide, signs follow the same rules as multiplication. Division by zero is undefined. Now choose different numbers to show you can transfer the method.",
+        "rule": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Integer division.",
+        "teaches": "Check by multiplying."
+      },
+      {
+        "alt": "Zero divisor.",
+        "teaches": "State undefined."
+      }
+    ]
+  }
+}
