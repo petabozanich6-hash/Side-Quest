@@ -6,10 +6,10 @@ Resume from `feature/gold-v2-resumable-pipeline`. Do not merge, deploy, or apply
 
 | Gate | Count |
 |---|---|
-| Automatically validated (pipeline) | **1143** |
+| Automatically validated (pipeline) | **1155** |
 | Human gates | **0** |
 
 ## Year 4 PDHPE
 
-- **24 / 80** auto-validated
-- Next resume: `s2-pdhpe-y4-w13-l1`
+- **36 / 80** auto-validated
+- Next resume: `s2-pdhpe-y4-w19-l1`
