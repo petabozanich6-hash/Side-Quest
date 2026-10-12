@@ -27,3 +27,5 @@ scripts/gold-pipeline/__pycache__/
 
 # Local agent worktrees (sibling checkouts under repo)
 .worktrees/
+
+.tools/
