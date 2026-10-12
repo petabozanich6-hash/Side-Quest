@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-13",
   "phase": "PHASE_1_WRITTEN_CORE",
-  "pipeline_auto_validated": 995,
+  "pipeline_auto_validated": 1007,
   "human_gates": {
     "educationally_reviewed": 0,
     "nesa_verified": 0,
@@ -29,9 +29,9 @@
   "y4_english_complete_auto": true,
   "y4_maths_written_core_auto_validated": 160,
   "y4_maths_total": 160,
-  "next_resume": "s2-sci-y4-w19-l1",
-  "note": "Y4 Eng+Maths complete. Y4 Science 36/80. Next s2-sci-y4-w19-l1. Human gates 0. No remote D1.",
+  "next_resume": "s2-sci-y4-w25-l1",
+  "note": "Y4 Eng+Maths complete. Y4 Science 48/80. Next s2-sci-y4-w25-l1. Human gates 0. No remote D1.",
   "y4_maths_complete_auto": true,
-  "y4_science_written_core_auto_validated": 36,
+  "y4_science_written_core_auto_validated": 48,
   "y4_science_total": 80
 }
