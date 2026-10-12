@@ -152,8 +152,8 @@ export function validateMigration(file) {
   const sql=fs.readFileSync(file,'utf8');const lessons=jsonLiterals(sql);
   // Migration 0068 onward contains the Year 3 rebuild and must never bypass v2
   // validation merely because an author omitted the optional marker string.
-  const migrationNumber=Number(path.basename(file).match(/^(\\d{4})_/)?.[1] ?? 0);
-  const isYear3Rebuild=lessons.some(l => /^s2-(?:eng|mat)-y3-w\\d{2}-l\\d+$/.test(l.seed_key||''));
+  const migrationNumber=Number(path.basename(file).match(/^(\d{4})_/)?.[1] ?? 0);
+  const isYear3Rebuild=lessons.some(l => /^s2-(?:eng|mat)-y3-w\d{2}-l\d+$/.test(l.seed_key||''));
   const strict=sql.includes('Standard v2') || (migrationNumber >= 68 && isYear3Rebuild);
   if(!strict) return {historical:true,jsonPatches:lessons.length};
   ensure(lessons.length>0,'v2 migration has no lesson patch');
