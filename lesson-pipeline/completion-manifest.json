@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-13",
   "phase": "PHASE_1_WRITTEN_CORE",
-  "pipeline_auto_validated": 747,
+  "pipeline_auto_validated": 759,
   "human_gates": {
     "educationally_reviewed": 0,
     "nesa_verified": 0,
@@ -32,9 +32,9 @@
   "y3_pdhpe_complete_auto": true,
   "y3_arts_written_core_auto_validated": 80,
   "y3_arts_complete_auto": true,
-  "y4_english_written_core_auto_validated": 108,
+  "y4_english_written_core_auto_validated": 120,
   "y4_english_total": 160,
-  "next_resume": "s2-eng-y4-w28-l1",
-  "note": "Y4 English Written Core auto-validated 108/160 through batch 09 (w27). Human gates closed. No remote D1.",
+  "next_resume": "s2-eng-y4-w31-l1",
+  "note": "Y4 English Written Core auto-validated 120/160 (through week 30). Human gates closed. No remote D1.",
   "y4_english_complete_auto": false
 }
