@@ -1,0 +1,55 @@
+name: Gold v2 lesson quality gate
+
+# Cloud-only, read-only checks. This does not generate, merge or deploy lessons.
+on:
+  workflow_dispatch:
+    inputs:
+      migration:
+        description: "Migration filename under worker/migrations to audit (e.g. 0085_s2_y3_w10_four_depth_revisions.sql)"
+        required: true
+        type: string
+  pull_request:
+    paths:
+      - 'worker/migrations/**'
+      - 'scripts/validate-lessons.mjs'
+      - 'scripts/audit-y3-d1-quality.mjs'
+      - 'scripts/gold-v2-marker-gate.test.mjs'
+      - '.github/workflows/gold-v2-quality.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regression tests for marker bypass
+        run: node --test scripts/gold-v2-marker-gate.test.mjs
+      - name: Audit selected migration (manual)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          MIGRATION: ${{ inputs.migration }}
+        run: |
+          case "$MIGRATION" in
+            *[!a-zA-Z0-9_.-]*|''|..*) echo "Invalid migration filename"; exit 2 ;;
+          esac
+          test -f "worker/migrations/$MIGRATION"
+          node scripts/validate-lessons.mjs "worker/migrations/$MIGRATION"
+          node scripts/audit-y3-d1-quality.mjs "worker/migrations/$MIGRATION"
+      - name: Audit changed Year 3 migration files (PR)
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git fetch --no-tags --depth=1 origin "$BASE"
+          git diff --name-only "$BASE" HEAD -- worker/migrations | grep -E '^worker/migrations/00(6[8-9]|[7-9][0-9])_.*\.sql$' > /tmp/changed-y3.txt || true
+          while IFS= read -r file; do
+            echo "Auditing $file"
+            node scripts/validate-lessons.mjs "$file"
+            node scripts/audit-y3-d1-quality.mjs "$file"
+          done < /tmp/changed-y3.txt
