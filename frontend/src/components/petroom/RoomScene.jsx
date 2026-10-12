@@ -175,6 +175,7 @@ export default function RoomScene({
           onClick={() => onCommand("pet")}
         >
           <span className="pet-shadow" />
+          <span className="pet-hit" />
           {actor.say && <span className="pet-say">{actor.say}</span>}
           {actor.pose === "pet" && <span className="pet-heart" aria-hidden="true">♥</span>}
           <span className={`pet-flip ${actor.facing < 0 ? "is-left" : ""}`}>

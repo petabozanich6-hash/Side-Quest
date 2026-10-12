@@ -16,7 +16,7 @@ export default function NestShop({ shop = [], acorns = 0, busy, justBought, onBu
           <h2 className="font-display text-lg font-bold" style={{ color: "#1F3B2D" }}>Nest shop</h2>
           <p className="text-xs text-stone-600 mt-1">Acorns come with learning, once for each piece of work. Nothing here costs real money.</p>
         </div>
-        <div className="acorn-balance" data-testid="acorn-balance">
+        <div className="acorn-balance" data-testid="acorn-balance" aria-live="polite" aria-label={`${acorns} acorns`}>
           <AcornIcon />
           <span>{acorns}</span>
         </div>
@@ -40,7 +40,14 @@ export default function NestShop({ shop = [], acorns = 0, busy, justBought, onBu
                 {item.owned ? (
                   <OwnedActions item={item} onUse={onUse} onTheme={onTheme} onFloor={onFloor} />
                 ) : (
-                  <button type="button" className="shop-buy" disabled={busy || acorns < item.cost} onClick={() => onBuy(item.id)} data-testid={`buy-${item.id}`}>
+                  <button
+                    type="button"
+                    className="shop-buy"
+                    disabled={busy || acorns < item.cost}
+                    aria-label={acorns < item.cost ? `${item.name} needs ${item.cost} acorns. You have ${acorns}.` : `Add the ${item.name} to the cupboard for ${item.cost} acorns`}
+                    onClick={() => onBuy(item.id)}
+                    data-testid={`buy-${item.id}`}
+                  >
                     {acorns < item.cost ? "Need more acorns" : "Add to cupboard"}
                   </button>
                 )}

@@ -20,6 +20,7 @@ import {
   makePet,
   needsFeed,
   publicPet,
+  retryPetWrite,
   savePet,
   insertPet,
   syncPetCare,
@@ -67,6 +68,18 @@ function jsonDetail(c: any, detail: string, code: number) {
   return c.json({ detail }, code as any);
 }
 
+async function persistPet(c: any, pet: any) {
+  if (await savePet(c.env.DB, pet)) return null;
+  return jsonDetail(c, "Could not save. Please try again.", 409);
+}
+
+function writeError(c: any, result: { error?: string; pet?: any }) {
+  if (result.error === "No pet yet") return jsonDetail(c, "No pet yet", 404);
+  if (result.error === "Could not save. Please try again.") return jsonDetail(c, result.error, 409);
+  if (result.error) return jsonDetail(c, result.error, 400);
+  return null;
+}
+
 export function registerPets(app: App, g: Guards) {
   app.get("/api/pet/species", (c) =>
     c.json(Object.entries(PET_SPECIES).map(([id, meta]) => ({ id, ...meta })))
@@ -94,7 +107,8 @@ export function registerPets(app: App, g: Guards) {
     if (!pet) return jsonDetail(c, "No pet yet", 404);
     pet.happiness = Math.min(100, pet.happiness + 10);
     pet.last_fed = nowIso();
-    await savePet(c.env.DB, pet);
+    const missed = await persistPet(c, pet);
+    if (missed) return missed;
     return c.json({ happiness: pet.happiness });
   });
 
@@ -106,7 +120,8 @@ export function registerPets(app: App, g: Guards) {
     pet.xp += 2;
     pet.last_played = ts;
     pet.activity = [...pet.activity, { amount: 2, reason: "Played with pet", at: ts }];
-    await savePet(c.env.DB, pet);
+    const missed = await persistPet(c, pet);
+    if (missed) return missed;
     return c.json({ happiness: pet.happiness, xp: pet.xp });
   });
 
@@ -138,36 +153,42 @@ export function registerPets(app: App, g: Guards) {
       changed = true;
     }
     if (!changed) return jsonDetail(c, "Nothing to update", 400);
-    await savePet(c.env.DB, pet);
+    const missed = await persistPet(c, pet);
+    if (missed) return missed;
     return c.json(legacyPetView(pet));
   });
 
   app.put("/api/pet/room", g.auth, g.child, async (c) => {
-    const pet = await loadSyncedPet(c.env.DB, c.get("user").id);
-    if (!pet) return jsonDetail(c, "No pet yet", 404);
     const body: any = await jsonBody(c);
-    const result = applyRoomPatch(pet.extra, pet.background, {
-      theme: body.theme,
-      floor: body.floor,
-      lampOn: body.lampOn,
-      placements: body.placements,
+    const result = await retryPetWrite(c.env.DB, c.get("user").id, (pet) => {
+      const patched = applyRoomPatch(pet.extra, pet.background, {
+        theme: body.theme,
+        floor: body.floor,
+        lampOn: body.lampOn,
+        placements: body.placements,
+      });
+      if (patched.error) return { error: patched.error };
+      pet.extra = patched.extra;
+      if (typeof body.theme === "string") pet.background = String(body.theme).slice(0, 30);
+      return {};
     });
-    if (result.error) return jsonDetail(c, result.error, 400);
-    pet.extra = result.extra;
-    if (typeof body.theme === "string") pet.background = String(body.theme).slice(0, 30);
-    await savePet(c.env.DB, pet);
-    return c.json(await publicPet(c.env.DB, pet));
+    const failed = writeError(c, result);
+    if (failed || !result.pet) return failed || jsonDetail(c, "Could not save. Please try again.", 409);
+    return c.json(await publicPet(c.env.DB, result.pet));
   });
 
   app.post("/api/pet/shop/buy", g.auth, g.child, async (c) => {
-    const pet = await loadSyncedPet(c.env.DB, c.get("user").id);
-    if (!pet) return jsonDetail(c, "No pet yet", 404);
     const body: any = await jsonBody(c);
-    const result = buyShopItem(pet.extra, pet.background, String(body.item_id || body.itemId || ""));
-    if (result.error) return jsonDetail(c, result.error, 400);
-    pet.extra = result.extra;
-    await savePet(c.env.DB, pet);
-    return c.json(await publicPet(c.env.DB, pet));
+    const itemId = String(body.item_id || body.itemId || "");
+    const result = await retryPetWrite(c.env.DB, c.get("user").id, (pet) => {
+      const bought = buyShopItem(pet.extra, pet.background, itemId);
+      if (bought.error) return { error: bought.error };
+      pet.extra = bought.extra;
+      return {};
+    });
+    const failed = writeError(c, result);
+    if (failed || !result.pet) return failed || jsonDetail(c, "Could not save. Please try again.", 409);
+    return c.json(await publicPet(c.env.DB, result.pet));
   });
 
   app.post("/api/pet/help", g.auth, g.child, async (c) => {
@@ -205,7 +226,8 @@ export function registerPets(app: App, g: Guards) {
     if (!pet.hatched) {
       pet.egg_care_dates = [...new Set([...pet.egg_care_dates, now.toISOString().slice(0, 10)])].sort();
     }
-    await savePet(c.env.DB, pet);
+    const missed = await persistPet(c, pet);
+    if (missed) return missed;
     await syncPetCare(c.env.DB, pet, now);
     return c.json({ ...(await publicPet(c.env.DB, pet)), revived });
   });
@@ -226,7 +248,8 @@ export function registerPets(app: App, g: Guards) {
     pet.xp += PLAY_XP;
     pet.activity = [...pet.activity, { amount: PLAY_XP, reason: "Played with pet", at: now.toISOString() }];
     if (!pet.hatched) pet.egg_care_dates = [...new Set([...pet.egg_care_dates, today])].sort();
-    await savePet(c.env.DB, pet);
+    const missed = await persistPet(c, pet);
+    if (missed) return missed;
     await syncPetCare(c.env.DB, pet, now);
     return c.json(await publicPet(c.env.DB, pet));
   });
@@ -242,7 +265,8 @@ export function registerPets(app: App, g: Guards) {
     pet.next_poop_at = new Date(now.getTime() + 24 * 3600000).toISOString();
     pet.cleans_total += 1;
     pet.happiness = Math.min(100, pet.happiness + 5);
-    await savePet(c.env.DB, pet);
+    const missed = await persistPet(c, pet);
+    if (missed) return missed;
     await syncPetCare(c.env.DB, pet, now);
     return c.json(await publicPet(c.env.DB, pet));
   });
@@ -262,7 +286,8 @@ export function registerPets(app: App, g: Guards) {
       ),
     ) as string[];
     pet.accessories = pet.accessories.slice(0, 10);
-    await savePet(c.env.DB, pet);
+    const missed = await persistPet(c, pet);
+    if (missed) return missed;
     return c.json({ accessories: pet.accessories });
   });
 
@@ -275,10 +300,11 @@ export function registerPets(app: App, g: Guards) {
     if (!pet || pet.family_id !== user.family_id) return jsonDetail(c, "Pet not found", 404);
     if (pet.care_paused) return c.json({ ok: true, paused: true });
     const now = new Date();
-    await syncPetCare(c.env.DB, pet, now);
-    pet.care_paused = true;
-    pet.paused_at = now.toISOString();
-    await savePet(c.env.DB, pet);
+    const current = await syncPetCare(c.env.DB, pet, now);
+    current.care_paused = true;
+    current.paused_at = now.toISOString();
+    const missed = await persistPet(c, current);
+    if (missed) return missed;
     return c.json({ ok: true, paused: true });
   });
 
@@ -303,7 +329,8 @@ export function registerPets(app: App, g: Guards) {
     pet.last_fed = shift(pet.last_fed);
     pet.next_poop_at = shift(pet.next_poop_at);
     pet.poop_since = shift(pet.poop_since);
-    await savePet(c.env.DB, pet);
+    const missed = await persistPet(c, pet);
+    if (missed) return missed;
     return c.json({ ok: true, paused: false });
   });
 
@@ -349,8 +376,11 @@ export function registerPets(app: App, g: Guards) {
     if (!res.meta.changes) return jsonDetail(c, "You already opened a box for this one", 400);
     const pet = await loadPet(c.env.DB, c.get("user").id);
     if (pet) {
-      pet.items = [...pet.items, { ...prize, from_lesson: row.lesson_title, at: ts }];
-      await savePet(c.env.DB, pet);
+      await retryPetWrite(c.env.DB, c.get("user").id, (current) => {
+        const already = current.items.some((item: any) => item?.at === ts && item?.from_lesson === row.lesson_title);
+        if (!already) current.items = [...current.items, { ...prize, from_lesson: row.lesson_title, at: ts }];
+        return {};
+      });
     }
     return c.json({ prize, boxes: fullDoc.box_prizes, chosen_box: box, lesson_title: row.lesson_title });
   });

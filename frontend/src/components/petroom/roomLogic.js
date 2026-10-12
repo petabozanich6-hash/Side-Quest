@@ -286,9 +286,13 @@ export function buyShopItem(extra, background, itemId) {
   const economy = economyOf(extra);
   const key = ownKey(entry);
   if (room.owned.includes(key)) return { error: "You already own this" };
-  const cost = Number(entry.cost) || 0;
-  if (economy.acorns < cost) return { error: "Not enough acorns" };
-  economy.acorns -= cost;
+  const cost = Number(entry.cost);
+  if (!Number.isFinite(cost) || cost < 0) return { error: "Unknown item" };
+  const balance = Number(economy.acorns);
+  if (!Number.isFinite(balance) || balance < cost) return { error: "Not enough acorns" };
+  const nextBalance = balance - cost;
+  if (nextBalance < 0) return { error: "Not enough acorns" };
+  economy.acorns = nextBalance;
   room.owned = [...room.owned, key];
   return {
     extra: { ...extra, room: persistRoom(room), economy },
@@ -313,6 +317,18 @@ export function pathTo(from, to) {
   if (Math.hypot(to.x - beside.x, to.y - beside.y) > 0.03) points.push({ x: round(to.x), y: round(to.y) });
   if (!points.length) points.push({ x: round(to.x), y: round(to.y) });
   return points.map((point) => ({ x: round(point.x), y: round(point.y) }));
+}
+
+export function moveDuration(distance, speed, reduced) {
+  if (reduced || distance < 0.02) return 0;
+  const pace = Number(speed) > 0 ? Number(speed) : 1;
+  return Math.max(480, (distance * 2500) / pace);
+}
+
+export function nudgePlacement(room, item, dx, dy) {
+  const current = (room?.placements || []).find((placement) => placement.item === item);
+  if (!current) return { error: "That item is not in the room" };
+  return placeAt(room, item, current.x + Number(dx || 0), current.y + Number(dy || 0));
 }
 
 export function placeAt(room, item, x, y) {

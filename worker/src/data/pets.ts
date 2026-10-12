@@ -106,6 +106,8 @@ export type PetState = {
   best_streak: number;
   revived_count: number;
   extra: Record<string, any>;
+  /** Exact `extra` text last read or written. Used so two saves cannot both win. */
+  extraRaw?: string;
   care_status?: string;
   neglect_days?: number;
 };
@@ -249,6 +251,7 @@ export function normalisePetRow(row: any): PetState {
     best_streak: Number(row.best_streak ?? 0),
     revived_count: Number(row.revived_count ?? 0),
     extra: parseJson<Record<string, any>>(row.extra, {}),
+    extraRaw: row.extra == null ? "{}" : String(row.extra),
   };
 }
 
@@ -272,16 +275,31 @@ export async function insertPet(db: D1Database, pet: PetState) {
   ).run();
 }
 
-export async function savePet(db: D1Database, pet: PetState) {
-  await db.prepare(
-    `UPDATE pets SET
-      family_id = ?, name = ?, species = ?, xp = ?, happiness = ?, created_at = ?, last_fed = ?, last_played = ?,
-      background = ?, accessories = ?, activity = ?, items = ?, hatched = ?, hatched_at = ?, egg_care_dates = ?,
-      next_poop_at = ?, poop_pending = ?, poop_since = ?, unlocked_accessories = ?, play_day = ?, play_count = ?,
-      cleans_total = ?, care_paused = ?, paused_at = ?, last_streak_date = ?, care_streak = ?, best_streak = ?,
-      revived_count = ?, extra = ?
-    WHERE student_id = ?`
-  ).bind(...serialisePet(pet), pet.student_id).run();
+export async function savePet(db: D1Database, pet: PetState): Promise<boolean> {
+  const nextExtra = JSON.stringify(pet.extra ?? {});
+  const values = serialisePet(pet);
+  const matched = pet.extraRaw == null
+    ? await db.prepare(
+      `UPDATE pets SET
+        family_id = ?, name = ?, species = ?, xp = ?, happiness = ?, created_at = ?, last_fed = ?, last_played = ?,
+        background = ?, accessories = ?, activity = ?, items = ?, hatched = ?, hatched_at = ?, egg_care_dates = ?,
+        next_poop_at = ?, poop_pending = ?, poop_since = ?, unlocked_accessories = ?, play_day = ?, play_count = ?,
+        cleans_total = ?, care_paused = ?, paused_at = ?, last_streak_date = ?, care_streak = ?, best_streak = ?,
+        revived_count = ?, extra = ?
+      WHERE student_id = ?`
+    ).bind(...values, pet.student_id).run()
+    : await db.prepare(
+      `UPDATE pets SET
+        family_id = ?, name = ?, species = ?, xp = ?, happiness = ?, created_at = ?, last_fed = ?, last_played = ?,
+        background = ?, accessories = ?, activity = ?, items = ?, hatched = ?, hatched_at = ?, egg_care_dates = ?,
+        next_poop_at = ?, poop_pending = ?, poop_since = ?, unlocked_accessories = ?, play_day = ?, play_count = ?,
+        cleans_total = ?, care_paused = ?, paused_at = ?, last_streak_date = ?, care_streak = ?, best_streak = ?,
+        revived_count = ?, extra = ?
+      WHERE student_id = ? AND extra = ?`
+    ).bind(...values, pet.student_id, pet.extraRaw).run();
+  if (!matched.meta?.changes) return false;
+  pet.extraRaw = nextExtra;
+  return true;
 }
 
 export function makePet(studentId: string, familyId: string, name: string, species: keyof typeof PET_SPECIES): PetState {
@@ -321,29 +339,30 @@ export function makePet(studentId: string, familyId: string, name: string, speci
   };
 }
 
-export async function syncPetProgress(db: D1Database, pet: PetState) {
+export async function syncPetProgress(db: D1Database, pet: PetState, attempt = 0): Promise<PetState> {
+  const working = attempt === 0 ? pet : (await loadPet(db, pet.student_id) ?? pet);
   const awards = {
-    submissions: new Set<string>(stringArray(pet.extra?.awards?.submissions)),
-    feedback: new Set<string>(stringArray(pet.extra?.awards?.feedback)),
-    reading: new Set<string>(stringArray(pet.extra?.awards?.reading)),
+    submissions: new Set<string>(stringArray(working.extra?.awards?.submissions)),
+    feedback: new Set<string>(stringArray(working.extra?.awards?.feedback)),
+    reading: new Set<string>(stringArray(working.extra?.awards?.reading)),
   };
   let changed = false;
-  const economy = economyOf(pet.extra);
-  const economyWasSeeded = !!pet.extra?.economy?.seeded;
+  const economy = economyOf(working.extra);
+  const economyWasSeeded = !!working.extra?.economy?.seeded;
   let acornsGained = 0;
 
   try {
     const { results: submissions } = await db.prepare(
       "SELECT id, lesson_id, submitted_at FROM submissions WHERE student_id = ? ORDER BY submitted_at ASC LIMIT 5000"
-    ).bind(pet.student_id).all<any>();
+    ).bind(working.student_id).all<any>();
     for (const row of submissions) {
       const key = String(row.id);
       if (awards.submissions.has(key)) continue;
       awards.submissions.add(key);
-      pet.xp += SUBMISSION_XP;
+      working.xp += SUBMISSION_XP;
       acornsGained += grantAcorn(economy, "submissions", key, ACORN_AMOUNTS.submission);
-      pet.happiness = clamp(pet.happiness + 5, 0, 100);
-      pushActivity(pet, SUBMISSION_XP, `Submitted: ${row.lesson_id || row.id}`, String(row.submitted_at || nowIso()));
+      working.happiness = clamp(working.happiness + 5, 0, 100);
+      pushActivity(working, SUBMISSION_XP, `Submitted: ${row.lesson_id || row.id}`, String(row.submitted_at || nowIso()));
       changed = true;
     }
   } catch {}
@@ -351,17 +370,17 @@ export async function syncPetProgress(db: D1Database, pet: PetState) {
   try {
     const { results: feedbackRows } = await db.prepare(
       "SELECT id, status, reviewed_at FROM submissions WHERE student_id = ? AND reviewed_at IS NOT NULL AND status IN ('accepted', 'demonstrated', 'needs_revision', 'needs_more_practice') ORDER BY reviewed_at ASC LIMIT 5000"
-    ).bind(pet.student_id).all<any>();
+    ).bind(working.student_id).all<any>();
     for (const row of feedbackRows) {
       const amount = FEEDBACK_XP[String(row.status)] ?? 0;
       if (!amount) continue;
       const key = `${row.id}:${row.reviewed_at}:${row.status}`;
       if (awards.feedback.has(key)) continue;
       awards.feedback.add(key);
-      pet.xp += amount;
+      working.xp += amount;
       acornsGained += grantAcorn(economy, "feedback", key, acornsForFeedback(String(row.status)));
-      pet.happiness = clamp(pet.happiness + 5, 0, 100);
-      pushActivity(pet, amount, `Feedback: ${row.status}`, String(row.reviewed_at));
+      working.happiness = clamp(working.happiness + 5, 0, 100);
+      pushActivity(working, amount, `Feedback: ${row.status}`, String(row.reviewed_at));
       changed = true;
     }
   } catch {}
@@ -369,21 +388,21 @@ export async function syncPetProgress(db: D1Database, pet: PetState) {
   try {
     const { results: readingRows } = await db.prepare(
       "SELECT id, title, created_at FROM reading_log WHERE student_id = ? ORDER BY created_at ASC LIMIT 5000"
-    ).bind(pet.student_id).all<any>();
+    ).bind(working.student_id).all<any>();
     for (const row of readingRows) {
       const key = String(row.id);
       if (awards.reading.has(key)) continue;
       awards.reading.add(key);
-      pet.xp += READING_XP;
+      working.xp += READING_XP;
       acornsGained += grantAcorn(economy, "reading", key, ACORN_AMOUNTS.reading);
-      pushActivity(pet, READING_XP, `Read: ${row.title || "Book"}`, String(row.created_at || nowIso()));
+      pushActivity(working, READING_XP, `Read: ${row.title || "Book"}`, String(row.created_at || nowIso()));
       changed = true;
     }
   } catch {}
 
   if (changed || !economyWasSeeded || acornsGained) {
-    pet.extra = {
-      ...pet.extra,
+    working.extra = {
+      ...working.extra,
       economy,
       awards: {
         submissions: [...awards.submissions],
@@ -391,12 +410,17 @@ export async function syncPetProgress(db: D1Database, pet: PetState) {
         reading: [...awards.reading],
       },
     };
-    await savePet(db, pet);
+    if (!(await savePet(db, working))) {
+      if (attempt >= 5) return working;
+      return syncPetProgress(db, working, attempt + 1);
+    }
   }
-  return pet;
+  return working;
 }
 
-export async function syncPetCare(db: D1Database, pet: PetState, now = new Date()) {
+export async function syncPetCare(db: D1Database, pet: PetState, now = new Date(), attempt = 0): Promise<PetState> {
+  const working = attempt === 0 ? pet : (await loadPet(db, pet.student_id) ?? pet);
+  pet = working;
   const updates: Partial<PetState> = {};
   const clock = pet.care_paused ? parseDate(pet.paused_at) ?? now : now;
   const lastFed = parseDate(pet.last_fed) ?? clock;
@@ -430,16 +454,39 @@ export async function syncPetCare(db: D1Database, pet: PetState, now = new Date(
   pet.neglect_days = Math.round(Math.max(fedDays, poopDays) * 100) / 100;
   pet.care_status = careStatus(pet.hatched, pet.neglect_days);
 
-  if (Object.keys(updates).length) await savePet(db, pet);
+  if (Object.keys(updates).length) {
+    if (!(await savePet(db, pet))) {
+      if (attempt >= 5) return pet;
+      return syncPetCare(db, pet, now, attempt + 1);
+    }
+  }
   return pet;
 }
 
 export async function loadSyncedPet(db: D1Database, studentId: string, now = new Date()) {
   const pet = await loadPet(db, studentId);
   if (!pet) return null;
-  await syncPetProgress(db, pet);
-  await syncPetCare(db, pet, now);
-  return pet;
+  const progressed = await syncPetProgress(db, pet);
+  return syncPetCare(db, progressed, now);
+}
+
+/** Reload, re-apply learning, then save one change. A conflicting write retries from the saved row. */
+export async function retryPetWrite(
+  db: D1Database,
+  studentId: string,
+  apply: (pet: PetState) => { error?: string } | Promise<{ error?: string }>,
+  now = new Date(),
+): Promise<{ pet?: PetState; error?: string }> {
+  let lastError = "Could not save. Please try again.";
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const pet = await loadSyncedPet(db, studentId, now);
+    if (!pet) return { error: "No pet yet" };
+    const outcome = await apply(pet);
+    if (outcome?.error) return { pet, error: outcome.error };
+    if (await savePet(db, pet)) return { pet };
+    lastError = "Could not save. Please try again.";
+  }
+  return { error: lastError };
 }
 
 export function touchStreak(pet: PetState, now = new Date()) {
@@ -476,6 +523,7 @@ export async function publicPet(db: D1Database, pet: PetState) {
   };
   delete out.activity;
   delete out.extra;
+  delete out.extraRaw;
 
   const stage = stageFor(pet.xp, pet.hatched);
   Object.assign(out, stage);
@@ -520,7 +568,7 @@ export async function publicPet(db: D1Database, pet: PetState) {
 }
 
 export function legacyPetView(pet: PetState) {
-  return {
+  const view: any = {
     ...pet,
     accessories: [...pet.accessories],
     activity: [...pet.activity],
@@ -529,4 +577,6 @@ export function legacyPetView(pet: PetState) {
     unlocked_accessories: [...pet.unlocked_accessories],
     ...levelForXp(pet.xp),
   };
+  delete view.extraRaw;
+  return view;
 }

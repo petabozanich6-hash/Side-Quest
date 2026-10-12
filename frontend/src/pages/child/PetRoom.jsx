@@ -7,7 +7,8 @@ import { toast } from "sonner";
 import { ArrowLeft, Apple, Gamepad2, Palette, Sparkles, Loader2 } from "lucide-react";
 import RoomScene from "../../components/petroom/RoomScene";
 import NestShop from "../../components/petroom/NestShop";
-import { ITEMS, placeAt, readRoom, rewardWorthShowing } from "../../components/petroom/roomLogic";
+import { ITEMS, nudgePlacement, placeAt, readRoom, rewardWorthShowing } from "../../components/petroom/roomLogic";
+import NudgeControls from "../../components/petroom/NudgeControls";
 import { RewardBanner, takeRewardDiff } from "../../components/petroom/RewardPulse";
 import { usePrefersReducedMotion } from "../../components/petroom/usePetDirector";
 import "../../components/petroom/room.css";
@@ -117,10 +118,14 @@ export default function PetRoom() {
   const [reward, setReward] = useState(null);
   const [justBought, setJustBought] = useState(null);
   const rewarded = useRef(false);
+  const roomRef = useRef(null);
+  const saveGen = useRef(0);
+  const buying = useRef(false);
 
   const apply = (data) => {
     if (!data || data.needs_pet) return;
     const room = data.room || readRoom({}, data.background);
+    roomRef.current = room;
     setPet({ ...data, room });
     setNewName(data.name || "");
   };
@@ -155,7 +160,10 @@ export default function PetRoom() {
   const react = (kind) => { setReaction(kind); setTimeout(() => setReaction(null), 1000); };
 
   const saveRoom = async (partial) => {
-    const room = { ...pet.room, ...partial };
+    const base = roomRef.current || pet.room;
+    const room = { ...base, ...partial };
+    roomRef.current = room;
+    const gen = ++saveGen.current;
     const previous = pet;
     setPet({ ...pet, room });
     try {
@@ -165,10 +173,13 @@ export default function PetRoom() {
         lampOn: room.lampOn,
         placements: room.placements,
       });
+      if (gen !== saveGen.current) return;
       apply(data);
     } catch (error) {
+      if (gen !== saveGen.current) return;
+      roomRef.current = previous.room;
       setPet(previous);
-      toast.error(error?.response?.data?.detail || "Could not save the room");
+      toast.error(error?.response ? (error.response.data?.detail || "Could not save the room") : "The room could not be saved. Your last saved layout is still here.");
     }
   };
 
@@ -187,6 +198,8 @@ export default function PetRoom() {
   };
 
   const buy = async (itemId) => {
+    if (buying.current) return;
+    buying.current = true;
     setLoading(true);
     try {
       const { data } = await api.post("/pet/shop/buy", { item_id: itemId });
@@ -194,8 +207,22 @@ export default function PetRoom() {
       setJustBought(itemId);
       toast.success("Added to your cupboard");
     } catch (error) {
-      toast.error(error?.response?.data?.detail || "Could not add that");
-    } finally { setLoading(false); }
+      toast.error(error?.response ? (error.response.data?.detail || "Could not add that") : "That purchase did not go through. Your acorns are unchanged.");
+    } finally {
+      buying.current = false;
+      setLoading(false);
+    }
+  };
+
+  const nudgeItem = (item, dx, dy) => {
+    const result = nudgePlacement(roomRef.current || pet.room, item, dx, dy);
+    if (result.error) toast.error(result.error);
+    else saveRoom({ placements: result.placements });
+  };
+
+  const removeItem = (item) => {
+    const current = roomRef.current || pet.room;
+    saveRoom({ placements: current.placements.filter((placement) => placement.item !== item) });
   };
 
   const putInRoom = (itemId) => {
@@ -307,10 +334,12 @@ export default function PetRoom() {
         <div className="paper-card p-5" data-testid="customize-card">
           <div className="h-11 w-11 rounded-xl grid place-items-center mb-3" style={{ backgroundColor: "#D4A57422", color: "#C8893B" }}><Palette size={20} /></div>
           <div className="font-display text-lg font-bold" style={{ color: "#1F3B2D" }}>Move the room</div>
-          <p className="text-xs text-stone-600 mt-1 mb-3">{editing ? "Drag furniture. Arrow keys nudge it. Tap the floor to place a cupboard item." : "Arrange furniture, then it stays where you left it."}</p>
+          <p className="text-xs text-stone-600 mt-1 mb-3">{editing ? "Drag a piece, use the move buttons, or press the arrow keys while it is selected." : "Arrange furniture, then it stays where you left it."}</p>
           <button type="button" className="tool-btn" aria-pressed={editing} onClick={() => setEditing((value) => !value)} data-testid="edit-room">{editing ? "Done" : "Arrange"}</button>
         </div>
       </section>
+
+      {editing && <NudgeControls placements={room.placements} onNudge={nudgeItem} onRemove={removeItem} />}
 
       {editing && (
         <div className="paper-card p-4" data-testid="cupboard">

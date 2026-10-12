@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { TRAITS, anchorFor, pathTo, pickWanderTarget } from "./roomLogic";
+import { TRAITS, anchorFor, moveDuration, pathTo, pickWanderTarget } from "./roomLogic";
 
 export function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(() =>
@@ -32,13 +32,14 @@ export function usePetDirector({ species, placements, active, reduced, command }
   placementsRef.current = placements;
 
   const follow = (target, poseAfter, say, linger) => {
+    clearTimers();
     const my = ++token.current;
     const path = pathTo(actorRef.current, target);
     let delay = 0;
     path.forEach((point, index) => {
       const from = index === 0 ? actorRef.current : path[index - 1];
       const dist = Math.hypot(point.x - from.x, point.y - from.y);
-      const ms = reduced || dist < 0.02 ? 0 : Math.max(480, (dist * 2500) / trait.speed);
+      const ms = moveDuration(dist, trait.speed, reduced);
       const id = setTimeout(() => {
         if (token.current !== my) return;
         const current = actorRef.current;

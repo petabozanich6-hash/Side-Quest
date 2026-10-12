@@ -56,6 +56,18 @@
   background: none;
   border: 0;
   padding: 0;
+  pointer-events: none;
+}
+.pet-hit {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  width: 46%;
+  height: 36%;
+  transform: translateX(-50%);
+  pointer-events: auto;
+  border-radius: 999px;
+  cursor: pointer;
 }
 .pet-actor svg { width: 100%; height: auto; }
 .pet-flip.is-left { transform: scaleX(-1); }
@@ -122,6 +134,23 @@
   cursor: pointer;
 }
 .tool-btn[aria-pressed="true"], .room-chip.is-on { background: #1f3b2d; color: #f5efe0; }
+.furn:focus-visible, .tool-btn:focus-visible, .shop-buy:focus-visible, .nudge-btn:focus-visible, .room-chip:focus-visible {
+  outline: 3px solid #1f3b2d;
+  outline-offset: 2px;
+}
+.nudge-list { display: flex; flex-direction: column; gap: 8px; }
+.nudge-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.nudge-name { min-width: 8.5rem; font-weight: 800; color: #1f3b2d; font-size: 14px; }
+.nudge-btn {
+  border-radius: 999px;
+  border: 1px solid #d4c8a8;
+  background: #fff;
+  color: #1f3b2d;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
 .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
 .shop-card {
   text-align: left;
