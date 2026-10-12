@@ -21,7 +21,14 @@
     "learner checkpoint persistence"
   ],
   "fully_approved": 0,
-  "github_workflow_execution": "not yet run",
+  "github_workflow_execution": {
+    "status": "success",
+    "run_id": 38207550951,
+    "url": "https://github.com/petabozanich6-hash/Side-Quest/actions/runs/38207550951",
+    "validated_commit": "890d2dd8f11846a638a2e4f5e004c389db32211a",
+    "node_tests_passed": 21,
+    "python_tests_passed": 26
+  },
   "frontend_build": "Reused unchanged main build from environment setup; no frontend code changed. Actual Chromium used this build.",
   "production_changes": 0,
   "paid_generation_api_calls": 0,
@@ -31,6 +38,11 @@
     "python-tests.log": "a89fafe7898a5d441f2e725cc57c0279734449f95bd8180e5b6353ff2df150b0",
     "browser-report.json": "130f8940fbc8ef37d8d4fb687154c4d80be4e597aebbd6d9c7e0c6d8cf4928a9",
     "rounding-phone.png": "f859284aa19082233f9bafd654cb38fe85cebd5938cd2527eec4c31831fe30ff",
-    "pilot-print.html": "34f30f56aef28b9b80f16c58713338b6ffd65efe72a2350a4d24c20bab0a5252"
+    "pilot-print.html": "34f30f56aef28b9b80f16c58713338b6ffd65efe72a2350a4d24c20bab0a5252",
+    "github-checks.json": "4832f5fed434c8a4488fc515032c0f9f6ac8f4c480215c147c375cee929494cd"
+  },
+  "existing_cloudflare_build_check": {
+    "status": "failure",
+    "details_available": "GitHub metadata reports the failed Workers Builds check and build ID only; no underlying build log diagnosis obtained. No deployment command was invoked by this task."
   }
 }

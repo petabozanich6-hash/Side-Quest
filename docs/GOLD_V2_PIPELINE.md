@@ -171,7 +171,10 @@ merge, deploy, commit, call a model or run a schedule. Uploads retain the comple
 checkpoint as a review artifact for 14 days, including failed-run state. Download
 and review any changed checkpoint, then commit it to the same feature branch
 before another execution. Artifact storage alone is not permanent persistence.
-The workflow has been inspected locally, not run on GitHub. Dispatch availability
+The PR workflow passed on GitHub (run 38207550951): the validator, Python
+integration, checkpoint-verification and artifact-preservation steps succeeded.
+The manual batch-processing step was correctly skipped on the PR event.
+No manual dispatch was initiated. Dispatch availability
 depends on GitHub recognising the workflow; it may require an owner-approved
 merge later. This task does not authorise such a merge.
 
