@@ -20,13 +20,13 @@ Machine-readable tracker: `lesson-pipeline/completion-manifest.json`.
 
 ## Year 4 Mathematics — started
 
-- **12 / 160** auto-validated (`s2-mat-y4-w01-l1` … `w03-l4`)
+- **24 / 160** auto-validated (`s2-mat-y4-w01-l1` … `w06-l4`)
 - Builder: `build-written-maths-y4-batch01.py` + `maths_y4_support.py`
 - Proposed code **MA2-RN-01** (official wording recorded in `lesson-pipeline/sources/nesa-ma2-rn-01.json`); content points pending
 
 ## Next resume
 
-`s2-mat-y4-w04-l1` — continue Year 4 Mathematics Written Core in 12-lesson batches.
+`s2-mat-y4-w07-l1` — continue Year 4 Mathematics Written Core in 12-lesson batches.
 
 ```sh
 python3 scripts/gold-pipeline/pipeline.py status
