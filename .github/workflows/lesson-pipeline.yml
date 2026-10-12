@@ -1,0 +1,56 @@
+name: Resumable Gold v2 pipeline checks
+
+# No schedule and no generation API. Recurring agent execution needs separate
+# owner authorisation, bounded cost and a durable feature-branch writer.
+on:
+  workflow_dispatch:
+    inputs:
+      batch_size:
+        description: Maximum available authored bundles to process
+        type: choice
+        options: ['1', '2', '3', '4', '5']
+        default: '1'
+  pull_request:
+    paths:
+      - 'lesson-pipeline/**'
+      - 'scripts/gold-pipeline/**'
+      - 'scripts/validate-lessons*'
+      - 'scripts/audit-y3-d1-quality.mjs'
+      - 'scripts/gold-v2-marker-gate.test.mjs'
+      - '.github/workflows/lesson-pipeline.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gold-v2-checks-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Validator and marker-bypass regression tests
+        run: node --test scripts/gold-pipeline/validate.test.mjs scripts/gold-v2-marker-gate.test.mjs scripts/validate-lessons.test.mjs scripts/validate-stage3-batch.test.mjs
+      - name: Queue, interruption, review-gate and local SQL integration tests
+        run: python3 scripts/gold-pipeline/test_pipeline.py
+      - name: Validate durable checkpoint against current sources
+        run: python3 scripts/gold-pipeline/pipeline.py status
+      - name: Process available authored bundles (manual only)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          BATCH_SIZE: ${{ inputs.batch_size }}
+        run: python3 scripts/gold-pipeline/pipeline.py run --limit "$BATCH_SIZE"
+      - name: Preserve the complete checkpoint for review, including failure state
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: gold-v2-checkpoint-${{ github.run_id }}
+          path: lesson-pipeline/
+          retention-days: 14
+          if-no-files-found: error

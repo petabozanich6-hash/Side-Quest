@@ -1,0 +1,12 @@
+{
+  "code": "MA2-RN-01",
+  "official_wording": "applies an understanding of place value and the role of zero to represent numbers to at least tens of thousands",
+  "source": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes",
+  "syllabus": "Mathematics K–10 Syllabus (2022)",
+  "stage": "Stage 2",
+  "retrieved_utc": "2026-10-12",
+  "retrieved_html_sha256": "6ae94beab8b1cc9dda0306c78c75e593ebcc13938a8716816857084a83c3ed08",
+  "method": "HTTPS with TLS verification; extracted the outcome code and description from official __NEXT_DATA__ and corroborated visible HTML.",
+  "scope": "Confirms code and wording only. Individual lesson evidence and content-point alignment are pending independent review; no NESA gate advanced.",
+  "repository_catalogue_conflict": "worker/src/data/nsw-outcomes.ts uses MA2-RWN-01; the official source uses MA2-RN-01. This task does not change the application catalogue."
+}

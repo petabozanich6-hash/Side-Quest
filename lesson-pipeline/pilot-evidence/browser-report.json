@@ -1,0 +1,87 @@
+{
+  "browser": "Chromium via CDP",
+  "authored_file_sha256": "324f7f4378e60adf00070db0da4d7f6c67d5aaf2f48c94e1f34de0b69c25b9c9",
+  "checks": [
+    {
+      "name": "local registration, child login and pilot assignment",
+      "status": "passed"
+    },
+    {
+      "name": "four teaching stages, example reveals, accessible SVGs and knowledge checks at phone width",
+      "status": "passed"
+    },
+    {
+      "name": "eight-choice quiz and two typed written responses",
+      "status": "passed"
+    },
+    {
+      "name": "child submission and parent receipt preserve both written responses",
+      "status": "passed"
+    },
+    {
+      "name": "actual Chromium print rendering, seven SVG instances and hidden parent models",
+      "status": "passed"
+    },
+    {
+      "name": "local test account cleanup",
+      "status": "passed"
+    }
+  ],
+  "failures": [
+    {
+      "name": "parent-only answer fields in child API",
+      "status": "failed",
+      "diagnosis": "Existing worker/src/core.ts lessonOut sends parent_notes and written models to authenticated child routes. UI hiding is not role isolation."
+    },
+    {
+      "name": "learner checkpoint persistence",
+      "status": "failed",
+      "diagnosis": "The saved localStorage snapshot does not contain completed learn/guided stages, task and quiz progress. Existing ChildLesson onClick={mark(\"learn\")} and onClick={mark(\"guided\")} pass React events into done; serialising progress then fails and retains an older checkpoint."
+    }
+  ],
+  "gates_advanced": false,
+  "saved_progress_checks": {
+    "learn": false,
+    "guided": false,
+    "quiz": false,
+    "written": false,
+    "response": false
+  },
+  "restored_progress_checks": {
+    "learn": false,
+    "guided": false,
+    "quiz": false,
+    "written": false,
+    "response": false
+  },
+  "svg_layouts": [
+    {
+      "width": 720,
+      "text": "220"
+    },
+    {
+      "width": 720,
+      "text": "360"
+    },
+    {
+      "width": 720,
+      "text": "400"
+    },
+    {
+      "width": 720,
+      "text": "700"
+    },
+    {
+      "width": 720,
+      "text": "220"
+    },
+    {
+      "width": 720,
+      "text": "400"
+    },
+    {
+      "width": 720,
+      "text": "700"
+    }
+  ]
+}
