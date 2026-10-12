@@ -1,0 +1,333 @@
+{
+  "child_mission": "Investigate how a short story shapes your understanding. Build an interpretation of its setting, character and plot, then support it with precise evidence.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep three close-reading notes, analytical response, one explained revision, reflection and quiz result. Review the claim-to-evidence links separately from spelling.",
+  "extension": "Compare two defensible interpretations of Mara’s repeated handle-pulling. Explain which additional detail makes one reading stronger.",
+  "guided_practice": "WE DO: Build a setting explanation.\n1. Find a detail from the front entrance. Before reading the suggestion, say what makes it relevant. Suggestion: an empty foyer behind an unmoving door conflicts with Mara’s expectation of preparing early.\n2. Find a contrast at the side entrance. Suggestion: the open frame and warm light make entry possible and can create a more welcoming atmosphere.\n3. Draft a claim about the change in atmosphere. Starter: “The movement from ____ to ____ suggests ____.”\n4. Add one precise detail from each entrance. Explain why the difference matters to Mara’s goal.\n5. Reread. If you only list objects, add their effect. If you claim all darkness or light always has one meaning, narrow the statement to this story.\nYour interpretation can differ when supported. Try before comparing each suggestion.",
+  "independent_task": "YOU DO: Close-reading response (about 25–30 minutes).\nUse The Side Entrance, included above.\n1. Make three notes: a setting detail and effect; a character action and possible inference; a choice and consequence in the plot.\n2. Write about 180–250 words answering: “How does the story develop Mara’s response to the blocked entrance?” Use two paragraphs if helpful.\n3. Support your response with at least two precise details. Explain each link; distinguish stated events from your interpretation.\n4. Check: focused claim; accurate evidence; explained connection; no invented thoughts or events; proportionate wording.\n5. Revise one weak link and include a short note explaining the revision.\nType in the big box or work on paper and type the response or a clear summary with your evidence-and-explanation sentences. An upload is optional. The word range guides the task; reasoning matters more than filler.",
+  "learning_area": "English",
+  "learning_intention": "We are learning to explain how setting, character choices and connected plot events create meaning in a short narrative.",
+  "lesson_number": 1,
+  "lesson_role": "Reading and viewing",
+  "materials": [
+    "All texts and examples are included in this lesson",
+    "Optional: paper and a pen for notes"
+  ],
+  "offline_alternative": "Copy or print the included story. Make the three notes and response on paper, then type a summary and complete the quiz later.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches contextual effects of setting, careful character inference, causal plot analysis and claim-evidence-explanation paragraphs. The lesson follows the repository’s Year 7 narrative unit. Exact outcome codes are empty because a current Stage 4 code mapping was not verified from the accessible official page; do not claim full outcome coverage. All practice texts are original fiction.\n\nParent: Look for supported reasoning rather than a single prescribed interpretation. The supplied text is complete; no class novel is needed.\n\nParent: Allow a learner to split the reading into sections. Do not supply the scored answers. A different turning point can be valid when its change is explained. The lesson supplies the instruction, models and practice. The ten-question quiz is multiple-choice and the unchanged 90% threshold requires 9/10. Written analysis and reflection are part of the independent task, not automatically scored by the quiz.\n\nParent: Possible main-task interpretation: Mara initially reacts to blocked access and worries about the model, then investigates, enters and improves the sign. Use the handle, roof adjustment, entry and permission-seeking as evidence. Accept alternatives supported by the story. Reflection model: the sign-improvement action made me see her as responding constructively rather than only complaining.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 2,
+      "explanation": "Setting includes place, time and relevant circumstances. A place name alone does not capture all its possible roles.",
+      "options": [
+        "Only a place name",
+        "Only the title",
+        "Where, when and the surrounding circumstances",
+        "Every thought a reader invents"
+      ],
+      "question": "What does setting include?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "The visible emptiness and blocked access conflict with Mara’s expectation of setting up early.",
+      "options": [
+        "An empty foyer behind an unmoving door",
+        "A narrator’s invented school history",
+        "A fact about an unrelated city",
+        "A guarantee about all locked doors"
+      ],
+      "question": "Which detail supports uncertainty at the front entrance?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "An inference reasons from evidence. It is not an invented fact or an automatic certainty.",
+      "options": [
+        "A fact you add without evidence",
+        "A copied title",
+        "A claim that must be certain",
+        "An interpretation supported by textual evidence"
+      ],
+      "question": "What is an inference?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Checking instructions supplies evidence for his proposed response. The other actions are not stated.",
+      "options": [
+        "He changes the exhibition date",
+        "He checks the instructions before proposing a next step",
+        "He comments on every model",
+        "He knows all visitors’ thoughts"
+      ],
+      "question": "Which action supports Ari’s practical approach?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "An action can suggest different responses; context and other evidence help assess which reading is supported.",
+      "options": [
+        "Actions have no context",
+        "Every interpretation is equally supported",
+        "A reader must consider the action alongside other details",
+        "The event never happened"
+      ],
+      "question": "Why can pulling the handle again have more than one interpretation?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "A consequence is a result that may shape what follows. It need not be happy.",
+      "options": [
+        "The result of an action or situation",
+        "The number of letters in a name",
+        "An unrelated object",
+        "A word that always means a happy ending"
+      ],
+      "question": "What is a consequence in plot analysis?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The checked instruction redirects them from an assumption of closure to investigating another entrance.",
+      "options": [
+        "Ari has a folder",
+        "The story mentions a roof",
+        "A model has cardboard",
+        "They check the message and investigate the side entrance"
+      ],
+      "question": "Which moment changes the approach to the blocked entrance?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The extra arrow responds to the earlier confusion. Permission remains part of the stated action.",
+      "options": [
+        "It proves every visitor was lost",
+        "It responds to Mara missing the first sign",
+        "It creates a different exhibition goal",
+        "It removes the need for permission"
+      ],
+      "question": "How does the new arrow connect to an earlier event?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Precise evidence can be located and connected to the claim. Length or impressiveness alone does not make it useful.",
+      "options": [
+        "It is long enough to fill a page",
+        "It sounds impressive but cannot be located",
+        "It identifies relevant words or an accurately described action",
+        "It replaces all explanation"
+      ],
+      "question": "What makes evidence precise?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "The passage supports a situational change. The other claims go beyond what its events establish.",
+      "options": [
+        "Mara’s actions suggest a changed response in this situation",
+        "Mara never makes another mistake in her life",
+        "Everyone secretly dislikes the model",
+        "The hall will always be closed"
+      ],
+      "question": "Which claim is proportionate to the evidence?",
+      "type": "multiple_choice"
+    }
+  ],
+  "response_prompt": "Which piece of evidence changed or strengthened your interpretation, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s4-eng-y7-w01-l1",
+  "stage": "S4",
+  "stage_hints": {
+    "accept": [
+      "Read the challenge and notice that your final response must explain evidence.",
+      "Begin with one setting detail; character and plot connections follow.",
+      "Keep a space for three notes: setting effect, character inference and plot consequence."
+    ],
+    "guided": [
+      "Start with a front-entrance detail before looking for a contrast.",
+      "Make a short note about its effect on Mara’s expectation.",
+      "Use the contrast starter with one detail from each entrance and explain why the change matters."
+    ],
+    "learn": [
+      "Read the whole story before the model paragraph.",
+      "Locate each piece of evidence used in the model.",
+      "Choose one action and explain its purpose in the argument before reading the next sentence."
+    ],
+    "quiz": [
+      "Return to setting, inference, plot or evidence reasoning as the question requires.",
+      "Distinguish a stated event from a claim about what it suggests.",
+      "Compare each option with the passage and avoid claims that require invented background information."
+    ],
+    "submit": [
+      "Check that your response, revision note and reflection are ready.",
+      "Include your evidence-and-explanation sentences if you worked on paper.",
+      "Keep the original page for review and submit a clear typed summary or full response."
+    ],
+    "teach0": [
+      "Look back at a detail and its effect as different parts of an explanation.",
+      "Ask how the detail interacts with what Mara expects to do.",
+      "Use “This detail suggests ____ because ____.” Keep the link specific to this situation."
+    ],
+    "teach1": [
+      "Look back at an action and a proportionate inference.",
+      "Consider what else the action might suggest before deciding.",
+      "Combine two relevant details and explain why they support your reading of this moment."
+    ],
+    "teach2": [
+      "Look back at the character’s goal and obstacle.",
+      "Identify the choice before naming its result.",
+      "Use a supported because/so connection and compare the approach before and after the key moment."
+    ],
+    "teach3": [
+      "Look back at the three parts of the analytical model.",
+      "Check that your evidence can be located and relates to the claim.",
+      "After a detail, add “This suggests ____ because ____.” Explain the relationship instead of repeating the event."
+    ],
+    "write": [
+      "Look back at your three notes and decide which interpretation they support.",
+      "Begin “The story presents Mara as ____ in response to ____.”",
+      "A partial opening shape is “At the front entrance, Mara’s response suggests ____.” Fill the idea, then support it with a precise detail."
+    ]
+  },
+  "subject": "English",
+  "success_criteria": [
+    "I can connect a setting detail with its effect.",
+    "I can infer a character’s response from words and actions.",
+    "I can explain a cause-and-result connection in the plot.",
+    "I can write a claim supported by evidence and explanation."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "The blocked entrance matters because Mara expects to prepare her display. This connects the detail to its effect in this particular situation.",
+        "options": [
+          "The hall contains several nouns",
+          "The blocked entrance interrupts Mara’s expectation of getting ready",
+          "The story has a place name",
+          "Every locked door symbolises the same idea"
+        ],
+        "question": "Which statement explains a setting detail’s effect in this story?"
+      },
+      "example": "I DO:\nExtract: “Through the front glass she could see chairs, a folded display board and an empty foyer. The door would not move.”\nPlace: the front of the community hall.\nSelected detail: an empty foyer visible behind an unmoving door.\nEffect: uncertainty, because the expected exhibition preparations seem inaccessible.\n\nCOMPARE:\n“The foyer is empty” repeats the detail. I add how it affects the situation rather than listing another object.\n\nYOU TRY:\n“Warm light fell across the concrete” appears when the side entrance is open. How might that detail change the atmosphere? Try before reading on.\n\nCHECK:\nIt can suggest welcome or relief, contrasting with the blocked front entrance. Link the effect to the newly accessible entrance; do not claim warm light always has that meaning in every story.",
+      "explain": "**Setting is more than a place name.**\nSetting includes where and when events occur and the circumstances around them. A writer selects details to help us picture the situation and feel its pressure or atmosphere. Mood is the feeling a passage creates for a reader.\n\n**Begin with what is stated.**\nRead the short extract below. Identify a place, a time and one selected detail before deciding what it suggests. Do not invent background history because a place seems familiar.\n\n**Explain a detail’s job.**\nAn empty foyer behind a locked door can create uncertainty when a character expects an event to begin. The detail matters because it conflicts with the character’s expectation.\n\n**Distinguish detail from effect.**\n“There is a door” identifies a thing. “The unmoving door interrupts Mara’s expectation of getting ready” explains what it does in this situation. Readers can have different reactions, but a supported effect needs a link to the words.\n\nTry the frame “The detail ____ creates/suggests ____ because ____.” Use it to organise an explanation, not to replace thinking with a formula.",
+      "icon": "📖",
+      "notice": "An effect depends on context. Do not turn one setting detail into a universal symbol without evidence.",
+      "title": "Read the setting for its effect"
+    },
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "Checking the message and proposing that they investigate support a practical approach. The other claims add information the story does not supply.",
+        "options": [
+          "He secretly owns the hall",
+          "He has never made a mistake",
+          "He takes a practical approach by checking the instructions",
+          "He knows everyone’s private thoughts"
+        ],
+        "question": "Which is an evidence-based inference about Ari?"
+      },
+      "example": "I DO:\nEvidence: Mara notices the crooked roof in the glass and later stops adjusting it when she reaches the open entrance.\nInference: she seems self-conscious about presenting the model, and access to the event eases that pressure.\nWhy: her attention shifts from checking the roof to stepping forward.\n\nCOMPARE:\n“Mara is bad at everything” is an unfair generalisation. The passage describes a particular moment, not her whole life.\n\nYOU TRY:\nAri checks the message and says, “We can check before deciding it’s closed.” What response does this suggest?\n\nCHECK:\nIt suggests a practical, evidence-seeking approach. Support that interpretation with his checking action rather than simply calling him clever.",
+      "explain": "**Characterisation is how a writer presents a character.**\nA writer may state a quality directly or reveal it through actions, dialogue and reactions. An inference is an interpretation supported by evidence, not a fact you add to the story.\n\n**Look for a pattern, not only a label.**\nMara pulls the handle again and worries about the roof. These details can suggest anxiety about the exhibition. One action does not prove a person always behaves that way.\n\n**Consider another explanation.**\nPulling again could also show determination to get inside. To choose between interpretations, combine details and explain which reading the wider passage supports.\n\n**Avoid unsupported mind-reading.**\n“Mara thinks every person dislikes her” is stronger than the text permits. “Her attention to the crooked roof suggests concern about how the model will be judged” is a more careful claim.\n\nUse suggests, implies or may reveal where you are interpreting. Then name the action or words that support the idea. A cautious verb does not make an unsupported guess valid by itself.",
+      "icon": "📖",
+      "notice": "Describe a response in this situation before making a claim about a permanent personality trait.",
+      "title": "Infer character from action and dialogue",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "A character pulls a locked handle twice. Can I claim that they always make poor decisions?",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Keep the claim proportionate. Use the action and its context to interpret this moment.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "I can consider another reading and explain which details support my view.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try. Turn one character label into a careful claim with a supporting detail.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Inference needs evidence",
+            "transcript": "Pip: A character pulls a locked handle twice. Can I claim that they always make poor decisions?\nJuno: Keep the claim proportionate. Use the action and its context to interpret this moment.\nPip: I can consider another reading and explain which details support my view.\nJuno: Pause and try. Turn one character label into a careful claim with a supporting detail."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "The instruction about a side entrance changes the next response and helps the characters reach their goal. The other interpretations are unsupported.",
+        "options": [
+          "It gives a reason to investigate another entrance",
+          "It removes every character from the story",
+          "It proves the front door is broken forever",
+          "It adds an unrelated setting detail"
+        ],
+        "question": "Why does checking the message matter to the plot?"
+      },
+      "example": "I DO:\nGoal: prepare the model before visitors arrive.\nObstacle: the front door does not open.\nResponse: check the message and investigate the side entrance.\nConsequence: Mara gets inside and sets up.\nLater response: improve the sign with permission.\n\nMy connection: “Because Ari checks the instructions, they investigate a different entrance rather than accepting the first assumption.”\n\nYOU TRY:\nExplain why the second arrow at the front door connects to an earlier event.\n\nCHECK:\nIt responds to Mara missing the first sign and pulling the blocked handle. It is not an unrelated ending decoration: she uses her experience to help later arrivals.",
+      "explain": "**Plot is a connected sequence.**\nA narrative’s events are more than a list of things happening. Identify a goal, obstacle, response and consequence. A consequence is the result of an action or situation.\n\n**Order is not the same as cause.**\nThen shows that an event follows another. Because or so can help explain why it happens or what follows from it. Only claim a causal link when the text supports it.\n\n**Locate a change of direction.**\nA turning point is a moment that changes how the main situation develops. Ari’s message-check and the decision to investigate the side entrance redirect the response from assuming closure to testing the instructions.\n\n**Explain how the problem settles.**\nThe resolution shows what happens to the central obstacle or goal. Getting inside lets Mara place her model. Her later sign change responds to the earlier confusion and suggests learning from the experience.\n\nDifferent turning-point choices can be defensible. Explain the approach before and after your chosen moment rather than relying on its position on the page.",
+      "icon": "📖",
+      "notice": "An exciting event is not automatically the turning point. Show what it changes in the developing problem.",
+      "title": "Trace plot through choices and consequences"
+    },
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "The explanation shows why the evidence supports the claim. Repetition or unrelated information does not supply that reasoning.",
+        "options": [
+          "An unrelated fact about your weekend",
+          "The same evidence copied again",
+          "A guarantee that no other reading is possible",
+          "An explanation linking the evidence to the claim"
+        ],
+        "question": "What should follow a piece of textual evidence in an analytical paragraph?"
+      },
+      "example": "I DO:\nClaim: The story presents Mara moving from quick frustration towards a more considered response.\nEvidence: She first says, “That could mean anywhere,” but later asks permission to add another arrow.\nExplanation: Her early comment dismisses the sign; the later action acknowledges the problem and tries to improve it. The ending also lets both students recognise a useful point in the other’s view.\n\nCOMMON MISTAKE:\n“Mara changes. There is a sign.” The evidence is vague and the link missing. I name the contrasting responses and explain their effect.\n\nYOU TRY:\nMake one claim about Ari and choose one short supporting action. Explain the connection before comparing the model paragraph later in the lesson.",
+      "explain": "**A claim answers an interpretive question.**\nFor example: “How does the story present Mara’s changing response?” Your claim should offer an idea about the text, not only repeat the question.\n\n**Choose precise evidence.**\nEvidence may be a short quotation or an accurately described action. Select the part that supports this claim. You do not need to copy an entire paragraph.\n\n**Explain the link.**\nAfter evidence, answer “How does this support my idea?” Naming a technique such as dialogue is useful only if you explain its role. A reader needs to follow your reasoning.\n\n**Keep the claim proportionate.**\nOne incident can suggest a change in this situation, not prove a character has permanently changed every belief. Check your wording against the strength of your evidence.\n\nReread the paragraph. Does the claim answer the question? Is the evidence accurate? Does the explanation add reasoning rather than retell the same event? Improve one weak link.",
+      "icon": "📖",
+      "notice": "A quotation does not explain itself. Add how the selected words or action support the particular claim.",
+      "title": "Build a claim, evidence and explanation",
+      "visual": [
+        {
+          "alt": "An analysis links a claim with precise evidence and an explanation of how the evidence supports it.",
+          "caption": "Explanation turns evidence into reasoning.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">CLAIM: your interpretation</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">EVIDENCE: precise words/action</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">EXPLAIN: how they connect</text></svg>"
+        }
+      ]
+    }
+  ],
+  "title": "Year 7: Analyse setting, character and plot",
+  "unit_number": 1,
+  "unit_title": "Narrative: short stories and voice",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Read the complete original story.\nTHE SIDE ENTRANCE\n\nMara reached the community hall twenty minutes before the student exhibition opened. She had spent the week building a cardboard model and wanted it on a table before anyone arrived. Through the front glass she could see chairs, a folded display board and an empty foyer. The door would not move.\n\n“They said we could bring our work early,” she told Ari. She pulled the handle again. In the glass, her model’s crooked roof looked more noticeable than it had at home.\n\nAri set down his folder and checked the message on his phone. “It says side entrance for exhibitors.”\n\nMara looked along the wall. A small paper arrow pointed towards the corner, but she had walked straight past it. “That could mean anywhere,” she said.\n\n“We can check before deciding it’s closed.” Ari picked up his folder. He did not touch Mara’s model.\n\nAt the side door, a volunteer was holding the frame open while another student carried a painting through. Warm light fell across the concrete. Mara stopped adjusting the roof and stepped forward.\n\n“There’s a table for models at the back,” the volunteer said. “Take your time.”\n\nInside, Mara found a space and placed the model beside a bridge made from paddle-pop sticks. Nobody commented on her roof. Ari put his folder on the neighbouring table.\n\nMara took the paper arrow from the outside wall, showed it to the volunteer and asked whether they could add a second arrow near the front handle. With permission, she placed the new sign where the next student would see it before pulling.\n\nWhen she came back, Ari was straightening his display label. “You were right about checking,” she said. He looked up. “And you were right that the sign could be clearer.”\n\nMODEL ANALYTICAL PARAGRAPH\nThe story presents Ari as practical without making him dismissive of Mara’s concern. He checks the message and proposes that they investigate before deciding the hall is closed. This response uses available evidence to change their next action rather than arguing about who is right. However, his final comment that the sign “could be clearer” also recognises Mara’s experience. Together, the actions and dialogue suggest that a useful response combines checking an assumption with listening to someone affected by it.\n\nWHY THE PARAGRAPH WORKS\nThe claim is specific, the evidence includes action and dialogue, and the explanation identifies their relationship. It does not claim Ari is perfect or knows facts outside the text.\n\nCOMMON MISTAKE AND FIX\n“Ari has a phone, so he is practical” names an object rather than explaining its use. Fix: specify that he checks the instructions and uses what he finds to guide the next action.",
+  "worked_visuals": [
+    {
+      "alt": "A causal chain moves from an initial assumption through checking instructions to investigating, setting up and improving the sign.",
+      "caption": "Use the chain to explain change, not merely list events.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 224\"><rect width=\"420\" height=\"224\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Assumption: hall is closed</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Check: side-entry instruction</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Action: investigate and set up</text><text x=\"16\" y=\"172\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Response: improve the sign</text></svg>"
+    }
+  ],
+  "year_level": "Year 7"
+}
