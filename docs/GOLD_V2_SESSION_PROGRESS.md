@@ -45,12 +45,12 @@ Priority: Stage 2 Written Core → Stage 4 Written Core → remainder. Phase 1 w
 | Mathematics | 160 | Strong pilot quizzes preserved where already good |
 | Science and Technology | 80 | Assessments repaired |
 | HSIE | 80 | Assessments repaired |
-| PDHPE | in authored/pipeline mix | Continue after quality gate stabilised |
+| PDHPE | 80 | Complete (auto); PH2-* codes proposed, content-point mapping pending; body/safety content non-graphic and consent-aware |
 | Creative Arts | queued | |
 
 ## Next resume point
 
-1. Continue Y3 PDHPE / Creative Arts Written Core using the new assessment builder (do not regenerate weak meta quizzes).
+1. Continue Y3 Creative Arts Written Core from `s2-arts-y3-w01-l1` using the new assessment builder (do not regenerate weak meta quizzes). Y3 PDHPE (80) is auto-validated.
 2. Spot educational review of repaired assessments before claiming quality beyond automated gates.
 3. Keep PR #105 draft; no merge/deploy.
 
