@@ -6,10 +6,10 @@ Resume from `feature/gold-v2-resumable-pipeline`. Do not merge, deploy, or apply
 
 | Gate | Count |
 |---|---|
-| Automatically validated (pipeline) | **1087** |
+| Automatically validated (pipeline) | **1099** |
 | Human gates | **0** |
 
 ## Year 4 HSIE
 
-- **48 / 80** auto-validated (protocol-safe First Nations framing; Community verification pending)
-- Next resume: `s2-hsie-y4-w25-l1`
+- **60 / 80** auto-validated (protocol-safe First Nations framing; Community verification pending)
+- Next resume: `s2-hsie-y4-w31-l1`
