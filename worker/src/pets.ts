@@ -25,6 +25,7 @@ import {
   syncPetCare,
   touchStreak,
 } from "./data/pets";
+import { applyRoomPatch, buyShopItem } from "../../frontend/src/components/petroom/roomLogic.js";
 
 const cleanDate = (value: unknown) => {
   if (value == null || String(value).trim() === "") return null;
@@ -139,6 +140,34 @@ export function registerPets(app: App, g: Guards) {
     if (!changed) return jsonDetail(c, "Nothing to update", 400);
     await savePet(c.env.DB, pet);
     return c.json(legacyPetView(pet));
+  });
+
+  app.put("/api/pet/room", g.auth, g.child, async (c) => {
+    const pet = await loadSyncedPet(c.env.DB, c.get("user").id);
+    if (!pet) return jsonDetail(c, "No pet yet", 404);
+    const body: any = await jsonBody(c);
+    const result = applyRoomPatch(pet.extra, pet.background, {
+      theme: body.theme,
+      floor: body.floor,
+      lampOn: body.lampOn,
+      placements: body.placements,
+    });
+    if (result.error) return jsonDetail(c, result.error, 400);
+    pet.extra = result.extra;
+    if (typeof body.theme === "string") pet.background = String(body.theme).slice(0, 30);
+    await savePet(c.env.DB, pet);
+    return c.json(await publicPet(c.env.DB, pet));
+  });
+
+  app.post("/api/pet/shop/buy", g.auth, g.child, async (c) => {
+    const pet = await loadSyncedPet(c.env.DB, c.get("user").id);
+    if (!pet) return jsonDetail(c, "No pet yet", 404);
+    const body: any = await jsonBody(c);
+    const result = buyShopItem(pet.extra, pet.background, String(body.item_id || body.itemId || ""));
+    if (result.error) return jsonDetail(c, result.error, 400);
+    pet.extra = result.extra;
+    await savePet(c.env.DB, pet);
+    return c.json(await publicPet(c.env.DB, pet));
   });
 
   app.post("/api/pet/help", g.auth, g.child, async (c) => {

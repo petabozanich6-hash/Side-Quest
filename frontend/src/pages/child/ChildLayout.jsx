@@ -6,6 +6,7 @@ import { api } from "../../lib/api";
 import PetPicker from "./PetPicker";
 import PetCompanion from "../../components/shared/PetCompanion";
 import ChildInbox from "../../components/child/ChildInbox";
+import RewardPulse from "../../components/petroom/RewardPulse";
 
 const themeMap = {
   early: { shell:"child-early", accent:"#C77B5B", title:"Early Explorer" },
@@ -53,6 +54,7 @@ export default function ChildLayout() {
         </div>
       </header>
       <ChildInbox />
+      <RewardPulse studentId={user?.id} pathname={loc.pathname} />
       <main className="mx-auto max-w-6xl p-6 pb-28">
         <Outlet />
       </main>

@@ -40,7 +40,7 @@ export const Flower = ({ className = "", color = "#D4857A", size = 40 }) => (
 );
 
 // children are drawn on top of the pet inside its 120x120 drawing (used for worn prizes).
-export const Pet = ({ species = "fox", size = 120, happy = true, children }) => {
+export const Pet = ({ species = "fox", size = 120, happy = true, resting = false, motion = "bob", children }) => {
   const bodyColor = {
     fox: "#C77B5B", owl: "#8B6F47", turtle: "#6B8A5B", hedgehog: "#9B7E5C",
     fawn: "#D4A574", squirrel: "#B8755A", rabbit: "#E8E2D1", dragon: "#4A6D5A"
@@ -51,7 +51,7 @@ export const Pet = ({ species = "fox", size = 120, happy = true, children }) => 
   }[species] || "#F5EFE0";
 
   return (
-    <svg width={size} height={size} viewBox="0 0 120 120" className="animate-bob" style={{ overflow: "visible" }}>
+    <svg width={size} height={size} viewBox="0 0 120 120" className={motion === "bob" && !resting ? "animate-bob" : ""} style={{ overflow: "visible" }}>
       {/* Body */}
       <ellipse cx="60" cy="78" rx="34" ry="30" fill={bodyColor}/>
       {/* Belly */}
@@ -83,8 +83,19 @@ export const Pet = ({ species = "fox", size = 120, happy = true, children }) => 
         <path d="M38 32 L 30 12 L 48 24 Z" fill={bodyColor}/><path d="M82 32 L 90 12 L 72 24 Z" fill={bodyColor}/>
         <path d="M80 70 Q 110 60, 115 35 Q 105 55, 90 60 Z" fill={bodyColor} opacity="0.9"/>
       </>)}
+      {species === "fawn" && (<>
+        <path d="M42 30 L 40 16 L 52 26 Z" fill={bodyColor}/><path d="M78 30 L 80 16 L 68 26 Z" fill={bodyColor}/>
+        <circle cx="48" cy="72" r="3" fill={accent}/><circle cx="70" cy="76" r="2.4" fill={accent}/>
+      </>)}
+      {species === "squirrel" && (<>
+        <path d="M40 28 L 36 14 L 50 24 Z" fill={bodyColor}/><path d="M80 28 L 84 14 L 70 24 Z" fill={bodyColor}/>
+        <path d="M86 68 Q 114 58 108 90 Q 94 98 88 80 Z" fill={bodyColor}/>
+      </>)}
 
-      {/* Eyes */}
+      {resting ? (<>
+        <path d="M46 48 Q50 51 54 48" stroke="#2A2822" strokeWidth="2" fill="none" strokeLinecap="round"/>
+        <path d="M66 48 Q70 51 74 48" stroke="#2A2822" strokeWidth="2" fill="none" strokeLinecap="round"/>
+      </>) : (<>
       <g className={happy ? "animate-blink" : ""} style={{transformOrigin:"50px 48px"}}>
         <circle cx="50" cy="48" r="4" fill="#2A2822"/>
         <circle cx="51" cy="47" r="1.2" fill="#FBF7EC"/>
@@ -93,6 +104,7 @@ export const Pet = ({ species = "fox", size = 120, happy = true, children }) => 
         <circle cx="70" cy="48" r="4" fill="#2A2822"/>
         <circle cx="71" cy="47" r="1.2" fill="#FBF7EC"/>
       </g>
+      </>)}
       {/* Blush */}
       <ellipse cx="42" cy="56" rx="5" ry="3" fill="#D4857A" opacity="0.5"/>
       <ellipse cx="78" cy="56" rx="5" ry="3" fill="#D4857A" opacity="0.5"/>

@@ -61,7 +61,7 @@ export default function ChildAchievements() {
       </h1>
 
       {revealed ? (
-        <div className="paper-card p-6 text-center" data-testid="box-reveal">
+          <div className="paper-card p-6 text-center reward-settle" data-testid="box-reveal">
           <div className="text-5xl">{revealed.prize.emoji}</div>
 
           <h2

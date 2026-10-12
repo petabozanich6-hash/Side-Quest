@@ -1,4 +1,5 @@
 import { newId, nowIso } from "../types";
+import { ACORN_AMOUNTS, acornsForFeedback, economyOf, grantAcorn, listShop, readRoom } from "../../../frontend/src/components/petroom/roomLogic.js";
 
 export const PET_SPECIES = {
   fox: { label: "Fox", voice: "clever, warm, curious" },
@@ -158,12 +159,8 @@ const parseDate = (value: string | null | undefined) => {
   return Number.isNaN(d.getTime()) ? null : d;
 };
 
-const careStatus = (hatched: boolean, neglectDays: number) => {
-  if (neglectDays >= ASLEEP_DAYS) return hatched ? "asleep" : "cold";
-  if (neglectDays >= SICK_DAYS) return hatched ? "sick" : "cold";
-  if (neglectDays >= SAD_DAYS) return hatched ? "sad" : "chilly";
-  return "ok";
-};
+// Time away must not make a pet sick, sad, cold, or asleep. Care actions stay optional.
+const careStatus = (_hatched: boolean, _neglectDays: number) => "ok";
 
 export function needsFeed(pet: Pick<PetState, "last_fed">, now = new Date()) {
   const lastFed = parseDate(pet.last_fed);
@@ -331,6 +328,9 @@ export async function syncPetProgress(db: D1Database, pet: PetState) {
     reading: new Set<string>(stringArray(pet.extra?.awards?.reading)),
   };
   let changed = false;
+  const economy = economyOf(pet.extra);
+  const economyWasSeeded = !!pet.extra?.economy?.seeded;
+  let acornsGained = 0;
 
   try {
     const { results: submissions } = await db.prepare(
@@ -341,6 +341,7 @@ export async function syncPetProgress(db: D1Database, pet: PetState) {
       if (awards.submissions.has(key)) continue;
       awards.submissions.add(key);
       pet.xp += SUBMISSION_XP;
+      acornsGained += grantAcorn(economy, "submissions", key, ACORN_AMOUNTS.submission);
       pet.happiness = clamp(pet.happiness + 5, 0, 100);
       pushActivity(pet, SUBMISSION_XP, `Submitted: ${row.lesson_id || row.id}`, String(row.submitted_at || nowIso()));
       changed = true;
@@ -358,6 +359,7 @@ export async function syncPetProgress(db: D1Database, pet: PetState) {
       if (awards.feedback.has(key)) continue;
       awards.feedback.add(key);
       pet.xp += amount;
+      acornsGained += grantAcorn(economy, "feedback", key, acornsForFeedback(String(row.status)));
       pet.happiness = clamp(pet.happiness + 5, 0, 100);
       pushActivity(pet, amount, `Feedback: ${row.status}`, String(row.reviewed_at));
       changed = true;
@@ -373,14 +375,16 @@ export async function syncPetProgress(db: D1Database, pet: PetState) {
       if (awards.reading.has(key)) continue;
       awards.reading.add(key);
       pet.xp += READING_XP;
+      acornsGained += grantAcorn(economy, "reading", key, ACORN_AMOUNTS.reading);
       pushActivity(pet, READING_XP, `Read: ${row.title || "Book"}`, String(row.created_at || nowIso()));
       changed = true;
     }
   } catch {}
 
-  if (changed) {
+  if (changed || !economyWasSeeded || acornsGained) {
     pet.extra = {
       ...pet.extra,
+      economy,
       awards: {
         submissions: [...awards.submissions],
         feedback: [...awards.feedback],
@@ -504,10 +508,14 @@ export async function publicPet(db: D1Database, pet: PetState) {
   };
   out.care = {
     needs_feeding: needsFeed(pet),
-    needs_cleaning: pet.poop_pending,
-    asleep: pet.care_status === "asleep",
+    needs_cleaning: false,
+    asleep: false,
     paused: pet.care_paused,
   };
+  const room = readRoom(pet.extra, pet.background);
+  out.room = room;
+  out.economy = { acorns: economyOf(pet.extra).acorns };
+  out.shop = listShop(room);
   return out;
 }
 

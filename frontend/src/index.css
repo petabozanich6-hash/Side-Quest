@@ -147,6 +147,15 @@ body::before {
 ::-webkit-scrollbar-thumb { background: #D4C8A8; border-radius: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 
+[data-testid^="child-nav-"] { transition: background-color .18s ease, color .18s ease; }
+@media (prefers-reduced-motion: no-preference) {
+  .reward-settle { animation: fadeInUp .45s ease; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-in, .animate-bob, .animate-blink, .animate-wiggle, .animate-sprout, .reward-settle { animation: none !important; }
+  [data-testid^="child-nav-"] { transition: none; }
+}
+
 /* Botanical decorations */
 .botanical-corner {
   position: absolute; pointer-events: none; opacity: 0.5;
