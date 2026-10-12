@@ -54,7 +54,7 @@ Default order is week-first within each year: English, Mathematics, Science and 
 
 Read this register, the inventory, current renderer and latest migration/PR numbering before the next batch. Reuse the approved depth, not the Year 3 topic or reading level. Author original subject-specific content; do not fill the queue by cloning one generic lesson.
 
-Each PR contains one subject-week, up to 50 lessons per migration, with one UPDATE per lesson or two (text then media) for lessons over about 90 KB; every statement must be at most 100,000 bytes. Complete arrays replace old arrays. Preserve seed keys, row IDs and assignments. Include readable reviews, actual validation results, a brief Usage check (estimated rows written and largest statement size) and beginner backup/apply/undo instructions.
+Each PR can combine multiple subject-weeks, up to 50 lessons per migration, with one UPDATE per lesson or two (text then media) for lessons over about 90 KB; every statement must be at most 100,000 bytes. Complete arrays replace old arrays. Preserve seed keys, row IDs and assignments. Include readable reviews, actual validation results, a brief Usage check (estimated rows written and largest statement size) and beginner backup/apply/undo instructions.
 
 This environment had no execution container for this batch. The validator's pure functions were run in tool JavaScript; Node CLI, SQLite, React build and browser interactions were not run. Do not copy an earlier batch's testing claims.
 
