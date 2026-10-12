@@ -6,8 +6,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 // Voices come from the browser (speechSynthesis). If no voice is available the lines still play with timed captions.
 
 const CAST = {
-  pip: { name: "Pip", body: "#38bdf8", belly: "#e0f2fe", pitch: 1.4, rate: 0.95, ears: true, x: 190 },
-  juno: { name: "Juno", body: "#fb923c", belly: "#ffedd5", pitch: 0.95, rate: 0.92, ears: false, x: 610 },
+  pip: { name: "Pip", body: "#38bdf8", belly: "#e0f2fe", pitch: 1.06, rate: 0.97, ears: true, x: 190 },
+  juno: { name: "Juno", body: "#fb923c", belly: "#ffedd5", pitch: 0.98, rate: 0.94, ears: false, x: 610 },
 };
 
 const BLOCK = {
@@ -108,14 +108,29 @@ function Character({ id, talking, active }) {
   );
 }
 
+// Prefer high-quality voices regardless of accent. Browser voice lists are not
+// quality-ranked; their first entries are often older synthetic or novelty voices.
+const AVOID_VOICES = /(compact|novelty|whisper|zarvox|bells|bad news|good news|bubbles|cellos|organ|trinoids|albert|junior|fred|ralph)/i;
+const QUALITY_VOICES = /(natural|premium|enhanced|neural|online|google)/i;
+const PREFERRED_NAMES = /(samantha|ava|allison|serena|karen|catherine|natasha|libby|hazel|susan|daniel|alex|oliver)/i;
+
+function rankedVoices() {
+  if (typeof window === "undefined" || !window.speechSynthesis) return [];
+  return window.speechSynthesis.getVoices()
+    .filter((v) => /^en(?:-|_|$)/i.test(v.lang || "") && !AVOID_VOICES.test(v.name))
+    .sort((a, b) => {
+      const score = (v) => (QUALITY_VOICES.test(v.name) ? 10 : 0)
+        + (PREFERRED_NAMES.test(v.name) ? 4 : 0)
+        + (v.default ? 2 : 0);
+      return score(b) - score(a);
+    });
+}
+
 function pickVoice(id) {
-  if (typeof window === "undefined" || !window.speechSynthesis) return null;
-  const voices = window.speechSynthesis.getVoices();
-  const english = voices.filter((v) => v.localService && /^en/i.test(v.lang));
-  const au = english.filter((v) => /en-AU/i.test(v.lang));
-  const pool = au.length ? au : english;
-  if (!pool.length) return null;
-  return id === "pip" ? pool[0] : pool[Math.min(1, pool.length - 1)];
+  const voices = rankedVoices();
+  if (!voices.length) return null;
+  // Prefer distinct voices, but never sacrifice voice quality just for an accent.
+  return voices[id === "juno" && voices.length > 1 ? 1 : 0];
 }
 
 export default function CartoonEpisode({ episode }) {
@@ -130,6 +145,21 @@ export default function CartoonEpisode({ episode }) {
   const [speaking, setSpeaking] = useState(false);
   const timer = useRef(null);
   const hasSpeech = typeof window !== "undefined" && !!window.speechSynthesis;
+  const [voiceVersion, setVoiceVersion] = useState(0);
+
+  // Safari/Chrome may populate getVoices() only after voiceschanged fires.
+  useEffect(() => {
+    if (!hasSpeech) return undefined;
+    const synth = window.speechSynthesis;
+    const onVoices = () => setVoiceVersion((v) => v + 1);
+    synth.addEventListener?.("voiceschanged", onVoices);
+    // Some browsers support only the legacy event property.
+    if (!synth.addEventListener) synth.onvoiceschanged = onVoices;
+    return () => {
+      synth.removeEventListener?.("voiceschanged", onVoices);
+      if (!synth.removeEventListener && synth.onvoiceschanged === onVoices) synth.onvoiceschanged = null;
+    };
+  }, [hasSpeech]);
 
   const stop = useCallback(() => {
     clearTimeout(timer.current);
@@ -166,6 +196,7 @@ export default function CartoonEpisode({ episode }) {
       const u = new SpeechSynthesisUtterance(line.text);
       const cast = CAST[line.who] || CAST.pip;
       u.voice = voice;
+      u.lang = voice.lang;
       u.pitch = cast.pitch;
       u.rate = cast.rate;
       u.onend = next;
@@ -180,7 +211,7 @@ export default function CartoonEpisode({ episode }) {
       clearTimeout(timer.current);
       if (hasSpeech) window.speechSynthesis.cancel();
     };
-  }, [idx, playing, muted]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [idx, playing, muted, voiceVersion]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => stop, [stop]);
 
