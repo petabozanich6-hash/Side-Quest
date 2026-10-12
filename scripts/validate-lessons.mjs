@@ -170,8 +170,8 @@ export function validateMigration(file) {
     const patch=own[0];
     const target=statement.match(/WHERE\s+seed_key\s*=\s*'((?:[^']|'')*)'/i)?.[1]?.replace(/''/g,"'");
     ensure(target && (!patch.seed_key || patch.seed_key===target),'WHERE seed key does not match lesson patch');
-    const entry=grouped.get(target)||{data:{},updates:0,clearsComingSoon:false};
-    entry.data=mergePatch(entry.data,patch);entry.updates++;entry.clearsComingSoon ||= patch.coming_soon===null;
+    const entry=grouped.get(target)||{data:{},updates:0,clearsComingSoon:false,largestStatementBytes:0};
+    entry.data=mergePatch(entry.data,patch);entry.updates++;entry.largestStatementBytes=Math.max(entry.largestStatementBytes,Buffer.byteLength(statement));entry.clearsComingSoon ||= patch.coming_soon===null;
     grouped.set(target,entry);
   });
   ensure(grouped.size<=50,'more than 50 lessons per migration');
@@ -180,7 +180,7 @@ export function validateMigration(file) {
     ensure(entry.updates<=2,'Use at most two UPDATEs per lesson: text first, media second');
     ensure(entry.clearsComingSoon,'coming_soon must be deleted');
     const result=validateLesson(entry.data);
-    if(result.bytes>90000){largeLessons.push({seed_key:seed,bytes:result.bytes,updates:entry.updates});ensure(entry.updates===2,'Lesson over 90 KB requires two UPDATEs: text first, media second');}
+    if(result.bytes>90000 || (entry.updates===1 && entry.largestStatementBytes>90000)){largeLessons.push({seed_key:seed,bytes:result.bytes,largestStatementBytes:entry.largestStatementBytes,updates:entry.updates});ensure(entry.updates===2,`${seed}: lesson over 90 KB requires two UPDATEs: text first, media second`);}
     return result;
   });
   return {lessons:grouped.size,estimatedRowsWritten:statements.length,statements:statements.length,sqlBytes:Buffer.byteLength(sql),statementBytes:all.map(s=>Buffer.byteLength(s)),largeLessons,results};

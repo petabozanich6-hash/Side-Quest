@@ -8,7 +8,7 @@ A beginner at the lesson's year level should learn from the lesson itself: expla
 
 Adapt vocabulary, explanations, concepts, tasks and assessment to the age band. Do not copy Year 3 teaching unchanged into Kindergarten or senior subjects. Use the approved age-band step counts, quiz types and pass marks. Do not alter the approved standard without asking the parent.
 
-Original internal text, episodes and small SVG diagrams remain required where they teach usefully. Include three specific hints for every generated stage, appropriate parent/evidence notes, a screen-free alternative and a stretch idea. No runtime AI, paid services, external embeds or copied teaching materials. Verify outcome codes or leave them empty; follow the expert-review rules for uncertain specialist and cultural content.
+Original internal text, episodes and SVG diagrams remain required where they teach usefully. Include three specific hints for every generated stage, appropriate parent/evidence notes, a screen-free alternative and a stretch idea. No runtime AI, external embeds or copied teaching materials. Propose any new paid service with its approximate cost and benefit, and obtain the owner’s approval before use. Verify outcome codes or leave them empty; follow the expert-review rules for uncertain specialist and cultural content.
 
 ## Repository inventory
 
