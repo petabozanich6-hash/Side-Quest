@@ -33,8 +33,9 @@ The coming_soon flag is not a quality certificate. Earlier apparently finished c
 
 - Approved gold: `s2-eng-y3-w01-l1`, migration 0044, on main.
 - Stage 3 Year 5 English Week 1: four new-standard lessons, migration 0045, merged in PR #98. They remain authored/unreviewed; no claim that database content has been applied or reviewed.
-- First priority batch: Stage 2 Year 3 English Week 1 Lessons 2–4 are authored in migration 0046, pending PR review/application. Together with the approved Lesson 1, the whole week is written.
-- Eight rows now have new-standard authored content in repository sources: one approved gold, four preserved Stage 3 lessons and these three Stage 2 lessons. The remaining 19,194 rows remain queued. This does not mean eight lessons have been deployed or reviewed.
+- First priority batch: Stage 2 Year 3 English Week 1 Lessons 2–4 are authored in migration 0046 and merged through PR #99. Remote database application is not verified. Together with the approved Lesson 1, the whole week is written.
+- Stage 4 Year 7 English Week 1: four lessons are authored in migration 0047, pending PR review/application.
+- Twelve rows now have new-standard authored content in repository sources: one approved gold, four preserved Stage 3 lessons, three Stage 2 lessons and four Stage 4 lessons. The remaining 19,190 rows remain queued. This does not mean twelve lessons have been deployed or reviewed.
 - No gold lesson or Stage 3 batch is discarded by the priority change.
 
 The stage-specific register and inventory remain available for reference. This master register controls the authoring priority from now on.
@@ -44,8 +45,8 @@ The stage-specific register and inventory remain available for reference. This m
 Alternate subject-week batches between Stage 2 and Stage 4 so both receive work before lower-priority stages. Begin with the early years in each stage, then include the other year:
 
 1. Stage 2, Year 3 English Week 1: Lessons 2–4 authored in this PR beside the approved Lesson 1.
-2. Stage 4, Year 7 English Week 1.
-3. Stage 2, Year 4 English Week 1.
+2. Stage 4, Year 7 English Week 1: four lessons authored in this PR.
+3. **Next: Stage 2, Year 4 English Week 1.**
 4. Stage 4, Year 8 English Week 1.
 5. Stage 2/4 Mathematics Week 1 in the same year alternation.
 6. Continue through each priority stage's other subjects and electives, then later weeks. Read the actual subject plan before writing; not every subject has the same lesson count or sequence.
@@ -54,7 +55,7 @@ This is the default order, not a reduction of the all-stage scope. The parent ma
 
 ## Branches, migrations and review
 
-Each new PR targets **main directly** and covers one subject-week. Never commit to main or merge/deploy on the parent's behalf without their instruction. Check main and open PRs before allocating numbers. At this register's creation, main ends at 0045 and open PR #95 reserves 0043; this batch uses 0046. Recheck the next number before authoring the Stage 4 batch.
+Each new PR targets **main directly** and covers one subject-week. Never commit to main or merge/deploy on the parent's behalf without their instruction. Check main and open PRs before allocating numbers. At this batch’s creation, main ends at 0046 and open PR #95 reserves 0043; this batch uses 0047. Recheck the next number before authoring the Year 4 batch.
 
 At most 25 lessons per migration, normally one UPDATE per lesson below the statement limit. Supply complete arrays and delete obsolete fields with JSON merge-patch nulls. Preserve IDs, keys, ownership and assignments. A content patch and a frontend deployment are distinct from applying remote D1 content.
 
@@ -71,3 +72,4 @@ python3 scripts/export-lesson-inventory.py
 This reconstructs only a local in-memory database and writes inventory CSVs. It never contacts Cloudflare or private user data. It reflects repository sources, not which migrations have been applied remotely. Regenerate after new authored migrations and review the status labels before committing the register.
 
 The local reconstruction completed without SQL errors. Stage and unique-key counts were checked. No deployment, remote D1 mutation or live-site verification was performed by this inventory work.
+
