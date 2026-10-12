@@ -6,12 +6,12 @@ Resume from `feature/gold-v2-resumable-pipeline`. Do not merge, deploy, or apply
 
 | Gate | Count |
 |---|---|
-| Automatically validated (pipeline) | **983** |
+| Automatically validated (pipeline) | **995** |
 | Human gates | **0** |
 
 ## Year 4 Mathematics — COMPLETE (160/160)
 
 ## Year 4 Science
 
-- **24 / 80** auto-validated
-- Next resume: `s2-sci-y4-w13-l1`
+- **36 / 80** auto-validated
+- Next resume: `s2-sci-y4-w19-l1`
