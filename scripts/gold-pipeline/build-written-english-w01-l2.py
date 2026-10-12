@@ -6,6 +6,7 @@ Writes a reviewable D1 JSON bundle; never touches remote D1 or live lessons.
 """
 from pathlib import Path
 from pipeline import ROOT, reconstruct, baseline_data, atomic_json
+from episode_support import room_episode
 
 SEED = 's2-eng-y3-w01-l2'
 
@@ -81,6 +82,12 @@ def build():
       '"The lantern flickered. We looked for fresh batteries." Both thoughts are complete, properly capitalised and separated.',
       mc('Which version separates two complete thoughts correctly?',['The cat stretched it yawned.','The cat stretched. It yawned.','The cat. Stretched it yawned.','The cat stretched, it yawned.'],1,
         'A full stop separates the two complete thoughts. Each sentence has a subject and verb and starts with a capital letter.'))
+    steps[0]['visual_before']=[room_episode('Is a place phrase a complete sentence?', [
+        ('pip','The words say behind the old shed. That has a capital letter. Is it finished?'),
+        ('juno','Ask who did what. Behind the old shed names a place, but nothing happens yet.'),
+        ('pip','I will add a subject and an action: A blue lizard hid behind the old shed.'),
+        ('juno','Now a reader knows who acted and what happened. Pause here. Repair a place phrase of your own.', True),
+    ])]
     l['teach_steps']=steps
     l['worked_example']=('I DO: Repair and improve "near the pond the duck". First I ask, "Who or what?" — the duck. '
       'Then I ask, "What happened?" — missing. I supply a precise verb: "The duck paddled near the pond." '
@@ -132,13 +139,15 @@ def build():
     steps[0]['visual']=[visual1]
     steps[1]['visual']=[visual2]
     l['quiz']=q
-    l['parent_notes']=('Parent only — independent examples, not a single required wording. Task 1: "A beetle hid under the fallen gum tree." '
+    l['parent_notes']=('Parent: Independent examples are not a single required wording. Task 1: "A beetle hid under the fallen gum tree." '
       'It needed a subject and action. Task 2: accept a meaningful original sentence followed by a genuine precision revision. '
       'Task 3: subject "The curious echidna"; verb "searched", followed by a fresh grammatical sentence. '
-      'Task 4: "A storm rolled in. Our game stopped." Capitalisation and sentence boundaries matter. '
-      'Written quiz: see sample_answer and marking_guide fields, which must never be sent to a child role. '
-      'Look for independent meaningful sentences, correct identification of subject/verb and justified revisions. '
-      'Do not assess vocabulary sophistication alone; accept oral explanation recorded by the parent if writing limits demonstration.')
+      'Task 4: "A storm rolled in. Our game stopped." Capitalisation and sentence boundaries matter.\n\n'
+      'Parent: Written model 1: The turtle rested beside the creek. Subject: the turtle. Verb: rested.\n\n'
+      'Parent: Written model 2: The wombat shuffled into its burrow. I named a particular animal and chose shuffled to show its movement.\n\n'
+      'Parent: Look for independent meaningful sentences, correct identification of subject/verb and justified revisions. '
+      'Do not assess vocabulary sophistication alone; accept oral explanation recorded by the parent if writing limits demonstration. '
+      'Keep sample answers out of the child role.')
     l['evidence_instructions']='Save the four independent sentences and their explanations, plus two written quiz answers. Parent may record an oral reasoning explanation where appropriate.'
     l['offline_alternative']='Read the teaching aloud together, rewrite each prompt on paper and underline subjects and verbs. Keep the page as evidence and type a brief summary later.'
     l['extension']='Write a three-sentence description of an unusual animal encounter. Use one vivid verb in each sentence, then explain why each sentence stands alone.'
@@ -158,6 +167,7 @@ def build():
                 'planner_intro','spelling','spelling_focus','hoard_words','follow_up_challenges',
                 'printable_resource','interactive_activities','explicit_teaching'):
         l[key]=None
+    l['coming_soon']=None
     return dict(architecture='d1-worker',lesson=l,
       curriculum=[dict(code='EN2-CWT-01',source='https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes',
         verification_status='pending',lesson_evidence='Compose, identify and revise grammatically complete sentences using specific subjects, precise verbs and punctuation.',

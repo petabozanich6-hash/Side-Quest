@@ -4,6 +4,7 @@ These are distinct hand-authored subject lessons, not generic topic summaries.
 Phase 2 videos, animation and interactive work are deliberately excluded.
 """
 from pipeline import ROOT, reconstruct, baseline_data, atomic_json
+from episode_support import room_episode
 import json
 
 def topic(code, mission, outcome, stages, independent, parent, vocab):
@@ -94,18 +95,116 @@ topic('s2-eng-y3-w04-l1','Infer unstated meaning by combining textual clues with
 ['fact','inference','evidence','interpretation'])
 ]
 
+def esc(t):
+    return (t.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('"','&quot;'))
+
+def pair_visual(left_title, left_text, right_title, right_text, alt, caption):
+    svg=(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 150">'
+         f'<rect x="10" y="12" width="310" height="126" rx="14" fill="#fff4ea" stroke="#b87445"/>'
+         f'<rect x="340" y="12" width="310" height="126" rx="14" fill="#e8f5ed" stroke="#297a61"/>'
+         f'<g font-size="16" fill="#263948">'
+         f'<text x="28" y="42">{esc(left_title)}</text>'
+         f'<text x="28" y="78">{esc(left_text[:42])}</text>'
+         f'<text x="358" y="42">{esc(right_title)}</text>'
+         f'<text x="358" y="78">{esc(right_text[:42])}</text>'
+         f'</g></svg>')
+    return dict(svg=svg, alt=alt, caption=caption)
+
+VISUALS = {
+  's2-eng-y3-w01-l4': [
+    pair_visual('First','hat on near the oval','Next','wind carries it over the fence',
+      'Story events ordered as hat on oval then wind carrying it over the fence.',
+      'Events follow a cause: the hat must be worn before the wind can take it.'),
+    pair_visual('Cue notes','oval — hat','Spoken sentence','I put my hat on near the oval.',
+      'Brief cue notes oval and hat beside the full spoken sentence they prompt.',
+      'Notes stay short so the speaker tells the story instead of reading a script.')
+  ],
+  's2-eng-y3-w02-l1': [
+    pair_visual('Character + goal','Aria searches for a compass','Setting clues','before sunrise on a jetty',
+      'Character Aria searching for a compass contrasted with jetty setting clues before sunrise.',
+      'A character wants something; setting tells where and when that wanting happens.'),
+    pair_visual('Problem','library book is lost','Response','search the bus then find it',
+      'Plot linked as a lost library book causing a search of the bus and a recovery.',
+      'Plot is cause and effect, not a shuffled list of actions.')
+  ],
+  's2-eng-y3-w02-l2': [
+    pair_visual('Orientation','Tali checks her vegetable patch','Complication','tiny footprints among seedlings',
+      'Story mountain start with Tali in the garden then footprints among seedlings.',
+      'The ordinary situation is established before a specific problem appears.'),
+    pair_visual('Important choice','build a safe barrier','Resolution','netting that still lets wildlife pass',
+      'Climax choice of a safe barrier leading to a resolution that protects plants and wildlife.',
+      'The ending should grow from the character choice, not from an unrelated miracle.')
+  ],
+  's2-eng-y3-w02-l3': [
+    pair_visual('Nouns','mechanic, bicycle','Verb','repaired',
+      'Sentence parts labelled: nouns mechanic and bicycle with verb repaired.',
+      'Nouns name people or things; the verb tells the action.'),
+    pair_visual('Vague draft','The bird flew.','Precise revision','The startled rosella darted between branches.',
+      'Vague sentence The bird flew beside a precise revision naming a startled rosella.',
+      'Choose a specific noun and verb, then add an adjective only if it helps.')
+  ],
+  's2-eng-y3-w02-l4': [
+    pair_visual('Keep this','bag handle breaks on the bridge','Leave this','colour of Luca shoes',
+      'Essential retell event of a broken bag contrasted with an unimportant shoe colour.',
+      'A retell keeps the problem and outcome, not every decorative detail.'),
+    pair_visual('Original wording','squeezed beneath the veranda','Own words','hid under the veranda',
+      'Paraphrase of a kitten hiding under the veranda using different wording with the same meaning.',
+      'Paraphrase changes the words while keeping the same event true.')
+  ],
+  's2-eng-y3-w03-l1': [
+    pair_visual('Clue','Clouds darkened','Supported prediction','Mara packed because rain may come',
+      'Dark clouds used as a clue for the prediction that Mara packed for rain.',
+      'A prediction needs a clue from the text, not a wild guess.'),
+    pair_visual('First idea','dark sky means storm','Updated idea','smoke from a bushfire',
+      'A first storm prediction revised when smoke from a bushfire explains the dark sky.',
+      'New evidence can change a prediction; revising is thoughtful, not failure.')
+  ],
+  's2-eng-y3-w03-l2': [
+    pair_visual('Orientation','Before breakfast, Asha arranged shells','Complication','A gust scattered the shells',
+      'Asha arranging shells on the veranda before a gust scatters them.',
+      'Show the ordinary situation first, then a concrete event that interrupts it.'),
+    pair_visual('Connected problem','shells were her goal','Reader question','How can she reach the top branch safely?',
+      'Complication connected to Asha wanting the shells and a hanging question about reaching a branch.',
+      'The problem should matter to the character and leave a question for the next paragraph.')
+  ],
+  's2-eng-y3-w03-l3': [
+    pair_visual('Present','The possum climbs','Past','The possum climbed',
+      'Present tense climbs beside past tense climbed for the same possum action.',
+      'Tense tells whether the action happens now or already happened.'),
+    pair_visual('Mixed draft','opened the gate and sees a fox','Consistent past','opened the gate and saw a fox',
+      'Inconsistent sees corrected to saw so both actions stay in the past.',
+      'Keep the main verbs in the same time unless there is a clear reason to shift.')
+  ],
+  's2-eng-y3-w03-l4': [
+    pair_visual('Speaker label','MIA:','Spoken words','Where is the map?',
+      'Readers-theatre line with speaker label MIA and the spoken question Where is the map.',
+      'Read the spoken words, not the speaker label, unless you are introducing a character.'),
+    pair_visual('Question mark','Is the door open?','Exclamation','The door is open!',
+      'The same door idea punctuated as a curious question and as a surprised exclamation.',
+      'Punctuation guides voice: a question often asks; an exclamation adds urgency.')
+  ],
+  's2-eng-y3-w04-l1': [
+    pair_visual('Stated fact','Nia wiped her muddy shoes','Inference','She did not want a dirty floor',
+      'Stated fact of wiping muddy shoes beside the inference that Nia wanted a clean floor.',
+      'An inference is a reasoned conclusion; the text did not name the reason.'),
+    pair_visual('Several clues','empty lunchbox, clock, sigh','Stronger idea','Jax may be hungry',
+      'Empty lunchbox, clock glance and sigh supporting the idea that Jax may be hungry.',
+      'Several clues pointing the same way make an inference stronger.')
+  ],
+}
+
 # Original per-topic practice uses each unique authored scenario. The program simply
 # wraps individually written content into the established lesson structure.
 def make_spec(row,unit):
     base=baseline_data(row)
     l={k:v for k,v in base.items() if k in ('seed_key','stage','learning_area','year_level','week',
       'week_in_unit','lesson_number','lesson_role','subject','unit_title','unit_number')}
+    criteria=[f'I can use {unit["vocab"][0]} with a specific example from this lesson.',
+              f'I can identify {unit["vocab"][1]} and point to the words or events that support it.',
+              f'I can practise {unit["vocab"][2]} independently on a new prompt.',
+              f'I can notice {unit["vocab"][3]} needs and correct a likely mistake.']
     l.update(title=base['title'],child_mission=unit['mission'],
-      learning_intention=unit['mission'],success_criteria=[
-        'I can explain the main idea in my own words.',
-        'I can identify evidence in a written or spoken example.',
-        'I can use the strategy on a different task independently.',
-        'I can explain and correct a common mistake.'],
+      learning_intention=unit['mission'],success_criteria=criteria,
       duration_minutes=55,materials=['Paper or typing area','Pencil for optional evidence'],outcome_codes=[unit['outcome']],
       source_note='Proposed Stage 2 NESA alignment; compare the existing Coming Soon card and official syllabus content points before marking verified.',
       review_status='unreviewed',**{'pass':1,'pass_mark':0.9},coming_soon=None)
@@ -129,14 +228,16 @@ def make_spec(row,unit):
         evidence.append(dict(rule=idea,why=rationale,model=model,misconception=trap,
           fix='Re-read the prompt and correct the misunderstanding before moving on.',
           guided_attempt=try_it,feedback=feedback))
-        # Static language organisers, no media. Labelled text, accessible caption.
-        def esc(t):
-            return t.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('"','&quot;')
-        label=title[:43]
-        v=dict(svg=f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 145"><rect x="8" y="15" width="624" height="112" rx="15" fill="#eaf4f1" stroke="#226a64"/><text x="24" y="47" font-size="18" fill="#17393d">{esc(label)}</text><text x="24" y="82" font-size="18" fill="#17393d">Idea → Evidence → Explain → Check</text><text x="24" y="108" font-size="15" fill="#17393d">Apply this sequence to the teaching example.</text></svg>',
-          alt=f'Static four-step reading and writing organiser for {title}: idea, evidence, explanation, check.',
-          caption=f'Use the evidence-and-explanation process when practising: {title.lower()}.')
-        if i < 2: visuals.append(v);teach[-1]['visual']=[v]
+    visuals=list(VISUALS[unit['code']])
+    teach[0]['visual']=[visuals[0]]
+    teach[1]['visual']=[visuals[1]]
+    model=unit['stages'][0][2]
+    teach[0]['visual_before']=[room_episode('Talk through the first model', [
+        ('pip','I read the first example, but I am not sure which detail matters most.'),
+        ('juno','Name the exact words or events that carry the meaning before you copy a conclusion.'),
+        ('pip','So I should try the small prompt myself, then compare it with the feedback.'),
+        ('juno','Pause here. Use this model: '+model[:120]+' Then write your own attempt.', True),
+    ])]
     l['teach_steps']=teach
     l['worked_visuals']=visuals
     l['worked_example']='I DO — '+unit['stages'][0][2]+'\n\nNow look for the exact evidence in the words or actions. '+unit['stages'][1][2]
@@ -146,44 +247,53 @@ def make_spec(row,unit):
     l['response_prompt']='Submit your original independent work and your brief explanation of the key choices you made.'
     # Questions reference each individually authored concept and example, not a repeated generic quiz.
     q=[]
+    distractors=[
+      'Ignore the words and invent a more exciting event.',
+      'Copy the model word-for-word and call that independent work.',
+      'Treat a missing detail as a stated fact.',
+      'Skip the prompt because the first idea sounded good.']
     for i,st in enumerate(unit['stages']):
         q.append(dict(type='multiple_choice',
-           question=f'In the lesson stage "{st[0]}", which explanation matches the teaching?',
-           options=[st[1],st[5],'Copy without reading or explanation.','Invent an unsupported answer.'],
+           question=f'Which idea is taught in the stage "{st[0]}"?',
+           options=[st[1],st[5],distractors[i % 4],distractors[(i+1) % 4]],
            correct_index=0,explanation=st[1]+' The other choices either name a known misunderstanding or avoid explaining the actual strategy.'))
     for i,st in enumerate(unit['stages']):
         q.append(dict(type='multiple_choice',
-          question=f'After practising "{st[0]}", what is the useful feedback for the example?',
-          options=[st[4],st[5],'All answers are equally supported by the passage.','Skip checking your response altogether.'],
+          question=f'After trying "{st[3][:80]}", which feedback is most useful?',
+          options=[st[4],st[5],'Any answer is equally supported.','There is no need to compare your attempt.'],
           correct_index=0,explanation=st[4]+' This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.'))
+    sample1='Original demonstration: '+unit['stages'][0][2]
+    sample2='Common error: '+unit['stages'][2][5]+' Correction: '+unit['stages'][2][4]
     q += [dict(type='short_answer',question=f'Use your own example to demonstrate {unit["vocab"][0]} and explain the evidence supporting your choice.',
-         sample_answer=unit['stages'][0][2],marking_guide='Require an original relevant example, accurate terminology and an explanation grounded in the example.',
+         sample_answer=sample1,marking_guide='Require an original relevant example, accurate terminology and an explanation grounded in the example.',
          explanation='Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.'),
        dict(type='short_answer',question=f'Identify and correct a common mistake relating to {unit["vocab"][2]} in this lesson.',
-         sample_answer=unit['stages'][2][5]+' Correction: '+unit['stages'][2][4],
+         sample_answer=sample2,
          marking_guide='Require a genuine relevant error, accurate correction and a reason that refers to the target concept.',
          explanation='Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.')]
     l['quiz']=q
-    l['parent_notes']=('Parent-only marking guidance: '+unit['parent']+' Written quiz samples and rubrics are stored as protected sample_answer and marking_guide fields. '
-      'Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice. '
-      'Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective.')
+    l['parent_notes']=('Parent: Marking guidance: '+unit['parent']+' Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\n'
+      'Parent: Written model 1: '+sample1+'\n\n'
+      'Parent: Written model 2: '+sample2+'\n\n'
+      'Parent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.')
     l['evidence_instructions']='Keep the independent response and two written check responses; record oral retelling or performance where required by the task.'
     l['offline_alternative']='Use paper to copy only the original independent prompt; have the child respond in writing or orally as required. Save a photograph or brief parent observation for the learning record.'
     l['extension']='Create a new example using a completely different character or setting, show the same skill, then explain to another person how you checked its accuracy.'
     keys=['accept','teach0','teach1','teach2','teach3','learn','guided','write','quiz','submit']
     descriptions=[
-      ('Name the language skill in today\'s title.','Find a model that shows it rather than only its definition.','Your goal is: '+unit['mission']),
-      *[(f'Focus on {st[0].lower()}.','Recall this teaching point: '+st[1],st[4]) for st in unit['stages']],
-      ('Look for evidence in the worked example.','Explain why the first model makes sense.','Model: '+unit['stages'][0][2]),
-      ('Attempt each guided prompt without looking ahead.','Compare your attempt with the supplied specific feedback.','Review: '+unit['stages'][1][4]),
-      ('Use the independent instructions, not the model words.','Explain the steps or clues behind your original response.','Your task asks: '+unit['independent'][:160]),
-      ('Read the whole question and eliminate misconceptions.','Recall the distinction between explanation and invented facts.','Try: '+unit['stages'][2][4]),
-      ('Check that you have included your own response and explanation.','Proofread and compare your answer with the actual goal.','Evidence must demonstrate: '+unit['mission'])]
+      ('Today you will practise '+unit['vocab'][0]+'.','Read the mission before you start writing or speaking.','Your goal is: '+unit['mission']),
+      *[(f'Focus on {st[0].lower()}.','Hold this teaching point: '+st[1][:120], 'Worked comparison: '+st[4][:120]) for st in unit['stages']],
+      ('Study the first worked demonstration carefully.','Name the exact words or events that make it work.','Demonstration: '+unit['stages'][0][2][:140]),
+      ('Attempt each guided prompt without looking ahead.','Compare your attempt with the supplied specific feedback.','Guided comparison: '+unit['stages'][1][4][:140]),
+      ('Use the independent instructions, not the model words.','Give an original response and the reason behind it.','Independent reminder: '+unit['independent'][:160]),
+      ('Read the whole question and eliminate misconceptions.','Prefer the option that quotes or uses actual evidence.','Likely trap: '+unit['stages'][2][5][:140]),
+      ('Include your own response and a short reason.','Proofread names, sequence and punctuation before sending.','Success looks like: '+unit['mission'])]
     l['stage_hints']={k:list(v) for k,v in zip(keys,descriptions)}
     for key in ('resources','word_challenges','sort_activity','suspense_builder','planner_fields',
       'planner_title','planner_intro','spelling','spelling_focus','hoard_words','follow_up_challenges',
       'printable_resource','interactive_activities','explicit_teaching'):
         l[key]=None
+    l['coming_soon']=None
     return dict(architecture='d1-worker',lesson=l,
       curriculum=[dict(code=unit['outcome'],
          source='https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes',
@@ -193,10 +303,11 @@ def make_spec(row,unit):
         practice=dict(model_inputs=[unit['stages'][0][2]],guided_inputs=[unit['stages'][1][3]],
           independent_inputs=[unit['independent']]),
         visuals=[dict(alt=v['alt'],teaches=v['caption']) for v in visuals],
-        review_questions=['Verify original Coming Soon outcome and syllabus content point.',
+        review_questions=['Verify original Coming Soon outcome and syllabus content point against NESA English K–10 2022.',
          'Educationally review worked example, independent prompts and all 10 quiz answers.',
          'Verify Stage 2 age suitability and child/parent API answer privacy.',
-         'Verify written learner progress saved and restored.']))
+         'Verify written learner progress saved and restored.',
+         'Confirm diagrams teach this lesson idea rather than a generic process.']))
 
 def build_all():
     db=reconstruct()

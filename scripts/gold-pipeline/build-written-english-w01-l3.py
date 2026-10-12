@@ -5,6 +5,7 @@ Focus: syllable segmentation, phoneme/grapheme matching, spelling checks.
 Multimedia is reserved for Phase 2. Never modifies live D1.
 """
 from pipeline import ROOT, reconstruct, baseline_data, atomic_json
+from episode_support import room_episode
 
 SEED = 's2-eng-y3-w01-l3'
 
@@ -95,6 +96,12 @@ def build():
       'The conventional spellings are "bright" and "garden". Bright has igh for its long vowel sound; garden has e rather than i in the last syllable.',
       mc('Which sentence is conventionally spelled?',['The yelow boat sailed.','The yellow boat sailed.','The yelloe boat sailed.','The yello boat sailed.'],1,
          'Yellow is spelled with double l and ow. Reading the complete word, not only the first sound, catches the mistake.'))
+    steps[0]['visual_before']=[room_episode('Hear the beats before you write', [
+        ('pip','Umbrella looks long. Should I write one letter for every clap?'),
+        ('juno','Clap spoken beats, not letters. Umbrella is often um, brel, la: three beats.'),
+        ('pip','So a beat can hold several letters, and two letters can make one sound.'),
+        ('juno','Pause here. Clap a long word from this lesson and count the beats before spelling it.', True),
+    ])]
     l['teach_steps']=steps
     l['worked_visuals']=[syllables,graphemes]
     l['worked_example']=('I DO: Spell "sunshine" by listening and checking. First say it naturally: sun-shine (two syllables). '
@@ -133,31 +140,34 @@ def build():
            marking_guide='Require both conventional spellings chicken and branch, and a reasonable sound-letter or spelling-pattern explanation.',
            explanation='A proofreading explanation identifies the changed letter groups, rather than supplying an unexplained replacement.')
     ]
-    l['parent_notes']=('Parent only — independent answers: 1. but-ter-fly has three spoken syllables. '
+    l['parent_notes']=('Parent: Independent answers: 1. but-ter-fly has three spoken syllables. '
        '2. brush can be heard as /b/ /r/ /u/ /sh/: br contains two consonant sounds; sh represents one sound with two letters. '
        '3. rain uses ai; day uses ay. 4. "The rabbit hopped beside the tree." '
-       'Rabbit has double b, hopped has double p before ed in this spelling, and tree has ee for its long vowel sound. '
-       'Written quiz: see the sample answers and marking guides, which must be removed from child-facing API responses. '
-       'Observe whether the learner segments aloud, checks spelling against known patterns and can explain corrections rather than guessing.')
+       'Rabbit has double b, hopped has double p before ed in this spelling, and tree has ee for its long vowel sound.\n\n'
+       'Parent: Written model 1: cat-er-pil-lar is commonly spoken in four beats. Clapping one beat at a time helps me avoid leaving out a part.\n\n'
+       'Parent: Written model 2: The chicken sat on the branch. Chicken uses ch for the /ch/ sound; branch also has ch at the end.\n\n'
+       'Parent: Observe whether the learner segments aloud, checks spelling against known patterns and can explain corrections rather than guessing. '
+       'Keep sample answers out of the child role.')
     l['evidence_instructions']='Collect independent word breakdowns, a corrected sentence and explanations, plus two written spelling responses. Parent may record an oral segmentation as evidence.'
     l['offline_alternative']='Use claps or taps to hear syllables, draw boxes for graphemes, and write a proofreading passage by hand. Save the paper page or describe it in the typing area.'
     l['extension']='Find four words from your current book with different long-vowel spelling patterns. Sort them, check each spelling and explain any unexpected pattern.'
     l['stage_hints']={
      'accept':['Think about hearing words in smaller parts.','Listen for beats and smaller sound units before spelling.','You will use syllables, graphemes, familiar patterns and proofreading.'],
-     'teach0':['Say the whole word normally first.','Tap each spoken beat, not each letter.','Banana separates into ba-na-na, three beats.'],
-     'teach1':['Look for letters that work together for a sound.','Stretch the word and identify each sound before writing.','In sheep, sh and ee are each two-letter graphemes for one sound.'],
-     'teach2':['Some vowels have more than one spelling choice.','Compare your word with known examples like rain and day.','Train resembles rain and is conventionally spelled with ai.'],
-     'teach3':['Read slowly and stop at uncertain words.','Check the middle of the word as well as its beginning.','Yellow needs two ls, while umbrella also needs double l.'],
+     'teach0':['Say the whole word normally first.','Tap each spoken beat, not each letter.','A long fruit word often has three vowel-centred beats rather than one beat per letter.'],
+     'teach1':['Look for letters that work together for a sound.','Stretch the word and identify each sound before writing.','A long-e animal word can use two-letter groups for its first and middle sounds.'],
+     'teach2':['Some vowels have more than one spelling choice.','Compare your word with known examples like rain and day.','A railway word with a long /ay/ sound often uses the same inner pattern as rain.'],
+     'teach3':['Read slowly and stop at uncertain words.','Check the middle of the word as well as its beginning.','Colour words and long nouns often hide a doubled letter in the middle or near the end.'],
      'learn':['Split the model word into natural spoken parts.','Work through sun and shine as separate chunks.','Sunshine joins sun and shine; preserve sh and the final silent e.'],
      'guided':['Try the word before reading its correction.','Mark syllables, digraphs or spelling patterns, depending on the prompt.','For chop, the first grapheme is ch, not c alone.'],
      'write':['Complete the four independent tasks in order.','Explain both the letter pattern and the reason for a correction.','For brush, /b/ and /r/ are separate sounds but final sh is one grapheme.'],
-     'quiz':['Listen carefully before choosing letters.','Notice when two letters work together for a single sound.','Ship has three sounds even though its spelling has four letters.'],
+     'quiz':['Read every option before you tap one.','Notice when two letters work together for a single sound.','Count spoken beats separately from the number of letters.'],
      'submit':['Check every labelled response is present.','Read back each corrected word within its whole sentence.','Keep syllable separators and explanations so your parent can see your strategy.']
     }
     for key in ('resources','word_challenges','sort_activity','suspense_builder','planner_fields',
        'planner_title','planner_intro','spelling','spelling_focus','hoard_words','follow_up_challenges',
        'printable_resource','interactive_activities','explicit_teaching'):
         l[key]=None
+    l['coming_soon']=None
     return dict(architecture='d1-worker',lesson=l,
       curriculum=[dict(code='EN2-SPELL-01',
           source='https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes',
@@ -166,7 +176,7 @@ def build():
           scope_limit='These word-level activities are partial evidence of spelling strategies; confirm original NESA mapping and content points.')],
       requirements=dict(teaching=evidence,
        practice=dict(model_inputs=['sunshine'],guided_inputs=['computer','chop','play','sheep slept'],
-        independent_inputs=['butterfly','brush','rain','rabbit hopped']),
+        independent_inputs=['butterfly','brush','sunny d__','rabit hopd']),
        visuals=[dict(alt=syllables['alt'],teaches='Three spoken syllables of umbrella shown in beat boxes'),
          dict(alt=graphemes['alt'],teaches='Three grapheme groups within sheep mapped to sounds')],
        review_questions=['Compare existing Coming Soon card against proposed spelling outcome.',
