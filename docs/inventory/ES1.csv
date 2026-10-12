@@ -1,0 +1,641 @@
+seed_key,stage,year_level,learning_area,title,priority,status
+es1-arts-k-w01-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 1, Lesson 1: Drawing lines and shapes",2,queued
+es1-arts-k-w01-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 1, Lesson 2: Making a line picture",2,queued
+es1-arts-k-w02-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 2, Lesson 1: Exploring colours",2,queued
+es1-arts-k-w02-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 2, Lesson 2: Mixing primary colours",2,queued
+es1-arts-k-w03-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 3, Lesson 1: Looking at artworks",2,queued
+es1-arts-k-w03-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 3, Lesson 2: Talking about art we like",2,queued
+es1-arts-k-w04-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 4, Lesson 1: Painting with brushes and fingers",2,queued
+es1-arts-k-w04-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 4, Lesson 2: Painting my favourite thing",2,queued
+es1-arts-k-w05-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 5, Lesson 1: Investigation: my art",2,queued
+es1-arts-k-w05-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 5, Lesson 2: Unit review and showcase",2,queued
+es1-arts-k-w06-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 6, Lesson 1: Feeling the beat",2,queued
+es1-arts-k-w06-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 6, Lesson 2: Clapping and stepping to a beat",2,queued
+es1-arts-k-w07-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 7, Lesson 1: Loud and soft",2,queued
+es1-arts-k-w07-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 7, Lesson 2: Singing loud and soft",2,queued
+es1-arts-k-w08-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 8, Lesson 1: Fast and slow",2,queued
+es1-arts-k-w08-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 8, Lesson 2: Moving to fast and slow music",2,queued
+es1-arts-k-w09-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 9, Lesson 1: Singing songs together",2,queued
+es1-arts-k-w09-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 9, Lesson 2: Action songs",2,queued
+es1-arts-k-w10-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 10, Lesson 1: Investigation: our class song",2,queued
+es1-arts-k-w10-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 10, Lesson 2: Unit review and showcase",2,queued
+es1-arts-k-w11-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 11, Lesson 1: Pretend play",2,queued
+es1-arts-k-w11-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 11, Lesson 2: Role play: home and shop",2,queued
+es1-arts-k-w12-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 12, Lesson 1: Using my voice and body to show feelings",2,queued
+es1-arts-k-w12-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 12, Lesson 2: Feelings charades",2,queued
+es1-arts-k-w13-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 13, Lesson 1: Acting out a story",2,queued
+es1-arts-k-w13-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 13, Lesson 2: Retelling a story with actions",2,queued
+es1-arts-k-w14-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 14, Lesson 1: Characters in stories",2,queued
+es1-arts-k-w14-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 14, Lesson 2: Dressing up as a character",2,queued
+es1-arts-k-w15-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 15, Lesson 1: Investigation: a class play",2,queued
+es1-arts-k-w15-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 15, Lesson 2: Unit review and showcase",2,queued
+es1-arts-k-w16-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 16, Lesson 1: Moving to music",2,queued
+es1-arts-k-w16-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 16, Lesson 2: Freeze dance",2,queued
+es1-arts-k-w17-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 17, Lesson 1: High, low, big and small movements",2,queued
+es1-arts-k-w17-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 17, Lesson 2: Animal movements",2,queued
+es1-arts-k-w18-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 18, Lesson 1: Dancing with scarves and ribbons",2,queued
+es1-arts-k-w18-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 18, Lesson 2: Making a dance pattern",2,queued
+es1-arts-k-w19-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 19, Lesson 1: Dances from different cultures",2,queued
+es1-arts-k-w19-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 19, Lesson 2: Learning a simple dance",2,queued
+es1-arts-k-w20-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 20, Lesson 1: Investigation: our dance",2,queued
+es1-arts-k-w20-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 20, Lesson 2: Unit review and showcase",2,queued
+es1-arts-k-w21-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 21, Lesson 1: Collage with paper",2,queued
+es1-arts-k-w21-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 21, Lesson 2: Making a paper collage",2,queued
+es1-arts-k-w22-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 22, Lesson 1: Clay and playdough",2,queued
+es1-arts-k-w22-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 22, Lesson 2: Modelling an animal",2,queued
+es1-arts-k-w23-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 23, Lesson 1: Printing and stamping",2,queued
+es1-arts-k-w23-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 23, Lesson 2: Making a pattern print",2,queued
+es1-arts-k-w24-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 24, Lesson 1: Craft with recycled materials",2,queued
+es1-arts-k-w24-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 24, Lesson 2: Creating a junk model",2,queued
+es1-arts-k-w25-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 25, Lesson 1: Investigation: making art",2,queued
+es1-arts-k-w25-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 25, Lesson 2: Unit review and showcase",2,queued
+es1-arts-k-w26-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 26, Lesson 1: Instruments in the classroom",2,queued
+es1-arts-k-w26-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 26, Lesson 2: Playing percussion instruments",2,queued
+es1-arts-k-w27-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 27, Lesson 1: Sounds around us",2,queued
+es1-arts-k-w27-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 27, Lesson 2: Making sounds with found objects",2,queued
+es1-arts-k-w28-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 28, Lesson 1: Long and short sounds",2,queued
+es1-arts-k-w28-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 28, Lesson 2: Making sound patterns",2,queued
+es1-arts-k-w29-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 29, Lesson 1: Listening to music",2,queued
+es1-arts-k-w29-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 29, Lesson 2: Drawing what music sounds like",2,queued
+es1-arts-k-w30-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 30, Lesson 1: Investigation: our sound story",2,queued
+es1-arts-k-w30-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 30, Lesson 2: Unit review and showcase",2,queued
+es1-arts-k-w31-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 31, Lesson 1: What is a puppet",2,queued
+es1-arts-k-w31-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 31, Lesson 2: Making a stick puppet",2,queued
+es1-arts-k-w32-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 32, Lesson 1: Giving puppets voices",2,queued
+es1-arts-k-w32-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 32, Lesson 2: Puppet conversations",2,queued
+es1-arts-k-w33-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 33, Lesson 1: Puppet show planning",2,queued
+es1-arts-k-w33-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 33, Lesson 2: Rehearsing a puppet show",2,queued
+es1-arts-k-w34-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 34, Lesson 1: Performing for others",2,queued
+es1-arts-k-w34-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 34, Lesson 2: Puppet show for the class",2,queued
+es1-arts-k-w35-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 35, Lesson 1: Investigation: our puppet show",2,queued
+es1-arts-k-w35-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 35, Lesson 2: Unit review and showcase",2,queued
+es1-arts-k-w36-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 36, Lesson 1: Choosing my best work",2,queued
+es1-arts-k-w36-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 36, Lesson 2: Planning an art show",2,queued
+es1-arts-k-w37-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 37, Lesson 1: Displaying and describing art",2,queued
+es1-arts-k-w37-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 37, Lesson 2: Making labels for artworks",2,queued
+es1-arts-k-w38-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 38, Lesson 1: Sharing a song, dance or play",2,queued
+es1-arts-k-w38-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 38, Lesson 2: Rehearsing a performance",2,queued
+es1-arts-k-w39-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 39, Lesson 1: Class showcase",2,queued
+es1-arts-k-w39-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 39, Lesson 2: Performing and sharing",2,queued
+es1-arts-k-w40-l1,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 40, Lesson 1: Kindergarten creative arts reflection",2,queued
+es1-arts-k-w40-l2,ES1,Kindergarten,Creative Arts,"Kindergarten, Week 40, Lesson 2: Reflection and celebration",2,queued
+es1-eng-k-w01-l1,ES1,Kindergarten,English,"Kindergarten, Week 1, Lesson 1: Sharing a book together",2,queued
+es1-eng-k-w01-l2,ES1,Kindergarten,English,"Kindergarten, Week 1, Lesson 2: Drawing and talking about my day",2,queued
+es1-eng-k-w01-l3,ES1,Kindergarten,English,"Kindergarten, Week 1, Lesson 3: Learning my name",2,queued
+es1-eng-k-w01-l4,ES1,Kindergarten,English,"Kindergarten, Week 1, Lesson 4: Class rules and good listening",2,queued
+es1-eng-k-w02-l1,ES1,Kindergarten,English,"Kindergarten, Week 2, Lesson 1: Parts of a book: front, back and pages",2,queued
+es1-eng-k-w02-l2,ES1,Kindergarten,English,"Kindergarten, Week 2, Lesson 2: Drawing a picture and telling about it",2,queued
+es1-eng-k-w02-l3,ES1,Kindergarten,English,"Kindergarten, Week 2, Lesson 3: Holding a pencil and making marks",2,queued
+es1-eng-k-w02-l4,ES1,Kindergarten,English,"Kindergarten, Week 2, Lesson 4: Taking turns to talk",2,queued
+es1-eng-k-w03-l1,ES1,Kindergarten,English,"Kindergarten, Week 3, Lesson 1: Reading pictures",2,queued
+es1-eng-k-w03-l2,ES1,Kindergarten,English,"Kindergarten, Week 3, Lesson 2: Labelling a picture",2,queued
+es1-eng-k-w03-l3,ES1,Kindergarten,English,"Kindergarten, Week 3, Lesson 3: Letters in my name",2,queued
+es1-eng-k-w03-l4,ES1,Kindergarten,English,"Kindergarten, Week 3, Lesson 4: Listening to a story",2,queued
+es1-eng-k-w04-l1,ES1,Kindergarten,English,"Kindergarten, Week 4, Lesson 1: Favourite books",2,queued
+es1-eng-k-w04-l2,ES1,Kindergarten,English,"Kindergarten, Week 4, Lesson 2: Writing my name",2,queued
+es1-eng-k-w04-l3,ES1,Kindergarten,English,"Kindergarten, Week 4, Lesson 3: Tracing lines and curves",2,queued
+es1-eng-k-w04-l4,ES1,Kindergarten,English,"Kindergarten, Week 4, Lesson 4: Show and tell",2,queued
+es1-eng-k-w05-l1,ES1,Kindergarten,English,"Kindergarten, Week 5, Lesson 1: Sound s",2,queued
+es1-eng-k-w05-l2,ES1,Kindergarten,English,"Kindergarten, Week 5, Lesson 2: Making marks and letters for s",2,queued
+es1-eng-k-w05-l3,ES1,Kindergarten,English,"Kindergarten, Week 5, Lesson 3: Hearing the first sound in words",2,queued
+es1-eng-k-w05-l4,ES1,Kindergarten,English,"Kindergarten, Week 5, Lesson 4: Songs and chants about sounds",2,queued
+es1-eng-k-w06-l1,ES1,Kindergarten,English,"Kindergarten, Week 6, Lesson 1: Sound a",2,queued
+es1-eng-k-w06-l2,ES1,Kindergarten,English,"Kindergarten, Week 6, Lesson 2: Writing with s and a",2,queued
+es1-eng-k-w06-l3,ES1,Kindergarten,English,"Kindergarten, Week 6, Lesson 3: Forming the letter a",2,queued
+es1-eng-k-w06-l4,ES1,Kindergarten,English,"Kindergarten, Week 6, Lesson 4: Sound games: s and a",2,queued
+es1-eng-k-w07-l1,ES1,Kindergarten,English,"Kindergarten, Week 7, Lesson 1: Sound t",2,queued
+es1-eng-k-w07-l2,ES1,Kindergarten,English,"Kindergarten, Week 7, Lesson 2: Writing the word at",2,queued
+es1-eng-k-w07-l3,ES1,Kindergarten,English,"Kindergarten, Week 7, Lesson 3: Forming the letter t",2,queued
+es1-eng-k-w07-l4,ES1,Kindergarten,English,"Kindergarten, Week 7, Lesson 4: Sound games: s, a, t",2,queued
+es1-eng-k-w08-l1,ES1,Kindergarten,English,"Kindergarten, Week 8, Lesson 1: Sounds p and i",2,queued
+es1-eng-k-w08-l2,ES1,Kindergarten,English,"Kindergarten, Week 8, Lesson 2: Writing the words sat and pat",2,queued
+es1-eng-k-w08-l3,ES1,Kindergarten,English,"Kindergarten, Week 8, Lesson 3: Forming the letters p and i",2,queued
+es1-eng-k-w08-l4,ES1,Kindergarten,English,"Kindergarten, Week 8, Lesson 4: Review: s, a, t, p, i",2,queued
+es1-eng-k-w09-l1,ES1,Kindergarten,English,"Kindergarten, Week 9, Lesson 1: Sound n",2,queued
+es1-eng-k-w09-l2,ES1,Kindergarten,English,"Kindergarten, Week 9, Lesson 2: Writing the words in and tin",2,queued
+es1-eng-k-w09-l3,ES1,Kindergarten,English,"Kindergarten, Week 9, Lesson 3: Forming the letter n",2,queued
+es1-eng-k-w09-l4,ES1,Kindergarten,English,"Kindergarten, Week 9, Lesson 4: Rhyming words: pin, tin, sin",2,queued
+es1-eng-k-w10-l1,ES1,Kindergarten,English,"Kindergarten, Week 10, Lesson 1: Sound m",2,queued
+es1-eng-k-w10-l2,ES1,Kindergarten,English,"Kindergarten, Week 10, Lesson 2: Writing the words mat and man",2,queued
+es1-eng-k-w10-l3,ES1,Kindergarten,English,"Kindergarten, Week 10, Lesson 3: Forming the letter m",2,queued
+es1-eng-k-w10-l4,ES1,Kindergarten,English,"Kindergarten, Week 10, Lesson 4: Sound games: m, n, p",2,queued
+es1-eng-k-w11-l1,ES1,Kindergarten,English,"Kindergarten, Week 11, Lesson 1: Sound d",2,queued
+es1-eng-k-w11-l2,ES1,Kindergarten,English,"Kindergarten, Week 11, Lesson 2: Writing the words dad and did",2,queued
+es1-eng-k-w11-l3,ES1,Kindergarten,English,"Kindergarten, Week 11, Lesson 3: Forming the letter d",2,queued
+es1-eng-k-w11-l4,ES1,Kindergarten,English,"Kindergarten, Week 11, Lesson 4: Rhyming words: sad, mad, dad",2,queued
+es1-eng-k-w12-l1,ES1,Kindergarten,English,"Kindergarten, Week 12, Lesson 1: Sounds g and o",2,queued
+es1-eng-k-w12-l2,ES1,Kindergarten,English,"Kindergarten, Week 12, Lesson 2: Writing the words got and dog",2,queued
+es1-eng-k-w12-l3,ES1,Kindergarten,English,"Kindergarten, Week 12, Lesson 3: Forming the letters g and o",2,queued
+es1-eng-k-w12-l4,ES1,Kindergarten,English,"Kindergarten, Week 12, Lesson 4: Review: letters and sounds so far",2,queued
+es1-eng-k-w13-l1,ES1,Kindergarten,English,"Kindergarten, Week 13, Lesson 1: Sounds c and k",2,queued
+es1-eng-k-w13-l2,ES1,Kindergarten,English,"Kindergarten, Week 13, Lesson 2: Writing the words cat and kit",2,queued
+es1-eng-k-w13-l3,ES1,Kindergarten,English,"Kindergarten, Week 13, Lesson 3: Forming the letters c and k",2,queued
+es1-eng-k-w13-l4,ES1,Kindergarten,English,"Kindergarten, Week 13, Lesson 4: Sound games: c, k, g",2,queued
+es1-eng-k-w14-l1,ES1,Kindergarten,English,"Kindergarten, Week 14, Lesson 1: Blending sounds to read words",2,queued
+es1-eng-k-w14-l2,ES1,Kindergarten,English,"Kindergarten, Week 14, Lesson 2: Writing simple words",2,queued
+es1-eng-k-w14-l3,ES1,Kindergarten,English,"Kindergarten, Week 14, Lesson 3: Letter formation review",2,queued
+es1-eng-k-w14-l4,ES1,Kindergarten,English,"Kindergarten, Week 14, Lesson 4: Segmenting sounds in words",2,queued
+es1-eng-k-w15-l1,ES1,Kindergarten,English,"Kindergarten, Week 15, Lesson 1: Reading short words in a book",2,queued
+es1-eng-k-w15-l2,ES1,Kindergarten,English,"Kindergarten, Week 15, Lesson 2: Making a word list",2,queued
+es1-eng-k-w15-l3,ES1,Kindergarten,English,"Kindergarten, Week 15, Lesson 3: The alphabet song and letter names",2,queued
+es1-eng-k-w15-l4,ES1,Kindergarten,English,"Kindergarten, Week 15, Lesson 4: Rhyme time",2,queued
+es1-eng-k-w16-l1,ES1,Kindergarten,English,"Kindergarten, Week 16, Lesson 1: Reading with a partner",2,queued
+es1-eng-k-w16-l2,ES1,Kindergarten,English,"Kindergarten, Week 16, Lesson 2: Writing a short caption",2,queued
+es1-eng-k-w16-l3,ES1,Kindergarten,English,"Kindergarten, Week 16, Lesson 3: Capital and lower case letters",2,queued
+es1-eng-k-w16-l4,ES1,Kindergarten,English,"Kindergarten, Week 16, Lesson 4: Sharing my caption",2,queued
+es1-eng-k-w17-l1,ES1,Kindergarten,English,"Kindergarten, Week 17, Lesson 1: Sound e",2,queued
+es1-eng-k-w17-l2,ES1,Kindergarten,English,"Kindergarten, Week 17, Lesson 2: Writing the words pen and net",2,queued
+es1-eng-k-w17-l3,ES1,Kindergarten,English,"Kindergarten, Week 17, Lesson 3: Forming the letter e",2,queued
+es1-eng-k-w17-l4,ES1,Kindergarten,English,"Kindergarten, Week 17, Lesson 4: Sound games: e",2,queued
+es1-eng-k-w18-l1,ES1,Kindergarten,English,"Kindergarten, Week 18, Lesson 1: Sounds u and r",2,queued
+es1-eng-k-w18-l2,ES1,Kindergarten,English,"Kindergarten, Week 18, Lesson 2: Writing the words sun and run",2,queued
+es1-eng-k-w18-l3,ES1,Kindergarten,English,"Kindergarten, Week 18, Lesson 3: Forming the letters u and r",2,queued
+es1-eng-k-w18-l4,ES1,Kindergarten,English,"Kindergarten, Week 18, Lesson 4: Sound games: u and r",2,queued
+es1-eng-k-w19-l1,ES1,Kindergarten,English,"Kindergarten, Week 19, Lesson 1: Sounds h and b",2,queued
+es1-eng-k-w19-l2,ES1,Kindergarten,English,"Kindergarten, Week 19, Lesson 2: Writing the words hat and bat",2,queued
+es1-eng-k-w19-l3,ES1,Kindergarten,English,"Kindergarten, Week 19, Lesson 3: Forming the letters h and b",2,queued
+es1-eng-k-w19-l4,ES1,Kindergarten,English,"Kindergarten, Week 19, Lesson 4: Sound games: h and b",2,queued
+es1-eng-k-w20-l1,ES1,Kindergarten,English,"Kindergarten, Week 20, Lesson 1: Sounds f and l",2,queued
+es1-eng-k-w20-l2,ES1,Kindergarten,English,"Kindergarten, Week 20, Lesson 2: Writing the words fan and leg",2,queued
+es1-eng-k-w20-l3,ES1,Kindergarten,English,"Kindergarten, Week 20, Lesson 3: Forming the letters f and l",2,queued
+es1-eng-k-w20-l4,ES1,Kindergarten,English,"Kindergarten, Week 20, Lesson 4: Review: sounds e to l",2,queued
+es1-eng-k-w21-l1,ES1,Kindergarten,English,"Kindergarten, Week 21, Lesson 1: Reading simple sentences",2,queued
+es1-eng-k-w21-l2,ES1,Kindergarten,English,"Kindergarten, Week 21, Lesson 2: Writing a sentence",2,queued
+es1-eng-k-w21-l3,ES1,Kindergarten,English,"Kindergarten, Week 21, Lesson 3: Capital letters and full stops",2,queued
+es1-eng-k-w21-l4,ES1,Kindergarten,English,"Kindergarten, Week 21, Lesson 4: Talking in sentences",2,queued
+es1-eng-k-w22-l1,ES1,Kindergarten,English,"Kindergarten, Week 22, Lesson 1: Reading with expression: a first look",2,queued
+es1-eng-k-w22-l2,ES1,Kindergarten,English,"Kindergarten, Week 22, Lesson 2: Writing a sentence about me",2,queued
+es1-eng-k-w22-l3,ES1,Kindergarten,English,"Kindergarten, Week 22, Lesson 3: Spaces between words",2,queued
+es1-eng-k-w22-l4,ES1,Kindergarten,English,"Kindergarten, Week 22, Lesson 4: Retelling in order",2,queued
+es1-eng-k-w23-l1,ES1,Kindergarten,English,"Kindergarten, Week 23, Lesson 1: Story characters",2,queued
+es1-eng-k-w23-l2,ES1,Kindergarten,English,"Kindergarten, Week 23, Lesson 2: Drawing and writing about a character",2,queued
+es1-eng-k-w23-l3,ES1,Kindergarten,English,"Kindergarten, Week 23, Lesson 3: Handwriting: letters on the line",2,queued
+es1-eng-k-w23-l4,ES1,Kindergarten,English,"Kindergarten, Week 23, Lesson 4: Telling a story with props",2,queued
+es1-eng-k-w24-l1,ES1,Kindergarten,English,"Kindergarten, Week 24, Lesson 1: Beginning, middle and end",2,queued
+es1-eng-k-w24-l2,ES1,Kindergarten,English,"Kindergarten, Week 24, Lesson 2: Writing a story in three parts",2,queued
+es1-eng-k-w24-l3,ES1,Kindergarten,English,"Kindergarten, Week 24, Lesson 3: Handwriting review",2,queued
+es1-eng-k-w24-l4,ES1,Kindergarten,English,"Kindergarten, Week 24, Lesson 4: Sharing my story",2,queued
+es1-eng-k-w25-l1,ES1,Kindergarten,English,"Kindergarten, Week 25, Lesson 1: Rhymes in stories",2,queued
+es1-eng-k-w25-l2,ES1,Kindergarten,English,"Kindergarten, Week 25, Lesson 2: Writing rhyming words",2,queued
+es1-eng-k-w25-l3,ES1,Kindergarten,English,"Kindergarten, Week 25, Lesson 3: Letters: x, y, z, w, v, j, q",2,queued
+es1-eng-k-w25-l4,ES1,Kindergarten,English,"Kindergarten, Week 25, Lesson 4: Reciting nursery rhymes",2,queued
+es1-eng-k-w26-l1,ES1,Kindergarten,English,"Kindergarten, Week 26, Lesson 1: Rhythm and beat in poems",2,queued
+es1-eng-k-w26-l2,ES1,Kindergarten,English,"Kindergarten, Week 26, Lesson 2: Writing a rhyming pair",2,queued
+es1-eng-k-w26-l3,ES1,Kindergarten,English,"Kindergarten, Week 26, Lesson 3: Syllables: clapping words",2,queued
+es1-eng-k-w26-l4,ES1,Kindergarten,English,"Kindergarten, Week 26, Lesson 4: Chanting a poem",2,queued
+es1-eng-k-w27-l1,ES1,Kindergarten,English,"Kindergarten, Week 27, Lesson 1: Poems about animals",2,queued
+es1-eng-k-w27-l2,ES1,Kindergarten,English,"Kindergarten, Week 27, Lesson 2: Writing a line for a poem",2,queued
+es1-eng-k-w27-l3,ES1,Kindergarten,English,"Kindergarten, Week 27, Lesson 3: Handwriting: neat letters",2,queued
+es1-eng-k-w27-l4,ES1,Kindergarten,English,"Kindergarten, Week 27, Lesson 4: Reading poems together",2,queued
+es1-eng-k-w28-l1,ES1,Kindergarten,English,"Kindergarten, Week 28, Lesson 1: Favourite poem",2,queued
+es1-eng-k-w28-l2,ES1,Kindergarten,English,"Kindergarten, Week 28, Lesson 2: Writing a class poem",2,queued
+es1-eng-k-w28-l3,ES1,Kindergarten,English,"Kindergarten, Week 28, Lesson 3: Poetry review",2,queued
+es1-eng-k-w28-l4,ES1,Kindergarten,English,"Kindergarten, Week 28, Lesson 4: Performing a poem",2,queued
+es1-eng-k-w29-l1,ES1,Kindergarten,English,"Kindergarten, Week 29, Lesson 1: Sight words: the, a, is",2,queued
+es1-eng-k-w29-l2,ES1,Kindergarten,English,"Kindergarten, Week 29, Lesson 2: Writing with sight words",2,queued
+es1-eng-k-w29-l3,ES1,Kindergarten,English,"Kindergarten, Week 29, Lesson 3: Handwriting sight words",2,queued
+es1-eng-k-w29-l4,ES1,Kindergarten,English,"Kindergarten, Week 29, Lesson 4: Listening for sight words",2,queued
+es1-eng-k-w30-l1,ES1,Kindergarten,English,"Kindergarten, Week 30, Lesson 1: Sight words: I, to, and",2,queued
+es1-eng-k-w30-l2,ES1,Kindergarten,English,"Kindergarten, Week 30, Lesson 2: Writing a sentence with sight words",2,queued
+es1-eng-k-w30-l3,ES1,Kindergarten,English,"Kindergarten, Week 30, Lesson 3: Handwriting: words on a line",2,queued
+es1-eng-k-w30-l4,ES1,Kindergarten,English,"Kindergarten, Week 30, Lesson 4: Talking about a book",2,queued
+es1-eng-k-w31-l1,ES1,Kindergarten,English,"Kindergarten, Week 31, Lesson 1: Reading a simple book",2,queued
+es1-eng-k-w31-l2,ES1,Kindergarten,English,"Kindergarten, Week 31, Lesson 2: Writing about a book",2,queued
+es1-eng-k-w31-l3,ES1,Kindergarten,English,"Kindergarten, Week 31, Lesson 3: Spelling sight words",2,queued
+es1-eng-k-w31-l4,ES1,Kindergarten,English,"Kindergarten, Week 31, Lesson 4: Asking questions about a book",2,queued
+es1-eng-k-w32-l1,ES1,Kindergarten,English,"Kindergarten, Week 32, Lesson 1: Reading decodable texts",2,queued
+es1-eng-k-w32-l2,ES1,Kindergarten,English,"Kindergarten, Week 32, Lesson 2: Writing about a book in pictures and words",2,queued
+es1-eng-k-w32-l3,ES1,Kindergarten,English,"Kindergarten, Week 32, Lesson 3: Sight word review",2,queued
+es1-eng-k-w32-l4,ES1,Kindergarten,English,"Kindergarten, Week 32, Lesson 4: Book talk",2,queued
+es1-eng-k-w33-l1,ES1,Kindergarten,English,"Kindergarten, Week 33, Lesson 1: Information texts: what are they",2,queued
+es1-eng-k-w33-l2,ES1,Kindergarten,English,"Kindergarten, Week 33, Lesson 2: Writing a fact",2,queued
+es1-eng-k-w33-l3,ES1,Kindergarten,English,"Kindergarten, Week 33, Lesson 3: Labelling a diagram",2,queued
+es1-eng-k-w33-l4,ES1,Kindergarten,English,"Kindergarten, Week 33, Lesson 4: Listening for facts",2,queued
+es1-eng-k-w34-l1,ES1,Kindergarten,English,"Kindergarten, Week 34, Lesson 1: Reading facts about animals",2,queued
+es1-eng-k-w34-l2,ES1,Kindergarten,English,"Kindergarten, Week 34, Lesson 2: Writing facts about an animal",2,queued
+es1-eng-k-w34-l3,ES1,Kindergarten,English,"Kindergarten, Week 34, Lesson 3: Handwriting: facts",2,queued
+es1-eng-k-w34-l4,ES1,Kindergarten,English,"Kindergarten, Week 34, Lesson 4: Sharing facts",2,queued
+es1-eng-k-w35-l1,ES1,Kindergarten,English,"Kindergarten, Week 35, Lesson 1: Facts about my family and home",2,queued
+es1-eng-k-w35-l2,ES1,Kindergarten,English,"Kindergarten, Week 35, Lesson 2: Writing about my home",2,queued
+es1-eng-k-w35-l3,ES1,Kindergarten,English,"Kindergarten, Week 35, Lesson 3: Handwriting review",2,queued
+es1-eng-k-w35-l4,ES1,Kindergarten,English,"Kindergarten, Week 35, Lesson 4: Talking about my family",2,queued
+es1-eng-k-w36-l1,ES1,Kindergarten,English,"Kindergarten, Week 36, Lesson 1: Using pictures to find information",2,queued
+es1-eng-k-w36-l2,ES1,Kindergarten,English,"Kindergarten, Week 36, Lesson 2: Making a mini book of facts",2,queued
+es1-eng-k-w36-l3,ES1,Kindergarten,English,"Kindergarten, Week 36, Lesson 3: Spelling review",2,queued
+es1-eng-k-w36-l4,ES1,Kindergarten,English,"Kindergarten, Week 36, Lesson 4: Presenting my mini book",2,queued
+es1-eng-k-w37-l1,ES1,Kindergarten,English,"Kindergarten, Week 37, Lesson 1: Favourite stories",2,queued
+es1-eng-k-w37-l2,ES1,Kindergarten,English,"Kindergarten, Week 37, Lesson 2: Writing a letter to a friend",2,queued
+es1-eng-k-w37-l3,ES1,Kindergarten,English,"Kindergarten, Week 37, Lesson 3: Letters and sounds review",2,queued
+es1-eng-k-w37-l4,ES1,Kindergarten,English,"Kindergarten, Week 37, Lesson 4: Speaking clearly",2,queued
+es1-eng-k-w38-l1,ES1,Kindergarten,English,"Kindergarten, Week 38, Lesson 1: Reading aloud with a friend",2,queued
+es1-eng-k-w38-l2,ES1,Kindergarten,English,"Kindergarten, Week 38, Lesson 2: Writing my best sentence",2,queued
+es1-eng-k-w38-l3,ES1,Kindergarten,English,"Kindergarten, Week 38, Lesson 3: Handwriting check",2,queued
+es1-eng-k-w38-l4,ES1,Kindergarten,English,"Kindergarten, Week 38, Lesson 4: Listening and responding",2,queued
+es1-eng-k-w39-l1,ES1,Kindergarten,English,"Kindergarten, Week 39, Lesson 1: Reading check-in",2,queued
+es1-eng-k-w39-l2,ES1,Kindergarten,English,"Kindergarten, Week 39, Lesson 2: Writing check-in",2,queued
+es1-eng-k-w39-l3,ES1,Kindergarten,English,"Kindergarten, Week 39, Lesson 3: Letters and sounds check-in",2,queued
+es1-eng-k-w39-l4,ES1,Kindergarten,English,"Kindergarten, Week 39, Lesson 4: Speaking and listening check-in",2,queued
+es1-eng-k-w40-l1,ES1,Kindergarten,English,"Kindergarten, Week 40, Lesson 1: Reading celebration",2,queued
+es1-eng-k-w40-l2,ES1,Kindergarten,English,"Kindergarten, Week 40, Lesson 2: Portfolio: my best writing",2,queued
+es1-eng-k-w40-l3,ES1,Kindergarten,English,"Kindergarten, Week 40, Lesson 3: Handwriting showcase",2,queued
+es1-eng-k-w40-l4,ES1,Kindergarten,English,"Kindergarten, Week 40, Lesson 4: Reflection and celebration",2,queued
+es1-hsie-k-w01-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 1, Lesson 1: Who am I",2,queued
+es1-hsie-k-w01-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 1, Lesson 2: All about me poster",2,queued
+es1-hsie-k-w02-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 2, Lesson 1: My family",2,queued
+es1-hsie-k-w02-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 2, Lesson 2: Drawing my family",2,queued
+es1-hsie-k-w03-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 3, Lesson 1: Families around us",2,queued
+es1-hsie-k-w03-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 3, Lesson 2: Different families, same needs",2,queued
+es1-hsie-k-w04-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 4, Lesson 1: Where I live",2,queued
+es1-hsie-k-w04-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 4, Lesson 2: Home and neighbourhood map",2,queued
+es1-hsie-k-w05-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 5, Lesson 1: Investigation: my family",2,queued
+es1-hsie-k-w05-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 5, Lesson 2: Unit review and showcase",2,queued
+es1-hsie-k-w06-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 6, Lesson 1: Family stories",2,queued
+es1-hsie-k-w06-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 6, Lesson 2: Interviewing a family member",2,queued
+es1-hsie-k-w07-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 7, Lesson 1: Special days and celebrations",2,queued
+es1-hsie-k-w07-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 7, Lesson 2: Celebrations in Australia",2,queued
+es1-hsie-k-w08-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 8, Lesson 1: Traditions in families",2,queued
+es1-hsie-k-w08-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 8, Lesson 2: Sharing a tradition",2,queued
+es1-hsie-k-w09-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 9, Lesson 1: Photos and objects from the past",2,queued
+es1-hsie-k-w09-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 9, Lesson 2: Making a family timeline",2,queued
+es1-hsie-k-w10-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 10, Lesson 1: Investigation: a family tradition",2,queued
+es1-hsie-k-w10-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 10, Lesson 2: Unit review and showcase",2,queued
+es1-hsie-k-w11-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 11, Lesson 1: Past, present and future",2,queued
+es1-hsie-k-w11-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 11, Lesson 2: Sequencing events",2,queued
+es1-hsie-k-w12-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 12, Lesson 1: Toys then and now",2,queued
+es1-hsie-k-w12-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 12, Lesson 2: Comparing old and new toys",2,queued
+es1-hsie-k-w13-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 13, Lesson 1: Homes then and now",2,queued
+es1-hsie-k-w13-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 13, Lesson 2: Clothes then and now",2,queued
+es1-hsie-k-w14-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 14, Lesson 1: Old and new objects",2,queued
+es1-hsie-k-w14-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 14, Lesson 2: Museum in the classroom",2,queued
+es1-hsie-k-w15-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 15, Lesson 1: Investigation: how things have changed",2,queued
+es1-hsie-k-w15-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 15, Lesson 2: Unit review and showcase",2,queued
+es1-hsie-k-w16-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 16, Lesson 1: Our school",2,queued
+es1-hsie-k-w16-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 16, Lesson 2: School map and tour",2,queued
+es1-hsie-k-w17-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 17, Lesson 1: People who help us at school",2,queued
+es1-hsie-k-w17-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 17, Lesson 2: Thank you cards",2,queued
+es1-hsie-k-w18-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 18, Lesson 1: Our local community",2,queued
+es1-hsie-k-w18-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 18, Lesson 2: Places in our community",2,queued
+es1-hsie-k-w19-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 19, Lesson 1: Jobs in the community",2,queued
+es1-hsie-k-w19-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 19, Lesson 2: Community helpers",2,queued
+es1-hsie-k-w20-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 20, Lesson 1: Investigation: a place in our community",2,queued
+es1-hsie-k-w20-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 20, Lesson 2: Unit review and showcase",2,queued
+es1-hsie-k-w21-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 21, Lesson 1: Places we belong to",2,queued
+es1-hsie-k-w21-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 21, Lesson 2: Special places",2,queued
+es1-hsie-k-w22-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 22, Lesson 1: Features of places",2,queued
+es1-hsie-k-w22-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 22, Lesson 2: Natural and built features",2,queued
+es1-hsie-k-w23-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 23, Lesson 1: Looking after places",2,queued
+es1-hsie-k-w23-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 23, Lesson 2: Caring for our school grounds",2,queued
+es1-hsie-k-w24-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 24, Lesson 1: Maps and pictures",2,queued
+es1-hsie-k-w24-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 24, Lesson 2: Drawing a simple map",2,queued
+es1-hsie-k-w25-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 25, Lesson 1: Investigation: a special place",2,queued
+es1-hsie-k-w25-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 25, Lesson 2: Unit review and showcase",2,queued
+es1-hsie-k-w26-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 26, Lesson 1: Weather and where we live",2,queued
+es1-hsie-k-w26-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 26, Lesson 2: Weather around Australia",2,queued
+es1-hsie-k-w27-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 27, Lesson 1: Seasons and how people live",2,queued
+es1-hsie-k-w27-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 27, Lesson 2: Clothes and homes in different places",2,queued
+es1-hsie-k-w28-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 28, Lesson 1: Places around the world",2,queued
+es1-hsie-k-w28-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 28, Lesson 2: Comparing places near and far",2,queued
+es1-hsie-k-w29-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 29, Lesson 1: Australia on a globe or map",2,queued
+es1-hsie-k-w29-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 29, Lesson 2: Finding our country",2,queued
+es1-hsie-k-w30-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 30, Lesson 1: Investigation: a place far away",2,queued
+es1-hsie-k-w30-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 30, Lesson 2: Unit review and showcase",2,queued
+es1-hsie-k-w31-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 31, Lesson 1: First Nations peoples of Australia",2,queued
+es1-hsie-k-w31-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 31, Lesson 2: Listening to Aboriginal and Torres Strait Islander stories",2,queued
+es1-hsie-k-w32-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 32, Lesson 1: Country and place",2,queued
+es1-hsie-k-w32-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 32, Lesson 2: Learning about the local Country",2,queued
+es1-hsie-k-w33-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 33, Lesson 1: Dreaming stories: a first look",2,queued
+es1-hsie-k-w33-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 33, Lesson 2: Retelling a story with art",2,queued
+es1-hsie-k-w34-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 34, Lesson 1: Respect for people and Country",2,queued
+es1-hsie-k-w34-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 34, Lesson 2: Caring for Country",2,queued
+es1-hsie-k-w35-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 35, Lesson 1: Investigation: stories of Country",2,queued
+es1-hsie-k-w35-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 35, Lesson 2: Unit review and showcase",2,queued
+es1-hsie-k-w36-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 36, Lesson 1: Rules at home and school",2,queued
+es1-hsie-k-w36-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 36, Lesson 2: Making class rules",2,queued
+es1-hsie-k-w37-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 37, Lesson 1: Fairness and sharing",2,queued
+es1-hsie-k-w37-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 37, Lesson 2: Taking turns and being fair",2,queued
+es1-hsie-k-w38-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 38, Lesson 1: Rights and responsibilities",2,queued
+es1-hsie-k-w38-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 38, Lesson 2: Being a good friend",2,queued
+es1-hsie-k-w39-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 39, Lesson 1: Belonging to groups",2,queued
+es1-hsie-k-w39-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 39, Lesson 2: Our class community",2,queued
+es1-hsie-k-w40-l1,ES1,Kindergarten,HSIE,"Kindergarten, Week 40, Lesson 1: Kindergarten HSIE reflection",2,queued
+es1-hsie-k-w40-l2,ES1,Kindergarten,HSIE,"Kindergarten, Week 40, Lesson 2: Reflection and celebration",2,queued
+es1-mat-k-w01-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 1, Lesson 1: Counting and comparing groups to 3",2,queued
+es1-mat-k-w01-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 1, Lesson 2: Counting objects with one-to-one matching",2,queued
+es1-mat-k-w01-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 1, Lesson 3: Which group has more",2,queued
+es1-mat-k-w01-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 1, Lesson 4: Fluency: counting to 3",2,queued
+es1-mat-k-w02-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 2, Lesson 1: Numbers 1 to 4",2,queued
+es1-mat-k-w02-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 2, Lesson 2: Counting forwards and backwards",2,queued
+es1-mat-k-w02-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 2, Lesson 3: Showing numbers in different ways",2,queued
+es1-mat-k-w02-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 2, Lesson 4: Fluency: counting to 4",2,queued
+es1-mat-k-w03-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 3, Lesson 1: Numbers 1 to 5",2,queued
+es1-mat-k-w03-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 3, Lesson 2: Subitising: seeing small groups",2,queued
+es1-mat-k-w03-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 3, Lesson 3: Finger and object counting",2,queued
+es1-mat-k-w03-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 3, Lesson 4: Fluency: counting to 5",2,queued
+es1-mat-k-w04-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 4, Lesson 1: Reading and writing numerals to 5",2,queued
+es1-mat-k-w04-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 4, Lesson 2: Ordering numbers to 5",2,queued
+es1-mat-k-w04-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 4, Lesson 3: Number problems to 5",2,queued
+es1-mat-k-w04-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 4, Lesson 4: Unit review and check-in",2,queued
+es1-mat-k-w05-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 5, Lesson 1: Numbers 6 and 7",2,queued
+es1-mat-k-w05-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 5, Lesson 2: Counting on from a number",2,queued
+es1-mat-k-w05-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 5, Lesson 3: Making groups of 6 and 7",2,queued
+es1-mat-k-w05-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 5, Lesson 4: Fluency: counting to 7",2,queued
+es1-mat-k-w06-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 6, Lesson 1: Numbers 8 and 9",2,queued
+es1-mat-k-w06-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 6, Lesson 2: Counting backwards from 9",2,queued
+es1-mat-k-w06-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 6, Lesson 3: Making groups of 8 and 9",2,queued
+es1-mat-k-w06-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 6, Lesson 4: Fluency: counting to 9",2,queued
+es1-mat-k-w07-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 7, Lesson 1: Number 10 and zero",2,queued
+es1-mat-k-w07-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 7, Lesson 2: Ten frames",2,queued
+es1-mat-k-w07-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 7, Lesson 3: Number problems to 10",2,queued
+es1-mat-k-w07-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 7, Lesson 4: Fluency: counting to 10",2,queued
+es1-mat-k-w08-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 8, Lesson 1: Writing numerals to 10",2,queued
+es1-mat-k-w08-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 8, Lesson 2: Comparing numbers to 10",2,queued
+es1-mat-k-w08-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 8, Lesson 3: One more and one less",2,queued
+es1-mat-k-w08-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 8, Lesson 4: Unit review and check-in",2,queued
+es1-mat-k-w09-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 9, Lesson 1: Sorting by one attribute",2,queued
+es1-mat-k-w09-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 9, Lesson 2: Describing what is the same and different",2,queued
+es1-mat-k-w09-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 9, Lesson 3: Sorting problems",2,queued
+es1-mat-k-w09-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 9, Lesson 4: Fluency: sorting",2,queued
+es1-mat-k-w10-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 10, Lesson 1: Repeating patterns with objects",2,queued
+es1-mat-k-w10-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 10, Lesson 2: Continuing patterns",2,queued
+es1-mat-k-w10-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 10, Lesson 3: Creating my own pattern",2,queued
+es1-mat-k-w10-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 10, Lesson 4: Fluency: patterns",2,queued
+es1-mat-k-w11-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 11, Lesson 1: Patterns with sounds and movement",2,queued
+es1-mat-k-w11-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 11, Lesson 2: Patterns in the world",2,queued
+es1-mat-k-w11-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 11, Lesson 3: Pattern problems",2,queued
+es1-mat-k-w11-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 11, Lesson 4: Fluency: pattern practice",2,queued
+es1-mat-k-w12-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 12, Lesson 1: Number patterns: counting by ones",2,queued
+es1-mat-k-w12-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 12, Lesson 2: Skip counting by twos: a first look",2,queued
+es1-mat-k-w12-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 12, Lesson 3: Pattern investigation",2,queued
+es1-mat-k-w12-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 12, Lesson 4: Unit review and check-in",2,queued
+es1-mat-k-w13-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 13, Lesson 1: Joining groups: adding",2,queued
+es1-mat-k-w13-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 13, Lesson 2: Adding with objects",2,queued
+es1-mat-k-w13-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 13, Lesson 3: Adding stories",2,queued
+es1-mat-k-w13-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 13, Lesson 4: Fluency: adding to 5",2,queued
+es1-mat-k-w14-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 14, Lesson 1: Taking away: subtracting",2,queued
+es1-mat-k-w14-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 14, Lesson 2: Subtracting with objects",2,queued
+es1-mat-k-w14-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 14, Lesson 3: Subtracting stories",2,queued
+es1-mat-k-w14-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 14, Lesson 4: Fluency: subtracting from 5",2,queued
+es1-mat-k-w15-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 15, Lesson 1: Making 5 in different ways",2,queued
+es1-mat-k-w15-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 15, Lesson 2: Number bonds to 5",2,queued
+es1-mat-k-w15-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 15, Lesson 3: Adding and subtracting problems",2,queued
+es1-mat-k-w15-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 15, Lesson 4: Fluency: number bonds to 5",2,queued
+es1-mat-k-w16-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 16, Lesson 1: Adding and subtracting to 10",2,queued
+es1-mat-k-w16-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 16, Lesson 2: Using ten frames to add and subtract",2,queued
+es1-mat-k-w16-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 16, Lesson 3: Number story problems",2,queued
+es1-mat-k-w16-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 16, Lesson 4: Unit review and check-in",2,queued
+es1-mat-k-w17-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 17, Lesson 1: Comparing length: longer and shorter",2,queued
+es1-mat-k-w17-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 17, Lesson 2: Measuring length with objects",2,queued
+es1-mat-k-w17-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 17, Lesson 3: Length problems",2,queued
+es1-mat-k-w17-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 17, Lesson 4: Fluency: length words",2,queued
+es1-mat-k-w18-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 18, Lesson 1: Comparing height: taller and shorter",2,queued
+es1-mat-k-w18-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 18, Lesson 2: Measuring with hands and feet",2,queued
+es1-mat-k-w18-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 18, Lesson 3: Ordering by length",2,queued
+es1-mat-k-w18-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 18, Lesson 4: Fluency: measuring",2,queued
+es1-mat-k-w19-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 19, Lesson 1: Comparing mass: heavier and lighter",2,queued
+es1-mat-k-w19-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 19, Lesson 2: Using balance scales",2,queued
+es1-mat-k-w19-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 19, Lesson 3: Mass problems",2,queued
+es1-mat-k-w19-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 19, Lesson 4: Fluency: mass words",2,queued
+es1-mat-k-w20-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 20, Lesson 1: Comparing capacity: full and empty",2,queued
+es1-mat-k-w20-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 20, Lesson 2: Filling containers",2,queued
+es1-mat-k-w20-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 20, Lesson 3: Capacity problems",2,queued
+es1-mat-k-w20-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 20, Lesson 4: Unit review and check-in",2,queued
+es1-mat-k-w21-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 21, Lesson 1: Naming circles, squares and triangles",2,queued
+es1-mat-k-w21-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 21, Lesson 2: Sides and corners",2,queued
+es1-mat-k-w21-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 21, Lesson 3: Shapes in the classroom",2,queued
+es1-mat-k-w21-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 21, Lesson 4: Fluency: naming shapes",2,queued
+es1-mat-k-w22-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 22, Lesson 1: Rectangles and other shapes",2,queued
+es1-mat-k-w22-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 22, Lesson 2: Sorting 2D shapes",2,queued
+es1-mat-k-w22-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 22, Lesson 3: Making pictures with shapes",2,queued
+es1-mat-k-w22-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 22, Lesson 4: Fluency: shape sorting",2,queued
+es1-mat-k-w23-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 23, Lesson 1: Spheres, cubes and cylinders",2,queued
+es1-mat-k-w23-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 23, Lesson 2: Describing 3D objects",2,queued
+es1-mat-k-w23-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 23, Lesson 3: Building with 3D objects",2,queued
+es1-mat-k-w23-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 23, Lesson 4: Fluency: naming 3D objects",2,queued
+es1-mat-k-w24-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 24, Lesson 1: Stacking, rolling and sliding",2,queued
+es1-mat-k-w24-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 24, Lesson 2: Shape hunt: shapes around us",2,queued
+es1-mat-k-w24-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 24, Lesson 3: Shape problems",2,queued
+es1-mat-k-w24-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 24, Lesson 4: Unit review and check-in",2,queued
+es1-mat-k-w25-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 25, Lesson 1: Numbers 11 to 13",2,queued
+es1-mat-k-w25-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 25, Lesson 2: Teen numbers with ten frames",2,queued
+es1-mat-k-w25-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 25, Lesson 3: Counting to 13",2,queued
+es1-mat-k-w25-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 25, Lesson 4: Fluency: counting to 13",2,queued
+es1-mat-k-w26-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 26, Lesson 1: Numbers 14 to 16",2,queued
+es1-mat-k-w26-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 26, Lesson 2: Counting on from 10",2,queued
+es1-mat-k-w26-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 26, Lesson 3: Counting to 16",2,queued
+es1-mat-k-w26-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 26, Lesson 4: Fluency: counting to 16",2,queued
+es1-mat-k-w27-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 27, Lesson 1: Numbers 17 to 20",2,queued
+es1-mat-k-w27-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 27, Lesson 2: Counting to 20",2,queued
+es1-mat-k-w27-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 27, Lesson 3: Ordering numbers to 20",2,queued
+es1-mat-k-w27-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 27, Lesson 4: Fluency: counting to 20",2,queued
+es1-mat-k-w28-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 28, Lesson 1: Writing numerals to 20",2,queued
+es1-mat-k-w28-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 28, Lesson 2: Comparing numbers to 20",2,queued
+es1-mat-k-w28-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 28, Lesson 3: Number problems to 20",2,queued
+es1-mat-k-w28-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 28, Lesson 4: Unit review and check-in",2,queued
+es1-mat-k-w29-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 29, Lesson 1: Position words: on, under, next to",2,queued
+es1-mat-k-w29-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 29, Lesson 2: Following position directions",2,queued
+es1-mat-k-w29-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 29, Lesson 3: Position problems",2,queued
+es1-mat-k-w29-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 29, Lesson 4: Fluency: position words",2,queued
+es1-mat-k-w30-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 30, Lesson 1: Days of the week",2,queued
+es1-mat-k-w30-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 30, Lesson 2: Months and seasons",2,queued
+es1-mat-k-w30-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 30, Lesson 3: Time problems",2,queued
+es1-mat-k-w30-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 30, Lesson 4: Fluency: days and months",2,queued
+es1-mat-k-w31-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 31, Lesson 1: Daily routines and time words",2,queued
+es1-mat-k-w31-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 31, Lesson 2: Reading a simple clock: o clock",2,queued
+es1-mat-k-w31-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 31, Lesson 3: Time problems",2,queued
+es1-mat-k-w31-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 31, Lesson 4: Fluency: time words",2,queued
+es1-mat-k-w32-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 32, Lesson 1: Australian coins",2,queued
+es1-mat-k-w32-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 32, Lesson 2: Naming and recognising coins",2,queued
+es1-mat-k-w32-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 32, Lesson 3: Money problems",2,queued
+es1-mat-k-w32-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 32, Lesson 4: Unit review and check-in",2,queued
+es1-mat-k-w33-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 33, Lesson 1: Sharing into equal groups",2,queued
+es1-mat-k-w33-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 33, Lesson 2: Sharing objects fairly",2,queued
+es1-mat-k-w33-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 33, Lesson 3: Sharing problems",2,queued
+es1-mat-k-w33-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 33, Lesson 4: Fluency: sharing",2,queued
+es1-mat-k-w34-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 34, Lesson 1: Grouping objects",2,queued
+es1-mat-k-w34-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 34, Lesson 2: Equal groups of 2, 5 and 10: a first look",2,queued
+es1-mat-k-w34-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 34, Lesson 3: Grouping problems",2,queued
+es1-mat-k-w34-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 34, Lesson 4: Fluency: grouping",2,queued
+es1-mat-k-w35-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 35, Lesson 1: Halves: sharing into two",2,queued
+es1-mat-k-w35-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 35, Lesson 2: Halves of shapes and objects",2,queued
+es1-mat-k-w35-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 35, Lesson 3: Half problems",2,queued
+es1-mat-k-w35-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 35, Lesson 4: Fluency: halves",2,queued
+es1-mat-k-w36-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 36, Lesson 1: Quarters: a first look",2,queued
+es1-mat-k-w36-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 36, Lesson 2: Fair shares",2,queued
+es1-mat-k-w36-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 36, Lesson 3: Fractions around us",2,queued
+es1-mat-k-w36-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 36, Lesson 4: Unit review and check-in",2,queued
+es1-mat-k-w37-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 37, Lesson 1: Collecting and sorting data",2,queued
+es1-mat-k-w37-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 37, Lesson 2: Making a pictograph",2,queued
+es1-mat-k-w37-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 37, Lesson 3: Reading a pictograph",2,queued
+es1-mat-k-w37-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 37, Lesson 4: Fluency: data questions",2,queued
+es1-mat-k-w38-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 38, Lesson 1: Our class data",2,queued
+es1-mat-k-w38-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 38, Lesson 2: Comparing groups in data",2,queued
+es1-mat-k-w38-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 38, Lesson 3: Data problems",2,queued
+es1-mat-k-w38-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 38, Lesson 4: Fluency: data practice",2,queued
+es1-mat-k-w39-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 39, Lesson 1: Chance: will it happen",2,queued
+es1-mat-k-w39-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 39, Lesson 2: Likely and unlikely: a first look",2,queued
+es1-mat-k-w39-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 39, Lesson 3: Chance experiments",2,queued
+es1-mat-k-w39-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 39, Lesson 4: Fluency: chance words",2,queued
+es1-mat-k-w40-l1,ES1,Kindergarten,Mathematics,"Kindergarten, Week 40, Lesson 1: Kindergarten investigation: planning",2,queued
+es1-mat-k-w40-l2,ES1,Kindergarten,Mathematics,"Kindergarten, Week 40, Lesson 2: Kindergarten investigation: doing and sharing",2,queued
+es1-mat-k-w40-l3,ES1,Kindergarten,Mathematics,"Kindergarten, Week 40, Lesson 3: Kindergarten skills check",2,queued
+es1-mat-k-w40-l4,ES1,Kindergarten,Mathematics,"Kindergarten, Week 40, Lesson 4: Reflection and celebration",2,queued
+es1-pdh-k-w01-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 1, Lesson 1: Naming feelings",2,queued
+es1-pdh-k-w01-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 1, Lesson 2: Feelings faces and stories",2,queued
+es1-pdh-k-w02-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 2, Lesson 1: Calm and happy bodies",2,queued
+es1-pdh-k-w02-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 2, Lesson 2: Breathing and calming tools",2,queued
+es1-pdh-k-w03-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 3, Lesson 1: When I feel upset",2,queued
+es1-pdh-k-w03-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 3, Lesson 2: Asking for help",2,queued
+es1-pdh-k-w04-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 4, Lesson 1: Things I am good at",2,queued
+es1-pdh-k-w04-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 4, Lesson 2: Celebrating my strengths",2,queued
+es1-pdh-k-w05-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 5, Lesson 1: Investigation: my feelings",2,queued
+es1-pdh-k-w05-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 5, Lesson 2: Unit review and showcase",2,queued
+es1-pdh-k-w06-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 6, Lesson 1: Making friends",2,queued
+es1-pdh-k-w06-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 6, Lesson 2: Playing together",2,queued
+es1-pdh-k-w07-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 7, Lesson 1: Being kind and respectful",2,queued
+es1-pdh-k-w07-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 7, Lesson 2: Kind words and actions",2,queued
+es1-pdh-k-w08-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 8, Lesson 1: Sharing and taking turns",2,queued
+es1-pdh-k-w08-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 8, Lesson 2: Solving a problem with a friend",2,queued
+es1-pdh-k-w09-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 9, Lesson 1: Including others",2,queued
+es1-pdh-k-w09-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 9, Lesson 2: Games that include everyone",2,queued
+es1-pdh-k-w10-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 10, Lesson 1: Investigation: friends",2,queued
+es1-pdh-k-w10-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 10, Lesson 2: Unit review and showcase",2,queued
+es1-pdh-k-w11-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 11, Lesson 1: Staying safe at home and school",2,queued
+es1-pdh-k-w11-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 11, Lesson 2: Safe and unsafe situations",2,queued
+es1-pdh-k-w12-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 12, Lesson 1: Safe people and trusted adults",2,queued
+es1-pdh-k-w12-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 12, Lesson 2: My safety network",2,queued
+es1-pdh-k-w13-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 13, Lesson 1: Road and pedestrian safety",2,queued
+es1-pdh-k-w13-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 13, Lesson 2: Practising crossing safely",2,queued
+es1-pdh-k-w14-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 14, Lesson 1: Sun, water and play safety",2,queued
+es1-pdh-k-w14-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 14, Lesson 2: Safety rules in games",2,queued
+es1-pdh-k-w15-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 15, Lesson 1: Investigation: staying safe",2,queued
+es1-pdh-k-w15-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 15, Lesson 2: Unit review and showcase",2,queued
+es1-pdh-k-w16-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 16, Lesson 1: Healthy food and drinks",2,queued
+es1-pdh-k-w16-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 16, Lesson 2: Everyday foods and sometimes foods",2,queued
+es1-pdh-k-w17-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 17, Lesson 1: Sleep and rest",2,queued
+es1-pdh-k-w17-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 17, Lesson 2: Our daily routine",2,queued
+es1-pdh-k-w18-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 18, Lesson 1: Germs and handwashing",2,queued
+es1-pdh-k-w18-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 18, Lesson 2: Practising good hygiene",2,queued
+es1-pdh-k-w19-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 19, Lesson 1: Being active every day",2,queued
+es1-pdh-k-w19-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 19, Lesson 2: Our activity chart",2,queued
+es1-pdh-k-w20-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 20, Lesson 1: Investigation: a healthy day",2,queued
+es1-pdh-k-w20-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 20, Lesson 2: Unit review and showcase",2,queued
+es1-pdh-k-w21-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 21, Lesson 1: Walking and running",2,queued
+es1-pdh-k-w21-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 21, Lesson 2: Run, stop and change direction",2,queued
+es1-pdh-k-w22-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 22, Lesson 1: Jumping and hopping",2,queued
+es1-pdh-k-w22-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 22, Lesson 2: Jumping games",2,queued
+es1-pdh-k-w23-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 23, Lesson 1: Balancing",2,queued
+es1-pdh-k-w23-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 23, Lesson 2: Obstacle course",2,queued
+es1-pdh-k-w24-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 24, Lesson 1: Climbing and crawling",2,queued
+es1-pdh-k-w24-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 24, Lesson 2: Moving in different ways",2,queued
+es1-pdh-k-w25-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 25, Lesson 1: Investigation: moving my body",2,queued
+es1-pdh-k-w25-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 25, Lesson 2: Unit review and showcase",2,queued
+es1-pdh-k-w26-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 26, Lesson 1: Throwing",2,queued
+es1-pdh-k-w26-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 26, Lesson 2: Throwing at targets",2,queued
+es1-pdh-k-w27-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 27, Lesson 1: Catching",2,queued
+es1-pdh-k-w27-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 27, Lesson 2: Catching with a partner",2,queued
+es1-pdh-k-w28-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 28, Lesson 1: Kicking and rolling a ball",2,queued
+es1-pdh-k-w28-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 28, Lesson 2: Ball games",2,queued
+es1-pdh-k-w29-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 29, Lesson 1: Team games and fair play",2,queued
+es1-pdh-k-w29-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 29, Lesson 2: Playing by the rules",2,queued
+es1-pdh-k-w30-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 30, Lesson 1: Investigation: ball skills",2,queued
+es1-pdh-k-w30-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 30, Lesson 2: Unit review and showcase",2,queued
+es1-pdh-k-w31-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 31, Lesson 1: Moving to music",2,queued
+es1-pdh-k-w31-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 31, Lesson 2: Dance patterns",2,queued
+es1-pdh-k-w32-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 32, Lesson 1: Fast and slow, high and low",2,queued
+es1-pdh-k-w32-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 32, Lesson 2: Creating a movement story",2,queued
+es1-pdh-k-w33-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 33, Lesson 1: Skipping, galloping and sliding",2,queued
+es1-pdh-k-w33-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 33, Lesson 2: Action rhymes and games",2,queued
+es1-pdh-k-w34-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 34, Lesson 1: Rhythm and beat",2,queued
+es1-pdh-k-w34-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 34, Lesson 2: Making a class dance",2,queued
+es1-pdh-k-w35-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 35, Lesson 1: Investigation: dance",2,queued
+es1-pdh-k-w35-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 35, Lesson 2: Unit review and showcase",2,queued
+es1-pdh-k-w36-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 36, Lesson 1: How I have grown",2,queued
+es1-pdh-k-w36-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 36, Lesson 2: Then and now: me",2,queued
+es1-pdh-k-w37-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 37, Lesson 1: My body and keeping it private",2,queued
+es1-pdh-k-w37-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 37, Lesson 2: Body parts and privacy",2,queued
+es1-pdh-k-w38-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 38, Lesson 1: Changes and new experiences",2,queued
+es1-pdh-k-w38-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 38, Lesson 2: Getting ready for Year 1",2,queued
+es1-pdh-k-w39-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 39, Lesson 1: Looking forward",2,queued
+es1-pdh-k-w39-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 39, Lesson 2: Setting a goal",2,queued
+es1-pdh-k-w40-l1,ES1,Kindergarten,PDHPE,"Kindergarten, Week 40, Lesson 1: Kindergarten PDHPE reflection",2,queued
+es1-pdh-k-w40-l2,ES1,Kindergarten,PDHPE,"Kindergarten, Week 40, Lesson 2: Reflection and celebration",2,queued
+es1-sci-k-w01-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 1, Lesson 1: Our five senses",2,queued
+es1-sci-k-w01-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 1, Lesson 2: Sense detectives: what can we see and hear",2,queued
+es1-sci-k-w02-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 2, Lesson 1: Touch, smell and taste",2,queued
+es1-sci-k-w02-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 2, Lesson 2: Mystery bag: guess by touch and smell",2,queued
+es1-sci-k-w03-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 3, Lesson 1: Parts of my body",2,queued
+es1-sci-k-w03-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 3, Lesson 2: Drawing and labelling my body",2,queued
+es1-sci-k-w04-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 4, Lesson 1: Keeping my body clean and healthy",2,queued
+es1-sci-k-w04-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 4, Lesson 2: Making a healthy body poster",2,queued
+es1-sci-k-w05-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 5, Lesson 1: Investigation: my favourite sense",2,queued
+es1-sci-k-w05-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 5, Lesson 2: Unit review and showcase",2,queued
+es1-sci-k-w06-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 6, Lesson 1: Plants we see every day",2,queued
+es1-sci-k-w06-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 6, Lesson 2: Looking closely at leaves and flowers",2,queued
+es1-sci-k-w07-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 7, Lesson 1: Animals we know",2,queued
+es1-sci-k-w07-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 7, Lesson 2: Sorting animals: pets, farm and wild",2,queued
+es1-sci-k-w08-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 8, Lesson 1: What animals need to live",2,queued
+es1-sci-k-w08-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 8, Lesson 2: Caring for a class plant or pet",2,queued
+es1-sci-k-w09-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 9, Lesson 1: Where animals live",2,queued
+es1-sci-k-w09-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 9, Lesson 2: Making a habitat in a box",2,queued
+es1-sci-k-w10-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 10, Lesson 1: Mini beast hunt",2,queued
+es1-sci-k-w10-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 10, Lesson 2: Unit review and showcase",2,queued
+es1-sci-k-w11-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 11, Lesson 1: Everyday materials",2,queued
+es1-sci-k-w11-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 11, Lesson 2: Sorting by hard, soft, rough and smooth",2,queued
+es1-sci-k-w12-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 12, Lesson 1: Natural and made things",2,queued
+es1-sci-k-w12-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 12, Lesson 2: Treasure hunt for natural and made things",2,queued
+es1-sci-k-w13-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 13, Lesson 1: Floating and sinking",2,queued
+es1-sci-k-w13-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 13, Lesson 2: Fair test: will it float",2,queued
+es1-sci-k-w14-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 14, Lesson 1: Wet and dry",2,queued
+es1-sci-k-w14-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 14, Lesson 2: Which material keeps us dry",2,queued
+es1-sci-k-w15-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 15, Lesson 1: Using materials to make things",2,queued
+es1-sci-k-w15-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 15, Lesson 2: Unit review and showcase",2,queued
+es1-sci-k-w16-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 16, Lesson 1: Pushing and pulling",2,queued
+es1-sci-k-w16-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 16, Lesson 2: Pushes and pulls in the playground",2,queued
+es1-sci-k-w17-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 17, Lesson 1: Fast and slow",2,queued
+es1-sci-k-w17-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 17, Lesson 2: Rolling things down ramps",2,queued
+es1-sci-k-w18-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 18, Lesson 1: Things that spin, slide and roll",2,queued
+es1-sci-k-w18-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 18, Lesson 2: Making a moving toy",2,queued
+es1-sci-k-w19-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 19, Lesson 1: Magnets: a first look",2,queued
+es1-sci-k-w19-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 19, Lesson 2: Magnet treasure hunt",2,queued
+es1-sci-k-w20-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 20, Lesson 1: Wind and moving air",2,queued
+es1-sci-k-w20-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 20, Lesson 2: Unit review and showcase",2,queued
+es1-sci-k-w21-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 21, Lesson 1: Day and night",2,queued
+es1-sci-k-w21-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 21, Lesson 2: Sun and shadow play",2,queued
+es1-sci-k-w22-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 22, Lesson 1: The Sun keeps us warm",2,queued
+es1-sci-k-w22-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 22, Lesson 2: Staying sun safe",2,queued
+es1-sci-k-w23-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 23, Lesson 1: Weather: sunny, cloudy, rainy and windy",2,queued
+es1-sci-k-w23-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 23, Lesson 2: Making a weather chart",2,queued
+es1-sci-k-w24-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 24, Lesson 1: Seasons and clothes",2,queued
+es1-sci-k-w24-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 24, Lesson 2: Dressing for the weather",2,queued
+es1-sci-k-w25-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 25, Lesson 1: Looking at the sky",2,queued
+es1-sci-k-w25-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 25, Lesson 2: Unit review and showcase",2,queued
+es1-sci-k-w26-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 26, Lesson 1: What is design",2,queued
+es1-sci-k-w26-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 26, Lesson 2: Design a place for a toy",2,queued
+es1-sci-k-w27-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 27, Lesson 1: Joining and building",2,queued
+es1-sci-k-w27-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 27, Lesson 2: Building with blocks and recycled boxes",2,queued
+es1-sci-k-w28-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 28, Lesson 1: Strong and stable",2,queued
+es1-sci-k-w28-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 28, Lesson 2: Testing the tallest tower",2,queued
+es1-sci-k-w29-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 29, Lesson 1: Making a model",2,queued
+es1-sci-k-w29-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 29, Lesson 2: Improving my model",2,queued
+es1-sci-k-w30-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 30, Lesson 1: Sharing what I made",2,queued
+es1-sci-k-w30-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 30, Lesson 2: Unit review and showcase",2,queued
+es1-sci-k-w31-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 31, Lesson 1: What is a device",2,queued
+es1-sci-k-w31-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 31, Lesson 2: Devices in my home and school",2,queued
+es1-sci-k-w32-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 32, Lesson 1: Giving instructions",2,queued
+es1-sci-k-w32-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 32, Lesson 2: Following and giving steps",2,queued
+es1-sci-k-w33-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 33, Lesson 1: Direction games",2,queued
+es1-sci-k-w33-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 33, Lesson 2: Programming a floor robot or a friend",2,queued
+es1-sci-k-w34-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 34, Lesson 1: Staying safe with devices",2,queued
+es1-sci-k-w34-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 34, Lesson 2: Using a device with an adult",2,queued
+es1-sci-k-w35-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 35, Lesson 1: Digital showcase",2,queued
+es1-sci-k-w35-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 35, Lesson 2: Unit review and showcase",2,queued
+es1-sci-k-w36-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 36, Lesson 1: Where food comes from",2,queued
+es1-sci-k-w36-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 36, Lesson 2: Fruit and vegetable tasting",2,queued
+es1-sci-k-w37-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 37, Lesson 1: Planting seeds",2,queued
+es1-sci-k-w37-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 37, Lesson 2: Watching seeds grow",2,queued
+es1-sci-k-w38-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 38, Lesson 1: Caring for a garden",2,queued
+es1-sci-k-w38-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 38, Lesson 2: Garden helpers",2,queued
+es1-sci-k-w39-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 39, Lesson 1: Healthy food choices",2,queued
+es1-sci-k-w39-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 39, Lesson 2: Making a healthy snack",2,queued
+es1-sci-k-w40-l1,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 40, Lesson 1: Kindergarten science and technology reflection",2,queued
+es1-sci-k-w40-l2,ES1,Kindergarten,Science and Technology,"Kindergarten, Week 40, Lesson 2: Reflection and celebration",2,queued

@@ -1,5 +1,7 @@
 # Stage 3 rebuild register
 
+**Priority update:** The parent now requests every lesson across every stage, with Stage 2 and Stage 4 first. [The master register](LESSON_REBUILD_MASTER.md) controls the build order. Keep the Stage 3 inventory and four authored lessons; pause its former next batch while priority work proceeds.
+
 The parent approved the deeper gold lesson and authorised the same teaching depth for **every Stage 3 lesson**. Scope: Years 5 and 6, every subject in the repository. Approved Lesson Standard v2 remains unchanged.
 
 ## Scope and source
@@ -41,7 +43,7 @@ Cultural, language and Aboriginal and Torres Strait Islander content follows the
 
 Default order is week-first within each year: English, Mathematics, Science and Technology, HSIE, PDHPE, Creative Arts. Complete Year 5 weeks 1–40, then Year 6 weeks 1–40, unless the parent steers the order. This does not reduce the all-Stage-3 scope.
 
-**Next: Year 5 Mathematics Week 1, four lessons.**
+**Next within Stage 3 when its turn resumes: Year 5 Mathematics Week 1, four lessons.**
 
 1. `s3-mat-y5-w01-l1` — Reading and writing numbers to the millions.
 2. `s3-mat-y5-w01-l2` — Place value charts and expanded form.

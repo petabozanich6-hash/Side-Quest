@@ -1,0 +1,1281 @@
+seed_key,stage,year_level,learning_area,title,priority,status
+s3-arts-y5-w01-l1,S3,Year 5,Creative Arts,"Year 5, Week 1, Lesson 1: Drawing techniques (Explore and learn)",2,queued
+s3-arts-y5-w01-l2,S3,Year 5,Creative Arts,"Year 5, Week 1, Lesson 2: Drawing techniques (Create and perform)",2,queued
+s3-arts-y5-w02-l1,S3,Year 5,Creative Arts,"Year 5, Week 2, Lesson 1: Colour and tone (Explore and learn)",2,queued
+s3-arts-y5-w02-l2,S3,Year 5,Creative Arts,"Year 5, Week 2, Lesson 2: Colour and tone (Create and perform)",2,queued
+s3-arts-y5-w03-l1,S3,Year 5,Creative Arts,"Year 5, Week 3, Lesson 1: Painting (Explore and learn)",2,queued
+s3-arts-y5-w03-l2,S3,Year 5,Creative Arts,"Year 5, Week 3, Lesson 2: Painting (Create and perform)",2,queued
+s3-arts-y5-w04-l1,S3,Year 5,Creative Arts,"Year 5, Week 4, Lesson 1: Artists and their influences (Explore and learn)",2,queued
+s3-arts-y5-w04-l2,S3,Year 5,Creative Arts,"Year 5, Week 4, Lesson 2: Artists and their influences (Create and perform)",2,queued
+s3-arts-y5-w05-l1,S3,Year 5,Creative Arts,"Year 5, Week 5, Lesson 1: Investigation: an artwork (Explore and learn)",2,queued
+s3-arts-y5-w05-l2,S3,Year 5,Creative Arts,"Year 5, Week 5, Lesson 2: Investigation: an artwork (Create and perform)",2,queued
+s3-arts-y5-w06-l1,S3,Year 5,Creative Arts,"Year 5, Week 6, Lesson 1: Reading music notation (Explore and learn)",2,queued
+s3-arts-y5-w06-l2,S3,Year 5,Creative Arts,"Year 5, Week 6, Lesson 2: Reading music notation (Create and perform)",2,queued
+s3-arts-y5-w07-l1,S3,Year 5,Creative Arts,"Year 5, Week 7, Lesson 1: Rhythm and melody (Explore and learn)",2,queued
+s3-arts-y5-w07-l2,S3,Year 5,Creative Arts,"Year 5, Week 7, Lesson 2: Rhythm and melody (Create and perform)",2,queued
+s3-arts-y5-w08-l1,S3,Year 5,Creative Arts,"Year 5, Week 8, Lesson 1: Singing and playing (Explore and learn)",2,queued
+s3-arts-y5-w08-l2,S3,Year 5,Creative Arts,"Year 5, Week 8, Lesson 2: Singing and playing (Create and perform)",2,queued
+s3-arts-y5-w09-l1,S3,Year 5,Creative Arts,"Year 5, Week 9, Lesson 1: Performing in a group (Explore and learn)",2,queued
+s3-arts-y5-w09-l2,S3,Year 5,Creative Arts,"Year 5, Week 9, Lesson 2: Performing in a group (Create and perform)",2,queued
+s3-arts-y5-w10-l1,S3,Year 5,Creative Arts,"Year 5, Week 10, Lesson 1: Investigation: a performance (Explore and learn)",2,queued
+s3-arts-y5-w10-l2,S3,Year 5,Creative Arts,"Year 5, Week 10, Lesson 2: Investigation: a performance (Create and perform)",2,queued
+s3-arts-y5-w11-l1,S3,Year 5,Creative Arts,"Year 5, Week 11, Lesson 1: Reading a script (Explore and learn)",2,queued
+s3-arts-y5-w11-l2,S3,Year 5,Creative Arts,"Year 5, Week 11, Lesson 2: Reading a script (Create and perform)",2,queued
+s3-arts-y5-w12-l1,S3,Year 5,Creative Arts,"Year 5, Week 12, Lesson 1: Character and voice (Explore and learn)",2,queued
+s3-arts-y5-w12-l2,S3,Year 5,Creative Arts,"Year 5, Week 12, Lesson 2: Character and voice (Create and perform)",2,queued
+s3-arts-y5-w13-l1,S3,Year 5,Creative Arts,"Year 5, Week 13, Lesson 1: Improvisation (Explore and learn)",2,queued
+s3-arts-y5-w13-l2,S3,Year 5,Creative Arts,"Year 5, Week 13, Lesson 2: Improvisation (Create and perform)",2,queued
+s3-arts-y5-w14-l1,S3,Year 5,Creative Arts,"Year 5, Week 14, Lesson 1: Performing a scene (Explore and learn)",2,queued
+s3-arts-y5-w14-l2,S3,Year 5,Creative Arts,"Year 5, Week 14, Lesson 2: Performing a scene (Create and perform)",2,queued
+s3-arts-y5-w15-l1,S3,Year 5,Creative Arts,"Year 5, Week 15, Lesson 1: Investigation: a drama (Explore and learn)",2,queued
+s3-arts-y5-w15-l2,S3,Year 5,Creative Arts,"Year 5, Week 15, Lesson 2: Investigation: a drama (Create and perform)",2,queued
+s3-arts-y5-w16-l1,S3,Year 5,Creative Arts,"Year 5, Week 16, Lesson 1: Elements of dance (Explore and learn)",2,queued
+s3-arts-y5-w16-l2,S3,Year 5,Creative Arts,"Year 5, Week 16, Lesson 2: Elements of dance (Create and perform)",2,queued
+s3-arts-y5-w17-l1,S3,Year 5,Creative Arts,"Year 5, Week 17, Lesson 1: Choreographing a phrase (Explore and learn)",2,queued
+s3-arts-y5-w17-l2,S3,Year 5,Creative Arts,"Year 5, Week 17, Lesson 2: Choreographing a phrase (Create and perform)",2,queued
+s3-arts-y5-w18-l1,S3,Year 5,Creative Arts,"Year 5, Week 18, Lesson 1: Dance from different cultures (Explore and learn)",2,queued
+s3-arts-y5-w18-l2,S3,Year 5,Creative Arts,"Year 5, Week 18, Lesson 2: Dance from different cultures (Create and perform)",2,queued
+s3-arts-y5-w19-l1,S3,Year 5,Creative Arts,"Year 5, Week 19, Lesson 1: Performing dance (Explore and learn)",2,queued
+s3-arts-y5-w19-l2,S3,Year 5,Creative Arts,"Year 5, Week 19, Lesson 2: Performing dance (Create and perform)",2,queued
+s3-arts-y5-w20-l1,S3,Year 5,Creative Arts,"Year 5, Week 20, Lesson 1: Investigation: choreography (Explore and learn)",2,queued
+s3-arts-y5-w20-l2,S3,Year 5,Creative Arts,"Year 5, Week 20, Lesson 2: Investigation: choreography (Create and perform)",2,queued
+s3-arts-y5-w21-l1,S3,Year 5,Creative Arts,"Year 5, Week 21, Lesson 1: Sculpture and form (Explore and learn)",2,queued
+s3-arts-y5-w21-l2,S3,Year 5,Creative Arts,"Year 5, Week 21, Lesson 2: Sculpture and form (Create and perform)",2,queued
+s3-arts-y5-w22-l1,S3,Year 5,Creative Arts,"Year 5, Week 22, Lesson 1: Working with clay and wire (Explore and learn)",2,queued
+s3-arts-y5-w22-l2,S3,Year 5,Creative Arts,"Year 5, Week 22, Lesson 2: Working with clay and wire (Create and perform)",2,queued
+s3-arts-y5-w23-l1,S3,Year 5,Creative Arts,"Year 5, Week 23, Lesson 1: Design for a purpose (Explore and learn)",2,queued
+s3-arts-y5-w23-l2,S3,Year 5,Creative Arts,"Year 5, Week 23, Lesson 2: Design for a purpose (Create and perform)",2,queued
+s3-arts-y5-w24-l1,S3,Year 5,Creative Arts,"Year 5, Week 24, Lesson 1: Making a sculpture (Explore and learn)",2,queued
+s3-arts-y5-w24-l2,S3,Year 5,Creative Arts,"Year 5, Week 24, Lesson 2: Making a sculpture (Create and perform)",2,queued
+s3-arts-y5-w25-l1,S3,Year 5,Creative Arts,"Year 5, Week 25, Lesson 1: Investigation: a sculpture (Explore and learn)",2,queued
+s3-arts-y5-w25-l2,S3,Year 5,Creative Arts,"Year 5, Week 25, Lesson 2: Investigation: a sculpture (Create and perform)",2,queued
+s3-arts-y5-w26-l1,S3,Year 5,Creative Arts,"Year 5, Week 26, Lesson 1: Pulse and tempo (Explore and learn)",2,queued
+s3-arts-y5-w26-l2,S3,Year 5,Creative Arts,"Year 5, Week 26, Lesson 2: Pulse and tempo (Create and perform)",2,queued
+s3-arts-y5-w27-l1,S3,Year 5,Creative Arts,"Year 5, Week 27, Lesson 1: Composing a melody (Explore and learn)",2,queued
+s3-arts-y5-w27-l2,S3,Year 5,Creative Arts,"Year 5, Week 27, Lesson 2: Composing a melody (Create and perform)",2,queued
+s3-arts-y5-w28-l1,S3,Year 5,Creative Arts,"Year 5, Week 28, Lesson 1: Using instruments and technology (Explore and learn)",2,queued
+s3-arts-y5-w28-l2,S3,Year 5,Creative Arts,"Year 5, Week 28, Lesson 2: Using instruments and technology (Create and perform)",2,queued
+s3-arts-y5-w29-l1,S3,Year 5,Creative Arts,"Year 5, Week 29, Lesson 1: Recording and sharing (Explore and learn)",2,queued
+s3-arts-y5-w29-l2,S3,Year 5,Creative Arts,"Year 5, Week 29, Lesson 2: Recording and sharing (Create and perform)",2,queued
+s3-arts-y5-w30-l1,S3,Year 5,Creative Arts,"Year 5, Week 30, Lesson 1: Investigation: a composition (Explore and learn)",2,queued
+s3-arts-y5-w30-l2,S3,Year 5,Creative Arts,"Year 5, Week 30, Lesson 2: Investigation: a composition (Create and perform)",2,queued
+s3-arts-y5-w31-l1,S3,Year 5,Creative Arts,"Year 5, Week 31, Lesson 1: Drama conventions (Explore and learn)",2,queued
+s3-arts-y5-w31-l2,S3,Year 5,Creative Arts,"Year 5, Week 31, Lesson 2: Drama conventions (Create and perform)",2,queued
+s3-arts-y5-w32-l1,S3,Year 5,Creative Arts,"Year 5, Week 32, Lesson 1: Theatre roles (Explore and learn)",2,queued
+s3-arts-y5-w32-l2,S3,Year 5,Creative Arts,"Year 5, Week 32, Lesson 2: Theatre roles (Create and perform)",2,queued
+s3-arts-y5-w33-l1,S3,Year 5,Creative Arts,"Year 5, Week 33, Lesson 1: Rehearsing a play (Explore and learn)",2,queued
+s3-arts-y5-w33-l2,S3,Year 5,Creative Arts,"Year 5, Week 33, Lesson 2: Rehearsing a play (Create and perform)",2,queued
+s3-arts-y5-w34-l1,S3,Year 5,Creative Arts,"Year 5, Week 34, Lesson 1: Performing a play (Explore and learn)",2,queued
+s3-arts-y5-w34-l2,S3,Year 5,Creative Arts,"Year 5, Week 34, Lesson 2: Performing a play (Create and perform)",2,queued
+s3-arts-y5-w35-l1,S3,Year 5,Creative Arts,"Year 5, Week 35, Lesson 1: Investigation: a production (Explore and learn)",2,queued
+s3-arts-y5-w35-l2,S3,Year 5,Creative Arts,"Year 5, Week 35, Lesson 2: Investigation: a production (Create and perform)",2,queued
+s3-arts-y5-w36-l1,S3,Year 5,Creative Arts,"Year 5, Week 36, Lesson 1: Selecting and refining work (Explore and learn)",2,queued
+s3-arts-y5-w36-l2,S3,Year 5,Creative Arts,"Year 5, Week 36, Lesson 2: Selecting and refining work (Create and perform)",2,queued
+s3-arts-y5-w37-l1,S3,Year 5,Creative Arts,"Year 5, Week 37, Lesson 1: Curating an exhibition (Explore and learn)",2,queued
+s3-arts-y5-w37-l2,S3,Year 5,Creative Arts,"Year 5, Week 37, Lesson 2: Curating an exhibition (Create and perform)",2,queued
+s3-arts-y5-w38-l1,S3,Year 5,Creative Arts,"Year 5, Week 38, Lesson 1: Rehearsing performances (Explore and learn)",2,queued
+s3-arts-y5-w38-l2,S3,Year 5,Creative Arts,"Year 5, Week 38, Lesson 2: Rehearsing performances (Create and perform)",2,queued
+s3-arts-y5-w39-l1,S3,Year 5,Creative Arts,"Year 5, Week 39, Lesson 1: Class showcase (Explore and learn)",2,queued
+s3-arts-y5-w39-l2,S3,Year 5,Creative Arts,"Year 5, Week 39, Lesson 2: Class showcase (Create and perform)",2,queued
+s3-arts-y5-w40-l1,S3,Year 5,Creative Arts,"Year 5, Week 40, Lesson 1: Year 5 creative arts reflection (Explore and learn)",2,queued
+s3-arts-y5-w40-l2,S3,Year 5,Creative Arts,"Year 5, Week 40, Lesson 2: Year 5 creative arts reflection (Create and perform)",2,queued
+s3-arts-y6-w01-l1,S3,Year 6,Creative Arts,"Year 6, Week 1, Lesson 1: Art and meaning (Explore and learn)",2,queued
+s3-arts-y6-w01-l2,S3,Year 6,Creative Arts,"Year 6, Week 1, Lesson 2: Art and meaning (Create and perform)",2,queued
+s3-arts-y6-w02-l1,S3,Year 6,Creative Arts,"Year 6, Week 2, Lesson 1: Symbols and ideas (Explore and learn)",2,queued
+s3-arts-y6-w02-l2,S3,Year 6,Creative Arts,"Year 6, Week 2, Lesson 2: Symbols and ideas (Create and perform)",2,queued
+s3-arts-y6-w03-l1,S3,Year 6,Creative Arts,"Year 6, Week 3, Lesson 1: Printmaking (Explore and learn)",2,queued
+s3-arts-y6-w03-l2,S3,Year 6,Creative Arts,"Year 6, Week 3, Lesson 2: Printmaking (Create and perform)",2,queued
+s3-arts-y6-w04-l1,S3,Year 6,Creative Arts,"Year 6, Week 4, Lesson 1: Responding to artworks (Explore and learn)",2,queued
+s3-arts-y6-w04-l2,S3,Year 6,Creative Arts,"Year 6, Week 4, Lesson 2: Responding to artworks (Create and perform)",2,queued
+s3-arts-y6-w05-l1,S3,Year 6,Creative Arts,"Year 6, Week 5, Lesson 1: Investigation: art and ideas (Explore and learn)",2,queued
+s3-arts-y6-w05-l2,S3,Year 6,Creative Arts,"Year 6, Week 5, Lesson 2: Investigation: art and ideas (Create and perform)",2,queued
+s3-arts-y6-w06-l1,S3,Year 6,Creative Arts,"Year 6, Week 6, Lesson 1: Ensemble playing (Explore and learn)",2,queued
+s3-arts-y6-w06-l2,S3,Year 6,Creative Arts,"Year 6, Week 6, Lesson 2: Ensemble playing (Create and perform)",2,queued
+s3-arts-y6-w07-l1,S3,Year 6,Creative Arts,"Year 6, Week 7, Lesson 1: Harmony and texture (Explore and learn)",2,queued
+s3-arts-y6-w07-l2,S3,Year 6,Creative Arts,"Year 6, Week 7, Lesson 2: Harmony and texture (Create and perform)",2,queued
+s3-arts-y6-w08-l1,S3,Year 6,Creative Arts,"Year 6, Week 8, Lesson 1: Music technology (Explore and learn)",2,queued
+s3-arts-y6-w08-l2,S3,Year 6,Creative Arts,"Year 6, Week 8, Lesson 2: Music technology (Create and perform)",2,queued
+s3-arts-y6-w09-l1,S3,Year 6,Creative Arts,"Year 6, Week 9, Lesson 1: Performing as an ensemble (Explore and learn)",2,queued
+s3-arts-y6-w09-l2,S3,Year 6,Creative Arts,"Year 6, Week 9, Lesson 2: Performing as an ensemble (Create and perform)",2,queued
+s3-arts-y6-w10-l1,S3,Year 6,Creative Arts,"Year 6, Week 10, Lesson 1: Investigation: an ensemble piece (Explore and learn)",2,queued
+s3-arts-y6-w10-l2,S3,Year 6,Creative Arts,"Year 6, Week 10, Lesson 2: Investigation: an ensemble piece (Create and perform)",2,queued
+s3-arts-y6-w11-l1,S3,Year 6,Creative Arts,"Year 6, Week 11, Lesson 1: Improvisation skills (Explore and learn)",2,queued
+s3-arts-y6-w11-l2,S3,Year 6,Creative Arts,"Year 6, Week 11, Lesson 2: Improvisation skills (Create and perform)",2,queued
+s3-arts-y6-w12-l1,S3,Year 6,Creative Arts,"Year 6, Week 12, Lesson 1: Playbuilding (Explore and learn)",2,queued
+s3-arts-y6-w12-l2,S3,Year 6,Creative Arts,"Year 6, Week 12, Lesson 2: Playbuilding (Create and perform)",2,queued
+s3-arts-y6-w13-l1,S3,Year 6,Creative Arts,"Year 6, Week 13, Lesson 1: Mask and movement (Explore and learn)",2,queued
+s3-arts-y6-w13-l2,S3,Year 6,Creative Arts,"Year 6, Week 13, Lesson 2: Mask and movement (Create and perform)",2,queued
+s3-arts-y6-w14-l1,S3,Year 6,Creative Arts,"Year 6, Week 14, Lesson 1: Performing a devised piece (Explore and learn)",2,queued
+s3-arts-y6-w14-l2,S3,Year 6,Creative Arts,"Year 6, Week 14, Lesson 2: Performing a devised piece (Create and perform)",2,queued
+s3-arts-y6-w15-l1,S3,Year 6,Creative Arts,"Year 6, Week 15, Lesson 1: Investigation: a devised drama (Explore and learn)",2,queued
+s3-arts-y6-w15-l2,S3,Year 6,Creative Arts,"Year 6, Week 15, Lesson 2: Investigation: a devised drama (Create and perform)",2,queued
+s3-arts-y6-w16-l1,S3,Year 6,Creative Arts,"Year 6, Week 16, Lesson 1: Dance and storytelling (Explore and learn)",2,queued
+s3-arts-y6-w16-l2,S3,Year 6,Creative Arts,"Year 6, Week 16, Lesson 2: Dance and storytelling (Create and perform)",2,queued
+s3-arts-y6-w17-l1,S3,Year 6,Creative Arts,"Year 6, Week 17, Lesson 1: Group choreography (Explore and learn)",2,queued
+s3-arts-y6-w17-l2,S3,Year 6,Creative Arts,"Year 6, Week 17, Lesson 2: Group choreography (Create and perform)",2,queued
+s3-arts-y6-w18-l1,S3,Year 6,Creative Arts,"Year 6, Week 18, Lesson 1: Dance and culture (Explore and learn)",2,queued
+s3-arts-y6-w18-l2,S3,Year 6,Creative Arts,"Year 6, Week 18, Lesson 2: Dance and culture (Create and perform)",2,queued
+s3-arts-y6-w19-l1,S3,Year 6,Creative Arts,"Year 6, Week 19, Lesson 1: Performing and evaluating (Explore and learn)",2,queued
+s3-arts-y6-w19-l2,S3,Year 6,Creative Arts,"Year 6, Week 19, Lesson 2: Performing and evaluating (Create and perform)",2,queued
+s3-arts-y6-w20-l1,S3,Year 6,Creative Arts,"Year 6, Week 20, Lesson 1: Investigation: a dance story (Explore and learn)",2,queued
+s3-arts-y6-w20-l2,S3,Year 6,Creative Arts,"Year 6, Week 20, Lesson 2: Investigation: a dance story (Create and perform)",2,queued
+s3-arts-y6-w21-l1,S3,Year 6,Creative Arts,"Year 6, Week 21, Lesson 1: Photography and framing (Explore and learn)",2,queued
+s3-arts-y6-w21-l2,S3,Year 6,Creative Arts,"Year 6, Week 21, Lesson 2: Photography and framing (Create and perform)",2,queued
+s3-arts-y6-w22-l1,S3,Year 6,Creative Arts,"Year 6, Week 22, Lesson 1: Digital art (Explore and learn)",2,queued
+s3-arts-y6-w22-l2,S3,Year 6,Creative Arts,"Year 6, Week 22, Lesson 2: Digital art (Create and perform)",2,queued
+s3-arts-y6-w23-l1,S3,Year 6,Creative Arts,"Year 6, Week 23, Lesson 1: Stop motion animation (Explore and learn)",2,queued
+s3-arts-y6-w23-l2,S3,Year 6,Creative Arts,"Year 6, Week 23, Lesson 2: Stop motion animation (Create and perform)",2,queued
+s3-arts-y6-w24-l1,S3,Year 6,Creative Arts,"Year 6, Week 24, Lesson 1: Making a short film (Explore and learn)",2,queued
+s3-arts-y6-w24-l2,S3,Year 6,Creative Arts,"Year 6, Week 24, Lesson 2: Making a short film (Create and perform)",2,queued
+s3-arts-y6-w25-l1,S3,Year 6,Creative Arts,"Year 6, Week 25, Lesson 1: Investigation: media arts (Explore and learn)",2,queued
+s3-arts-y6-w25-l2,S3,Year 6,Creative Arts,"Year 6, Week 25, Lesson 2: Investigation: media arts (Create and perform)",2,queued
+s3-arts-y6-w26-l1,S3,Year 6,Creative Arts,"Year 6, Week 26, Lesson 1: Lyrics and song structure (Explore and learn)",2,queued
+s3-arts-y6-w26-l2,S3,Year 6,Creative Arts,"Year 6, Week 26, Lesson 2: Lyrics and song structure (Create and perform)",2,queued
+s3-arts-y6-w27-l1,S3,Year 6,Creative Arts,"Year 6, Week 27, Lesson 1: Songwriting (Explore and learn)",2,queued
+s3-arts-y6-w27-l2,S3,Year 6,Creative Arts,"Year 6, Week 27, Lesson 2: Songwriting (Create and perform)",2,queued
+s3-arts-y6-w28-l1,S3,Year 6,Creative Arts,"Year 6, Week 28, Lesson 1: Arranging and rehearsing (Explore and learn)",2,queued
+s3-arts-y6-w28-l2,S3,Year 6,Creative Arts,"Year 6, Week 28, Lesson 2: Arranging and rehearsing (Create and perform)",2,queued
+s3-arts-y6-w29-l1,S3,Year 6,Creative Arts,"Year 6, Week 29, Lesson 1: Recording a song (Explore and learn)",2,queued
+s3-arts-y6-w29-l2,S3,Year 6,Creative Arts,"Year 6, Week 29, Lesson 2: Recording a song (Create and perform)",2,queued
+s3-arts-y6-w30-l1,S3,Year 6,Creative Arts,"Year 6, Week 30, Lesson 1: Investigation: songwriting (Explore and learn)",2,queued
+s3-arts-y6-w30-l2,S3,Year 6,Creative Arts,"Year 6, Week 30, Lesson 2: Investigation: songwriting (Create and perform)",2,queued
+s3-arts-y6-w31-l1,S3,Year 6,Creative Arts,"Year 6, Week 31, Lesson 1: Directing and designing (Explore and learn)",2,queued
+s3-arts-y6-w31-l2,S3,Year 6,Creative Arts,"Year 6, Week 31, Lesson 2: Directing and designing (Create and perform)",2,queued
+s3-arts-y6-w32-l1,S3,Year 6,Creative Arts,"Year 6, Week 32, Lesson 1: Costumes, sets and props (Explore and learn)",2,queued
+s3-arts-y6-w32-l2,S3,Year 6,Creative Arts,"Year 6, Week 32, Lesson 2: Costumes, sets and props (Create and perform)",2,queued
+s3-arts-y6-w33-l1,S3,Year 6,Creative Arts,"Year 6, Week 33, Lesson 1: Rehearsing a production (Explore and learn)",2,queued
+s3-arts-y6-w33-l2,S3,Year 6,Creative Arts,"Year 6, Week 33, Lesson 2: Rehearsing a production (Create and perform)",2,queued
+s3-arts-y6-w34-l1,S3,Year 6,Creative Arts,"Year 6, Week 34, Lesson 1: Performing a production (Explore and learn)",2,queued
+s3-arts-y6-w34-l2,S3,Year 6,Creative Arts,"Year 6, Week 34, Lesson 2: Performing a production (Create and perform)",2,queued
+s3-arts-y6-w35-l1,S3,Year 6,Creative Arts,"Year 6, Week 35, Lesson 1: Investigation: a production (Explore and learn)",2,queued
+s3-arts-y6-w35-l2,S3,Year 6,Creative Arts,"Year 6, Week 35, Lesson 2: Investigation: a production (Create and perform)",2,queued
+s3-arts-y6-w36-l1,S3,Year 6,Creative Arts,"Year 6, Week 36, Lesson 1: Planning a showcase (Explore and learn)",2,queued
+s3-arts-y6-w36-l2,S3,Year 6,Creative Arts,"Year 6, Week 36, Lesson 2: Planning a showcase (Create and perform)",2,queued
+s3-arts-y6-w37-l1,S3,Year 6,Creative Arts,"Year 6, Week 37, Lesson 1: Curating and presenting (Explore and learn)",2,queued
+s3-arts-y6-w37-l2,S3,Year 6,Creative Arts,"Year 6, Week 37, Lesson 2: Curating and presenting (Create and perform)",2,queued
+s3-arts-y6-w38-l1,S3,Year 6,Creative Arts,"Year 6, Week 38, Lesson 1: Final rehearsals (Explore and learn)",2,queued
+s3-arts-y6-w38-l2,S3,Year 6,Creative Arts,"Year 6, Week 38, Lesson 2: Final rehearsals (Create and perform)",2,queued
+s3-arts-y6-w39-l1,S3,Year 6,Creative Arts,"Year 6, Week 39, Lesson 1: Stage 3 showcase (Explore and learn)",2,queued
+s3-arts-y6-w39-l2,S3,Year 6,Creative Arts,"Year 6, Week 39, Lesson 2: Stage 3 showcase (Create and perform)",2,queued
+s3-arts-y6-w40-l1,S3,Year 6,Creative Arts,"Year 6, Week 40, Lesson 1: Year 6 creative arts reflection (Explore and learn)",2,queued
+s3-arts-y6-w40-l2,S3,Year 6,Creative Arts,"Year 6, Week 40, Lesson 2: Year 6 creative arts reflection (Create and perform)",2,queued
+s3-eng-y5-w01-l1,S3,Year 5,English,Year 5: Read a plot as a chain of choices,2,authored_in_repository_unreviewed
+s3-eng-y5-w01-l2,S3,Year 5,English,Year 5: Plan and draft a connected narrative,2,authored_in_repository_unreviewed
+s3-eng-y5-w01-l3,S3,Year 5,English,Year 5: Make narrative sentences connect,2,authored_in_repository_unreviewed
+s3-eng-y5-w01-l4,S3,Year 5,English,Year 5: Prepare and deliver a clear retelling,2,authored_in_repository_unreviewed
+s3-eng-y5-w02-l1,S3,Year 5,English,"Year 5, Week 2, Lesson 1: Developing characters (Reading)",2,queued
+s3-eng-y5-w02-l2,S3,Year 5,English,"Year 5, Week 2, Lesson 2: Developing characters (Writing)",2,queued
+s3-eng-y5-w02-l3,S3,Year 5,English,"Year 5, Week 2, Lesson 3: Developing characters (Language and spelling)",2,queued
+s3-eng-y5-w02-l4,S3,Year 5,English,"Year 5, Week 2, Lesson 4: Developing characters (Speaking and handwriting)",2,queued
+s3-eng-y5-w03-l1,S3,Year 5,English,"Year 5, Week 3, Lesson 1: Setting and mood (Reading)",2,queued
+s3-eng-y5-w03-l2,S3,Year 5,English,"Year 5, Week 3, Lesson 2: Setting and mood (Writing)",2,queued
+s3-eng-y5-w03-l3,S3,Year 5,English,"Year 5, Week 3, Lesson 3: Setting and mood (Language and spelling)",2,queued
+s3-eng-y5-w03-l4,S3,Year 5,English,"Year 5, Week 3, Lesson 4: Setting and mood (Speaking and handwriting)",2,queued
+s3-eng-y5-w04-l1,S3,Year 5,English,"Year 5, Week 4, Lesson 1: Writing a narrative (Reading)",2,queued
+s3-eng-y5-w04-l2,S3,Year 5,English,"Year 5, Week 4, Lesson 2: Writing a narrative (Writing)",2,queued
+s3-eng-y5-w04-l3,S3,Year 5,English,"Year 5, Week 4, Lesson 3: Writing a narrative (Language and spelling)",2,queued
+s3-eng-y5-w04-l4,S3,Year 5,English,"Year 5, Week 4, Lesson 4: Writing a narrative (Speaking and handwriting)",2,queued
+s3-eng-y5-w05-l1,S3,Year 5,English,"Year 5, Week 5, Lesson 1: Identifying bias and opinion (Reading)",2,queued
+s3-eng-y5-w05-l2,S3,Year 5,English,"Year 5, Week 5, Lesson 2: Identifying bias and opinion (Writing)",2,queued
+s3-eng-y5-w05-l3,S3,Year 5,English,"Year 5, Week 5, Lesson 3: Identifying bias and opinion (Language and spelling)",2,queued
+s3-eng-y5-w05-l4,S3,Year 5,English,"Year 5, Week 5, Lesson 4: Identifying bias and opinion (Speaking and handwriting)",2,queued
+s3-eng-y5-w06-l1,S3,Year 5,English,"Year 5, Week 6, Lesson 1: Building an argument (Reading)",2,queued
+s3-eng-y5-w06-l2,S3,Year 5,English,"Year 5, Week 6, Lesson 2: Building an argument (Writing)",2,queued
+s3-eng-y5-w06-l3,S3,Year 5,English,"Year 5, Week 6, Lesson 3: Building an argument (Language and spelling)",2,queued
+s3-eng-y5-w06-l4,S3,Year 5,English,"Year 5, Week 6, Lesson 4: Building an argument (Speaking and handwriting)",2,queued
+s3-eng-y5-w07-l1,S3,Year 5,English,"Year 5, Week 7, Lesson 1: Persuasive devices (Reading)",2,queued
+s3-eng-y5-w07-l2,S3,Year 5,English,"Year 5, Week 7, Lesson 2: Persuasive devices (Writing)",2,queued
+s3-eng-y5-w07-l3,S3,Year 5,English,"Year 5, Week 7, Lesson 3: Persuasive devices (Language and spelling)",2,queued
+s3-eng-y5-w07-l4,S3,Year 5,English,"Year 5, Week 7, Lesson 4: Persuasive devices (Speaking and handwriting)",2,queued
+s3-eng-y5-w08-l1,S3,Year 5,English,"Year 5, Week 8, Lesson 1: Writing and presenting a persuasive text (Reading)",2,queued
+s3-eng-y5-w08-l2,S3,Year 5,English,"Year 5, Week 8, Lesson 2: Writing and presenting a persuasive text (Writing)",2,queued
+s3-eng-y5-w08-l3,S3,Year 5,English,"Year 5, Week 8, Lesson 3: Writing and presenting a persuasive text (Language and spelling)",2,queued
+s3-eng-y5-w08-l4,S3,Year 5,English,"Year 5, Week 8, Lesson 4: Writing and presenting a persuasive text (Speaking and handwriting)",2,queued
+s3-eng-y5-w09-l1,S3,Year 5,English,"Year 5, Week 9, Lesson 1: Simile, metaphor and personification (Reading)",2,queued
+s3-eng-y5-w09-l2,S3,Year 5,English,"Year 5, Week 9, Lesson 2: Simile, metaphor and personification (Writing)",2,queued
+s3-eng-y5-w09-l3,S3,Year 5,English,"Year 5, Week 9, Lesson 3: Simile, metaphor and personification (Language and spelling)",2,queued
+s3-eng-y5-w09-l4,S3,Year 5,English,"Year 5, Week 9, Lesson 4: Simile, metaphor and personification (Speaking and handwriting)",2,queued
+s3-eng-y5-w10-l1,S3,Year 5,English,"Year 5, Week 10, Lesson 1: Imagery and sound devices (Reading)",2,queued
+s3-eng-y5-w10-l2,S3,Year 5,English,"Year 5, Week 10, Lesson 2: Imagery and sound devices (Writing)",2,queued
+s3-eng-y5-w10-l3,S3,Year 5,English,"Year 5, Week 10, Lesson 3: Imagery and sound devices (Language and spelling)",2,queued
+s3-eng-y5-w10-l4,S3,Year 5,English,"Year 5, Week 10, Lesson 4: Imagery and sound devices (Speaking and handwriting)",2,queued
+s3-eng-y5-w11-l1,S3,Year 5,English,"Year 5, Week 11, Lesson 1: Reading and performing poems (Reading)",2,queued
+s3-eng-y5-w11-l2,S3,Year 5,English,"Year 5, Week 11, Lesson 2: Reading and performing poems (Writing)",2,queued
+s3-eng-y5-w11-l3,S3,Year 5,English,"Year 5, Week 11, Lesson 3: Reading and performing poems (Language and spelling)",2,queued
+s3-eng-y5-w11-l4,S3,Year 5,English,"Year 5, Week 11, Lesson 4: Reading and performing poems (Speaking and handwriting)",2,queued
+s3-eng-y5-w12-l1,S3,Year 5,English,"Year 5, Week 12, Lesson 1: Writing a poem (Reading)",2,queued
+s3-eng-y5-w12-l2,S3,Year 5,English,"Year 5, Week 12, Lesson 2: Writing a poem (Writing)",2,queued
+s3-eng-y5-w12-l3,S3,Year 5,English,"Year 5, Week 12, Lesson 3: Writing a poem (Language and spelling)",2,queued
+s3-eng-y5-w12-l4,S3,Year 5,English,"Year 5, Week 12, Lesson 4: Writing a poem (Speaking and handwriting)",2,queued
+s3-eng-y5-w13-l1,S3,Year 5,English,"Year 5, Week 13, Lesson 1: Research skills and note taking (Reading)",2,queued
+s3-eng-y5-w13-l2,S3,Year 5,English,"Year 5, Week 13, Lesson 2: Research skills and note taking (Writing)",2,queued
+s3-eng-y5-w13-l3,S3,Year 5,English,"Year 5, Week 13, Lesson 3: Research skills and note taking (Language and spelling)",2,queued
+s3-eng-y5-w13-l4,S3,Year 5,English,"Year 5, Week 13, Lesson 4: Research skills and note taking (Speaking and handwriting)",2,queued
+s3-eng-y5-w14-l1,S3,Year 5,English,"Year 5, Week 14, Lesson 1: Structuring an information report (Reading)",2,queued
+s3-eng-y5-w14-l2,S3,Year 5,English,"Year 5, Week 14, Lesson 2: Structuring an information report (Writing)",2,queued
+s3-eng-y5-w14-l3,S3,Year 5,English,"Year 5, Week 14, Lesson 3: Structuring an information report (Language and spelling)",2,queued
+s3-eng-y5-w14-l4,S3,Year 5,English,"Year 5, Week 14, Lesson 4: Structuring an information report (Speaking and handwriting)",2,queued
+s3-eng-y5-w15-l1,S3,Year 5,English,"Year 5, Week 15, Lesson 1: Writing with technical language (Reading)",2,queued
+s3-eng-y5-w15-l2,S3,Year 5,English,"Year 5, Week 15, Lesson 2: Writing with technical language (Writing)",2,queued
+s3-eng-y5-w15-l3,S3,Year 5,English,"Year 5, Week 15, Lesson 3: Writing with technical language (Language and spelling)",2,queued
+s3-eng-y5-w15-l4,S3,Year 5,English,"Year 5, Week 15, Lesson 4: Writing with technical language (Speaking and handwriting)",2,queued
+s3-eng-y5-w16-l1,S3,Year 5,English,"Year 5, Week 16, Lesson 1: Presenting research (Reading)",2,queued
+s3-eng-y5-w16-l2,S3,Year 5,English,"Year 5, Week 16, Lesson 2: Presenting research (Writing)",2,queued
+s3-eng-y5-w16-l3,S3,Year 5,English,"Year 5, Week 16, Lesson 3: Presenting research (Language and spelling)",2,queued
+s3-eng-y5-w16-l4,S3,Year 5,English,"Year 5, Week 16, Lesson 4: Presenting research (Speaking and handwriting)",2,queued
+s3-eng-y5-w17-l1,S3,Year 5,English,"Year 5, Week 17, Lesson 1: Reading a class novel (Reading)",2,queued
+s3-eng-y5-w17-l2,S3,Year 5,English,"Year 5, Week 17, Lesson 2: Reading a class novel (Writing)",2,queued
+s3-eng-y5-w17-l3,S3,Year 5,English,"Year 5, Week 17, Lesson 3: Reading a class novel (Language and spelling)",2,queued
+s3-eng-y5-w17-l4,S3,Year 5,English,"Year 5, Week 17, Lesson 4: Reading a class novel (Speaking and handwriting)",2,queued
+s3-eng-y5-w18-l1,S3,Year 5,English,"Year 5, Week 18, Lesson 1: Character and motivation (Reading)",2,queued
+s3-eng-y5-w18-l2,S3,Year 5,English,"Year 5, Week 18, Lesson 2: Character and motivation (Writing)",2,queued
+s3-eng-y5-w18-l3,S3,Year 5,English,"Year 5, Week 18, Lesson 3: Character and motivation (Language and spelling)",2,queued
+s3-eng-y5-w18-l4,S3,Year 5,English,"Year 5, Week 18, Lesson 4: Character and motivation (Speaking and handwriting)",2,queued
+s3-eng-y5-w19-l1,S3,Year 5,English,"Year 5, Week 19, Lesson 1: Theme and author purpose (Reading)",2,queued
+s3-eng-y5-w19-l2,S3,Year 5,English,"Year 5, Week 19, Lesson 2: Theme and author purpose (Writing)",2,queued
+s3-eng-y5-w19-l3,S3,Year 5,English,"Year 5, Week 19, Lesson 3: Theme and author purpose (Language and spelling)",2,queued
+s3-eng-y5-w19-l4,S3,Year 5,English,"Year 5, Week 19, Lesson 4: Theme and author purpose (Speaking and handwriting)",2,queued
+s3-eng-y5-w20-l1,S3,Year 5,English,"Year 5, Week 20, Lesson 1: Responding to the novel (Reading)",2,queued
+s3-eng-y5-w20-l2,S3,Year 5,English,"Year 5, Week 20, Lesson 2: Responding to the novel (Writing)",2,queued
+s3-eng-y5-w20-l3,S3,Year 5,English,"Year 5, Week 20, Lesson 3: Responding to the novel (Language and spelling)",2,queued
+s3-eng-y5-w20-l4,S3,Year 5,English,"Year 5, Week 20, Lesson 4: Responding to the novel (Speaking and handwriting)",2,queued
+s3-eng-y5-w21-l1,S3,Year 5,English,"Year 5, Week 21, Lesson 1: Complex and compound sentences (Reading)",2,queued
+s3-eng-y5-w21-l2,S3,Year 5,English,"Year 5, Week 21, Lesson 2: Complex and compound sentences (Writing)",2,queued
+s3-eng-y5-w21-l3,S3,Year 5,English,"Year 5, Week 21, Lesson 3: Complex and compound sentences (Language and spelling)",2,queued
+s3-eng-y5-w21-l4,S3,Year 5,English,"Year 5, Week 21, Lesson 4: Complex and compound sentences (Speaking and handwriting)",2,queued
+s3-eng-y5-w22-l1,S3,Year 5,English,"Year 5, Week 22, Lesson 1: Clauses and conjunctions (Reading)",2,queued
+s3-eng-y5-w22-l2,S3,Year 5,English,"Year 5, Week 22, Lesson 2: Clauses and conjunctions (Writing)",2,queued
+s3-eng-y5-w22-l3,S3,Year 5,English,"Year 5, Week 22, Lesson 3: Clauses and conjunctions (Language and spelling)",2,queued
+s3-eng-y5-w22-l4,S3,Year 5,English,"Year 5, Week 22, Lesson 4: Clauses and conjunctions (Speaking and handwriting)",2,queued
+s3-eng-y5-w23-l1,S3,Year 5,English,"Year 5, Week 23, Lesson 1: Punctuation: commas and apostrophes (Reading)",2,queued
+s3-eng-y5-w23-l2,S3,Year 5,English,"Year 5, Week 23, Lesson 2: Punctuation: commas and apostrophes (Writing)",2,queued
+s3-eng-y5-w23-l3,S3,Year 5,English,"Year 5, Week 23, Lesson 3: Punctuation: commas and apostrophes (Language and spelling)",2,queued
+s3-eng-y5-w23-l4,S3,Year 5,English,"Year 5, Week 23, Lesson 4: Punctuation: commas and apostrophes (Speaking and handwriting)",2,queued
+s3-eng-y5-w24-l1,S3,Year 5,English,"Year 5, Week 24, Lesson 1: Direct and indirect speech (Reading)",2,queued
+s3-eng-y5-w24-l2,S3,Year 5,English,"Year 5, Week 24, Lesson 2: Direct and indirect speech (Writing)",2,queued
+s3-eng-y5-w24-l3,S3,Year 5,English,"Year 5, Week 24, Lesson 3: Direct and indirect speech (Language and spelling)",2,queued
+s3-eng-y5-w24-l4,S3,Year 5,English,"Year 5, Week 24, Lesson 4: Direct and indirect speech (Speaking and handwriting)",2,queued
+s3-eng-y5-w25-l1,S3,Year 5,English,"Year 5, Week 25, Lesson 1: Prefixes and suffixes (Reading)",2,queued
+s3-eng-y5-w25-l2,S3,Year 5,English,"Year 5, Week 25, Lesson 2: Prefixes and suffixes (Writing)",2,queued
+s3-eng-y5-w25-l3,S3,Year 5,English,"Year 5, Week 25, Lesson 3: Prefixes and suffixes (Language and spelling)",2,queued
+s3-eng-y5-w25-l4,S3,Year 5,English,"Year 5, Week 25, Lesson 4: Prefixes and suffixes (Speaking and handwriting)",2,queued
+s3-eng-y5-w26-l1,S3,Year 5,English,"Year 5, Week 26, Lesson 1: Roots and word origins (Reading)",2,queued
+s3-eng-y5-w26-l2,S3,Year 5,English,"Year 5, Week 26, Lesson 2: Roots and word origins (Writing)",2,queued
+s3-eng-y5-w26-l3,S3,Year 5,English,"Year 5, Week 26, Lesson 3: Roots and word origins (Language and spelling)",2,queued
+s3-eng-y5-w26-l4,S3,Year 5,English,"Year 5, Week 26, Lesson 4: Roots and word origins (Speaking and handwriting)",2,queued
+s3-eng-y5-w27-l1,S3,Year 5,English,"Year 5, Week 27, Lesson 1: Homophones and tricky words (Reading)",2,queued
+s3-eng-y5-w27-l2,S3,Year 5,English,"Year 5, Week 27, Lesson 2: Homophones and tricky words (Writing)",2,queued
+s3-eng-y5-w27-l3,S3,Year 5,English,"Year 5, Week 27, Lesson 3: Homophones and tricky words (Language and spelling)",2,queued
+s3-eng-y5-w27-l4,S3,Year 5,English,"Year 5, Week 27, Lesson 4: Homophones and tricky words (Speaking and handwriting)",2,queued
+s3-eng-y5-w28-l1,S3,Year 5,English,"Year 5, Week 28, Lesson 1: Spelling strategies (Reading)",2,queued
+s3-eng-y5-w28-l2,S3,Year 5,English,"Year 5, Week 28, Lesson 2: Spelling strategies (Writing)",2,queued
+s3-eng-y5-w28-l3,S3,Year 5,English,"Year 5, Week 28, Lesson 3: Spelling strategies (Language and spelling)",2,queued
+s3-eng-y5-w28-l4,S3,Year 5,English,"Year 5, Week 28, Lesson 4: Spelling strategies (Speaking and handwriting)",2,queued
+s3-eng-y5-w29-l1,S3,Year 5,English,"Year 5, Week 29, Lesson 1: Reading images and layout (Reading)",2,queued
+s3-eng-y5-w29-l2,S3,Year 5,English,"Year 5, Week 29, Lesson 2: Reading images and layout (Writing)",2,queued
+s3-eng-y5-w29-l3,S3,Year 5,English,"Year 5, Week 29, Lesson 3: Reading images and layout (Language and spelling)",2,queued
+s3-eng-y5-w29-l4,S3,Year 5,English,"Year 5, Week 29, Lesson 4: Reading images and layout (Speaking and handwriting)",2,queued
+s3-eng-y5-w30-l1,S3,Year 5,English,"Year 5, Week 30, Lesson 1: Analysing advertisements (Reading)",2,queued
+s3-eng-y5-w30-l2,S3,Year 5,English,"Year 5, Week 30, Lesson 2: Analysing advertisements (Writing)",2,queued
+s3-eng-y5-w30-l3,S3,Year 5,English,"Year 5, Week 30, Lesson 3: Analysing advertisements (Language and spelling)",2,queued
+s3-eng-y5-w30-l4,S3,Year 5,English,"Year 5, Week 30, Lesson 4: Analysing advertisements (Speaking and handwriting)",2,queued
+s3-eng-y5-w31-l1,S3,Year 5,English,"Year 5, Week 31, Lesson 1: Reading websites and digital texts (Reading)",2,queued
+s3-eng-y5-w31-l2,S3,Year 5,English,"Year 5, Week 31, Lesson 2: Reading websites and digital texts (Writing)",2,queued
+s3-eng-y5-w31-l3,S3,Year 5,English,"Year 5, Week 31, Lesson 3: Reading websites and digital texts (Language and spelling)",2,queued
+s3-eng-y5-w31-l4,S3,Year 5,English,"Year 5, Week 31, Lesson 4: Reading websites and digital texts (Speaking and handwriting)",2,queued
+s3-eng-y5-w32-l1,S3,Year 5,English,"Year 5, Week 32, Lesson 1: Creating a multimodal text (Reading)",2,queued
+s3-eng-y5-w32-l2,S3,Year 5,English,"Year 5, Week 32, Lesson 2: Creating a multimodal text (Writing)",2,queued
+s3-eng-y5-w32-l3,S3,Year 5,English,"Year 5, Week 32, Lesson 3: Creating a multimodal text (Language and spelling)",2,queued
+s3-eng-y5-w32-l4,S3,Year 5,English,"Year 5, Week 32, Lesson 4: Creating a multimodal text (Speaking and handwriting)",2,queued
+s3-eng-y5-w33-l1,S3,Year 5,English,"Year 5, Week 33, Lesson 1: Explanations: how and why (Reading)",2,queued
+s3-eng-y5-w33-l2,S3,Year 5,English,"Year 5, Week 33, Lesson 2: Explanations: how and why (Writing)",2,queued
+s3-eng-y5-w33-l3,S3,Year 5,English,"Year 5, Week 33, Lesson 3: Explanations: how and why (Language and spelling)",2,queued
+s3-eng-y5-w33-l4,S3,Year 5,English,"Year 5, Week 33, Lesson 4: Explanations: how and why (Speaking and handwriting)",2,queued
+s3-eng-y5-w34-l1,S3,Year 5,English,"Year 5, Week 34, Lesson 1: Writing an explanation (Reading)",2,queued
+s3-eng-y5-w34-l2,S3,Year 5,English,"Year 5, Week 34, Lesson 2: Writing an explanation (Writing)",2,queued
+s3-eng-y5-w34-l3,S3,Year 5,English,"Year 5, Week 34, Lesson 3: Writing an explanation (Language and spelling)",2,queued
+s3-eng-y5-w34-l4,S3,Year 5,English,"Year 5, Week 34, Lesson 4: Writing an explanation (Speaking and handwriting)",2,queued
+s3-eng-y5-w35-l1,S3,Year 5,English,"Year 5, Week 35, Lesson 1: Writing procedures (Reading)",2,queued
+s3-eng-y5-w35-l2,S3,Year 5,English,"Year 5, Week 35, Lesson 2: Writing procedures (Writing)",2,queued
+s3-eng-y5-w35-l3,S3,Year 5,English,"Year 5, Week 35, Lesson 3: Writing procedures (Language and spelling)",2,queued
+s3-eng-y5-w35-l4,S3,Year 5,English,"Year 5, Week 35, Lesson 4: Writing procedures (Speaking and handwriting)",2,queued
+s3-eng-y5-w36-l1,S3,Year 5,English,"Year 5, Week 36, Lesson 1: Reading and writing reviews (Reading)",2,queued
+s3-eng-y5-w36-l2,S3,Year 5,English,"Year 5, Week 36, Lesson 2: Reading and writing reviews (Writing)",2,queued
+s3-eng-y5-w36-l3,S3,Year 5,English,"Year 5, Week 36, Lesson 3: Reading and writing reviews (Language and spelling)",2,queued
+s3-eng-y5-w36-l4,S3,Year 5,English,"Year 5, Week 36, Lesson 4: Reading and writing reviews (Speaking and handwriting)",2,queued
+s3-eng-y5-w37-l1,S3,Year 5,English,"Year 5, Week 37, Lesson 1: Fluency and comprehension (Reading)",2,queued
+s3-eng-y5-w37-l2,S3,Year 5,English,"Year 5, Week 37, Lesson 2: Fluency and comprehension (Writing)",2,queued
+s3-eng-y5-w37-l3,S3,Year 5,English,"Year 5, Week 37, Lesson 3: Fluency and comprehension (Language and spelling)",2,queued
+s3-eng-y5-w37-l4,S3,Year 5,English,"Year 5, Week 37, Lesson 4: Fluency and comprehension (Speaking and handwriting)",2,queued
+s3-eng-y5-w38-l1,S3,Year 5,English,"Year 5, Week 38, Lesson 1: Writing portfolio (Reading)",2,queued
+s3-eng-y5-w38-l2,S3,Year 5,English,"Year 5, Week 38, Lesson 2: Writing portfolio (Writing)",2,queued
+s3-eng-y5-w38-l3,S3,Year 5,English,"Year 5, Week 38, Lesson 3: Writing portfolio (Language and spelling)",2,queued
+s3-eng-y5-w38-l4,S3,Year 5,English,"Year 5, Week 38, Lesson 4: Writing portfolio (Speaking and handwriting)",2,queued
+s3-eng-y5-w39-l1,S3,Year 5,English,"Year 5, Week 39, Lesson 1: Spelling and grammar review (Reading)",2,queued
+s3-eng-y5-w39-l2,S3,Year 5,English,"Year 5, Week 39, Lesson 2: Spelling and grammar review (Writing)",2,queued
+s3-eng-y5-w39-l3,S3,Year 5,English,"Year 5, Week 39, Lesson 3: Spelling and grammar review (Language and spelling)",2,queued
+s3-eng-y5-w39-l4,S3,Year 5,English,"Year 5, Week 39, Lesson 4: Spelling and grammar review (Speaking and handwriting)",2,queued
+s3-eng-y5-w40-l1,S3,Year 5,English,"Year 5, Week 40, Lesson 1: Year 5 English celebration (Reading)",2,queued
+s3-eng-y5-w40-l2,S3,Year 5,English,"Year 5, Week 40, Lesson 2: Year 5 English celebration (Writing)",2,queued
+s3-eng-y5-w40-l3,S3,Year 5,English,"Year 5, Week 40, Lesson 3: Year 5 English celebration (Language and spelling)",2,queued
+s3-eng-y5-w40-l4,S3,Year 5,English,"Year 5, Week 40, Lesson 4: Year 5 English celebration (Speaking and handwriting)",2,queued
+s3-eng-y6-w01-l1,S3,Year 6,English,"Year 6, Week 1, Lesson 1: Voice and style (Reading)",2,queued
+s3-eng-y6-w01-l2,S3,Year 6,English,"Year 6, Week 1, Lesson 2: Voice and style (Writing)",2,queued
+s3-eng-y6-w01-l3,S3,Year 6,English,"Year 6, Week 1, Lesson 3: Voice and style (Language and spelling)",2,queued
+s3-eng-y6-w01-l4,S3,Year 6,English,"Year 6, Week 1, Lesson 4: Voice and style (Speaking and handwriting)",2,queued
+s3-eng-y6-w02-l1,S3,Year 6,English,"Year 6, Week 2, Lesson 1: Building suspense (Reading)",2,queued
+s3-eng-y6-w02-l2,S3,Year 6,English,"Year 6, Week 2, Lesson 2: Building suspense (Writing)",2,queued
+s3-eng-y6-w02-l3,S3,Year 6,English,"Year 6, Week 2, Lesson 3: Building suspense (Language and spelling)",2,queued
+s3-eng-y6-w02-l4,S3,Year 6,English,"Year 6, Week 2, Lesson 4: Building suspense (Speaking and handwriting)",2,queued
+s3-eng-y6-w03-l1,S3,Year 6,English,"Year 6, Week 3, Lesson 1: Show, do not tell (Reading)",2,queued
+s3-eng-y6-w03-l2,S3,Year 6,English,"Year 6, Week 3, Lesson 2: Show, do not tell (Writing)",2,queued
+s3-eng-y6-w03-l3,S3,Year 6,English,"Year 6, Week 3, Lesson 3: Show, do not tell (Language and spelling)",2,queued
+s3-eng-y6-w03-l4,S3,Year 6,English,"Year 6, Week 3, Lesson 4: Show, do not tell (Speaking and handwriting)",2,queued
+s3-eng-y6-w04-l1,S3,Year 6,English,"Year 6, Week 4, Lesson 1: Writing and publishing a narrative (Reading)",2,queued
+s3-eng-y6-w04-l2,S3,Year 6,English,"Year 6, Week 4, Lesson 2: Writing and publishing a narrative (Writing)",2,queued
+s3-eng-y6-w04-l3,S3,Year 6,English,"Year 6, Week 4, Lesson 3: Writing and publishing a narrative (Language and spelling)",2,queued
+s3-eng-y6-w04-l4,S3,Year 6,English,"Year 6, Week 4, Lesson 4: Writing and publishing a narrative (Speaking and handwriting)",2,queued
+s3-eng-y6-w05-l1,S3,Year 6,English,"Year 6, Week 5, Lesson 1: Writing a speech (Reading)",2,queued
+s3-eng-y6-w05-l2,S3,Year 6,English,"Year 6, Week 5, Lesson 2: Writing a speech (Writing)",2,queued
+s3-eng-y6-w05-l3,S3,Year 6,English,"Year 6, Week 5, Lesson 3: Writing a speech (Language and spelling)",2,queued
+s3-eng-y6-w05-l4,S3,Year 6,English,"Year 6, Week 5, Lesson 4: Writing a speech (Speaking and handwriting)",2,queued
+s3-eng-y6-w06-l1,S3,Year 6,English,"Year 6, Week 6, Lesson 1: Rebuttal and counter-argument (Reading)",2,queued
+s3-eng-y6-w06-l2,S3,Year 6,English,"Year 6, Week 6, Lesson 2: Rebuttal and counter-argument (Writing)",2,queued
+s3-eng-y6-w06-l3,S3,Year 6,English,"Year 6, Week 6, Lesson 3: Rebuttal and counter-argument (Language and spelling)",2,queued
+s3-eng-y6-w06-l4,S3,Year 6,English,"Year 6, Week 6, Lesson 4: Rebuttal and counter-argument (Speaking and handwriting)",2,queued
+s3-eng-y6-w07-l1,S3,Year 6,English,"Year 6, Week 7, Lesson 1: Debating skills (Reading)",2,queued
+s3-eng-y6-w07-l2,S3,Year 6,English,"Year 6, Week 7, Lesson 2: Debating skills (Writing)",2,queued
+s3-eng-y6-w07-l3,S3,Year 6,English,"Year 6, Week 7, Lesson 3: Debating skills (Language and spelling)",2,queued
+s3-eng-y6-w07-l4,S3,Year 6,English,"Year 6, Week 7, Lesson 4: Debating skills (Speaking and handwriting)",2,queued
+s3-eng-y6-w08-l1,S3,Year 6,English,"Year 6, Week 8, Lesson 1: Delivering a persuasive speech (Reading)",2,queued
+s3-eng-y6-w08-l2,S3,Year 6,English,"Year 6, Week 8, Lesson 2: Delivering a persuasive speech (Writing)",2,queued
+s3-eng-y6-w08-l3,S3,Year 6,English,"Year 6, Week 8, Lesson 3: Delivering a persuasive speech (Language and spelling)",2,queued
+s3-eng-y6-w08-l4,S3,Year 6,English,"Year 6, Week 8, Lesson 4: Delivering a persuasive speech (Speaking and handwriting)",2,queued
+s3-eng-y6-w09-l1,S3,Year 6,English,"Year 6, Week 9, Lesson 1: Poetic forms: haiku, sonnet and free verse (Reading)",2,queued
+s3-eng-y6-w09-l2,S3,Year 6,English,"Year 6, Week 9, Lesson 2: Poetic forms: haiku, sonnet and free verse (Writing)",2,queued
+s3-eng-y6-w09-l3,S3,Year 6,English,"Year 6, Week 9, Lesson 3: Poetic forms: haiku, sonnet and free verse (Language and spelling)",2,queued
+s3-eng-y6-w09-l4,S3,Year 6,English,"Year 6, Week 9, Lesson 4: Poetic forms: haiku, sonnet and free verse (Speaking and handwriting)",2,queued
+s3-eng-y6-w10-l1,S3,Year 6,English,"Year 6, Week 10, Lesson 1: Language and meaning (Reading)",2,queued
+s3-eng-y6-w10-l2,S3,Year 6,English,"Year 6, Week 10, Lesson 2: Language and meaning (Writing)",2,queued
+s3-eng-y6-w10-l3,S3,Year 6,English,"Year 6, Week 10, Lesson 3: Language and meaning (Language and spelling)",2,queued
+s3-eng-y6-w10-l4,S3,Year 6,English,"Year 6, Week 10, Lesson 4: Language and meaning (Speaking and handwriting)",2,queued
+s3-eng-y6-w11-l1,S3,Year 6,English,"Year 6, Week 11, Lesson 1: Poems from different cultures (Reading)",2,queued
+s3-eng-y6-w11-l2,S3,Year 6,English,"Year 6, Week 11, Lesson 2: Poems from different cultures (Writing)",2,queued
+s3-eng-y6-w11-l3,S3,Year 6,English,"Year 6, Week 11, Lesson 3: Poems from different cultures (Language and spelling)",2,queued
+s3-eng-y6-w11-l4,S3,Year 6,English,"Year 6, Week 11, Lesson 4: Poems from different cultures (Speaking and handwriting)",2,queued
+s3-eng-y6-w12-l1,S3,Year 6,English,"Year 6, Week 12, Lesson 1: Writing and performing poetry (Reading)",2,queued
+s3-eng-y6-w12-l2,S3,Year 6,English,"Year 6, Week 12, Lesson 2: Writing and performing poetry (Writing)",2,queued
+s3-eng-y6-w12-l3,S3,Year 6,English,"Year 6, Week 12, Lesson 3: Writing and performing poetry (Language and spelling)",2,queued
+s3-eng-y6-w12-l4,S3,Year 6,English,"Year 6, Week 12, Lesson 4: Writing and performing poetry (Speaking and handwriting)",2,queued
+s3-eng-y6-w13-l1,S3,Year 6,English,"Year 6, Week 13, Lesson 1: Evaluating sources (Reading)",2,queued
+s3-eng-y6-w13-l2,S3,Year 6,English,"Year 6, Week 13, Lesson 2: Evaluating sources (Writing)",2,queued
+s3-eng-y6-w13-l3,S3,Year 6,English,"Year 6, Week 13, Lesson 3: Evaluating sources (Language and spelling)",2,queued
+s3-eng-y6-w13-l4,S3,Year 6,English,"Year 6, Week 13, Lesson 4: Evaluating sources (Speaking and handwriting)",2,queued
+s3-eng-y6-w14-l1,S3,Year 6,English,"Year 6, Week 14, Lesson 1: Planning a research report (Reading)",2,queued
+s3-eng-y6-w14-l2,S3,Year 6,English,"Year 6, Week 14, Lesson 2: Planning a research report (Writing)",2,queued
+s3-eng-y6-w14-l3,S3,Year 6,English,"Year 6, Week 14, Lesson 3: Planning a research report (Language and spelling)",2,queued
+s3-eng-y6-w14-l4,S3,Year 6,English,"Year 6, Week 14, Lesson 4: Planning a research report (Speaking and handwriting)",2,queued
+s3-eng-y6-w15-l1,S3,Year 6,English,"Year 6, Week 15, Lesson 1: Writing a report (Reading)",2,queued
+s3-eng-y6-w15-l2,S3,Year 6,English,"Year 6, Week 15, Lesson 2: Writing a report (Writing)",2,queued
+s3-eng-y6-w15-l3,S3,Year 6,English,"Year 6, Week 15, Lesson 3: Writing a report (Language and spelling)",2,queued
+s3-eng-y6-w15-l4,S3,Year 6,English,"Year 6, Week 15, Lesson 4: Writing a report (Speaking and handwriting)",2,queued
+s3-eng-y6-w16-l1,S3,Year 6,English,"Year 6, Week 16, Lesson 1: Presenting findings (Reading)",2,queued
+s3-eng-y6-w16-l2,S3,Year 6,English,"Year 6, Week 16, Lesson 2: Presenting findings (Writing)",2,queued
+s3-eng-y6-w16-l3,S3,Year 6,English,"Year 6, Week 16, Lesson 3: Presenting findings (Language and spelling)",2,queued
+s3-eng-y6-w16-l4,S3,Year 6,English,"Year 6, Week 16, Lesson 4: Presenting findings (Speaking and handwriting)",2,queued
+s3-eng-y6-w17-l1,S3,Year 6,English,"Year 6, Week 17, Lesson 1: Reading a novel (Reading)",2,queued
+s3-eng-y6-w17-l2,S3,Year 6,English,"Year 6, Week 17, Lesson 2: Reading a novel (Writing)",2,queued
+s3-eng-y6-w17-l3,S3,Year 6,English,"Year 6, Week 17, Lesson 3: Reading a novel (Language and spelling)",2,queued
+s3-eng-y6-w17-l4,S3,Year 6,English,"Year 6, Week 17, Lesson 4: Reading a novel (Speaking and handwriting)",2,queued
+s3-eng-y6-w18-l1,S3,Year 6,English,"Year 6, Week 18, Lesson 1: Character change (Reading)",2,queued
+s3-eng-y6-w18-l2,S3,Year 6,English,"Year 6, Week 18, Lesson 2: Character change (Writing)",2,queued
+s3-eng-y6-w18-l3,S3,Year 6,English,"Year 6, Week 18, Lesson 3: Character change (Language and spelling)",2,queued
+s3-eng-y6-w18-l4,S3,Year 6,English,"Year 6, Week 18, Lesson 4: Character change (Speaking and handwriting)",2,queued
+s3-eng-y6-w19-l1,S3,Year 6,English,"Year 6, Week 19, Lesson 1: Themes and messages (Reading)",2,queued
+s3-eng-y6-w19-l2,S3,Year 6,English,"Year 6, Week 19, Lesson 2: Themes and messages (Writing)",2,queued
+s3-eng-y6-w19-l3,S3,Year 6,English,"Year 6, Week 19, Lesson 3: Themes and messages (Language and spelling)",2,queued
+s3-eng-y6-w19-l4,S3,Year 6,English,"Year 6, Week 19, Lesson 4: Themes and messages (Speaking and handwriting)",2,queued
+s3-eng-y6-w20-l1,S3,Year 6,English,"Year 6, Week 20, Lesson 1: Literary response (Reading)",2,queued
+s3-eng-y6-w20-l2,S3,Year 6,English,"Year 6, Week 20, Lesson 2: Literary response (Writing)",2,queued
+s3-eng-y6-w20-l3,S3,Year 6,English,"Year 6, Week 20, Lesson 3: Literary response (Language and spelling)",2,queued
+s3-eng-y6-w20-l4,S3,Year 6,English,"Year 6, Week 20, Lesson 4: Literary response (Speaking and handwriting)",2,queued
+s3-eng-y6-w21-l1,S3,Year 6,English,"Year 6, Week 21, Lesson 1: Cohesion and linking ideas (Reading)",2,queued
+s3-eng-y6-w21-l2,S3,Year 6,English,"Year 6, Week 21, Lesson 2: Cohesion and linking ideas (Writing)",2,queued
+s3-eng-y6-w21-l3,S3,Year 6,English,"Year 6, Week 21, Lesson 3: Cohesion and linking ideas (Language and spelling)",2,queued
+s3-eng-y6-w21-l4,S3,Year 6,English,"Year 6, Week 21, Lesson 4: Cohesion and linking ideas (Speaking and handwriting)",2,queued
+s3-eng-y6-w22-l1,S3,Year 6,English,"Year 6, Week 22, Lesson 1: Complex sentences and clauses (Reading)",2,queued
+s3-eng-y6-w22-l2,S3,Year 6,English,"Year 6, Week 22, Lesson 2: Complex sentences and clauses (Writing)",2,queued
+s3-eng-y6-w22-l3,S3,Year 6,English,"Year 6, Week 22, Lesson 3: Complex sentences and clauses (Language and spelling)",2,queued
+s3-eng-y6-w22-l4,S3,Year 6,English,"Year 6, Week 22, Lesson 4: Complex sentences and clauses (Speaking and handwriting)",2,queued
+s3-eng-y6-w23-l1,S3,Year 6,English,"Year 6, Week 23, Lesson 1: Punctuation for effect (Reading)",2,queued
+s3-eng-y6-w23-l2,S3,Year 6,English,"Year 6, Week 23, Lesson 2: Punctuation for effect (Writing)",2,queued
+s3-eng-y6-w23-l3,S3,Year 6,English,"Year 6, Week 23, Lesson 3: Punctuation for effect (Language and spelling)",2,queued
+s3-eng-y6-w23-l4,S3,Year 6,English,"Year 6, Week 23, Lesson 4: Punctuation for effect (Speaking and handwriting)",2,queued
+s3-eng-y6-w24-l1,S3,Year 6,English,"Year 6, Week 24, Lesson 1: Editing for clarity (Reading)",2,queued
+s3-eng-y6-w24-l2,S3,Year 6,English,"Year 6, Week 24, Lesson 2: Editing for clarity (Writing)",2,queued
+s3-eng-y6-w24-l3,S3,Year 6,English,"Year 6, Week 24, Lesson 3: Editing for clarity (Language and spelling)",2,queued
+s3-eng-y6-w24-l4,S3,Year 6,English,"Year 6, Week 24, Lesson 4: Editing for clarity (Speaking and handwriting)",2,queued
+s3-eng-y6-w25-l1,S3,Year 6,English,"Year 6, Week 25, Lesson 1: Word origins (Reading)",2,queued
+s3-eng-y6-w25-l2,S3,Year 6,English,"Year 6, Week 25, Lesson 2: Word origins (Writing)",2,queued
+s3-eng-y6-w25-l3,S3,Year 6,English,"Year 6, Week 25, Lesson 3: Word origins (Language and spelling)",2,queued
+s3-eng-y6-w25-l4,S3,Year 6,English,"Year 6, Week 25, Lesson 4: Word origins (Speaking and handwriting)",2,queued
+s3-eng-y6-w26-l1,S3,Year 6,English,"Year 6, Week 26, Lesson 1: Latin and Greek roots (Reading)",2,queued
+s3-eng-y6-w26-l2,S3,Year 6,English,"Year 6, Week 26, Lesson 2: Latin and Greek roots (Writing)",2,queued
+s3-eng-y6-w26-l3,S3,Year 6,English,"Year 6, Week 26, Lesson 3: Latin and Greek roots (Language and spelling)",2,queued
+s3-eng-y6-w26-l4,S3,Year 6,English,"Year 6, Week 26, Lesson 4: Latin and Greek roots (Speaking and handwriting)",2,queued
+s3-eng-y6-w27-l1,S3,Year 6,English,"Year 6, Week 27, Lesson 1: Spelling rules and exceptions (Reading)",2,queued
+s3-eng-y6-w27-l2,S3,Year 6,English,"Year 6, Week 27, Lesson 2: Spelling rules and exceptions (Writing)",2,queued
+s3-eng-y6-w27-l3,S3,Year 6,English,"Year 6, Week 27, Lesson 3: Spelling rules and exceptions (Language and spelling)",2,queued
+s3-eng-y6-w27-l4,S3,Year 6,English,"Year 6, Week 27, Lesson 4: Spelling rules and exceptions (Speaking and handwriting)",2,queued
+s3-eng-y6-w28-l1,S3,Year 6,English,"Year 6, Week 28, Lesson 1: Vocabulary building (Reading)",2,queued
+s3-eng-y6-w28-l2,S3,Year 6,English,"Year 6, Week 28, Lesson 2: Vocabulary building (Writing)",2,queued
+s3-eng-y6-w28-l3,S3,Year 6,English,"Year 6, Week 28, Lesson 3: Vocabulary building (Language and spelling)",2,queued
+s3-eng-y6-w28-l4,S3,Year 6,English,"Year 6, Week 28, Lesson 4: Vocabulary building (Speaking and handwriting)",2,queued
+s3-eng-y6-w29-l1,S3,Year 6,English,"Year 6, Week 29, Lesson 1: Persuasion in media (Reading)",2,queued
+s3-eng-y6-w29-l2,S3,Year 6,English,"Year 6, Week 29, Lesson 2: Persuasion in media (Writing)",2,queued
+s3-eng-y6-w29-l3,S3,Year 6,English,"Year 6, Week 29, Lesson 3: Persuasion in media (Language and spelling)",2,queued
+s3-eng-y6-w29-l4,S3,Year 6,English,"Year 6, Week 29, Lesson 4: Persuasion in media (Speaking and handwriting)",2,queued
+s3-eng-y6-w30-l1,S3,Year 6,English,"Year 6, Week 30, Lesson 1: Bias and point of view (Reading)",2,queued
+s3-eng-y6-w30-l2,S3,Year 6,English,"Year 6, Week 30, Lesson 2: Bias and point of view (Writing)",2,queued
+s3-eng-y6-w30-l3,S3,Year 6,English,"Year 6, Week 30, Lesson 3: Bias and point of view (Language and spelling)",2,queued
+s3-eng-y6-w30-l4,S3,Year 6,English,"Year 6, Week 30, Lesson 4: Bias and point of view (Speaking and handwriting)",2,queued
+s3-eng-y6-w31-l1,S3,Year 6,English,"Year 6, Week 31, Lesson 1: News and online texts (Reading)",2,queued
+s3-eng-y6-w31-l2,S3,Year 6,English,"Year 6, Week 31, Lesson 2: News and online texts (Writing)",2,queued
+s3-eng-y6-w31-l3,S3,Year 6,English,"Year 6, Week 31, Lesson 3: News and online texts (Language and spelling)",2,queued
+s3-eng-y6-w31-l4,S3,Year 6,English,"Year 6, Week 31, Lesson 4: News and online texts (Speaking and handwriting)",2,queued
+s3-eng-y6-w32-l1,S3,Year 6,English,"Year 6, Week 32, Lesson 1: Creating a media text (Reading)",2,queued
+s3-eng-y6-w32-l2,S3,Year 6,English,"Year 6, Week 32, Lesson 2: Creating a media text (Writing)",2,queued
+s3-eng-y6-w32-l3,S3,Year 6,English,"Year 6, Week 32, Lesson 3: Creating a media text (Language and spelling)",2,queued
+s3-eng-y6-w32-l4,S3,Year 6,English,"Year 6, Week 32, Lesson 4: Creating a media text (Speaking and handwriting)",2,queued
+s3-eng-y6-w33-l1,S3,Year 6,English,"Year 6, Week 33, Lesson 1: Note taking and summarising (Reading)",2,queued
+s3-eng-y6-w33-l2,S3,Year 6,English,"Year 6, Week 33, Lesson 2: Note taking and summarising (Writing)",2,queued
+s3-eng-y6-w33-l3,S3,Year 6,English,"Year 6, Week 33, Lesson 3: Note taking and summarising (Language and spelling)",2,queued
+s3-eng-y6-w33-l4,S3,Year 6,English,"Year 6, Week 33, Lesson 4: Note taking and summarising (Speaking and handwriting)",2,queued
+s3-eng-y6-w34-l1,S3,Year 6,English,"Year 6, Week 34, Lesson 1: Writing for different purposes (Reading)",2,queued
+s3-eng-y6-w34-l2,S3,Year 6,English,"Year 6, Week 34, Lesson 2: Writing for different purposes (Writing)",2,queued
+s3-eng-y6-w34-l3,S3,Year 6,English,"Year 6, Week 34, Lesson 3: Writing for different purposes (Language and spelling)",2,queued
+s3-eng-y6-w34-l4,S3,Year 6,English,"Year 6, Week 34, Lesson 4: Writing for different purposes (Speaking and handwriting)",2,queued
+s3-eng-y6-w35-l1,S3,Year 6,English,"Year 6, Week 35, Lesson 1: Formal and informal language (Reading)",2,queued
+s3-eng-y6-w35-l2,S3,Year 6,English,"Year 6, Week 35, Lesson 2: Formal and informal language (Writing)",2,queued
+s3-eng-y6-w35-l3,S3,Year 6,English,"Year 6, Week 35, Lesson 3: Formal and informal language (Language and spelling)",2,queued
+s3-eng-y6-w35-l4,S3,Year 6,English,"Year 6, Week 35, Lesson 4: Formal and informal language (Speaking and handwriting)",2,queued
+s3-eng-y6-w36-l1,S3,Year 6,English,"Year 6, Week 36, Lesson 1: Preparing for high school English (Reading)",2,queued
+s3-eng-y6-w36-l2,S3,Year 6,English,"Year 6, Week 36, Lesson 2: Preparing for high school English (Writing)",2,queued
+s3-eng-y6-w36-l3,S3,Year 6,English,"Year 6, Week 36, Lesson 3: Preparing for high school English (Language and spelling)",2,queued
+s3-eng-y6-w36-l4,S3,Year 6,English,"Year 6, Week 36, Lesson 4: Preparing for high school English (Speaking and handwriting)",2,queued
+s3-eng-y6-w37-l1,S3,Year 6,English,"Year 6, Week 37, Lesson 1: Reading and comprehension review (Reading)",2,queued
+s3-eng-y6-w37-l2,S3,Year 6,English,"Year 6, Week 37, Lesson 2: Reading and comprehension review (Writing)",2,queued
+s3-eng-y6-w37-l3,S3,Year 6,English,"Year 6, Week 37, Lesson 3: Reading and comprehension review (Language and spelling)",2,queued
+s3-eng-y6-w37-l4,S3,Year 6,English,"Year 6, Week 37, Lesson 4: Reading and comprehension review (Speaking and handwriting)",2,queued
+s3-eng-y6-w38-l1,S3,Year 6,English,"Year 6, Week 38, Lesson 1: Writing portfolio (Reading)",2,queued
+s3-eng-y6-w38-l2,S3,Year 6,English,"Year 6, Week 38, Lesson 2: Writing portfolio (Writing)",2,queued
+s3-eng-y6-w38-l3,S3,Year 6,English,"Year 6, Week 38, Lesson 3: Writing portfolio (Language and spelling)",2,queued
+s3-eng-y6-w38-l4,S3,Year 6,English,"Year 6, Week 38, Lesson 4: Writing portfolio (Speaking and handwriting)",2,queued
+s3-eng-y6-w39-l1,S3,Year 6,English,"Year 6, Week 39, Lesson 1: Grammar and spelling review (Reading)",2,queued
+s3-eng-y6-w39-l2,S3,Year 6,English,"Year 6, Week 39, Lesson 2: Grammar and spelling review (Writing)",2,queued
+s3-eng-y6-w39-l3,S3,Year 6,English,"Year 6, Week 39, Lesson 3: Grammar and spelling review (Language and spelling)",2,queued
+s3-eng-y6-w39-l4,S3,Year 6,English,"Year 6, Week 39, Lesson 4: Grammar and spelling review (Speaking and handwriting)",2,queued
+s3-eng-y6-w40-l1,S3,Year 6,English,"Year 6, Week 40, Lesson 1: Year 6 English celebration (Reading)",2,queued
+s3-eng-y6-w40-l2,S3,Year 6,English,"Year 6, Week 40, Lesson 2: Year 6 English celebration (Writing)",2,queued
+s3-eng-y6-w40-l3,S3,Year 6,English,"Year 6, Week 40, Lesson 3: Year 6 English celebration (Language and spelling)",2,queued
+s3-eng-y6-w40-l4,S3,Year 6,English,"Year 6, Week 40, Lesson 4: Year 6 English celebration (Speaking and handwriting)",2,queued
+s3-hsie-y5-w01-l1,S3,Year 5,HSIE,"Year 5, Week 1, Lesson 1: First Nations Peoples and Country (Investigate)",2,queued
+s3-hsie-y5-w01-l2,S3,Year 5,HSIE,"Year 5, Week 1, Lesson 2: First Nations Peoples and Country (Apply and respond)",2,queued
+s3-hsie-y5-w02-l1,S3,Year 5,HSIE,"Year 5, Week 2, Lesson 1: Contact and its impact (Investigate)",2,queued
+s3-hsie-y5-w02-l2,S3,Year 5,HSIE,"Year 5, Week 2, Lesson 2: Contact and its impact (Apply and respond)",2,queued
+s3-hsie-y5-w03-l1,S3,Year 5,HSIE,"Year 5, Week 3, Lesson 1: Early explorers and navigators (Investigate)",2,queued
+s3-hsie-y5-w03-l2,S3,Year 5,HSIE,"Year 5, Week 3, Lesson 2: Early explorers and navigators (Apply and respond)",2,queued
+s3-hsie-y5-w04-l1,S3,Year 5,HSIE,"Year 5, Week 4, Lesson 1: The First Fleet and Sydney Cove (Investigate)",2,queued
+s3-hsie-y5-w04-l2,S3,Year 5,HSIE,"Year 5, Week 4, Lesson 2: The First Fleet and Sydney Cove (Apply and respond)",2,queued
+s3-hsie-y5-w05-l1,S3,Year 5,HSIE,"Year 5, Week 5, Lesson 1: Investigation: early contact (Investigate)",2,queued
+s3-hsie-y5-w05-l2,S3,Year 5,HSIE,"Year 5, Week 5, Lesson 2: Investigation: early contact (Apply and respond)",2,queued
+s3-hsie-y5-w06-l1,S3,Year 5,HSIE,"Year 5, Week 6, Lesson 1: The Australian colonies (Investigate)",2,queued
+s3-hsie-y5-w06-l2,S3,Year 5,HSIE,"Year 5, Week 6, Lesson 2: The Australian colonies (Apply and respond)",2,queued
+s3-hsie-y5-w07-l1,S3,Year 5,HSIE,"Year 5, Week 7, Lesson 1: Reasons for colonisation (Investigate)",2,queued
+s3-hsie-y5-w07-l2,S3,Year 5,HSIE,"Year 5, Week 7, Lesson 2: Reasons for colonisation (Apply and respond)",2,queued
+s3-hsie-y5-w08-l1,S3,Year 5,HSIE,"Year 5, Week 8, Lesson 1: Convicts and free settlers (Investigate)",2,queued
+s3-hsie-y5-w08-l2,S3,Year 5,HSIE,"Year 5, Week 8, Lesson 2: Convicts and free settlers (Apply and respond)",2,queued
+s3-hsie-y5-w09-l1,S3,Year 5,HSIE,"Year 5, Week 9, Lesson 1: Life in the colonies (Investigate)",2,queued
+s3-hsie-y5-w09-l2,S3,Year 5,HSIE,"Year 5, Week 9, Lesson 2: Life in the colonies (Apply and respond)",2,queued
+s3-hsie-y5-w10-l1,S3,Year 5,HSIE,"Year 5, Week 10, Lesson 1: Investigation: a colony (Investigate)",2,queued
+s3-hsie-y5-w10-l2,S3,Year 5,HSIE,"Year 5, Week 10, Lesson 2: Investigation: a colony (Apply and respond)",2,queued
+s3-hsie-y5-w11-l1,S3,Year 5,HSIE,"Year 5, Week 11, Lesson 1: The gold rushes (Investigate)",2,queued
+s3-hsie-y5-w11-l2,S3,Year 5,HSIE,"Year 5, Week 11, Lesson 2: The gold rushes (Apply and respond)",2,queued
+s3-hsie-y5-w12-l1,S3,Year 5,HSIE,"Year 5, Week 12, Lesson 1: Diverse communities in colonial life (Investigate)",2,queued
+s3-hsie-y5-w12-l2,S3,Year 5,HSIE,"Year 5, Week 12, Lesson 2: Diverse communities in colonial life (Apply and respond)",2,queued
+s3-hsie-y5-w13-l1,S3,Year 5,HSIE,"Year 5, Week 13, Lesson 1: Women, children and workers (Investigate)",2,queued
+s3-hsie-y5-w13-l2,S3,Year 5,HSIE,"Year 5, Week 13, Lesson 2: Women, children and workers (Apply and respond)",2,queued
+s3-hsie-y5-w14-l1,S3,Year 5,HSIE,"Year 5, Week 14, Lesson 1: Colonial towns and heritage (Investigate)",2,queued
+s3-hsie-y5-w14-l2,S3,Year 5,HSIE,"Year 5, Week 14, Lesson 2: Colonial towns and heritage (Apply and respond)",2,queued
+s3-hsie-y5-w15-l1,S3,Year 5,HSIE,"Year 5, Week 15, Lesson 1: Investigation: colonial life (Investigate)",2,queued
+s3-hsie-y5-w15-l2,S3,Year 5,HSIE,"Year 5, Week 15, Lesson 2: Investigation: colonial life (Apply and respond)",2,queued
+s3-hsie-y5-w16-l1,S3,Year 5,HSIE,"Year 5, Week 16, Lesson 1: Asia and its countries (Investigate)",2,queued
+s3-hsie-y5-w16-l2,S3,Year 5,HSIE,"Year 5, Week 16, Lesson 2: Asia and its countries (Apply and respond)",2,queued
+s3-hsie-y5-w17-l1,S3,Year 5,HSIE,"Year 5, Week 17, Lesson 1: Asia: environments and climate (Investigate)",2,queued
+s3-hsie-y5-w17-l2,S3,Year 5,HSIE,"Year 5, Week 17, Lesson 2: Asia: environments and climate (Apply and respond)",2,queued
+s3-hsie-y5-w18-l1,S3,Year 5,HSIE,"Year 5, Week 18, Lesson 1: Connections between Australia and Asia (Investigate)",2,queued
+s3-hsie-y5-w18-l2,S3,Year 5,HSIE,"Year 5, Week 18, Lesson 2: Connections between Australia and Asia (Apply and respond)",2,queued
+s3-hsie-y5-w19-l1,S3,Year 5,HSIE,"Year 5, Week 19, Lesson 1: Trade and culture (Investigate)",2,queued
+s3-hsie-y5-w19-l2,S3,Year 5,HSIE,"Year 5, Week 19, Lesson 2: Trade and culture (Apply and respond)",2,queued
+s3-hsie-y5-w20-l1,S3,Year 5,HSIE,"Year 5, Week 20, Lesson 1: Investigation: Asia (Investigate)",2,queued
+s3-hsie-y5-w20-l2,S3,Year 5,HSIE,"Year 5, Week 20, Lesson 2: Investigation: Asia (Apply and respond)",2,queued
+s3-hsie-y5-w21-l1,S3,Year 5,HSIE,"Year 5, Week 21, Lesson 1: Natural environments and resources (Investigate)",2,queued
+s3-hsie-y5-w21-l2,S3,Year 5,HSIE,"Year 5, Week 21, Lesson 2: Natural environments and resources (Apply and respond)",2,queued
+s3-hsie-y5-w22-l1,S3,Year 5,HSIE,"Year 5, Week 22, Lesson 1: Natural hazards (Investigate)",2,queued
+s3-hsie-y5-w22-l2,S3,Year 5,HSIE,"Year 5, Week 22, Lesson 2: Natural hazards (Apply and respond)",2,queued
+s3-hsie-y5-w23-l1,S3,Year 5,HSIE,"Year 5, Week 23, Lesson 1: Managing environments (Investigate)",2,queued
+s3-hsie-y5-w23-l2,S3,Year 5,HSIE,"Year 5, Week 23, Lesson 2: Managing environments (Apply and respond)",2,queued
+s3-hsie-y5-w24-l1,S3,Year 5,HSIE,"Year 5, Week 24, Lesson 1: Sustainable futures (Investigate)",2,queued
+s3-hsie-y5-w24-l2,S3,Year 5,HSIE,"Year 5, Week 24, Lesson 2: Sustainable futures (Apply and respond)",2,queued
+s3-hsie-y5-w25-l1,S3,Year 5,HSIE,"Year 5, Week 25, Lesson 1: Investigation: environments (Investigate)",2,queued
+s3-hsie-y5-w25-l2,S3,Year 5,HSIE,"Year 5, Week 25, Lesson 2: Investigation: environments (Apply and respond)",2,queued
+s3-hsie-y5-w26-l1,S3,Year 5,HSIE,"Year 5, Week 26, Lesson 1: What is democracy (Investigate)",2,queued
+s3-hsie-y5-w26-l2,S3,Year 5,HSIE,"Year 5, Week 26, Lesson 2: What is democracy (Apply and respond)",2,queued
+s3-hsie-y5-w27-l1,S3,Year 5,HSIE,"Year 5, Week 27, Lesson 1: Voting and elections (Investigate)",2,queued
+s3-hsie-y5-w27-l2,S3,Year 5,HSIE,"Year 5, Week 27, Lesson 2: Voting and elections (Apply and respond)",2,queued
+s3-hsie-y5-w28-l1,S3,Year 5,HSIE,"Year 5, Week 28, Lesson 1: Laws and rules (Investigate)",2,queued
+s3-hsie-y5-w28-l2,S3,Year 5,HSIE,"Year 5, Week 28, Lesson 2: Laws and rules (Apply and respond)",2,queued
+s3-hsie-y5-w29-l1,S3,Year 5,HSIE,"Year 5, Week 29, Lesson 1: Rights and responsibilities (Investigate)",2,queued
+s3-hsie-y5-w29-l2,S3,Year 5,HSIE,"Year 5, Week 29, Lesson 2: Rights and responsibilities (Apply and respond)",2,queued
+s3-hsie-y5-w30-l1,S3,Year 5,HSIE,"Year 5, Week 30, Lesson 1: Investigation: democracy (Investigate)",2,queued
+s3-hsie-y5-w30-l2,S3,Year 5,HSIE,"Year 5, Week 30, Lesson 2: Investigation: democracy (Apply and respond)",2,queued
+s3-hsie-y5-w31-l1,S3,Year 5,HSIE,"Year 5, Week 31, Lesson 1: Needs and wants (Investigate)",2,queued
+s3-hsie-y5-w31-l2,S3,Year 5,HSIE,"Year 5, Week 31, Lesson 2: Needs and wants (Apply and respond)",2,queued
+s3-hsie-y5-w32-l1,S3,Year 5,HSIE,"Year 5, Week 32, Lesson 1: Making choices (Investigate)",2,queued
+s3-hsie-y5-w32-l2,S3,Year 5,HSIE,"Year 5, Week 32, Lesson 2: Making choices (Apply and respond)",2,queued
+s3-hsie-y5-w33-l1,S3,Year 5,HSIE,"Year 5, Week 33, Lesson 1: Resources and scarcity (Investigate)",2,queued
+s3-hsie-y5-w33-l2,S3,Year 5,HSIE,"Year 5, Week 33, Lesson 2: Resources and scarcity (Apply and respond)",2,queued
+s3-hsie-y5-w34-l1,S3,Year 5,HSIE,"Year 5, Week 34, Lesson 1: Work, business and money (Investigate)",2,queued
+s3-hsie-y5-w34-l2,S3,Year 5,HSIE,"Year 5, Week 34, Lesson 2: Work, business and money (Apply and respond)",2,queued
+s3-hsie-y5-w35-l1,S3,Year 5,HSIE,"Year 5, Week 35, Lesson 1: Investigation: a class business (Investigate)",2,queued
+s3-hsie-y5-w35-l2,S3,Year 5,HSIE,"Year 5, Week 35, Lesson 2: Investigation: a class business (Apply and respond)",2,queued
+s3-hsie-y5-w36-l1,S3,Year 5,HSIE,"Year 5, Week 36, Lesson 1: Asking inquiry questions (Investigate)",2,queued
+s3-hsie-y5-w36-l2,S3,Year 5,HSIE,"Year 5, Week 36, Lesson 2: Asking inquiry questions (Apply and respond)",2,queued
+s3-hsie-y5-w37-l1,S3,Year 5,HSIE,"Year 5, Week 37, Lesson 1: Locating and evaluating sources (Investigate)",2,queued
+s3-hsie-y5-w37-l2,S3,Year 5,HSIE,"Year 5, Week 37, Lesson 2: Locating and evaluating sources (Apply and respond)",2,queued
+s3-hsie-y5-w38-l1,S3,Year 5,HSIE,"Year 5, Week 38, Lesson 1: Analysing and interpreting (Investigate)",2,queued
+s3-hsie-y5-w38-l2,S3,Year 5,HSIE,"Year 5, Week 38, Lesson 2: Analysing and interpreting (Apply and respond)",2,queued
+s3-hsie-y5-w39-l1,S3,Year 5,HSIE,"Year 5, Week 39, Lesson 1: Presenting an inquiry project (Investigate)",2,queued
+s3-hsie-y5-w39-l2,S3,Year 5,HSIE,"Year 5, Week 39, Lesson 2: Presenting an inquiry project (Apply and respond)",2,queued
+s3-hsie-y5-w40-l1,S3,Year 5,HSIE,"Year 5, Week 40, Lesson 1: Year 5 HSIE reflection (Investigate)",2,queued
+s3-hsie-y5-w40-l2,S3,Year 5,HSIE,"Year 5, Week 40, Lesson 2: Year 5 HSIE reflection (Apply and respond)",2,queued
+s3-hsie-y6-w01-l1,S3,Year 6,HSIE,"Year 6, Week 1, Lesson 1: Colonies to nation (Investigate)",2,queued
+s3-hsie-y6-w01-l2,S3,Year 6,HSIE,"Year 6, Week 1, Lesson 2: Colonies to nation (Apply and respond)",2,queued
+s3-hsie-y6-w02-l1,S3,Year 6,HSIE,"Year 6, Week 2, Lesson 1: The road to Federation (Investigate)",2,queued
+s3-hsie-y6-w02-l2,S3,Year 6,HSIE,"Year 6, Week 2, Lesson 2: The road to Federation (Apply and respond)",2,queued
+s3-hsie-y6-w03-l1,S3,Year 6,HSIE,"Year 6, Week 3, Lesson 1: The Australian Constitution (Investigate)",2,queued
+s3-hsie-y6-w03-l2,S3,Year 6,HSIE,"Year 6, Week 3, Lesson 2: The Australian Constitution (Apply and respond)",2,queued
+s3-hsie-y6-w04-l1,S3,Year 6,HSIE,"Year 6, Week 4, Lesson 1: Federation celebrations and people (Investigate)",2,queued
+s3-hsie-y6-w04-l2,S3,Year 6,HSIE,"Year 6, Week 4, Lesson 2: Federation celebrations and people (Apply and respond)",2,queued
+s3-hsie-y6-w05-l1,S3,Year 6,HSIE,"Year 6, Week 5, Lesson 1: Investigation: Federation (Investigate)",2,queued
+s3-hsie-y6-w05-l2,S3,Year 6,HSIE,"Year 6, Week 5, Lesson 2: Investigation: Federation (Apply and respond)",2,queued
+s3-hsie-y6-w06-l1,S3,Year 6,HSIE,"Year 6, Week 6, Lesson 1: Citizens and citizenship (Investigate)",2,queued
+s3-hsie-y6-w06-l2,S3,Year 6,HSIE,"Year 6, Week 6, Lesson 2: Citizens and citizenship (Apply and respond)",2,queued
+s3-hsie-y6-w07-l1,S3,Year 6,HSIE,"Year 6, Week 7, Lesson 1: Democratic values (Investigate)",2,queued
+s3-hsie-y6-w07-l2,S3,Year 6,HSIE,"Year 6, Week 7, Lesson 2: Democratic values (Apply and respond)",2,queued
+s3-hsie-y6-w08-l1,S3,Year 6,HSIE,"Year 6, Week 8, Lesson 1: Elections and voting (Investigate)",2,queued
+s3-hsie-y6-w08-l2,S3,Year 6,HSIE,"Year 6, Week 8, Lesson 2: Elections and voting (Apply and respond)",2,queued
+s3-hsie-y6-w09-l1,S3,Year 6,HSIE,"Year 6, Week 9, Lesson 1: Active citizens (Investigate)",2,queued
+s3-hsie-y6-w09-l2,S3,Year 6,HSIE,"Year 6, Week 9, Lesson 2: Active citizens (Apply and respond)",2,queued
+s3-hsie-y6-w10-l1,S3,Year 6,HSIE,"Year 6, Week 10, Lesson 1: Investigation: citizenship (Investigate)",2,queued
+s3-hsie-y6-w10-l2,S3,Year 6,HSIE,"Year 6, Week 10, Lesson 2: Investigation: citizenship (Apply and respond)",2,queued
+s3-hsie-y6-w11-l1,S3,Year 6,HSIE,"Year 6, Week 11, Lesson 1: Waves of migration (Investigate)",2,queued
+s3-hsie-y6-w11-l2,S3,Year 6,HSIE,"Year 6, Week 11, Lesson 2: Waves of migration (Apply and respond)",2,queued
+s3-hsie-y6-w12-l1,S3,Year 6,HSIE,"Year 6, Week 12, Lesson 1: Migrant stories (Investigate)",2,queued
+s3-hsie-y6-w12-l2,S3,Year 6,HSIE,"Year 6, Week 12, Lesson 2: Migrant stories (Apply and respond)",2,queued
+s3-hsie-y6-w13-l1,S3,Year 6,HSIE,"Year 6, Week 13, Lesson 1: Contributions of migrants (Investigate)",2,queued
+s3-hsie-y6-w13-l2,S3,Year 6,HSIE,"Year 6, Week 13, Lesson 2: Contributions of migrants (Apply and respond)",2,queued
+s3-hsie-y6-w14-l1,S3,Year 6,HSIE,"Year 6, Week 14, Lesson 1: Australian identity (Investigate)",2,queued
+s3-hsie-y6-w14-l2,S3,Year 6,HSIE,"Year 6, Week 14, Lesson 2: Australian identity (Apply and respond)",2,queued
+s3-hsie-y6-w15-l1,S3,Year 6,HSIE,"Year 6, Week 15, Lesson 1: Investigation: migration (Investigate)",2,queued
+s3-hsie-y6-w15-l2,S3,Year 6,HSIE,"Year 6, Week 15, Lesson 2: Investigation: migration (Apply and respond)",2,queued
+s3-hsie-y6-w16-l1,S3,Year 6,HSIE,"Year 6, Week 16, Lesson 1: The world and its regions (Investigate)",2,queued
+s3-hsie-y6-w16-l2,S3,Year 6,HSIE,"Year 6, Week 16, Lesson 2: The world and its regions (Apply and respond)",2,queued
+s3-hsie-y6-w17-l1,S3,Year 6,HSIE,"Year 6, Week 17, Lesson 1: Global connections (Investigate)",2,queued
+s3-hsie-y6-w17-l2,S3,Year 6,HSIE,"Year 6, Week 17, Lesson 2: Global connections (Apply and respond)",2,queued
+s3-hsie-y6-w18-l1,S3,Year 6,HSIE,"Year 6, Week 18, Lesson 1: Australia and the world (Investigate)",2,queued
+s3-hsie-y6-w18-l2,S3,Year 6,HSIE,"Year 6, Week 18, Lesson 2: Australia and the world (Apply and respond)",2,queued
+s3-hsie-y6-w19-l1,S3,Year 6,HSIE,"Year 6, Week 19, Lesson 1: Global organisations (Investigate)",2,queued
+s3-hsie-y6-w19-l2,S3,Year 6,HSIE,"Year 6, Week 19, Lesson 2: Global organisations (Apply and respond)",2,queued
+s3-hsie-y6-w20-l1,S3,Year 6,HSIE,"Year 6, Week 20, Lesson 1: Investigation: global connections (Investigate)",2,queued
+s3-hsie-y6-w20-l2,S3,Year 6,HSIE,"Year 6, Week 20, Lesson 2: Investigation: global connections (Apply and respond)",2,queued
+s3-hsie-y6-w21-l1,S3,Year 6,HSIE,"Year 6, Week 21, Lesson 1: World environments (Investigate)",2,queued
+s3-hsie-y6-w21-l2,S3,Year 6,HSIE,"Year 6, Week 21, Lesson 2: World environments (Apply and respond)",2,queued
+s3-hsie-y6-w22-l1,S3,Year 6,HSIE,"Year 6, Week 22, Lesson 1: Climate and climate zones (Investigate)",2,queued
+s3-hsie-y6-w22-l2,S3,Year 6,HSIE,"Year 6, Week 22, Lesson 2: Climate and climate zones (Apply and respond)",2,queued
+s3-hsie-y6-w23-l1,S3,Year 6,HSIE,"Year 6, Week 23, Lesson 1: Human impacts on environments (Investigate)",2,queued
+s3-hsie-y6-w23-l2,S3,Year 6,HSIE,"Year 6, Week 23, Lesson 2: Human impacts on environments (Apply and respond)",2,queued
+s3-hsie-y6-w24-l1,S3,Year 6,HSIE,"Year 6, Week 24, Lesson 1: Environmental action (Investigate)",2,queued
+s3-hsie-y6-w24-l2,S3,Year 6,HSIE,"Year 6, Week 24, Lesson 2: Environmental action (Apply and respond)",2,queued
+s3-hsie-y6-w25-l1,S3,Year 6,HSIE,"Year 6, Week 25, Lesson 1: Investigation: environmental change (Investigate)",2,queued
+s3-hsie-y6-w25-l2,S3,Year 6,HSIE,"Year 6, Week 25, Lesson 2: Investigation: environmental change (Apply and respond)",2,queued
+s3-hsie-y6-w26-l1,S3,Year 6,HSIE,"Year 6, Week 26, Lesson 1: Three levels of government (Investigate)",2,queued
+s3-hsie-y6-w26-l2,S3,Year 6,HSIE,"Year 6, Week 26, Lesson 2: Three levels of government (Apply and respond)",2,queued
+s3-hsie-y6-w27-l1,S3,Year 6,HSIE,"Year 6, Week 27, Lesson 1: Making and changing laws (Investigate)",2,queued
+s3-hsie-y6-w27-l2,S3,Year 6,HSIE,"Year 6, Week 27, Lesson 2: Making and changing laws (Apply and respond)",2,queued
+s3-hsie-y6-w28-l1,S3,Year 6,HSIE,"Year 6, Week 28, Lesson 1: Australian courts and justice (Investigate)",2,queued
+s3-hsie-y6-w28-l2,S3,Year 6,HSIE,"Year 6, Week 28, Lesson 2: Australian courts and justice (Apply and respond)",2,queued
+s3-hsie-y6-w29-l1,S3,Year 6,HSIE,"Year 6, Week 29, Lesson 1: Human rights (Investigate)",2,queued
+s3-hsie-y6-w29-l2,S3,Year 6,HSIE,"Year 6, Week 29, Lesson 2: Human rights (Apply and respond)",2,queued
+s3-hsie-y6-w30-l1,S3,Year 6,HSIE,"Year 6, Week 30, Lesson 1: Investigation: government (Investigate)",2,queued
+s3-hsie-y6-w30-l2,S3,Year 6,HSIE,"Year 6, Week 30, Lesson 2: Investigation: government (Apply and respond)",2,queued
+s3-hsie-y6-w31-l1,S3,Year 6,HSIE,"Year 6, Week 31, Lesson 1: Consumer choices (Investigate)",2,queued
+s3-hsie-y6-w31-l2,S3,Year 6,HSIE,"Year 6, Week 31, Lesson 2: Consumer choices (Apply and respond)",2,queued
+s3-hsie-y6-w32-l1,S3,Year 6,HSIE,"Year 6, Week 32, Lesson 1: Advertising and decisions (Investigate)",2,queued
+s3-hsie-y6-w32-l2,S3,Year 6,HSIE,"Year 6, Week 32, Lesson 2: Advertising and decisions (Apply and respond)",2,queued
+s3-hsie-y6-w33-l1,S3,Year 6,HSIE,"Year 6, Week 33, Lesson 1: Entrepreneurs and enterprise (Investigate)",2,queued
+s3-hsie-y6-w33-l2,S3,Year 6,HSIE,"Year 6, Week 33, Lesson 2: Entrepreneurs and enterprise (Apply and respond)",2,queued
+s3-hsie-y6-w34-l1,S3,Year 6,HSIE,"Year 6, Week 34, Lesson 1: Budgeting and saving (Investigate)",2,queued
+s3-hsie-y6-w34-l2,S3,Year 6,HSIE,"Year 6, Week 34, Lesson 2: Budgeting and saving (Apply and respond)",2,queued
+s3-hsie-y6-w35-l1,S3,Year 6,HSIE,"Year 6, Week 35, Lesson 1: Investigation: enterprise (Investigate)",2,queued
+s3-hsie-y6-w35-l2,S3,Year 6,HSIE,"Year 6, Week 35, Lesson 2: Investigation: enterprise (Apply and respond)",2,queued
+s3-hsie-y6-w36-l1,S3,Year 6,HSIE,"Year 6, Week 36, Lesson 1: Developing an inquiry (Investigate)",2,queued
+s3-hsie-y6-w36-l2,S3,Year 6,HSIE,"Year 6, Week 36, Lesson 2: Developing an inquiry (Apply and respond)",2,queued
+s3-hsie-y6-w37-l1,S3,Year 6,HSIE,"Year 6, Week 37, Lesson 1: Researching and referencing (Investigate)",2,queued
+s3-hsie-y6-w37-l2,S3,Year 6,HSIE,"Year 6, Week 37, Lesson 2: Researching and referencing (Apply and respond)",2,queued
+s3-hsie-y6-w38-l1,S3,Year 6,HSIE,"Year 6, Week 38, Lesson 1: Analysing evidence (Investigate)",2,queued
+s3-hsie-y6-w38-l2,S3,Year 6,HSIE,"Year 6, Week 38, Lesson 2: Analysing evidence (Apply and respond)",2,queued
+s3-hsie-y6-w39-l1,S3,Year 6,HSIE,"Year 6, Week 39, Lesson 1: Presenting a Stage 3 project (Investigate)",2,queued
+s3-hsie-y6-w39-l2,S3,Year 6,HSIE,"Year 6, Week 39, Lesson 2: Presenting a Stage 3 project (Apply and respond)",2,queued
+s3-hsie-y6-w40-l1,S3,Year 6,HSIE,"Year 6, Week 40, Lesson 1: Year 6 HSIE reflection (Investigate)",2,queued
+s3-hsie-y6-w40-l2,S3,Year 6,HSIE,"Year 6, Week 40, Lesson 2: Year 6 HSIE reflection (Apply and respond)",2,queued
+s3-mat-y5-w01-l1,S3,Year 5,Mathematics,"Year 5, Week 1, Lesson 1: Reading and writing numbers to the millions",2,queued
+s3-mat-y5-w01-l2,S3,Year 5,Mathematics,"Year 5, Week 1, Lesson 2: Place value charts and expanded form",2,queued
+s3-mat-y5-w01-l3,S3,Year 5,Mathematics,"Year 5, Week 1, Lesson 3: Comparing and ordering large numbers",2,queued
+s3-mat-y5-w01-l4,S3,Year 5,Mathematics,"Year 5, Week 1, Lesson 4: Number sense warm-ups and fluency",2,queued
+s3-mat-y5-w02-l1,S3,Year 5,Mathematics,"Year 5, Week 2, Lesson 1: Rounding to the nearest ten, hundred and thousand",2,queued
+s3-mat-y5-w02-l2,S3,Year 5,Mathematics,"Year 5, Week 2, Lesson 2: Estimating with rounded numbers",2,queued
+s3-mat-y5-w02-l3,S3,Year 5,Mathematics,"Year 5, Week 2, Lesson 3: Number lines and large number patterns",2,queued
+s3-mat-y5-w02-l4,S3,Year 5,Mathematics,"Year 5, Week 2, Lesson 4: Quick check: place value and rounding",2,queued
+s3-mat-y5-w03-l1,S3,Year 5,Mathematics,"Year 5, Week 3, Lesson 1: Number sequences and rules",2,queued
+s3-mat-y5-w03-l2,S3,Year 5,Mathematics,"Year 5, Week 3, Lesson 2: Skip counting forwards and backwards",2,queued
+s3-mat-y5-w03-l3,S3,Year 5,Mathematics,"Year 5, Week 3, Lesson 3: Roman numerals and other number systems",2,queued
+s3-mat-y5-w03-l4,S3,Year 5,Mathematics,"Year 5, Week 3, Lesson 4: Fluency: sequences and counting",2,queued
+s3-mat-y5-w04-l1,S3,Year 5,Mathematics,"Year 5, Week 4, Lesson 1: Reading large numbers in real life",2,queued
+s3-mat-y5-w04-l2,S3,Year 5,Mathematics,"Year 5, Week 4, Lesson 2: Place value problem solving",2,queued
+s3-mat-y5-w04-l3,S3,Year 5,Mathematics,"Year 5, Week 4, Lesson 3: Mini investigation: how big is a million",2,queued
+s3-mat-y5-w04-l4,S3,Year 5,Mathematics,"Year 5, Week 4, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y5-w05-l1,S3,Year 5,Mathematics,"Year 5, Week 5, Lesson 1: Mental strategies for addition",2,queued
+s3-mat-y5-w05-l2,S3,Year 5,Mathematics,"Year 5, Week 5, Lesson 2: Mental strategies for subtraction",2,queued
+s3-mat-y5-w05-l3,S3,Year 5,Mathematics,"Year 5, Week 5, Lesson 3: Using the inverse to check answers",2,queued
+s3-mat-y5-w05-l4,S3,Year 5,Mathematics,"Year 5, Week 5, Lesson 4: Fluency: addition and subtraction facts",2,queued
+s3-mat-y5-w06-l1,S3,Year 5,Mathematics,"Year 5, Week 6, Lesson 1: Written addition with large numbers",2,queued
+s3-mat-y5-w06-l2,S3,Year 5,Mathematics,"Year 5, Week 6, Lesson 2: Written subtraction with regrouping",2,queued
+s3-mat-y5-w06-l3,S3,Year 5,Mathematics,"Year 5, Week 6, Lesson 3: Estimating sums and differences",2,queued
+s3-mat-y5-w06-l4,S3,Year 5,Mathematics,"Year 5, Week 6, Lesson 4: Fluency: written methods practice",2,queued
+s3-mat-y5-w07-l1,S3,Year 5,Mathematics,"Year 5, Week 7, Lesson 1: Addition and subtraction word problems",2,queued
+s3-mat-y5-w07-l2,S3,Year 5,Mathematics,"Year 5, Week 7, Lesson 2: Multi-step problems",2,queued
+s3-mat-y5-w07-l3,S3,Year 5,Mathematics,"Year 5, Week 7, Lesson 3: Choosing the right operation",2,queued
+s3-mat-y5-w07-l4,S3,Year 5,Mathematics,"Year 5, Week 7, Lesson 4: Fluency: problem solving warm-ups",2,queued
+s3-mat-y5-w08-l1,S3,Year 5,Mathematics,"Year 5, Week 8, Lesson 1: Number sentences and the equals sign",2,queued
+s3-mat-y5-w08-l2,S3,Year 5,Mathematics,"Year 5, Week 8, Lesson 2: Finding missing numbers",2,queued
+s3-mat-y5-w08-l3,S3,Year 5,Mathematics,"Year 5, Week 8, Lesson 3: Real-life addition and subtraction",2,queued
+s3-mat-y5-w08-l4,S3,Year 5,Mathematics,"Year 5, Week 8, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y5-w09-l1,S3,Year 5,Mathematics,"Year 5, Week 9, Lesson 1: Multiplication facts and patterns",2,queued
+s3-mat-y5-w09-l2,S3,Year 5,Mathematics,"Year 5, Week 9, Lesson 2: Multiplying by 10, 100 and 1000",2,queued
+s3-mat-y5-w09-l3,S3,Year 5,Mathematics,"Year 5, Week 9, Lesson 3: Mental multiplication strategies",2,queued
+s3-mat-y5-w09-l4,S3,Year 5,Mathematics,"Year 5, Week 9, Lesson 4: Fluency: times tables",2,queued
+s3-mat-y5-w10-l1,S3,Year 5,Mathematics,"Year 5, Week 10, Lesson 1: Written multiplication by a one-digit number",2,queued
+s3-mat-y5-w10-l2,S3,Year 5,Mathematics,"Year 5, Week 10, Lesson 2: Written multiplication by a two-digit number",2,queued
+s3-mat-y5-w10-l3,S3,Year 5,Mathematics,"Year 5, Week 10, Lesson 3: Estimating products",2,queued
+s3-mat-y5-w10-l4,S3,Year 5,Mathematics,"Year 5, Week 10, Lesson 4: Fluency: multiplication practice",2,queued
+s3-mat-y5-w11-l1,S3,Year 5,Mathematics,"Year 5, Week 11, Lesson 1: Division facts and the link to multiplication",2,queued
+s3-mat-y5-w11-l2,S3,Year 5,Mathematics,"Year 5, Week 11, Lesson 2: Short division with remainders",2,queued
+s3-mat-y5-w11-l3,S3,Year 5,Mathematics,"Year 5, Week 11, Lesson 3: Interpreting remainders",2,queued
+s3-mat-y5-w11-l4,S3,Year 5,Mathematics,"Year 5, Week 11, Lesson 4: Fluency: division practice",2,queued
+s3-mat-y5-w12-l1,S3,Year 5,Mathematics,"Year 5, Week 12, Lesson 1: Multiplication and division word problems",2,queued
+s3-mat-y5-w12-l2,S3,Year 5,Mathematics,"Year 5, Week 12, Lesson 2: Multi-step problems with all four operations",2,queued
+s3-mat-y5-w12-l3,S3,Year 5,Mathematics,"Year 5, Week 12, Lesson 3: Area models for multiplication",2,queued
+s3-mat-y5-w12-l4,S3,Year 5,Mathematics,"Year 5, Week 12, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y5-w13-l1,S3,Year 5,Mathematics,"Year 5, Week 13, Lesson 1: Factors and multiples",2,queued
+s3-mat-y5-w13-l2,S3,Year 5,Mathematics,"Year 5, Week 13, Lesson 2: Prime and composite numbers",2,queued
+s3-mat-y5-w13-l3,S3,Year 5,Mathematics,"Year 5, Week 13, Lesson 3: Common factors and multiples",2,queued
+s3-mat-y5-w13-l4,S3,Year 5,Mathematics,"Year 5, Week 13, Lesson 4: Fluency: factors and multiples",2,queued
+s3-mat-y5-w14-l1,S3,Year 5,Mathematics,"Year 5, Week 14, Lesson 1: Square numbers and their patterns",2,queued
+s3-mat-y5-w14-l2,S3,Year 5,Mathematics,"Year 5, Week 14, Lesson 2: Number patterns and rules",2,queued
+s3-mat-y5-w14-l3,S3,Year 5,Mathematics,"Year 5, Week 14, Lesson 3: Growing patterns and tables of values",2,queued
+s3-mat-y5-w14-l4,S3,Year 5,Mathematics,"Year 5, Week 14, Lesson 4: Fluency: patterns and rules",2,queued
+s3-mat-y5-w15-l1,S3,Year 5,Mathematics,"Year 5, Week 15, Lesson 1: Equivalent number sentences",2,queued
+s3-mat-y5-w15-l2,S3,Year 5,Mathematics,"Year 5, Week 15, Lesson 2: Balancing equations",2,queued
+s3-mat-y5-w15-l3,S3,Year 5,Mathematics,"Year 5, Week 15, Lesson 3: Using a symbol for an unknown number",2,queued
+s3-mat-y5-w15-l4,S3,Year 5,Mathematics,"Year 5, Week 15, Lesson 4: Fluency: missing numbers",2,queued
+s3-mat-y5-w16-l1,S3,Year 5,Mathematics,"Year 5, Week 16, Lesson 1: Using patterns to solve problems",2,queued
+s3-mat-y5-w16-l2,S3,Year 5,Mathematics,"Year 5, Week 16, Lesson 2: Describing patterns in words",2,queued
+s3-mat-y5-w16-l3,S3,Year 5,Mathematics,"Year 5, Week 16, Lesson 3: Investigation: patterns in the world around us",2,queued
+s3-mat-y5-w16-l4,S3,Year 5,Mathematics,"Year 5, Week 16, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y5-w17-l1,S3,Year 5,Mathematics,"Year 5, Week 17, Lesson 1: Fractions as parts of a whole and of a set",2,queued
+s3-mat-y5-w17-l2,S3,Year 5,Mathematics,"Year 5, Week 17, Lesson 2: Equivalent fractions",2,queued
+s3-mat-y5-w17-l3,S3,Year 5,Mathematics,"Year 5, Week 17, Lesson 3: Simplifying fractions",2,queued
+s3-mat-y5-w17-l4,S3,Year 5,Mathematics,"Year 5, Week 17, Lesson 4: Fluency: fraction recognition",2,queued
+s3-mat-y5-w18-l1,S3,Year 5,Mathematics,"Year 5, Week 18, Lesson 1: Comparing and ordering fractions",2,queued
+s3-mat-y5-w18-l2,S3,Year 5,Mathematics,"Year 5, Week 18, Lesson 2: Fractions on a number line",2,queued
+s3-mat-y5-w18-l3,S3,Year 5,Mathematics,"Year 5, Week 18, Lesson 3: Mixed numbers and improper fractions",2,queued
+s3-mat-y5-w18-l4,S3,Year 5,Mathematics,"Year 5, Week 18, Lesson 4: Fluency: comparing fractions",2,queued
+s3-mat-y5-w19-l1,S3,Year 5,Mathematics,"Year 5, Week 19, Lesson 1: Adding fractions with the same denominator",2,queued
+s3-mat-y5-w19-l2,S3,Year 5,Mathematics,"Year 5, Week 19, Lesson 2: Subtracting fractions with the same denominator",2,queued
+s3-mat-y5-w19-l3,S3,Year 5,Mathematics,"Year 5, Week 19, Lesson 3: Adding and subtracting with related denominators",2,queued
+s3-mat-y5-w19-l4,S3,Year 5,Mathematics,"Year 5, Week 19, Lesson 4: Fluency: fraction addition and subtraction",2,queued
+s3-mat-y5-w20-l1,S3,Year 5,Mathematics,"Year 5, Week 20, Lesson 1: Fractions of a quantity",2,queued
+s3-mat-y5-w20-l2,S3,Year 5,Mathematics,"Year 5, Week 20, Lesson 2: Fraction word problems",2,queued
+s3-mat-y5-w20-l3,S3,Year 5,Mathematics,"Year 5, Week 20, Lesson 3: Investigation: fractions in cooking and sharing",2,queued
+s3-mat-y5-w20-l4,S3,Year 5,Mathematics,"Year 5, Week 20, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y5-w21-l1,S3,Year 5,Mathematics,"Year 5, Week 21, Lesson 1: Tenths and hundredths",2,queued
+s3-mat-y5-w21-l2,S3,Year 5,Mathematics,"Year 5, Week 21, Lesson 2: Decimal place value to thousandths",2,queued
+s3-mat-y5-w21-l3,S3,Year 5,Mathematics,"Year 5, Week 21, Lesson 3: Comparing and ordering decimals",2,queued
+s3-mat-y5-w21-l4,S3,Year 5,Mathematics,"Year 5, Week 21, Lesson 4: Fluency: decimal place value",2,queued
+s3-mat-y5-w22-l1,S3,Year 5,Mathematics,"Year 5, Week 22, Lesson 1: Adding and subtracting decimals",2,queued
+s3-mat-y5-w22-l2,S3,Year 5,Mathematics,"Year 5, Week 22, Lesson 2: Multiplying decimals by 10 and 100",2,queued
+s3-mat-y5-w22-l3,S3,Year 5,Mathematics,"Year 5, Week 22, Lesson 3: Rounding decimals",2,queued
+s3-mat-y5-w22-l4,S3,Year 5,Mathematics,"Year 5, Week 22, Lesson 4: Fluency: decimal operations",2,queued
+s3-mat-y5-w23-l1,S3,Year 5,Mathematics,"Year 5, Week 23, Lesson 1: Fractions, decimals and percentages",2,queued
+s3-mat-y5-w23-l2,S3,Year 5,Mathematics,"Year 5, Week 23, Lesson 2: Common percentages: 10, 25, 50 and 100",2,queued
+s3-mat-y5-w23-l3,S3,Year 5,Mathematics,"Year 5, Week 23, Lesson 3: Converting between fractions, decimals and percentages",2,queued
+s3-mat-y5-w23-l4,S3,Year 5,Mathematics,"Year 5, Week 23, Lesson 4: Fluency: benchmark percentages",2,queued
+s3-mat-y5-w24-l1,S3,Year 5,Mathematics,"Year 5, Week 24, Lesson 1: Money: adding, subtracting and giving change",2,queued
+s3-mat-y5-w24-l2,S3,Year 5,Mathematics,"Year 5, Week 24, Lesson 2: Rounding amounts of money",2,queued
+s3-mat-y5-w24-l3,S3,Year 5,Mathematics,"Year 5, Week 24, Lesson 3: Planning a budget",2,queued
+s3-mat-y5-w24-l4,S3,Year 5,Mathematics,"Year 5, Week 24, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y5-w25-l1,S3,Year 5,Mathematics,"Year 5, Week 25, Lesson 1: Measuring length in millimetres, centimetres, metres and kilometres",2,queued
+s3-mat-y5-w25-l2,S3,Year 5,Mathematics,"Year 5, Week 25, Lesson 2: Converting units of length",2,queued
+s3-mat-y5-w25-l3,S3,Year 5,Mathematics,"Year 5, Week 25, Lesson 3: Estimating and measuring lengths",2,queued
+s3-mat-y5-w25-l4,S3,Year 5,Mathematics,"Year 5, Week 25, Lesson 4: Fluency: length conversions",2,queued
+s3-mat-y5-w26-l1,S3,Year 5,Mathematics,"Year 5, Week 26, Lesson 1: Perimeter of rectangles and other shapes",2,queued
+s3-mat-y5-w26-l2,S3,Year 5,Mathematics,"Year 5, Week 26, Lesson 2: Perimeter problems",2,queued
+s3-mat-y5-w26-l3,S3,Year 5,Mathematics,"Year 5, Week 26, Lesson 3: Scale drawings and simple maps",2,queued
+s3-mat-y5-w26-l4,S3,Year 5,Mathematics,"Year 5, Week 26, Lesson 4: Fluency: perimeter practice",2,queued
+s3-mat-y5-w27-l1,S3,Year 5,Mathematics,"Year 5, Week 27, Lesson 1: Area of rectangles",2,queued
+s3-mat-y5-w27-l2,S3,Year 5,Mathematics,"Year 5, Week 27, Lesson 2: Area of composite shapes",2,queued
+s3-mat-y5-w27-l3,S3,Year 5,Mathematics,"Year 5, Week 27, Lesson 3: Comparing area and perimeter",2,queued
+s3-mat-y5-w27-l4,S3,Year 5,Mathematics,"Year 5, Week 27, Lesson 4: Fluency: area practice",2,queued
+s3-mat-y5-w28-l1,S3,Year 5,Mathematics,"Year 5, Week 28, Lesson 1: Area and perimeter problems",2,queued
+s3-mat-y5-w28-l2,S3,Year 5,Mathematics,"Year 5, Week 28, Lesson 2: Investigation: design a room",2,queued
+s3-mat-y5-w28-l3,S3,Year 5,Mathematics,"Year 5, Week 28, Lesson 3: Real-life measurement problems",2,queued
+s3-mat-y5-w28-l4,S3,Year 5,Mathematics,"Year 5, Week 28, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y5-w29-l1,S3,Year 5,Mathematics,"Year 5, Week 29, Lesson 1: Volume and cubic centimetres",2,queued
+s3-mat-y5-w29-l2,S3,Year 5,Mathematics,"Year 5, Week 29, Lesson 2: Volume of rectangular prisms",2,queued
+s3-mat-y5-w29-l3,S3,Year 5,Mathematics,"Year 5, Week 29, Lesson 3: Capacity: millilitres and litres",2,queued
+s3-mat-y5-w29-l4,S3,Year 5,Mathematics,"Year 5, Week 29, Lesson 4: Fluency: volume and capacity",2,queued
+s3-mat-y5-w30-l1,S3,Year 5,Mathematics,"Year 5, Week 30, Lesson 1: Mass: grams, kilograms and tonnes",2,queued
+s3-mat-y5-w30-l2,S3,Year 5,Mathematics,"Year 5, Week 30, Lesson 2: Converting units of mass",2,queued
+s3-mat-y5-w30-l3,S3,Year 5,Mathematics,"Year 5, Week 30, Lesson 3: Mass and capacity problems",2,queued
+s3-mat-y5-w30-l4,S3,Year 5,Mathematics,"Year 5, Week 30, Lesson 4: Fluency: mass and capacity conversions",2,queued
+s3-mat-y5-w31-l1,S3,Year 5,Mathematics,"Year 5, Week 31, Lesson 1: Time: 12-hour and 24-hour time",2,queued
+s3-mat-y5-w31-l2,S3,Year 5,Mathematics,"Year 5, Week 31, Lesson 2: Elapsed time",2,queued
+s3-mat-y5-w31-l3,S3,Year 5,Mathematics,"Year 5, Week 31, Lesson 3: Timetables",2,queued
+s3-mat-y5-w31-l4,S3,Year 5,Mathematics,"Year 5, Week 31, Lesson 4: Fluency: reading time",2,queued
+s3-mat-y5-w32-l1,S3,Year 5,Mathematics,"Year 5, Week 32, Lesson 1: Time and duration problems",2,queued
+s3-mat-y5-w32-l2,S3,Year 5,Mathematics,"Year 5, Week 32, Lesson 2: Calendars and timelines",2,queued
+s3-mat-y5-w32-l3,S3,Year 5,Mathematics,"Year 5, Week 32, Lesson 3: Investigation: planning a trip",2,queued
+s3-mat-y5-w32-l4,S3,Year 5,Mathematics,"Year 5, Week 32, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y5-w33-l1,S3,Year 5,Mathematics,"Year 5, Week 33, Lesson 1: Types of angles",2,queued
+s3-mat-y5-w33-l2,S3,Year 5,Mathematics,"Year 5, Week 33, Lesson 2: Measuring angles with a protractor",2,queued
+s3-mat-y5-w33-l3,S3,Year 5,Mathematics,"Year 5, Week 33, Lesson 3: Drawing angles",2,queued
+s3-mat-y5-w33-l4,S3,Year 5,Mathematics,"Year 5, Week 33, Lesson 4: Fluency: estimating angles",2,queued
+s3-mat-y5-w34-l1,S3,Year 5,Mathematics,"Year 5, Week 34, Lesson 1: Properties of 2D shapes",2,queued
+s3-mat-y5-w34-l2,S3,Year 5,Mathematics,"Year 5, Week 34, Lesson 2: Triangles and quadrilaterals",2,queued
+s3-mat-y5-w34-l3,S3,Year 5,Mathematics,"Year 5, Week 34, Lesson 3: Symmetry",2,queued
+s3-mat-y5-w34-l4,S3,Year 5,Mathematics,"Year 5, Week 34, Lesson 4: Fluency: naming shapes",2,queued
+s3-mat-y5-w35-l1,S3,Year 5,Mathematics,"Year 5, Week 35, Lesson 1: Properties of 3D objects",2,queued
+s3-mat-y5-w35-l2,S3,Year 5,Mathematics,"Year 5, Week 35, Lesson 2: Prisms, pyramids and their nets",2,queued
+s3-mat-y5-w35-l3,S3,Year 5,Mathematics,"Year 5, Week 35, Lesson 3: Drawing and building 3D objects",2,queued
+s3-mat-y5-w35-l4,S3,Year 5,Mathematics,"Year 5, Week 35, Lesson 4: Fluency: faces, edges and vertices",2,queued
+s3-mat-y5-w36-l1,S3,Year 5,Mathematics,"Year 5, Week 36, Lesson 1: Grid references and maps",2,queued
+s3-mat-y5-w36-l2,S3,Year 5,Mathematics,"Year 5, Week 36, Lesson 2: Translation, reflection and rotation",2,queued
+s3-mat-y5-w36-l3,S3,Year 5,Mathematics,"Year 5, Week 36, Lesson 3: Investigation: tessellating patterns",2,queued
+s3-mat-y5-w36-l4,S3,Year 5,Mathematics,"Year 5, Week 36, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y5-w37-l1,S3,Year 5,Mathematics,"Year 5, Week 37, Lesson 1: Collecting data",2,queued
+s3-mat-y5-w37-l2,S3,Year 5,Mathematics,"Year 5, Week 37, Lesson 2: Tables, picture graphs and column graphs",2,queued
+s3-mat-y5-w37-l3,S3,Year 5,Mathematics,"Year 5, Week 37, Lesson 3: Reading and interpreting graphs",2,queued
+s3-mat-y5-w37-l4,S3,Year 5,Mathematics,"Year 5, Week 37, Lesson 4: Fluency: reading graphs",2,queued
+s3-mat-y5-w38-l1,S3,Year 5,Mathematics,"Year 5, Week 38, Lesson 1: Line graphs",2,queued
+s3-mat-y5-w38-l2,S3,Year 5,Mathematics,"Year 5, Week 38, Lesson 2: Comparing data displays",2,queued
+s3-mat-y5-w38-l3,S3,Year 5,Mathematics,"Year 5, Week 38, Lesson 3: Describing and summarising data",2,queued
+s3-mat-y5-w38-l4,S3,Year 5,Mathematics,"Year 5, Week 38, Lesson 4: Fluency: data practice",2,queued
+s3-mat-y5-w39-l1,S3,Year 5,Mathematics,"Year 5, Week 39, Lesson 1: Chance: likelihood and the probability scale",2,queued
+s3-mat-y5-w39-l2,S3,Year 5,Mathematics,"Year 5, Week 39, Lesson 2: Fair and unfair games",2,queued
+s3-mat-y5-w39-l3,S3,Year 5,Mathematics,"Year 5, Week 39, Lesson 3: Chance experiments and recording results",2,queued
+s3-mat-y5-w39-l4,S3,Year 5,Mathematics,"Year 5, Week 39, Lesson 4: Fluency: chance language",2,queued
+s3-mat-y5-w40-l1,S3,Year 5,Mathematics,"Year 5, Week 40, Lesson 1: Year 5 investigation: planning",2,queued
+s3-mat-y5-w40-l2,S3,Year 5,Mathematics,"Year 5, Week 40, Lesson 2: Year 5 investigation: carrying it out and presenting",2,queued
+s3-mat-y5-w40-l3,S3,Year 5,Mathematics,"Year 5, Week 40, Lesson 3: Year 5 skills check",2,queued
+s3-mat-y5-w40-l4,S3,Year 5,Mathematics,"Year 5, Week 40, Lesson 4: Reflection and celebration",2,queued
+s3-mat-y6-w01-l1,S3,Year 6,Mathematics,"Year 6, Week 1, Lesson 1: Reading and writing very large numbers",2,queued
+s3-mat-y6-w01-l2,S3,Year 6,Mathematics,"Year 6, Week 1, Lesson 2: Place value and expanded form",2,queued
+s3-mat-y6-w01-l3,S3,Year 6,Mathematics,"Year 6, Week 1, Lesson 3: Comparing and ordering large numbers",2,queued
+s3-mat-y6-w01-l4,S3,Year 6,Mathematics,"Year 6, Week 1, Lesson 4: Number sense warm-ups",2,queued
+s3-mat-y6-w02-l1,S3,Year 6,Mathematics,"Year 6, Week 2, Lesson 1: Rounding and estimating",2,queued
+s3-mat-y6-w02-l2,S3,Year 6,Mathematics,"Year 6, Week 2, Lesson 2: Estimating to check reasonableness",2,queued
+s3-mat-y6-w02-l3,S3,Year 6,Mathematics,"Year 6, Week 2, Lesson 3: Number lines and scales",2,queued
+s3-mat-y6-w02-l4,S3,Year 6,Mathematics,"Year 6, Week 2, Lesson 4: Quick check: place value",2,queued
+s3-mat-y6-w03-l1,S3,Year 6,Mathematics,"Year 6, Week 3, Lesson 1: Number patterns and sequences",2,queued
+s3-mat-y6-w03-l2,S3,Year 6,Mathematics,"Year 6, Week 3, Lesson 2: Square and cube numbers",2,queued
+s3-mat-y6-w03-l3,S3,Year 6,Mathematics,"Year 6, Week 3, Lesson 3: Number puzzles",2,queued
+s3-mat-y6-w03-l4,S3,Year 6,Mathematics,"Year 6, Week 3, Lesson 4: Fluency: patterns",2,queued
+s3-mat-y6-w04-l1,S3,Year 6,Mathematics,"Year 6, Week 4, Lesson 1: Large numbers in the real world",2,queued
+s3-mat-y6-w04-l2,S3,Year 6,Mathematics,"Year 6, Week 4, Lesson 2: Place value problem solving",2,queued
+s3-mat-y6-w04-l3,S3,Year 6,Mathematics,"Year 6, Week 4, Lesson 3: Investigation: populations and distances",2,queued
+s3-mat-y6-w04-l4,S3,Year 6,Mathematics,"Year 6, Week 4, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y6-w05-l1,S3,Year 6,Mathematics,"Year 6, Week 5, Lesson 1: Mental strategies for all four operations",2,queued
+s3-mat-y6-w05-l2,S3,Year 6,Mathematics,"Year 6, Week 5, Lesson 2: Efficient written addition and subtraction",2,queued
+s3-mat-y6-w05-l3,S3,Year 6,Mathematics,"Year 6, Week 5, Lesson 3: Estimating answers",2,queued
+s3-mat-y6-w05-l4,S3,Year 6,Mathematics,"Year 6, Week 5, Lesson 4: Fluency: mental maths",2,queued
+s3-mat-y6-w06-l1,S3,Year 6,Mathematics,"Year 6, Week 6, Lesson 1: Multiplying by two-digit numbers",2,queued
+s3-mat-y6-w06-l2,S3,Year 6,Mathematics,"Year 6, Week 6, Lesson 2: Dividing larger numbers",2,queued
+s3-mat-y6-w06-l3,S3,Year 6,Mathematics,"Year 6, Week 6, Lesson 3: Remainders as fractions and decimals",2,queued
+s3-mat-y6-w06-l4,S3,Year 6,Mathematics,"Year 6, Week 6, Lesson 4: Fluency: written multiplication and division",2,queued
+s3-mat-y6-w07-l1,S3,Year 6,Mathematics,"Year 6, Week 7, Lesson 1: Multi-step word problems",2,queued
+s3-mat-y6-w07-l2,S3,Year 6,Mathematics,"Year 6, Week 7, Lesson 2: Choosing and justifying strategies",2,queued
+s3-mat-y6-w07-l3,S3,Year 6,Mathematics,"Year 6, Week 7, Lesson 3: Problems with extra or missing information",2,queued
+s3-mat-y6-w07-l4,S3,Year 6,Mathematics,"Year 6, Week 7, Lesson 4: Fluency: problem warm-ups",2,queued
+s3-mat-y6-w08-l1,S3,Year 6,Mathematics,"Year 6, Week 8, Lesson 1: Using a calculator wisely",2,queued
+s3-mat-y6-w08-l2,S3,Year 6,Mathematics,"Year 6, Week 8, Lesson 2: Checking with inverse operations",2,queued
+s3-mat-y6-w08-l3,S3,Year 6,Mathematics,"Year 6, Week 8, Lesson 3: Real-life operations problems",2,queued
+s3-mat-y6-w08-l4,S3,Year 6,Mathematics,"Year 6, Week 8, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y6-w09-l1,S3,Year 6,Mathematics,"Year 6, Week 9, Lesson 1: Order of operations",2,queued
+s3-mat-y6-w09-l2,S3,Year 6,Mathematics,"Year 6, Week 9, Lesson 2: Brackets and number sentences",2,queued
+s3-mat-y6-w09-l3,S3,Year 6,Mathematics,"Year 6, Week 9, Lesson 3: Writing and solving number sentences",2,queued
+s3-mat-y6-w09-l4,S3,Year 6,Mathematics,"Year 6, Week 9, Lesson 4: Fluency: order of operations",2,queued
+s3-mat-y6-w10-l1,S3,Year 6,Mathematics,"Year 6, Week 10, Lesson 1: Factors, multiples and divisibility tests",2,queued
+s3-mat-y6-w10-l2,S3,Year 6,Mathematics,"Year 6, Week 10, Lesson 2: Prime and composite numbers",2,queued
+s3-mat-y6-w10-l3,S3,Year 6,Mathematics,"Year 6, Week 10, Lesson 3: Factor trees",2,queued
+s3-mat-y6-w10-l4,S3,Year 6,Mathematics,"Year 6, Week 10, Lesson 4: Fluency: divisibility",2,queued
+s3-mat-y6-w11-l1,S3,Year 6,Mathematics,"Year 6, Week 11, Lesson 1: Square numbers and square roots",2,queued
+s3-mat-y6-w11-l2,S3,Year 6,Mathematics,"Year 6, Week 11, Lesson 2: Cube numbers",2,queued
+s3-mat-y6-w11-l3,S3,Year 6,Mathematics,"Year 6, Week 11, Lesson 3: Number patterns and rules",2,queued
+s3-mat-y6-w11-l4,S3,Year 6,Mathematics,"Year 6, Week 11, Lesson 4: Fluency: squares and cubes",2,queued
+s3-mat-y6-w12-l1,S3,Year 6,Mathematics,"Year 6, Week 12, Lesson 1: Algebraic thinking: using letters for unknowns",2,queued
+s3-mat-y6-w12-l2,S3,Year 6,Mathematics,"Year 6, Week 12, Lesson 2: Equivalent number sentences and balance",2,queued
+s3-mat-y6-w12-l3,S3,Year 6,Mathematics,"Year 6, Week 12, Lesson 3: Investigation: number puzzles and patterns",2,queued
+s3-mat-y6-w12-l4,S3,Year 6,Mathematics,"Year 6, Week 12, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y6-w13-l1,S3,Year 6,Mathematics,"Year 6, Week 13, Lesson 1: Equivalent fractions and simplifying",2,queued
+s3-mat-y6-w13-l2,S3,Year 6,Mathematics,"Year 6, Week 13, Lesson 2: Comparing and ordering fractions",2,queued
+s3-mat-y6-w13-l3,S3,Year 6,Mathematics,"Year 6, Week 13, Lesson 3: Mixed numbers and improper fractions",2,queued
+s3-mat-y6-w13-l4,S3,Year 6,Mathematics,"Year 6, Week 13, Lesson 4: Fluency: fraction skills",2,queued
+s3-mat-y6-w14-l1,S3,Year 6,Mathematics,"Year 6, Week 14, Lesson 1: Adding and subtracting fractions with different denominators",2,queued
+s3-mat-y6-w14-l2,S3,Year 6,Mathematics,"Year 6, Week 14, Lesson 2: Adding and subtracting mixed numbers",2,queued
+s3-mat-y6-w14-l3,S3,Year 6,Mathematics,"Year 6, Week 14, Lesson 3: Fraction word problems",2,queued
+s3-mat-y6-w14-l4,S3,Year 6,Mathematics,"Year 6, Week 14, Lesson 4: Fluency: fraction operations",2,queued
+s3-mat-y6-w15-l1,S3,Year 6,Mathematics,"Year 6, Week 15, Lesson 1: Multiplying fractions by whole numbers",2,queued
+s3-mat-y6-w15-l2,S3,Year 6,Mathematics,"Year 6, Week 15, Lesson 2: Fractions of a quantity",2,queued
+s3-mat-y6-w15-l3,S3,Year 6,Mathematics,"Year 6, Week 15, Lesson 3: Fractions of amounts in real life",2,queued
+s3-mat-y6-w15-l4,S3,Year 6,Mathematics,"Year 6, Week 15, Lesson 4: Fluency: fractions of amounts",2,queued
+s3-mat-y6-w16-l1,S3,Year 6,Mathematics,"Year 6, Week 16, Lesson 1: Fractions on the number line",2,queued
+s3-mat-y6-w16-l2,S3,Year 6,Mathematics,"Year 6, Week 16, Lesson 2: Using fractions to solve problems",2,queued
+s3-mat-y6-w16-l3,S3,Year 6,Mathematics,"Year 6, Week 16, Lesson 3: Investigation: fractions in music and recipes",2,queued
+s3-mat-y6-w16-l4,S3,Year 6,Mathematics,"Year 6, Week 16, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y6-w17-l1,S3,Year 6,Mathematics,"Year 6, Week 17, Lesson 1: Decimal place value to thousandths",2,queued
+s3-mat-y6-w17-l2,S3,Year 6,Mathematics,"Year 6, Week 17, Lesson 2: Comparing and ordering decimals",2,queued
+s3-mat-y6-w17-l3,S3,Year 6,Mathematics,"Year 6, Week 17, Lesson 3: Rounding decimals",2,queued
+s3-mat-y6-w17-l4,S3,Year 6,Mathematics,"Year 6, Week 17, Lesson 4: Fluency: decimals",2,queued
+s3-mat-y6-w18-l1,S3,Year 6,Mathematics,"Year 6, Week 18, Lesson 1: Adding and subtracting decimals",2,queued
+s3-mat-y6-w18-l2,S3,Year 6,Mathematics,"Year 6, Week 18, Lesson 2: Multiplying decimals by whole numbers",2,queued
+s3-mat-y6-w18-l3,S3,Year 6,Mathematics,"Year 6, Week 18, Lesson 3: Dividing decimals by whole numbers",2,queued
+s3-mat-y6-w18-l4,S3,Year 6,Mathematics,"Year 6, Week 18, Lesson 4: Fluency: decimal operations",2,queued
+s3-mat-y6-w19-l1,S3,Year 6,Mathematics,"Year 6, Week 19, Lesson 1: Percentages as parts of 100",2,queued
+s3-mat-y6-w19-l2,S3,Year 6,Mathematics,"Year 6, Week 19, Lesson 2: Fractions, decimals and percentages",2,queued
+s3-mat-y6-w19-l3,S3,Year 6,Mathematics,"Year 6, Week 19, Lesson 3: Finding percentages of quantities",2,queued
+s3-mat-y6-w19-l4,S3,Year 6,Mathematics,"Year 6, Week 19, Lesson 4: Fluency: percentages",2,queued
+s3-mat-y6-w20-l1,S3,Year 6,Mathematics,"Year 6, Week 20, Lesson 1: Percentage problems",2,queued
+s3-mat-y6-w20-l2,S3,Year 6,Mathematics,"Year 6, Week 20, Lesson 2: Discounts and sales",2,queued
+s3-mat-y6-w20-l3,S3,Year 6,Mathematics,"Year 6, Week 20, Lesson 3: Investigation: survey results as percentages",2,queued
+s3-mat-y6-w20-l4,S3,Year 6,Mathematics,"Year 6, Week 20, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y6-w21-l1,S3,Year 6,Mathematics,"Year 6, Week 21, Lesson 1: Earning and spending money",2,queued
+s3-mat-y6-w21-l2,S3,Year 6,Mathematics,"Year 6, Week 21, Lesson 2: Calculating change and totals",2,queued
+s3-mat-y6-w21-l3,S3,Year 6,Mathematics,"Year 6, Week 21, Lesson 3: Rounding and estimating costs",2,queued
+s3-mat-y6-w21-l4,S3,Year 6,Mathematics,"Year 6, Week 21, Lesson 4: Fluency: money calculations",2,queued
+s3-mat-y6-w22-l1,S3,Year 6,Mathematics,"Year 6, Week 22, Lesson 1: Unit prices and best buys",2,queued
+s3-mat-y6-w22-l2,S3,Year 6,Mathematics,"Year 6, Week 22, Lesson 2: Discounts and percentages",2,queued
+s3-mat-y6-w22-l3,S3,Year 6,Mathematics,"Year 6, Week 22, Lesson 3: Comparing prices",2,queued
+s3-mat-y6-w22-l4,S3,Year 6,Mathematics,"Year 6, Week 22, Lesson 4: Fluency: shopping maths",2,queued
+s3-mat-y6-w23-l1,S3,Year 6,Mathematics,"Year 6, Week 23, Lesson 1: Budgeting basics",2,queued
+s3-mat-y6-w23-l2,S3,Year 6,Mathematics,"Year 6, Week 23, Lesson 2: Needs, wants and saving",2,queued
+s3-mat-y6-w23-l3,S3,Year 6,Mathematics,"Year 6, Week 23, Lesson 3: Planning a budget for an event",2,queued
+s3-mat-y6-w23-l4,S3,Year 6,Mathematics,"Year 6, Week 23, Lesson 4: Fluency: budget calculations",2,queued
+s3-mat-y6-w24-l1,S3,Year 6,Mathematics,"Year 6, Week 24, Lesson 1: Simple profit and loss",2,queued
+s3-mat-y6-w24-l2,S3,Year 6,Mathematics,"Year 6, Week 24, Lesson 2: Income and expenses tables",2,queued
+s3-mat-y6-w24-l3,S3,Year 6,Mathematics,"Year 6, Week 24, Lesson 3: Investigation: plan a class market stall",2,queued
+s3-mat-y6-w24-l4,S3,Year 6,Mathematics,"Year 6, Week 24, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y6-w25-l1,S3,Year 6,Mathematics,"Year 6, Week 25, Lesson 1: Area of rectangles, squares and composite shapes",2,queued
+s3-mat-y6-w25-l2,S3,Year 6,Mathematics,"Year 6, Week 25, Lesson 2: Area of triangles",2,queued
+s3-mat-y6-w25-l3,S3,Year 6,Mathematics,"Year 6, Week 25, Lesson 3: Area units and conversions",2,queued
+s3-mat-y6-w25-l4,S3,Year 6,Mathematics,"Year 6, Week 25, Lesson 4: Fluency: area practice",2,queued
+s3-mat-y6-w26-l1,S3,Year 6,Mathematics,"Year 6, Week 26, Lesson 1: Perimeter and area compared",2,queued
+s3-mat-y6-w26-l2,S3,Year 6,Mathematics,"Year 6, Week 26, Lesson 2: Composite shapes and problem solving",2,queued
+s3-mat-y6-w26-l3,S3,Year 6,Mathematics,"Year 6, Week 26, Lesson 3: Area investigation: design a garden",2,queued
+s3-mat-y6-w26-l4,S3,Year 6,Mathematics,"Year 6, Week 26, Lesson 4: Fluency: area and perimeter",2,queued
+s3-mat-y6-w27-l1,S3,Year 6,Mathematics,"Year 6, Week 27, Lesson 1: Volume of rectangular prisms",2,queued
+s3-mat-y6-w27-l2,S3,Year 6,Mathematics,"Year 6, Week 27, Lesson 2: Cubic units and conversions",2,queued
+s3-mat-y6-w27-l3,S3,Year 6,Mathematics,"Year 6, Week 27, Lesson 3: Capacity and volume links",2,queued
+s3-mat-y6-w27-l4,S3,Year 6,Mathematics,"Year 6, Week 27, Lesson 4: Fluency: volume",2,queued
+s3-mat-y6-w28-l1,S3,Year 6,Mathematics,"Year 6, Week 28, Lesson 1: Volume and capacity problems",2,queued
+s3-mat-y6-w28-l2,S3,Year 6,Mathematics,"Year 6, Week 28, Lesson 2: Packaging and containers",2,queued
+s3-mat-y6-w28-l3,S3,Year 6,Mathematics,"Year 6, Week 28, Lesson 3: Investigation: design a container",2,queued
+s3-mat-y6-w28-l4,S3,Year 6,Mathematics,"Year 6, Week 28, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y6-w29-l1,S3,Year 6,Mathematics,"Year 6, Week 29, Lesson 1: 12-hour and 24-hour time",2,queued
+s3-mat-y6-w29-l2,S3,Year 6,Mathematics,"Year 6, Week 29, Lesson 2: Elapsed time and timetables",2,queued
+s3-mat-y6-w29-l3,S3,Year 6,Mathematics,"Year 6, Week 29, Lesson 3: Time zones",2,queued
+s3-mat-y6-w29-l4,S3,Year 6,Mathematics,"Year 6, Week 29, Lesson 4: Fluency: time calculations",2,queued
+s3-mat-y6-w30-l1,S3,Year 6,Mathematics,"Year 6, Week 30, Lesson 1: Reading timetables and schedules",2,queued
+s3-mat-y6-w30-l2,S3,Year 6,Mathematics,"Year 6, Week 30, Lesson 2: Time and duration problems",2,queued
+s3-mat-y6-w30-l3,S3,Year 6,Mathematics,"Year 6, Week 30, Lesson 3: Investigation: planning a journey",2,queued
+s3-mat-y6-w30-l4,S3,Year 6,Mathematics,"Year 6, Week 30, Lesson 4: Fluency: timetables",2,queued
+s3-mat-y6-w31-l1,S3,Year 6,Mathematics,"Year 6, Week 31, Lesson 1: Length and units of length",2,queued
+s3-mat-y6-w31-l2,S3,Year 6,Mathematics,"Year 6, Week 31, Lesson 2: Converting units of length",2,queued
+s3-mat-y6-w31-l3,S3,Year 6,Mathematics,"Year 6, Week 31, Lesson 3: Mass and units of mass",2,queued
+s3-mat-y6-w31-l4,S3,Year 6,Mathematics,"Year 6, Week 31, Lesson 4: Fluency: conversions",2,queued
+s3-mat-y6-w32-l1,S3,Year 6,Mathematics,"Year 6, Week 32, Lesson 1: Scale drawings and maps",2,queued
+s3-mat-y6-w32-l2,S3,Year 6,Mathematics,"Year 6, Week 32, Lesson 2: Using scales to solve problems",2,queued
+s3-mat-y6-w32-l3,S3,Year 6,Mathematics,"Year 6, Week 32, Lesson 3: Measurement problem solving",2,queued
+s3-mat-y6-w32-l4,S3,Year 6,Mathematics,"Year 6, Week 32, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y6-w33-l1,S3,Year 6,Mathematics,"Year 6, Week 33, Lesson 1: Angles: types, measuring and drawing",2,queued
+s3-mat-y6-w33-l2,S3,Year 6,Mathematics,"Year 6, Week 33, Lesson 2: Angles on a straight line and at a point",2,queued
+s3-mat-y6-w33-l3,S3,Year 6,Mathematics,"Year 6, Week 33, Lesson 3: Angle problems",2,queued
+s3-mat-y6-w33-l4,S3,Year 6,Mathematics,"Year 6, Week 33, Lesson 4: Fluency: angles",2,queued
+s3-mat-y6-w34-l1,S3,Year 6,Mathematics,"Year 6, Week 34, Lesson 1: Properties of 2D shapes",2,queued
+s3-mat-y6-w34-l2,S3,Year 6,Mathematics,"Year 6, Week 34, Lesson 2: Classifying triangles and quadrilaterals",2,queued
+s3-mat-y6-w34-l3,S3,Year 6,Mathematics,"Year 6, Week 34, Lesson 3: Symmetry and transformations",2,queued
+s3-mat-y6-w34-l4,S3,Year 6,Mathematics,"Year 6, Week 34, Lesson 4: Fluency: shape properties",2,queued
+s3-mat-y6-w35-l1,S3,Year 6,Mathematics,"Year 6, Week 35, Lesson 1: Properties of 3D objects",2,queued
+s3-mat-y6-w35-l2,S3,Year 6,Mathematics,"Year 6, Week 35, Lesson 2: Nets of prisms and pyramids",2,queued
+s3-mat-y6-w35-l3,S3,Year 6,Mathematics,"Year 6, Week 35, Lesson 3: Views of 3D objects",2,queued
+s3-mat-y6-w35-l4,S3,Year 6,Mathematics,"Year 6, Week 35, Lesson 4: Fluency: 3D objects",2,queued
+s3-mat-y6-w36-l1,S3,Year 6,Mathematics,"Year 6, Week 36, Lesson 1: Coordinates on a grid",2,queued
+s3-mat-y6-w36-l2,S3,Year 6,Mathematics,"Year 6, Week 36, Lesson 2: Transformations on a grid",2,queued
+s3-mat-y6-w36-l3,S3,Year 6,Mathematics,"Year 6, Week 36, Lesson 3: Investigation: design with transformations",2,queued
+s3-mat-y6-w36-l4,S3,Year 6,Mathematics,"Year 6, Week 36, Lesson 4: Unit review and check-in",2,queued
+s3-mat-y6-w37-l1,S3,Year 6,Mathematics,"Year 6, Week 37, Lesson 1: Collecting and organising data",2,queued
+s3-mat-y6-w37-l2,S3,Year 6,Mathematics,"Year 6, Week 37, Lesson 2: Column graphs and line graphs",2,queued
+s3-mat-y6-w37-l3,S3,Year 6,Mathematics,"Year 6, Week 37, Lesson 3: Interpreting graphs",2,queued
+s3-mat-y6-w37-l4,S3,Year 6,Mathematics,"Year 6, Week 37, Lesson 4: Fluency: reading graphs",2,queued
+s3-mat-y6-w38-l1,S3,Year 6,Mathematics,"Year 6, Week 38, Lesson 1: Describing and comparing data sets",2,queued
+s3-mat-y6-w38-l2,S3,Year 6,Mathematics,"Year 6, Week 38, Lesson 2: Spotting misleading graphs",2,queued
+s3-mat-y6-w38-l3,S3,Year 6,Mathematics,"Year 6, Week 38, Lesson 3: Planning a data investigation",2,queued
+s3-mat-y6-w38-l4,S3,Year 6,Mathematics,"Year 6, Week 38, Lesson 4: Fluency: data practice",2,queued
+s3-mat-y6-w39-l1,S3,Year 6,Mathematics,"Year 6, Week 39, Lesson 1: Chance and probability language",2,queued
+s3-mat-y6-w39-l2,S3,Year 6,Mathematics,"Year 6, Week 39, Lesson 2: Probability as a fraction",2,queued
+s3-mat-y6-w39-l3,S3,Year 6,Mathematics,"Year 6, Week 39, Lesson 3: Chance experiments and predictions",2,queued
+s3-mat-y6-w39-l4,S3,Year 6,Mathematics,"Year 6, Week 39, Lesson 4: Fluency: chance",2,queued
+s3-mat-y6-w40-l1,S3,Year 6,Mathematics,"Year 6, Week 40, Lesson 1: Stage 3 investigation: planning",2,queued
+s3-mat-y6-w40-l2,S3,Year 6,Mathematics,"Year 6, Week 40, Lesson 2: Stage 3 investigation: presenting",2,queued
+s3-mat-y6-w40-l3,S3,Year 6,Mathematics,"Year 6, Week 40, Lesson 3: Stage 3 skills check",2,queued
+s3-mat-y6-w40-l4,S3,Year 6,Mathematics,"Year 6, Week 40, Lesson 4: Reflection and celebration",2,queued
+s3-pdh-y5-w01-l1,S3,Year 5,PDHPE,"Year 5, Week 1, Lesson 1: Identity and self-awareness (Learn and discuss)",2,queued
+s3-pdh-y5-w01-l2,S3,Year 5,PDHPE,"Year 5, Week 1, Lesson 2: Identity and self-awareness (Practise and apply)",2,queued
+s3-pdh-y5-w02-l1,S3,Year 5,PDHPE,"Year 5, Week 2, Lesson 1: Strengths and values (Learn and discuss)",2,queued
+s3-pdh-y5-w02-l2,S3,Year 5,PDHPE,"Year 5, Week 2, Lesson 2: Strengths and values (Practise and apply)",2,queued
+s3-pdh-y5-w03-l1,S3,Year 5,PDHPE,"Year 5, Week 3, Lesson 1: Managing emotions (Learn and discuss)",2,queued
+s3-pdh-y5-w03-l2,S3,Year 5,PDHPE,"Year 5, Week 3, Lesson 2: Managing emotions (Practise and apply)",2,queued
+s3-pdh-y5-w04-l1,S3,Year 5,PDHPE,"Year 5, Week 4, Lesson 1: Resilience (Learn and discuss)",2,queued
+s3-pdh-y5-w04-l2,S3,Year 5,PDHPE,"Year 5, Week 4, Lesson 2: Resilience (Practise and apply)",2,queued
+s3-pdh-y5-w05-l1,S3,Year 5,PDHPE,"Year 5, Week 5, Lesson 1: Investigation: wellbeing (Learn and discuss)",2,queued
+s3-pdh-y5-w05-l2,S3,Year 5,PDHPE,"Year 5, Week 5, Lesson 2: Investigation: wellbeing (Practise and apply)",2,queued
+s3-pdh-y5-w06-l1,S3,Year 5,PDHPE,"Year 5, Week 6, Lesson 1: Communication skills (Learn and discuss)",2,queued
+s3-pdh-y5-w06-l2,S3,Year 5,PDHPE,"Year 5, Week 6, Lesson 2: Communication skills (Practise and apply)",2,queued
+s3-pdh-y5-w07-l1,S3,Year 5,PDHPE,"Year 5, Week 7, Lesson 1: Respectful relationships (Learn and discuss)",2,queued
+s3-pdh-y5-w07-l2,S3,Year 5,PDHPE,"Year 5, Week 7, Lesson 2: Respectful relationships (Practise and apply)",2,queued
+s3-pdh-y5-w08-l1,S3,Year 5,PDHPE,"Year 5, Week 8, Lesson 1: Friendships and peer influence (Learn and discuss)",2,queued
+s3-pdh-y5-w08-l2,S3,Year 5,PDHPE,"Year 5, Week 8, Lesson 2: Friendships and peer influence (Practise and apply)",2,queued
+s3-pdh-y5-w09-l1,S3,Year 5,PDHPE,"Year 5, Week 9, Lesson 1: Resolving conflict (Learn and discuss)",2,queued
+s3-pdh-y5-w09-l2,S3,Year 5,PDHPE,"Year 5, Week 9, Lesson 2: Resolving conflict (Practise and apply)",2,queued
+s3-pdh-y5-w10-l1,S3,Year 5,PDHPE,"Year 5, Week 10, Lesson 1: Investigation: relationships (Learn and discuss)",2,queued
+s3-pdh-y5-w10-l2,S3,Year 5,PDHPE,"Year 5, Week 10, Lesson 2: Investigation: relationships (Practise and apply)",2,queued
+s3-pdh-y5-w11-l1,S3,Year 5,PDHPE,"Year 5, Week 11, Lesson 1: Identifying risk (Learn and discuss)",2,queued
+s3-pdh-y5-w11-l2,S3,Year 5,PDHPE,"Year 5, Week 11, Lesson 2: Identifying risk (Practise and apply)",2,queued
+s3-pdh-y5-w12-l1,S3,Year 5,PDHPE,"Year 5, Week 12, Lesson 1: Safe decisions (Learn and discuss)",2,queued
+s3-pdh-y5-w12-l2,S3,Year 5,PDHPE,"Year 5, Week 12, Lesson 2: Safe decisions (Practise and apply)",2,queued
+s3-pdh-y5-w13-l1,S3,Year 5,PDHPE,"Year 5, Week 13, Lesson 1: Online safety (Learn and discuss)",2,queued
+s3-pdh-y5-w13-l2,S3,Year 5,PDHPE,"Year 5, Week 13, Lesson 2: Online safety (Practise and apply)",2,queued
+s3-pdh-y5-w14-l1,S3,Year 5,PDHPE,"Year 5, Week 14, Lesson 1: First aid basics (Learn and discuss)",2,queued
+s3-pdh-y5-w14-l2,S3,Year 5,PDHPE,"Year 5, Week 14, Lesson 2: First aid basics (Practise and apply)",2,queued
+s3-pdh-y5-w15-l1,S3,Year 5,PDHPE,"Year 5, Week 15, Lesson 1: Investigation: staying safe (Learn and discuss)",2,queued
+s3-pdh-y5-w15-l2,S3,Year 5,PDHPE,"Year 5, Week 15, Lesson 2: Investigation: staying safe (Practise and apply)",2,queued
+s3-pdh-y5-w16-l1,S3,Year 5,PDHPE,"Year 5, Week 16, Lesson 1: Food groups and nutrition (Learn and discuss)",2,queued
+s3-pdh-y5-w16-l2,S3,Year 5,PDHPE,"Year 5, Week 16, Lesson 2: Food groups and nutrition (Practise and apply)",2,queued
+s3-pdh-y5-w17-l1,S3,Year 5,PDHPE,"Year 5, Week 17, Lesson 1: Reading food labels (Learn and discuss)",2,queued
+s3-pdh-y5-w17-l2,S3,Year 5,PDHPE,"Year 5, Week 17, Lesson 2: Reading food labels (Practise and apply)",2,queued
+s3-pdh-y5-w18-l1,S3,Year 5,PDHPE,"Year 5, Week 18, Lesson 1: Planning healthy meals (Learn and discuss)",2,queued
+s3-pdh-y5-w18-l2,S3,Year 5,PDHPE,"Year 5, Week 18, Lesson 2: Planning healthy meals (Practise and apply)",2,queued
+s3-pdh-y5-w19-l1,S3,Year 5,PDHPE,"Year 5, Week 19, Lesson 1: Physical activity guidelines (Learn and discuss)",2,queued
+s3-pdh-y5-w19-l2,S3,Year 5,PDHPE,"Year 5, Week 19, Lesson 2: Physical activity guidelines (Practise and apply)",2,queued
+s3-pdh-y5-w20-l1,S3,Year 5,PDHPE,"Year 5, Week 20, Lesson 1: Investigation: healthy choices (Learn and discuss)",2,queued
+s3-pdh-y5-w20-l2,S3,Year 5,PDHPE,"Year 5, Week 20, Lesson 2: Investigation: healthy choices (Practise and apply)",2,queued
+s3-pdh-y5-w21-l1,S3,Year 5,PDHPE,"Year 5, Week 21, Lesson 1: Running, jumping and throwing (Learn and discuss)",2,queued
+s3-pdh-y5-w21-l2,S3,Year 5,PDHPE,"Year 5, Week 21, Lesson 2: Running, jumping and throwing (Practise and apply)",2,queued
+s3-pdh-y5-w22-l1,S3,Year 5,PDHPE,"Year 5, Week 22, Lesson 1: Ball skills (Learn and discuss)",2,queued
+s3-pdh-y5-w22-l2,S3,Year 5,PDHPE,"Year 5, Week 22, Lesson 2: Ball skills (Practise and apply)",2,queued
+s3-pdh-y5-w23-l1,S3,Year 5,PDHPE,"Year 5, Week 23, Lesson 1: Fitness components (Learn and discuss)",2,queued
+s3-pdh-y5-w23-l2,S3,Year 5,PDHPE,"Year 5, Week 23, Lesson 2: Fitness components (Practise and apply)",2,queued
+s3-pdh-y5-w24-l1,S3,Year 5,PDHPE,"Year 5, Week 24, Lesson 1: Setting personal bests (Learn and discuss)",2,queued
+s3-pdh-y5-w24-l2,S3,Year 5,PDHPE,"Year 5, Week 24, Lesson 2: Setting personal bests (Practise and apply)",2,queued
+s3-pdh-y5-w25-l1,S3,Year 5,PDHPE,"Year 5, Week 25, Lesson 1: Investigation: movement skills (Learn and discuss)",2,queued
+s3-pdh-y5-w25-l2,S3,Year 5,PDHPE,"Year 5, Week 25, Lesson 2: Investigation: movement skills (Practise and apply)",2,queued
+s3-pdh-y5-w26-l1,S3,Year 5,PDHPE,"Year 5, Week 26, Lesson 1: Invasion games and tactics (Learn and discuss)",2,queued
+s3-pdh-y5-w26-l2,S3,Year 5,PDHPE,"Year 5, Week 26, Lesson 2: Invasion games and tactics (Practise and apply)",2,queued
+s3-pdh-y5-w27-l1,S3,Year 5,PDHPE,"Year 5, Week 27, Lesson 1: Net and wall games (Learn and discuss)",2,queued
+s3-pdh-y5-w27-l2,S3,Year 5,PDHPE,"Year 5, Week 27, Lesson 2: Net and wall games (Practise and apply)",2,queued
+s3-pdh-y5-w28-l1,S3,Year 5,PDHPE,"Year 5, Week 28, Lesson 1: Striking and fielding games (Learn and discuss)",2,queued
+s3-pdh-y5-w28-l2,S3,Year 5,PDHPE,"Year 5, Week 28, Lesson 2: Striking and fielding games (Practise and apply)",2,queued
+s3-pdh-y5-w29-l1,S3,Year 5,PDHPE,"Year 5, Week 29, Lesson 1: Fair play and teamwork (Learn and discuss)",2,queued
+s3-pdh-y5-w29-l2,S3,Year 5,PDHPE,"Year 5, Week 29, Lesson 2: Fair play and teamwork (Practise and apply)",2,queued
+s3-pdh-y5-w30-l1,S3,Year 5,PDHPE,"Year 5, Week 30, Lesson 1: Investigation: game strategy (Learn and discuss)",2,queued
+s3-pdh-y5-w30-l2,S3,Year 5,PDHPE,"Year 5, Week 30, Lesson 2: Investigation: game strategy (Practise and apply)",2,queued
+s3-pdh-y5-w31-l1,S3,Year 5,PDHPE,"Year 5, Week 31, Lesson 1: Dance styles (Learn and discuss)",2,queued
+s3-pdh-y5-w31-l2,S3,Year 5,PDHPE,"Year 5, Week 31, Lesson 2: Dance styles (Practise and apply)",2,queued
+s3-pdh-y5-w32-l1,S3,Year 5,PDHPE,"Year 5, Week 32, Lesson 1: Gymnastic sequences (Learn and discuss)",2,queued
+s3-pdh-y5-w32-l2,S3,Year 5,PDHPE,"Year 5, Week 32, Lesson 2: Gymnastic sequences (Practise and apply)",2,queued
+s3-pdh-y5-w33-l1,S3,Year 5,PDHPE,"Year 5, Week 33, Lesson 1: Creating a routine (Learn and discuss)",2,queued
+s3-pdh-y5-w33-l2,S3,Year 5,PDHPE,"Year 5, Week 33, Lesson 2: Creating a routine (Practise and apply)",2,queued
+s3-pdh-y5-w34-l1,S3,Year 5,PDHPE,"Year 5, Week 34, Lesson 1: Performing and evaluating (Learn and discuss)",2,queued
+s3-pdh-y5-w34-l2,S3,Year 5,PDHPE,"Year 5, Week 34, Lesson 2: Performing and evaluating (Practise and apply)",2,queued
+s3-pdh-y5-w35-l1,S3,Year 5,PDHPE,"Year 5, Week 35, Lesson 1: Investigation: performance (Learn and discuss)",2,queued
+s3-pdh-y5-w35-l2,S3,Year 5,PDHPE,"Year 5, Week 35, Lesson 2: Investigation: performance (Practise and apply)",2,queued
+s3-pdh-y5-w36-l1,S3,Year 5,PDHPE,"Year 5, Week 36, Lesson 1: Changes in growing (Learn and discuss)",2,queued
+s3-pdh-y5-w36-l2,S3,Year 5,PDHPE,"Year 5, Week 36, Lesson 2: Changes in growing (Practise and apply)",2,queued
+s3-pdh-y5-w37-l1,S3,Year 5,PDHPE,"Year 5, Week 37, Lesson 1: Introduction to puberty (Learn and discuss)",2,queued
+s3-pdh-y5-w37-l2,S3,Year 5,PDHPE,"Year 5, Week 37, Lesson 2: Introduction to puberty (Practise and apply)",2,queued
+s3-pdh-y5-w38-l1,S3,Year 5,PDHPE,"Year 5, Week 38, Lesson 1: Hygiene and health (Learn and discuss)",2,queued
+s3-pdh-y5-w38-l2,S3,Year 5,PDHPE,"Year 5, Week 38, Lesson 2: Hygiene and health (Practise and apply)",2,queued
+s3-pdh-y5-w39-l1,S3,Year 5,PDHPE,"Year 5, Week 39, Lesson 1: Respect and privacy (Learn and discuss)",2,queued
+s3-pdh-y5-w39-l2,S3,Year 5,PDHPE,"Year 5, Week 39, Lesson 2: Respect and privacy (Practise and apply)",2,queued
+s3-pdh-y5-w40-l1,S3,Year 5,PDHPE,"Year 5, Week 40, Lesson 1: Year 5 PDHPE reflection (Learn and discuss)",2,queued
+s3-pdh-y5-w40-l2,S3,Year 5,PDHPE,"Year 5, Week 40, Lesson 2: Year 5 PDHPE reflection (Practise and apply)",2,queued
+s3-pdh-y6-w01-l1,S3,Year 6,PDHPE,"Year 6, Week 1, Lesson 1: Mental health and wellbeing (Learn and discuss)",2,queued
+s3-pdh-y6-w01-l2,S3,Year 6,PDHPE,"Year 6, Week 1, Lesson 2: Mental health and wellbeing (Practise and apply)",2,queued
+s3-pdh-y6-w02-l1,S3,Year 6,PDHPE,"Year 6, Week 2, Lesson 1: Coping with stress (Learn and discuss)",2,queued
+s3-pdh-y6-w02-l2,S3,Year 6,PDHPE,"Year 6, Week 2, Lesson 2: Coping with stress (Practise and apply)",2,queued
+s3-pdh-y6-w03-l1,S3,Year 6,PDHPE,"Year 6, Week 3, Lesson 1: Seeking help (Learn and discuss)",2,queued
+s3-pdh-y6-w03-l2,S3,Year 6,PDHPE,"Year 6, Week 3, Lesson 2: Seeking help (Practise and apply)",2,queued
+s3-pdh-y6-w04-l1,S3,Year 6,PDHPE,"Year 6, Week 4, Lesson 1: Positive self-talk (Learn and discuss)",2,queued
+s3-pdh-y6-w04-l2,S3,Year 6,PDHPE,"Year 6, Week 4, Lesson 2: Positive self-talk (Practise and apply)",2,queued
+s3-pdh-y6-w05-l1,S3,Year 6,PDHPE,"Year 6, Week 5, Lesson 1: Investigation: mental health (Learn and discuss)",2,queued
+s3-pdh-y6-w05-l2,S3,Year 6,PDHPE,"Year 6, Week 5, Lesson 2: Investigation: mental health (Practise and apply)",2,queued
+s3-pdh-y6-w06-l1,S3,Year 6,PDHPE,"Year 6, Week 6, Lesson 1: Respectful relationships (Learn and discuss)",2,queued
+s3-pdh-y6-w06-l2,S3,Year 6,PDHPE,"Year 6, Week 6, Lesson 2: Respectful relationships (Practise and apply)",2,queued
+s3-pdh-y6-w07-l1,S3,Year 6,PDHPE,"Year 6, Week 7, Lesson 1: Consent and personal boundaries (Learn and discuss)",2,queued
+s3-pdh-y6-w07-l2,S3,Year 6,PDHPE,"Year 6, Week 7, Lesson 2: Consent and personal boundaries (Practise and apply)",2,queued
+s3-pdh-y6-w08-l1,S3,Year 6,PDHPE,"Year 6, Week 8, Lesson 1: Peer pressure (Learn and discuss)",2,queued
+s3-pdh-y6-w08-l2,S3,Year 6,PDHPE,"Year 6, Week 8, Lesson 2: Peer pressure (Practise and apply)",2,queued
+s3-pdh-y6-w09-l1,S3,Year 6,PDHPE,"Year 6, Week 9, Lesson 1: Online relationships (Learn and discuss)",2,queued
+s3-pdh-y6-w09-l2,S3,Year 6,PDHPE,"Year 6, Week 9, Lesson 2: Online relationships (Practise and apply)",2,queued
+s3-pdh-y6-w10-l1,S3,Year 6,PDHPE,"Year 6, Week 10, Lesson 1: Investigation: respect and consent (Learn and discuss)",2,queued
+s3-pdh-y6-w10-l2,S3,Year 6,PDHPE,"Year 6, Week 10, Lesson 2: Investigation: respect and consent (Practise and apply)",2,queued
+s3-pdh-y6-w11-l1,S3,Year 6,PDHPE,"Year 6, Week 11, Lesson 1: Online and digital safety (Learn and discuss)",2,queued
+s3-pdh-y6-w11-l2,S3,Year 6,PDHPE,"Year 6, Week 11, Lesson 2: Online and digital safety (Practise and apply)",2,queued
+s3-pdh-y6-w12-l1,S3,Year 6,PDHPE,"Year 6, Week 12, Lesson 1: Community safety (Learn and discuss)",2,queued
+s3-pdh-y6-w12-l2,S3,Year 6,PDHPE,"Year 6, Week 12, Lesson 2: Community safety (Practise and apply)",2,queued
+s3-pdh-y6-w13-l1,S3,Year 6,PDHPE,"Year 6, Week 13, Lesson 1: Substances and health (Learn and discuss)",2,queued
+s3-pdh-y6-w13-l2,S3,Year 6,PDHPE,"Year 6, Week 13, Lesson 2: Substances and health (Practise and apply)",2,queued
+s3-pdh-y6-w14-l1,S3,Year 6,PDHPE,"Year 6, Week 14, Lesson 1: Emergency responses (Learn and discuss)",2,queued
+s3-pdh-y6-w14-l2,S3,Year 6,PDHPE,"Year 6, Week 14, Lesson 2: Emergency responses (Practise and apply)",2,queued
+s3-pdh-y6-w15-l1,S3,Year 6,PDHPE,"Year 6, Week 15, Lesson 1: Investigation: safe choices (Learn and discuss)",2,queued
+s3-pdh-y6-w15-l2,S3,Year 6,PDHPE,"Year 6, Week 15, Lesson 2: Investigation: safe choices (Practise and apply)",2,queued
+s3-pdh-y6-w16-l1,S3,Year 6,PDHPE,"Year 6, Week 16, Lesson 1: Healthy lifestyle habits (Learn and discuss)",2,queued
+s3-pdh-y6-w16-l2,S3,Year 6,PDHPE,"Year 6, Week 16, Lesson 2: Healthy lifestyle habits (Practise and apply)",2,queued
+s3-pdh-y6-w17-l1,S3,Year 6,PDHPE,"Year 6, Week 17, Lesson 1: Nutrition and active living (Learn and discuss)",2,queued
+s3-pdh-y6-w17-l2,S3,Year 6,PDHPE,"Year 6, Week 17, Lesson 2: Nutrition and active living (Practise and apply)",2,queued
+s3-pdh-y6-w18-l1,S3,Year 6,PDHPE,"Year 6, Week 18, Lesson 1: Goal setting (Learn and discuss)",2,queued
+s3-pdh-y6-w18-l2,S3,Year 6,PDHPE,"Year 6, Week 18, Lesson 2: Goal setting (Practise and apply)",2,queued
+s3-pdh-y6-w19-l1,S3,Year 6,PDHPE,"Year 6, Week 19, Lesson 1: Planning an active week (Learn and discuss)",2,queued
+s3-pdh-y6-w19-l2,S3,Year 6,PDHPE,"Year 6, Week 19, Lesson 2: Planning an active week (Practise and apply)",2,queued
+s3-pdh-y6-w20-l1,S3,Year 6,PDHPE,"Year 6, Week 20, Lesson 1: Investigation: healthy lifestyle (Learn and discuss)",2,queued
+s3-pdh-y6-w20-l2,S3,Year 6,PDHPE,"Year 6, Week 20, Lesson 2: Investigation: healthy lifestyle (Practise and apply)",2,queued
+s3-pdh-y6-w21-l1,S3,Year 6,PDHPE,"Year 6, Week 21, Lesson 1: Athletics (Learn and discuss)",2,queued
+s3-pdh-y6-w21-l2,S3,Year 6,PDHPE,"Year 6, Week 21, Lesson 2: Athletics (Practise and apply)",2,queued
+s3-pdh-y6-w22-l1,S3,Year 6,PDHPE,"Year 6, Week 22, Lesson 1: Fitness training (Learn and discuss)",2,queued
+s3-pdh-y6-w22-l2,S3,Year 6,PDHPE,"Year 6, Week 22, Lesson 2: Fitness training (Practise and apply)",2,queued
+s3-pdh-y6-w23-l1,S3,Year 6,PDHPE,"Year 6, Week 23, Lesson 1: Measuring performance (Learn and discuss)",2,queued
+s3-pdh-y6-w23-l2,S3,Year 6,PDHPE,"Year 6, Week 23, Lesson 2: Measuring performance (Practise and apply)",2,queued
+s3-pdh-y6-w24-l1,S3,Year 6,PDHPE,"Year 6, Week 24, Lesson 1: Personal challenge (Learn and discuss)",2,queued
+s3-pdh-y6-w24-l2,S3,Year 6,PDHPE,"Year 6, Week 24, Lesson 2: Personal challenge (Practise and apply)",2,queued
+s3-pdh-y6-w25-l1,S3,Year 6,PDHPE,"Year 6, Week 25, Lesson 1: Investigation: fitness (Learn and discuss)",2,queued
+s3-pdh-y6-w25-l2,S3,Year 6,PDHPE,"Year 6, Week 25, Lesson 2: Investigation: fitness (Practise and apply)",2,queued
+s3-pdh-y6-w26-l1,S3,Year 6,PDHPE,"Year 6, Week 26, Lesson 1: Team sport skills (Learn and discuss)",2,queued
+s3-pdh-y6-w26-l2,S3,Year 6,PDHPE,"Year 6, Week 26, Lesson 2: Team sport skills (Practise and apply)",2,queued
+s3-pdh-y6-w27-l1,S3,Year 6,PDHPE,"Year 6, Week 27, Lesson 1: Tactics and strategy (Learn and discuss)",2,queued
+s3-pdh-y6-w27-l2,S3,Year 6,PDHPE,"Year 6, Week 27, Lesson 2: Tactics and strategy (Practise and apply)",2,queued
+s3-pdh-y6-w28-l1,S3,Year 6,PDHPE,"Year 6, Week 28, Lesson 1: Leadership and officiating (Learn and discuss)",2,queued
+s3-pdh-y6-w28-l2,S3,Year 6,PDHPE,"Year 6, Week 28, Lesson 2: Leadership and officiating (Practise and apply)",2,queued
+s3-pdh-y6-w29-l1,S3,Year 6,PDHPE,"Year 6, Week 29, Lesson 1: Sportsmanship (Learn and discuss)",2,queued
+s3-pdh-y6-w29-l2,S3,Year 6,PDHPE,"Year 6, Week 29, Lesson 2: Sportsmanship (Practise and apply)",2,queued
+s3-pdh-y6-w30-l1,S3,Year 6,PDHPE,"Year 6, Week 30, Lesson 1: Investigation: team sport (Learn and discuss)",2,queued
+s3-pdh-y6-w30-l2,S3,Year 6,PDHPE,"Year 6, Week 30, Lesson 2: Investigation: team sport (Practise and apply)",2,queued
+s3-pdh-y6-w31-l1,S3,Year 6,PDHPE,"Year 6, Week 31, Lesson 1: Rhythmic movement (Learn and discuss)",2,queued
+s3-pdh-y6-w31-l2,S3,Year 6,PDHPE,"Year 6, Week 31, Lesson 2: Rhythmic movement (Practise and apply)",2,queued
+s3-pdh-y6-w32-l1,S3,Year 6,PDHPE,"Year 6, Week 32, Lesson 1: Dance sequences (Learn and discuss)",2,queued
+s3-pdh-y6-w32-l2,S3,Year 6,PDHPE,"Year 6, Week 32, Lesson 2: Dance sequences (Practise and apply)",2,queued
+s3-pdh-y6-w33-l1,S3,Year 6,PDHPE,"Year 6, Week 33, Lesson 1: Creative movement (Learn and discuss)",2,queued
+s3-pdh-y6-w33-l2,S3,Year 6,PDHPE,"Year 6, Week 33, Lesson 2: Creative movement (Practise and apply)",2,queued
+s3-pdh-y6-w34-l1,S3,Year 6,PDHPE,"Year 6, Week 34, Lesson 1: Performing for an audience (Learn and discuss)",2,queued
+s3-pdh-y6-w34-l2,S3,Year 6,PDHPE,"Year 6, Week 34, Lesson 2: Performing for an audience (Practise and apply)",2,queued
+s3-pdh-y6-w35-l1,S3,Year 6,PDHPE,"Year 6, Week 35, Lesson 1: Investigation: movement composition (Learn and discuss)",2,queued
+s3-pdh-y6-w35-l2,S3,Year 6,PDHPE,"Year 6, Week 35, Lesson 2: Investigation: movement composition (Practise and apply)",2,queued
+s3-pdh-y6-w36-l1,S3,Year 6,PDHPE,"Year 6, Week 36, Lesson 1: Preparing for high school (Learn and discuss)",2,queued
+s3-pdh-y6-w36-l2,S3,Year 6,PDHPE,"Year 6, Week 36, Lesson 2: Preparing for high school (Practise and apply)",2,queued
+s3-pdh-y6-w37-l1,S3,Year 6,PDHPE,"Year 6, Week 37, Lesson 1: Managing change (Learn and discuss)",2,queued
+s3-pdh-y6-w37-l2,S3,Year 6,PDHPE,"Year 6, Week 37, Lesson 2: Managing change (Practise and apply)",2,queued
+s3-pdh-y6-w38-l1,S3,Year 6,PDHPE,"Year 6, Week 38, Lesson 1: Puberty and health (Learn and discuss)",2,queued
+s3-pdh-y6-w38-l2,S3,Year 6,PDHPE,"Year 6, Week 38, Lesson 2: Puberty and health (Practise and apply)",2,queued
+s3-pdh-y6-w39-l1,S3,Year 6,PDHPE,"Year 6, Week 39, Lesson 1: Looking ahead (Learn and discuss)",2,queued
+s3-pdh-y6-w39-l2,S3,Year 6,PDHPE,"Year 6, Week 39, Lesson 2: Looking ahead (Practise and apply)",2,queued
+s3-pdh-y6-w40-l1,S3,Year 6,PDHPE,"Year 6, Week 40, Lesson 1: Year 6 PDHPE reflection (Learn and discuss)",2,queued
+s3-pdh-y6-w40-l2,S3,Year 6,PDHPE,"Year 6, Week 40, Lesson 2: Year 6 PDHPE reflection (Practise and apply)",2,queued
+s3-sci-y5-w01-l1,S3,Year 5,Science and Technology,"Year 5, Week 1, Lesson 1: Adaptations of plants and animals (Investigate)",2,queued
+s3-sci-y5-w01-l2,S3,Year 5,Science and Technology,"Year 5, Week 1, Lesson 2: Adaptations of plants and animals (Apply and make)",2,queued
+s3-sci-y5-w02-l1,S3,Year 5,Science and Technology,"Year 5, Week 2, Lesson 1: Structural and behavioural adaptations (Investigate)",2,queued
+s3-sci-y5-w02-l2,S3,Year 5,Science and Technology,"Year 5, Week 2, Lesson 2: Structural and behavioural adaptations (Apply and make)",2,queued
+s3-sci-y5-w03-l1,S3,Year 5,Science and Technology,"Year 5, Week 3, Lesson 1: Food chains and food webs (Investigate)",2,queued
+s3-sci-y5-w03-l2,S3,Year 5,Science and Technology,"Year 5, Week 3, Lesson 2: Food chains and food webs (Apply and make)",2,queued
+s3-sci-y5-w04-l1,S3,Year 5,Science and Technology,"Year 5, Week 4, Lesson 1: Survival and change (Investigate)",2,queued
+s3-sci-y5-w04-l2,S3,Year 5,Science and Technology,"Year 5, Week 4, Lesson 2: Survival and change (Apply and make)",2,queued
+s3-sci-y5-w05-l1,S3,Year 5,Science and Technology,"Year 5, Week 5, Lesson 1: Investigation: adaptations (Investigate)",2,queued
+s3-sci-y5-w05-l2,S3,Year 5,Science and Technology,"Year 5, Week 5, Lesson 2: Investigation: adaptations (Apply and make)",2,queued
+s3-sci-y5-w06-l1,S3,Year 5,Science and Technology,"Year 5, Week 6, Lesson 1: States of matter (Investigate)",2,queued
+s3-sci-y5-w06-l2,S3,Year 5,Science and Technology,"Year 5, Week 6, Lesson 2: States of matter (Apply and make)",2,queued
+s3-sci-y5-w07-l1,S3,Year 5,Science and Technology,"Year 5, Week 7, Lesson 1: Changes of state (Investigate)",2,queued
+s3-sci-y5-w07-l2,S3,Year 5,Science and Technology,"Year 5, Week 7, Lesson 2: Changes of state (Apply and make)",2,queued
+s3-sci-y5-w08-l1,S3,Year 5,Science and Technology,"Year 5, Week 8, Lesson 1: Properties and uses of materials (Investigate)",2,queued
+s3-sci-y5-w08-l2,S3,Year 5,Science and Technology,"Year 5, Week 8, Lesson 2: Properties and uses of materials (Apply and make)",2,queued
+s3-sci-y5-w09-l1,S3,Year 5,Science and Technology,"Year 5, Week 9, Lesson 1: Reversible and irreversible changes (Investigate)",2,queued
+s3-sci-y5-w09-l2,S3,Year 5,Science and Technology,"Year 5, Week 9, Lesson 2: Reversible and irreversible changes (Apply and make)",2,queued
+s3-sci-y5-w10-l1,S3,Year 5,Science and Technology,"Year 5, Week 10, Lesson 1: Investigation: materials and change (Investigate)",2,queued
+s3-sci-y5-w10-l2,S3,Year 5,Science and Technology,"Year 5, Week 10, Lesson 2: Investigation: materials and change (Apply and make)",2,queued
+s3-sci-y5-w11-l1,S3,Year 5,Science and Technology,"Year 5, Week 11, Lesson 1: Sources of light (Investigate)",2,queued
+s3-sci-y5-w11-l2,S3,Year 5,Science and Technology,"Year 5, Week 11, Lesson 2: Sources of light (Apply and make)",2,queued
+s3-sci-y5-w12-l1,S3,Year 5,Science and Technology,"Year 5, Week 12, Lesson 1: Reflection and refraction (Investigate)",2,queued
+s3-sci-y5-w12-l2,S3,Year 5,Science and Technology,"Year 5, Week 12, Lesson 2: Reflection and refraction (Apply and make)",2,queued
+s3-sci-y5-w13-l1,S3,Year 5,Science and Technology,"Year 5, Week 13, Lesson 1: Shadows and opaque materials (Investigate)",2,queued
+s3-sci-y5-w13-l2,S3,Year 5,Science and Technology,"Year 5, Week 13, Lesson 2: Shadows and opaque materials (Apply and make)",2,queued
+s3-sci-y5-w14-l1,S3,Year 5,Science and Technology,"Year 5, Week 14, Lesson 1: Colour and the spectrum (Investigate)",2,queued
+s3-sci-y5-w14-l2,S3,Year 5,Science and Technology,"Year 5, Week 14, Lesson 2: Colour and the spectrum (Apply and make)",2,queued
+s3-sci-y5-w15-l1,S3,Year 5,Science and Technology,"Year 5, Week 15, Lesson 1: Investigation: light (Investigate)",2,queued
+s3-sci-y5-w15-l2,S3,Year 5,Science and Technology,"Year 5, Week 15, Lesson 2: Investigation: light (Apply and make)",2,queued
+s3-sci-y5-w16-l1,S3,Year 5,Science and Technology,"Year 5, Week 16, Lesson 1: Earth, Sun and Moon (Investigate)",2,queued
+s3-sci-y5-w16-l2,S3,Year 5,Science and Technology,"Year 5, Week 16, Lesson 2: Earth, Sun and Moon (Apply and make)",2,queued
+s3-sci-y5-w17-l1,S3,Year 5,Science and Technology,"Year 5, Week 17, Lesson 1: Planets of the solar system (Investigate)",2,queued
+s3-sci-y5-w17-l2,S3,Year 5,Science and Technology,"Year 5, Week 17, Lesson 2: Planets of the solar system (Apply and make)",2,queued
+s3-sci-y5-w18-l1,S3,Year 5,Science and Technology,"Year 5, Week 18, Lesson 1: Day, night and seasons (Investigate)",2,queued
+s3-sci-y5-w18-l2,S3,Year 5,Science and Technology,"Year 5, Week 18, Lesson 2: Day, night and seasons (Apply and make)",2,queued
+s3-sci-y5-w19-l1,S3,Year 5,Science and Technology,"Year 5, Week 19, Lesson 1: Space exploration (Investigate)",2,queued
+s3-sci-y5-w19-l2,S3,Year 5,Science and Technology,"Year 5, Week 19, Lesson 2: Space exploration (Apply and make)",2,queued
+s3-sci-y5-w20-l1,S3,Year 5,Science and Technology,"Year 5, Week 20, Lesson 1: Investigation: the solar system (Investigate)",2,queued
+s3-sci-y5-w20-l2,S3,Year 5,Science and Technology,"Year 5, Week 20, Lesson 2: Investigation: the solar system (Apply and make)",2,queued
+s3-sci-y5-w21-l1,S3,Year 5,Science and Technology,"Year 5, Week 21, Lesson 1: Structures and forces (Investigate)",2,queued
+s3-sci-y5-w21-l2,S3,Year 5,Science and Technology,"Year 5, Week 21, Lesson 2: Structures and forces (Apply and make)",2,queued
+s3-sci-y5-w22-l1,S3,Year 5,Science and Technology,"Year 5, Week 22, Lesson 1: Strong and stable designs (Investigate)",2,queued
+s3-sci-y5-w22-l2,S3,Year 5,Science and Technology,"Year 5, Week 22, Lesson 2: Strong and stable designs (Apply and make)",2,queued
+s3-sci-y5-w23-l1,S3,Year 5,Science and Technology,"Year 5, Week 23, Lesson 1: Bridges and towers (Investigate)",2,queued
+s3-sci-y5-w23-l2,S3,Year 5,Science and Technology,"Year 5, Week 23, Lesson 2: Bridges and towers (Apply and make)",2,queued
+s3-sci-y5-w24-l1,S3,Year 5,Science and Technology,"Year 5, Week 24, Lesson 1: Testing and improving a design (Investigate)",2,queued
+s3-sci-y5-w24-l2,S3,Year 5,Science and Technology,"Year 5, Week 24, Lesson 2: Testing and improving a design (Apply and make)",2,queued
+s3-sci-y5-w25-l1,S3,Year 5,Science and Technology,"Year 5, Week 25, Lesson 1: Investigation: design challenge (Investigate)",2,queued
+s3-sci-y5-w25-l2,S3,Year 5,Science and Technology,"Year 5, Week 25, Lesson 2: Investigation: design challenge (Apply and make)",2,queued
+s3-sci-y5-w26-l1,S3,Year 5,Science and Technology,"Year 5, Week 26, Lesson 1: Algorithms and flowcharts (Investigate)",2,queued
+s3-sci-y5-w26-l2,S3,Year 5,Science and Technology,"Year 5, Week 26, Lesson 2: Algorithms and flowcharts (Apply and make)",2,queued
+s3-sci-y5-w27-l1,S3,Year 5,Science and Technology,"Year 5, Week 27, Lesson 1: Programming with variables (Investigate)",2,queued
+s3-sci-y5-w27-l2,S3,Year 5,Science and Technology,"Year 5, Week 27, Lesson 2: Programming with variables (Apply and make)",2,queued
+s3-sci-y5-w28-l1,S3,Year 5,Science and Technology,"Year 5, Week 28, Lesson 1: Programming with decisions (Investigate)",2,queued
+s3-sci-y5-w28-l2,S3,Year 5,Science and Technology,"Year 5, Week 28, Lesson 2: Programming with decisions (Apply and make)",2,queued
+s3-sci-y5-w29-l1,S3,Year 5,Science and Technology,"Year 5, Week 29, Lesson 1: Debugging programs (Investigate)",2,queued
+s3-sci-y5-w29-l2,S3,Year 5,Science and Technology,"Year 5, Week 29, Lesson 2: Debugging programs (Apply and make)",2,queued
+s3-sci-y5-w30-l1,S3,Year 5,Science and Technology,"Year 5, Week 30, Lesson 1: Investigation: coding project (Investigate)",2,queued
+s3-sci-y5-w30-l2,S3,Year 5,Science and Technology,"Year 5, Week 30, Lesson 2: Investigation: coding project (Apply and make)",2,queued
+s3-sci-y5-w31-l1,S3,Year 5,Science and Technology,"Year 5, Week 31, Lesson 1: Where food and fibre come from (Investigate)",2,queued
+s3-sci-y5-w31-l2,S3,Year 5,Science and Technology,"Year 5, Week 31, Lesson 2: Where food and fibre come from (Apply and make)",2,queued
+s3-sci-y5-w32-l1,S3,Year 5,Science and Technology,"Year 5, Week 32, Lesson 1: Farming in Australia (Investigate)",2,queued
+s3-sci-y5-w32-l2,S3,Year 5,Science and Technology,"Year 5, Week 32, Lesson 2: Farming in Australia (Apply and make)",2,queued
+s3-sci-y5-w33-l1,S3,Year 5,Science and Technology,"Year 5, Week 33, Lesson 1: Plants and animals in agriculture (Investigate)",2,queued
+s3-sci-y5-w33-l2,S3,Year 5,Science and Technology,"Year 5, Week 33, Lesson 2: Plants and animals in agriculture (Apply and make)",2,queued
+s3-sci-y5-w34-l1,S3,Year 5,Science and Technology,"Year 5, Week 34, Lesson 1: Sustainable farming (Investigate)",2,queued
+s3-sci-y5-w34-l2,S3,Year 5,Science and Technology,"Year 5, Week 34, Lesson 2: Sustainable farming (Apply and make)",2,queued
+s3-sci-y5-w35-l1,S3,Year 5,Science and Technology,"Year 5, Week 35, Lesson 1: Investigation: food and fibre (Investigate)",2,queued
+s3-sci-y5-w35-l2,S3,Year 5,Science and Technology,"Year 5, Week 35, Lesson 2: Investigation: food and fibre (Apply and make)",2,queued
+s3-sci-y5-w36-l1,S3,Year 5,Science and Technology,"Year 5, Week 36, Lesson 1: Planning a fair test (Investigate)",2,queued
+s3-sci-y5-w36-l2,S3,Year 5,Science and Technology,"Year 5, Week 36, Lesson 2: Planning a fair test (Apply and make)",2,queued
+s3-sci-y5-w37-l1,S3,Year 5,Science and Technology,"Year 5, Week 37, Lesson 1: Collecting and graphing data (Investigate)",2,queued
+s3-sci-y5-w37-l2,S3,Year 5,Science and Technology,"Year 5, Week 37, Lesson 2: Collecting and graphing data (Apply and make)",2,queued
+s3-sci-y5-w38-l1,S3,Year 5,Science and Technology,"Year 5, Week 38, Lesson 1: Drawing conclusions (Investigate)",2,queued
+s3-sci-y5-w38-l2,S3,Year 5,Science and Technology,"Year 5, Week 38, Lesson 2: Drawing conclusions (Apply and make)",2,queued
+s3-sci-y5-w39-l1,S3,Year 5,Science and Technology,"Year 5, Week 39, Lesson 1: Presenting a STEM project (Investigate)",2,queued
+s3-sci-y5-w39-l2,S3,Year 5,Science and Technology,"Year 5, Week 39, Lesson 2: Presenting a STEM project (Apply and make)",2,queued
+s3-sci-y5-w40-l1,S3,Year 5,Science and Technology,"Year 5, Week 40, Lesson 1: Year 5 science and technology reflection (Investigate)",2,queued
+s3-sci-y5-w40-l2,S3,Year 5,Science and Technology,"Year 5, Week 40, Lesson 2: Year 5 science and technology reflection (Apply and make)",2,queued
+s3-sci-y6-w01-l1,S3,Year 6,Science and Technology,"Year 6, Week 1, Lesson 1: Ecosystems and habitats (Investigate)",2,queued
+s3-sci-y6-w01-l2,S3,Year 6,Science and Technology,"Year 6, Week 1, Lesson 2: Ecosystems and habitats (Apply and make)",2,queued
+s3-sci-y6-w02-l1,S3,Year 6,Science and Technology,"Year 6, Week 2, Lesson 1: Energy flow in ecosystems (Investigate)",2,queued
+s3-sci-y6-w02-l2,S3,Year 6,Science and Technology,"Year 6, Week 2, Lesson 2: Energy flow in ecosystems (Apply and make)",2,queued
+s3-sci-y6-w03-l1,S3,Year 6,Science and Technology,"Year 6, Week 3, Lesson 1: Human impact on ecosystems (Investigate)",2,queued
+s3-sci-y6-w03-l2,S3,Year 6,Science and Technology,"Year 6, Week 3, Lesson 2: Human impact on ecosystems (Apply and make)",2,queued
+s3-sci-y6-w04-l1,S3,Year 6,Science and Technology,"Year 6, Week 4, Lesson 1: Protecting living things (Investigate)",2,queued
+s3-sci-y6-w04-l2,S3,Year 6,Science and Technology,"Year 6, Week 4, Lesson 2: Protecting living things (Apply and make)",2,queued
+s3-sci-y6-w05-l1,S3,Year 6,Science and Technology,"Year 6, Week 5, Lesson 1: Investigation: an ecosystem (Investigate)",2,queued
+s3-sci-y6-w05-l2,S3,Year 6,Science and Technology,"Year 6, Week 5, Lesson 2: Investigation: an ecosystem (Apply and make)",2,queued
+s3-sci-y6-w06-l1,S3,Year 6,Science and Technology,"Year 6, Week 6, Lesson 1: Physical changes (Investigate)",2,queued
+s3-sci-y6-w06-l2,S3,Year 6,Science and Technology,"Year 6, Week 6, Lesson 2: Physical changes (Apply and make)",2,queued
+s3-sci-y6-w07-l1,S3,Year 6,Science and Technology,"Year 6, Week 7, Lesson 1: Chemical changes (Investigate)",2,queued
+s3-sci-y6-w07-l2,S3,Year 6,Science and Technology,"Year 6, Week 7, Lesson 2: Chemical changes (Apply and make)",2,queued
+s3-sci-y6-w08-l1,S3,Year 6,Science and Technology,"Year 6, Week 8, Lesson 1: Mixtures and solutions (Investigate)",2,queued
+s3-sci-y6-w08-l2,S3,Year 6,Science and Technology,"Year 6, Week 8, Lesson 2: Mixtures and solutions (Apply and make)",2,queued
+s3-sci-y6-w09-l1,S3,Year 6,Science and Technology,"Year 6, Week 9, Lesson 1: Separating mixtures (Investigate)",2,queued
+s3-sci-y6-w09-l2,S3,Year 6,Science and Technology,"Year 6, Week 9, Lesson 2: Separating mixtures (Apply and make)",2,queued
+s3-sci-y6-w10-l1,S3,Year 6,Science and Technology,"Year 6, Week 10, Lesson 1: Investigation: a chemical change (Investigate)",2,queued
+s3-sci-y6-w10-l2,S3,Year 6,Science and Technology,"Year 6, Week 10, Lesson 2: Investigation: a chemical change (Apply and make)",2,queued
+s3-sci-y6-w11-l1,S3,Year 6,Science and Technology,"Year 6, Week 11, Lesson 1: Forms of energy (Investigate)",2,queued
+s3-sci-y6-w11-l2,S3,Year 6,Science and Technology,"Year 6, Week 11, Lesson 2: Forms of energy (Apply and make)",2,queued
+s3-sci-y6-w12-l1,S3,Year 6,Science and Technology,"Year 6, Week 12, Lesson 1: Electric circuits (Investigate)",2,queued
+s3-sci-y6-w12-l2,S3,Year 6,Science and Technology,"Year 6, Week 12, Lesson 2: Electric circuits (Apply and make)",2,queued
+s3-sci-y6-w13-l1,S3,Year 6,Science and Technology,"Year 6, Week 13, Lesson 1: Conductors and insulators (Investigate)",2,queued
+s3-sci-y6-w13-l2,S3,Year 6,Science and Technology,"Year 6, Week 13, Lesson 2: Conductors and insulators (Apply and make)",2,queued
+s3-sci-y6-w14-l1,S3,Year 6,Science and Technology,"Year 6, Week 14, Lesson 1: Renewable energy (Investigate)",2,queued
+s3-sci-y6-w14-l2,S3,Year 6,Science and Technology,"Year 6, Week 14, Lesson 2: Renewable energy (Apply and make)",2,queued
+s3-sci-y6-w15-l1,S3,Year 6,Science and Technology,"Year 6, Week 15, Lesson 1: Investigation: electricity (Investigate)",2,queued
+s3-sci-y6-w15-l2,S3,Year 6,Science and Technology,"Year 6, Week 15, Lesson 2: Investigation: electricity (Apply and make)",2,queued
+s3-sci-y6-w16-l1,S3,Year 6,Science and Technology,"Year 6, Week 16, Lesson 1: Earth layers and plate movement (Investigate)",2,queued
+s3-sci-y6-w16-l2,S3,Year 6,Science and Technology,"Year 6, Week 16, Lesson 2: Earth layers and plate movement (Apply and make)",2,queued
+s3-sci-y6-w17-l1,S3,Year 6,Science and Technology,"Year 6, Week 17, Lesson 1: Earthquakes and volcanoes (Investigate)",2,queued
+s3-sci-y6-w17-l2,S3,Year 6,Science and Technology,"Year 6, Week 17, Lesson 2: Earthquakes and volcanoes (Apply and make)",2,queued
+s3-sci-y6-w18-l1,S3,Year 6,Science and Technology,"Year 6, Week 18, Lesson 1: Weathering and erosion (Investigate)",2,queued
+s3-sci-y6-w18-l2,S3,Year 6,Science and Technology,"Year 6, Week 18, Lesson 2: Weathering and erosion (Apply and make)",2,queued
+s3-sci-y6-w19-l1,S3,Year 6,Science and Technology,"Year 6, Week 19, Lesson 1: Natural hazards and responses (Investigate)",2,queued
+s3-sci-y6-w19-l2,S3,Year 6,Science and Technology,"Year 6, Week 19, Lesson 2: Natural hazards and responses (Apply and make)",2,queued
+s3-sci-y6-w20-l1,S3,Year 6,Science and Technology,"Year 6, Week 20, Lesson 1: Investigation: changing Earth (Investigate)",2,queued
+s3-sci-y6-w20-l2,S3,Year 6,Science and Technology,"Year 6, Week 20, Lesson 2: Investigation: changing Earth (Apply and make)",2,queued
+s3-sci-y6-w21-l1,S3,Year 6,Science and Technology,"Year 6, Week 21, Lesson 1: Systems and mechanisms (Investigate)",2,queued
+s3-sci-y6-w21-l2,S3,Year 6,Science and Technology,"Year 6, Week 21, Lesson 2: Systems and mechanisms (Apply and make)",2,queued
+s3-sci-y6-w22-l1,S3,Year 6,Science and Technology,"Year 6, Week 22, Lesson 1: Gears, levers and pulleys (Investigate)",2,queued
+s3-sci-y6-w22-l2,S3,Year 6,Science and Technology,"Year 6, Week 22, Lesson 2: Gears, levers and pulleys (Apply and make)",2,queued
+s3-sci-y6-w23-l1,S3,Year 6,Science and Technology,"Year 6, Week 23, Lesson 1: Designing a mechanism (Investigate)",2,queued
+s3-sci-y6-w23-l2,S3,Year 6,Science and Technology,"Year 6, Week 23, Lesson 2: Designing a mechanism (Apply and make)",2,queued
+s3-sci-y6-w24-l1,S3,Year 6,Science and Technology,"Year 6, Week 24, Lesson 1: Building and testing (Investigate)",2,queued
+s3-sci-y6-w24-l2,S3,Year 6,Science and Technology,"Year 6, Week 24, Lesson 2: Building and testing (Apply and make)",2,queued
+s3-sci-y6-w25-l1,S3,Year 6,Science and Technology,"Year 6, Week 25, Lesson 1: Investigation: engineering challenge (Investigate)",2,queued
+s3-sci-y6-w25-l2,S3,Year 6,Science and Technology,"Year 6, Week 25, Lesson 2: Investigation: engineering challenge (Apply and make)",2,queued
+s3-sci-y6-w26-l1,S3,Year 6,Science and Technology,"Year 6, Week 26, Lesson 1: Data and spreadsheets (Investigate)",2,queued
+s3-sci-y6-w26-l2,S3,Year 6,Science and Technology,"Year 6, Week 26, Lesson 2: Data and spreadsheets (Apply and make)",2,queued
+s3-sci-y6-w27-l1,S3,Year 6,Science and Technology,"Year 6, Week 27, Lesson 1: Designing an app (Investigate)",2,queued
+s3-sci-y6-w27-l2,S3,Year 6,Science and Technology,"Year 6, Week 27, Lesson 2: Designing an app (Apply and make)",2,queued
+s3-sci-y6-w28-l1,S3,Year 6,Science and Technology,"Year 6, Week 28, Lesson 1: Coding with inputs and outputs (Investigate)",2,queued
+s3-sci-y6-w28-l2,S3,Year 6,Science and Technology,"Year 6, Week 28, Lesson 2: Coding with inputs and outputs (Apply and make)",2,queued
+s3-sci-y6-w29-l1,S3,Year 6,Science and Technology,"Year 6, Week 29, Lesson 1: Testing and improving (Investigate)",2,queued
+s3-sci-y6-w29-l2,S3,Year 6,Science and Technology,"Year 6, Week 29, Lesson 2: Testing and improving (Apply and make)",2,queued
+s3-sci-y6-w30-l1,S3,Year 6,Science and Technology,"Year 6, Week 30, Lesson 1: Investigation: digital project (Investigate)",2,queued
+s3-sci-y6-w30-l2,S3,Year 6,Science and Technology,"Year 6, Week 30, Lesson 2: Investigation: digital project (Apply and make)",2,queued
+s3-sci-y6-w31-l1,S3,Year 6,Science and Technology,"Year 6, Week 31, Lesson 1: Sustainable technologies (Investigate)",2,queued
+s3-sci-y6-w31-l2,S3,Year 6,Science and Technology,"Year 6, Week 31, Lesson 2: Sustainable technologies (Apply and make)",2,queued
+s3-sci-y6-w32-l1,S3,Year 6,Science and Technology,"Year 6, Week 32, Lesson 1: Food processing and packaging (Investigate)",2,queued
+s3-sci-y6-w32-l2,S3,Year 6,Science and Technology,"Year 6, Week 32, Lesson 2: Food processing and packaging (Apply and make)",2,queued
+s3-sci-y6-w33-l1,S3,Year 6,Science and Technology,"Year 6, Week 33, Lesson 1: Reducing waste (Investigate)",2,queued
+s3-sci-y6-w33-l2,S3,Year 6,Science and Technology,"Year 6, Week 33, Lesson 2: Reducing waste (Apply and make)",2,queued
+s3-sci-y6-w34-l1,S3,Year 6,Science and Technology,"Year 6, Week 34, Lesson 1: Designing a sustainable product (Investigate)",2,queued
+s3-sci-y6-w34-l2,S3,Year 6,Science and Technology,"Year 6, Week 34, Lesson 2: Designing a sustainable product (Apply and make)",2,queued
+s3-sci-y6-w35-l1,S3,Year 6,Science and Technology,"Year 6, Week 35, Lesson 1: Investigation: sustainability (Investigate)",2,queued
+s3-sci-y6-w35-l2,S3,Year 6,Science and Technology,"Year 6, Week 35, Lesson 2: Investigation: sustainability (Apply and make)",2,queued
+s3-sci-y6-w36-l1,S3,Year 6,Science and Technology,"Year 6, Week 36, Lesson 1: Asking investigable questions (Investigate)",2,queued
+s3-sci-y6-w36-l2,S3,Year 6,Science and Technology,"Year 6, Week 36, Lesson 2: Asking investigable questions (Apply and make)",2,queued
+s3-sci-y6-w37-l1,S3,Year 6,Science and Technology,"Year 6, Week 37, Lesson 1: Controlling variables (Investigate)",2,queued
+s3-sci-y6-w37-l2,S3,Year 6,Science and Technology,"Year 6, Week 37, Lesson 2: Controlling variables (Apply and make)",2,queued
+s3-sci-y6-w38-l1,S3,Year 6,Science and Technology,"Year 6, Week 38, Lesson 1: Analysing evidence (Investigate)",2,queued
+s3-sci-y6-w38-l2,S3,Year 6,Science and Technology,"Year 6, Week 38, Lesson 2: Analysing evidence (Apply and make)",2,queued
+s3-sci-y6-w39-l1,S3,Year 6,Science and Technology,"Year 6, Week 39, Lesson 1: Presenting a STEM project (Investigate)",2,queued
+s3-sci-y6-w39-l2,S3,Year 6,Science and Technology,"Year 6, Week 39, Lesson 2: Presenting a STEM project (Apply and make)",2,queued
+s3-sci-y6-w40-l1,S3,Year 6,Science and Technology,"Year 6, Week 40, Lesson 1: Stage 3 science and technology reflection (Investigate)",2,queued
+s3-sci-y6-w40-l2,S3,Year 6,Science and Technology,"Year 6, Week 40, Lesson 2: Stage 3 science and technology reflection (Apply and make)",2,queued
