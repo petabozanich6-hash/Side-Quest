@@ -1,6 +1,4 @@
-import { sign, verify } from "hono/jwt";
-
-import { hashSecret } from "./auth";
+import { authenticateToken, hashSecret, presentedToken } from "./auth";
 import {
   NSW_LA_LINKS,
   NSW_LEARNING_AREAS,
@@ -9,10 +7,9 @@ import {
   NSW_SOURCE_LINKS,
   NSW_STAGES,
 } from "./data/curriculum";
-import type { App, AuthUser, Env, Guards } from "./types";
+import type { App, Guards } from "./types";
 import { nowIso, newId, parseJson } from "./types";
 
-const TOKEN_DAYS = 30;
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
 const FILE_PREFIX = "sidequest";
 const SAFE_FILE_TYPES = [
@@ -78,9 +75,6 @@ const guessTheme = (stage?: string) =>
       : ["S4", "S5"].includes(stage || "")
         ? "secondary"
         : "senior";
-
-const makeToken = (env: Env, sub: string, role: "parent" | "child", familyId: string) =>
-  sign({ sub, role, family_id: familyId, exp: Math.floor(Date.now() / 1000) + TOKEN_DAYS * 86400 }, env.JWT_SECRET);
 
 function levelForXp(xp: number) {
   let tier: (typeof LEVEL_TIERS)[number] = LEVEL_TIERS[0];
@@ -182,119 +176,7 @@ async function safeAll<T>(fn: () => Promise<{ results?: T[] }>, fallback: T[] = 
   }
 }
 
-async function getAuthUserFromToken(env: Env, token: string): Promise<AuthUser | null> {
-  let payload: any;
-  try {
-    payload = await verify(token, env.JWT_SECRET, "HS256");
-  } catch {
-    return null;
-  }
-  if (!payload?.sub || (payload.role !== "parent" && payload.role !== "child")) return null;
-  const table = payload.role === "parent" ? "users" : "students";
-  const row = await env.DB.prepare(`SELECT id, family_id, name FROM ${table} WHERE id = ?`).bind(payload.sub).first<AuthUser>();
-  return row ? { ...row, role: payload.role } : null;
-}
-
-async function fetchGoogleTokenInfo(idToken: string) {
-  const response = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
-  if (!response.ok) return null;
-  return (await response.json()) as Record<string, string>;
-}
-
-async function upsertGoogleUser(env: Env, email: string, name: string, picture?: string | null) {
-  const existing = await env.DB.prepare("SELECT id, family_id, email, name, picture, is_owner, created_at FROM users WHERE email = ?")
-    .bind(email)
-    .first<Record<string, unknown>>();
-  if (existing) {
-    await env.DB.prepare("UPDATE users SET name = ?, picture = ?, oauth_provider = 'google' WHERE id = ?")
-      .bind(name, picture ?? null, existing.id)
-      .run();
-    const user = { ...existing, name, picture: picture ?? null, oauth_provider: "google", role: "parent" };
-    return { token: await makeToken(env, String(existing.id), "parent", String(existing.family_id)), user };
-  }
-
-  const familyId = newId();
-  const userId = newId();
-  const ts = nowIso();
-  await env.DB.batch([
-    env.DB.prepare("INSERT INTO families (id, name, owner_id, created_at) VALUES (?, ?, ?, ?)")
-      .bind(familyId, `${name}'s Family`, userId, ts),
-    env.DB.prepare(
-      "INSERT INTO users (id, family_id, email, password_hash, name, picture, oauth_provider, is_owner, created_at) VALUES (?, ?, ?, NULL, ?, ?, 'google', 1, ?)"
-    ).bind(userId, familyId, email, name, picture ?? null, ts),
-  ]);
-  return {
-    token: await makeToken(env, userId, "parent", familyId),
-    user: { id: userId, family_id: familyId, email, name, picture: picture ?? null, oauth_provider: "google", is_owner: 1, created_at: ts, role: "parent" },
-  };
-}
-
 export function registerFamily(app: App, g: Guards) {
-  app.post("/api/auth/logout", (c) => c.json({ ok: true }));
-
-  app.post("/api/auth/google", async (c) => {
-    const clientId = c.env.GOOGLE_OAUTH_CLIENT_ID?.trim();
-    if (!clientId) return c.json({ detail: "Google sign-in is not configured" }, 500);
-    const body = await c.req.json().catch(() => ({}));
-    const credential = String(body.credential || "");
-    if (!credential) return c.json({ detail: "Invalid Google sign-in credential" }, 401);
-
-    const googleUser = await fetchGoogleTokenInfo(credential);
-    if (!googleUser) return c.json({ detail: "Invalid Google sign-in credential" }, 401);
-    if (googleUser.aud !== clientId) return c.json({ detail: "Google token audience mismatch" }, 401);
-    if (String(googleUser.email_verified).toLowerCase() !== "true") return c.json({ detail: "Google email is not verified" }, 401);
-    const email = String(googleUser.email || "").trim().toLowerCase();
-    if (!email) return c.json({ detail: "Google account email missing" }, 401);
-
-    const name = String(googleUser.name || email.split("@")[0]).trim();
-    return c.json(await upsertGoogleUser(c.env, email, name, googleUser.picture || null));
-  });
-
-  app.post("/api/auth/google/callback", async (c) => {
-    const clientId = c.env.GOOGLE_OAUTH_CLIENT_ID?.trim();
-    const clientSecret = c.env.GOOGLE_OAUTH_CLIENT_SECRET?.trim();
-    if (!clientId || !clientSecret) return c.json({ detail: "Google sign-in is not configured" }, 500);
-
-    const body = await c.req.json().catch(() => ({}));
-    const code = String(body.code || "");
-    const redirectUri = String(body.redirect_uri || "");
-    const origin = new URL(c.req.url).origin;
-    if (!code || !redirectUri) return c.json({ detail: "Could not verify Google sign-in" }, 401);
-    try {
-      if (new URL(redirectUri).origin !== origin) return c.json({ detail: "Invalid Google redirect URI" }, 400);
-    } catch {
-      return c.json({ detail: "Invalid Google redirect URI" }, 400);
-    }
-
-    const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        code,
-        client_id: clientId,
-        client_secret: clientSecret,
-        redirect_uri: redirectUri,
-        grant_type: "authorization_code",
-      }),
-    }).catch(() => null);
-    if (!tokenResponse?.ok) return c.json({ detail: "Could not verify Google sign-in" }, 401);
-
-    const tokens = (await tokenResponse.json()) as Record<string, string>;
-    const googleUser = tokens.id_token ? await fetchGoogleTokenInfo(tokens.id_token) : null;
-    if (!googleUser) return c.json({ detail: "Could not verify Google sign-in" }, 401);
-    if (googleUser.aud !== clientId) return c.json({ detail: "Google token audience mismatch" }, 401);
-    if (String(googleUser.email_verified).toLowerCase() !== "true") return c.json({ detail: "Google email is not verified" }, 401);
-
-    const email = String(googleUser.email || "").trim().toLowerCase();
-    if (!email) return c.json({ detail: "Google account email missing" }, 401);
-    const name = String(googleUser.name || email.split("@")[0]).trim();
-    return c.json(await upsertGoogleUser(c.env, email, name, googleUser.picture || null));
-  });
-
-  app.post("/api/auth/session", (c) =>
-    c.json({ detail: "Session sign-in is not supported. Use email/password or Google." }, 410)
-  );
-
   app.get("/api/curriculum/stages", (c) =>
     c.json(NSW_STAGES.map((stage) => ({ ...stage, source_link: NSW_SOURCE_LINKS[stage.code] })))
   );
@@ -670,11 +552,10 @@ export function registerFamily(app: App, g: Guards) {
   });
 
   app.get("/api/files/:fid", async (c) => {
-    const header = c.req.header("Authorization") || "";
-    const token = header.startsWith("Bearer ") ? header.slice(7) : c.req.query("auth");
+    const token = presentedToken(c, { allowQuery: true });
     if (!token) return c.json({ detail: "No auth" }, 401);
 
-    const user = await getAuthUserFromToken(c.env, token);
+    const user = await authenticateToken(c.env, token);
     if (!user) return c.json({ detail: "Invalid token" }, 401);
     const record = await c.env.DB.prepare("SELECT * FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0")
       .bind(c.req.param("fid"), user.family_id)

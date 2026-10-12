@@ -37,10 +37,23 @@ Prerequisites: Node 20+, a Cloudflare account, and `npm install` run once at the
 
    ```bash
    npx wrangler secret put JWT_SECRET            # any long random string, e.g. `openssl rand -hex 32`
-   # optional – Google sign-in API (the UI does not currently show a Google button):
    npx wrangler secret put GOOGLE_OAUTH_CLIENT_ID
    npx wrangler secret put GOOGLE_OAUTH_CLIENT_SECRET
    ```
+
+   Google sign-in is a server-side OpenID Connect authorization-code flow with PKCE. The browser only opens `/api/auth/google/start`. The client secret stays on the Worker. Set the secrets in the Cloudflare dashboard or with the commands above. Do not put them in frontend code or `wrangler.jsonc`.
+
+   In Google Cloud Console → APIs & Services → Credentials → OAuth 2.0 Client ID (application type **Web application**):
+
+   - Authorised JavaScript origins are unused by this redirect flow. If the form requires them, use `https://sidequestlearning.app` and, for local `wrangler dev`, `http://localhost:8787` and `http://127.0.0.1:8787`.
+   - Authorised redirect URIs, exactly:
+     - `https://sidequestlearning.app/api/auth/google/callback`
+     - `http://localhost:8787/api/auth/google/callback`
+     - `http://127.0.0.1:8787/api/auth/google/callback`
+   - Add `https://www.sidequestlearning.app/api/auth/google/callback` only if parents open the www host. The Worker accepts that host and builds the redirect from it.
+   - OAuth consent screen: app name **Side Quest Learning**, home page `https://sidequestlearning.app`, privacy policy `https://sidequestlearning.app/legal/privacy-policy`. Scopes: `openid`, `email` and `profile` (Google lists these as `openid`, `.../auth/userinfo.email` and `.../auth/userinfo.profile`). While the app is in **Testing**, add each parent Google account under Test users. Otherwise Google sign-in works only for those test accounts.
+
+   Apply migration `0050_google_auth.sql` with the other D1 migrations before relying on Google sign-in. Existing parent accounts, children and progress stay in place. A password account is linked to Google only after the parent enters that password. Children keep using username and PIN. The platform Owner role is a separate database value and is not granted by Google sign-in. See [docs/GOOGLE_AUTH_DEPLOYMENT.md](docs/GOOGLE_AUTH_DEPLOYMENT.md) for the backup, migrate-then-deploy sequence and recovery steps.
 
 5. **(Optional) R2 bucket for file uploads** (evidence photos, work samples). Until enabled,
    `POST /api/files/upload` returns 501. Create the bucket, then uncomment the `r2_buckets` block in
@@ -76,7 +89,7 @@ word hoard, pets, achievements, etc. are ready. Nothing is imported from any ear
 
 ```bash
 npm install && npm --prefix worker install && npm --prefix frontend install --legacy-peer-deps
-echo 'JWT_SECRET=dev-secret-change-me' > .dev.vars
+printf '%s\n' 'JWT_SECRET=dev-secret-change-me' 'GOOGLE_OAUTH_CLIENT_ID=your-client-id.apps.googleusercontent.com' 'GOOGLE_OAUTH_CLIENT_SECRET=your-client-secret' > .dev.vars
 npm run db:migrate:local            # local D1 (stored in .wrangler/)
 npm --prefix frontend run build     # the Worker serves frontend/build
 npm run dev                         # http://localhost:8787

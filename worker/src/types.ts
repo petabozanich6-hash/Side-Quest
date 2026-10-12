@@ -28,7 +28,16 @@ export type Env = {
   GOOGLE_OAUTH_CLIENT_SECRET?: string;
   OWNER_PASSWORD?: string;
 };
-export type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
+export type AuthUser = {
+  id: string;
+  family_id: string;
+  role: "parent" | "child";
+  name: string;
+  email?: string;
+  /** Read from the database on each request. Tokens cannot grant this. */
+  platform_role?: "owner" | "parent";
+  lifetime_access?: boolean;
+};
 export type Vars = { user: AuthUser };
 export type App = Hono<{ Bindings: Env; Variables: Vars }>;
 

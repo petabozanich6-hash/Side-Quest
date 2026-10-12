@@ -1,8 +1,9 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { sign, verify } from "hono/jwt";
 import type { MiddlewareHandler } from "hono";
-import { hashSecret, verifySecret } from "./auth";
+import { authenticateToken, hashSecret, issueSession, presentedToken, verifySecret } from "./auth";
+import { isPlatformOwner, publicPlatformRole } from "./platformRole";
+import { registerGoogleAuth } from "./googleAuth";
 import { registerCore } from "./core";
 import { registerFamily, studentOut, studentExtraFromBody, STUDENT_SELECT } from "./family";
 import { registerLearning } from "./learning";
@@ -19,37 +20,18 @@ import type { InboundMessage } from "./inbound";
 import type { App, Env, Guards, Vars } from "./types";
 
 const app: App = new Hono<{ Bindings: Env; Variables: Vars }>();
-const TOKEN_DAYS = 30;
 
 app.use("/api/*", cors());
 
 const nowIso = () => new Date().toISOString();
 const newId = () => crypto.randomUUID();
 
-async function makeToken(env: Env, sub: string, role: string, familyId: string) {
-  const exp = Math.floor(Date.now() / 1000) + TOKEN_DAYS * 86400;
-  return sign({ sub, role, family_id: familyId, exp }, env.JWT_SECRET);
-}
-
 const requireAuth: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = async (c, next) => {
-  const header = c.req.header("Authorization") || "";
-  if (!header.startsWith("Bearer ")) return c.json({ detail: "Not authenticated" }, 401);
-  let payload: any;
-  try {
-    payload = await verify(header.slice(7), c.env.JWT_SECRET, "HS256");
-  } catch {
-    return c.json({ detail: "Invalid token" }, 401);
-  }
-  const role = payload.role;
-  if (!payload.sub || (role !== "parent" && role !== "child")) {
-    return c.json({ detail: "Invalid authentication token" }, 401);
-  }
-  const table = role === "parent" ? "users" : "students";
-  const row = await c.env.DB.prepare(`SELECT id, family_id, name FROM ${table} WHERE id = ?`)
-    .bind(payload.sub)
-    .first<{ id: string; family_id: string; name: string }>();
-  if (!row) return c.json({ detail: "User not found" }, 401);
-  c.set("user", { ...row, role });
+  const token = presentedToken(c);
+  if (!token) return c.json({ detail: "Not authenticated" }, 401);
+  const user = await authenticateToken(c.env, token);
+  if (!user) return c.json({ detail: "Your session has expired. Please sign in again." }, 401);
+  c.set("user", user);
   await next();
 };
 
@@ -87,10 +69,10 @@ app.post("/api/auth/register", async (c) => {
     c.env.DB.prepare("INSERT INTO families (id, name, owner_id, created_at) VALUES (?, ?, ?, ?)")
       .bind(familyId, familyName, userId, ts),
     c.env.DB.prepare(
-      "INSERT INTO users (id, family_id, email, password_hash, name, is_owner, created_at) VALUES (?, ?, ?, ?, ?, 1, ?)"
+      "INSERT INTO users (id, family_id, email, password_hash, name, is_owner, platform_role, created_at) VALUES (?, ?, ?, ?, ?, 1, 'parent', ?)"
     ).bind(userId, familyId, email, await hashSecret(password), name, ts),
   ]);
-  const token = await makeToken(c.env, userId, "parent", familyId);
+  const token = await issueSession(c, userId, "parent", familyId);
 
   // Welcome email: sent in the background, and never blocks or breaks sign up.
   const sending = sendEmail(c.env, welcomeEmail(email, name));
@@ -108,14 +90,22 @@ app.post("/api/auth/login", async (c) => {
   const email = String(b.email || "").trim().toLowerCase();
   const password = String(b.password || "");
   const user = await c.env.DB.prepare(
-    "SELECT id, family_id, email, name, password_hash FROM users WHERE email = ?"
+    "SELECT id, family_id, email, name, password_hash, platform_role FROM users WHERE email = ?"
   ).bind(email).first<any>();
   if (!user || !(await verifySecret(password, user.password_hash))) {
     return c.json({ detail: "Invalid email or password" }, 401);
   }
-  const token = await makeToken(c.env, user.id, "parent", user.family_id);
-  const { password_hash, ...safe } = user;
-  return c.json({ token, user: { ...safe, role: "parent" } });
+  const token = await issueSession(c, user.id, "parent", user.family_id);
+  const { password_hash, platform_role, ...safe } = user;
+  return c.json({
+    token,
+    user: {
+      ...safe,
+      role: "parent",
+      platform_role: publicPlatformRole(platform_role),
+      lifetime_access: isPlatformOwner(platform_role),
+    },
+  });
 });
 
 app.post("/api/auth/child-login", async (c) => {
@@ -126,7 +116,7 @@ app.post("/api/auth/child-login", async (c) => {
   if (!s || !(await verifySecret(pin, s.pin_hash))) {
     return c.json({ detail: "Invalid username or PIN" }, 401);
   }
-  const token = await makeToken(c.env, s.id, "child", s.family_id);
+  const token = await issueSession(c, s.id, "child", s.family_id);
   const { pin_hash, pin_enc, ...safe } = s;
   return c.json({ token, student: { ...safe, interests: JSON.parse(s.interests || "[]"), role: "child" } });
 });
@@ -161,6 +151,7 @@ app.post("/api/students", requireAuth, requireParent, async (c) => {
   return c.json(studentOut(created));
 });
 
+registerGoogleAuth(app);
 registerCore(app, requireAuth, requireParent);
 const guards: Guards = { auth: requireAuth, parent: requireParent, child: requireChild };
 registerFamily(app, guards);

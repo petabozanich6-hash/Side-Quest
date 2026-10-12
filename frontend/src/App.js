@@ -1,7 +1,7 @@
 import LessonDetail from "./pages/LessonDetail";
 import React from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Landing from "./pages/Landing";
@@ -47,8 +47,6 @@ function Guard({ role, children }) {
 }
 
 function Router() {
-  const loc = useLocation();
-  if (loc.hash?.includes("session_id=")) return <AuthCallback />;
   return (
     <Routes>
       <Route path="/" element={<Landing />} />

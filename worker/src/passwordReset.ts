@@ -1,6 +1,6 @@
 import type { App } from "./types";
 import { newId, nowIso } from "./types";
-import { hashSecret } from "./auth";
+import { hashSecret, revokeUserSessions } from "./auth";
 import { SITE_URL, sendEmail } from "./email";
 import { passwordChangedEmail, passwordResetEmail } from "./authEmails";
 
@@ -79,6 +79,7 @@ export function registerPasswordReset(app: App) {
       c.env.DB.prepare("UPDATE users SET password_hash = ? WHERE id = ?").bind(newHash, row.user_id),
       c.env.DB.prepare("UPDATE password_resets SET used_at = ? WHERE user_id = ? AND used_at IS NULL").bind(ts, row.user_id),
     ]);
+    await revokeUserSessions(c.env, row.user_id);
 
     const user = await c.env.DB.prepare("SELECT name, email FROM users WHERE id = ?")
       .bind(row.user_id).first<{ name: string; email: string }>();

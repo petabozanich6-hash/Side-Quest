@@ -24,7 +24,7 @@ export const PAGES = {
       { h: "Who I am", p: "Side Quest (sidequestlearning.app) is a personal project run by one parent in Australia, who is also homeschooling. It began as a tool for my own children and is not a registered business or company. In this policy, \"Side Quest\", \"I\", \"me\" and \"my\" mean the parent who runs sidequestlearning.app. You can contact me at support@sidequestlearning.app." },
       { h: "About this policy", p: "I handle personal information in line with the spirit of the Privacy Act 1988 (Cth) and the Australian Privacy Principles, even where the law may not strictly require it of a personal project. This policy applies to the Side Quest website and app, including the parent hub and the child area." },
       { h: "Information I collect from parents", items: [
-        "Account details: your name, your email address and your sign-in credentials. Your email address is also used to help you get back into your account if you forget your password.",
+        "Account details: your name, your email address and your sign-in credentials. If you choose Google sign-in, Google confirms your name, email address and profile picture. Side Quest does not receive your Google password. Your email address is also used to help you get back into your account if you forget your password.",
         "Settings and preferences you choose in the parent hub.",
         "Records you create: lesson plans, learning plans, calendar entries, resources you save and notes.",
         "Messages you send me by email or through the contact and request pages.",
@@ -40,6 +40,7 @@ export const PAGES = {
       { h: "Technical information", p: "When you use Side Quest, Cloudflare, the hosting provider, may automatically record technical data such as IP address, browser and device type, pages requested, error logs and the time of requests. This is used to keep the service running, secure and fast, and to fix problems." },
       { h: "How I collect information", items: [
         "Directly from you when you create an account, add a child, upload evidence or contact me.",
+        "From Google, only when a parent chooses Sign in with Google. Children are not asked to have a Google account.",
         "From your child's activity in the child area, such as completing a lesson or asking for help with their PIN.",
         "Automatically through the hosting systems.",
       ] },
@@ -58,6 +59,7 @@ export const PAGES = {
       { h: "Service providers", items: [
         "Cloudflare: hosting, network security, the database, file storage, AI features and the email routing for the support address.",
         "Google (Gmail): emails you send to support@sidequestlearning.app are forwarded by Cloudflare to a Gmail inbox that is used only for Side Quest.",
+        "Google sign-in: if a parent chooses it, Google checks their identity and sends Side Quest the verified name, email address and profile picture. Children's profiles stay on username and PIN.",
         "I do not use third-party advertising services or add separate analytics trackers.",
       ] },
       { h: "Other disclosures", p: "I may disclose information if required or authorised by law, to protect someone's safety, or to respond to a lawful request from a court or authority." },

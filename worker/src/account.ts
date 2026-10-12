@@ -97,10 +97,16 @@ export function registerAccount(app: App, g: Guards) {
 
     const db = c.env.DB;
     const user = c.get("user");
-    const record = await db.prepare("SELECT id, family_id, password_hash FROM users WHERE id = ?")
+    const record = await db.prepare("SELECT id, family_id, password_hash, platform_role FROM users WHERE id = ?")
       .bind(user.id).first<any>();
     if (!record) return c.json({ detail: "Account not found" }, 404);
-    if (!record.password_hash || !(await verifySecret(String(b.password ?? ""), record.password_hash))) {
+    if (record.platform_role === "owner") {
+      return c.json({ detail: "The permanent Owner account cannot be deleted from this page." }, 403);
+    }
+    if (!record.password_hash) {
+      return c.json({ detail: "This account has no password yet. Use Forgot password on the sign-in page to set one, then delete the account." }, 400);
+    }
+    if (!(await verifySecret(String(b.password ?? ""), record.password_hash))) {
       return c.json({ detail: "Incorrect password" }, 403);
     }
 

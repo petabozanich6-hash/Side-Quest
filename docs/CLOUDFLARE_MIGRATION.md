@@ -56,10 +56,8 @@ pet species, plan builder rules) lives in `worker/src/data/*.ts`. The lesson lib
 
 - **Passwords**: bcrypt is unavailable on Workers; new hashes use PBKDF2-SHA256 (WebCrypto, 100k iterations).
   Existing bcrypt hashes from the earlier system are not importable, so re-register.
-- **Legacy session auth** (`/auth/session`, `AuthCallback`): the endpoint returns a clear 410 and the UI shows "sign-in failed". Email/password and child PIN login are the supported methods.
-- **Google sign-in** (`/auth/google`, `/auth/google/callback`): implemented with `fetch` to Google; needs the
-  `GOOGLE_OAUTH_CLIENT_ID` (+ `GOOGLE_OAUTH_CLIENT_SECRET`) secrets. The UI does not currently render a Google button.
-  The old hard-coded Render redirect URI was replaced with a same-origin check.
+- **Legacy session auth** (`POST /auth/session`): still returns 410. The old `session_id` hash flow is not used.
+- **Google sign-in**: parent login and registration open `GET /api/auth/google/start`. Google redirects to `GET /api/auth/google/callback` on the same host (`https://sidequestlearning.app/api/auth/google/callback` in production). The Worker checks `state`, PKCE and the ID token signature, then hands the browser a one-time ticket. Password accounts with the same email are not merged until the parent confirms the existing password. Secrets: `GOOGLE_OAUTH_CLIENT_ID` and `GOOGLE_OAUTH_CLIENT_SECRET`.
 - **File uploads**: stored in R2 (`BUCKET` binding). The binding is commented out in `wrangler.jsonc` (instructions inline); until it is enabled `POST /api/files/upload` and `GET /api/files/:id` return 501.
 - **LLM calls**: none were present in the backend (pet help was already a fixed message); life-evidence mapping
   suggestions are keyword based.

@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
+import { googleErrorMessage } from "../lib/googleErrors";
+import GoogleSignInButton from "../components/GoogleSignInButton";
 import { toast } from "sonner";
 import { Compass } from "lucide-react";
 import { Fern, Flower, Pet } from "../components/shared/Botanical";
@@ -12,6 +14,16 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { setSession } = useAuth();
   const nav = useNavigate();
+  const [search, setSearch] = useSearchParams();
+
+  useEffect(() => {
+    const code = search.get("error");
+    if (!code) return;
+    toast.error(googleErrorMessage(code));
+    const next = new URLSearchParams(search);
+    next.delete("error");
+    setSearch(next, { replace: true });
+  }, [search, setSearch]);
 
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
@@ -47,9 +59,12 @@ export default function Login() {
         <Flower className="absolute top-8 right-10" size={34} color="#D4857A"/>
         <form onSubmit={submit} className="w-full max-w-md paper-card p-8" data-testid="login-form">
           <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Parent sign in</h1>
-          <p className="text-sm text-stone-500 mt-1">Children sign in separately with username + PIN.</p>
+          <p className="text-sm text-stone-500 mt-1">Children sign in separately with username + PIN. They do not need a Google account.</p>
 
-          <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-stone-400"><div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/>email<div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/></div>
+          <div className="mt-5">
+            <GoogleSignInButton />
+          </div>
+          <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-stone-400"><div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/>or email<div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/></div>
 
           <div className="space-y-4">
             <div>

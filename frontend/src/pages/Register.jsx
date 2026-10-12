@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 import { Compass } from "lucide-react";
 import { Fern, Pet, Branch } from "../components/shared/Botanical";
+import GoogleSignInButton from "../components/GoogleSignInButton";
 
 const LABELS = ["Mum", "Dad", "Aunty", "Uncle", "Nan", "Pop", "Grandma", "Grandpa"];
 
@@ -63,9 +64,12 @@ export default function Register() {
       <div className="flex items-center justify-center p-6">
         <form onSubmit={submit} className="w-full max-w-md paper-card p-8" data-testid="register-form">
           <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Create a family account</h1>
-          <p className="text-sm text-stone-500 mt-1">You'll be the first parent. Add children once you're inside.</p>
+          <p className="text-sm text-stone-500 mt-1">You'll be the first parent. Add children once you're inside. Children do not need a Google account.</p>
 
-          <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-stone-400"><div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/>email<div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/></div>
+          <div className="mt-5">
+            <GoogleSignInButton label="Sign up with Google" />
+          </div>
+          <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-stone-400"><div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/>or email<div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/></div>
 
           <div className="space-y-3.5">
             <F label="Your name"><input value={form.name} onChange={upd("name")} required className="input" data-testid="reg-name"/></F>

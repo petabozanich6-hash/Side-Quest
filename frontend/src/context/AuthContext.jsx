@@ -8,10 +8,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
-    // Skip /me check if coming back from OAuth (session_id in URL fragment)
-    if (typeof window !== "undefined" && window.location.hash?.includes("session_id=")) {
-      setLoading(false); return;
-    }
     try {
       const { data } = await api.get("/auth/me");
       setUser(data);
