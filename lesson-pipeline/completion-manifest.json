@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-13",
   "phase": "PHASE_1_WRITTEN_CORE",
-  "pipeline_auto_validated": 639,
+  "pipeline_auto_validated": 723,
   "human_gates": {
     "educationally_reviewed": 0,
     "nesa_verified": 0,
@@ -14,6 +14,12 @@
     "validator_assessment_gates": true,
     "builder": "scripts/gold-pipeline/assessment_quiz.py"
   },
+  "batch_sizing": {
+    "authoring_batch_lessons": 12,
+    "pipeline_limit_max": 16,
+    "pipeline_limit_recommended": 12,
+    "note": "Trailing year-close builders may be 8 when only w37-w40 remain at 2 lessons/week; that is inventory remainder, not policy."
+  },
   "y3_english_written_core_auto_validated": 159,
   "y3_english_complete_auto": true,
   "y3_maths_written_core_auto_validated": 160,
@@ -22,10 +28,12 @@
   "y3_science_complete_auto": true,
   "y3_hsie_written_core_auto_validated": 80,
   "y3_hsie_complete_auto": true,
-  "next_resume": "s2-eng-y4-w01-l1",
-  "note": "Assessment quality correction applied. Auto-validated ≠ educationally approved. Human gates closed. No remote D1. Y3 PDHPE Written Core auto-validated (80/80; PH2-* codes proposed, content-point mapping pending). Y3 Creative Arts Written Core auto-validated (80/80; CA2-* codes proposed, content-point mapping pending; First Nations lessons are protocol-only). Next: Year 4 English from s2-eng-y4-w01-l1.",
   "y3_pdhpe_written_core_auto_validated": 80,
   "y3_pdhpe_complete_auto": true,
   "y3_arts_written_core_auto_validated": 80,
-  "y3_arts_complete_auto": true
+  "y3_arts_complete_auto": true,
+  "y4_english_written_core_auto_validated": 84,
+  "y4_english_total": 160,
+  "next_resume": "s2-eng-y4-w22-l1",
+  "note": "Y4 English Written Core through w21-l4 auto-validated (84/160). Assessment meta stems 0. Human gates closed. No remote D1."
 }

@@ -34,7 +34,7 @@ Codex Cloud may perform coding tasks while the user's computer is asleep. Unatte
 - Read `docs/GOLD_V2_PIPELINE.md` and `docs/GOLD_V2_PIPELINE_PILOT.md` before continuing.
 - Use the existing isolated checkout. Do not create a worktree unless the user explicitly asks. Resume from `feature/gold-v2-resumable-pipeline` and pull its committed checkpoints after checking for local changes; never reset or force-push local work.
 - Run `python3 scripts/gold-pipeline/pipeline.py status`. Read the queue, source manifest and current review blockers. Do not initialise over existing state.
-- Author a small, coherent, subject-specific bundle in `lesson-pipeline/authored/<seed_key>.json`, then run `python3 scripts/gold-pipeline/pipeline.py run --limit 1`. The runner resumes or skips unchanged attempts automatically.
+- Author a small, coherent, subject-specific bundle in `lesson-pipeline/authored/<seed_key>.json`, then run `python3 scripts/gold-pipeline/pipeline.py run --limit 12` (hard cap 1–16; per-lesson checkpoints keep larger runs recoverable). The runner resumes or skips unchanged attempts automatically.
 - Run the pipeline's relevant tests, preserve successful and failed artifacts, commit checkpoint changes on the feature branch and keep its PR draft. Do not put draft SQL in numbered production migrations.
 - Independent educational, NESA, browser and owner sign-offs remain separate from automated checks. Do not manufacture human attestations, generic drafts or fully-approved counts.
 - Recurring execution and paid generation are not enabled by these instructions. Follow the documented authorisation and cost boundaries.

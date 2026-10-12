@@ -1,0 +1,327 @@
+{
+  "child_mission": "Become a Story Teller! Practise a short story so a listener can follow it, then make a clear note card to help you remember.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep event notes, written retelling or summary, reflection and quiz responses. Where available, observe the two tellings and keep the handwritten join practice separately.",
+  "extension": "Retell the same events in fewer words without losing the opened-fold problem and response. Explain what you safely left out.",
+  "guided_practice": "WE DO: Build a telling from the paper-boat story.\n1. Say who is in the story and what she has. Compare after your try: Mila has a paper boat in the garden.\n2. Name the important middle event and response. Compare: a fold opens and Mila presses it back.\n3. Say where the boat ends up and why that matters. Compare: it is on a tray so she can find it for the game.\n4. Write three short notes and speak the connected telling from them. Look back at the original to check accuracy.\n5. Practise your in join slowly three times, then write in the garden with clear spaces. Use your familiar taught join if different.\n6. Tell the story again and choose one useful pace or pause improvement. Explain the change rather than just saying it was better.",
+  "independent_task": "YOU DO: Story telling and note-card task (about 20 minutes).\nUse the original paper-boat story included above.\n1. Prepare three short event notes: beginning, middle and ending. Keep one note per line.\n2. On paper, practise the in join three times and write in the garden. Check clear shapes and spaces. If handwriting is not accessible, type the notes and tell a grown-up that no handwriting sample was produced.\n3. Retell the story in your own words using the notes. You can practise alone; a listener or recording is optional.\n4. Choose a clearer word, steadier pace or helpful thought pause. Retell it again with that improvement.\n5. In the big box, submit your three notes, retelling wording or summary, and improvement with its reason. Keep any handwritten page for review; an upload is not required.\nCheck: important events accurate; person introduced; ending included; notes readable; one improvement explained.",
+  "learning_area": "English",
+  "learning_intention": "We are learning to retell a short story in order and prepare readable handwriting cues.",
+  "lesson_number": 4,
+  "lesson_role": "Speaking and handwriting",
+  "materials": [
+    "This lesson contains the story and models",
+    "Paper and a pencil for handwriting practice",
+    "A text box is available if handwriting is not accessible today"
+  ],
+  "offline_alternative": "Copy the short story before switching off the screen. Write three cues and practise the join on paper. Retell twice, record one improvement and later type a summary and complete the quiz.",
+  "outcome_codes": [
+    "EN2-OLC-01",
+    "EN2-HANDW-01"
+  ],
+  "parent_notes": "Parent: Teaches short retelling, cue notes, rehearsal and a simple joined-letter practice linked to readable notes. This is one contribution to the listed Stage 2 outcomes, not complete coverage. Codes were checked against the NESA English K–10 (2022) outcomes page. All practice text is original.\n\nParent: Observe oral clarity only if you hear a telling. Review handwriting only if a handwritten sample exists. The simple in diagram is an illustrative practice model, not a mandated full alphabet; preserve a child’s existing taught style. Let the child attempt the small practice before comparing its feedback. The lesson supplies the teaching; your role is reviewing evidence and helping with access if required.\n\nParent: The quiz has eight automatically scored choices and two written answers. The unchanged 90% threshold requires 8/8 choices. Written answers accompany the submission for manual review. Model for question 9: A fold opened in Mila’s paper boat. She pressed the fold back carefully. Model for question 10: I slowed the part about the opened fold so a listener could follow Mila’s repair.\n\nParent: A written retelling can evidence planning, but is not by itself evidence of oral performance. A typed card does not demonstrate joined handwriting. Check both areas separately and record any access support. No particular accent, dramatic voice, recording or photo is required.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 1,
+      "explanation": "A retelling keeps important events and meaning while using your own wording.",
+      "options": [
+        "Changes every event into a different story",
+        "Tells important events again in your own words",
+        "Lists every object but no actions",
+        "Copies only the title"
+      ],
+      "question": "What does a retelling do?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Introducing the person and situation gives the listener a starting point for later events.",
+      "options": [
+        "An unexplained she",
+        "Only the last event",
+        "Who the story is about and the situation",
+        "A list of all punctuation"
+      ],
+      "question": "What helps an unfamiliar listener at the beginning?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "The opened fold and repair are stated in the original. The other choices invent events.",
+      "options": [
+        "The fold opens and Mila presses it back",
+        "Mila travels overseas in the boat",
+        "The tray turns into a kite",
+        "A new person wins an invented race"
+      ],
+      "question": "Which middle event belongs in the paper-boat retelling?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "This detail gives the event an outcome and shows why the placement matters.",
+      "options": [
+        "It means the middle can disappear",
+        "Every story must include a tray",
+        "It lists a colour",
+        "It explains where the boat ends up ready for the game"
+      ],
+      "question": "Why include the boat being put on a tray?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Short meaningful notes prompt full spoken ideas; they do not replace the explanation.",
+      "options": [
+        "Replacing all explanation with vague words",
+        "Prompting the events you will explain",
+        "Changing the names randomly",
+        "Counting every letter"
+      ],
+      "question": "What is a note card for?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "A steadier pace improves clarity without changing the original event.",
+      "options": [
+        "Make every word louder",
+        "Remove the repair",
+        "Give it more time and keep the words clear",
+        "Add a new problem"
+      ],
+      "question": "Which change helps a rushed repair event?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Word spaces help the reader identify separate words and use the note at a glance.",
+      "options": [
+        "So the separate words can be recognised easily",
+        "So all letters become one shape",
+        "So the story needs no ending",
+        "So decoration replaces meaning"
+      ],
+      "question": "Why leave spaces between written words?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The connected main strokes can be followed before lifting to add the i dot. Word spaces and clear letters still matter.",
+      "options": [
+        "Never lift to add any dot",
+        "Join the next word without a space",
+        "Hide the i letter completely",
+        "Add the i dot after the connected strokes"
+      ],
+      "question": "When practising the modelled in join, which step is appropriate?",
+      "type": "multiple_choice"
+    },
+    {
+      "explanation": "A useful retelling preserves the event and explains the response.",
+      "marking_guide": "Accept accurate original wording for the problem and response, without invented events.",
+      "question": "Retell the paper-boat problem and response in one or two sentences.",
+      "sample_answer": "A fold opened in Mila’s paper boat. She pressed the fold back carefully.",
+      "type": "short_answer"
+    },
+    {
+      "explanation": "An explanation names the change and how it helps.",
+      "marking_guide": "Accept a specific improvement to pace, pause, clarity or readable notes with a purpose.",
+      "question": "Explain one delivery or note-card improvement you made.",
+      "sample_answer": "I slowed the part about the opened fold so a listener could follow Mila’s repair.",
+      "type": "short_answer"
+    }
+  ],
+  "response_prompt": "Which note or delivery change helped your second telling, and how?",
+  "review_status": "unreviewed",
+  "seed_key": "s2-eng-y3-w01-l4",
+  "stage": "S2",
+  "stage_hints": {
+    "accept": [
+      "Read the mission and notice the telling and note-card parts.",
+      "Begin with the first story; your notes can grow after the examples.",
+      "Choose paper for handwriting practice if accessible. You can still use typed notes to plan your telling."
+    ],
+    "guided": [
+      "Start with Mila’s situation before the middle event.",
+      "Make three short notes before trying the connected telling.",
+      "Use “At the beginning, ____.” Fill that gap, then move to what changes in the middle."
+    ],
+    "learn": [
+      "Read the original story before the model telling.",
+      "Match each short note to an important event in the original.",
+      "Use one note to speak a complete idea, keeping the event the same."
+    ],
+    "quiz": [
+      "Return to the step about events, cues, delivery or handwriting.",
+      "Check whether a choice preserves the story or helps a listener follow it.",
+      "For a written answer, name the actual event or improvement and explain its purpose."
+    ],
+    "submit": [
+      "Check your notes, summary and reflection are ready.",
+      "Include the two written answers and keep any handwritten sample separately.",
+      "Say whether your telling was practised alone or observed, then send the planning evidence for review."
+    ],
+    "teach0": [
+      "Look back at important events rather than lists of things.",
+      "Find what happens to the object and what the person does next.",
+      "Use a beginning, middle and ending note to check that the main action stays understandable."
+    ],
+    "teach1": [
+      "Look back at a note becoming a full spoken idea.",
+      "Name the person before using a pronoun the listener cannot identify.",
+      "Use your note to explain what happened, then check the original story for accuracy."
+    ],
+    "teach2": [
+      "Look back at a pace or pause improvement.",
+      "Choose one rushed event and say it carefully by itself.",
+      "Tell that short event twice and compare whether the action is easier to follow."
+    ],
+    "teach3": [
+      "Look at the line guides and start point in the drawing.",
+      "Follow the main strokes slowly and check that both letters remain recognisable.",
+      "Practise one join, then test a short note for clear letters and word spaces."
+    ],
+    "write": [
+      "Prepare the three event notes before your full rehearsal.",
+      "Begin “This story is about ____.” Introduce the person before the event.",
+      "A partial opening shape is “In the garden, ____ had ____.” Complete it from the story and continue in your own words."
+    ]
+  },
+  "subject": "English",
+  "success_criteria": [
+    "I can include a beginning, important middle events and an ending.",
+    "I can use a few notes to retell rather than copy every word.",
+    "I can improve a pause or pace in my second telling.",
+    "I can practise a simple letter join and check my note card is readable."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "The opened fold and its repair explain the important middle event. Unrelated lists or invented events do not preserve the story.",
+        "options": [
+          "Only the colour of every object",
+          "An invented journey to another country",
+          "A list of all letters in boat",
+          "The opened fold and what Ben does to fix it"
+        ],
+        "question": "What belongs in a useful retelling of Ben’s boat story?"
+      },
+      "example": "I DO:\nShort story: “Ava made a kite at the table. Its string came loose. She tied it again and put the kite beside her bag.”\nBeginning: Ava makes a kite.\nMiddle: the string comes loose, so she repairs it.\nEnding: she puts the repaired kite away.\n\nCOMPARE:\n“There is a table and a bag” names things but leaves out what happens.\n\nYOU TRY:\n“Ben made a paper boat. A fold opened. He pressed it back and placed the boat on a tray.”\nSay three event notes before checking.\n\nCHECK:\nKeep making the boat, fixing the opened fold and placing it on the tray. Your words can differ if the events stay accurate.",
+      "explain": "**A listener needs the important events.**\nA retelling tells a story again in your own words. Keep what happens accurate. You can shorten the wording without changing the events.\n\n**Begin with someone and a situation.**\nWho is the story about? Where are they and what are they doing? Choose details that help the listener follow what happens next.\n\n**Keep the middle connected.**\nTell the important event or problem and what someone does about it. Do not list every object while leaving out the action.\n\n**Tell how the event ends.**\nThe ending shows what happens after the important action. A listener should not be left asking whether the main event was finished.\n\nTry three short notes: beginning, middle, ending. These help with our short practice story. They are not a rule that every story must have exactly three sentences.",
+      "icon": "📖",
+      "notice": "Select events that help a listener follow the action. Do not invent a new ending to fill a gap.",
+      "title": "Find the beginning, middle and ending"
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "A note prompts an event; you explain that event in a spoken sentence. It should not change the story or remove needed information.",
+        "options": [
+          "To replace all speaking with one unclear word",
+          "To remind you of an event you will explain",
+          "To change the original story",
+          "To list every letter on the page"
+        ],
+        "question": "What is the job of a short note?"
+      },
+      "example": "I DO:\nNote: loose string.\nSpoken idea: “Next, Ava noticed that the kite’s string had come loose.”\nThe note reminds me; my sentence tells the listener what happened.\n\nCOMMON MISTAKE:\n“She did it, then that happened” does not name the person or event. I fix it by saying Ava and the loose string.\n\nYOU TRY:\nUse the note pressed the fold to tell Ben’s action in a complete spoken sentence.\n\nCHECK:\n“Ben pressed the opened fold back into place” explains the note. Another accurate sentence is fine. Do not add a different repair that the story never mentions.",
+      "explain": "**A note is a reminder.**\nA short note helps you remember an event. It does not need to contain every word you will say. You turn the note into a complete spoken idea.\n\n**Introduce the person first.**\nSay who you mean before using he, she or they. A listener who has not read the story needs that information.\n\n**Link the order.**\nFirst, next, then and finally can help a listener follow the sequence. Choose the important actions rather than putting a link before every word.\n\n**Check against the story.**\nRead a section, look away and explain it. Look back to check the event. It is fine to keep names or an important word, but you do not have to memorise the whole text.\n\nYour notes should help you explain; they should not replace the explanation with a list of vague words.",
+      "icon": "📖",
+      "notice": "Notes can be short, but your spoken ideas still need enough information for a listener.",
+      "title": "Use notes to speak in your own words"
+    },
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "A steadier pace helps the listener follow the same important event. Deleting, shouting or inventing does not repair the rushed explanation.",
+        "options": [
+          "Delete the event entirely",
+          "Shout every word",
+          "Give the event more time and keep the words clear",
+          "Invent a different problem"
+        ],
+        "question": "Your middle event was rushed. Which change is useful?"
+      },
+      "example": "I DO:\nFirst try: I rush the part about the string, and the repair is unclear.\nMy change: I give that event more time and pause before the ending.\nSecond try: “The string came loose. [brief pause] Ava tied it again. [brief pause] She put the kite away.” I do not say the bracketed notes aloud.\n\nYOU TRY:\nTell Ben’s opened-fold event twice. In the second version, keep each word clear and choose one helpful pause.\n\nCHECK:\nThe pause should separate understandable thoughts, not turn each word into a separate event. You can explain your improvement without sounding exactly like someone else.",
+      "explain": "**Help the listener hear the ideas.**\nPace is how fast you speak. Volume is how loud or quiet your voice is. Speak comfortably and keep the words clear. You do not need a performance voice.\n\n**Pause between thoughts.**\nA brief pause lets a listener follow one event before the next. Do not stop between every word or rush all the events together.\n\n**Practise one part first.**\nSay the beginning and one middle event. Notice whether you lose a word, speak too quickly or miss the important action.\n\n**Make one improvement.**\nTell the story once. Choose one change, such as a slower middle event or a clearer ending. Tell it again using that change.\n\nYou can practise alone. A listener or recording can help if available, but is not required. Explain what your change helps a listener understand.",
+      "icon": "📖",
+      "notice": "Making the voice louder does not automatically fix rushed words. Start with clarity and a pace you can manage.",
+      "title": "Practise a clear telling twice",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "I remembered the story, but I rushed the part where the character fixed the problem.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Try that event again at a steadier pace. Keep the action clear for your listener.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "I can use a short note and a brief pause before the next event.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try. Tell one event twice and explain what you improved.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "A second telling has a purpose",
+            "transcript": "Pip: I remembered the story, but I rushed the part where the character fixed the problem.\nJuno: Try that event again at a steadier pace. Keep the action clear for your listener.\nPip: I can use a short note and a brief pause before the next event.\nJuno: Pause and try. Tell one event twice and explain what you improved."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "Letter clarity, spacing and size help you read a note at a glance. Decoration or crowding does not establish readability.",
+        "options": [
+          "Clear letter shapes, word spaces and readable size",
+          "Only the amount of decoration",
+          "Whether every word is crowded together",
+          "Whether the page has no blank space"
+        ],
+        "question": "What is a useful handwriting check for a note card?"
+      },
+      "example": "I DO:\nMy three event notes:\nGarden: paper boat\nOpened fold: pressed back\nEnding: boat on tray\n\nI keep each event on its own line. I practise the small in join separately, then write in the garden clearly below the notes.\n\nCOMMON MISTAKE:\nOne crowded line of tiny letters is hard to use. Fix: separate the notes and leave clear word spaces.\n\nYOU TRY:\nWrite in slowly using the model. Then write one short event note and read it back after looking away.\n\nCHECK:\nCan you identify both letters and the space between words? If the join hides a letter, slow down or use your familiar taught form. Your readable note matters more than extra decoration.",
+      "explain": "**Write notes you can use.**\nGive each event its own line. Leave enough space between words to read them at a glance. Use letter shapes and sizes you can recognise consistently.\n\n**Try one simple join.**\nOur drawing models a practice join in the lower-case word in. Start at the entry point, move into i, bring its downstroke to the writing line, then continue into the entry and arch of n. Add the i dot after the connected strokes. Follow the drawing slowly on paper.\n\nYou lift the pencil to add the dot; joining letters does not mean keeping the pencil down for the whole word. Leave a space before the next word. Do not force letters together if the join makes them unreadable.\n\n**Practise, then apply.**\nTry in three times, checking the shapes and connection. Use it in a short note such as in the garden. If you already use another taught joining style, keep that style and focus on clear letters.\n\nTest the card by looking up, glancing back and explaining one event. If a note is too cramped or vague, revise it. A typed alternative can support your telling, but shows different evidence from handwriting.",
+      "icon": "📖",
+      "notice": "This drawing is a simple practice model, not a complete handwriting alphabet. Keep a familiar taught style when you have one and check the result for readability.",
+      "title": "Write and test a readable note card",
+      "visual": [
+        {
+          "alt": "A simple continuous practice stroke connects lower-case i and n between a midline and baseline. The i dot is added separately. Start and line guides are labelled.",
+          "caption": "Follow slowly; use your familiar taught form if it differs.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 240\"><rect width=\"420\" height=\"240\" rx=\"12\" fill=\"#fff\"/><text x=\"20\" y=\"28\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Practice join: in</text><line x1=\"25\" y1=\"100\" x2=\"295\" y2=\"100\" stroke=\"#777\" stroke-dasharray=\"6 5\"/><line x1=\"25\" y1=\"150\" x2=\"295\" y2=\"150\" stroke=\"#18382b\"/><text x=\"302\" y=\"106\" font-family=\"Arial,sans-serif\" font-size=\"18\" fill=\"#18382b\">midline</text><text x=\"302\" y=\"156\" font-family=\"Arial,sans-serif\" font-size=\"18\" fill=\"#18382b\">baseline</text><path d=\"M60 150 Q78 145 95 100 L95 145 Q95 157 110 150 L135 100 L135 150 C135 118 141 98 156 100 C169 102 170 118 170 141 Q170 159 185 150 L205 130\" fill=\"none\" stroke=\"#18382b\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"95\" cy=\"78\" r=\"4\" fill=\"#18382b\"/><circle cx=\"60\" cy=\"150\" r=\"5\" fill=\"#18382b\"/><text x=\"30\" y=\"191\" font-family=\"Arial,sans-serif\" font-size=\"18\" fill=\"#18382b\">Start at the dot; add the i dot last.</text><text x=\"30\" y=\"222\" font-family=\"Arial,sans-serif\" font-size=\"18\" fill=\"#18382b\">Keep a space before the next word.</text></svg>"
+        }
+      ]
+    }
+  ],
+  "title": "Year 3: Tell a story and prepare readable notes",
+  "unit_number": 1,
+  "unit_title": "Narrative: story elements and planning",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Read the original short story.\nTHE PAPER BOAT\nMila sat in the garden with a paper boat. She wanted to keep it ready for an afternoon game.\nWhen she lifted it, one fold opened. Mila pressed the fold back carefully and checked the shape.\nShe put the boat on a tray beside the door. Now she could find it when the game began.\n\nMY EVENT NOTES\nBeginning: Mila in garden, boat ready\nMiddle: fold opens, Mila presses it back\nEnding: boat on tray for game\n\nMY RETELLING\n“Mila had a paper boat in the garden. A fold opened when she lifted it, so she pressed it back carefully. Finally, she put it on a tray where she could find it for her game.”\n\nWHY IT WORKS\nI name Mila and the situation, explain the problem and repair, then tell the outcome. I keep the events but choose my own wording. My short notes prompt full spoken ideas.\n\nCOMMON MISTAKE AND FIX\n“A boat was there, then it was there again” loses the middle event. I add the opened fold and Mila’s action. In rehearsal I give that repair enough time to be clear.",
+  "worked_visuals": [
+    {
+      "alt": "A short retelling includes the person and situation, an important event and response, and the outcome.",
+      "caption": "Use notes to remember, then speak complete ideas.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Beginning: person + situation</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Middle: event + response</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Ending: what happens after</text></svg>"
+    }
+  ],
+  "year_level": "Year 3"
+}

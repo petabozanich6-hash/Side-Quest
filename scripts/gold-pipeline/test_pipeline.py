@@ -165,7 +165,7 @@ class PipelineTests(unittest.TestCase):
             p.initialise(self.state)
 
     def test_batch_limit_enforced(self):
-        for limit in [0, 6, 1000]:
+        for limit in [0, 17, 1000]:
             with self.assertRaisesRegex(RuntimeError, 'bounded'):
                 p.run_batch(self.state, self.inbox, limit=limit)
 

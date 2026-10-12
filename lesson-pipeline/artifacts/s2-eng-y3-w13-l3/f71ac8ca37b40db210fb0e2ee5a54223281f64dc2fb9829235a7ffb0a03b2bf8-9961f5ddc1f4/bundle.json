@@ -1,0 +1,445 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-VOCAB-01",
+      "lesson_evidence": "Persuasive language can use modal verbs (should, must, could) and careful word choices to strengthen a request without unfair exaggeration.",
+      "scope_limit": "Partial contribution; confirm content points for each listed code.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    },
+    {
+      "code": "EN2-SPELL-01",
+      "lesson_evidence": "Persuasive language can use modal verbs (should, must, could) and careful word choices to strengthen a request without unfair exaggeration.",
+      "scope_limit": "Partial contribution; confirm content points for each listed code.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Persuasive language can use modal verbs (should, must, could) and careful word choices to strengthen a request without unfair exaggeration.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same strategy to an unfamiliar topic or audience, then compare the effect of two different choices.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nRewrite \"It is okay to leave rubbish\" into a clearer persuasive sentence using should or must, then add one fair reason.\n\nFEEDBACK\n\"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation.\n\nCHECK\nUsing must for every small request can sound unfair or untrue; match strength to the issue.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nRevise a weak persuasive draft of six sentences. Add two modal verbs, one rhetorical question and replace two vague words with precise ones. Explain how your tone changed.\n\nWrite a short reflection describing one specific revision you made and why.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Persuasive language can use modal verbs (should, must, could) and careful word choices to strengthen a request without unfair exaggeration.",
+    "lesson_number": 3,
+    "lesson_role": "Language and spelling",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "EN2-VOCAB-01",
+      "EN2-SPELL-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Revise a weak persuasive draft of six sentences. Add two modal verbs, one rhetorical question and replace two vague words with precise ones. Explain how your tone changed. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: \"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation. Reasoning: I used modal verb by attending to rhetorical question and explain why it m rather than copying the worked model.\n\nParent: Written model 2: Common error: Using must for every small request can sound unfair or untrue; match strength to the issue. Correction: \"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation. Why: the correction restores accurate use of modal verb.\n\nParent: Likely misconception: Using must for every small request can sound unfair or untrue; match strength to the issue. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating modal verb on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with modal verb, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "\"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation. This matches the lesson skill for modal verb.",
+        "options": [
+          "Using must for every small request can sound unfair or untrue; match strength to the issue.",
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "\"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation."
+        ],
+        "question": "Rewrite \"It is okay to leave rubbish\" into a clearer persuasive sentence using should or must, then add one fair reason. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Using must for every small request can sound unfair or untrue; match strength to the issue. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Careful use of rhetorical question and explain why it m with clear evidence.",
+          "Using must for every small request can sound unfair or untrue; match strength to the issue.",
+          "Persuasive language can use modal verbs (should, must, could) and careful word choices to strengthen a request without unfair exaggeration.",
+          "\"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation."
+        ],
+        "question": "Which statement is a common mistake when practising modal verb?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and named rhetorical question and explain why it m, not by copying the model.",
+        "options": [
+          "Apply the idea with new evidence and name the rhetorical question and explain why it m used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact."
+        ],
+        "question": "A learner is practising modal verb. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries modal verb.",
+        "options": [
+          "Point to exact words in the sentence that show modal verb and say what they do.",
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "Using must for every small request can sound unfair or untrue; match strength to the issue."
+        ],
+        "question": "Read: \"Beside the oval, Kai practised bowling until the sun slipped low.\" Which choice best uses modal verb from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "options": [
+          "Copy the worked example and call it independent work.",
+          "\"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation.",
+          "Using must for every small request can sound unfair or untrue; match strength to the issue.",
+          "Ignore the task and invent an unrelated answer."
+        ],
+        "question": "Which statement correctly applies the lesson idea about modal verb?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "options": [
+          "Treat a missing detail as a proven fact.",
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged."
+        ],
+        "question": "In a new text, what should you do first to practise rhetorical question and explain why it m?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "options": [
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
+        ],
+        "question": "Which revision actually repairs meaning?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "Change fonts and claim the work is new.",
+          "Using must for every small request can sound unfair or untrue; match strength to the issue.",
+          "Use a fresh sentence or text and explain one precise choice about modal verb.",
+          "Retype the worked model as the final answer."
+        ],
+        "question": "Which response shows transfer of modal verb to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating modal verb on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: \"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation. Reasoning: I used modal verb by attending to rhetorical question and explain why it m rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with modal verb, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Using must for every small request can sound unfair or untrue; match strength to the issue. Correction: \"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation. Why: the correction restores accurate use of modal verb.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent task and reflection, with explanations where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w13-l3",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; verify content points before acceptance.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise modal verb.",
+        "Read the mission before you start writing or speaking.",
+        "Keep the audience and purpose in mind as you work."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reason with the feedback.",
+        "Adjust anything that does not match the evidence."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the wording that carries the meaning.",
+        "Then explain the choice without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore the example.",
+        "Prefer evidence over wording that merely sounds clever."
+      ],
+      "submit": [
+        "Check that your response and reason are both present.",
+        "Proofread names, sequence and punctuation.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact word or action before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and underline one useful detail.",
+        "Say what that detail helps a reader understand.",
+        "A vague compliment is weaker than quoted evidence."
+      ],
+      "teach2": [
+        "Compare a weak attempt with a stronger revision.",
+        "Change meaning or accuracy, not only length.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh topic that still uses the same skill.",
+        "Explain one decision in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include an original response and a short reason.",
+        "Save work that shows the skill on new content."
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use modal verb with a specific example from this lesson.",
+      "I can identify rhetorical question and explain why it matters.",
+      "I can practise word choice independently on a new prompt.",
+      "I can notice tone needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Persuasive language can use modal verbs (should, must, could) and careful word choices to strengthen a request without unfair exaggeration. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A guess with no explanation.",
+            "Persuasive language can use modal verbs (should, must, could) and careful word choices to strengthen a request without unfair exaggeration.",
+            "A claim unrelated to the text.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about modal verb?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\n\"We should protect the wetlands\" uses should for recommendation. \"Must we wait until the frogs disappear?\" is a rhetorical question that pushes urgency.\n\nTRY FIRST\nRewrite \"It is okay to leave rubbish\" into a clearer persuasive sentence using should or must, then add one fair reason.\n\nFEEDBACK\n\"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation.",
+        "explain": "Persuasive language can use modal verbs (should, must, could) and careful word choices to strengthen a request without unfair exaggeration.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Using must for every small request can sound unfair or untrue; match strength to the issue. Correct the meaning, not just the appearance.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Modal should beside a rhetorical urgency question.",
+            "caption": "Match language strength to the issue.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Modal</text><text x=\"28\" y=\"78\">should protect</text><text x=\"358\" y=\"42\">Question</text><text x=\"358\" y=\"78\">Must we wait?</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or actions that carry the meaning before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: \"We should protect the wetlands\" uses should for recommendation. \"Must we wait until the frogs disappear?\" is a rhetoric Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which detail matters most.\nJuno: Name the exact words or actions that carry the meaning before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: \"We should protect the wetlands\" uses should for recommendation. \"Must we wait until the frogs disappear?\" is a rhetoric Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no explanation.",
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
+            "A claim unrelated to the text."
+          ],
+          "question": "Which choice best shows accurate use of this idea about modal verb?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\n\"We should protect the wetlands\" uses should for recommendation. \"Must we wait until the frogs disappear?\" is a rhetorical question that pushes urgency. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
+        "explain": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Saying a choice is good without naming the actual detail does not show understanding. Correct the meaning, not just the appearance.",
+        "title": "Explain the evidence",
+        "visual": [
+          {
+            "alt": "Weak permission statement revised to a clear recommendation.",
+            "caption": "Precise words make the position clearer.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Weak</text><text x=\"28\" y=\"78\">It is okay to litter</text><text x=\"358\" y=\"42\">Stronger</text><text x=\"358\" y=\"78\">We should not leave rubbish</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A claim unrelated to the text.",
+            "An answer copied without understanding.",
+            "A guess with no explanation.",
+            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error."
+          ],
+          "question": "Which choice best shows accurate use of this idea about modal verb?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nUsing must for every small request can sound unfair or untrue; match strength to the issue. Here is a more productive model: \"We should protect the wetlands\" uses should for recommendation. \"Must we wait until the frogs disappear?\" is a rhetorical question that pushes urgency.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\n\"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "A superficial change in length or appearance does not repair meaning. Using must for every small request can sound unfair or untrue; match strength to the issue. Correct the meaning, not just the appearance.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A claim unrelated to the text.",
+            "An answer copied without understanding.",
+            "A guess with no explanation.",
+            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity."
+          ],
+          "question": "Which choice best shows accurate use of this idea about modal verb?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nPersuasive language can use modal verbs (should, must, could) and careful word choices to strengthen a request without unfair exaggeration. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",
+        "explain": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new content. Correct the meaning, not just the appearance.",
+        "title": "Transfer to an independent example"
+      }
+    ],
+    "title": "Year 3, Week 13, Lesson 3: Strong verbs",
+    "unit_number": 3,
+    "unit_title": "Poetry: rhyme, rhythm and imagery",
+    "week": 13,
+    "week_in_unit": 3,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\n\"We should protect the wetlands\" uses should for recommendation. \"Must we wait until the frogs disappear?\" is a rhetorical question that pushes urgency.\n\nExplain what makes this example accurate and effective, identifying its specific wording.",
+    "worked_visuals": [
+      {
+        "alt": "Modal should beside a rhetorical urgency question.",
+        "caption": "Match language strength to the issue.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Modal</text><text x=\"28\" y=\"78\">should protect</text><text x=\"358\" y=\"42\">Question</text><text x=\"358\" y=\"78\">Must we wait?</text></g></svg>"
+      },
+      {
+        "alt": "Weak permission statement revised to a clear recommendation.",
+        "caption": "Precise words make the position clearer.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Weak</text><text x=\"28\" y=\"78\">It is okay to litter</text><text x=\"358\" y=\"42\">Stronger</text><text x=\"358\" y=\"78\">We should not leave rubbish</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Rewrite \"It is okay to leave rubbish\" into a clearer persuasive sentence using should or must, then add one fair reason."
+      ],
+      "independent_inputs": [
+        "Revise a weak persuasive draft of six sentences. Add two modal verbs, one rhetorical question and replace two vague words with precise ones. Explain how your tone changed."
+      ],
+      "model_inputs": [
+        "\"We should protect the wetlands\" uses should for recommendation. \"Must we wait until the frogs disappear?\" is a rhetorical question that pushes urgency."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "\"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Rewrite \"It is okay to leave rubbish\" into a clearer persuasive sentence using should or must, then add one fair reason.",
+        "misconception": "Using must for every small request can sound unfair or untrue; match strength to the issue.",
+        "model": "\"We should protect the wetlands\" uses should for recommendation. \"Must we wait until the frogs disappear?\" is a rhetorical question that pushes urgency.",
+        "rule": "Persuasive language can use modal verbs (should, must, could) and careful word choices to strengthen a request without unfair exaggeration.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "The most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Underline or quote one precise detail in the model and explain its effect.",
+        "misconception": "Saying a choice is good without naming the actual detail does not show understanding.",
+        "model": "\"We should protect the wetlands\" uses should for recommendation. \"Must we wait until the frogs disappear?\" is a rhetorical question that pushes urgency. Think about how this word or relationship creates meaning.",
+        "rule": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "\"We should not leave rubbish because it can harm birds that feed near the path.\" The modal marks the recommendation.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Describe why the warned-against approach would weaken your work, then write a corrected version.",
+        "misconception": "A superficial change in length or appearance does not repair meaning. Using must for every small request can sound unfair or untrue; match strength to the issue.",
+        "model": "Using must for every small request can sound unfair or untrue; match strength to the issue. Here is a more productive model: \"We should protect the wetlands\" uses should for recommendation. \"Must we wait until the frogs disappear?\" is a rhetorical question that pushes urgency.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "The new example should meet the same purpose as the model, but contain original material.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Make one fresh example demonstrating the skill and explain your main choice.",
+        "misconception": "Repeating the worked example cannot show transfer to new content.",
+        "model": "Persuasive language can use modal verbs (should, must, could) and careful word choices to strengthen a request without unfair exaggeration. Now choose different people, facts or text to show you can transfer the idea.",
+        "rule": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Modal should beside a rhetorical urgency question.",
+        "teaches": "Match language strength to the issue."
+      },
+      {
+        "alt": "Weak permission statement revised to a clear recommendation.",
+        "teaches": "Precise words make the position clearer."
+      }
+    ]
+  }
+}

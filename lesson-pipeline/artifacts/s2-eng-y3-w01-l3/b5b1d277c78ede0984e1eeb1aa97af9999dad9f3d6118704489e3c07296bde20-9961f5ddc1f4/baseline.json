@@ -1,0 +1,381 @@
+{
+  "child_mission": "Become a Word Investigator! Listen to words, notice their letter patterns and use a checking routine to improve your spelling.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep beat counts, three reminders, a first/check result, corrected versions where needed, original sentences, reflection and written quiz answers.",
+  "extension": "Find one other familiar word with sh. Explain which letters make that sound, then check its full spelling using a reliable model you already have.",
+  "guided_practice": "WE DO: Compare two attempts.\n1. Intended word: ship. Attempt: sip. Say both if you can. Find the difference before reading the suggestion: ship needs h after s for its sh group.\n2. Intended word: fantastic. Attempt: fantasic. Say fan-tas-tic and compare the parts. Suggestion: the middle tas needs t.\n3. Try rabbit with look, cover, write and check. Give yourself the reminder about its middle letters before covering.\n4. Write one original sentence with a corrected word. Reread so both the spelling and meaning fit.\nIf you make a different mistake, compare your own attempt rather than copying these errors. The goal is to identify and repair the actual difference.",
+  "hoard_words": [
+    "ship",
+    "sunset",
+    "rabbit",
+    "fantastic",
+    "window"
+  ],
+  "independent_task": "YOU DO: Word Investigator record (about 20 minutes).\nUse the five taught words: ship, sunset, rabbit, fantastic and window.\n1. Say each word naturally. Tap its syllables and write the count beside the word.\n2. Choose three words and write a reminder for each: a sound group, chunk order or tricky written part.\n3. Use look, cover, write and check with all five words. Keep your first attempt and corrected version if they differ. If an attempt matches, record that it matched.\n4. Write two original sentences using two of the checked words.\n5. In the big box, record your syllable counts, three reminders, one check result and your sentences. You can work on paper first and type a summary. A photo is optional.\nDo not invent a mistake if you spelled every word correctly. Explain which reminder helped instead.",
+  "learning_area": "English",
+  "learning_intention": "We are learning to combine sounds, syllables and remembered letter patterns when spelling taught words.",
+  "lesson_number": 3,
+  "lesson_role": "Language and spelling",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Copy the five models onto paper. Use another sheet to cover them, practise and compare. Write your reminders and sentences, then type a summary and complete the quiz later.",
+  "outcome_codes": [
+    "EN2-SPELL-01"
+  ],
+  "parent_notes": "Parent: Teaches sound/letter distinction, syllable grouping, particular taught patterns and a spelling-check routine. This is one contribution to the listed Stage 2 outcomes, not complete coverage. Codes were checked against the NESA English K–10 (2022) outcomes page. All practice text is original.\n\nParent: Check spoken beat counts separately from written spelling. The models teach these particular words; do not generalise doubled letters to every two-syllable word. Let the child attempt the small practice before comparing its feedback. The lesson supplies the teaching; your role is reviewing evidence and helping with access if required.\n\nParent: The quiz has eight automatically scored choices and two written answers. The unchanged 90% threshold requires 8/8 choices. Written answers accompany the submission for manual review. Model for question 9: Rabbit has two spoken beats, rab-bit, and I must remember two b letters in its written middle. Model for question 10: I compared my attempt rabit with rabbit, noticed the missing b and practised the corrected word.\n\nParent: Expected counts: ship 1, sunset 2, rabbit 2, fantastic 3, window 2. Accept a matching first attempt as success; do not require an error. Review the child’s chosen reminders and sentences as well as quiz performance.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 1,
+      "explanation": "A group such as sh can represent one sound, so a sound count need not match the letter count.",
+      "options": [
+        "A letter always makes two sounds",
+        "Two letters can represent one sound",
+        "Sounds cannot be heard",
+        "Words have no written forms"
+      ],
+      "question": "Why can letters and sound parts have different counts?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Sh is the taught two-letter group representing the starting sound in ship.",
+      "options": [
+        "ow",
+        "bb",
+        "sh",
+        "tas"
+      ],
+      "question": "Which starting group is in ship?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Sun and set form two spoken beats, regardless of the number of written letters.",
+      "options": [
+        "Two",
+        "Six",
+        "One for each letter",
+        "Seven"
+      ],
+      "question": "How many spoken syllable beats are in sun-set?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "Fan, tas and tic make three spoken syllable beats.",
+      "options": [
+        "One",
+        "Four",
+        "Nine",
+        "Three"
+      ],
+      "question": "How many spoken beats are in fan-tas-tic?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The model rabbit has two b letters and one final t. The alternatives change that taught pattern.",
+      "options": [
+        "rabit",
+        "rabbit",
+        "rabbbit",
+        "rabitt"
+      ],
+      "question": "Which spelling matches the taught model?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The hyphens mark practice chunks. The actual taught spelling is fantastic without those practice hyphens.",
+      "options": [
+        "Punctuation to copy into every word",
+        "Separate sentences",
+        "Practice syllable parts",
+        "Three unrelated words"
+      ],
+      "question": "What do the hyphens in fan-tas-tic show here?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Comparing with the correct intended word reveals differences in letters and order.",
+      "options": [
+        "Your attempt with the correct intended word",
+        "Only whether the page has colours",
+        "Only how fast you wrote",
+        "Two unchecked guesses"
+      ],
+      "question": "What should a check compare?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "Focused study followed by a corrected attempt practises the pattern that was missing.",
+      "options": [
+        "Ignore the difference",
+        "Copy the mistake repeatedly",
+        "Change the meaning at random",
+        "Study the correct part and practise the whole corrected word"
+      ],
+      "question": "What is useful after finding a missing letter?",
+      "type": "multiple_choice"
+    },
+    {
+      "explanation": "A useful reminder names a taught part of the word.",
+      "marking_guide": "Accept a correct taught beat or letter-pattern reminder. Look for a specific clue rather than only “remember it”.",
+      "question": "Explain one useful reminder for rabbit.",
+      "sample_answer": "Rabbit has two spoken beats, rab-bit, and I must remember two b letters in its written middle.",
+      "type": "short_answer"
+    },
+    {
+      "explanation": "A clear explanation shows what was compared and what the learner noticed.",
+      "marking_guide": "Accept an actual comparison or a matching result with a useful explanation. A mistake is not required.",
+      "question": "Explain how you used a model to check one spelling attempt.",
+      "sample_answer": "I compared my attempt rabit with rabbit, noticed the missing b and practised the corrected word.",
+      "type": "short_answer"
+    }
+  ],
+  "response_prompt": "Which spelling clue or check helped you most, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s2-eng-y3-w01-l3",
+  "spelling": {
+    "check": [
+      {
+        "correct_index": 2,
+        "explanation": "The starting sh sound is written with the two-letter group sh in ship. The other reminders do not fit the taught word.",
+        "options": [
+          "It starts with two separate words",
+          "It needs three b letters",
+          "Its first sound is written sh",
+          "Every letter is a syllable"
+        ],
+        "question": "Which reminder matches the taught word ship?"
+      }
+    ],
+    "focus": "Sounds, syllables and patterns",
+    "teaching": "Use the models below for your practice. Say each word normally, listen to its parts, then tap its syllables. Study the listed written detail before covering and writing. Compare each attempt with the model. The hyphens in parts show practice chunks; write the actual word without them.",
+    "words": [
+      {
+        "parts": "sh / i / p; one syllable",
+        "tip": "Sh is a two-letter group for one starting sound.",
+        "word": "ship"
+      },
+      {
+        "parts": "sun-set; two syllables",
+        "tip": "Join sun and set in this order.",
+        "word": "sunset"
+      },
+      {
+        "parts": "rab-bit; two syllables",
+        "tip": "Remember two b letters in the middle.",
+        "word": "rabbit"
+      },
+      {
+        "parts": "fan-tas-tic; three syllables",
+        "tip": "Keep the t in the middle part tas.",
+        "word": "fantastic"
+      },
+      {
+        "parts": "win-dow; two syllables",
+        "tip": "Check the written ow ending against the model.",
+        "word": "window"
+      }
+    ]
+  },
+  "stage": "S2",
+  "stage_hints": {
+    "accept": [
+      "Read the mission and notice that listening and written checking have different jobs.",
+      "Begin with the first taught word; you do not need to guess all five spellings yet.",
+      "Keep a small space for a first attempt and a checked version. The models are included."
+    ],
+    "guided": [
+      "Compare the first attempt with its intended word before reading the suggestion.",
+      "Check from the beginning and locate a missing or changed group.",
+      "Use “My attempt ____ differs at ____.” Then write the correct whole word."
+    ],
+    "learn": [
+      "Read each job in the complete routine before copying the final word.",
+      "Notice which part is heard and which part must be checked in writing.",
+      "Explain one comparison result in your own words before moving to another word."
+    ],
+    "quiz": [
+      "Return to sounds, beats, written patterns or the checking routine as needed.",
+      "Identify whether the question is asking about speech or letters before comparing options.",
+      "For a written response, name a particular clue or comparison and explain how it helped."
+    ],
+    "spelling": [
+      "Look at a base model and its listed written detail.",
+      "Speak the word, tap its chunks and notice the part you want to remember.",
+      "Cover only after studying the model, then uncover for a letter-by-letter comparison."
+    ],
+    "submit": [
+      "Check that your practice record and sentences are ready.",
+      "Include the reflection and both written answers; a correct first attempt is allowed.",
+      "If you used paper, type a short record of your counts, reminders and check result, and keep the page."
+    ],
+    "teach0": [
+      "Look back at how a sound can use a letter group.",
+      "Say the whole word, then listen to its beginning without separating every letter.",
+      "Compare the heard start with the written model. Keep a two-letter sound group together where the example shows one."
+    ],
+    "teach1": [
+      "Look back at speaking naturally before counting beats.",
+      "Tap once per spoken chunk rather than once per letter.",
+      "Repeat the whole word and then its chunks. Use the chunking to plan the order."
+    ],
+    "teach2": [
+      "Look back at comparing an attempt from its beginning.",
+      "Find the first place where your letters differ from the model.",
+      "Name that particular difference, then practise the correct whole word. Do not invent a rule for every word."
+    ],
+    "teach3": [
+      "Look back at what happens after uncovering the model.",
+      "Compare the order and presence of letters before your next attempt.",
+      "Say a reminder about the part you noticed, look away and try the correct whole word again."
+    ],
+    "write": [
+      "Start with the five models and one spoken beat count.",
+      "Use “For this word, I notice ____.” Add a reminder you can actually use.",
+      "A record can begin “I said ____ in parts. My first attempt ____.” Finish with your own check result."
+    ]
+  },
+  "subject": "English",
+  "success_criteria": [
+    "I can listen for sounds without assuming one letter per sound.",
+    "I can split a spoken word into syllable beats.",
+    "I can use the model to check a tricky letter pattern.",
+    "I can find a difference and practise the corrected word."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "S and h together represent the starting sh sound in ship. The other groups do not represent that first sound.",
+        "options": [
+          "s and p",
+          "h and i",
+          "s and h",
+          "i and p"
+        ],
+        "question": "In ship, which letters work together for one starting sound?"
+      },
+      "example": "I DO:\nWord: ship.\nI hear sh / i / p. I choose sh, i and p, then join them: ship.\n\nCOMPARE:\nSaying s and h separately does not match the starting sound in ship. The letters work as one group here.\n\nYOU TRY:\nSay shop slowly. What letter group represents its first sound? Try before reading on.\n\nCHECK:\nShop begins with sh too. Its middle sound differs from ship, so check the whole word rather than copying the last example automatically.",
+      "explain": "**Sounds and letters are different.**\nWhen you say a word, you hear sounds. When you write it, you choose letters to represent them. A word does not always have one letter for each sound.\n\n**Say, stretch and listen.**\nSay ship normally. Now say its parts slowly: sh, i, p. Sh is one sound written with two letters. The word has four letters, but these three sound parts.\n\nA digraph is two letters representing one sound. In this example, sh is the digraph. Keep it together when matching the heard sound to letters.\n\n**Do not add sounds accidentally.**\nSome sounds can stretch; others are brief. Keep the final p short rather than adding an extra uh. Then join the parts and say ship normally again.\n\nListening helps you start a spelling. You also need letter-pattern knowledge, because a sound can sometimes be written in different ways. Use the model when you are unsure.",
+      "icon": "📖",
+      "notice": "Listening does not reveal every spelling by itself. Use sounds as clues and check the written pattern.",
+      "title": "Listen for sound parts"
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "Fan, tas and tic are three spoken beats. Counting letters would answer a different question.",
+        "options": [
+          "One",
+          "Three",
+          "Six",
+          "Nine"
+        ],
+        "question": "How many spoken syllable beats are in fan-tas-tic?"
+      },
+      "example": "I DO:\nSunset: I say sun-set, tap twice and write sun + set. I join the parts as sunset.\nFantastic: I say fan-tas-tic and tap three times. I keep each part in order.\n\nCOMMON MISTAKE:\nCounting every letter gives a different number from counting beats. Sunset has six letters and two syllables.\n\nYOU TRY:\nSay window naturally, then tap its beats. Check before reading on.\n\nCHECK:\nWin-dow has two beats. The split helps you remember the order of the written parts; it is not six separate spoken beats.",
+      "explain": "**A syllable is a spoken beat.**\nSyllables help you handle a longer word in smaller parts. Say sunset naturally, then clap its two beats: sun-set. You are counting spoken beats, not letters.\n\n**Hear before you split.**\nSay the whole word first. Tap once for each beat as you repeat it. Keep the sounds inside each beat together. Fantastic has three beats: fan-tas-tic.\n\n**Use beats for a spelling plan.**\nWrite one part, then the next, then read the joined word. The split is a practice aid; do not leave hyphens in an ordinary spelling answer unless the actual word requires them.\n\n**Beats do not settle every letter.**\nRabbit has two beats. The spoken beats help you organise the word, but the model also tells you that its written spelling has two b letters. Listening and checking work together.",
+      "icon": "📖",
+      "notice": "Count what you hear when speaking naturally. A row of letters is not a row of syllable beats.",
+      "title": "Listen for syllable beats",
+      "visual": [
+        {
+          "alt": "Sunset has two spoken syllable beats; fantastic has three. Syllables are not counted by letters.",
+          "caption": "Speak the whole word before tapping its beats.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">sun-set: 2 spoken beats</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">fan-tas-tic: 3 spoken beats</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Beats are not letter counts.</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "Rabbit is written with two b letters. Rabit has only one, so adding the missing b repairs the taught spelling.",
+        "options": [
+          "The model needs three r letters",
+          "The final t should disappear",
+          "The a should become a whole sentence",
+          "The attempt needs another b in the middle"
+        ],
+        "question": "What needs fixing when rabit is compared with rabbit?"
+      },
+      "example": "I DO:\nMy attempt: rabit.\nModel: rabbit.\nI compare from the beginning. R and a match. At the middle I notice the model has two b letters. I say, “Rabbit needs two b letters,” and rewrite it.\n\nYOU TRY:\nCompare sip with the model ship. Which written part changes? Think first.\n\nCHECK:\nShip includes h after s to make sh. Sip is another real word, but it does not spell the intended word ship. A spelling check needs to keep the intended meaning too.",
+      "explain": "**Some spellings need a closer look.**\nAfter listening and splitting, compare your idea with the correct model. Find the part you might miss, rather than staring at the whole word without a plan.\n\n**Use this word's evidence.**\nRabbit is written rab-bit: two b letters meet in the middle. Write both. Do not assume that every two-syllable word needs a double letter. Window has two syllables without that doubled b pattern.\n\nShip begins with sh, a two-letter group for one sound. Sunset joins the written parts sun and set. Fantastic keeps fan, tas and tic in order.\n\n**Say a useful reminder.**\n“Rabbit needs two b letters.” “Ship starts with sh.” A reminder should name the particular tricky part.\n\n**Check rather than guess.**\nIf you are uncertain, look at the model again. Learning a spelling includes noticing and remembering its written pattern, not only sounding it out.",
+      "icon": "📖",
+      "notice": "A word can look familiar and still be the wrong word. Compare your spelling with the intended word, including its tricky part.",
+      "title": "Notice the written pattern"
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "Finding and studying the difference lets you practise the correct pattern. Repeating an unchecked mistake does not repair it.",
+        "options": [
+          "Notice the difference, study it and try the corrected word",
+          "Repeat the unchecked attempt ten times",
+          "Remove random letters",
+          "Ignore the intended word"
+        ],
+        "question": "After a spelling attempt differs from the model, what should you do?"
+      },
+      "example": "I DO:\nModel: fantastic.\nI say fan-tas-tic and notice the order of the three parts. I cover it and write fantasic.\nChecking shows I missed the t in tas. I look at that part, say the reminder and rewrite fantastic. Then I cover and try again.\n\nYOU TRY:\nUse the routine with sunset. Check the letters before writing a sentence with it.\n\nCHECK:\nYou need the joined spelling sunset, with sun before set. A possible sentence is “We watched the sunset.” Your original sentence can be different if sunset fits its meaning.",
+      "explain": "**Practise with a method.**\nLook closely at a model and say the word. Identify its sounds, syllable parts and one written detail you want to remember.\n\nCover the model with your hand or look away. Write the word from memory. Then uncover and compare from the beginning. Check letter order as well as whether all the letters are present.\n\n**Learn from a difference.**\nIf your attempt differs, mark the first place that needs attention. Look at the correct part, say a reminder and rewrite the whole word correctly. Cover and try again.\n\n**Use the word in meaning.**\nOnce you have checked the spelling, use it in a short sentence. Reread to make sure it is the word you meant.\n\n**Practice is not a race.**\nCopying the same mistake many times will not fix it. A careful comparison and corrected attempt are more useful than rushing a long list.",
+      "icon": "📖",
+      "notice": "Keep the corrected version visible for your comparison, then cover it for the next memory try. Do not practise an unchecked mistake.",
+      "title": "Use look, cover, write and check",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "I wrote a word from memory, but it does not match the model. Should I keep copying my attempt?",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Find the first difference. Look at that part and practise the corrected whole word.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "I can use a sound clue, a syllable part and a reminder about the letters.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try. Check one taught word carefully before your next memory attempt.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "A spelling mistake can teach you",
+            "transcript": "Pip: I wrote a word from memory, but it does not match the model. Should I keep copying my attempt?\nJuno: Find the first difference. Look at that part and practise the corrected whole word.\nPip: I can use a sound clue, a syllable part and a reminder about the letters.\nJuno: Pause and try. Check one taught word carefully before your next memory attempt."
+          }
+        }
+      ]
+    }
+  ],
+  "title": "Year 3: Spell with sounds and syllables",
+  "unit_number": 1,
+  "unit_title": "Narrative: story elements and planning",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Spell rabbit with a complete routine.\nListen: I say rabbit normally and hear its parts.\nBeats: I tap rab-bit, two spoken beats.\nPattern: I look at the model rabbit and notice two b letters.\nCover: I hide the model and write rabit.\nCheck: Comparing from the beginning shows one b is missing.\nRepair: I say “two b letters in rabbit”, write rabbit and try from memory again.\nUse: “The rabbit rested beside the box.” I check the spelling in the sentence too.\n\nWHY THE METHOD WORKS\nSounds and beats give me a starting plan. The written model supplies the exact letter pattern. My correction focuses on a particular difference.\n\nCOMMON MISTAKE AND FIX\nCounting the letters in rabbit does not count its syllables. I speak the word to count beats and use the model to check letters. These are different jobs.",
+  "worked_visuals": [
+    {
+      "alt": "A spelling routine listens, splits and notices, then looks, covers, writes and checks before repairing a difference.",
+      "caption": "Check a taught model rather than guessing the missing part.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Listen → split → notice</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Look → cover → write → check</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Find a difference and repair.</text></svg>"
+    }
+  ],
+  "year_level": "Year 3"
+}

@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-RECOM-01",
+      "lesson_evidence": "Use precise technical words and explain them in reader-friendly language.",
+      "scope_limit": "Individual Written Core lesson contributes partial evidence; independently verify syllabus content-point alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Use precise technical words and explain them in reader-friendly language.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Keep the independent response and two written check responses; record oral retelling or performance where required by the task.",
+    "explicit_teaching": null,
+    "extension": "Create a new example using a completely different character or setting, show the same skill, then explain to another person how you checked its accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "WE DO — attempt each prompt before comparing to the feedback.\n1. Replace \"thing the animal lives in\" when describing bees.\nCOMPARE: Hive (or nest, if carefully defined) names the structure; explain the term.\n2. Define habitat in one short sentence for a Year 3 reader.\nCOMPARE: Example: Habitat is the place where a living thing usually lives and finds what it needs.\n3. Give an example and non-example for hive.\nCOMPARE: Example: bee colony structure; non-example: a dog kennel.\n4. Name one place you could check the meaning of nocturnal.\nCOMPARE: A glossary, museum fact sheet or approved dictionary can help.",
+    "hoard_words": null,
+    "independent_task": "YOU DO — complete the following substantial original task, not a copied model.\nCreate a six-word glossary for a habitat report. For three of the words, write a plain-English definition, a correct example sentence and a non-example; note where you checked each meaning.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Use precise technical words and explain them in reader-friendly language.",
+    "lesson_number": 3,
+    "lesson_role": "Language and spelling",
+    "materials": [
+      "Paper or typing area",
+      "Pencil for optional evidence"
+    ],
+    "offline_alternative": "Use paper to copy only the original independent prompt; have the child respond in writing or orally as required. Save a photograph or brief parent observation for the learning record.",
+    "outcome_codes": [
+      "EN2-RECOM-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Create a six-word glossary for a habitat report. For three of the words, write a plain-English definition, a correct example sentence and a non-example; note where you checked each meaning. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Hive (or nest, if carefully defined) names the structure; explain the term. Reasoning: I used technical by attending to definition and point to the words or eve rather than copying the worked model.\n\nParent: Written model 2: Common error: A complicated word is not automatically accurate. Correction: Hive (or nest, if carefully defined) names the structure; explain the term. Why: the correction restores accurate use of technical.\n\nParent: Likely misconception: A complicated word is not automatically accurate. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating technical on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with technical, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "Hive (or nest, if carefully defined) names the structure; explain the term. This matches the lesson skill for technical.",
+        "options": [
+          "Hive (or nest, if carefully defined) names the structure; explain the term.",
+          "A complicated word is not automatically accurate.",
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work."
+        ],
+        "question": "Define habitat in one short sentence for a Year 3 reader. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "A complicated word is not automatically accurate. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "A complicated word is not automatically accurate.",
+          "Use precise technical words and explain them in reader-friendly language.",
+          "Hive (or nest, if carefully defined) names the structure; explain the term.",
+          "Careful use of definition and point to the words or eve with clear evidence."
+        ],
+        "question": "Which statement is a common mistake when practising technical?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and named definition and point to the words or eve, not by copying the model.",
+        "options": [
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the definition and point to the words or eve used."
+        ],
+        "question": "A learner is practising technical. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries technical.",
+        "options": [
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "A complicated word is not automatically accurate.",
+          "Point to exact words in the sentence that show technical and say what they do."
+        ],
+        "question": "Read: \"Under the pier, Sam found a locked tin and a dripping map.\" Which choice best uses technical from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "options": [
+          "Copy the worked example and call it independent work.",
+          "Hive (or nest, if carefully defined) names the structure; explain the term.",
+          "A complicated word is not automatically accurate.",
+          "Ignore the task and invent an unrelated answer."
+        ],
+        "question": "Which statement correctly applies the lesson idea about technical?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "options": [
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Treat a missing detail as a proven fact.",
+          "Locate a specific word, phrase or structural clue before deciding."
+        ],
+        "question": "In a new text, what should you do first to practise definition and point to the words or eve?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "options": [
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
+        ],
+        "question": "Which revision actually repairs meaning?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "Change fonts and claim the work is new.",
+          "A complicated word is not automatically accurate.",
+          "Use a fresh sentence or text and explain one precise choice about technical.",
+          "Retype the worked model as the final answer."
+        ],
+        "question": "Which response shows transfer of technical to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating technical on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: Hive (or nest, if carefully defined) names the structure; explain the term. Reasoning: I used technical by attending to definition and point to the words or eve rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with technical, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: A complicated word is not automatically accurate. Correction: Hive (or nest, if carefully defined) names the structure; explain the term. Why: the correction restores accurate use of technical.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Submit your original independent work and your brief explanation of the key choices you made.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w06-l3",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; compare the existing Coming Soon card and official syllabus content points before marking verified.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise technical.",
+        "Read the mission before you start writing or speaking.",
+        "Your goal is: Use precise technical words and explain them in reader-friendly language."
+      ],
+      "guided": [
+        "Attempt each guided prompt without looking ahead.",
+        "Compare your attempt with the supplied specific feedback.",
+        "Guided comparison: Example: Habitat is the place where a living thing usually lives and finds what it needs."
+      ],
+      "learn": [
+        "Study the first worked demonstration carefully.",
+        "Name the exact words or events that make it work.",
+        "Demonstration: \"The wombat digs a burrow\" is clearer than \"The animal makes a hole.\" Burrow means an underground shelter made or used by an animal."
+      ],
+      "quiz": [
+        "Read the whole question and eliminate misconceptions.",
+        "Prefer the option that quotes or uses actual evidence.",
+        "Likely trap: A non-example helps prevent overgeneralising the term."
+      ],
+      "submit": [
+        "Include your own response and a short reason.",
+        "Proofread names, sequence and punctuation before sending.",
+        "Success looks like: Use precise technical words and explain them in reader-friendly language."
+      ],
+      "teach0": [
+        "Focus on replace vague wording with an exact term.",
+        "Hold this teaching point: A precise subject word carries more information than a general placeholder.",
+        "Worked comparison: Hive (or nest, if carefully defined) names the structure; explain the term."
+      ],
+      "teach1": [
+        "Focus on define before you rely on the word.",
+        "Hold this teaching point: Give a plain-English definition so a reader can follow the sentence.",
+        "Worked comparison: Example: Habitat is the place where a living thing usually lives and finds what it needs."
+      ],
+      "teach2": [
+        "Focus on give an example and a non-example.",
+        "Hold this teaching point: An example shows correct use; a non-example shows a misuse.",
+        "Worked comparison: Example: bee colony structure; non-example: a dog kennel."
+      ],
+      "teach3": [
+        "Focus on check the term against a source.",
+        "Hold this teaching point: Confirm that your definition matches a reliable information source.",
+        "Worked comparison: A glossary, museum fact sheet or approved dictionary can help."
+      ],
+      "write": [
+        "Use the independent instructions, not the model words.",
+        "Give an original response and the reason behind it.",
+        "Independent reminder: Create a six-word glossary for a habitat report. For three of the words, write a plain-English definition, a correct example sentence and a non-example; note wh"
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use technical with a specific example from this lesson.",
+      "I can identify definition and point to the words or events that support it.",
+      "I can practise example independently on a new prompt.",
+      "I can notice glossary needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying technical independently."
+          ],
+          "question": "Which choice best shows accurate use of this idea about technical?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\n\"The wombat digs a burrow\" is clearer than \"The animal makes a hole.\" Burrow means an underground shelter made or used by an animal.\n\nYOUR SMALL TRY\nReplace \"thing the animal lives in\" when describing bees.\n\nCOMPARE AND CORRECT\nHive (or nest, if carefully defined) names the structure; explain the term.",
+        "explain": "A precise subject word carries more information than a general placeholder.\n\nA precise subject word carries more information than a general placeholder. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nA complicated word is not automatically accurate. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Replace vague wording with an exact term",
+        "visual": [
+          {
+            "alt": "Vague makes a hole improved to precise digs a burrow.",
+            "caption": "Technical words carry exact meaning when defined.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Vague</text><text x=\"28\" y=\"78\">makes a hole</text><text x=\"358\" y=\"42\">Precise</text><text x=\"358\" y=\"78\">digs a burrow</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I read the first example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or events that carry the meaning before you copy a conclusion.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "So I should try the small prompt myself, then compare it with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: \"The wombat digs a burrow\" is clearer than \"The animal makes a hole.\" Burrow means an underground shelter made or used b Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I read the first example, but I am not sure which detail matters most.\nJuno: Name the exact words or events that carry the meaning before you copy a conclusion.\nPip: So I should try the small prompt myself, then compare it with the feedback.\nJuno: Pause here. Use this model: \"The wombat digs a burrow\" is clearer than \"The animal makes a hole.\" Burrow means an underground shelter made or used b Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying definition independently."
+          ],
+          "question": "Which choice best shows accurate use of this idea about technical?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\n\"A burrow is an underground shelter. Wombats dig burrows for safety.\" Definition first, then use.\n\nYOUR SMALL TRY\nDefine habitat in one short sentence for a Year 3 reader.\n\nCOMPARE AND CORRECT\nExample: Habitat is the place where a living thing usually lives and finds what it needs.",
+        "explain": "Give a plain-English definition so a reader can follow the sentence.\n\nGive a plain-English definition so a reader can follow the sentence. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nUsing a technical word without explanation can block understanding. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Define before you rely on the word",
+        "visual": [
+          {
+            "alt": "Burrow definition beside a non-example of a high bird nest.",
+            "caption": "Examples and non-examples protect accurate word use.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Definition</text><text x=\"28\" y=\"78\">burrow = underground shelter</text><text x=\"358\" y=\"42\">Non-example</text><text x=\"358\" y=\"78\">bird nest high in tree</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying example independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact."
+          ],
+          "question": "Which choice best shows accurate use of this idea about technical?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nExample: \"The bilby rests in a burrow.\" Non-example: calling a bird's high nest a burrow.\n\nYOUR SMALL TRY\nGive an example and non-example for hive.\n\nCOMPARE AND CORRECT\nExample: bee colony structure; non-example: a dog kennel.",
+        "explain": "An example shows correct use; a non-example shows a misuse.\n\nAn example shows correct use; a non-example shows a misuse. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nA non-example helps prevent overgeneralising the term. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Give an example and a non-example"
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding. Apply the lesson idea with evidence.",
+          "options": [
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying glossary independently."
+          ],
+          "question": "Which choice best shows accurate use of this idea about technical?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI check burrow against a wildlife glossary before I lock the definition into my report.\n\nYOUR SMALL TRY\nName one place you could check the meaning of nocturnal.\n\nCOMPARE AND CORRECT\nA glossary, museum fact sheet or approved dictionary can help.",
+        "explain": "Confirm that your definition matches a reliable information source.\n\nConfirm that your definition matches a reliable information source. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nCopying a wrong definition spreads the error. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Check the term against a source"
+      }
+    ],
+    "title": "Year 3, Week 6, Lesson 3: Technical words and vocabulary",
+    "unit_number": 2,
+    "unit_title": "Information reports",
+    "week": 6,
+    "week_in_unit": 1,
+    "word_challenges": null,
+    "worked_example": "I DO — \"The wombat digs a burrow\" is clearer than \"The animal makes a hole.\" Burrow means an underground shelter made or used by an animal.\n\nNow look for the exact evidence in the words or actions. \"A burrow is an underground shelter. Wombats dig burrows for safety.\" Definition first, then use.",
+    "worked_visuals": [
+      {
+        "alt": "Vague makes a hole improved to precise digs a burrow.",
+        "caption": "Technical words carry exact meaning when defined.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Vague</text><text x=\"28\" y=\"78\">makes a hole</text><text x=\"358\" y=\"42\">Precise</text><text x=\"358\" y=\"78\">digs a burrow</text></g></svg>"
+      },
+      {
+        "alt": "Burrow definition beside a non-example of a high bird nest.",
+        "caption": "Examples and non-examples protect accurate word use.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Definition</text><text x=\"28\" y=\"78\">burrow = underground shelter</text><text x=\"358\" y=\"42\">Non-example</text><text x=\"358\" y=\"78\">bird nest high in tree</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Define habitat in one short sentence for a Year 3 reader."
+      ],
+      "independent_inputs": [
+        "Create a six-word glossary for a habitat report. For three of the words, write a plain-English definition, a correct example sentence and a non-example; note where you checked each meaning."
+      ],
+      "model_inputs": [
+        "\"The wombat digs a burrow\" is clearer than \"The animal makes a hole.\" Burrow means an underground shelter made or used by an animal."
+      ]
+    },
+    "review_questions": [
+      "Verify original Coming Soon outcome and syllabus content point against NESA English K–10 2022.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Hive (or nest, if carefully defined) names the structure; explain the term.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Replace \"thing the animal lives in\" when describing bees.",
+        "misconception": "A complicated word is not automatically accurate.",
+        "model": "\"The wombat digs a burrow\" is clearer than \"The animal makes a hole.\" Burrow means an underground shelter made or used by an animal.",
+        "rule": "A precise subject word carries more information than a general placeholder.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Example: Habitat is the place where a living thing usually lives and finds what it needs.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Define habitat in one short sentence for a Year 3 reader.",
+        "misconception": "Using a technical word without explanation can block understanding.",
+        "model": "\"A burrow is an underground shelter. Wombats dig burrows for safety.\" Definition first, then use.",
+        "rule": "Give a plain-English definition so a reader can follow the sentence.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Example: bee colony structure; non-example: a dog kennel.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Give an example and non-example for hive.",
+        "misconception": "A non-example helps prevent overgeneralising the term.",
+        "model": "Example: \"The bilby rests in a burrow.\" Non-example: calling a bird's high nest a burrow.",
+        "rule": "An example shows correct use; a non-example shows a misuse.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "A glossary, museum fact sheet or approved dictionary can help.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Name one place you could check the meaning of nocturnal.",
+        "misconception": "Copying a wrong definition spreads the error.",
+        "model": "I check burrow against a wildlife glossary before I lock the definition into my report.",
+        "rule": "Confirm that your definition matches a reliable information source.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Vague makes a hole improved to precise digs a burrow.",
+        "teaches": "Technical words carry exact meaning when defined."
+      },
+      {
+        "alt": "Burrow definition beside a non-example of a high bird nest.",
+        "teaches": "Examples and non-examples protect accurate word use."
+      }
+    ]
+  }
+}

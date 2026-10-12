@@ -61,13 +61,16 @@ From the existing checkout at `/workspace/Side-Quest`:
 
 ```sh
 python3 scripts/gold-pipeline/pipeline.py status
-python3 scripts/gold-pipeline/pipeline.py run --limit 1
+python3 scripts/gold-pipeline/pipeline.py run --limit 12
 ```
 
 Resume commands are automatic: completed identical inputs are skipped, changed
 inputs are new attempts, and an interrupted `in_progress` claim is retried under
-the process lock. Batches are capped at five; default one. Available authored
-inputs are sorted by current-stage priority, year, subject, week and lesson.
+the process lock. Pipeline `--limit` is capped at **1–16** (default 1); per-lesson
+checkpointing keeps larger runs recoverable. Authoring builders use coherent
+**12-lesson** subject batches (owner directive); trailing year-close builders may
+be shorter (e.g. 8) when fewer lessons remain. Available authored inputs are
+sorted by current-stage priority, year, subject, week and lesson.
 An explicit `--seed` selects a coherent pilot. No unavailable content is filled
 with generic drafts. A failed input is retained and skipped until changed, while
 later available inputs can proceed. A failed attempted validation exits nonzero.

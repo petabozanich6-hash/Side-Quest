@@ -283,8 +283,10 @@ def sequence(row):
 
 
 def run_batch(state, inbox, limit=1, seeds=None, root=ROOT):
-    if not 1 <= limit <= 5:
-        raise RuntimeError('Batches are bounded to 1–5 lessons')
+    # Per-lesson checkpointing makes larger runs recoverable; keep a hard
+    # upper bound so one invocation cannot monopolise a writer lock forever.
+    if not 1 <= limit <= 16:
+        raise RuntimeError('Batches are bounded to 1–16 lessons')
     rows, cp = load(state, root)
     by_key = {r['seed_key']: r for r in rows}
     for key in seeds or []:

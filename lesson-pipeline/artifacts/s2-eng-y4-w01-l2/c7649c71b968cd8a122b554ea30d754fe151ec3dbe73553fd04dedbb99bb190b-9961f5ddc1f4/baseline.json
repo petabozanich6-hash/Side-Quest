@@ -1,0 +1,352 @@
+{
+  "child_mission": "Become a Suspense Writer! Give your reader a question, a useful clue and a satisfying answer in a short original story.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep the three planning notes, complete story or detailed paper-work summary, revision explanation, reflection and quiz responses.",
+  "extension": "Rewrite only the discovery paragraph to change its pace. Compare what the reader notices in each version.",
+  "guided_practice": "WE DO: Plan a missing-ribbon story.\n1. Choose a character and purpose for the ribbon. Try first. Example: Sam needs it to mark the treasure-hunt finish.\n2. Choose a safe place it could slip. Example: under a chair.\n3. Plant one clue before the answer. Try a visible colour or movement; compare with “A red strip showed beside the chair leg.”\n4. Add a search action. Example: Sam bends down to look, then lifts the chair carefully.\n5. Write the reveal and an outcome that completes the game goal.\n6. Read the short sequence. Remove an unrelated detail or add a missing connection. Explain why your edit helps.\nYour character, object and wording can differ. Keep the question, clue and answer connected.",
+  "independent_task": "YOU DO: Write an original gentle suspense story (about 20–25 minutes).\n1. Plan a missing everyday item: a map, ribbon, card or label. Give your fictional character a goal and a reason it matters.\n2. Use the three planner boxes or paper notes to connect question, clue, search and reveal.\n3. Write an opening that introduces the character and situation. Let the reader understand the question.\n4. Write the search. Include one fair clue and one meaningful action that gives the reader time to follow the discovery.\n5. Reveal the answer and finish the original goal. Aim for three short paragraphs; clarity matters more than counting words.\n6. Reread for connections. Improve one clue, action or ending and explain the change below the story.\nYou can write on paper or in the big box. If using paper, type the story or a clear summary with the clue, reveal and revision. Check: clear goal; fair clue; purposeful pace; connected reveal; outcome; explained revision.",
+  "learning_area": "English",
+  "learning_intention": "We are learning to build gentle suspense through a character’s goal, selective details, pacing and a connected reveal.",
+  "lesson_number": 2,
+  "lesson_role": "Writing",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Make three planning boxes on paper, write the story and mark one revision. Later type the story or detailed summary and complete the quiz.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches gentle suspense, purposeful goals, fair clues, pacing, reveal, resolution and revision. These lessons follow the repository’s Year 4 narrative sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of full syllabus coverage. All texts are original.\n\nParent: Look for a connected sequence rather than frightening content or a fixed word count. Accept an everyday safe scenario. The lesson supplies teaching, models and feedback. Support access and review the evidence; do not teach the steps for the child.\n\nParent: Eight multiple-choice answers are scored. The unchanged 90% threshold requires 8/8. Two written responses are reviewed manually. Model for question 9: A red strip showed beside one chair leg. Model for question 10: I added a paper rustle before the reveal because the missing label was moving in the draught.\n\nParent: The complete Rustle model shows the taught method. Review the child’s clue and answer together. A short clear story with an explained improvement can demonstrate more than a long disconnected one.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "planner_fields": [
+    {
+      "hint": "Who wants what, and why does the answer matter?",
+      "key": "goal",
+      "label": "Character, goal and reader question"
+    },
+    {
+      "hint": "What useful detail appears before the answer? What happens next?",
+      "key": "clue",
+      "label": "Clue and search action"
+    },
+    {
+      "hint": "Explain the clue and show what happens to the original goal.",
+      "key": "reveal",
+      "label": "Reveal and outcome"
+    }
+  ],
+  "planner_intro": "Use brief notes. Your reveal should explain your clue, and the outcome should connect to the character’s goal.",
+  "planner_title": "Plan the question and its answer",
+  "quiz": [
+    {
+      "correct_index": 2,
+      "explanation": "Suspense involves waiting for an answer that matters; it can be gentle and clear.",
+      "options": [
+        "Every answer before the opening",
+        "Only confusing missing information",
+        "A reason to wait for an important answer",
+        "A rule that all stories must frighten"
+      ],
+      "question": "What does gentle suspense give a reader?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The display goal gives the search a purpose for the character and reader.",
+      "options": [
+        "It removes the need for an ending",
+        "It makes every object a clue",
+        "It changes the spelling rules",
+        "It explains why finding the label matters"
+      ],
+      "question": "Why give Lena a goal?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "A fair clue provides a detail whose purpose becomes clear at the reveal.",
+      "options": [
+        "It connects to the later answer",
+        "It is always the longest sentence",
+        "It is unrelated to the question",
+        "It replaces the character"
+      ],
+      "question": "What makes a fair clue useful?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The colour, paper and place connect the detail to the missing label.",
+      "options": [
+        "A distant unrelated bicycle",
+        "A blue paper corner below the board",
+        "A new character with no connection",
+        "A list of all chair colours"
+      ],
+      "question": "Which detail points towards a blue label behind a board?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Pacing concerns the speed of the unfolding events, influenced by selected actions and detail.",
+      "options": [
+        "Choosing a font size only",
+        "Counting every letter",
+        "How quickly events seem to unfold",
+        "Removing all actions"
+      ],
+      "question": "What is pacing in this writing lesson?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "A close look adds a connected observation before the reveal rather than filler.",
+      "options": [
+        "Repeat waiting without new information",
+        "Describe an unrelated event",
+        "Use only exclamation marks",
+        "Show a close look at the clue before reaching"
+      ],
+      "question": "Which is a purposeful way to slow a discovery?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "A short sentence can focus attention, but it is one choice rather than a universal rule.",
+      "options": [
+        "It can draw attention to that moment",
+        "It proves all other sentences are wrong",
+        "It removes the need for a goal",
+        "It automatically explains every clue"
+      ],
+      "question": "Why use a short sentence at one important moment?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Placing the label beside the model completes the exhibition goal after the discovery.",
+      "options": [
+        "Lena forgets the display permanently",
+        "She places the recovered label beside her model",
+        "An unrelated story starts",
+        "The blue corner is never explained"
+      ],
+      "question": "Which ending completes the model’s goal?",
+      "type": "multiple_choice"
+    },
+    {
+      "explanation": "A clue points towards the ribbon without having to reveal everything at once.",
+      "marking_guide": "Accept a plausible connected detail before the entire ribbon is revealed.",
+      "question": "Write a clue for a missing red ribbon under a chair.",
+      "sample_answer": "A red strip showed beside one chair leg.",
+      "type": "short_answer"
+    },
+    {
+      "explanation": "The edit should strengthen the link between question, clue and answer, not only lengthen the story.",
+      "marking_guide": "Accept a specific clue, action or outcome revision with its purpose.",
+      "question": "Explain a revision that would make a suspense story more connected.",
+      "sample_answer": "I added a paper rustle before the reveal because the missing label was moving in the draught.",
+      "type": "short_answer"
+    }
+  ],
+  "response_prompt": "Which detail or action builds your story’s suspense, and how does the ending connect to it?",
+  "review_status": "unreviewed",
+  "seed_key": "s2-eng-y4-w01-l2",
+  "stage": "S2",
+  "stage_hints": {
+    "accept": [
+      "Read the mission about a question, clue and satisfying answer.",
+      "You will practise a gentle missing-item story before planning your own.",
+      "Start by deciding why the item matters; the lesson will help you connect a clue to its reveal."
+    ],
+    "guided": [
+      "Start with a reason the ribbon matters.",
+      "Pick one place and one visible detail before the search action.",
+      "Use “Beside ____, the character noticed ____.” Keep the later reveal connected."
+    ],
+    "learn": [
+      "Read the plan before the complete story.",
+      "Match the clue and search action to the later explanation.",
+      "Trace question → clue → reveal → outcome and look for a missing link."
+    ],
+    "plan": [
+      "Begin with just the character and goal box.",
+      "Ask why the item is needed before planning its hiding place.",
+      "Write one goal note, then one clue note and an answer that explains that clue."
+    ],
+    "quiz": [
+      "Return to the step about goal, clue, pace or reveal.",
+      "Ask whether each choice connects to the story’s question.",
+      "For written answers, give one useful detail and explain its connection to the later answer."
+    ],
+    "submit": [
+      "Check that your story includes the clue and its connected reveal.",
+      "Include your plan and explained revision as well as the story.",
+      "Send the suspense story and reflection; a paper-work summary should name the clue, reveal and improvement."
+    ],
+    "teach0": [
+      "Look back at the difference between curiosity and confusion.",
+      "Name what the character wants before choosing a mystery detail.",
+      "Plan a reader question tied to a goal, such as finding an item before an event starts."
+    ],
+    "teach1": [
+      "Reread the clue and reveal together.",
+      "Choose a detail connected by colour, place, sound or movement.",
+      "Show part of the missing item before showing the whole answer."
+    ],
+    "teach2": [
+      "Look at the rushed and revised discovery.",
+      "Add one observation or action that gets closer to the clue.",
+      "Try a noticing sentence followed by a careful search action; leave out repeated filler."
+    ],
+    "teach3": [
+      "Look back at how the model explains the earlier rustle.",
+      "Check the reveal first, then whether the original goal is finished.",
+      "Use the earlier clue to plan the discovery, followed by one outcome action."
+    ],
+    "write": [
+      "Choose the missing item and why your character needs it.",
+      "Begin “____ checked ____. The ____ was missing.”",
+      "A partial opening is “The game would begin soon. ____ looked beside ____.” Continue with your own goal and fair clue."
+    ]
+  },
+  "subject": "English",
+  "success_criteria": [
+    "I can give my character a clear goal.",
+    "I can create a question and plant a useful clue.",
+    "I can choose detail and pace for a reason.",
+    "I can reveal an answer that connects to the clue.",
+    "I can revise one part and explain its effect."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "The goal and approaching visitors explain why finding the label matters. The other plans provide too little connected context.",
+        "options": [
+          "A random noise with no character or situation",
+          "A list of colours only",
+          "Lena needs her missing label before visitors arrive",
+          "Someone does something in an unnamed place"
+        ],
+        "question": "Which plan gives a reader a clear reason to wonder?"
+      },
+      "example": "I DO:\nGoal: Lena needs her display label before visitors arrive.\nUncertainty: it is missing, and something rustles behind the display board.\nReader question: Could the sound help her find the label?\nOpening: “Lena checked the empty space beside her model. The visitors would arrive soon. Behind the board, paper rustled.”\n\nYOU TRY:\nGive a character a goal involving a missing map. What could make the answer matter?\n\nCHECK:\nOne possibility is finding the map before a treasure-hunt game starts. A goal plus a reason gives the uncertainty a purpose; your event can be different.",
+      "explain": "**Suspense is waiting to find out.**\nA reader may feel suspense when an important question has not yet been answered. It does not have to be frightening. Will a character find a missing item before the game begins? What is making a soft sound inside a box? A gentle question can hold attention.\n\n**Give the character a goal first.**\nReaders need to know why the answer matters. If Lena wants to find her missing exhibition label, an unexplained rustle near her display has a purpose. Without that goal, a noise can feel like a random detail.\n\n**Give enough information to follow.**\nName the character and situation. Show the obstacle or uncertainty. Hold back the answer for a short time, rather than withholding every useful fact. “Someone did something somewhere” leaves a reader confused, not usefully curious.\n\n**Use a question to plan.**\nYou do not need to write a question mark in the story. Decide what you want the reader to wonder, then let the action create that question.",
+      "icon": "📖",
+      "notice": "Suspense needs a question the reader can understand. Mystery is not the same as leaving out all context.",
+      "title": "Give the reader a reason to wonder"
+    },
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "The visible blue paper corner connects to the missing label and its location. The other details do not point to that answer.",
+        "options": [
+          "A new planet appears",
+          "A random bicycle wins a race",
+          "Every chair has a different colour",
+          "A blue paper corner shows below the board"
+        ],
+        "question": "Which clue connects fairly to a blue paper label behind a board?"
+      },
+      "example": "I DO:\nMissing item: blue paper label.\nClue: “A blue corner flickered below the board.”\nLater answer: the label has slipped into the gap and moves in the draught.\nThe clue and answer connect through colour, place and movement.\n\nYOU TRY:\nIf a missing red ribbon is caught under a chair, choose a clue a character could notice before seeing the whole ribbon.\n\nCHECK:\n“A red strip showed beside one chair leg” is a useful possibility. It points towards the ribbon without immediately showing everything.",
+      "explain": "**A clue is a useful detail.**\nIn this story, a clue points towards the later answer. A blue corner showing under the board can connect to the missing blue label. The reader may not know the answer yet, but the reveal should make the clue’s purpose clear.\n\n**Select details instead of adding everything.**\nA detail such as a paper rustle matters if the missing label has slipped behind the board. The colour of every chair may not help. Choose a few details that guide attention towards the question.\n\n**Keep the clue fair.**\nIf the answer is a label caught behind the board, show something connected before revealing it. A sudden helicopter arriving with an unrelated replacement changes the problem instead of paying off the clue.\n\n**Clues are not proof yet.**\nThe reader can suspect an answer and still wait to see. Use a visible corner, a repeated sound or a trail that fits the original situation. Keep the story safe and believable within the world you create.",
+      "icon": "📖",
+      "notice": "A clue should connect to the answer. Decoration can make a scene vivid, but does not automatically help solve the story’s question.",
+      "title": "Plant a clue before the answer",
+      "visual": [
+        {
+          "alt": "A connected suspense chain links the missing label goal to a blue-corner clue, search action and reveal.",
+          "caption": "Make each detail serve the story’s question.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 224\"><rect width=\"420\" height=\"224\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Goal: find missing label</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Clue: blue corner below board</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Action: crouch and reach</text><text x=\"16\" y=\"172\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Reveal: paper in the gap</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "Examining the clue is an action that advances the search while giving the reader time to follow it. The other changes do not control a connected discovery.",
+        "options": [
+          "Show the character crouching to examine the clue",
+          "Repeat an unrelated colour ten times",
+          "Remove the character’s goal",
+          "Add exclamation marks to every word"
+        ],
+        "question": "Which change slows discovery while moving the story forward?"
+      },
+      "example": "I DO:\nRushed: “Lena saw paper and got the label.”\nRevised: “Lena crouched beside the board. A blue corner moved in the draught. She reached into the narrow gap.”\nI slow the discovery with connected actions. The reader follows what she notices before the answer.\n\nYOU TRY:\nAdd one purposeful action between noticing a red strip and lifting the chair.\n\nCHECK:\nThe character might bend down to look closely. That brings the character nearer to the clue. Repeating “she waited” three times would not add the same information.",
+      "explain": "**Pacing is how quickly events seem to unfold.**\nYou can spend several sentences on a small action or move quickly over an unimportant journey. Slowing the important discovery can give the reader time to wonder. It should still move the story forward.\n\n**Show a purposeful sequence.**\n“Lena bent down. The corner moved again. She reached towards the gap.” Each action gets closer to the answer. Compare “Lena looked for ages and ages”: it says the wait is long but gives little action to follow.\n\n**Sentence length is one choice.**\nA short sentence can draw attention to a moment: “The paper moved.” Longer sentences can connect actions and details. Do not make every sentence short or add exclamation marks everywhere. Choose what helps this particular moment.\n\n**Read it aloud to check.**\nIf the discovery races past, add one meaningful observation or action before the reveal. If it drags, remove repeated waiting that teaches the reader nothing new.",
+      "icon": "📖",
+      "notice": "Short sentences are a tool, not a rule. Slow the important moment with meaningful actions rather than repeated filler.",
+      "title": "Control the pace of discovery",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "My character loses a label. Then I say she finds it. The search goes past very quickly.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Choose a useful clue first. What could she notice before the whole label is visible?",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "A blue corner under the board. Then she can crouch and check the narrow gap.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Those actions slow the discovery while getting closer to the answer. At the end, explain why the paper moved and finish the display goal.",
+                    "who": "juno"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and plan a clue, one search action and a reveal that fits. They should belong to the same event.",
+                    "who": "pip"
+                  }
+                ]
+              }
+            ],
+            "title": "A clue earns its place",
+            "transcript": "Pip: My character loses a label. Then I say she finds it. The search goes past very quickly.\nJuno: Choose a useful clue first. What could she notice before the whole label is visible?\nPip: A blue corner under the board. Then she can crouch and check the narrow gap.\nJuno: Those actions slow the discovery while getting closer to the answer. At the end, explain why the paper moved and finish the display goal.\nPip: Pause and plan a clue, one search action and a reveal that fits. They should belong to the same event."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "The reveal explains the clue and the resolution completes the original display goal. Suspense can have a gentle answer.",
+        "options": [
+          "Ignore the label forever",
+          "Explain the clue and show the label ready for the display",
+          "Replace the story with an unrelated adventure",
+          "Claim every question needs a frightening answer"
+        ],
+        "question": "What should the ending of this label story do?"
+      },
+      "example": "I DO:\nReveal: “Lena pulled out the label. The fan had blown it behind the board.”\nResolution: “She placed it beside the model as the first visitors arrived.”\nThe paper rustle and blue corner now have an explanation, and the goal is met.\n\nCOMMON MISTAKE:\nThe ending introduces a new missing item without answering the first question. I fix it by resolving the label search before starting anything else.\n\nYOU TRY:\nWrite one outcome sentence after a character retrieves a ribbon needed for the game.\n\nCHECK:\nAn outcome can show the ribbon ready when the game starts. It connects the discovery to the original goal.",
+      "explain": "**A reveal answers the question.**\nShow what caused the clues. Here the rustle comes from the paper label moving in a draught. Let the character discover the answer through an action, rather than jumping to an unrelated explanation.\n\n**A resolution shows what happens after.**\nFinding the label answers where it was. Placing it beside the model also completes Lena’s goal. Both parts help the ending feel connected to the beginning.\n\n**Reread backwards for fairness.**\nStart with the reveal and check whether an earlier clue fits it. Then check the goal: does the ending address what the character wanted? Repair a missing connection before polishing individual words.\n\n**Explain a revision.**\nAn edit should have a purpose. “I added the blue corner because it points towards the label” explains a useful change. Making a story longer alone does not show improved suspense.",
+      "icon": "📖",
+      "notice": "Answer the question you raised. A connected reveal can still surprise the reader without contradicting earlier facts.",
+      "title": "Reveal, resolve and revise"
+    }
+  ],
+  "title": "Year 4: Build suspense with a fair clue",
+  "unit_number": 1,
+  "unit_title": "Narrative: suspense, point of view and voice",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Plan and write a complete gentle suspense story.\nPLAN\nGoal: Lena needs her label for the exhibition.\nClues: paper rustle; blue corner below the board.\nSearch: crouch, look closely, reach into the gap.\nReveal: the fan blew the label behind the board.\nResolution: the label is displayed before visitors arrive.\n\nTHE RUSTLE\nLena checked the empty space beside her model. The visitors would arrive soon, but her blue label was missing. She searched the table and looked under her chair. Behind the display board, paper rustled.\nShe stopped. A blue corner flickered below the board. Lena crouched and looked into the narrow gap. The corner moved again. She reached carefully and drew out the folded label.\nThe fan on the windowsill had blown it behind the board. Lena smoothed the paper and placed it beside her model as the first visitors arrived.\n\nWHY IT WORKS\nThe goal makes the search matter. The rustle and blue corner point towards the reveal. Connected observations slow the important discovery. The final sentence completes the goal.\n\nCOMMON MISTAKE AND FIX\nDraft: “A noise happened. A person gave her a new label.” The noise has no purpose. Fix: make the label cause the rustle and let Lena follow the clue. Now the reveal rewards the reader’s attention.\n\nREVISION NOTE\nI added the visible blue corner so the answer has evidence before the reveal.",
+  "worked_visuals": [
+    {
+      "alt": "Suspense writing begins with a question, clue and search, then explains the clue and finishes the goal before checking connections.",
+      "caption": "The answer should fit the earlier detail.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 224\"><rect width=\"420\" height=\"224\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Question → clue → search</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Reveal: explain the clue</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Outcome: finish the goal</text><text x=\"16\" y=\"172\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Revise: check connections</text></svg>"
+    }
+  ],
+  "year_level": "Year 4"
+}

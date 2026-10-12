@@ -1,0 +1,445 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-VOCAB-01",
+      "lesson_evidence": "Figurative language compares or animates ideas: similes use like/as, metaphors say one thing is another and personification gives human actions to non-human things.",
+      "scope_limit": "Partial contribution; confirm content points for each listed code.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    },
+    {
+      "code": "EN2-SPELL-01",
+      "lesson_evidence": "Figurative language compares or animates ideas: similes use like/as, metaphors say one thing is another and personification gives human actions to non-human things.",
+      "scope_limit": "Partial contribution; confirm content points for each listed code.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Figurative language compares or animates ideas: similes use like/as, metaphors say one thing is another and personification gives human actions to non-human things.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same strategy to an unfamiliar topic or audience, then compare the effect of two different choices.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nLabel each: (1) The wind tugged my sleeve. (2) The wind was a bully. (3) The wind was like a shove.\n\nFEEDBACK\n(1) personification; (2) metaphor; (3) simile.\n\nCHECK\nCalling every description a metaphor hides the differences readers need to notice.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nWrite two similes, two metaphors and two personifications on the same topic. Label each and explain the effect of three examples.\n\nWrite a short reflection describing one specific revision you made and why.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Figurative language compares or animates ideas: similes use like/as, metaphors say one thing is another and personification gives human actions to non-human things.",
+    "lesson_number": 3,
+    "lesson_role": "Language and spelling",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "EN2-VOCAB-01",
+      "EN2-SPELL-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Write two similes, two metaphors and two personifications on the same topic. Label each and explain the effect of three examples. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: (1) personification; (2) metaphor; (3) simile. Reasoning: I used simile by attending to metaphor rather than copying the worked model.\n\nParent: Written model 2: Common error: Calling every description a metaphor hides the differences readers need to notice. Correction: (1) personification; (2) metaphor; (3) simile. Why: the correction restores accurate use of simile.\n\nParent: Likely misconception: Calling every description a metaphor hides the differences readers need to notice. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating simile on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with simile, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 1,
+        "explanation": "(1) personification; (2) metaphor; (3) simile. This matches the lesson skill for simile.",
+        "options": [
+          "Copy the model word-for-word and call that independent work.",
+          "(1) personification; (2) metaphor; (3) simile.",
+          "Calling every description a metaphor hides the differences readers need to notice.",
+          "Ignore the words and invent a more exciting event."
+        ],
+        "question": "Label each: (1) The wind tugged my sleeve. (2) The wind was a bully. (3) The wind was like a shove. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Calling every description a metaphor hides the differences readers need to notice. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Figurative language compares or animates ideas: similes use like/as, metaphors say one thing is another and personification gives human actions to non-human…",
+          "(1) personification; (2) metaphor; (3) simile.",
+          "Careful use of metaphor with clear evidence.",
+          "Calling every description a metaphor hides the differences readers need to notice."
+        ],
+        "question": "Which statement is a common mistake when practising simile?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and named metaphor, not by copying the model.",
+        "options": [
+          "Treat a missing detail as a stated fact.",
+          "Apply the idea with new evidence and name the metaphor used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right."
+        ],
+        "question": "A learner is practising simile. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries simile.",
+        "options": [
+          "Point to exact words in the sentence that show simile and say what they do.",
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "Calling every description a metaphor hides the differences readers need to notice."
+        ],
+        "question": "Read: \"At dawn, Mina whispered to her goat as frost glittered on the fence.\" Which choice best uses simile from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "options": [
+          "Copy the model word-for-word and call that independent work.",
+          "(1) personification; (2) metaphor; (3) simile.",
+          "Calling every description a metaphor hides the differences readers need to notice.",
+          "Ignore the words and invent a more exciting event."
+        ],
+        "question": "Which statement correctly applies the lesson idea about simile?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "options": [
+          "Copy a model sentence from another story unchanged.",
+          "Treat a missing detail as a stated fact.",
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue."
+        ],
+        "question": "In a new text, what should you do first to practise metaphor?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "options": [
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea.",
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess."
+        ],
+        "question": "Which revision actually repairs meaning?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "options": [
+          "Change fonts and claim the work is new.",
+          "Calling every description a metaphor hides the differences readers need to notice.",
+          "Use a fresh sentence or text and explain one precise choice about simile.",
+          "Retype the worked model as the final answer."
+        ],
+        "question": "Which response shows transfer of simile to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "question": "Produce a fresh example demonstrating simile on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Original response on new material: (1) personification; (2) metaphor; (3) simile. Reasoning: I used simile by attending to metaphor rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "question": "Name one likely error with simile, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Common error: Calling every description a metaphor hides the differences readers need to notice. Correction: (1) personification; (2) metaphor; (3) simile. Why: the correction restores accurate use of simile.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent task and reflection, with explanations where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y4-w11-l3",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; verify content points before acceptance.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise simile.",
+        "Read the mission before you start writing or speaking.",
+        "Keep the audience and purpose in mind as you work."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reason with the feedback.",
+        "Adjust anything that does not match the evidence."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the wording that carries the meaning.",
+        "Then explain the choice without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore the example.",
+        "Prefer evidence over wording that merely sounds clever."
+      ],
+      "submit": [
+        "Check that your response and reason are both present.",
+        "Proofread names, sequence and punctuation.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact word or action before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and underline one useful detail.",
+        "Say what that detail helps a reader understand.",
+        "A vague compliment is weaker than quoted evidence."
+      ],
+      "teach2": [
+        "Compare a weak attempt with a stronger revision.",
+        "Change meaning or accuracy, not only length.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh topic that still uses the same skill.",
+        "Explain one decision in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include an original response and a short reason.",
+        "Save work that shows the skill on new content."
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use simile with a specific example from this lesson.",
+      "I can identify metaphor and explain why it matters.",
+      "I can practise personification independently on a new prompt.",
+      "I can notice figurative needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Figurative language compares or animates ideas: similes use like/as, metaphors say one thing is another and personification gives human actions to non-human things. A supported explanation follows the actual words and purpose of the task.",
+          "options": [
+            "Figurative language compares or animates ideas: similes use like/as, metaphors say one thing is another and personification gives human actions to non-human things.",
+            "A claim unrelated to the text.",
+            "An answer copied without understanding.",
+            "A guess with no explanation."
+          ],
+          "question": "Which choice best shows accurate use of this idea about simile?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSimile: \"The moon was like a coin.\" Metaphor: \"The moon was a coin.\" Personification: \"The moon peeked over the hill.\" Each creates an image differently.\n\nTRY FIRST\nLabel each: (1) The wind tugged my sleeve. (2) The wind was a bully. (3) The wind was like a shove.\n\nFEEDBACK\n(1) personification; (2) metaphor; (3) simile.",
+        "explain": "Figurative language compares or animates ideas: similes use like/as, metaphors say one thing is another and personification gives human actions to non-human things.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Calling every description a metaphor hides the differences readers need to notice. Correct the meaning, not just the appearance.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Simile and metaphor side by side.",
+            "caption": "Like/as vs direct comparison.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Simile</text><text x=\"28\" y=\"78\">like a coin</text><text x=\"358\" y=\"42\">Metaphor</text><text x=\"358\" y=\"78\">was a coin</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or actions that carry the meaning before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Simile: \"The moon was like a coin.\" Metaphor: \"The moon was a coin.\" Personification: \"The moon peeked over the hill.\" E Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which detail matters most.\nJuno: Name the exact words or actions that carry the meaning before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Simile: \"The moon was like a coin.\" Metaphor: \"The moon was a coin.\" Personification: \"The moon peeked over the hill.\" E Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task.",
+          "options": [
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
+            "A claim unrelated to the text.",
+            "An answer copied without understanding.",
+            "A guess with no explanation."
+          ],
+          "question": "Which choice best shows accurate use of this idea about simile?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSimile: \"The moon was like a coin.\" Metaphor: \"The moon was a coin.\" Personification: \"The moon peeked over the hill.\" Each creates an image differently. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
+        "explain": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Saying a choice is good without naming the actual detail does not show understanding. Correct the meaning, not just the appearance.",
+        "title": "Explain the evidence",
+        "visual": [
+          {
+            "alt": "Personification contrasted with mislabelling.",
+            "caption": "Name the figurative type accurately.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Personify</text><text x=\"28\" y=\"78\">moon peeked</text><text x=\"358\" y=\"42\">Mislabel</text><text x=\"358\" y=\"78\">call every image metaphor</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no explanation.",
+            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
+            "A claim unrelated to the text."
+          ],
+          "question": "Which choice best shows accurate use of this idea about simile?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nCalling every description a metaphor hides the differences readers need to notice. Here is a more productive model: Simile: \"The moon was like a coin.\" Metaphor: \"The moon was a coin.\" Personification: \"The moon peeked over the hill.\" Each creates an image differently.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\n(1) personification; (2) metaphor; (3) simile.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "A superficial change in length or appearance does not repair meaning. Calling every description a metaphor hides the differences readers need to notice. Correct the meaning, not just the appearance.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task.",
+          "options": [
+            "A guess with no explanation.",
+            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
+            "A claim unrelated to the text.",
+            "An answer copied without understanding."
+          ],
+          "question": "Which choice best shows accurate use of this idea about simile?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nFigurative language compares or animates ideas: similes use like/as, metaphors say one thing is another and personification gives human actions to non-human things. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",
+        "explain": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new content. Correct the meaning, not just the appearance.",
+        "title": "Transfer to an independent example"
+      }
+    ],
+    "title": "Year 4, Week 11, Lesson 3: Figurative language: simile, metaphor and personification",
+    "unit_number": 3,
+    "unit_title": "Poetry: figurative language and ballads",
+    "week": 11,
+    "week_in_unit": 1,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nSimile: \"The moon was like a coin.\" Metaphor: \"The moon was a coin.\" Personification: \"The moon peeked over the hill.\" Each creates an image differently.\n\nExplain what makes this example accurate and effective, identifying its specific wording.",
+    "worked_visuals": [
+      {
+        "alt": "Simile and metaphor side by side.",
+        "caption": "Like/as vs direct comparison.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Simile</text><text x=\"28\" y=\"78\">like a coin</text><text x=\"358\" y=\"42\">Metaphor</text><text x=\"358\" y=\"78\">was a coin</text></g></svg>"
+      },
+      {
+        "alt": "Personification contrasted with mislabelling.",
+        "caption": "Name the figurative type accurately.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Personify</text><text x=\"28\" y=\"78\">moon peeked</text><text x=\"358\" y=\"42\">Mislabel</text><text x=\"358\" y=\"78\">call every image metaphor</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 4"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Label each: (1) The wind tugged my sleeve. (2) The wind was a bully. (3) The wind was like a shove."
+      ],
+      "independent_inputs": [
+        "Write two similes, two metaphors and two personifications on the same topic. Label each and explain the effect of three examples."
+      ],
+      "model_inputs": [
+        "Simile: \"The moon was like a coin.\" Metaphor: \"The moon was a coin.\" Personification: \"The moon peeked over the hill.\" Each creates an image differently."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "(1) personification; (2) metaphor; (3) simile.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Label each: (1) The wind tugged my sleeve. (2) The wind was a bully. (3) The wind was like a shove.",
+        "misconception": "Calling every description a metaphor hides the differences readers need to notice.",
+        "model": "Simile: \"The moon was like a coin.\" Metaphor: \"The moon was a coin.\" Personification: \"The moon peeked over the hill.\" Each creates an image differently.",
+        "rule": "Figurative language compares or animates ideas: similes use like/as, metaphors say one thing is another and personification gives human actions to non-human things.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "The most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Underline or quote one precise detail in the model and explain its effect.",
+        "misconception": "Saying a choice is good without naming the actual detail does not show understanding.",
+        "model": "Simile: \"The moon was like a coin.\" Metaphor: \"The moon was a coin.\" Personification: \"The moon peeked over the hill.\" Each creates an image differently. Think about how this word or relationship creates meaning.",
+        "rule": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "(1) personification; (2) metaphor; (3) simile.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Describe why the warned-against approach would weaken your work, then write a corrected version.",
+        "misconception": "A superficial change in length or appearance does not repair meaning. Calling every description a metaphor hides the differences readers need to notice.",
+        "model": "Calling every description a metaphor hides the differences readers need to notice. Here is a more productive model: Simile: \"The moon was like a coin.\" Metaphor: \"The moon was a coin.\" Personification: \"The moon peeked over the hill.\" Each creates an image differently.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "The new example should meet the same purpose as the model, but contain original material.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Make one fresh example demonstrating the skill and explain your main choice.",
+        "misconception": "Repeating the worked example cannot show transfer to new content.",
+        "model": "Figurative language compares or animates ideas: similes use like/as, metaphors say one thing is another and personification gives human actions to non-human things. Now choose different people, facts or text to show you can transfer the idea.",
+        "rule": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Simile and metaphor side by side.",
+        "teaches": "Like/as vs direct comparison."
+      },
+      {
+        "alt": "Personification contrasted with mislabelling.",
+        "teaches": "Name the figurative type accurately."
+      }
+    ]
+  }
+}
