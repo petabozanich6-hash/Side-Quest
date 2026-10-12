@@ -121,6 +121,16 @@ def build():
            marking_guide='Accept plausible original revisions with a clear subject, precise action and two relevant explanations. Do not award full credit for strings of repetitive adjectives.',
            explanation='Precision comes from identifying an exact noun and useful verb, not from adding many interchangeable describing words.')
     ]
+    # Static, subject-specific teaching diagrams; no animation or video.
+    visual1=dict(svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 130"><rect x="8" y="10" width="305" height="105" rx="14" fill="#fff2e8" stroke="#b87445"/><rect x="345" y="10" width="305" height="105" rx="14" fill="#e8f5ed" stroke="#297a61"/><g font-size="19" fill="#263948"><text x="24" y="44">Fragment</text><text x="24" y="83">Behind the shed.</text><text x="361" y="44">Complete thought</text><text x="361" y="83">A lizard hid behind the shed.</text></g></svg>',
+      alt='Compare incomplete place phrase Behind the shed with the complete sentence A lizard hid behind the shed.',
+      caption='A location alone is incomplete; the second sentence names a subject and action.')
+    visual2=dict(svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 160"><rect x="12" y="36" width="300" height="79" rx="12" fill="#e9f2fb" stroke="#316994"/><rect x="345" y="36" width="300" height="79" rx="12" fill="#e8f5ed" stroke="#297a61"/><g font-size="19" fill="#263948"><text x="33" y="27">Subject: who or what?</text><text x="367" y="27">Verb: what happened?</text><text x="42" y="80">Two magpies</text><text x="375" y="80">guarded the nest.</text></g><path d="M311 75H343" stroke="#263948" stroke-width="3"/></svg>',
+      alt='Sentence split into subject Two magpies and predicate guarded the nest with action verb guarded.',
+      caption='The subject tells who or what; the verb guarded identifies the action.')
+    l['worked_visuals']=[visual1, visual2]
+    steps[0]['visual']=[visual1]
+    steps[1]['visual']=[visual2]
     l['quiz']=q
     l['parent_notes']=('Parent only — independent examples, not a single required wording. Task 1: "A beetle hid under the fallen gum tree." '
       'It needed a subject and action. Task 2: accept a meaningful original sentence followed by a genuine precision revision. '
@@ -146,7 +156,7 @@ def build():
     }
     for key in ('resources','word_challenges','sort_activity','suspense_builder','planner_fields','planner_title',
                 'planner_intro','spelling','spelling_focus','hoard_words','follow_up_challenges',
-                'printable_resource','interactive_activities','explicit_teaching','worked_visuals'):
+                'printable_resource','interactive_activities','explicit_teaching'):
         l[key]=None
     return dict(architecture='d1-worker',lesson=l,
       curriculum=[dict(code='EN2-CWT-01',source='https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes',
@@ -155,7 +165,7 @@ def build():
       requirements=dict(teaching=teaching,practice=dict(model_inputs=['The duck paddled','The duck paddled through'],
          guided_inputs=['Three children waited','The dingo sprinted','The gate creaked'],
          independent_inputs=['Under the fallen gum tree','object in your home','The curious echidna','a storm rolled in']),
-       visuals=[],review_questions=['Confirm actual Coming Soon NESA code and content point.',
+       visuals=[dict(alt=visual1['alt'],teaches='Contrast a place fragment with a full subject-action sentence'),dict(alt=visual2['alt'],teaches='Locate the subject and action verb in a sentence')],review_questions=['Confirm actual Coming Soon NESA code and content point.',
          'Check every answer independently for grammatical accuracy.',
          'Review Year 3 vocabulary and the amount of direct instruction.',
          'Verify that child API does not expose parent answers.',
