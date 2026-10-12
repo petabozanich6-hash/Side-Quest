@@ -23,7 +23,7 @@ Binding owner order: finish **all Stage 2 then all Stage 4 Written Core** (4,902
 
 | Gate | Count |
 |---|---|
-| Automated validation passed (pipeline) | 208 |
+| Automated validation passed (pipeline) | 220 |
 | Educationally reviewed | 0 |
 | NESA verified | 0 |
 | Browser verified | 0 |
@@ -37,13 +37,13 @@ Protected gold reference on main: `s2-eng-y3-w01-l1` (not counted as pipeline co
 
 ### Year 3 Mathematics Written Core (in progress)
 
-Auto-validated through `s2-mat-y3-w13-l1` (49 lessons including prior pilot `w02-l1`). Maths batches 01–04. Next resume: `s2-mat-y3-w13-l2`.
+Auto-validated through `s2-mat-y3-w16-l1` (61 lessons including prior pilot `w02-l1`). Maths batches 01–05. Next resume: `s2-mat-y3-w16-l2`.
 
 **Not Gold Standard full approval.** Human educational / NESA / browser gates remain closed. Do not apply draft SQL to remote D1.
 
 ## Next resume point
 
-1. Continue Y3 Maths Written Core from `s2-mat-y3-w13-l2`.
+1. Continue Y3 Maths Written Core from `s2-mat-y3-w16-l2`.
 2. Keep coherent 12-lesson batches; do not start Phase 2 media.
 3. Preserve draft PR; no merge/deploy without owner authorisation.
 
