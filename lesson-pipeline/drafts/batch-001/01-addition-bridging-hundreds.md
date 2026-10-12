@@ -70,7 +70,7 @@ Type your solutions or write them on paper and submit a photo/brief typed explan
 8. A sensible estimate for 288 + 41 is? A 120; B 230; **C 330**; D 530. *Feedback:* 290 + 40 is approximately 330.
 
 **Written check A:** Explain two different ways to calculate 189 + 47 and why they agree.
-**Written check B:** Correct a learner who writes 197 + 36 = 233 by adding +3 to 200, then mistakenly adding +36 again.
+**Written check B:** A learner adds 197 + 36 by jumping +3 to 200, then adding all 36 again to get 236. Explain the error and calculate the correct total.
 
 ## Hints — three increasingly specific supports for every learner stage
 - **Mission:** Focus on crossing the next hundred → identify a starting number and addend → ask what gets you from 178 to 200.
@@ -96,7 +96,5 @@ Type your solutions or write them on paper and submit a photo/brief typed explan
 2. 287 + 48 = **335**: +40 → 327 → +8 → 335; or +13 → 300 → +35 → 335.
 3. 395 + 27 = **422**: +5 to 400, +22 to 422.
 4. 168 + 75 = **243** members; estimate about 170 + 70 = 240; check 243 − 75 = 168.
-Written A: 189 + 11 + 36 = 236, or 189 + 40 + 7 = 236. Written B: 197 + 3 + 33 = 233; 233 is actually correct, but the stated *method* of adding 36 again would yield 236, so ask the learner to explain the discrepancy and correct the method rather than rejecting a correct total.
+Written A: 189 + 11 + 36 = 236, or 189 + 40 + 7 = 236. Written B: The learner has double-counted the first three. Since 36 = 3 + 33, jump +3 to 200 and then +33 to reach **233**. The incorrect method 200 + 36 = 236.
 **Evidence:** Compare the child's initial and corrected reasoning, independent decomposition and inverse checks. Strong work explains *why* a split preserves the addend. **Extension:** Design a three-digit addition where tens-first seems harder than bridging, then defend your choice. **Screen-free:** Draw jumps on scrap paper and talk through them before entering the result.
-
-**Editorial note:** The written B scenario deliberately contains an inconsistent claim (correct total but incorrect stated steps); this can assess checking reasoning, but needs review for potential confusion before approval.
