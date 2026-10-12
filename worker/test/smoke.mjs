@@ -32,6 +32,37 @@ await check("student overview", call("GET", `/students/${st.id}/overview`, { tok
 const cl = await check("child login", call("POST", "/auth/child-login", { body: { username: `kid${stamp}`, pin: "1234" } }));
 const C = cl.token;
 
+// Privacy regression: a child must never receive answer keys or parent instructions,
+// including nested fields and assignment-level notes, even when the parent can.
+const privateLesson = await check("create privacy fixture lesson", call("POST", "/lessons", {
+  token: P,
+  body: {
+    title: "Privacy fixture",
+    stage: "S2",
+    parent_notes: "PARENT_ONLY_SECRET",
+    answer_key: { nested: [{ marking_guide: "SECRET_MARKING_GUIDE", sample_answer: "SECRET_SAMPLE" }] },
+    explicit_teaching: [{ explanation: "Visible lesson", marking_guide: "SECRET_IN_STEP" }]
+  }
+}));
+const privacyId = privateLesson.id;
+const privacyAssignment = await check("assign privacy fixture", call("POST", "/assignments", {
+  token: P,
+  body: { student_id: st.id, lesson_id: privacyId, parent_notes: "SECRET_ASSIGNMENT_NOTE" }
+}));
+const parentLesson = await check("parent retains lesson answer keys", call("GET", `/lessons/${privacyId}`, { token: P }));
+await check("parent lesson private notes intact", Promise.resolve({ status: 200, data: parentLesson }),
+  (r) => r.data.parent_notes === "PARENT_ONLY_SECRET" && !!r.data.answer_key);
+const noSecrets = (data) => !/PARENT_ONLY_SECRET|SECRET_MARKING_GUIDE|SECRET_SAMPLE|SECRET_IN_STEP|SECRET_ASSIGNMENT_NOTE|parent_notes|answer_key|marking_guide|sample_answer/.test(JSON.stringify(data));
+for (const [label, route] of [
+  ["child direct lesson", `/lessons/${privacyId}`],
+  ["child assignment list", "/assignments"],
+  ["child assignment detail", `/assignments/${privacyAssignment.id}`],
+  ["child dashboard", "/dashboard/child"]
+]) {
+  await check(`private data hidden: ${label}`, call("GET", route, { token: C }),
+    (r) => r.status === 200 && noSecrets(r.data));
+}
+
 for (const p of ["/dashboard/parent", "/lessons", "/lesson-index", "/resources", "/calendar", "/calendar/ics", "/audit",
   "/curriculum/stages", "/curriculum/learning-areas", "/curriculum/pattern/S4", "/curriculum/outcomes?stage=S2",
   "/reading-log", "/reading-log/stats", "/programs", "/units", "/learning-plans", "/life-evidence",

@@ -242,8 +242,12 @@ export default function ChildLesson() {
     quizShortAnswers
   ]);
 
-  const mark = (key) => (value) =>
+  // Only persist boolean stage completion. Ignore React synthetic events if a
+  // caller accidentally passes onClick={mark("x")} instead of () => mark("x")(true).
+  const mark = (key) => (value) => {
+    if (value !== true && value !== false) return;
     setDone((d) => (d[key] === value ? d : { ...d, [key]: value }));
+  };
 
   const uploadFile = async (file, setter) => {
     setUploading(true);
@@ -604,7 +608,7 @@ export default function ChildLesson() {
             {!flip && (
               <button
                 type="button"
-                onClick={mark("learn")}
+                onClick={() => mark("learn")(true)}
                 className="rounded-full px-5 py-2 text-sm font-bold"
                 style={CONTINUE_STYLE}
               >
@@ -636,7 +640,7 @@ export default function ChildLesson() {
             {!done.guided && (
               <button
                 type="button"
-                onClick={mark("guided")}
+                onClick={() => mark("guided")(true)}
                 className="rounded-full px-5 py-2 text-sm font-bold"
                 style={CONTINUE_STYLE}
               >
