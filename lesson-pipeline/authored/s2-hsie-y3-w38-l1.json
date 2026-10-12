@@ -1,0 +1,434 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "HS2-HIS-01",
+      "lesson_evidence": "A conclusion answers the inquiry question using evidence. It names the strongest evidence, states how sure you are and explains the limits, such as too few sources. A good conclusion can also suggest a new question.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/hsie/hsie-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "A conclusion answers the inquiry question using evidence. It names the strongest evidence, states how sure you are and explains the limits, such as too few sources. A good conclusion can also suggest a new question.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same HSIE idea to a new place or source, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nWhich conclusion is stronger: \"The library is better now\" or \"The library has more services than in 1990, because the librarian and two photos show new rooms\"?\n\nFEEDBACK\nThe second, because it answers the question with named evidence. The first is an opinion with no evidence.\n\nWATCH FOR\nA conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nWrite a conclusion for your inquiry that answers the main question with two pieces of evidence, one limit and one new question. Mark how confident you are and why.\n\nWrite a short reflection naming one source or idea you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "HSIE",
+    "learning_intention": "A conclusion answers the inquiry question using evidence. It names the strongest evidence, states how sure you are and explains the limits, such as too few sources. A good conclusion can also suggest a new question.",
+    "lesson_number": 1,
+    "lesson_role": "Investigate",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: local map, photo or interview notes"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "HS2-HIS-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Write a conclusion for your inquiry that answers the main question with two pieces of evidence, one limit and one new question. Mark how confident you are and why. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original demonstration: Example conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new computer room and the librarian said the children's section opened in 1998. A limit is that we only had two photos, so we cannot say when each change happened.\"\n\nParent: Written model 2: Common error: A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence. Correction: The second, because it answers the question with named evidence. The first is an opinion with no evidence.\n\nParent: Likely misconception: A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence. Keep sample answers out of the child role.",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "A conclusion answers the inquiry question using evidence. It names the strongest evidence, states how sure you are and explains the limits, such as too few sources. A good conclusion can also suggest a new question. The other choices avoid explaining the actual strategy.",
+        "options": [
+          "A conclusion answers the inquiry question using evidence. It names the strongest evidence, states how sure you are and explains the limits, such as too few sources. A good conclusion can also suggest a new question.",
+          "A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence.",
+          "Ignore the source and invent a more exciting story.",
+          "Copy the model places and call that independent work."
+        ],
+        "question": "Which idea is taught in the stage \"Understand and model\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. The other choices avoid explaining the actual strategy.",
+        "options": [
+          "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
+          "Writing only a final label without evidence does not show HSIE thinking.",
+          "Copy the model places and call that independent work.",
+          "Treat a missing fact as if it were recorded in a source."
+        ],
+        "question": "Which idea is taught in the stage \"Show the evidence\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. The other choices avoid explaining the actual strategy.",
+        "options": [
+          "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
+          "Changing the wording without repairing the evidence does not fix the error. A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence.",
+          "Treat a missing fact as if it were recorded in a source.",
+          "Skip respectful protocols because the first idea looked neat."
+        ],
+        "question": "Which idea is taught in the stage \"Test a misconception\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. The other choices avoid explaining the actual strategy.",
+        "options": [
+          "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
+          "Repeating the worked example cannot show transfer to new evidence.",
+          "Skip respectful protocols because the first idea looked neat.",
+          "Ignore the source and invent a more exciting story."
+        ],
+        "question": "Which idea is taught in the stage \"Transfer to a new inquiry\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The second, because it answers the question with named evidence. The first is an opinion with no evidence. Useful feedback uses the original sources and method.",
+        "options": [
+          "The second, because it answers the question with named evidence. The first is an opinion with no evidence.",
+          "A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Which conclusion is stronger: \"The library is better now\" or \"The library has mo\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The most useful record names the evidence and the reason it supports the claim, not only a label. Useful feedback uses the original sources and method.",
+        "options": [
+          "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+          "Writing only a final label without evidence does not show HSIE thinking.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"List the key observations, sources or steps from the model and say what each one\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The second, because it answers the question with named evidence. The first is an opinion with no evidence. Useful feedback uses the original sources and method.",
+        "options": [
+          "The second, because it answers the question with named evidence. The first is an opinion with no evidence.",
+          "Changing the wording without repairing the evidence does not fix the error. A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Describe why the warned-against claim fails, then write a corrected claim with e\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The new example should use the same HSIE idea as the model, but contain different evidence. Useful feedback uses the original sources and method.",
+        "options": [
+          "The new example should use the same HSIE idea as the model, but contain different evidence.",
+          "Repeating the worked example cannot show transfer to new evidence.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Inquire into or describe one fresh example that uses the same skill and write a \", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence, not repetition of the worked model, demonstrates the skill.",
+        "marking_guide": "Require independently produced relevant evidence with accurate reasoning and named sources or places.",
+        "question": "Inquire into or describe a fresh example that uses the central skill. Show evidence and name the sources or places that matter.",
+        "sample_answer": "Original demonstration: Example conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new computer room and the librarian said the children's section opened in 1998. A limit is that we only had two photos, so we cannot say when each change happened.\"",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A correction needs to change the claim or evidence, not just make the notes longer.",
+        "marking_guide": "Require an actual misconception plus corrected claim and an evidence-linked reason.",
+        "question": "Name one likely misconception for this HSIE topic, correct it and say why the correction works.",
+        "sample_answer": "Common error: A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence. Correction: The second, because it answers the question with named evidence. The first is an opinion with no evidence.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-hsie-y3-w38-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA HSIE alignment using catalogue outcome codes (HS2-*); content-point mapping and local First Nations protocols remain pending human review.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise conclusion.",
+        "Read the mission before you start mapping or using sources.",
+        "Keep the place, people or source you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the source or place detail that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore sources or respectful practice.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread names, places, dates and sequence.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact source detail or place feature before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key evidence.",
+        "Say what each source or place detail shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or use of sources, not only how neat the poster looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, person or source that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new sources or places."
+      ]
+    },
+    "subject": "Historical and Geographical Inquiry",
+    "success_criteria": [
+      "I can use conclusion with a specific example from this lesson.",
+      "I can identify evidence and explain why it matters.",
+      "I can practise limit independently on a new prompt.",
+      "I can notice confidence needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "A conclusion answers the inquiry question using evidence. It names the strongest evidence, states how sure you are and explains the limits, such as too few sources. A good conclusion can also suggest a new question. Supported records follow the actual sources and purpose of the task.",
+          "options": [
+            "A conclusion answers the inquiry question using evidence. It names the strongest evidence, states how sure you are and explains the limits, such as too few sources. A good conclusion can also suggest a new question.",
+            "A claim unrelated to the source or place.",
+            "An answer copied without understanding.",
+            "A guess with no evidence."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nExample conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new computer room and the librarian said the children's section opened in 1998. A limit is that we only had two photos, so we cannot say when each change happened.\"\n\nTRY FIRST\nWhich conclusion is stronger: \"The library is better now\" or \"The library has more services than in 1990, because the librarian and two photos show new rooms\"?\n\nFEEDBACK\nThe second, because it answers the question with named evidence. The first is an opinion with no evidence.",
+        "explain": "A conclusion answers the inquiry question using evidence. It names the strongest evidence, states how sure you are and explains the limits, such as too few sources. A good conclusion can also suggest a new question.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Strong and weak conclusions.",
+            "caption": "Name the evidence.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Strong</text><text x=\"28\" y=\"78\">names two photos and an interview</text><text x=\"358\" y=\"42\">Weak</text><text x=\"358\" y=\"78\">&quot;it is better now&quot;</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which source or place detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the sources, map features or community examples that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Example conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new compu Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which source or place detail matters most.\nJuno: Name the sources, map features or community examples that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Example conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new compu Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task.",
+          "options": [
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
+            "A claim unrelated to the source or place.",
+            "An answer copied without understanding.",
+            "A guess with no evidence."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nExample conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new computer room and the librarian said the children's section opened in 1998. A limit is that we only had two photos, so we cannot say when each change happened.\" Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show HSIE thinking. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "Limits and next questions.",
+            "caption": "Say how sure you are.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Limit</text><text x=\"28\" y=\"78\">only two photos</text><text x=\"358\" y=\"42\">Next</text><text x=\"358\" y=\"78\">new question to ask</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task.",
+          "options": [
+            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
+            "A claim unrelated to the source or place.",
+            "An answer copied without understanding.",
+            "A guess with no evidence."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nA conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence. Here is a more productive model: Example conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new computer room and the librarian said the children's section opened in 1998. A limit is that we only had two photos, so we cannot say when each change happened.\"\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nThe second, because it answers the question with named evidence. The first is an opinion with no evidence.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task.",
+          "options": [
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
+            "A claim unrelated to the source or place.",
+            "An answer copied without understanding.",
+            "A guess with no evidence."
+          ],
+          "question": "What should you demonstrate in this teaching stage?"
+        },
+        "example": "WORKED MODEL\nA conclusion answers the inquiry question using evidence. It names the strongest evidence, states how sure you are and explains the limits, such as too few sources. A good conclusion can also suggest a new question. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",
+        "explain": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Transfer to a new inquiry"
+      }
+    ],
+    "title": "Year 3, Week 38, Lesson 1: Drawing conclusions",
+    "unit_number": 8,
+    "unit_title": "Inquiry project",
+    "week": 38,
+    "week_in_unit": 3,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new computer room and the librarian said the children's section opened in 1998. A limit is that we only had two photos, so we cannot say when each change happened.\"\n\nWrite what makes this example accurate, naming the sources, places or community details used.",
+    "worked_visuals": [
+      {
+        "alt": "Strong and weak conclusions.",
+        "caption": "Name the evidence.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Strong</text><text x=\"28\" y=\"78\">names two photos and an interview</text><text x=\"358\" y=\"42\">Weak</text><text x=\"358\" y=\"78\">&quot;it is better now&quot;</text></g></svg>"
+      },
+      {
+        "alt": "Limits and next questions.",
+        "caption": "Say how sure you are.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Limit</text><text x=\"28\" y=\"78\">only two photos</text><text x=\"358\" y=\"42\">Next</text><text x=\"358\" y=\"78\">new question to ask</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Which conclusion is stronger: \"The library is better now\" or \"The library has more services than in 1990, because the librarian and two photos show new rooms\"?"
+      ],
+      "independent_inputs": [
+        "Write a conclusion for your inquiry that answers the main question with two pieces of evidence, one limit and one new question. Mark how confident you are and why."
+      ],
+      "model_inputs": [
+        "Example conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new computer room and the librarian said the children's section opened in 1998. A limit is that we only had two photos, so we cannot say when each change happened.\""
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "The second, because it answers the question with named evidence. The first is an opinion with no evidence.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Which conclusion is stronger: \"The library is better now\" or \"The library has more services than in 1990, because the librarian and two photos show new rooms\"?",
+        "misconception": "A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence.",
+        "model": "Example conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new computer room and the librarian said the children's section opened in 1998. A limit is that we only had two photos, so we cannot say when each change happened.\"",
+        "rule": "A conclusion answers the inquiry question using evidence. It names the strongest evidence, states how sure you are and explains the limits, such as too few sources. A good conclusion can also suggest a new question.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "List the key observations, sources or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show HSIE thinking.",
+        "model": "Example conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new computer room and the librarian said the children's section opened in 1998. A limit is that we only had two photos, so we cannot say when each change happened.\" Look at each observation, source detail or example that carries the idea.",
+        "rule": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "The second, because it answers the question with named evidence. The first is an opinion with no evidence.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence.",
+        "model": "A conclusion that overclaims, such as saying something happened everywhere from one source, is not supported by the evidence. Here is a more productive model: Example conclusion: \"The library has changed since 1990 mainly by adding services. Evidence: two photos show a new computer room and the librarian said the children's section opened in 1998. A limit is that we only had two photos, so we cannot say when each change happened.\"",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "The new example should use the same HSIE idea as the model, but contain different evidence.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Inquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "A conclusion answers the inquiry question using evidence. It names the strongest evidence, states how sure you are and explains the limits, such as too few sources. A good conclusion can also suggest a new question. Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Strong and weak conclusions.",
+        "teaches": "Name the evidence."
+      },
+      {
+        "alt": "Limits and next questions.",
+        "teaches": "Say how sure you are."
+      }
+    ]
+  }
+}

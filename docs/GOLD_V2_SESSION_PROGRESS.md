@@ -23,7 +23,7 @@ Binding owner order: finish **all Stage 2 then all Stage 4 Written Core** (4,902
 
 | Gate | Count |
 |---|---|
-| Automated validation passed (pipeline) | 399 |
+| Automated validation passed (pipeline) | 479 |
 | Educationally reviewed | 0 |
 | NESA verified | 0 |
 | Browser verified | 0 |
@@ -38,15 +38,15 @@ Protected gold reference on main: `s2-eng-y3-w01-l1` (not counted as pipeline co
 | English | 159 (+ protected w01-l1) | Complete (auto) |
 | Mathematics | 160 | Complete (auto) |
 | Science and Technology | 80 | Complete (auto) |
-| HSIE | 0 / 80 | Next: `s2-hsie-y3-w01-l1` |
-| PDHPE | 0 / 80 | Queued after HSIE |
+| HSIE | 80 | Complete (auto); First Nations units w06–w10 need local Custodian/educator review |
+| PDHPE | 0 / 80 | Next: `s2-pdhpe-y3-w01-l1` |
 | Creative Arts | 0 / 80 | Queued after PDHPE |
 
 **Not Gold Standard full approval.** Human educational / NESA / browser gates remain closed. Do not apply draft SQL to remote D1.
 
 ## Next resume point
 
-1. Continue Y3 HSIE Written Core from `s2-hsie-y3-w01-l1`.
+1. Continue Y3 PDHPE Written Core from `s2-pdhpe-y3-w01-l1`.
 2. Keep coherent batches; do not start Phase 2 media.
 3. Preserve draft PR; no merge/deploy without owner authorisation.
 
