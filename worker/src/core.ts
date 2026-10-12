@@ -123,6 +123,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       "SELECT * FROM assignments WHERE student_id = ? AND status IN ('not_started','opened','in_progress','awaiting_help','needs_revision') ORDER BY created_at DESC LIMIT 50"
     ).bind(u.id).all<any>();
     for (const a of pending) {
+      delete a.parent_notes;
       a.lesson = lessonSummaryForRole(await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first(), u.role);
     }
     const { results: fb } = await db.prepare(
@@ -211,6 +212,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     sql += " ORDER BY created_at DESC LIMIT 500";
     const { results } = await c.env.DB.prepare(sql).bind(...b).all<any>();
     for (const a of results) {
+      if (u.role === "child") delete a.parent_notes;
       a.lesson = lessonForRole(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first(), u.role);
     }
     return c.json(results);
@@ -236,6 +238,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     if (u.role === "child") { sql += " AND student_id = ?"; b.push(u.id); }
     const a: any = await c.env.DB.prepare(sql).bind(...b).first();
     if (!a) return c.json({ detail: "Not found" }, 404);
+    if (u.role === "child") delete a.parent_notes;
     a.lesson = lessonForRole(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first(), u.role);
     const { results } = await c.env.DB.prepare("SELECT * FROM submissions WHERE assignment_id = ? ORDER BY submitted_at DESC LIMIT 50").bind(a.id).all<any>();
     a.submissions = results.map(subOut);
