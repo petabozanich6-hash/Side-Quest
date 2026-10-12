@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-HANDW-01",
+      "lesson_evidence": "Write legibly at a comfortable pace, then improve unclear letters without rushing.",
+      "scope_limit": "Individual Written Core lesson contributes partial evidence; independently verify syllabus content-point alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Write legibly at a comfortable pace, then improve unclear letters without rushing.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Keep the independent response and two written check responses; record oral retelling or performance where required by the task.",
+    "explicit_teaching": null,
+    "extension": "Create a new example using a completely different character or setting, show the same skill, then explain to another person how you checked its accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "WE DO — attempt each prompt before comparing to the feedback.\n1. Copy \"The small kite floated above the oval\" slowly and check two letter pairs.\nCOMPARE: c/e and a/o should stay distinct; word spaces should not collapse.\n2. Rewrite \"quick\" and \"chair\" focusing on q, k, c and h.\nCOMPARE: Each letter should be recognisable without guessing from context alone.\n3. Write the kite sentence twice: once slowly, once at a comfortable pace.\nCOMPARE: Both should keep a readable baseline; faster is not better if letters merge.\n4. Identify two unclear words in your faster copy and rewrite them.\nCOMPARE: The rewrite should be clearer, not simply larger and messier.",
+    "hoard_words": null,
+    "independent_task": "YOU DO — complete the following substantial original task, not a copied model.\nCopy a 35–50 word original paragraph (from a book or this lesson) twice. Record approximate time for the comfortable copy, circle unclear letters, rewrite two words more clearly, and note one way you kept your hand comfortable.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Write legibly at a comfortable pace, then improve unclear letters without rushing.",
+    "lesson_number": 4,
+    "lesson_role": "Speaking and handwriting",
+    "materials": [
+      "Paper or typing area",
+      "Pencil for optional evidence"
+    ],
+    "offline_alternative": "Use paper to copy only the original independent prompt; have the child respond in writing or orally as required. Save a photograph or brief parent observation for the learning record.",
+    "outcome_codes": [
+      "EN2-HANDW-01"
+    ],
+    "parent_notes": "Parent: Marking guidance: Assess legibility and self-correction more than pure speed. Accept typed reflection if motor difficulty makes long handwriting unfair; still require a short handwriting sample where possible. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: I write \"We searched beside the creek\" at an even height, leave a finger-space between words, and check that c and e look different.\n\nParent: Written model 2: Common error: Racing to finish first is not the goal of this lesson. Correction: Both should keep a readable baseline; faster is not better if letters merge.\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "Readable handwriting keeps letters a similar size and leaves clear spaces between words before speed increases. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "Readable handwriting keeps letters a similar size and leaves clear spaces between words before speed increases.",
+          "Pressing harder does not make letters clearer if shapes become crushed.",
+          "Ignore the words and invent a more exciting event.",
+          "Copy the model word-for-word and call that independent work."
+        ],
+        "question": "Which idea is taught in the stage \"Keep letter size and spacing steady\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Letters that look alike need careful formation. Fix the shape first; then practise a comfortable pace. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "Letters that look alike need careful formation. Fix the shape first; then practise a comfortable pace.",
+          "Skipping a confusing letter and speeding on wastes the practice.",
+          "Copy the model word-for-word and call that independent work.",
+          "Treat a missing detail as a stated fact."
+        ],
+        "question": "Which idea is taught in the stage \"Shape tricky letters before racing\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "A second copy at a natural pace should stay readable. If meaning is lost, slow down again. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "A second copy at a natural pace should stay readable. If meaning is lost, slow down again.",
+          "Racing to finish first is not the goal of this lesson.",
+          "Treat a missing detail as a stated fact.",
+          "Skip the prompt because the first idea sounded good."
+        ],
+        "question": "Which idea is taught in the stage \"Compare slow and comfortable-pace copies\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Choose two unclear words, rewrite them more carefully, and note how you kept your hand comfortable. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "Choose two unclear words, rewrite them more carefully, and note how you kept your hand comfortable.",
+          "Rewriting the whole paragraph when only two words are unclear can cause fatigue.",
+          "Skip the prompt because the first idea sounded good.",
+          "Ignore the words and invent a more exciting event."
+        ],
+        "question": "Which idea is taught in the stage \"Rewrite only the unclear parts\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "c/e and a/o should stay distinct; word spaces should not collapse. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "c/e and a/o should stay distinct; word spaces should not collapse.",
+          "Pressing harder does not make letters clearer if shapes become crushed.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Copy \"The small kite floated above the oval\" slowly and check two letter pairs.\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Each letter should be recognisable without guessing from context alone. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "Each letter should be recognisable without guessing from context alone.",
+          "Skipping a confusing letter and speeding on wastes the practice.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Rewrite \"quick\" and \"chair\" focusing on q, k, c and h.\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Both should keep a readable baseline; faster is not better if letters merge. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "Both should keep a readable baseline; faster is not better if letters merge.",
+          "Racing to finish first is not the goal of this lesson.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Write the kite sentence twice: once slowly, once at a comfortable pace.\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The rewrite should be clearer, not simply larger and messier. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "The rewrite should be clearer, not simply larger and messier.",
+          "Rewriting the whole paragraph when only two words are unclear can cause fatigue.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Identify two unclear words in your faster copy and rewrite them.\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
+        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
+        "question": "Use your own example to demonstrate legibility and explain the evidence supporting your choice.",
+        "sample_answer": "Original demonstration: I write \"We searched beside the creek\" at an even height, leave a finger-space between words, and check that c and e look different.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
+        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
+        "question": "Identify and correct a common mistake relating to pace in this lesson.",
+        "sample_answer": "Common error: Racing to finish first is not the goal of this lesson. Correction: Both should keep a readable baseline; faster is not better if letters merge.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Submit your original independent work and your brief explanation of the key choices you made.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w04-l4",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; compare the existing Coming Soon card and official syllabus content points before marking verified.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise legibility.",
+        "Read the mission before you start writing or speaking.",
+        "Your goal is: Write legibly at a comfortable pace, then improve unclear letters without rushing."
+      ],
+      "guided": [
+        "Attempt each guided prompt without looking ahead.",
+        "Compare your attempt with the supplied specific feedback.",
+        "Guided comparison: Each letter should be recognisable without guessing from context alone."
+      ],
+      "learn": [
+        "Study the first worked demonstration carefully.",
+        "Name the exact words or events that make it work.",
+        "Demonstration: I write \"We searched beside the creek\" at an even height, leave a finger-space between words, and check that c and e look different."
+      ],
+      "quiz": [
+        "Read the whole question and eliminate misconceptions.",
+        "Prefer the option that quotes or uses actual evidence.",
+        "Likely trap: Racing to finish first is not the goal of this lesson."
+      ],
+      "submit": [
+        "Include your own response and a short reason.",
+        "Proofread names, sequence and punctuation before sending.",
+        "Success looks like: Write legibly at a comfortable pace, then improve unclear letters without rushing."
+      ],
+      "teach0": [
+        "Focus on keep letter size and spacing steady.",
+        "Hold this teaching point: Readable handwriting keeps letters a similar size and leaves clear spaces between words before speed increases.",
+        "Worked comparison: c/e and a/o should stay distinct; word spaces should not collapse."
+      ],
+      "teach1": [
+        "Focus on shape tricky letters before racing.",
+        "Hold this teaching point: Letters that look alike need careful formation. Fix the shape first; then practise a comfortable pace.",
+        "Worked comparison: Each letter should be recognisable without guessing from context alone."
+      ],
+      "teach2": [
+        "Focus on compare slow and comfortable-pace copies.",
+        "Hold this teaching point: A second copy at a natural pace should stay readable. If meaning is lost, slow down again.",
+        "Worked comparison: Both should keep a readable baseline; faster is not better if letters merge."
+      ],
+      "teach3": [
+        "Focus on rewrite only the unclear parts.",
+        "Hold this teaching point: Choose two unclear words, rewrite them more carefully, and note how you kept your hand comfortable.",
+        "Worked comparison: The rewrite should be clearer, not simply larger and messier."
+      ],
+      "write": [
+        "Use the independent instructions, not the model words.",
+        "Give an original response and the reason behind it.",
+        "Independent reminder: Copy a 35–50 word original paragraph (from a book or this lesson) twice. Record approximate time for the comfortable copy, circle unclear letters, rewrite two w"
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use legibility with a specific example from this lesson.",
+      "I can identify spacing and point to the words or events that support it.",
+      "I can practise pace independently on a new prompt.",
+      "I can notice formation needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying legibility independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to keep letter size and spacing steady?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI write \"We searched beside the creek\" at an even height, leave a finger-space between words, and check that c and e look different.\n\nYOUR SMALL TRY\nCopy \"The small kite floated above the oval\" slowly and check two letter pairs.\n\nCOMPARE AND CORRECT\nc/e and a/o should stay distinct; word spaces should not collapse.",
+        "explain": "Readable handwriting keeps letters a similar size and leaves clear spaces between words before speed increases.\n\nReadable handwriting keeps letters a similar size and leaves clear spaces between words before speed increases. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nPressing harder does not make letters clearer if shapes become crushed. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Keep letter size and spacing steady",
+        "visual": [
+          {
+            "alt": "Even letter height beside clear spaces between handwritten words.",
+            "caption": "Shape and spacing come before increasing speed.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Steady size</text><text x=\"28\" y=\"78\">even letter height</text><text x=\"358\" y=\"42\">Clear spaces</text><text x=\"358\" y=\"78\">gap between words</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I read the first example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or events that carry the meaning before you copy a conclusion.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "So I should try the small prompt myself, then compare it with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: I write \"We searched beside the creek\" at an even height, leave a finger-space between words, and check that c and e loo Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I read the first example, but I am not sure which detail matters most.\nJuno: Name the exact words or events that carry the meaning before you copy a conclusion.\nPip: So I should try the small prompt myself, then compare it with the feedback.\nJuno: Pause here. Use this model: I write \"We searched beside the creek\" at an even height, leave a finger-space between words, and check that c and e loo Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying spacing independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to shape tricky letters before racing?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI slow down on k and h so the upright and arms stay clear, then rewrite the whole word once.\n\nYOUR SMALL TRY\nRewrite \"quick\" and \"chair\" focusing on q, k, c and h.\n\nCOMPARE AND CORRECT\nEach letter should be recognisable without guessing from context alone.",
+        "explain": "Letters that look alike need careful formation. Fix the shape first; then practise a comfortable pace.\n\nLetters that look alike need careful formation. Fix the shape first; then practise a comfortable pace. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nSkipping a confusing letter and speeding on wastes the practice. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Shape tricky letters before racing",
+        "visual": [
+          {
+            "alt": "Merged unclear letters contrasted with two carefully rewritten words.",
+            "caption": "Rewrite only the unclear parts and keep your hand comfortable.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Unclear copy</text><text x=\"28\" y=\"78\">merged letters</text><text x=\"358\" y=\"42\">Rewrite</text><text x=\"358\" y=\"78\">two clearer words</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying pace independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to compare slow and comfortable-pace copies?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI time a careful copy, then a comfortable second copy of the same sentence, and circle any unclear letters.\n\nYOUR SMALL TRY\nWrite the kite sentence twice: once slowly, once at a comfortable pace.\n\nCOMPARE AND CORRECT\nBoth should keep a readable baseline; faster is not better if letters merge.",
+        "explain": "A second copy at a natural pace should stay readable. If meaning is lost, slow down again.\n\nA second copy at a natural pace should stay readable. If meaning is lost, slow down again. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nRacing to finish first is not the goal of this lesson. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Compare slow and comfortable-pace copies"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying formation independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to rewrite only the unclear parts?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI circle \"searched\" because the r and c joined oddly, rewrite it, and shake out my hand between lines.\n\nYOUR SMALL TRY\nIdentify two unclear words in your faster copy and rewrite them.\n\nCOMPARE AND CORRECT\nThe rewrite should be clearer, not simply larger and messier.",
+        "explain": "Choose two unclear words, rewrite them more carefully, and note how you kept your hand comfortable.\n\nChoose two unclear words, rewrite them more carefully, and note how you kept your hand comfortable. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nRewriting the whole paragraph when only two words are unclear can cause fatigue. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Rewrite only the unclear parts"
+      }
+    ],
+    "title": "Year 3, Week 4, Lesson 4: Handwriting speed and legibility",
+    "unit_number": 1,
+    "unit_title": "Narrative: story elements and planning",
+    "week": 4,
+    "week_in_unit": 4,
+    "word_challenges": null,
+    "worked_example": "I DO — I write \"We searched beside the creek\" at an even height, leave a finger-space between words, and check that c and e look different.\n\nNow look for the exact evidence in the words or actions. I slow down on k and h so the upright and arms stay clear, then rewrite the whole word once.",
+    "worked_visuals": [
+      {
+        "alt": "Even letter height beside clear spaces between handwritten words.",
+        "caption": "Shape and spacing come before increasing speed.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Steady size</text><text x=\"28\" y=\"78\">even letter height</text><text x=\"358\" y=\"42\">Clear spaces</text><text x=\"358\" y=\"78\">gap between words</text></g></svg>"
+      },
+      {
+        "alt": "Merged unclear letters contrasted with two carefully rewritten words.",
+        "caption": "Rewrite only the unclear parts and keep your hand comfortable.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Unclear copy</text><text x=\"28\" y=\"78\">merged letters</text><text x=\"358\" y=\"42\">Rewrite</text><text x=\"358\" y=\"78\">two clearer words</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Rewrite \"quick\" and \"chair\" focusing on q, k, c and h."
+      ],
+      "independent_inputs": [
+        "Copy a 35–50 word original paragraph (from a book or this lesson) twice. Record approximate time for the comfortable copy, circle unclear letters, rewrite two words more clearly, and note one way you kept your hand comfortable."
+      ],
+      "model_inputs": [
+        "I write \"We searched beside the creek\" at an even height, leave a finger-space between words, and check that c and e look different."
+      ]
+    },
+    "review_questions": [
+      "Verify original Coming Soon outcome and syllabus content point against NESA English K–10 2022.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "c/e and a/o should stay distinct; word spaces should not collapse.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Copy \"The small kite floated above the oval\" slowly and check two letter pairs.",
+        "misconception": "Pressing harder does not make letters clearer if shapes become crushed.",
+        "model": "I write \"We searched beside the creek\" at an even height, leave a finger-space between words, and check that c and e look different.",
+        "rule": "Readable handwriting keeps letters a similar size and leaves clear spaces between words before speed increases.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Each letter should be recognisable without guessing from context alone.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Rewrite \"quick\" and \"chair\" focusing on q, k, c and h.",
+        "misconception": "Skipping a confusing letter and speeding on wastes the practice.",
+        "model": "I slow down on k and h so the upright and arms stay clear, then rewrite the whole word once.",
+        "rule": "Letters that look alike need careful formation. Fix the shape first; then practise a comfortable pace.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Both should keep a readable baseline; faster is not better if letters merge.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Write the kite sentence twice: once slowly, once at a comfortable pace.",
+        "misconception": "Racing to finish first is not the goal of this lesson.",
+        "model": "I time a careful copy, then a comfortable second copy of the same sentence, and circle any unclear letters.",
+        "rule": "A second copy at a natural pace should stay readable. If meaning is lost, slow down again.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "The rewrite should be clearer, not simply larger and messier.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Identify two unclear words in your faster copy and rewrite them.",
+        "misconception": "Rewriting the whole paragraph when only two words are unclear can cause fatigue.",
+        "model": "I circle \"searched\" because the r and c joined oddly, rewrite it, and shake out my hand between lines.",
+        "rule": "Choose two unclear words, rewrite them more carefully, and note how you kept your hand comfortable.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Even letter height beside clear spaces between handwritten words.",
+        "teaches": "Shape and spacing come before increasing speed."
+      },
+      {
+        "alt": "Merged unclear letters contrasted with two carefully rewritten words.",
+        "teaches": "Rewrite only the unclear parts and keep your hand comfortable."
+      }
+    ]
+  }
+}

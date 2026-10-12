@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-CWT-01",
+      "lesson_evidence": "Write a resolution that solves the problem, then revise meaning before editing surface errors.",
+      "scope_limit": "Individual Written Core lesson contributes partial evidence; independently verify syllabus content-point alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Write a resolution that solves the problem, then revise meaning before editing surface errors.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Keep the independent response and two written check responses; record oral retelling or performance where required by the task.",
+    "explicit_teaching": null,
+    "extension": "Create a new example using a completely different character or setting, show the same skill, then explain to another person how you checked its accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "WE DO — attempt each prompt before comparing to the feedback.\n1. Complete an ending after \"The puppy escaped through a loose gate.\"\nCOMPARE: Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause.\n2. Revise an ending where a lost map is found by a dragon with no earlier clue.\nCOMPARE: Connect the finding to earlier actions, such as retracing steps or asking a ranger.\n3. Edit: \"dad fixed the latch. the puppy was safe\"\nCOMPARE: \"Dad fixed the latch. The puppy was safe.\"\n4. Identify one meaning change and one punctuation fix in your lost-map ending.\nCOMPARE: The meaning change should affect the solution; the edit should affect spelling or punctuation.",
+    "hoard_words": null,
+    "independent_task": "YOU DO — complete the following substantial original task, not a copied model.\nWrite a six-sentence story ending for a lost map. First revise the solution's logic and clarity, then edit punctuation and spelling. Identify one revision and one edit.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Write a resolution that solves the problem, then revise meaning before editing surface errors.",
+    "lesson_number": 2,
+    "lesson_role": "Writing",
+    "materials": [
+      "Paper or typing area",
+      "Pencil for optional evidence"
+    ],
+    "offline_alternative": "Use paper to copy only the original independent prompt; have the child respond in writing or orally as required. Save a photograph or brief parent observation for the learning record.",
+    "outcome_codes": [
+      "EN2-CWT-01"
+    ],
+    "parent_notes": "Parent: Marking guidance: Require a problem-linked resolution plus explicit revision/edit labels. Accept varied map-story settings. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: Opening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next week.\"\n\nParent: Written model 2: Common error: Editing before revising can polish a broken ending. Correction: \"Dad fixed the latch. The puppy was safe.\"\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "A resolution shows how the main difficulty is addressed. It should connect to the earlier problem. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "A resolution shows how the main difficulty is addressed. It should connect to the earlier problem.",
+          "An unrelated miracle ending ignores the story's problem.",
+          "Ignore the words and invent a more exciting event.",
+          "Copy the model word-for-word and call that independent work."
+        ],
+        "question": "Which idea is taught in the stage \"Solve the central problem\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Revising meaning comes before fixing capitals. Ask whether the ending answers the problem. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "Revising meaning comes before fixing capitals. Ask whether the ending answers the problem.",
+          "Editing spelling cannot repair a disconnected plot.",
+          "Copy the model word-for-word and call that independent work.",
+          "Treat a missing detail as a stated fact."
+        ],
+        "question": "Which idea is taught in the stage \"Revise for logic and clarity first\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "After meaning is sound, check capitals, full stops and spelling. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "After meaning is sound, check capitals, full stops and spelling.",
+          "Editing before revising can polish a broken ending.",
+          "Treat a missing detail as a stated fact.",
+          "Skip the prompt because the first idea sounded good."
+        ],
+        "question": "Which idea is taught in the stage \"Edit surface features second\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Show that you understand the difference between changing ideas and fixing conventions. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "Show that you understand the difference between changing ideas and fixing conventions.",
+          "Calling every change an edit hides the revision step.",
+          "Skip the prompt because the first idea sounded good.",
+          "Ignore the words and invent a more exciting event."
+        ],
+        "question": "Which idea is taught in the stage \"Name one revision and one edit\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause.",
+          "An unrelated miracle ending ignores the story's problem.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Complete an ending after \"The puppy escaped through a loose gate.\"\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Connect the finding to earlier actions, such as retracing steps or asking a ranger. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "Connect the finding to earlier actions, such as retracing steps or asking a ranger.",
+          "Editing spelling cannot repair a disconnected plot.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Revise an ending where a lost map is found by a dragon with no earlier clue.\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "\"Dad fixed the latch. The puppy was safe.\" This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "\"Dad fixed the latch. The puppy was safe.\"",
+          "Editing before revising can polish a broken ending.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Edit: \"dad fixed the latch. the puppy was safe\"\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The meaning change should affect the solution; the edit should affect spelling or punctuation. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "The meaning change should affect the solution; the edit should affect spelling or punctuation.",
+          "Calling every change an edit hides the revision step.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Identify one meaning change and one punctuation fix in your lost-map ending.\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
+        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
+        "question": "Use your own example to demonstrate resolution and explain the evidence supporting your choice.",
+        "sample_answer": "Original demonstration: Opening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next week.\"",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
+        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
+        "question": "Identify and correct a common mistake relating to edit in this lesson.",
+        "sample_answer": "Common error: Editing before revising can polish a broken ending. Correction: \"Dad fixed the latch. The puppy was safe.\"",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Submit your original independent work and your brief explanation of the key choices you made.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w05-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; compare the existing Coming Soon card and official syllabus content points before marking verified.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise resolution.",
+        "Read the mission before you start writing or speaking.",
+        "Your goal is: Write a resolution that solves the problem, then revise meaning before editing surface errors."
+      ],
+      "guided": [
+        "Attempt each guided prompt without looking ahead.",
+        "Compare your attempt with the supplied specific feedback.",
+        "Guided comparison: Connect the finding to earlier actions, such as retracing steps or asking a ranger."
+      ],
+      "learn": [
+        "Study the first worked demonstration carefully.",
+        "Name the exact words or events that make it work.",
+        "Demonstration: Opening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next week.\""
+      ],
+      "quiz": [
+        "Read the whole question and eliminate misconceptions.",
+        "Prefer the option that quotes or uses actual evidence.",
+        "Likely trap: Editing before revising can polish a broken ending."
+      ],
+      "submit": [
+        "Include your own response and a short reason.",
+        "Proofread names, sequence and punctuation before sending.",
+        "Success looks like: Write a resolution that solves the problem, then revise meaning before editing surface errors."
+      ],
+      "teach0": [
+        "Focus on solve the central problem.",
+        "Hold this teaching point: A resolution shows how the main difficulty is addressed. It should connect to the earlier problem.",
+        "Worked comparison: Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause."
+      ],
+      "teach1": [
+        "Focus on revise for logic and clarity first.",
+        "Hold this teaching point: Revising meaning comes before fixing capitals. Ask whether the ending answers the problem.",
+        "Worked comparison: Connect the finding to earlier actions, such as retracing steps or asking a ranger."
+      ],
+      "teach2": [
+        "Focus on edit surface features second.",
+        "Hold this teaching point: After meaning is sound, check capitals, full stops and spelling.",
+        "Worked comparison: \"Dad fixed the latch. The puppy was safe.\""
+      ],
+      "teach3": [
+        "Focus on name one revision and one edit.",
+        "Hold this teaching point: Show that you understand the difference between changing ideas and fixing conventions.",
+        "Worked comparison: The meaning change should affect the solution; the edit should affect spelling or punctuation."
+      ],
+      "write": [
+        "Use the independent instructions, not the model words.",
+        "Give an original response and the reason behind it.",
+        "Independent reminder: Write a six-sentence story ending for a lost map. First revise the solution's logic and clarity, then edit punctuation and spelling. Identify one revision and o"
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use resolution with a specific example from this lesson.",
+      "I can identify revise and point to the words or events that support it.",
+      "I can practise edit independently on a new prompt.",
+      "I can notice ending needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying resolution independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to solve the central problem?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nOpening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next week.\"\n\nYOUR SMALL TRY\nComplete an ending after \"The puppy escaped through a loose gate.\"\n\nCOMPARE AND CORRECT\nExample: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause.",
+        "explain": "A resolution shows how the main difficulty is addressed. It should connect to the earlier problem.\n\nA resolution shows how the main difficulty is addressed. It should connect to the earlier problem. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nAn unrelated miracle ending ignores the story's problem. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Solve the central problem",
+        "visual": [
+          {
+            "alt": "Escape problem linked to a resolution that repairs the latch.",
+            "caption": "The ending should solve the central problem.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Problem</text><text x=\"28\" y=\"78\">puppy escaped loose gate</text><text x=\"358\" y=\"42\">Resolution</text><text x=\"358\" y=\"78\">neighbour holds; latch repaired</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I read the first example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or events that carry the meaning before you copy a conclusion.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "So I should try the small prompt myself, then compare it with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Opening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next  Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I read the first example, but I am not sure which detail matters most.\nJuno: Name the exact words or events that carry the meaning before you copy a conclusion.\nPip: So I should try the small prompt myself, then compare it with the feedback.\nJuno: Pause here. Use this model: Opening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next  Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying revise independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to revise for logic and clarity first?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI check that watering explains why the plant recovers; then I improve a vague pronoun.\n\nYOUR SMALL TRY\nRevise an ending where a lost map is found by a dragon with no earlier clue.\n\nCOMPARE AND CORRECT\nConnect the finding to earlier actions, such as retracing steps or asking a ranger.",
+        "explain": "Revising meaning comes before fixing capitals. Ask whether the ending answers the problem.\n\nRevising meaning comes before fixing capitals. Ask whether the ending answers the problem. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nEditing spelling cannot repair a disconnected plot. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Revise for logic and clarity first",
+        "visual": [
+          {
+            "alt": "Revise meaning first then edit capitals and spelling.",
+            "caption": "Editing cannot repair a disconnected plot.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Revise meaning</text><text x=\"28\" y=\"78\">link ending to cause</text><text x=\"358\" y=\"42\">Then edit</text><text x=\"358\" y=\"78\">capitals and spelling</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying edit independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to edit surface features second?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI capitalise sentence starts and correct \"leaved\" to \"leaves\" once the ending makes sense.\n\nYOUR SMALL TRY\nEdit: \"dad fixed the latch. the puppy was safe\"\n\nCOMPARE AND CORRECT\n\"Dad fixed the latch. The puppy was safe.\"",
+        "explain": "After meaning is sound, check capitals, full stops and spelling.\n\nAfter meaning is sound, check capitals, full stops and spelling. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nEditing before revising can polish a broken ending. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Edit surface features second"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying ending independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to name one revision and one edit?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nRevision: I linked the latch repair to the escape. Edit: I capitalised Dad.\n\nYOUR SMALL TRY\nIdentify one meaning change and one punctuation fix in your lost-map ending.\n\nCOMPARE AND CORRECT\nThe meaning change should affect the solution; the edit should affect spelling or punctuation.",
+        "explain": "Show that you understand the difference between changing ideas and fixing conventions.\n\nShow that you understand the difference between changing ideas and fixing conventions. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nCalling every change an edit hides the revision step. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Name one revision and one edit"
+      }
+    ],
+    "title": "Year 3, Week 5, Lesson 2: Resolution, revising and editing",
+    "unit_number": 1,
+    "unit_title": "Narrative: story elements and planning",
+    "week": 5,
+    "week_in_unit": 5,
+    "word_challenges": null,
+    "worked_example": "I DO — Opening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next week.\"\n\nNow look for the exact evidence in the words or actions. I check that watering explains why the plant recovers; then I improve a vague pronoun.",
+    "worked_visuals": [
+      {
+        "alt": "Escape problem linked to a resolution that repairs the latch.",
+        "caption": "The ending should solve the central problem.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Problem</text><text x=\"28\" y=\"78\">puppy escaped loose gate</text><text x=\"358\" y=\"42\">Resolution</text><text x=\"358\" y=\"78\">neighbour holds; latch repaired</text></g></svg>"
+      },
+      {
+        "alt": "Revise meaning first then edit capitals and spelling.",
+        "caption": "Editing cannot repair a disconnected plot.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Revise meaning</text><text x=\"28\" y=\"78\">link ending to cause</text><text x=\"358\" y=\"42\">Then edit</text><text x=\"358\" y=\"78\">capitals and spelling</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Revise an ending where a lost map is found by a dragon with no earlier clue."
+      ],
+      "independent_inputs": [
+        "Write a six-sentence story ending for a lost map. First revise the solution's logic and clarity, then edit punctuation and spelling. Identify one revision and one edit."
+      ],
+      "model_inputs": [
+        "Opening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next week.\""
+      ]
+    },
+    "review_questions": [
+      "Verify original Coming Soon outcome and syllabus content point against NESA English K–10 2022.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Example: \"A neighbour held the puppy while Dad repaired the latch.\" The fix matches the cause.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Complete an ending after \"The puppy escaped through a loose gate.\"",
+        "misconception": "An unrelated miracle ending ignores the story's problem.",
+        "model": "Opening: \"The class plant wilted.\" Response: they check soil and water it. Resolution: \"Its leaves lifted over the next week.\"",
+        "rule": "A resolution shows how the main difficulty is addressed. It should connect to the earlier problem.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Connect the finding to earlier actions, such as retracing steps or asking a ranger.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Revise an ending where a lost map is found by a dragon with no earlier clue.",
+        "misconception": "Editing spelling cannot repair a disconnected plot.",
+        "model": "I check that watering explains why the plant recovers; then I improve a vague pronoun.",
+        "rule": "Revising meaning comes before fixing capitals. Ask whether the ending answers the problem.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "\"Dad fixed the latch. The puppy was safe.\"",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Edit: \"dad fixed the latch. the puppy was safe\"",
+        "misconception": "Editing before revising can polish a broken ending.",
+        "model": "I capitalise sentence starts and correct \"leaved\" to \"leaves\" once the ending makes sense.",
+        "rule": "After meaning is sound, check capitals, full stops and spelling.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "The meaning change should affect the solution; the edit should affect spelling or punctuation.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Identify one meaning change and one punctuation fix in your lost-map ending.",
+        "misconception": "Calling every change an edit hides the revision step.",
+        "model": "Revision: I linked the latch repair to the escape. Edit: I capitalised Dad.",
+        "rule": "Show that you understand the difference between changing ideas and fixing conventions.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Escape problem linked to a resolution that repairs the latch.",
+        "teaches": "The ending should solve the central problem."
+      },
+      {
+        "alt": "Revise meaning first then edit capitals and spelling.",
+        "teaches": "Editing cannot repair a disconnected plot."
+      }
+    ]
+  }
+}

@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-OLC-01",
+      "lesson_evidence": "Listen for the main topic and jot cue notes rather than copying every word.",
+      "scope_limit": "Individual Written Core lesson contributes partial evidence; independently verify syllabus content-point alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Listen for the main topic and jot cue notes rather than copying every word.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Keep the independent response and two written check responses; record oral retelling or performance where required by the task.",
+    "explicit_teaching": null,
+    "extension": "Create a new example using a completely different character or setting, show the same skill, then explain to another person how you checked its accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "WE DO — attempt each prompt before comparing to the feedback.\n1. Listen for the topic in: \"Rain fills the creek; water flows downhill towards the river.\"\nCOMPARE: Topic: rainwater moving from creek towards river.\n2. Reduce this sentence to five cue words or fewer: \"Storm clouds gathered above the oval before the match.\"\nCOMPARE: Example: storm clouds—oval—before match.\n3. Rebuild a spoken sentence from the cues rain—creek—river.\nCOMPARE: \"Rain fills the creek and water flows towards the river.\"\n4. After a 45-second summary, name one check you will make against the passage.\nCOMPARE: Listen again for a number, order word or name you might have altered.",
+    "hoard_words": null,
+    "independent_task": "YOU DO — complete the following substantial original task, not a copied model.\nAsk an adult to read a new 100–150 word factual passage twice. Take 6–8 cue notes; deliver a 45-second oral summary; compare it with the passage and record one missing or inaccurate detail.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Listen for the main topic and jot cue notes rather than copying every word.",
+    "lesson_number": 4,
+    "lesson_role": "Speaking and handwriting",
+    "materials": [
+      "Paper or typing area",
+      "Pencil for optional evidence"
+    ],
+    "offline_alternative": "Use paper to copy only the original independent prompt; have the child respond in writing or orally as required. Save a photograph or brief parent observation for the learning record.",
+    "outcome_codes": [
+      "EN2-OLC-01"
+    ],
+    "parent_notes": "Parent: Marking guidance: Assess cue brevity, oral reconstruction and accuracy check. Spelling in notes is not the target. Accept plausible original solutions where the text supports them; require the learner to explain at least one independent choice.\n\nParent: Written model 1: Original demonstration: Speaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs.\n\nParent: Written model 2: Common error: If you cannot rebuild the idea, your cues are too thin or unclear. Correction: \"Rain fills the creek and water flows towards the river.\"\n\nParent: Assess comprehension and language rather than penalising speech or motor difficulties unrelated to the objective. Keep written models out of the child role.",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "Good notes record the main subject and important steps or facts, not a full transcript. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "Good notes record the main subject and important steps or facts, not a full transcript.",
+          "Trying to write every word usually means missing the next idea.",
+          "Ignore the words and invent a more exciting event.",
+          "Copy the model word-for-word and call that independent work."
+        ],
+        "question": "Which idea is taught in the stage \"Catch the topic and a few key facts\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Cue notes are memory prompts. Spelling and full sentences are not required in the notes themselves. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "Cue notes are memory prompts. Spelling and full sentences are not required in the notes themselves.",
+          "Notes that look like a finished paragraph may be too slow for listening.",
+          "Copy the model word-for-word and call that independent work.",
+          "Treat a missing detail as a stated fact."
+        ],
+        "question": "Which idea is taught in the stage \"Use short cue words\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "After noting cues, say the ideas back in complete sentences to check understanding. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "After noting cues, say the ideas back in complete sentences to check understanding.",
+          "If you cannot rebuild the idea, your cues are too thin or unclear.",
+          "Treat a missing detail as a stated fact.",
+          "Skip the prompt because the first idea sounded good."
+        ],
+        "question": "Which idea is taught in the stage \"Rebuild the meaning aloud\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Check one detail you might have missed or changed after the oral summary. The other choices either name a known misunderstanding or avoid explaining the actual strategy.",
+        "options": [
+          "Check one detail you might have missed or changed after the oral summary.",
+          "A confident summary can still contain an inaccurate detail.",
+          "Skip the prompt because the first idea sounded good.",
+          "Ignore the words and invent a more exciting event."
+        ],
+        "question": "Which idea is taught in the stage \"Compare with the original for accuracy\"?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Topic: rainwater moving from creek towards river. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "Topic: rainwater moving from creek towards river.",
+          "Trying to write every word usually means missing the next idea.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Listen for the topic in: \"Rain fills the creek; water flows downhill towards the\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Example: storm clouds—oval—before match. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "Example: storm clouds—oval—before match.",
+          "Notes that look like a finished paragraph may be too slow for listening.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Reduce this sentence to five cue words or fewer: \"Storm clouds gathered above th\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "\"Rain fills the creek and water flows towards the river.\" This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "\"Rain fills the creek and water flows towards the river.\"",
+          "If you cannot rebuild the idea, your cues are too thin or unclear.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"Rebuild a spoken sentence from the cues rain—creek—river.\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Listen again for a number, order word or name you might have altered. This explanation uses the original evidence or language point, rather than treating a misconception as the correct response.",
+        "options": [
+          "Listen again for a number, order word or name you might have altered.",
+          "A confident summary can still contain an inaccurate detail.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "question": "After trying \"After a 45-second summary, name one check you will make against the passage.\", which feedback is most useful?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Meaningful understanding is shown when a learner transfers the method to new text or speech and explains their evidence.",
+        "marking_guide": "Require an original relevant example, accurate terminology and an explanation grounded in the example.",
+        "question": "Use your own example to demonstrate listen and explain the evidence supporting your choice.",
+        "sample_answer": "Original demonstration: Speaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "Explaining a correction helps the learner distinguish an effective strategy from a plausible-sounding but inaccurate approach.",
+        "marking_guide": "Require a genuine relevant error, accurate correction and a reason that refers to the target concept.",
+        "question": "Identify and correct a common mistake relating to summary in this lesson.",
+        "sample_answer": "Common error: If you cannot rebuild the idea, your cues are too thin or unclear. Correction: \"Rain fills the creek and water flows towards the river.\"",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Submit your original independent work and your brief explanation of the key choices you made.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w06-l4",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; compare the existing Coming Soon card and official syllabus content points before marking verified.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise listen.",
+        "Read the mission before you start writing or speaking.",
+        "Your goal is: Listen for the main topic and jot cue notes rather than copying every word."
+      ],
+      "guided": [
+        "Attempt each guided prompt without looking ahead.",
+        "Compare your attempt with the supplied specific feedback.",
+        "Guided comparison: Example: storm clouds—oval—before match."
+      ],
+      "learn": [
+        "Study the first worked demonstration carefully.",
+        "Name the exact words or events that make it work.",
+        "Demonstration: Speaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs."
+      ],
+      "quiz": [
+        "Read the whole question and eliminate misconceptions.",
+        "Prefer the option that quotes or uses actual evidence.",
+        "Likely trap: If you cannot rebuild the idea, your cues are too thin or unclear."
+      ],
+      "submit": [
+        "Include your own response and a short reason.",
+        "Proofread names, sequence and punctuation before sending.",
+        "Success looks like: Listen for the main topic and jot cue notes rather than copying every word."
+      ],
+      "teach0": [
+        "Focus on catch the topic and a few key facts.",
+        "Hold this teaching point: Good notes record the main subject and important steps or facts, not a full transcript.",
+        "Worked comparison: Topic: rainwater moving from creek towards river."
+      ],
+      "teach1": [
+        "Focus on use short cue words.",
+        "Hold this teaching point: Cue notes are memory prompts. Spelling and full sentences are not required in the notes themselves.",
+        "Worked comparison: Example: storm clouds—oval—before match."
+      ],
+      "teach2": [
+        "Focus on rebuild the meaning aloud.",
+        "Hold this teaching point: After noting cues, say the ideas back in complete sentences to check understanding.",
+        "Worked comparison: \"Rain fills the creek and water flows towards the river.\""
+      ],
+      "teach3": [
+        "Focus on compare with the original for accuracy.",
+        "Hold this teaching point: Check one detail you might have missed or changed after the oral summary.",
+        "Worked comparison: Listen again for a number, order word or name you might have altered."
+      ],
+      "write": [
+        "Use the independent instructions, not the model words.",
+        "Give an original response and the reason behind it.",
+        "Independent reminder: Ask an adult to read a new 100–150 word factual passage twice. Take 6–8 cue notes; deliver a 45-second oral summary; compare it with the passage and record one "
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use listen with a specific example from this lesson.",
+      "I can identify cue and point to the words or events that support it.",
+      "I can practise summary independently on a new prompt.",
+      "I can notice accuracy needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying listen independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to catch the topic and a few key facts?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nSpeaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs.\n\nYOUR SMALL TRY\nListen for the topic in: \"Rain fills the creek; water flows downhill towards the river.\"\n\nCOMPARE AND CORRECT\nTopic: rainwater moving from creek towards river.",
+        "explain": "Good notes record the main subject and important steps or facts, not a full transcript.\n\nGood notes record the main subject and important steps or facts, not a full transcript. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nTrying to write every word usually means missing the next idea. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Catch the topic and a few key facts",
+        "visual": [
+          {
+            "alt": "Long spoken explanation reduced to cue notes eggs tadpoles legs.",
+            "caption": "Cue notes capture sequence without a full transcript.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Full speech</text><text x=\"28\" y=\"78\">long frog life cycle talk</text><text x=\"358\" y=\"42\">Cue notes</text><text x=\"358\" y=\"78\">eggs → tadpoles → legs</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I read the first example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or events that carry the meaning before you copy a conclusion.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "So I should try the small prompt myself, then compare it with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Speaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs. Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I read the first example, but I am not sure which detail matters most.\nJuno: Name the exact words or events that carry the meaning before you copy a conclusion.\nPip: So I should try the small prompt myself, then compare it with the feedback.\nJuno: Pause here. Use this model: Speaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs. Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying cue independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to use short cue words?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI write \"rain—creek fills—downhill—river\" instead of copying the whole speech.\n\nYOUR SMALL TRY\nReduce this sentence to five cue words or fewer: \"Storm clouds gathered above the oval before the match.\"\n\nCOMPARE AND CORRECT\nExample: storm clouds—oval—before match.",
+        "explain": "Cue notes are memory prompts. Spelling and full sentences are not required in the notes themselves.\n\nCue notes are memory prompts. Spelling and full sentences are not required in the notes themselves. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nNotes that look like a finished paragraph may be too slow for listening. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Use short cue words",
+        "visual": [
+          {
+            "alt": "Oral rebuild in sentences then accuracy check against the passage.",
+            "caption": "Notes are only useful if you can rebuild and verify meaning.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Rebuild aloud</text><text x=\"28\" y=\"78\">complete sentences</text><text x=\"358\" y=\"42\">Accuracy check</text><text x=\"358\" y=\"78\">compare one detail</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying summary independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to rebuild the meaning aloud?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nFrom eggs → tadpoles → legs I can say: \"Frogs start as eggs, become tadpoles and then grow legs.\"\n\nYOUR SMALL TRY\nRebuild a spoken sentence from the cues rain—creek—river.\n\nCOMPARE AND CORRECT\n\"Rain fills the creek and water flows towards the river.\"",
+        "explain": "After noting cues, say the ideas back in complete sentences to check understanding.\n\nAfter noting cues, say the ideas back in complete sentences to check understanding. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nIf you cannot rebuild the idea, your cues are too thin or unclear. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Rebuild the meaning aloud"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying accuracy independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which is the strongest next step when learning to compare with the original for accuracy?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI notice I said \"instantly grow legs\" but the speaker said \"later develop legs,\" so I correct the timing.\n\nYOUR SMALL TRY\nAfter a 45-second summary, name one check you will make against the passage.\n\nCOMPARE AND CORRECT\nListen again for a number, order word or name you might have altered.",
+        "explain": "Check one detail you might have missed or changed after the oral summary.\n\nCheck one detail you might have missed or changed after the oral summary. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nA confident summary can still contain an inaccurate detail. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Compare with the original for accuracy"
+      }
+    ],
+    "title": "Year 3, Week 6, Lesson 4: Listening and note-taking",
+    "unit_number": 2,
+    "unit_title": "Information reports",
+    "week": 6,
+    "week_in_unit": 1,
+    "word_challenges": null,
+    "worked_example": "I DO — Speaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs.\n\nNow look for the exact evidence in the words or actions. I write \"rain—creek fills—downhill—river\" instead of copying the whole speech.",
+    "worked_visuals": [
+      {
+        "alt": "Long spoken explanation reduced to cue notes eggs tadpoles legs.",
+        "caption": "Cue notes capture sequence without a full transcript.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Full speech</text><text x=\"28\" y=\"78\">long frog life cycle talk</text><text x=\"358\" y=\"42\">Cue notes</text><text x=\"358\" y=\"78\">eggs → tadpoles → legs</text></g></svg>"
+      },
+      {
+        "alt": "Oral rebuild in sentences then accuracy check against the passage.",
+        "caption": "Notes are only useful if you can rebuild and verify meaning.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Rebuild aloud</text><text x=\"28\" y=\"78\">complete sentences</text><text x=\"358\" y=\"42\">Accuracy check</text><text x=\"358\" y=\"78\">compare one detail</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Reduce this sentence to five cue words or fewer: \"Storm clouds gathered above the oval before the match.\""
+      ],
+      "independent_inputs": [
+        "Ask an adult to read a new 100–150 word factual passage twice. Take 6–8 cue notes; deliver a 45-second oral summary; compare it with the passage and record one missing or inaccurate detail."
+      ],
+      "model_inputs": [
+        "Speaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs."
+      ]
+    },
+    "review_questions": [
+      "Verify original Coming Soon outcome and syllabus content point against NESA English K–10 2022.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Topic: rainwater moving from creek towards river.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Listen for the topic in: \"Rain fills the creek; water flows downhill towards the river.\"",
+        "misconception": "Trying to write every word usually means missing the next idea.",
+        "model": "Speaker: \"Frogs begin as eggs, hatch into tadpoles and later develop legs.\" Notes: frogs—eggs → tadpoles → legs.",
+        "rule": "Good notes record the main subject and important steps or facts, not a full transcript.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Example: storm clouds—oval—before match.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Reduce this sentence to five cue words or fewer: \"Storm clouds gathered above the oval before the match.\"",
+        "misconception": "Notes that look like a finished paragraph may be too slow for listening.",
+        "model": "I write \"rain—creek fills—downhill—river\" instead of copying the whole speech.",
+        "rule": "Cue notes are memory prompts. Spelling and full sentences are not required in the notes themselves.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "\"Rain fills the creek and water flows towards the river.\"",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Rebuild a spoken sentence from the cues rain—creek—river.",
+        "misconception": "If you cannot rebuild the idea, your cues are too thin or unclear.",
+        "model": "From eggs → tadpoles → legs I can say: \"Frogs start as eggs, become tadpoles and then grow legs.\"",
+        "rule": "After noting cues, say the ideas back in complete sentences to check understanding.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Listen again for a number, order word or name you might have altered.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "After a 45-second summary, name one check you will make against the passage.",
+        "misconception": "A confident summary can still contain an inaccurate detail.",
+        "model": "I notice I said \"instantly grow legs\" but the speaker said \"later develop legs,\" so I correct the timing.",
+        "rule": "Check one detail you might have missed or changed after the oral summary.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Long spoken explanation reduced to cue notes eggs tadpoles legs.",
+        "teaches": "Cue notes capture sequence without a full transcript."
+      },
+      {
+        "alt": "Oral rebuild in sentences then accuracy check against the passage.",
+        "teaches": "Notes are only useful if you can rebuild and verify meaning."
+      }
+    ]
+  }
+}
