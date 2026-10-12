@@ -1,5 +1,5 @@
 {
-  "generation": 4660,
+  "generation": 4684,
   "history": [
     {
       "at": "2026-10-12T04:58:13.396703+00:00",
@@ -27960,6 +27960,150 @@
       "event": "awaiting_review",
       "generation": 4660,
       "seed_key": "s2-mat-y4-w06-l4"
+    },
+    {
+      "at": "2026-10-12T23:17:50.155433+00:00",
+      "event": "claimed",
+      "generation": 4661,
+      "seed_key": "s2-mat-y4-w07-l1"
+    },
+    {
+      "at": "2026-10-12T23:17:50.773804+00:00",
+      "event": "awaiting_review",
+      "generation": 4662,
+      "seed_key": "s2-mat-y4-w07-l1"
+    },
+    {
+      "at": "2026-10-12T23:17:50.821381+00:00",
+      "event": "claimed",
+      "generation": 4663,
+      "seed_key": "s2-mat-y4-w07-l2"
+    },
+    {
+      "at": "2026-10-12T23:17:51.158704+00:00",
+      "event": "awaiting_review",
+      "generation": 4664,
+      "seed_key": "s2-mat-y4-w07-l2"
+    },
+    {
+      "at": "2026-10-12T23:17:51.204641+00:00",
+      "event": "claimed",
+      "generation": 4665,
+      "seed_key": "s2-mat-y4-w07-l3"
+    },
+    {
+      "at": "2026-10-12T23:17:51.497299+00:00",
+      "event": "awaiting_review",
+      "generation": 4666,
+      "seed_key": "s2-mat-y4-w07-l3"
+    },
+    {
+      "at": "2026-10-12T23:17:51.542999+00:00",
+      "event": "claimed",
+      "generation": 4667,
+      "seed_key": "s2-mat-y4-w07-l4"
+    },
+    {
+      "at": "2026-10-12T23:17:51.822185+00:00",
+      "event": "awaiting_review",
+      "generation": 4668,
+      "seed_key": "s2-mat-y4-w07-l4"
+    },
+    {
+      "at": "2026-10-12T23:17:51.870656+00:00",
+      "event": "claimed",
+      "generation": 4669,
+      "seed_key": "s2-mat-y4-w08-l1"
+    },
+    {
+      "at": "2026-10-12T23:17:52.151025+00:00",
+      "event": "awaiting_review",
+      "generation": 4670,
+      "seed_key": "s2-mat-y4-w08-l1"
+    },
+    {
+      "at": "2026-10-12T23:17:52.199108+00:00",
+      "event": "claimed",
+      "generation": 4671,
+      "seed_key": "s2-mat-y4-w08-l2"
+    },
+    {
+      "at": "2026-10-12T23:17:52.519396+00:00",
+      "event": "awaiting_review",
+      "generation": 4672,
+      "seed_key": "s2-mat-y4-w08-l2"
+    },
+    {
+      "at": "2026-10-12T23:17:52.587335+00:00",
+      "event": "claimed",
+      "generation": 4673,
+      "seed_key": "s2-mat-y4-w08-l3"
+    },
+    {
+      "at": "2026-10-12T23:17:53.070559+00:00",
+      "event": "awaiting_review",
+      "generation": 4674,
+      "seed_key": "s2-mat-y4-w08-l3"
+    },
+    {
+      "at": "2026-10-12T23:17:53.122962+00:00",
+      "event": "claimed",
+      "generation": 4675,
+      "seed_key": "s2-mat-y4-w08-l4"
+    },
+    {
+      "at": "2026-10-12T23:17:53.402520+00:00",
+      "event": "awaiting_review",
+      "generation": 4676,
+      "seed_key": "s2-mat-y4-w08-l4"
+    },
+    {
+      "at": "2026-10-12T23:17:53.449774+00:00",
+      "event": "claimed",
+      "generation": 4677,
+      "seed_key": "s2-mat-y4-w09-l1"
+    },
+    {
+      "at": "2026-10-12T23:17:53.742746+00:00",
+      "event": "awaiting_review",
+      "generation": 4678,
+      "seed_key": "s2-mat-y4-w09-l1"
+    },
+    {
+      "at": "2026-10-12T23:17:53.790011+00:00",
+      "event": "claimed",
+      "generation": 4679,
+      "seed_key": "s2-mat-y4-w09-l2"
+    },
+    {
+      "at": "2026-10-12T23:17:54.069982+00:00",
+      "event": "awaiting_review",
+      "generation": 4680,
+      "seed_key": "s2-mat-y4-w09-l2"
+    },
+    {
+      "at": "2026-10-12T23:17:54.117051+00:00",
+      "event": "claimed",
+      "generation": 4681,
+      "seed_key": "s2-mat-y4-w09-l3"
+    },
+    {
+      "at": "2026-10-12T23:17:54.392558+00:00",
+      "event": "awaiting_review",
+      "generation": 4682,
+      "seed_key": "s2-mat-y4-w09-l3"
+    },
+    {
+      "at": "2026-10-12T23:17:54.439193+00:00",
+      "event": "claimed",
+      "generation": 4683,
+      "seed_key": "s2-mat-y4-w09-l4"
+    },
+    {
+      "at": "2026-10-12T23:17:54.728542+00:00",
+      "event": "awaiting_review",
+      "generation": 4684,
+      "seed_key": "s2-mat-y4-w09-l4"
     }
   ],
   "lessons": {
@@ -49835,6 +49979,402 @@
         "Owner release approval"
       ],
       "source_sha256": "03245d174c42c7517f7c3c6b62e0a71970f8fafba1ada3717c7d5cbb5a129295",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w07-l1": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w07-l1/6689243101b2ecbf2231ecbda365e060da5ca49d36821281eb872e36514c73b2-9961f5ddc1f4/baseline.json": "00e66de1c7f18d7f0f94a012b5edb1cbe687709928eed2aa8a0919a1e34e7b57",
+        "artifacts/s2-mat-y4-w07-l1/6689243101b2ecbf2231ecbda365e060da5ca49d36821281eb872e36514c73b2-9961f5ddc1f4/bundle.json": "6689243101b2ecbf2231ecbda365e060da5ca49d36821281eb872e36514c73b2",
+        "artifacts/s2-mat-y4-w07-l1/6689243101b2ecbf2231ecbda365e060da5ca49d36821281eb872e36514c73b2-9961f5ddc1f4/draft.sql": "4b77c920902363500e314af12dbb854622e3c9bea8129ebf7e0c177f4d7169ae",
+        "artifacts/s2-mat-y4-w07-l1/6689243101b2ecbf2231ecbda365e060da5ca49d36821281eb872e36514c73b2-9961f5ddc1f4/validation.json": "528d14876a12608af0fcc19684a1f5eb16d4125b0272ebfe9f030fa9ac9a4d4d"
+      },
+      "attempts": 1,
+      "content_sha256": "68ff6ce00486ef9cfa0220df82529d4a61831f84c5dd01aed9927bb870ac50ff",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "6689243101b2ecbf2231ecbda365e060da5ca49d36821281eb872e36514c73b2",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "3e271d7b0d8ed7f66407102d2f81004af835ac5728ce5587ffbeba5bdcca71fd",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w07-l2": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w07-l2/d451832fbbed74c42889adde5bad85bbbe248e3fa27a787f485f70bbff5dfe50-9961f5ddc1f4/baseline.json": "2e7711b59d0ade89e47df47d249f0e486b7e42a502b78168ff4ee4e6be42292d",
+        "artifacts/s2-mat-y4-w07-l2/d451832fbbed74c42889adde5bad85bbbe248e3fa27a787f485f70bbff5dfe50-9961f5ddc1f4/bundle.json": "d451832fbbed74c42889adde5bad85bbbe248e3fa27a787f485f70bbff5dfe50",
+        "artifacts/s2-mat-y4-w07-l2/d451832fbbed74c42889adde5bad85bbbe248e3fa27a787f485f70bbff5dfe50-9961f5ddc1f4/draft.sql": "91018a991cd04709e3f2a66c6f29141d3d328e6594da5b5c88aaf93861ec9b0f",
+        "artifacts/s2-mat-y4-w07-l2/d451832fbbed74c42889adde5bad85bbbe248e3fa27a787f485f70bbff5dfe50-9961f5ddc1f4/validation.json": "586409fd3d2c7387439db756747952f86031596feca93bc13620e843322eeb1b"
+      },
+      "attempts": 1,
+      "content_sha256": "e2f4083523188481113e9042888003f92a10a722cbafa6fd865e83647fcd2516",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "d451832fbbed74c42889adde5bad85bbbe248e3fa27a787f485f70bbff5dfe50",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "8641cb0b131d404e4da38f5cea74137fcd89dd8797ea25b3cd0a78f4c700db14",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w07-l3": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w07-l3/a6caf090a2cd9d8406dd461026f7461d3b808bd15361857aa5f2ef584fb8736c-9961f5ddc1f4/baseline.json": "e071053de27bae8b62d981e6ed5ed237f507479fcf1c53eb9ee91292cd229a5a",
+        "artifacts/s2-mat-y4-w07-l3/a6caf090a2cd9d8406dd461026f7461d3b808bd15361857aa5f2ef584fb8736c-9961f5ddc1f4/bundle.json": "a6caf090a2cd9d8406dd461026f7461d3b808bd15361857aa5f2ef584fb8736c",
+        "artifacts/s2-mat-y4-w07-l3/a6caf090a2cd9d8406dd461026f7461d3b808bd15361857aa5f2ef584fb8736c-9961f5ddc1f4/draft.sql": "bc13aa1c4de9a393cd384077c630ef28268c4403878d549267ef7bc2cd53353d",
+        "artifacts/s2-mat-y4-w07-l3/a6caf090a2cd9d8406dd461026f7461d3b808bd15361857aa5f2ef584fb8736c-9961f5ddc1f4/validation.json": "a14cb7733ce098c784cf681835dc93ee3f4ef350aec3aa90c735ce1335884a1c"
+      },
+      "attempts": 1,
+      "content_sha256": "3fa8a0306fb8658b3d5cbea12285236cfe6300f498573135597e2da4bb97437f",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "a6caf090a2cd9d8406dd461026f7461d3b808bd15361857aa5f2ef584fb8736c",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "6d4c23b7c04fe9e89f6f4183e9b0e021f9f3a0c1fcf7617b46257f483a3da75f",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w07-l4": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w07-l4/309092faff78fe72928b4a43831190cbb600b5fbc664f4a2439603f8d3eb5ecc-9961f5ddc1f4/baseline.json": "860ace61b238628116d00944607416797b55d4dfd1e1b3d12a1c6f3240ae36aa",
+        "artifacts/s2-mat-y4-w07-l4/309092faff78fe72928b4a43831190cbb600b5fbc664f4a2439603f8d3eb5ecc-9961f5ddc1f4/bundle.json": "309092faff78fe72928b4a43831190cbb600b5fbc664f4a2439603f8d3eb5ecc",
+        "artifacts/s2-mat-y4-w07-l4/309092faff78fe72928b4a43831190cbb600b5fbc664f4a2439603f8d3eb5ecc-9961f5ddc1f4/draft.sql": "f7ea505e3c457d3ada8b50117ff1d4dd4647477f5f67855dcec430cf4f4f6e9b",
+        "artifacts/s2-mat-y4-w07-l4/309092faff78fe72928b4a43831190cbb600b5fbc664f4a2439603f8d3eb5ecc-9961f5ddc1f4/validation.json": "f5105bf1897084c327b87d30989160b028b0b1ddc56f13da548b984af6ceeb79"
+      },
+      "attempts": 1,
+      "content_sha256": "ccfa22eb3a4cae76d3824422f9509c10b5936d87a57dbfe80aaa376dd9f9568b",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "309092faff78fe72928b4a43831190cbb600b5fbc664f4a2439603f8d3eb5ecc",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "cccdfb542f6bf6506d87be3c56defe655c5b63c5d275dfc5a6948215dbff281e",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w08-l1": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w08-l1/b4c1cf66d343aaea676edf35bb5a1d54563d393e4031d8da1a30c1b4dcb546f2-9961f5ddc1f4/baseline.json": "2c87de140fc79ac5edd00a99cc390d412dde2ead2b82c6cbdb2f4e2980c96b47",
+        "artifacts/s2-mat-y4-w08-l1/b4c1cf66d343aaea676edf35bb5a1d54563d393e4031d8da1a30c1b4dcb546f2-9961f5ddc1f4/bundle.json": "b4c1cf66d343aaea676edf35bb5a1d54563d393e4031d8da1a30c1b4dcb546f2",
+        "artifacts/s2-mat-y4-w08-l1/b4c1cf66d343aaea676edf35bb5a1d54563d393e4031d8da1a30c1b4dcb546f2-9961f5ddc1f4/draft.sql": "7a4d525be7350040b56c62b21fd646d66137c873f89cacb764720858583f406a",
+        "artifacts/s2-mat-y4-w08-l1/b4c1cf66d343aaea676edf35bb5a1d54563d393e4031d8da1a30c1b4dcb546f2-9961f5ddc1f4/validation.json": "f965e97b0a89ad929bd81c8ea144c6bb6e0cf9f4d359e30fb66c1c7824ba891b"
+      },
+      "attempts": 1,
+      "content_sha256": "29970ec34435d6e1d9bc7f219d161a12e2d80b48a7af766fdd090a0cddca5278",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "b4c1cf66d343aaea676edf35bb5a1d54563d393e4031d8da1a30c1b4dcb546f2",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "1174685479e296e1eb4fb57de7aae3799eee8beecd9b38754b30b9a26336e7be",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w08-l2": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w08-l2/16630587c68f644f73292f73aedfb681058c5507bbec700243dcd894c9de42cb-9961f5ddc1f4/baseline.json": "961b5770163c00a647a39a92db5fd13a2fe4c5ebf34a38c80e49fc8ad8e1bc7a",
+        "artifacts/s2-mat-y4-w08-l2/16630587c68f644f73292f73aedfb681058c5507bbec700243dcd894c9de42cb-9961f5ddc1f4/bundle.json": "16630587c68f644f73292f73aedfb681058c5507bbec700243dcd894c9de42cb",
+        "artifacts/s2-mat-y4-w08-l2/16630587c68f644f73292f73aedfb681058c5507bbec700243dcd894c9de42cb-9961f5ddc1f4/draft.sql": "22ba8f581001efc3e3573e5f106a8db60097dc1941f0d7c65ae3d9be8a2c29f9",
+        "artifacts/s2-mat-y4-w08-l2/16630587c68f644f73292f73aedfb681058c5507bbec700243dcd894c9de42cb-9961f5ddc1f4/validation.json": "6b783a45b0d2d869557b7e09d156454c34ebd1bf81781c8b214cf0400369aae1"
+      },
+      "attempts": 1,
+      "content_sha256": "d537c1a82bb58dca36af580a7748a4e37af156279ee582390f4d25af5ba93c1c",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "16630587c68f644f73292f73aedfb681058c5507bbec700243dcd894c9de42cb",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "21101f6592a46d2f887857773dcf4e529104d68e9f21314c9e260c119c9efd59",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w08-l3": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w08-l3/4bcecc85deb5e759a31dd52559587e627bbd6e8102fe48443e23f9a9ee962c05-9961f5ddc1f4/baseline.json": "86592eaf492edb03b3b8dbaef4bd68e3f8f4564ff04ea7c7d78d4bb791910e83",
+        "artifacts/s2-mat-y4-w08-l3/4bcecc85deb5e759a31dd52559587e627bbd6e8102fe48443e23f9a9ee962c05-9961f5ddc1f4/bundle.json": "4bcecc85deb5e759a31dd52559587e627bbd6e8102fe48443e23f9a9ee962c05",
+        "artifacts/s2-mat-y4-w08-l3/4bcecc85deb5e759a31dd52559587e627bbd6e8102fe48443e23f9a9ee962c05-9961f5ddc1f4/draft.sql": "2e1e20d12ac08fe91ad759339fee78f9dfd3d364d213f373d3e0fd2e607d6f7f",
+        "artifacts/s2-mat-y4-w08-l3/4bcecc85deb5e759a31dd52559587e627bbd6e8102fe48443e23f9a9ee962c05-9961f5ddc1f4/validation.json": "90fefd7bff39632bb4d7c2ba4197d95324fe8fdf20afddc0691c8d11fec550a8"
+      },
+      "attempts": 1,
+      "content_sha256": "c05f859721222798c552dd26520829923ffc8a97d46ac2fc018a2ac4de1ff22e",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "4bcecc85deb5e759a31dd52559587e627bbd6e8102fe48443e23f9a9ee962c05",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "e4f07556fe03c2a2d46d9d49bf21e4e478627a527efe6e26d252ea26dad56d10",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w08-l4": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w08-l4/a110ac65d3b955530835061a628311982dc34774f92e2202724c84c67764c08c-9961f5ddc1f4/baseline.json": "752d93593bf8ee7e703d0d34e6cc8977204f25292ea9a366f7277275841c52f1",
+        "artifacts/s2-mat-y4-w08-l4/a110ac65d3b955530835061a628311982dc34774f92e2202724c84c67764c08c-9961f5ddc1f4/bundle.json": "a110ac65d3b955530835061a628311982dc34774f92e2202724c84c67764c08c",
+        "artifacts/s2-mat-y4-w08-l4/a110ac65d3b955530835061a628311982dc34774f92e2202724c84c67764c08c-9961f5ddc1f4/draft.sql": "0a8611d55b692530eca03ffa96f926cbd8ea72a0887d8ef6553701e1970958d8",
+        "artifacts/s2-mat-y4-w08-l4/a110ac65d3b955530835061a628311982dc34774f92e2202724c84c67764c08c-9961f5ddc1f4/validation.json": "ab6abd768d18222f45bbd0af234c05c5f5b62fde097f9fd75d7cb211785d9a7a"
+      },
+      "attempts": 1,
+      "content_sha256": "bf86ecd4ce44fb4232e6967b188d628ea068d9ef3a910302f95a9be5f1c6da19",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "a110ac65d3b955530835061a628311982dc34774f92e2202724c84c67764c08c",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "ad5a7c472a8e603aa1df3c71f2bd9904c2d3be972c51daa81d5d7aa16cb18bd9",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w09-l1": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w09-l1/d0456620879aea52f6e84f0ca8bb35a69f8f2057f1c85e70c4b33ce8edc53820-9961f5ddc1f4/baseline.json": "996885cde4db9cdc56ec21c6980e2e336c040b32d84a00499c7694a8da6aaaf0",
+        "artifacts/s2-mat-y4-w09-l1/d0456620879aea52f6e84f0ca8bb35a69f8f2057f1c85e70c4b33ce8edc53820-9961f5ddc1f4/bundle.json": "d0456620879aea52f6e84f0ca8bb35a69f8f2057f1c85e70c4b33ce8edc53820",
+        "artifacts/s2-mat-y4-w09-l1/d0456620879aea52f6e84f0ca8bb35a69f8f2057f1c85e70c4b33ce8edc53820-9961f5ddc1f4/draft.sql": "b5224b38286c815337f894ef173174a43fcfd2f5362ef33a15081092afa2b02c",
+        "artifacts/s2-mat-y4-w09-l1/d0456620879aea52f6e84f0ca8bb35a69f8f2057f1c85e70c4b33ce8edc53820-9961f5ddc1f4/validation.json": "94ef4628194426a73590a7146a5c5e1ccc420bc4cb628e2c4ad4deff2489562c"
+      },
+      "attempts": 1,
+      "content_sha256": "cb39fca1f1eb9fa177a198018536b5c2d4198195d7de0b86e4bb7790bbdb19eb",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "d0456620879aea52f6e84f0ca8bb35a69f8f2057f1c85e70c4b33ce8edc53820",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "27740438277a1c6b2796bbf1a76f6f304771ae6056ffa9d3b11bf48dda1018af",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w09-l2": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w09-l2/6b9aee3b063a17ef53ac09d2044e016a5287da73f40d657224b5d52d3eee8b5b-9961f5ddc1f4/baseline.json": "e8e6fa1fe317d20f6c8dc1dca2df7c8a349315a8b0dee76987b9729f454bdf6e",
+        "artifacts/s2-mat-y4-w09-l2/6b9aee3b063a17ef53ac09d2044e016a5287da73f40d657224b5d52d3eee8b5b-9961f5ddc1f4/bundle.json": "6b9aee3b063a17ef53ac09d2044e016a5287da73f40d657224b5d52d3eee8b5b",
+        "artifacts/s2-mat-y4-w09-l2/6b9aee3b063a17ef53ac09d2044e016a5287da73f40d657224b5d52d3eee8b5b-9961f5ddc1f4/draft.sql": "a5b710354334a9f755a312a360cecfde45fa58ce1539324d95beaf4407ee41cd",
+        "artifacts/s2-mat-y4-w09-l2/6b9aee3b063a17ef53ac09d2044e016a5287da73f40d657224b5d52d3eee8b5b-9961f5ddc1f4/validation.json": "56da959c646d378d537dcfba19dd312d4c13c67612f7dedc2d60ed67d3bec1d9"
+      },
+      "attempts": 1,
+      "content_sha256": "dddffade3bbe073d8931e18310812b2b8f20bb68abbc2b3072e2496389b63c35",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "6b9aee3b063a17ef53ac09d2044e016a5287da73f40d657224b5d52d3eee8b5b",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "886c1de3d0c4845417f72dbf296ae71130db229a0b27faa25ad0b8f035c5822c",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w09-l3": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w09-l3/1686412d9cb6f29b402b06ffb2f98d9443bf523616c80d3261be48063bbbf3a7-9961f5ddc1f4/baseline.json": "d41a9e71b114d65b78efe01ab816ecbeb674201be61752d51eb3fd8169cbd8f1",
+        "artifacts/s2-mat-y4-w09-l3/1686412d9cb6f29b402b06ffb2f98d9443bf523616c80d3261be48063bbbf3a7-9961f5ddc1f4/bundle.json": "1686412d9cb6f29b402b06ffb2f98d9443bf523616c80d3261be48063bbbf3a7",
+        "artifacts/s2-mat-y4-w09-l3/1686412d9cb6f29b402b06ffb2f98d9443bf523616c80d3261be48063bbbf3a7-9961f5ddc1f4/draft.sql": "d8969cfa4da50f8c546453399d91f4f727c16e5c8d6c867bbed36e831e5656ca",
+        "artifacts/s2-mat-y4-w09-l3/1686412d9cb6f29b402b06ffb2f98d9443bf523616c80d3261be48063bbbf3a7-9961f5ddc1f4/validation.json": "ab0031da905f121c7b55b567318032ff8788b4181feeaadaee6f7a2715589e52"
+      },
+      "attempts": 1,
+      "content_sha256": "3145b33e32f8a1ac8fa78bd494304f6321dbcaf600af8614497b9355a6266cbb",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "1686412d9cb6f29b402b06ffb2f98d9443bf523616c80d3261be48063bbbf3a7",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "1293d7b8d46d4f5682d65abd0f6661be0dc16a126682771db8e4f88b5230b6ad",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "939a03cb12c1b16cbb88355d3b73b26366c71c0cbdc91d73491ac0099c522a06",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s2-mat-y4-w09-l4": {
+      "artifacts": {
+        "artifacts/s2-mat-y4-w09-l4/d307baf03fb9c91dd7dc9d556717eaecdc70c76fad65b9eef12c69cec74d7e67-9961f5ddc1f4/baseline.json": "c99ebf090968b932a780dd706ab88ddb8964053f3fc6768ea38db9e7d36edd8b",
+        "artifacts/s2-mat-y4-w09-l4/d307baf03fb9c91dd7dc9d556717eaecdc70c76fad65b9eef12c69cec74d7e67-9961f5ddc1f4/bundle.json": "d307baf03fb9c91dd7dc9d556717eaecdc70c76fad65b9eef12c69cec74d7e67",
+        "artifacts/s2-mat-y4-w09-l4/d307baf03fb9c91dd7dc9d556717eaecdc70c76fad65b9eef12c69cec74d7e67-9961f5ddc1f4/draft.sql": "203ce5fcd15baad01f8d270f35609e42bbee54fca2a42fed41b921712e28afe7",
+        "artifacts/s2-mat-y4-w09-l4/d307baf03fb9c91dd7dc9d556717eaecdc70c76fad65b9eef12c69cec74d7e67-9961f5ddc1f4/validation.json": "961d9454315103b609b66c765dd356163078e3614a3989f4d44c0a8270ad91f2"
+      },
+      "attempts": 1,
+      "content_sha256": "cbfaae7bc32f26d87498094c8d443fccc0a993a48c80316df9123eba70ac8778",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "d307baf03fb9c91dd7dc9d556717eaecdc70c76fad65b9eef12c69cec74d7e67",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "a2c5fc64f7650c0eab3d3bc1e78c0b27520acb8906da7bee51a6a21732682b78",
       "validator_sha256": {
         "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
         "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
