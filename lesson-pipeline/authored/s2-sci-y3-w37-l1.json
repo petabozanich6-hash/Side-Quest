@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "ST2-DAT-01",
+      "lesson_evidence": "Collecting and recording investigation data means measuring carefully, repeating when planned and writing results in a clear table as you go.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/science/science-and-technology-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Collecting and recording investigation data means measuring carefully, repeating when planned and writing results in a clear table as you go.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same science idea to a new object or material, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nWhy do two or three trials help more than one trial?\n\nFEEDBACK\nRepeats show whether a result was a fluke and give a fairer typical value.\n\nWATCH FOR\nChanging the measure mid-way (drops then “looks wet”) breaks the data set.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nRun your planned fair test. Complete the results table with all trials. Note any odd result and whether you repeated it.\n\nWrite a short reflection naming one observation or step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Science and Technology",
+    "learning_intention": "Collecting and recording investigation data means measuring carefully, repeating when planned and writing results in a clear table as you go.",
+    "lesson_number": 1,
+    "lesson_role": "Investigate",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: safe everyday objects for observation"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "ST2-DAT-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Run your planned fair test. Complete the results table with all trials. Note any odd result and whether you repeated it. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Repeats show whether a result was a fluke and give a fairer typical value. Reasoning: I used data by attending to record and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Changing the measure mid-way (drops then “looks wet”) breaks the data set. Correction: Repeats show whether a result was a fluke and give a fairer typical value. Why: the correction restores accurate use of data.\n\nParent: Likely misconception: Changing the measure mid-way (drops then “looks wet”) breaks the data set. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses data. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about data, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 1,
+        "explanation": "Repeats show whether a result was a fluke and give a fairer typical value. This matches the lesson skill for data.",
+        "options": [
+          "Copy the worked example and call it independent work.",
+          "Repeats show whether a result was a fluke and give a fairer typical value.",
+          "Changing the measure mid-way (drops then “looks wet”) breaks the data set.",
+          "Ignore the task and invent an unrelated answer."
+        ],
+        "question": "Why do two or three trials help more than one trial?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Changing the measure mid-way (drops then “looks wet”) breaks the data set. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "options": [
+          "Collecting and recording investigation data means measuring carefully, repeating when planned and writing results in a clear table as you go.",
+          "Repeats show whether a result was a fluke and give a fairer typical value.",
+          "Careful use of record and explain why it matters with clear evidence.",
+          "Changing the measure mid-way (drops then “looks wet”) breaks the data set."
+        ],
+        "question": "Which statement is a common mistake when practising data?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and named record and explain why it matters, not by copying the model.",
+        "options": [
+          "Treat a missing detail as a proven fact.",
+          "Apply the idea with new evidence and name the record and explain why it matters used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right."
+        ],
+        "question": "A learner is practising data. Which approach best shows understanding?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "options": [
+          "Decide from which object looks most exciting.",
+          "Copy a label from the lesson title with no observation.",
+          "Changing the measure mid-way (drops then “looks wet”) breaks the data set.",
+          "Use observable features or measurements as evidence, not appearance alone."
+        ],
+        "question": "New examples: steam from a kettle, a germinating bean, a plastic dinosaur, a granite pebble. Which habit makes a scientific sort or claim trustworthy?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Science claims need named observations linked to the claim.",
+        "options": [
+          "Named observation plus how it supports the claim.",
+          "A longer story with no observation.",
+          "A label copied from the title with no evidence.",
+          "Changing the measure mid-way (drops then “looks wet”) breaks the data set."
+        ],
+        "question": "Which record best supports a science claim about data?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Repeats show whether a result was a fluke and give a fairer typical value. applies the science idea with evidence.",
+        "options": [
+          "Ignore the task and invent an unrelated answer.",
+          "Copy the worked example and call it independent work.",
+          "Repeats show whether a result was a fluke and give a fairer typical value.",
+          "Changing the measure mid-way (drops then “looks wet”) breaks the data set."
+        ],
+        "question": "Using this idea — Collecting and recording investigation data means measuring carefully, repeating when planned and… — which choice is strongest?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Fair tests change one variable and control the rest.",
+        "options": [
+          "Stop early when you like the first result.",
+          "Ignore measurements and decide by which looks nicer.",
+          "Change one variable and keep the other conditions the same.",
+          "Change several conditions at once so something happens faster."
+        ],
+        "question": "Which investigation habit keeps a comparison fair?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Transfer needs a new object or context with evidence.",
+        "options": [
+          "Test or describe a new object or context and cite fresh evidence.",
+          "Repeat the worked example objects unchanged.",
+          "Invent a dramatic result with no observation.",
+          "Copy the worked example and call it independent work."
+        ],
+        "question": "Which next step best shows transfer of data?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "question": "Investigate or describe a fresh example (not the worked objects) that uses data. Record evidence and explain how it supports your claim.",
+        "sample_answer": "Original response on new material: Repeats show whether a result was a fluke and give a fairer typical value. Reasoning: I used data by attending to record and explain why it matters rather than copying the worked model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "question": "Name one science misconception about data, correct it with evidence, and say why the correction works.",
+        "sample_answer": "Common error: Changing the measure mid-way (drops then “looks wet”) breaks the data set. Correction: Repeats show whether a result was a fluke and give a fairer typical value. Why: the correction restores accurate use of data.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-sci-y3-w37-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA Science and Technology alignment using catalogue outcome codes; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise data.",
+        "Read the mission before you start observing or testing.",
+        "Keep the property or variable you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the observation or step that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore observations or fair tests.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread labels, measurements and sequence of steps.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact observation or test step before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key observations.",
+        "Say what each observation shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or method, not only how neat the drawing looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh object or context that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new objects or data."
+      ]
+    },
+    "subject": "Working Scientifically and Technologically",
+    "success_criteria": [
+      "I can use data with a specific example from this lesson.",
+      "I can identify record and explain why it matters.",
+      "I can practise table independently on a new prompt.",
+      "I can notice repeat needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Collecting and recording investigation data means measuring carefully, repeating when planned and writing results in a clear table as you go. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no evidence.",
+            "Collecting and recording investigation data means measuring carefully, repeating when planned and writing results in a clear table as you go.",
+            "A claim unrelated to the observation or test."
+          ],
+          "question": "Which choice best shows accurate use of this idea about data?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nAbsorbency test: Trial1 towelA 12 drops; Trial2 11 drops. Table columns: material | trial | drops | notes. Do not rely on memory later.\n\nTRY FIRST\nWhy do two or three trials help more than one trial?\n\nFEEDBACK\nRepeats show whether a result was a fluke and give a fairer typical value.",
+        "explain": "Collecting and recording investigation data means measuring carefully, repeating when planned and writing results in a clear table as you go.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the measure mid-way (drops then “looks wet”) breaks the data set. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Recording investigation data.",
+            "caption": "Repeats reduce flukes.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Table</text><text x=\"28\" y=\"78\">material | trial | measure</text><text x=\"358\" y=\"42\">As you go</text><text x=\"358\" y=\"78\">write results live</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which observation matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the observations, properties or test steps that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Absorbency test: Trial1 towelA 12 drops; Trial2 11 drops. Table columns: material | trial | drops | notes. Do not rely o Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which observation matters most.\nJuno: Name the observations, properties or test steps that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Absorbency test: Trial1 towelA 12 drops; Trial2 11 drops. Table columns: material | trial | drops | notes. Do not rely o Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no evidence.",
+            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
+            "A claim unrelated to the observation or test."
+          ],
+          "question": "Which choice best shows accurate use of this idea about data?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nAbsorbency test: Trial1 towelA 12 drops; Trial2 11 drops. Table columns: material | trial | drops | notes. Do not rely on memory later. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show scientific thinking. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "Trial columns.",
+            "caption": "Do not change the measure mid-way.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Trials</text><text x=\"28\" y=\"78\">1 and 2</text><text x=\"358\" y=\"42\">Notes</text><text x=\"358\" y=\"78\">odd results</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "A claim unrelated to the observation or test.",
+            "An answer copied without understanding.",
+            "A guess with no evidence.",
+            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim."
+          ],
+          "question": "Which choice best shows accurate use of this idea about data?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nChanging the measure mid-way (drops then “looks wet”) breaks the data set. Here is a more productive model: Absorbency test: Trial1 towelA 12 drops; Trial2 11 drops. Table columns: material | trial | drops | notes. Do not rely on memory later.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nRepeats show whether a result was a fluke and give a fairer typical value.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. Changing the measure mid-way (drops then “looks wet”) breaks the data set. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no evidence.",
+            "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
+            "A claim unrelated to the observation or test."
+          ],
+          "question": "Which choice best shows accurate use of this idea about data?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nCollecting and recording investigation data means measuring carefully, repeating when planned and writing results in a clear table as you go. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",
+        "explain": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Transfer to a new investigation"
+      }
+    ],
+    "title": "Year 3, Week 37, Lesson 1: Collecting and recording data",
+    "unit_number": 8,
+    "unit_title": "Investigation and design project",
+    "week": 37,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nAbsorbency test: Trial1 towelA 12 drops; Trial2 11 drops. Table columns: material | trial | drops | notes. Do not rely on memory later.\n\nWrite what makes this example accurate, naming the observations, properties or test steps used.",
+    "worked_visuals": [
+      {
+        "alt": "Recording investigation data.",
+        "caption": "Repeats reduce flukes.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Table</text><text x=\"28\" y=\"78\">material | trial | measure</text><text x=\"358\" y=\"42\">As you go</text><text x=\"358\" y=\"78\">write results live</text></g></svg>"
+      },
+      {
+        "alt": "Trial columns.",
+        "caption": "Do not change the measure mid-way.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Trials</text><text x=\"28\" y=\"78\">1 and 2</text><text x=\"358\" y=\"42\">Notes</text><text x=\"358\" y=\"78\">odd results</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Why do two or three trials help more than one trial?"
+      ],
+      "independent_inputs": [
+        "Run your planned fair test. Complete the results table with all trials. Note any odd result and whether you repeated it."
+      ],
+      "model_inputs": [
+        "Absorbency test: Trial1 towelA 12 drops; Trial2 11 drops. Table columns: material | trial | drops | notes. Do not rely on memory later."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Repeats show whether a result was a fluke and give a fairer typical value.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Why do two or three trials help more than one trial?",
+        "misconception": "Changing the measure mid-way (drops then “looks wet”) breaks the data set.",
+        "model": "Absorbency test: Trial1 towelA 12 drops; Trial2 11 drops. Table columns: material | trial | drops | notes. Do not rely on memory later.",
+        "rule": "Collecting and recording investigation data means measuring carefully, repeating when planned and writing results in a clear table as you go.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "List the key observations or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show scientific thinking.",
+        "model": "Absorbency test: Trial1 towelA 12 drops; Trial2 11 drops. Table columns: material | trial | drops | notes. Do not rely on memory later. Look at each observation, variable or design choice that carries the idea.",
+        "rule": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "Repeats show whether a result was a fluke and give a fairer typical value.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. Changing the measure mid-way (drops then “looks wet”) breaks the data set.",
+        "model": "Changing the measure mid-way (drops then “looks wet”) breaks the data set. Here is a more productive model: Absorbency test: Trial1 towelA 12 drops; Trial2 11 drops. Table columns: material | trial | drops | notes. Do not rely on memory later.",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "The new example should use the same science idea as the model, but contain different objects or data.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Investigate or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "Collecting and recording investigation data means measuring carefully, repeating when planned and writing results in a clear table as you go. Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Recording investigation data.",
+        "teaches": "Repeats reduce flukes."
+      },
+      {
+        "alt": "Trial columns.",
+        "teaches": "Do not change the measure mid-way."
+      }
+    ]
+  }
+}
