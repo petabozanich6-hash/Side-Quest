@@ -225,9 +225,9 @@ Choose the method for the question.
 
 ### Help with this step
 
-1. Read the complete model before judging its result.
-2. Match each decision to the definition and representation used in this model.
-3. Explain one intermediate step and check that the final conclusion answers the original classify rational and irrational numbers question.
+1. Look at how the complete model uses an exact ratio or an established exact irrational identity.
+2. Track a finite display separately from the exact value rather than treating every number question alike.
+3. State which value is being classified, then use its exact fraction or identity as evidence.
 
 ## Try it with help
 
@@ -241,9 +241,9 @@ WE DO:
 
 ### Help with this step
 
-1. Start with the first supplied quantity and identify its role.
-2. Work one classify rational and irrational numbers example before comparing with the feedback.
-3. Record the intermediate representation and test the result against it before continuing.
+1. Begin the first supported example with an exact ratio or an established exact irrational identity.
+2. Write a short label for a finite display separately from the exact value before calculating.
+3. State which value is being classified, then use its exact fraction or identity as evidence. Compare with the feedback only after your attempt.
 
 ## Do the task
 
@@ -380,9 +380,9 @@ Why: It equals 1414/1000 exactly, even though it may be used to approximate an i
 
 ### Help with this step
 
-1. Return to the definition or method for the specific classify rational and irrational numbers question.
-2. Check what the symbols ask for before comparing the options.
-3. Use the taught representation to work independently, then check the meaning and unit of the result.
+1. Return to the step about an exact ratio or an established exact irrational identity.
+2. Check a finite display separately from the exact value before considering the options.
+3. State which value is being classified, then use its exact fraction or identity as evidence.
 
 ## Hand it in
 

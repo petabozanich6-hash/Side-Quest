@@ -242,9 +242,9 @@ Evaluate a specific claim with paired evidence.
 
 ### Help with this step
 
-1. Read the complete model and its explanation before copying a shape.
-2. Match one decision to the source detail or clause relationship that supports it.
-3. Explain how the model handles evaluate a narrator’s reliability and where it limits its claim.
+1. Read the model’s specific judgement about the accusation.
+2. Match the continuous-observation claim to the later phone admission.
+3. Explain how the evidence limits the accusation while acknowledging the model’s self-correction qualification.
 
 ## Try it with help
 
@@ -258,9 +258,9 @@ WE DO:
 
 ### Help with this step
 
-1. Start with the first supplied source detail or clause unit.
-2. Complete one evaluate a narrator’s reliability attempt before reading its feedback.
-3. Use the model’s checking question on your own attempt, then explain the reason for a revision.
+1. Start with the continuous-observation claim and later admission in separate columns.
+2. Explain the mismatch before naming the level of reliability.
+3. Build a limited judgement with a detail and a qualification, then test whether it exceeds the text.
 
 ## Do the task
 

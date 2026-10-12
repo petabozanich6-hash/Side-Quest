@@ -266,9 +266,9 @@ Position and distance from zero answer different questions.
 
 ### Help with this step
 
-1. Read the complete model before judging its result.
-2. Match each decision to the definition and representation used in this model.
-3. Explain one intermediate step and check that the final conclusion answers the original integer fluency with checks question.
+1. Look at how the complete model uses separate position, distance, order and change questions.
+2. Track the different roles of signed value and distance rather than treating every number question alike.
+3. Choose the requested representation first, then check it without silently switching the question.
 
 ## Try it with help
 
@@ -282,9 +282,9 @@ WE DO: Work one supported example at a time.
 
 ### Help with this step
 
-1. Start with the first supplied quantity and identify its role.
-2. Work one integer fluency with checks example before comparing with the feedback.
-3. Record the intermediate representation and test the result against it before continuing.
+1. Begin the first supported example with separate position, distance, order and change questions.
+2. Write a short label for the different roles of signed value and distance before calculating.
+3. Choose the requested representation first, then check it without silently switching the question. Compare with the feedback only after your attempt.
 
 ## Do the task
 
@@ -421,9 +421,9 @@ Why: Both addends point left, giving five negative units.
 
 ### Help with this step
 
-1. Return to the definition or method for the specific integer fluency with checks question.
-2. Check what the symbols ask for before comparing the options.
-3. Use the taught representation to work independently, then check the meaning and unit of the result.
+1. Return to the step about separate position, distance, order and change questions.
+2. Check the different roles of signed value and distance before considering the options.
+3. Choose the requested representation first, then check it without silently switching the question.
 
 ## Hand it in
 

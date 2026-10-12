@@ -225,9 +225,9 @@ Position and distance from zero answer different questions.
 
 ### Help with this step
 
-1. Read the complete model before judging its result.
-2. Match each decision to the definition and representation used in this model.
-3. Explain one intermediate step and check that the final conclusion answers the original add integers as signed changes question.
+1. Look at how the complete model uses a starting value followed by a directed change.
+2. Track same-direction accumulation or opposite-unit cancellation rather than treating every number question alike.
+3. Find the start, use the added sign for direction and check the landing value.
 
 ## Try it with help
 
@@ -241,9 +241,9 @@ WE DO: Work one supported example at a time.
 
 ### Help with this step
 
-1. Start with the first supplied quantity and identify its role.
-2. Work one add integers as signed changes example before comparing with the feedback.
-3. Record the intermediate representation and test the result against it before continuing.
+1. Begin the first supported example with a starting value followed by a directed change.
+2. Write a short label for same-direction accumulation or opposite-unit cancellation before calculating.
+3. Find the start, use the added sign for direction and check the landing value. Compare with the feedback only after your attempt.
 
 ## Do the task
 
@@ -380,9 +380,9 @@ Why: Equal opposite contributions cancel to zero.
 
 ### Help with this step
 
-1. Return to the definition or method for the specific add integers as signed changes question.
-2. Check what the symbols ask for before comparing the options.
-3. Use the taught representation to work independently, then check the meaning and unit of the result.
+1. Return to the step about a starting value followed by a directed change.
+2. Check same-direction accumulation or opposite-unit cancellation before considering the options.
+3. Find the start, use the added sign for direction and check the landing value.
 
 ## Hand it in
 

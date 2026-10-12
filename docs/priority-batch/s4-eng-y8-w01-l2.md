@@ -248,9 +248,9 @@ Change access and emphasis while preserving the incident.
 
 ### Help with this step
 
-1. Read the complete model and its explanation before copying a shape.
-2. Match one decision to the source detail or clause relationship that supports it.
-3. Explain how the model handles rewrite a scene from another perspective and where it limits its claim.
+1. Read the Sam model beside the shared-event notes.
+2. Find an observation and a newly created interior choice, keeping their labels separate.
+3. Explain how the practical emphasis changes the telling without replacing the incident.
 
 ## Try it with help
 
@@ -264,9 +264,9 @@ WE DO:
 
 ### Help with this step
 
-1. Start with the first supplied source detail or clause unit.
-2. Complete one rewrite a scene from another perspective attempt before reading its feedback.
-3. Use the model’s checking question on your own attempt, then explain the reason for a revision.
+1. Start with the four shared events before drafting through Sam.
+2. List one seen action and one heard line available through the chosen lens.
+3. Revise an unobserved thought into behaviour or a qualified interpretation, keeping the event sequence intact.
 
 ## Keep the event; change the lens
 

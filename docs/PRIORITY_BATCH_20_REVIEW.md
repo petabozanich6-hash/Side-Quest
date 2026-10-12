@@ -52,7 +52,7 @@ Not verified: production React build, phone visual layout, real-device audio, li
 
 ## Usage check
 
-Estimated rows written: **20**. Largest SQL statement: **30,203 bytes**.
+Estimated rows written: **20**. Largest SQL statement: **30,368 bytes**.
 
 ## Commands from repository root
 

@@ -254,9 +254,9 @@ Preparation and observed performance are different evidence.
 
 ### Help with this step
 
-1. Read the complete model and its explanation before copying a shape.
-2. Match one decision to the source detail or clause relationship that supports it.
-3. Explain how the model handles tell a story with deliberate perspective and where it limits its claim.
+1. Read the complete telling beside its four cues.
+2. Find where a reported accusation is kept separate from an action.
+3. Use one cue to communicate a full event, then check how the response leads to the outcome.
 
 ## Try it with help
 
@@ -270,9 +270,9 @@ WE DO:
 
 ### Help with this step
 
-1. Start with the first supplied source detail or clause unit.
-2. Complete one tell a story with deliberate perspective attempt before reading its feedback.
-3. Use the model’s checking question on your own attempt, then explain the reason for a revision.
+1. Start with Sam’s preparation purpose in a short cue.
+2. Add the question and gap-check cues without treating an accusation as proof.
+3. Explain from the cues, rehearse one transition twice and describe the actual change.
 
 ## Do the task
 

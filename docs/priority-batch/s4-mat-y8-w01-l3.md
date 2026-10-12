@@ -224,9 +224,9 @@ The exponent controls scale; retain the unit.
 
 ### Help with this step
 
-1. Read the complete model before judging its result.
-2. Match each decision to the definition and representation used in this model.
-3. Explain one intermediate step and check that the final conclusion answers the original use scientific notation accurately question.
+1. Look at how the complete model uses a standard coefficient with a power-of-ten scale.
+2. Track the exponent sign and the unchanged measurement unit rather than treating every number question alike.
+3. Check the coefficient interval, then multiply or divide back to recover the original quantity.
 
 ## Try it with help
 
@@ -240,9 +240,9 @@ WE DO:
 
 ### Help with this step
 
-1. Start with the first supplied quantity and identify its role.
-2. Work one use scientific notation accurately example before comparing with the feedback.
-3. Record the intermediate representation and test the result against it before continuing.
+1. Begin the first supported example with a standard coefficient with a power-of-ten scale.
+2. Write a short label for the exponent sign and the unchanged measurement unit before calculating.
+3. Check the coefficient interval, then multiply or divide back to recover the original quantity. Compare with the feedback only after your attempt.
 
 ## Do the task
 
@@ -379,9 +379,9 @@ Why: Dividing 3.6 by one hundred gives 0.036.
 
 ### Help with this step
 
-1. Return to the definition or method for the specific use scientific notation accurately question.
-2. Check what the symbols ask for before comparing the options.
-3. Use the taught representation to work independently, then check the meaning and unit of the result.
+1. Return to the step about a standard coefficient with a power-of-ten scale.
+2. Check the exponent sign and the unchanged measurement unit before considering the options.
+3. Check the coefficient interval, then multiply or divide back to recover the original quantity.
 
 ## Hand it in
 

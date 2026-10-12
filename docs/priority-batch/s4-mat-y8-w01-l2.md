@@ -224,9 +224,9 @@ Side length is the square root of square area.
 
 ### Help with this step
 
-1. Read the complete model before judging its result.
-2. Match each decision to the definition and representation used in this model.
-3. Explain one intermediate step and check that the final conclusion answers the original explain and estimate square roots question.
+1. Look at how the complete model uses square relationships and perfect-square bounds.
+2. Track a principal radical separately from equation solutions rather than treating every number question alike.
+3. Square a proposed principal result or square the bounding integers to test the original value.
 
 ## Try it with help
 
@@ -240,9 +240,9 @@ WE DO:
 
 ### Help with this step
 
-1. Start with the first supplied quantity and identify its role.
-2. Work one explain and estimate square roots example before comparing with the feedback.
-3. Record the intermediate representation and test the result against it before continuing.
+1. Begin the first supported example with square relationships and perfect-square bounds.
+2. Write a short label for a principal radical separately from equation solutions before calculating.
+3. Square a proposed principal result or square the bounding integers to test the original value. Compare with the feedback only after your attempt.
 
 ## Do the task
 
@@ -379,9 +379,9 @@ Why: Squaring reverses the root question.
 
 ### Help with this step
 
-1. Return to the definition or method for the specific explain and estimate square roots question.
-2. Check what the symbols ask for before comparing the options.
-3. Use the taught representation to work independently, then check the meaning and unit of the result.
+1. Return to the step about square relationships and perfect-square bounds.
+2. Check a principal radical separately from equation solutions before considering the options.
+3. Square a proposed principal result or square the bounding integers to test the original value.
 
 ## Hand it in
 

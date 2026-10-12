@@ -324,14 +324,14 @@ UPDATE lessons SET title='Year 8: Evaluate a narrator’s reliability', data=jso
       "Include a qualification when the text also shows self-correction."
     ],
     "learn": [
-      "Read the complete model and its explanation before copying a shape.",
-      "Match one decision to the source detail or clause relationship that supports it.",
-      "Explain how the model handles evaluate a narrator’s reliability and where it limits its claim."
+      "Read the model’s specific judgement about the accusation.",
+      "Match the continuous-observation claim to the later phone admission.",
+      "Explain how the evidence limits the accusation while acknowledging the model’s self-correction qualification."
     ],
     "guided": [
-      "Start with the first supplied source detail or clause unit.",
-      "Complete one evaluate a narrator’s reliability attempt before reading its feedback.",
-      "Use the model’s checking question on your own attempt, then explain the reason for a revision."
+      "Start with the continuous-observation claim and later admission in separate columns.",
+      "Explain the mismatch before naming the level of reliability.",
+      "Build a limited judgement with a detail and a qualification, then test whether it exceeds the text."
     ],
     "write": [
       "Begin with one specific claim Kai makes, not a whole-person judgement.",
@@ -690,14 +690,14 @@ UPDATE lessons SET title='Year 8: Rewrite a scene from another perspective', dat
       "Replace it with behaviour, a qualified inference or a clearly chosen thought of the focal character."
     ],
     "learn": [
-      "Read the complete model and its explanation before copying a shape.",
-      "Match one decision to the source detail or clause relationship that supports it.",
-      "Explain how the model handles rewrite a scene from another perspective and where it limits its claim."
+      "Read the Sam model beside the shared-event notes.",
+      "Find an observation and a newly created interior choice, keeping their labels separate.",
+      "Explain how the practical emphasis changes the telling without replacing the incident."
     ],
     "guided": [
-      "Start with the first supplied source detail or clause unit.",
-      "Complete one rewrite a scene from another perspective attempt before reading its feedback.",
-      "Use the model’s checking question on your own attempt, then explain the reason for a revision."
+      "Start with the four shared events before drafting through Sam.",
+      "List one seen action and one heard line available through the chosen lens.",
+      "Revise an unobserved thought into behaviour or a qualified interpretation, keeping the event sequence intact."
     ],
     "write": [
       "Record the shared events before inventing Sam’s interior thoughts.",
@@ -1045,14 +1045,14 @@ UPDATE lessons SET title='Year 8: Control complex sentences and clauses', data=j
       "Use the model’s comma boundary and read both clauses together for meaning."
     ],
     "learn": [
-      "Read the complete model and its explanation before copying a shape.",
-      "Match one decision to the source detail or clause relationship that supports it.",
-      "Explain how the model handles control complex sentences and clauses and where it limits its claim."
+      "Compare the main-first and introductory-clause models.",
+      "Mark the subject and verb in each unit before checking its boundary.",
+      "Reorder one complete pair and check that the link and comma still fit the demonstrated pattern."
     ],
     "guided": [
-      "Start with the first supplied source detail or clause unit.",
-      "Complete one control complex sentences and clauses attempt before reading its feedback.",
-      "Use the model’s checking question on your own attempt, then explain the reason for a revision."
+      "Begin with the subject and verb in the main statement.",
+      "Identify the dependent unit and what its linking word contributes.",
+      "Join the units, then move the dependent unit first and test the demonstrated boundary."
     ],
     "write": [
       "Start with one main statement and a reason clause.",
@@ -1407,14 +1407,14 @@ UPDATE lessons SET title='Year 8: Tell a story with deliberate perspective', dat
       "Explain the change and label the kind of evidence you really produced."
     ],
     "learn": [
-      "Read the complete model and its explanation before copying a shape.",
-      "Match one decision to the source detail or clause relationship that supports it.",
-      "Explain how the model handles tell a story with deliberate perspective and where it limits its claim."
+      "Read the complete telling beside its four cues.",
+      "Find where a reported accusation is kept separate from an action.",
+      "Use one cue to communicate a full event, then check how the response leads to the outcome."
     ],
     "guided": [
-      "Start with the first supplied source detail or clause unit.",
-      "Complete one tell a story with deliberate perspective attempt before reading its feedback.",
-      "Use the model’s checking question on your own attempt, then explain the reason for a revision."
+      "Start with Sam’s preparation purpose in a short cue.",
+      "Add the question and gap-check cues without treating an accusation as proof.",
+      "Explain from the cues, rehearse one transition twice and describe the actual change."
     ],
     "write": [
       "Begin with the person, preparation goal and first event cue.",
@@ -3117,14 +3117,14 @@ UPDATE lessons SET title='Year 7: Represent positive and negative integers', dat
       "Write a signed value, then explain its position relative to that same reference."
     ],
     "learn": [
-      "Read the complete model before judging its result.",
-      "Match each decision to the definition and representation used in this model.",
-      "Explain one intermediate step and check that the final conclusion answers the original represent positive and negative integers question."
+      "Look at how the complete model uses signed positions around a stated zero.",
+      "Track value, distance and opposite as separate labels rather than treating every number question alike.",
+      "Place the signed point, then answer only the position, distance or reflection question requested."
     ],
     "guided": [
-      "Start with the first supplied quantity and identify its role.",
-      "Work one represent positive and negative integers example before comparing with the feedback.",
-      "Record the intermediate representation and test the result against it before continuing."
+      "Begin the first supported example with signed positions around a stated zero.",
+      "Write a short label for value, distance and opposite as separate labels before calculating.",
+      "Place the signed point, then answer only the position, distance or reflection question requested. Compare with the feedback only after your attempt."
     ],
     "write": [
       "Copy the first represent positive and negative integers task and label its quantities.",
@@ -3132,9 +3132,9 @@ UPDATE lessons SET title='Year 7: Represent positive and negative integers', dat
       "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
     ],
     "quiz": [
-      "Return to the definition or method for the specific represent positive and negative integers question.",
-      "Check what the symbols ask for before comparing the options.",
-      "Use the taught representation to work independently, then check the meaning and unit of the result."
+      "Return to the step about signed positions around a stated zero.",
+      "Check value, distance and opposite as separate labels before considering the options.",
+      "Place the signed point, then answer only the position, distance or reflection question requested."
     ],
     "submit": [
       "Check that your represent positive and negative integers task and working are present.",
@@ -3467,14 +3467,14 @@ UPDATE lessons SET title='Year 7: Order integers and justify comparisons', data=
       "Explain whether the rightward or leftward value matches the requested meaning."
     ],
     "learn": [
-      "Read the complete model before judging its result.",
-      "Match each decision to the definition and representation used in this model.",
-      "Explain one intermediate step and check that the final conclusion answers the original order integers and justify comparisons question."
+      "Look at how the complete model uses rightward and leftward signed-value positions.",
+      "Track the requested direction of the sorted list rather than treating every number question alike.",
+      "Locate both signed values, record their relationship and check each neighbouring comparison."
     ],
     "guided": [
-      "Start with the first supplied quantity and identify its role.",
-      "Work one order integers and justify comparisons example before comparing with the feedback.",
-      "Record the intermediate representation and test the result against it before continuing."
+      "Begin the first supported example with rightward and leftward signed-value positions.",
+      "Write a short label for the requested direction of the sorted list before calculating.",
+      "Locate both signed values, record their relationship and check each neighbouring comparison. Compare with the feedback only after your attempt."
     ],
     "write": [
       "Copy the first order integers and justify comparisons task and label its quantities.",
@@ -3482,9 +3482,9 @@ UPDATE lessons SET title='Year 7: Order integers and justify comparisons', data=
       "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
     ],
     "quiz": [
-      "Return to the definition or method for the specific order integers and justify comparisons question.",
-      "Check what the symbols ask for before comparing the options.",
-      "Use the taught representation to work independently, then check the meaning and unit of the result."
+      "Return to the step about rightward and leftward signed-value positions.",
+      "Check the requested direction of the sorted list before considering the options.",
+      "Locate both signed values, record their relationship and check each neighbouring comparison."
     ],
     "submit": [
       "Check that your order integers and justify comparisons task and working are present.",
@@ -3817,14 +3817,14 @@ UPDATE lessons SET title='Year 7: Add integers as signed changes', data=json_pat
       "Write the addition equation and check the path across the reference."
     ],
     "learn": [
-      "Read the complete model before judging its result.",
-      "Match each decision to the definition and representation used in this model.",
-      "Explain one intermediate step and check that the final conclusion answers the original add integers as signed changes question."
+      "Look at how the complete model uses a starting value followed by a directed change.",
+      "Track same-direction accumulation or opposite-unit cancellation rather than treating every number question alike.",
+      "Find the start, use the added sign for direction and check the landing value."
     ],
     "guided": [
-      "Start with the first supplied quantity and identify its role.",
-      "Work one add integers as signed changes example before comparing with the feedback.",
-      "Record the intermediate representation and test the result against it before continuing."
+      "Begin the first supported example with a starting value followed by a directed change.",
+      "Write a short label for same-direction accumulation or opposite-unit cancellation before calculating.",
+      "Find the start, use the added sign for direction and check the landing value. Compare with the feedback only after your attempt."
     ],
     "write": [
       "Copy the first add integers as signed changes task and label its quantities.",
@@ -3832,9 +3832,9 @@ UPDATE lessons SET title='Year 7: Add integers as signed changes', data=json_pat
       "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
     ],
     "quiz": [
-      "Return to the definition or method for the specific add integers as signed changes question.",
-      "Check what the symbols ask for before comparing the options.",
-      "Use the taught representation to work independently, then check the meaning and unit of the result."
+      "Return to the step about a starting value followed by a directed change.",
+      "Check same-direction accumulation or opposite-unit cancellation before considering the options.",
+      "Find the start, use the added sign for direction and check the landing value."
     ],
     "submit": [
       "Check that your add integers as signed changes task and working are present.",
@@ -4190,14 +4190,14 @@ UPDATE lessons SET title='Year 7: Integer fluency with checks', data=json_patch(
       "Use the unpaired direction for the sign and its distance for the size."
     ],
     "learn": [
-      "Read the complete model before judging its result.",
-      "Match each decision to the definition and representation used in this model.",
-      "Explain one intermediate step and check that the final conclusion answers the original integer fluency with checks question."
+      "Look at how the complete model uses separate position, distance, order and change questions.",
+      "Track the different roles of signed value and distance rather than treating every number question alike.",
+      "Choose the requested representation first, then check it without silently switching the question."
     ],
     "guided": [
-      "Start with the first supplied quantity and identify its role.",
-      "Work one integer fluency with checks example before comparing with the feedback.",
-      "Record the intermediate representation and test the result against it before continuing."
+      "Begin the first supported example with separate position, distance, order and change questions.",
+      "Write a short label for the different roles of signed value and distance before calculating.",
+      "Choose the requested representation first, then check it without silently switching the question. Compare with the feedback only after your attempt."
     ],
     "write": [
       "Copy the first integer fluency with checks task and label its quantities.",
@@ -4205,9 +4205,9 @@ UPDATE lessons SET title='Year 7: Integer fluency with checks', data=json_patch(
       "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
     ],
     "quiz": [
-      "Return to the definition or method for the specific integer fluency with checks question.",
-      "Check what the symbols ask for before comparing the options.",
-      "Use the taught representation to work independently, then check the meaning and unit of the result."
+      "Return to the step about separate position, distance, order and change questions.",
+      "Check the different roles of signed value and distance before considering the options.",
+      "Choose the requested representation first, then check it without silently switching the question."
     ],
     "submit": [
       "Check that your integer fluency with checks task and working are present.",
@@ -5900,14 +5900,14 @@ UPDATE lessons SET title='Year 8: Classify rational and irrational numbers', dat
       "State a fraction or exact-value reason; avoid judging the shape of the notation."
     ],
     "learn": [
-      "Read the complete model before judging its result.",
-      "Match each decision to the definition and representation used in this model.",
-      "Explain one intermediate step and check that the final conclusion answers the original classify rational and irrational numbers question."
+      "Look at how the complete model uses an exact ratio or an established exact irrational identity.",
+      "Track a finite display separately from the exact value rather than treating every number question alike.",
+      "State which value is being classified, then use its exact fraction or identity as evidence."
     ],
     "guided": [
-      "Start with the first supplied quantity and identify its role.",
-      "Work one classify rational and irrational numbers example before comparing with the feedback.",
-      "Record the intermediate representation and test the result against it before continuing."
+      "Begin the first supported example with an exact ratio or an established exact irrational identity.",
+      "Write a short label for a finite display separately from the exact value before calculating.",
+      "State which value is being classified, then use its exact fraction or identity as evidence. Compare with the feedback only after your attempt."
     ],
     "write": [
       "Copy the first classify rational and irrational numbers task and label its quantities.",
@@ -5915,9 +5915,9 @@ UPDATE lessons SET title='Year 8: Classify rational and irrational numbers', dat
       "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
     ],
     "quiz": [
-      "Return to the definition or method for the specific classify rational and irrational numbers question.",
-      "Check what the symbols ask for before comparing the options.",
-      "Use the taught representation to work independently, then check the meaning and unit of the result."
+      "Return to the step about an exact ratio or an established exact irrational identity.",
+      "Check a finite display separately from the exact value before considering the options.",
+      "State which value is being classified, then use its exact fraction or identity as evidence."
     ],
     "submit": [
       "Check that your classify rational and irrational numbers task and working are present.",
@@ -6250,14 +6250,14 @@ UPDATE lessons SET title='Year 8: Explain and estimate square roots', data=json_
       "For a length, choose the non-negative result and give length units."
     ],
     "learn": [
-      "Read the complete model before judging its result.",
-      "Match each decision to the definition and representation used in this model.",
-      "Explain one intermediate step and check that the final conclusion answers the original explain and estimate square roots question."
+      "Look at how the complete model uses square relationships and perfect-square bounds.",
+      "Track a principal radical separately from equation solutions rather than treating every number question alike.",
+      "Square a proposed principal result or square the bounding integers to test the original value."
     ],
     "guided": [
-      "Start with the first supplied quantity and identify its role.",
-      "Work one explain and estimate square roots example before comparing with the feedback.",
-      "Record the intermediate representation and test the result against it before continuing."
+      "Begin the first supported example with square relationships and perfect-square bounds.",
+      "Write a short label for a principal radical separately from equation solutions before calculating.",
+      "Square a proposed principal result or square the bounding integers to test the original value. Compare with the feedback only after your attempt."
     ],
     "write": [
       "Copy the first explain and estimate square roots task and label its quantities.",
@@ -6265,9 +6265,9 @@ UPDATE lessons SET title='Year 8: Explain and estimate square roots', data=json_
       "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
     ],
     "quiz": [
-      "Return to the definition or method for the specific explain and estimate square roots question.",
-      "Check what the symbols ask for before comparing the options.",
-      "Use the taught representation to work independently, then check the meaning and unit of the result."
+      "Return to the step about square relationships and perfect-square bounds.",
+      "Check a principal radical separately from equation solutions before considering the options.",
+      "Square a proposed principal result or square the bounding integers to test the original value."
     ],
     "submit": [
       "Check that your explain and estimate square roots task and working are present.",
@@ -6600,14 +6600,14 @@ UPDATE lessons SET title='Year 8: Use scientific notation accurately', data=json
       "Compare standard exponents first, then coefficients when exponents match; verify by ordinary values if needed."
     ],
     "learn": [
-      "Read the complete model before judging its result.",
-      "Match each decision to the definition and representation used in this model.",
-      "Explain one intermediate step and check that the final conclusion answers the original use scientific notation accurately question."
+      "Look at how the complete model uses a standard coefficient with a power-of-ten scale.",
+      "Track the exponent sign and the unchanged measurement unit rather than treating every number question alike.",
+      "Check the coefficient interval, then multiply or divide back to recover the original quantity."
     ],
     "guided": [
-      "Start with the first supplied quantity and identify its role.",
-      "Work one use scientific notation accurately example before comparing with the feedback.",
-      "Record the intermediate representation and test the result against it before continuing."
+      "Begin the first supported example with a standard coefficient with a power-of-ten scale.",
+      "Write a short label for the exponent sign and the unchanged measurement unit before calculating.",
+      "Check the coefficient interval, then multiply or divide back to recover the original quantity. Compare with the feedback only after your attempt."
     ],
     "write": [
       "Copy the first use scientific notation accurately task and label its quantities.",
@@ -6615,9 +6615,9 @@ UPDATE lessons SET title='Year 8: Use scientific notation accurately', data=json
       "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
     ],
     "quiz": [
-      "Return to the definition or method for the specific use scientific notation accurately question.",
-      "Check what the symbols ask for before comparing the options.",
-      "Use the taught representation to work independently, then check the meaning and unit of the result."
+      "Return to the step about a standard coefficient with a power-of-ten scale.",
+      "Check the exponent sign and the unchanged measurement unit before considering the options.",
+      "Check the coefficient interval, then multiply or divide back to recover the original quantity."
     ],
     "submit": [
       "Check that your use scientific notation accurately task and working are present.",
@@ -6973,14 +6973,14 @@ UPDATE lessons SET title='Year 8: Real-number fluency with checks', data=json_pa
       "Require both correct value and a standard coefficient; do not choose by appearance alone."
     ],
     "learn": [
-      "Read the complete model before judging its result.",
-      "Match each decision to the definition and representation used in this model.",
-      "Explain one intermediate step and check that the final conclusion answers the original real-number fluency with checks question."
+      "Look at how the complete model uses classification, root and scientific-form checks separately.",
+      "Track the exact-value label and the convention the notation uses rather than treating every number question alike.",
+      "Choose a fraction, square relationship or scale check that matches the specific number question."
     ],
     "guided": [
-      "Start with the first supplied quantity and identify its role.",
-      "Work one real-number fluency with checks example before comparing with the feedback.",
-      "Record the intermediate representation and test the result against it before continuing."
+      "Begin the first supported example with classification, root and scientific-form checks separately.",
+      "Write a short label for the exact-value label and the convention the notation uses before calculating.",
+      "Choose a fraction, square relationship or scale check that matches the specific number question. Compare with the feedback only after your attempt."
     ],
     "write": [
       "Copy the first real-number fluency with checks task and label its quantities.",
@@ -6988,9 +6988,9 @@ UPDATE lessons SET title='Year 8: Real-number fluency with checks', data=json_pa
       "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
     ],
     "quiz": [
-      "Return to the definition or method for the specific real-number fluency with checks question.",
-      "Check what the symbols ask for before comparing the options.",
-      "Use the taught representation to work independently, then check the meaning and unit of the result."
+      "Return to the step about classification, root and scientific-form checks separately.",
+      "Check the exact-value label and the convention the notation uses before considering the options.",
+      "Choose a fraction, square relationship or scale check that matches the specific number question."
     ],
     "submit": [
       "Check that your real-number fluency with checks task and working are present.",

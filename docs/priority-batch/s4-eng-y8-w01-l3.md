@@ -231,9 +231,9 @@ Structure is about clause relationships, not length.
 
 ### Help with this step
 
-1. Read the complete model and its explanation before copying a shape.
-2. Match one decision to the source detail or clause relationship that supports it.
-3. Explain how the model handles control complex sentences and clauses and where it limits its claim.
+1. Compare the main-first and introductory-clause models.
+2. Mark the subject and verb in each unit before checking its boundary.
+3. Reorder one complete pair and check that the link and comma still fit the demonstrated pattern.
 
 ## Try it with help
 
@@ -247,9 +247,9 @@ WE DO:
 
 ### Help with this step
 
-1. Start with the first supplied source detail or clause unit.
-2. Complete one control complex sentences and clauses attempt before reading its feedback.
-3. Use the model’s checking question on your own attempt, then explain the reason for a revision.
+1. Begin with the subject and verb in the main statement.
+2. Identify the dependent unit and what its linking word contributes.
+3. Join the units, then move the dependent unit first and test the demonstrated boundary.
 
 ## Do the task
 

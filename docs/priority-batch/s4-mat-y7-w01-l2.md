@@ -225,9 +225,9 @@ Position and distance from zero answer different questions.
 
 ### Help with this step
 
-1. Read the complete model before judging its result.
-2. Match each decision to the definition and representation used in this model.
-3. Explain one intermediate step and check that the final conclusion answers the original order integers and justify comparisons question.
+1. Look at how the complete model uses rightward and leftward signed-value positions.
+2. Track the requested direction of the sorted list rather than treating every number question alike.
+3. Locate both signed values, record their relationship and check each neighbouring comparison.
 
 ## Try it with help
 
@@ -241,9 +241,9 @@ WE DO: Work one supported example at a time.
 
 ### Help with this step
 
-1. Start with the first supplied quantity and identify its role.
-2. Work one order integers and justify comparisons example before comparing with the feedback.
-3. Record the intermediate representation and test the result against it before continuing.
+1. Begin the first supported example with rightward and leftward signed-value positions.
+2. Write a short label for the requested direction of the sorted list before calculating.
+3. Locate both signed values, record their relationship and check each neighbouring comparison. Compare with the feedback only after your attempt.
 
 ## Do the task
 
@@ -380,9 +380,9 @@ Why: Position on the same scale gives signed order.
 
 ### Help with this step
 
-1. Return to the definition or method for the specific order integers and justify comparisons question.
-2. Check what the symbols ask for before comparing the options.
-3. Use the taught representation to work independently, then check the meaning and unit of the result.
+1. Return to the step about rightward and leftward signed-value positions.
+2. Check the requested direction of the sorted list before considering the options.
+3. Locate both signed values, record their relationship and check each neighbouring comparison.
 
 ## Hand it in
 

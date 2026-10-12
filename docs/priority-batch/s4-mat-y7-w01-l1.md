@@ -223,9 +223,9 @@ Position and distance from zero answer different questions.
 
 ### Help with this step
 
-1. Read the complete model before judging its result.
-2. Match each decision to the definition and representation used in this model.
-3. Explain one intermediate step and check that the final conclusion answers the original represent positive and negative integers question.
+1. Look at how the complete model uses signed positions around a stated zero.
+2. Track value, distance and opposite as separate labels rather than treating every number question alike.
+3. Place the signed point, then answer only the position, distance or reflection question requested.
 
 ## Try it with help
 
@@ -239,9 +239,9 @@ WE DO: Work one supported example at a time.
 
 ### Help with this step
 
-1. Start with the first supplied quantity and identify its role.
-2. Work one represent positive and negative integers example before comparing with the feedback.
-3. Record the intermediate representation and test the result against it before continuing.
+1. Begin the first supported example with signed positions around a stated zero.
+2. Write a short label for value, distance and opposite as separate labels before calculating.
+3. Place the signed point, then answer only the position, distance or reflection question requested. Compare with the feedback only after your attempt.
 
 ## Do the task
 
@@ -378,9 +378,9 @@ Why: Four is four units from zero.
 
 ### Help with this step
 
-1. Return to the definition or method for the specific represent positive and negative integers question.
-2. Check what the symbols ask for before comparing the options.
-3. Use the taught representation to work independently, then check the meaning and unit of the result.
+1. Return to the step about signed positions around a stated zero.
+2. Check value, distance and opposite as separate labels before considering the options.
+3. Place the signed point, then answer only the position, distance or reflection question requested.
 
 ## Hand it in
 
