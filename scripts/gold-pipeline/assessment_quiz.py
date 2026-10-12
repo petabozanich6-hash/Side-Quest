@@ -240,8 +240,11 @@ def build_skill_quiz(seed_key: str, subject: str, rule: str, model: str, prompt:
             ],
             'Transfer needs a new object or context with evidence.',
             seed_key, 'q8', pad=[d2, d3]))
-    elif subject in ('hsie', 'pdhpe'):
-        focus = 'sources and places' if subject == 'hsie' else 'safe, healthy, respectful choices'
+    elif subject in ('hsie', 'pdhpe', 'arts'):
+        focus = (
+            'sources and places' if subject == 'hsie' else
+            'safe, healthy, respectful choices' if subject == 'pdhpe' else
+            'elements, techniques and audience effect')
         items.append(shuffle_mc(
             f'Which response best shows careful thinking about {v0}?',
             answer_s, [pitfall_s, d0, d1],

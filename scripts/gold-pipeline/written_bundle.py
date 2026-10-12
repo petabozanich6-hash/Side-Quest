@@ -8,6 +8,7 @@ CURRICULUM_SOURCE = {
     'science': 'https://curriculum.nsw.edu.au/learning-areas/science/science-and-technology-k-6-2024/outcomes',
     'hsie': 'https://curriculum.nsw.edu.au/learning-areas/hsie/hsie-k-6-2024/outcomes',
     'pdhpe': 'https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes',
+    'arts': 'https://curriculum.nsw.edu.au/learning-areas/creative-arts/creative-arts-k-6-2024/outcomes',
 }
 
 
@@ -73,6 +74,28 @@ def expand_stages(rule, model, prompt, answer, pitfall, subject='english'):
              'Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.',
              'The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.',
              'Repeating the worked example cannot show transfer to a new situation.'),
+        ]
+    if subject == 'arts':
+        return [
+            ('Understand and demonstrate', rule, model, prompt, answer, pitfall),
+            ('Show the artistic choice',
+             'Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.',
+             model + ' Look at each line, sound, movement or role choice that carries the idea.',
+             'List the key artistic choices from the example and say what each one does for the audience or artwork.',
+             'The most useful response names the element or technique and its effect, not only “it looks nice”.',
+             'Writing only a final praise word without naming a choice does not show arts thinking.'),
+            ('Test a misconception',
+             'Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.',
+             pitfall + ' Here is a more helpful example: ' + model,
+             'Describe why the warned-against choice weakens the work, then write a stronger choice with a reason.',
+             answer,
+             'Changing the decoration without changing the artistic idea does not fix the error. ' + pitfall),
+            ('Transfer to a new artwork or performance',
+             'Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.',
+             rule + ' Now choose a different subject or piece to show you can transfer the idea.',
+             'Make or describe one fresh example that uses the same skill and write a short reason for your main choice.',
+             'The new example should use the same arts idea as the model, but with different content or material.',
+             'Repeating the worked example cannot show transfer to a new artwork or performance.'),
         ]
     if subject in ('science', 'hsie'):
         idea_word = 'science' if subject == 'science' else 'HSIE'
@@ -152,6 +175,8 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
         vocab = spec.get('vocab') or ['community', 'source', 'place', 'respect']
     elif subject == 'pdhpe':
         vocab = spec.get('vocab') or ['movement', 'health', 'safety', 'respect']
+    elif subject == 'arts':
+        vocab = spec.get('vocab') or ['element', 'technique', 'effect', 'audience']
     else:
         vocab = spec.get('vocab') or ['this skill', 'evidence', 'transfer', 'revision']
     stages = expand_stages(rule, model, prompt, answer, pitfall, subject=subject)
@@ -176,6 +201,9 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
         materials = ['Paper or typed answer space', 'Pencil',
                      'Clear, safe movement space with an adult nearby for any physical activity',
                      'Optional: soft ball, cushion or water bottle']
+    elif subject == 'arts':
+        materials = ['Paper or typed answer space', 'Pencil',
+                     'Optional: scrap paper, crayons, safe classroom instruments or clear movement space with an adult nearby']
     else:
         materials = ['Paper or typed answer space', 'Pencil']
     if subject == 'mathematics':
@@ -191,6 +219,10 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
         source_note = ('Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); '
                        'content-point mapping remains pending human review. Physical activities are optional, '
                        'adult-supervised and adaptable; no child is required to share personal details.')
+    elif subject == 'arts':
+        source_note = ('Proposed Stage 2 NESA Creative Arts alignment using catalogue outcome codes (CA2-*); '
+                       'content-point mapping remains pending. First Nations arts content requires local '
+                       'Aboriginal educator or Custodian guidance before acceptance; do not invent sacred designs.')
     else:
         source_note = 'Proposed Stage 2 NESA alignment; verify content points before acceptance.'
     l.update(
@@ -275,6 +307,25 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
                 ('pip', 'I will try the prompt myself, then compare with the feedback.'),
                 ('juno', 'Pause here. Use this example: ' + model[:120] + ' Then write your own reasons.', True),
             ]
+        elif subject == 'arts':
+            why = ('This helps the learner make intentional visual, music, drama or dance choices and name their effect, '
+                   'rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.')
+            how = (
+                'Read the worked example and name the elements, techniques or performance choices that carry the idea. '
+                'Before looking at the correction, make your own attempt using the exact question provided. '
+                'For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. '
+                'You may always describe a choice instead of performing it. '
+                'One deliberate artistic choice with a named effect is more useful than a longer praise sentence.')
+            wrong_opts = ['A comment that only says it looks nice with no element named.',
+                          'An answer copied without understanding.',
+                          'A guess with no artistic reason.']
+            fix = 'Name the element or technique and its effect, not just decoration.'
+            ep = [
+                ('pip', 'I can see the example, but I am not sure which artistic choice matters most.'),
+                ('juno', 'Name the element, technique or performance choice and the effect it creates before you decide.'),
+                ('pip', 'I will try the prompt myself, then compare with the feedback.'),
+                ('juno', 'Pause here. Use this example: ' + model[:120] + ' Then write your own artistic reason.', True),
+            ]
         else:
             why = ('This helps the learner make decisions based on specific language evidence, '
                    'rather than guess or copy someone else. Keep the meaning accurate and explain the choice.')
@@ -303,6 +354,8 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
             if subject == 'hsie' else
             ' Supported choices follow the actual cues, rules and purpose of the task.'
             if subject == 'pdhpe' else
+            ' Supported responses name the element or technique and its effect.'
+            if subject == 'arts' else
             ' A supported explanation follows the actual words and purpose of the task.')
         teach.append(dict(
             title=heading, icon='📖', explain=explain,
@@ -509,6 +562,53 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
              'Make sure the final evidence matches the lesson purpose.'),
         ]
         extension = 'Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.'
+    elif subject == 'arts':
+        l['worked_example'] = 'WORK THROUGH THIS\n' + model + '\n\nWrite what makes this example effective, naming the element, technique or performance choice and its effect.'
+        l['guided_practice'] = 'PRACTISE BEFORE READING THE FEEDBACK\n' + prompt + '\n\nFEEDBACK\n' + answer + '\n\nWATCH FOR\n' + pitfall
+        l['independent_task'] = 'INDEPENDENT EVIDENCE\n' + task + '\n\nWrite a short reflection naming one artistic choice you changed and why. Movement or instrument work is optional, adult-supervised and can be described instead.'
+        l['response_prompt'] = 'Include your independent artwork or performance notes and reflection, with reasons where requested.'
+        distractors = [
+            'Say it looks nice with no element or technique named.',
+            'Copy the example artwork or script and call that independent work.',
+            'Invent a sacred First Nations design without permission or guidance.',
+            'Skip safety or respectful audience behaviour because the piece felt exciting.']
+        sa1_q = 'Make or describe a fresh artwork or performance that uses the central skill. Name the element or technique and its effect.'
+        sa2_q = 'Name one likely arts misconception for this topic, correct it and say why the correction strengthens the work or shows respect.'
+        sa1_guide = 'Require independently produced relevant work with a named element/technique and effect.'
+        sa2_guide = 'Require an actual misconception plus corrected choice and an arts-linked reason.'
+        hint_set = [
+            ('Today you will practise ' + vocab[0] + '.',
+             'Read the mission before you start making or performing.',
+             'Keep the audience effect of your choice in view.'),
+            ('Read the stage title and find the worked example.',
+             'Name one exact element, technique or cue before you decide.',
+             'Think through the small prompt before opening the comparison.'),
+            ('Return to the example and list the key artistic choices.',
+             'Say what each choice does for the artwork or audience.',
+             'A final praise word alone is weaker than a named effect.'),
+            ('Compare a weak choice with a stronger one.',
+             'Change the element or technique, not only the decoration.',
+             'Name the mistake you are repairing.'),
+            ('Choose a fresh subject or piece that still uses the same skill.',
+             'Write one reason in your own words.',
+             'Do not retype the worked example as your answer.'),
+            ('Study how the first demonstration is built.',
+             'Point to the element or technique that carries the idea.',
+             'Then write the reason without copying every sentence.'),
+            ('Attempt the guided prompt without looking ahead.',
+             'Afterwards, compare your reasons with the feedback.',
+             'Adjust anything that does not name an effect clearly.'),
+            ('Follow every part of the independent instructions.',
+             'Include original work notes and a short reflection.',
+             'Save work that shows the skill on new material.'),
+            ('Read every option before you choose.',
+             'Eliminate answers that ignore elements, safety or respectful practice.',
+             'Prefer a named artistic reason over a guess that merely looks colourful.'),
+            ('Confirm that your choice and reason are both present.',
+             'Proofread element names and safety notes.',
+             'Make sure the final evidence matches the lesson purpose.'),
+        ]
+        extension = 'Apply the same arts idea to a new artwork or performance, then compare two choices for clarity of effect.'
     else:
         l['worked_example'] = 'WORK THROUGH THIS\n' + model + '\n\nExplain what makes this example accurate and effective, identifying its specific wording.'
         l['guided_practice'] = 'PRACTISE BEFORE READING THE FEEDBACK\n' + prompt + '\n\nFEEDBACK\n' + answer + '\n\nCHECK\n' + pitfall

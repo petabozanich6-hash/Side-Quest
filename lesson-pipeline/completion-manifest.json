@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-13",
   "phase": "PHASE_1_WRITTEN_CORE",
-  "pipeline_auto_validated": 559,
+  "pipeline_auto_validated": 639,
   "human_gates": {
     "educationally_reviewed": 0,
     "nesa_verified": 0,
@@ -22,8 +22,10 @@
   "y3_science_complete_auto": true,
   "y3_hsie_written_core_auto_validated": 80,
   "y3_hsie_complete_auto": true,
-  "next_resume": "s2-arts-y3-w01-l1",
-  "note": "Assessment quality correction applied. Auto-validated ≠ educationally approved. Human gates closed. No remote D1. Y3 PDHPE Written Core auto-validated (80/80; PH2-* codes proposed, content-point mapping pending). Next: Y3 Creative Arts.",
+  "next_resume": "s2-eng-y4-w01-l1",
+  "note": "Assessment quality correction applied. Auto-validated ≠ educationally approved. Human gates closed. No remote D1. Y3 PDHPE Written Core auto-validated (80/80; PH2-* codes proposed, content-point mapping pending). Y3 Creative Arts Written Core auto-validated (80/80; CA2-* codes proposed, content-point mapping pending; First Nations lessons are protocol-only). Next: Year 4 English from s2-eng-y4-w01-l1.",
   "y3_pdhpe_written_core_auto_validated": 80,
-  "y3_pdhpe_complete_auto": true
+  "y3_pdhpe_complete_auto": true,
+  "y3_arts_written_core_auto_validated": 80,
+  "y3_arts_complete_auto": true
 }

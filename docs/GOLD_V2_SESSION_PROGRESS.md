@@ -31,7 +31,7 @@ Priority: Stage 2 Written Core → Stage 4 Written Core → remainder. Phase 1 w
 
 | Gate | Count |
 |---|---|
-| Automatically validated (pipeline) | 559 |
+| Automatically validated (pipeline) | 639 |
 | Educationally reviewed | 0 |
 | NESA verified | 0 |
 | Browser verified | 0 |
@@ -46,11 +46,11 @@ Priority: Stage 2 Written Core → Stage 4 Written Core → remainder. Phase 1 w
 | Science and Technology | 80 | Assessments repaired |
 | HSIE | 80 | Assessments repaired |
 | PDHPE | 80 | Complete (auto); PH2-* codes proposed, content-point mapping pending; body/safety content non-graphic and consent-aware |
-| Creative Arts | queued | |
+| Creative Arts | 80 | Complete (auto); CA2-VIS/MUS/DRA/DAN-01 codes proposed, content-point mapping pending; First Nations lessons (w23, w31) teach respectful protocol only, with no invented Dreaming stories, sacred designs or restricted dances; movement and instrument work is optional and adult-supervised. Builders: `scripts/gold-pipeline/build-written-arts-batch01.py` to `batch07.py` (shared `arts_support.py`) |
 
 ## Next resume point
 
-1. Continue Y3 Creative Arts Written Core from `s2-arts-y3-w01-l1` using the new assessment builder (do not regenerate weak meta quizzes). Y3 PDHPE (80) is auto-validated.
+1. Begin Year 4 English Stage 2 Written Core from `s2-eng-y4-w01-l1` (160 records, `s2-eng-y4-w01-l1` to w40-l4), using the new assessment builder. Year 3 English, Maths, Science, HSIE, PDHPE and Creative Arts (639 records total) are auto-validated.
 2. Spot educational review of repaired assessments before claiming quality beyond automated gates.
 3. Keep PR #105 draft; no merge/deploy.
 

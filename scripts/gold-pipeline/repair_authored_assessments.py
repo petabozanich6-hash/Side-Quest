@@ -34,7 +34,7 @@ def detect_subject(lesson: dict) -> str:
     if 'pdhpe' in area or seed.startswith('s2-pdhpe-'):
         return 'pdhpe'
     if 'creative' in area or 'arts' in area or seed.startswith('s2-arts-'):
-        return 'english'
+        return 'arts'
     return 'english'
 
 
