@@ -1,8 +1,8 @@
 seed_key,stage,year_level,learning_area,title,priority,status
-s4-eng-y7-w01-l1,S4,Year 7,English,"Year 7, Week 1, Lesson 1: Reading short stories: setting, character and plot",1,queued
-s4-eng-y7-w01-l2,S4,Year 7,English,"Year 7, Week 1, Lesson 2: Writing a story opening",1,queued
-s4-eng-y7-w01-l3,S4,Year 7,English,"Year 7, Week 1, Lesson 3: Nouns, verbs and sentence types",1,queued
-s4-eng-y7-w01-l4,S4,Year 7,English,"Year 7, Week 1, Lesson 4: Reading aloud and discussing a story",1,queued
+s4-eng-y7-w01-l1,S4,Year 7,English,"Year 7: Analyse setting, character and plot",1,authored_in_repository_unreviewed
+s4-eng-y7-w01-l2,S4,Year 7,English,Year 7: Craft a purposeful story opening,1,authored_in_repository_unreviewed
+s4-eng-y7-w01-l3,S4,Year 7,English,"Year 7: Use nouns, verbs and sentence types deliberately",1,authored_in_repository_unreviewed
+s4-eng-y7-w01-l4,S4,Year 7,English,Year 7: Read aloud and discuss with evidence,1,authored_in_repository_unreviewed
 s4-eng-y7-w02-l1,S4,Year 7,English,"Year 7, Week 2, Lesson 1: Point of view and narrator",1,queued
 s4-eng-y7-w02-l2,S4,Year 7,English,"Year 7, Week 2, Lesson 2: Creating a character",1,queued
 s4-eng-y7-w02-l3,S4,Year 7,English,"Year 7, Week 2, Lesson 3: Paragraphing and punctuation",1,queued
