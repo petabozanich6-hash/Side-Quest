@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-13",
   "phase": "PHASE_1_WRITTEN_CORE",
-  "pipeline_auto_validated": 1451,
+  "pipeline_auto_validated": 1463,
   "human_gates": {
     "educationally_reviewed": 0,
     "nesa_verified": 0,
@@ -29,8 +29,8 @@
   "y4_english_complete_auto": true,
   "y4_maths_written_core_auto_validated": 160,
   "y4_maths_total": 160,
-  "next_resume": "s4-mat-y7-w04-l1",
-  "note": "Y4 complete. Y7 English COMPLETE. Y7 Maths 12/160. Next s4-mat-y7-w04-l1. Human gates 0.",
+  "next_resume": "s4-mat-y7-w07-l1",
+  "note": "Y7 Maths 24/160. Next s4-mat-y7-w07-l1. Human gates 0.",
   "y4_maths_complete_auto": true,
   "y4_science_written_core_auto_validated": 80,
   "y4_science_total": 80,
@@ -48,7 +48,7 @@
   "y7_english_written_core_auto_validated": 160,
   "y7_english_total": 160,
   "y7_english_complete_auto": true,
-  "y7_maths_written_core_auto_validated": 12,
+  "y7_maths_written_core_auto_validated": 24,
   "y7_maths_total": 160,
   "y7_maths_complete_auto": false
 }

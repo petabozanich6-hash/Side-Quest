@@ -6,15 +6,10 @@ Resume from `feature/gold-v2-resumable-pipeline`. Do not merge, deploy, or apply
 
 | Gate | Count |
 |---|---|
-| Automatically validated (pipeline) | **1451** |
+| Automatically validated (pipeline) | **1463** |
 | Human gates | **0** |
 
-## Completed this session (auto-validated Written Core)
-
-- Y4 Creative Arts: **80 / 80** (Y4 six subjects complete)
-- Y7 English: **160 / 160**
-- Y7 Mathematics: **12 / 160** (batch 01)
-
-## Next resume
-
-`s4-mat-y7-w04-l1`
+## Y4 six subjects | complete
+## Y7 English | 160/160 complete
+## Y7 Mathematics | **24/160**
+## Next resume | `s4-mat-y7-w07-l1`
