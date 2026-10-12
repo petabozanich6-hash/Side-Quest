@@ -8,24 +8,15 @@ Machine-readable tracker: `lesson-pipeline/completion-manifest.json`.
 
 | Gate | Count |
 |---|---|
-| Automatically validated (pipeline) | **847** |
+| Automatically validated (pipeline) | **859** |
 | Educationally reviewed / NESA / browser / fully approved | **0** |
 
-## Year 4 English Written Core — COMPLETE (auto)
-
-- **160 / 160** auto-validated
+## Year 4 English — COMPLETE (160/160)
 
 ## Year 4 Mathematics — in progress
 
-- **48 / 160** auto-validated (`s2-mat-y4-w01-l1` … `w12-l4`)
-- Builders: `build-written-maths-y4-batch01.py` … + `maths_y4_support.py`
+- **60 / 160** auto-validated through `w15-l4`
 
 ## Next resume
 
-`s2-mat-y4-w13-l1`
-
-```sh
-python3 scripts/gold-pipeline/pipeline.py status
-python3 scripts/gold-pipeline/build-written-maths-y4-batch05.py
-python3 scripts/gold-pipeline/pipeline.py run --limit 12
-```
+`s2-mat-y4-w16-l1`
