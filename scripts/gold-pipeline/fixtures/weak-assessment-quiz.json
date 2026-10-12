@@ -1,0 +1,133 @@
+{
+  "architecture": "d1-worker",
+  "lesson": {
+    "seed_key": "s2-mat-y3-w02-l1",
+    "stage": "Stage 2",
+    "learning_area": "Mathematics",
+    "year_level": "Year 3",
+    "week": 2,
+    "lesson_number": 1,
+    "title": "Weak assessment fixture",
+    "outcome_codes": ["MA2-RN-01"],
+    "learning_intention": "Round numbers to the nearest ten.",
+    "child_mission": "Round carefully.",
+    "success_criteria": ["I can round to the nearest ten."],
+    "worked_example": "Round 286 to the nearest ten. Neighbouring tens are 280 and 290. Midpoint is 285, so 286 rounds to 290.",
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nRound 173 to the nearest ten.\nFEEDBACK\n170.\nWATCH FOR\nRounding down from the midpoint.",
+    "independent_task": "Round 249 and 641 to the nearest ten and hundred.",
+    "teach_steps": [],
+    "stage_hints": {},
+    "parent_notes": "Parent: Models belong here.",
+    "quiz": [
+      {
+        "type": "multiple_choice",
+        "question": "A learner is practising rounding. Which approach best shows understanding?",
+        "options": [
+          "Apply the idea with new evidence and name the midpoint used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Choose randomly because any option could be right.",
+          "Ignore the task and invent an unrelated answer."
+        ],
+        "correct_index": 0,
+        "explanation": "Apply the idea with new evidence and name the midpoint used. Understanding is shown by new evidence."
+      },
+      {
+        "type": "multiple_choice",
+        "question": "Which practice choice shows transfer of rounding?",
+        "options": [
+          "Solve a fresh problem with different numbers and explain the method.",
+          "Retype the worked model numbers as the answer.",
+          "Copy the worked example and call it independent work.",
+          "Skip reasoning because the first guess looked neat."
+        ],
+        "correct_index": 0,
+        "explanation": "Transfer requires new numbers with the same method and a clear reason for the rounding choice."
+      },
+      {
+        "type": "multiple_choice",
+        "question": "Which feedback comment is most useful after a mistake?",
+        "options": [
+          "Name the exact place or step that failed, then show corrected working for rounding.",
+          "Praise neat handwriting even when the places are wrong.",
+          "Any answer is equally supported.",
+          "There is no need to compare your attempt."
+        ],
+        "correct_index": 0,
+        "explanation": "The other choices avoid explaining the actual strategy for repairing the rounding error."
+      },
+      {
+        "type": "multiple_choice",
+        "question": "Which working note best supports a mathematics answer about rounding?",
+        "options": [
+          "Show the places, values or steps and say why each step is valid…",
+          "Write only a final number with no working.",
+          "Change digits to look neater without checking place value.",
+          "Treat a missing detail as a proven fact."
+        ],
+        "correct_index": 0,
+        "explanation": "Mathematics answers need labelled working tied to place value or quantity for rounding decisions."
+      },
+      {
+        "type": "multiple_choice",
+        "question": "Which idea is taught in the stage Understand?",
+        "options": ["Rounding uses midpoints.", "Guessing", "Skipping", "Colouring"],
+        "correct_index": 0,
+        "explanation": "The correct choice applies the lesson skill; the others use a common mistake or ignore the evidence."
+      },
+      {
+        "type": "multiple_choice",
+        "question": "Which statement appeared in the teaching stage?",
+        "options": ["Round up from midpoint.", "Never round.", "Delete units.", "Average answers."],
+        "correct_index": 0,
+        "explanation": "This restates a taught statement rather than asking the learner to apply rounding on new numbers carefully."
+      },
+      {
+        "type": "multiple_choice",
+        "question": "Which task best shows independent use of rounding?",
+        "options": ["New numbers", "Same numbers", "No working", "Random guess"],
+        "correct_index": 0,
+        "explanation": "Independence requires a new example that still uses the rounding method with visible reasoning."
+      },
+      {
+        "type": "multiple_choice",
+        "question": "Which next step best shows transfer of rounding?",
+        "options": ["Fresh problem", "Copy model", "Invent result", "Stop early"],
+        "correct_index": 0,
+        "explanation": "Transfer needs a new object or context with evidence about neighbouring tens and the midpoint rule."
+      },
+      {
+        "type": "short_answer",
+        "question": "Solve one fresh rounding problem.",
+        "sample_answer": "Original response on new material: Round 286 to the nearest ten. Neighbouring tens are 280 and 290. Midpoint is 285, so 286 rounds to 290.",
+        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not."
+      },
+      {
+        "type": "short_answer",
+        "question": "Describe one likely mistake.",
+        "sample_answer": "Common error: guessing. Correction: use midpoint.",
+        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why it restores accuracy."
+      }
+    ]
+  },
+  "curriculum": [
+    {
+      "code": "MA2-RN-01",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes",
+      "verification_status": "pending",
+      "lesson_evidence": "Rounding practice",
+      "scope_limit": "Single lesson"
+    }
+  ],
+  "requirements": {
+    "teaching": [],
+    "practice": {
+      "model_inputs": ["Round 286"],
+      "guided_inputs": ["Round 173"],
+      "independent_inputs": ["Round 249"]
+    },
+    "visuals": [{"alt": "Number line", "teaches": "midpoint"}],
+    "review_questions": ["a", "b", "c", "d", "e"]
+  }
+}
