@@ -44,7 +44,40 @@ function svg(visual,where) {
   ensure(stack.length===0,`${where}: unclosed SVG tag`);
   ensure(!/&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[\da-f]+);)/i.test(value),`${where}: unescaped XML entity`);
 }
+function teachingEpisode(ep,where) {
+  ensure(ep.format==='teaching',`${where}: teaching format required`);
+  ensure(nonempty(ep.title) && nonempty(ep.transcript),`${where}: title and transcript required`);
+  ensure(nonempty(ep.learning_intention),`${where}: learning_intention required`);
+  ensure(Array.isArray(ep.scenes) && ep.scenes.length>=3,`${where}: teaching episode needs at least 3 scenes`);
+  const roles=new Set();
+  let interacts=0;
+  for(const scene of ep.scenes) {
+    ensure(['park','room','evening','board'].includes(scene.bg),`${where}: unknown background`);
+    ensure(nonempty(scene.id) && nonempty(scene.title),`${where}: scene id and title required`);
+    ensure(Array.isArray(scene.beats) && scene.beats.length>0,`${where}: beats required`);
+    if(scene.role)roles.add(scene.role);
+    for(const beat of scene.beats) {
+      ensure(['narrate','diagram','interact','pause','conclude'].includes(beat.type),`${where}: unknown beat type`);
+      if(beat.who)ensure(['pip','juno'].includes(beat.who),`${where}: valid speaker required`);
+      if(beat.text!==undefined)ensure(nonempty(beat.text),`${where}: beat text cannot be empty`);
+      if(beat.type==='interact'){
+        interacts++;
+        ensure(nonempty(beat.prompt) && Array.isArray(beat.choices) && beat.choices.length>=2,`${where}: interact needs prompt and choices`);
+        ensure(Number.isInteger(beat.correct_index) && beat.correct_index>=0 && beat.correct_index<beat.choices.length,`${where}: interact correct_index out of range`);
+        ensure(beat.feedback && nonempty(beat.feedback.correct) && nonempty(beat.feedback.incorrect),`${where}: interact feedback required`);
+      }
+      if(beat.type==='diagram' || beat.diagram){
+        const d=beat.diagram; ensure(d && d.type==='number_line',`${where}: diagram must be number_line for now`);
+        ensure(Number.isFinite(d.low) && Number.isFinite(d.high) && Number.isFinite(d.value),`${where}: number_line bounds required`);
+        ensure(d.low<d.high && d.value>=d.low && d.value<=d.high,`${where}: number_line value outside bounds`);
+      }
+    }
+  }
+  ensure(interacts>=2,`${where}: teaching episode needs at least 2 interactive beats`);
+  ensure(roles.has('introduce') && roles.has('conclusion'),`${where}: introduce and conclusion roles required`);
+}
 function episode(ep,where) {
+  if(ep && ep.format==='teaching') return teachingEpisode(ep,where);
   ensure(nonempty(ep.title) && nonempty(ep.transcript),`${where}: title and transcript required`);
   ensure(Array.isArray(ep.scenes) && ep.scenes.length>0,`${where}: scenes required`);
   let ms=0;

@@ -22,6 +22,8 @@ import QuestBanner from "../../components/shared/QuestBanner";
 import QuestQuiz from "../../components/shared/QuestQuiz";
 import TeachStep from "../../components/shared/QuestTeach";
 import QuestVisual from "../../components/shared/QuestVisual";
+import { EpisodePlayer } from "../../components/episode";
+import { getTeachingEpisode } from "../../episodes/registry";
 import PrintableResource from "../../components/shared/PrintableResource";
 import { lessonPrintHtml } from "../../components/shared/lessonPrint";
 import SpellingSegment from "../../components/shared/SpellingSegment";
@@ -390,9 +392,18 @@ export default function ChildLesson() {
   const plannerTitle = l.planner_title || "Plan your work";
   const plannerIntro =
     l.planner_intro || "Good writers plan first. Fill in each box with a few words.";
+  // Prefer lesson-embedded teaching episode; fall back to Phase 2 frontend registry by seed_key.
+  const teachingEpisode =
+    (l.teaching_episode && l.teaching_episode.format === "teaching" && l.teaching_episode) ||
+    getTeachingEpisode(l.seed_key);
 
   const stages = [
     { key: "accept", icon: "📜", title: "Accept the quest" },
+    teachingEpisode && {
+      key: "episode",
+      icon: "🎬",
+      title: teachingEpisode.title || "Watch the teaching episode"
+    },
     ...teachSteps.map((step, i) => ({
       key: `teach${i}`,
       icon: step.icon || "📖",
@@ -436,6 +447,8 @@ export default function ChildLesson() {
     switch (key) {
       case "accept":
         return !!done.accept;
+      case "episode":
+        return !!done.episode;
       case "learn":
         return !!done.learn;
       case "spelling":
@@ -509,6 +522,36 @@ export default function ChildLesson() {
     }
 
     switch (key) {
+      case "episode":
+        return (
+          <div className="space-y-4" data-testid="lesson-teaching-episode">
+            <p className="text-sm text-stone-700">
+              Watch this short teaching episode first. Sound stays off until you turn it on.
+              The written lesson stages still follow — nothing here replaces your independent work.
+            </p>
+            <EpisodePlayer
+              episode={teachingEpisode}
+              onComplete={() => mark("episode")(true)}
+            />
+            {done.episode ? (
+              <p className="text-sm font-bold text-green-800">Episode marked complete. Continue when ready.</p>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  mark("episode")(true);
+                  const episodeIdx = stages.findIndex((s) => s.key === "episode");
+                  if (episodeIdx >= 0) advance(episodeIdx);
+                }}
+                className="rounded-full px-5 py-2 text-sm font-bold"
+                style={CONTINUE_STYLE}
+              >
+                I have finished the episode
+              </button>
+            )}
+          </div>
+        );
+
       case "accept":
         return (
           <div>

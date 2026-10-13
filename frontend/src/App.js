@@ -37,6 +37,7 @@ import ChildAchievements from "./pages/child/ChildAchievements";
 import ChildWordHoard from "./pages/child/ChildWordHoard";
 import PetRoom from "./pages/child/PetRoom";
 import ChildReading from "./pages/child/ChildReading";
+import EpisodePreview from "./pages/dev/EpisodePreview";
 
 function Guard({ role, children }) {
   const { user, loading } = useAuth();
@@ -59,6 +60,8 @@ function Router() {
       <Route path="/child-login" element={<ChildLogin />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/legal/:slug" element={<LegalPage publicView />} />
+      <Route path="/dev/episode" element={<EpisodePreview />} />
+      <Route path="/dev/episode/:seedKey" element={<EpisodePreview />} />
       <Route path="/parent" element={<Guard role="parent"><ParentLayout /></Guard>}>
         <Route index element={<ParentDashboard />} />
         <Route path="children" element={<ChildrenPage />} />

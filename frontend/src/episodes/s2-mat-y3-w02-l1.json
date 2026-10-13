@@ -1,0 +1,272 @@
+{
+  "format": "teaching",
+  "version": 1,
+  "id": "s2-mat-y3-w02-l1-rounding-pilot",
+  "seed_key": "s2-mat-y3-w02-l1",
+  "stage": "S2",
+  "age_band": "year3",
+  "title": "Which landmark is nearer?",
+  "hook": "Pip and Juno use a number line to round. Sound stays off until you turn it on.",
+  "learning_intention": "We are learning to choose the nearest multiple of ten or hundred using endpoints, distances and midpoints.",
+  "transcript": "Pip: Rounding means choosing a nearby landmark number, not changing how many you really have.\nJuno: We round when an approximate value is useful — like about how many seats we need.\nPip: To round to the nearest ten, name the two neighbouring tens around your number.\nJuno: For 224, the neighbours are 220 and 230. Count both distances.\nPip: 224 is 4 from 220 and 6 from 230, so it rounds to 220.\nJuno: Your turn — which neighbouring tens surround 247?\nPip: A common mistake is picking the lower ten just because it looks smaller.\nJuno: For 368, the distances are 8 and 2, so we round up to 370.\nPip: Predict: round 432 to the nearest ten.\nJuno: At a midpoint like 450, both distances are 50. Neither is closer — we use the upward tie rule to choose 500.\nPip: New challenge: round 163 to the nearest ten using both distances.\nJuno: Remember the intention — endpoints, distances, and the midpoint rule when the gaps are equal.",
+  "scenes": [
+    {
+      "id": "introduce",
+      "role": "introduce",
+      "title": "What rounding means",
+      "bg": "room",
+      "beats": [
+        {
+          "type": "narrate",
+          "who": "pip",
+          "text": "Rounding means choosing a nearby landmark number. The real count stays the same."
+        },
+        {
+          "type": "narrate",
+          "who": "juno",
+          "text": "We round when an approximate value is useful — not when someone needs an exact count."
+        }
+      ]
+    },
+    {
+      "id": "why-how",
+      "role": "why_how",
+      "title": "Why landmarks and how to find them",
+      "bg": "board",
+      "beats": [
+        {
+          "type": "narrate",
+          "who": "pip",
+          "text": "To round to the nearest ten, first name the two neighbouring tens around your number."
+        },
+        {
+          "type": "diagram",
+          "who": "juno",
+          "text": "Neighbours are consecutive multiples of ten. Only one ten sits between them.",
+          "diagram": {
+            "type": "number_line",
+            "low": 220,
+            "high": 230,
+            "value": 224,
+            "midpoint": 225,
+            "showDistances": false,
+            "label": "Find the neighbouring tens",
+            "srDescription": "Number line from 220 to 230 with 224 marked between them and midpoint 225."
+          }
+        }
+      ]
+    },
+    {
+      "id": "worked",
+      "role": "worked_example",
+      "title": "Worked example: 224",
+      "bg": "board",
+      "beats": [
+        {
+          "type": "diagram",
+          "who": "pip",
+          "text": "Watch my thinking. 224 is 4 from 220 and 6 from 230.",
+          "diagram": {
+            "type": "number_line",
+            "low": 220,
+            "high": 230,
+            "value": 224,
+            "midpoint": 225,
+            "showDistances": true,
+            "highlight": "low",
+            "label": "224 rounds to 220",
+            "srDescription": "224 is four units from 220 and six units from 230, so the nearer ten is 220."
+          }
+        },
+        {
+          "type": "narrate",
+          "who": "juno",
+          "text": "Four is the shorter distance, so 224 rounds to 220. The actual number remains 224."
+        }
+      ]
+    },
+    {
+      "id": "predict",
+      "role": "prediction",
+      "title": "Predict the neighbours",
+      "bg": "room",
+      "beats": [
+        {
+          "type": "interact",
+          "who": "juno",
+          "text": "Pause and choose.",
+          "prompt": "Which neighbouring tens surround 247?",
+          "choices": ["200 and 300", "240 and 250", "230 and 250", "247 and 257"],
+          "correct_index": 1,
+          "feedback": {
+            "correct": "Yes — 240 and 250 are consecutive tens and 247 sits between them.",
+            "incorrect": "Use consecutive multiples of ten with only one ten between them. 247 sits between 240 and 250."
+          }
+        }
+      ]
+    },
+    {
+      "id": "misconception",
+      "role": "misconception",
+      "title": "Misconception: smaller endpoint wins",
+      "bg": "board",
+      "beats": [
+        {
+          "type": "narrate",
+          "who": "pip",
+          "text": "A common mistake is choosing the lower ten just because its value looks smaller."
+        },
+        {
+          "type": "diagram",
+          "who": "juno",
+          "text": "For 368, compare distances: 8 to 360, and only 2 to 370.",
+          "diagram": {
+            "type": "number_line",
+            "low": 360,
+            "high": 370,
+            "value": 368,
+            "midpoint": 365,
+            "showDistances": true,
+            "highlight": "high",
+            "label": "368 rounds to 370",
+            "srDescription": "368 is eight from 360 and two from 370, so it rounds to 370."
+          }
+        },
+        {
+          "type": "narrate",
+          "who": "pip",
+          "text": "The nearer landmark is 370. Compare gaps, not which endpoint looks smaller."
+        }
+      ]
+    },
+    {
+      "id": "participate",
+      "role": "participation",
+      "title": "Your turn: round 432",
+      "bg": "room",
+      "beats": [
+        {
+          "type": "interact",
+          "who": "juno",
+          "text": "Use both distances before you choose.",
+          "prompt": "Round 432 to the nearest ten. 432 is 2 from 430 and 8 from 440.",
+          "choices": ["440", "430", "432", "400"],
+          "correct_index": 1,
+          "diagram": {
+            "type": "number_line",
+            "low": 430,
+            "high": 440,
+            "value": 432,
+            "midpoint": 435,
+            "showDistances": true,
+            "label": "Round 432",
+            "srDescription": "432 is two from 430 and eight from 440 on an equally spaced number line."
+          },
+          "feedback": {
+            "correct": "Correct — the shorter distance is 2, so 432 rounds to 430.",
+            "incorrect": "The shorter distance is 2 toward 430. Choose the endpoint with the smaller gap."
+          }
+        }
+      ]
+    },
+    {
+      "id": "midpoint",
+      "role": "misconception",
+      "title": "Midpoint tie on hundreds",
+      "bg": "board",
+      "beats": [
+        {
+          "type": "diagram",
+          "who": "pip",
+          "text": "For 450 to the nearest hundred, both distances are 50. Neither endpoint is closer.",
+          "diagram": {
+            "type": "number_line",
+            "low": 400,
+            "high": 500,
+            "value": 450,
+            "midpoint": 450,
+            "showDistances": true,
+            "highlight": "mid",
+            "label": "Midpoint: equal distances",
+            "srDescription": "450 is exactly fifty from 400 and fifty from 500."
+          }
+        },
+        {
+          "type": "interact",
+          "who": "juno",
+          "text": "Which reason is correct?",
+          "prompt": "Which reason correctly rounds 350 to the nearest hundred?",
+          "choices": [
+            "350 is closer to 400 than to 300.",
+            "350 has no rounding answer.",
+            "Both distances are equal, so the upward tie rule selects 400.",
+            "The first digit always stays unchanged."
+          ],
+          "correct_index": 2,
+          "feedback": {
+            "correct": "Yes — equal distances create a tie, and our upward rule selects 400.",
+            "incorrect": "At 350 both gaps are 50. Name the tie, then use the upward midpoint convention to choose 400."
+          }
+        }
+      ]
+    },
+    {
+      "id": "challenge",
+      "role": "independent_challenge",
+      "title": "New challenge: 163",
+      "bg": "board",
+      "beats": [
+        {
+          "type": "diagram",
+          "who": "pip",
+          "text": "New number — not from the worked example. Round 163 to the nearest ten.",
+          "diagram": {
+            "type": "number_line",
+            "low": 160,
+            "high": 170,
+            "value": 163,
+            "midpoint": 165,
+            "showDistances": true,
+            "label": "Your challenge: 163",
+            "srDescription": "163 lies between 160 and 170 on an equally spaced number line."
+          }
+        },
+        {
+          "type": "interact",
+          "who": "juno",
+          "text": "Compare both distances from 163.",
+          "prompt": "163 is 3 from 160 and 7 from 170. What is the nearest ten?",
+          "choices": ["170", "160", "163", "200"],
+          "correct_index": 1,
+          "feedback": {
+            "correct": "Yes — distance 3 is shorter, so 163 rounds to 160.",
+            "incorrect": "3 is shorter than 7, so the nearer ten is 160. Keep 163 as the exact value."
+          }
+        }
+      ]
+    },
+    {
+      "id": "conclude",
+      "role": "conclusion",
+      "title": "Learning intention",
+      "bg": "evening",
+      "beats": [
+        {
+          "type": "conclude",
+          "who": "juno",
+          "text": "Remember: name the endpoints, compare both distances, and at an exact midpoint use the upward rule."
+        },
+        {
+          "type": "conclude",
+          "who": "pip",
+          "text": "We are learning to choose the nearest multiple of ten or hundred using endpoints, distances and midpoints."
+        },
+        {
+          "type": "pause",
+          "who": "juno",
+          "text": "Replay any scene you want. Then continue the written lesson stages."
+        }
+      ]
+    }
+  ]
+}
