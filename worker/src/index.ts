@@ -25,6 +25,31 @@ const TOKEN_DAYS = 30;
 
 app.use("/api/*", cors());
 
+// Private staging gate. Off unless STAGING_KEY is set (it is never set in production).
+// Visit /api/staging-access?key=<STAGING_KEY> once in a browser to receive the access cookie.
+const sameText = (a: string, b: string) => {
+  if (a.length !== b.length) return false;
+  let d = 0;
+  for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return d === 0;
+};
+app.use("/api/*", async (c, next) => {
+  const key = c.env.STAGING_KEY;
+  if (!key) return next();
+  if (c.req.path === "/api/staging-access") {
+    if (sameText(c.req.query("key") || "", key)) {
+      return new Response(null, {
+        status: 302,
+        headers: { location: "/", "set-cookie": `sq_staging=${encodeURIComponent(key)}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=2592000` },
+      });
+    }
+    return c.json({ detail: "Not found" }, 404);
+  }
+  const cookie = (c.req.header("cookie") || "").split(";").map((x) => x.trim()).find((x) => x.startsWith("sq_staging="));
+  if (!cookie || !sameText(decodeURIComponent(cookie.slice(11)), key)) return c.json({ detail: "Private staging site" }, 403);
+  return next();
+});
+
 const nowIso = () => new Date().toISOString();
 const newId = () => crypto.randomUUID();
 
