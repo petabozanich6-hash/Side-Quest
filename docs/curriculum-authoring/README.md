@@ -1,40 +1,39 @@
-# Side-Quest — Lesson Content Authoring
+# Side-Quest — Student Teaching Manuscripts
 
-**Reset instruction (owner, 13 October 2026):** Start fresh on **lesson content**. All existing Coming Soon lessons already have titles and attached learning outcomes. Treat those assignments as fixed; do not re-verify, remap or redesign them. Disregard previous requests to use any old lesson as an approved content benchmark.
+## Editorial reset: genuine teaching, no reflections
 
-## What this repository needs from the curriculum author
+**Owner correction:** The first five manuscripts were judged too outline-like. They are **REWRITE REQUIRED**, not approved or exemplary. **No reflection activities or reflection sections anywhere in lessons.** Do not use the earlier drafts as the quality benchmark.
 
-Write the **entire educational content** for every Coming Soon lesson, based on its existing title and attached outcomes. Each manuscript must be self-contained and specific to that lesson, so Cursor can implement it without inventing teaching.
+The Coming Soon lesson titles and existing attached outcomes remain fixed. This project authors the actual educational content; Cursor implements it.
 
-Store complete manuscripts at `docs/curriculum-authoring/lessons/<existing-lesson-id>.md`.
+### Required quality
 
-### Required contents of EACH manuscript
+Write the lesson as a **substantial student-facing instructional chapter**, not a teacher lesson plan, bullet-point skeleton, list of prompts, or assessment bank. A student working alone should learn the concept by reading the text, even without adult narration.
 
-1. Exact existing lesson ID, title, attached learning outcomes, stage/year/subject and sequence.
-2. Complete student-facing explanation of necessary prior knowledge.
-3. Full instructional prose: definitions, concepts, why/how explanations, accurate topic-specific examples.
-4. Step-by-step worked models, including reasoning and answers.
-5. Guided practice: actual questions, scaffolds, hints, answers and error-specific feedback.
-6. Independent practice: actual tasks and questions, expected responses, answers and solutions.
-7. Application/reasoning tasks and any source passages, data or scenarios needed to complete them.
-8. Specific misconceptions, diagnostic questions and corrective explanations.
-9. Actual assessment questions, answer key, marking criteria and useful next-step feedback.
-10. Static illustration/diagram specifications and alt text where educationally useful; **no videos**.
-11. Precise interactive behaviour and completion requirements for Cursor to implement.
-12. Age-appropriate pacing, accessibility/support guidance and optional purposeful Pip/Juno dialogue.
+For each lesson:
+1. Start with an engaging, specific problem or question that motivates the topic, then **teach** the needed idea in connected explanatory paragraphs.
+2. Build the concept carefully from prior knowledge: define terms in context, explain mechanisms and *why* methods work, and use clear transitions between ideas. Depth must fit age, topic and cognitive load; do not pad.
+3. Include multiple **fully narrated worked examples** showing the thinking, intermediate steps, checks and decisions, including at least one thoughtfully analysed wrong approach.
+4. Use precise topic-specific visuals or diagrams where they genuinely help; provide accurate alt text and asset briefs.
+5. Guide the learner through gradually released support: full model → partially completed example → independent questions → meaningful application. Give exact prompts, solutions, targeted hints and misconception-specific feedback.
+6. Include genuine end-of-lesson checks for understanding with answer keys and reteaching routes.
+7. Include all texts, data, contexts and materials needed to complete activities, with no missing sources or developer-authored educational gaps.
+8. Preserve the existing lesson metadata and keep each lesson distinct from adjacent lessons.
+9. **Do not include any reflection**, journal prompt, self-evaluation, “what did you learn?” or reflective closing. End with completion/next-topic guidance or the assessment.
+10. No videos. Static educational illustrations only where useful. Pip/Juno may appear purposefully, not as filler.
 
-No generic outline, “explain X”, “add example here”, or placeholder quiz is a completed manuscript. No content should be delegated back to Cursor.
+**Presentation rule:** Expository teaching should predominantly be **cohesive prose**, with headings, diagrams and tables where helpful. Lists are acceptable for questions, answer keys, and procedural steps, but **not as a substitute for teaching**.
 
-## Existing data is authoritative
+**Editorial gate:** A manuscript is not a finished teaching resource if deleting its questions leaves almost no instructional prose. Check whether a student unfamiliar with the topic could learn it from the explanations alone.
 
-Retrieve title and learning outcomes **from the existing Coming Soon lesson records**, not solely from an inventory CSV title. Do not invent missing fields. If the attached outcomes are inaccessible, flag that data access problem and do not pretend a manuscript is finished.
+## File architecture
 
-## Cursor's job
+`docs/curriculum-authoring/lessons/<existing-lesson-id>.md` holds complete manuscripts. `docs/curriculum-authoring/coverage.csv` tracks status. Earlier files remain visible for revision, but must not be passed to Cursor as approved.
 
-Implement the exact authored content in the existing app: layout, interactions, saving progress, feedback, accessibility and approved static assets. **Do not ask Cursor to author, shorten, or replace the teaching.**
+## Cursor's responsibility
 
-## Workflow and progress
+Implement the educational content faithfully in the app. Do not invent teaching, condense chapters into bullets, generate quiz questions, or add reflections.
 
-Enumerate all Coming Soon lesson IDs and their existing title/outcome metadata. Write each manuscript fully, in sequence, with distinct teaching suited to its topic. Track which manuscripts actually exist and are complete. A README is an index, **not** a substitute for the lesson files.
+## Current status
 
-**Current status:** This file is the corrected handoff contract. It does not claim that any lesson manuscripts have yet been authored.
+**Five initial drafts require substantial rewriting to meet this standard.** Do not report them as five exemplary completed lessons. The target remains 19,202 individually authored lessons.
