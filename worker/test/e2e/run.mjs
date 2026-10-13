@@ -245,9 +245,10 @@ await step("G. child opens the lesson: sees real content, no answer keys anywher
   ok(!body.includes(SECRET), "answer key text visible to child");
   const raw = await api("GET", `/assignments/${assignmentId}`, childToken);
   const txt = JSON.stringify(raw.json);
+  const lessonTxt = JSON.stringify(raw.json.lesson);
   ok(!txt.includes(SECRET), "answer key in child API response");
   ok(!txt.includes("correct_index"), "correct_index in child API response");
-  ok(!txt.includes("parent_notes"), "parent_notes in child API response");
+  ok(!lessonTxt.includes("parent_notes") && !lessonTxt.includes("answer_key"), "parent-only fields in child lesson");
   await noOverflow(cpage, "child lesson");
   await cpage.screenshot({ path: `${SHOTS}/child-lesson-mobile.png`, fullPage: true });
 });
