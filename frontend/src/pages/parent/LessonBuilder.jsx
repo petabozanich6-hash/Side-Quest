@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Plus, Trash2, Eye, Pencil, Save, Send } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Eye, Pencil, Save, Send, Sparkles } from "lucide-react";
 import { api } from "../../lib/api";
 import ScheduleModal from "../../components/parent/ScheduleModal";
 
@@ -32,6 +32,7 @@ function Card({ title, hint, children }) {
 
 function fromServer(l) {
   return {
+    ai_generated: !!l.ai_generated,
     ...blank(),
     title: l.title || "", learning_area: l.learning_area || "", year_level: l.year_level || "",
     objectives: l.objectives?.length ? l.objectives : [""],
@@ -139,6 +140,13 @@ export default function LessonBuilder() {
           </p>
         )}
       </div>
+
+      {f.ai_generated && (
+        <p className="rounded-lg border border-violet-300 bg-violet-50 px-3 py-2 text-sm text-violet-900" data-testid="ai-banner">
+          <b>AI-generated draft.</b> Check every fact, answer and quiz question before you save it to your library. It is not checked against any curriculum.
+        </p>
+      )}
+      {!lessonId && !preview && plan && <AiPanel allowed={!!plan.limits?.aiGeneration} onDone={(l) => { toast.success("AI draft created. Please review it before assigning."); nav(`/parent/lessons/${l.id}/edit`); }} />}
 
       {error && <div role="alert" className="rounded-lg border border-rose-300 bg-rose-50 px-3 py-2 text-sm text-rose-800" data-testid="builder-error">{error} {upgrade && <Link to="/parent/plan" className="underline font-bold">See plans</Link>}</div>}
 
@@ -304,6 +312,51 @@ function Preview({ f }) {
       {f.activities.filter(a => a.title).map((a, i) => <div key={i}><h3 className="font-semibold">{a.title}{a.offline ? " (off the screen)" : ""}</h3><p className="text-sm whitespace-pre-wrap">{a.instructions}</p></div>)}
       {f.questions.filter(q => q.prompt).map((q, i) => <div key={i}><p className="text-sm font-medium">{i + 1}. {q.prompt}</p><div className="mt-1 h-10 rounded-lg border border-dashed border-slate-300" /></div>)}
       {f.quiz.filter(q => q.question).map((q, i) => <div key={i}><p className="text-sm font-medium">{q.question}</p>{q.options.filter(Boolean).map((o, j) => <div key={j} className="text-sm rounded-lg border border-slate-200 px-3 py-1.5 mt-1">{o}</div>)}</div>)}
+    </div>
+  );
+}
+
+
+function AiPanel({ allowed, onDone }) {
+  const [open, setOpen] = useState(false);
+  const [v, setV] = useState({ topic: "", learning_area: "", year_level: "", length: "standard", notes: "" });
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  const field = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm";
+  if (!allowed) {
+    return (
+      <div className="rounded-xl border border-violet-200 bg-violet-50/60 p-4 text-sm" data-testid="ai-upsell">
+        <p className="font-semibold text-violet-900 flex items-center gap-1"><Sparkles size={16} /> Draft with AI</p>
+        <p className="text-slate-700 mt-1">AI lesson drafting is part of the paid Family Membership. Building lessons by hand works fully on the free preview. <Link to="/parent/plan" className="underline font-semibold">See plans</Link></p>
+      </div>
+    );
+  }
+  const go = async () => {
+    setErr(""); setBusy(true);
+    try {
+      const body = { ...v, stage: STAGE_OF[v.year_level] || "" };
+      const r = await api.post("/ai/lesson-draft", body);
+      onDone(r.data.lesson);
+    } catch (e) { setErr(e.response?.data?.detail || "Could not create a draft. You can still build the lesson by hand."); }
+    finally { setBusy(false); }
+  };
+  return (
+    <div className="rounded-xl border border-violet-200 bg-violet-50/60 p-4 space-y-3" data-testid="ai-panel">
+      <button onClick={() => setOpen(o => !o)} className="font-semibold text-violet-900 flex items-center gap-1" data-testid="ai-toggle"><Sparkles size={16} /> Draft with AI {open ? "−" : "+"}</button>
+      {open && (
+        <div className="space-y-2">
+          <p className="text-xs text-slate-600">The AI writes a first draft for you to edit. It may make mistakes, so always check the facts and answers. Drafts are saved as drafts and are not linked to any curriculum.</p>
+          <input className={field} value={v.topic} onChange={e => setV({ ...v, topic: e.target.value })} placeholder="What should the lesson be about? e.g. Adding fractions with the same denominator" maxLength={300} data-testid="ai-topic" />
+          <div className="grid sm:grid-cols-3 gap-2">
+            <select className={field} value={v.learning_area} onChange={e => setV({ ...v, learning_area: e.target.value })}><option value="">Subject</option>{SUBJECTS.map(x => <option key={x}>{x}</option>)}</select>
+            <select className={field} value={v.year_level} onChange={e => setV({ ...v, year_level: e.target.value })}><option value="">Year level</option>{YEARS.map(x => <option key={x}>{x}</option>)}</select>
+            <select className={field} value={v.length} onChange={e => setV({ ...v, length: e.target.value })}><option value="short">Short (~15 min)</option><option value="standard">Standard (~30 min)</option><option value="detailed">Detailed (~45 min)</option></select>
+          </div>
+          <textarea className={field} rows={2} value={v.notes} onChange={e => setV({ ...v, notes: e.target.value })} placeholder="Anything else? (optional) e.g. my child loves dinosaurs" maxLength={600} />
+          {err && <p role="alert" className="text-sm text-rose-700" data-testid="ai-error">{err}</p>}
+          <button disabled={busy || v.topic.trim().length < 3} onClick={go} className="rounded-full bg-violet-700 text-white px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="ai-go">{busy ? "Drafting… this can take up to a minute" : "Create draft"}</button>
+        </div>
+      )}
     </div>
   );
 }

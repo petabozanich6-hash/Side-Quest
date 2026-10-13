@@ -33,7 +33,7 @@ export default function UpgradePage() {
             {row("Child dashboard, XP and pet", ["Yes", "Yes"])}
             {row("Parent review and evidence", ["Yes", "Yes"])}
             {row("Full portfolio export", ["1 sample entry", "Full"])}
-            {row("AI lesson drafting", ["No", "Coming later"])}
+            {row("AI lesson drafting", ["No", "Yes (fair-use limits)"])}
           </tbody>
         </table>
       </div>

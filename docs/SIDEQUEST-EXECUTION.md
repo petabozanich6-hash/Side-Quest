@@ -6,7 +6,7 @@
 
 **Cancelled:** Producing 19,202 / 4,902 / 900 prewritten lessons, the Stage 2/4 lesson-authoring program, legacy curriculum research, lesson-excellence pipelines and proprietary curriculum release targets. Do not restart them. Do not promise complete syllabus coverage.
 
-**Current product:** Parent creates or brings learning material -> saves in family lesson library -> assigns to child -> child learns and submits -> parent reviews -> progress, evidence and XP update. Preserve branding, parent and child dashboards, family-owned lessons, reusable assignment snapshots, independent child work and gamification. Future AI lesson drafting is optional; no paid AI API calls without approval.
+**Current product:** Parent creates or brings learning material -> saves in family lesson library -> assigns to child -> child learns and submits -> parent reviews -> progress, evidence and XP update. Preserve branding, parent and child dashboards, family-owned lessons, reusable assignment snapshots, independent child work and gamification. AI lesson drafting is built in from the start on Cloudflare Workers AI, for **paid plans only** (enforced on the server; free preview and expired users are refused). The manual builder never depends on AI.
 
 **National scope:** Welcome Australian families, but do not claim that the application automatically satisfies any state or territory's homeschooling requirements. Links and any mapping must be verified for that jurisdiction.
 
@@ -21,7 +21,39 @@
 
 ## Operating mode (14 Oct 2026)
 
-Claude builds and integrates; the owner tests by hand on a private staging site; ChatGPT may prepare small PRs (wording, docs, small UI) on separate branches; GitHub Actions verifies. Build order: (1) lesson builder and library, (2) assign and schedule, (3) child dashboard and lessons, (4) submissions, review, progress, evidence, XP, (5) uploads, (6) weekly planner, (7) portfolio and exports, (8) national onboarding, (9) preview entitlements and upgrade screens, (10) billing prep (owner approval needed). No AI generation until the core works and API costs are approved.
+Claude builds and integrates; the owner tests by hand; ChatGPT may prepare small PRs; GitHub Actions verifies. Work follows the Master Product Completion workstreams A to P below. IMPLEMENTED means written and building; VERIFIED means exercised by CI (worker tests plus browser end-to-end). Neither means owner-tested.
+
+## Workstream checklist
+
+| | Workstream | Status | Notes / next |
+|---|---|---|---|
+| A | Lesson Builder | VERIFIED (core) | Guided builder, preview, draft/ready, archive/restore/duplicate, links/YouTube/Vimeo embeds. Next: topic field, image support, worksheet print, parent-assessed practical task type. |
+| B | Family Library | IMPLEMENTED | Search, archive view. Next: filters by subject/child/year and draft/published tabs. |
+| C | Assignment and scheduling | IMPLEMENTED | Assign with snapshot, calendar add/extra days. Next: multi-child, move/cancel/reassign, status vocabulary. |
+| D | Child dashboard | VERIFIED (core) | XP, done, waiting, handed-in lists. |
+| E | Submissions and review | VERIFIED | Draft autosave, quiz gate, hand-in, review states, XP once. |
+| F | Planner | IMPLEMENTED | Uses assignments. Next: weekly/daily view polish. |
+| G | Resources and files | IMPLEMENTED | R2 code verified against local bucket in CI; production bucket binding is an owner step. |
+| H | Evidence Backpack | IMPLEMENTED | Auto evidence on accepted review. Next: parent-added manual evidence, search. |
+| I | Progress tracking | IMPLEMENTED | Completed vs demonstrated distinguished in XP/evidence. Next: summaries. |
+| J | Portfolio and exports | IMPLEMENTED | Print portfolio (preview-limited). Next: date range, CSV. |
+| K | Family onboarding | IMPLEMENTED | Get-started checklist. Next: state/territory at registration, child avatar/theme. |
+| L | Seven-day free preview | VERIFIED | Server-enforced limits and expiry. |
+| M | Paid subscription | NOT STARTED | Stripe test mode only; needs owner's Stripe test keys. No live charges. |
+| N | Dashboards (real data only) | IMPLEMENTED | |
+| O | Mobile/tablet | VERIFIED (phone layouts) | Tablet pass pending. |
+| P | Production hardening | NOT STARTED | Password reset, account deletion, legal pages flagged for owner/legal review. |
+| AI | Paid-only AI lesson drafting | IMPLEMENTED, tests passing locally | See below. |
+
+## AI lesson drafting (paid plans only)
+
+- Route `POST /api/ai/lesson-draft`, status `GET /api/ai/status`. Code: `worker/src/aiDraft.ts`. UI: "Draft with AI" panel in the builder (free users see an upgrade note, no fake AI).
+- Server checks `limitsFor(plan).aiGeneration` first: FREE_PREVIEW, PREVIEW_EXPIRED and CANCELLED get 402 `UPGRADE_REQUIRED` before any AI call or usage record. Existing INTERNAL families count as paid.
+- Fair use: 10 drafts per family per day, 60 per month (`ai_usage` table, migration 0051). Failed calls do not use the allowance.
+- Output is a whitelist, passed through the same sanitiser as manual lessons, links removed, always saved as an unreviewed DRAFT labelled "AI-generated" (`ai_generated`, `source: ai`). Marking it ready records a parent review. No curriculum alignment is claimed.
+- Cloudflare requirement: `"ai": {"binding": "AI"}` is in `wrangler.jsonc`. Workers AI has a free daily allowance and bills per use beyond it, so owner should confirm the Cloudflare plan. Optional vars `AI_MODEL`, `AI_GATEWAY_ID`. If the binding is missing the route returns 503 `AI_UNAVAILABLE`.
+- **Migration 0051 must be applied (after backup) before deploying**, same as 0050. CI never calls real AI; it checks the paywall and uses a stub binding in worker tests.
+- Not yet verified: output quality of the real model. Owner testing needed.
 
 ## Implemented on the development branch (verified by CI unless noted)
 
@@ -41,7 +73,7 @@ Owner steps: (1) Cloudflare dashboard > My Profile > API Tokens > Create Token f
 
 - No Cloudflare credentials in the build environment: staging deploy needs the owner's secrets (above).
 - Uploads: the R2 code in `worker/src/family.ts` (family-scoped, type allow-list, 50 MB cap, nosniff, sandbox CSP) is sound, but no bucket is bound. Not enabled; the app says photo upload is unavailable. Enabling needs `wrangler r2 bucket create` and a binding (owner approval).
-- Billing and AI are not live. Remaining NSW-specific tools (curriculum links, learning plans, legal copy) are truthful about being NSW-based but need owner/legal review.
+- Billing is not live. Remaining NSW-specific tools (curriculum links, learning plans, legal copy) are truthful about being NSW-based but need owner/legal review.
 - Pet-care XP and lesson XP share one counter; first-time children must choose a pet before anything else.
 
 ## Targeted legacy lesson source cleanup

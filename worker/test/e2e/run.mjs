@@ -381,6 +381,15 @@ await step("K. another family cannot see or touch this family's records", async 
   ok((await api("POST", "/students", t2, { name: "B", username: `b${stamp}`.slice(0, 14), pin: "1234", stage: "S1" })).status === 200, "INTERNAL child 2");
 });
 
+await step("AI drafting: free preview is blocked by the server and the builder shows an upsell, not a fake AI", async () => {
+  const r = await api("POST", "/ai/lesson-draft", parentToken, { topic: "Fractions" });
+  ok(r.status === 402 && r.json.code === "UPGRADE_REQUIRED", `expected 402, got ${r.status}`);
+  const st = await api("GET", "/ai/status", parentToken);
+  ok(st.json.allowed === false, "free preview shown as allowed");
+  const n = await api("GET", "/lessons", parentToken);
+  ok(!n.json.some(l => l.ai_generated), "AI lesson exists for a free family");
+});
+
 await step("L. users cannot grant themselves a paid plan", async () => {
   const r = await api("PUT", "/account/plan", parentToken, { plan: "ACTIVE_MONTHLY" });
   ok(r.status === 404 || r.status === 405, "plan update route exists: " + r.status);

@@ -1,9 +1,10 @@
 import type { Hono, MiddlewareHandler } from "hono";
 import { applySpelling } from "./data/spelling";
 import * as lb from "./lessonBuilder";
+import * as aid from "./aiDraft";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
-type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket };
+type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string };
 type App = Hono<{ Bindings: Env; Variables: { user: AuthUser } }>;
 
 const nowIso = () => new Date().toISOString();
@@ -193,6 +194,20 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   app.get("/api/lesson-index", auth, parent, async (c) => {
     const archived = c.req.query("archived") === "1";
     return c.json(await lb.listLessons(c.env.DB, c.get("user").family_id, { archived, q: c.req.query("q") || undefined }));
+  });
+
+  // Paid plans only. Creates an unreviewed DRAFT labelled AI-generated; the parent edits it before assigning.
+  app.get("/api/ai/status", auth, parent, async (c) => {
+    const u = c.get("user");
+    const { limits } = await lb.getEntitlement(c.env.DB, u.family_id);
+    return c.json({ allowed: limits.aiGeneration, available: !!c.env.AI, usage: await aid.aiUsage(c.env.DB, u.family_id) });
+  });
+
+  app.post("/api/ai/lesson-draft", auth, parent, async (c) => {
+    const u = c.get("user");
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await aid.draftLessonWithAi(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, request: b });
+    return r.ok ? c.json({ lesson: r.lesson, usage: r.usage }) : send(c, r);
   });
 
   app.post("/api/lessons", auth, parent, async (c) => {

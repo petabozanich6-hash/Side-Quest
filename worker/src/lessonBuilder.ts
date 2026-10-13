@@ -10,8 +10,8 @@ export type Fail = { ok: false; status: number; detail: string; code?: string };
 export type Ok<T> = { ok: true } & T;
 export type Result<T> = Ok<T> | Fail;
 
-const fail = (status: number, detail: string, code?: string): Fail => ({ ok: false, status, detail, code });
-const paywall = (detail?: string): Fail => fail(402, detail || UPGRADE_MESSAGE, "UPGRADE_REQUIRED");
+export const fail = (status: number, detail: string, code?: string): Fail => ({ ok: false, status, detail, code });
+export const paywall = (detail?: string): Fail => fail(402, detail || UPGRADE_MESSAGE, "UPGRADE_REQUIRED");
 
 const nowIso = (d: Date = new Date()) => d.toISOString();
 const newId = () => crypto.randomUUID();
@@ -343,7 +343,9 @@ export async function listLessons(db: DB, familyId: string, opts: { archived?: b
   });
 }
 
-export async function createLesson(db: DB, familyId: string, input: unknown, now: Date = new Date()): Promise<Result<{ lesson: any }>> {
+export const AI_FLAGS = { source: "ai", ai_generated: true, review_status: "ai_draft_needs_review" };
+
+export async function createLesson(db: DB, familyId: string, input: unknown, now: Date = new Date(), opts: { ai?: boolean } = {}): Promise<Result<{ lesson: any }>> {
   const clean = sanitizeLessonInput(input);
   if (!clean.ok) return clean;
   const { limits } = await getEntitlement(db, familyId, now);
@@ -359,7 +361,7 @@ export async function createLesson(db: DB, familyId: string, input: unknown, now
     .prepare(
       "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, ?, ?, 1, ?, ?)"
     )
-    .bind(id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify(toLessonData(clean.value)), ts, ts)
+    .bind(id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(opts.ai ? AI_FLAGS : {}) }), ts, ts)
     .run();
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)) };
 }
@@ -376,7 +378,7 @@ export async function updateLesson(db: DB, familyId: string, id: string, input: 
   if (bad) return bad;
   await db
     .prepare("UPDATE lessons SET title = ?, stage = ?, learning_area = ?, status = ?, data = ?, version = version + 1, updated_at = ? WHERE id = ? AND family_id = ?")
-    .bind(clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify(toLessonData(clean.value)), nowIso(now), id, familyId)
+    .bind(clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(parseJson<any>(row.data, {}).ai_generated ? { source: "ai", ai_generated: true, review_status: clean.value.status === "ready" ? "parent_reviewed" : "ai_draft_needs_review" } : {}) }), nowIso(now), id, familyId)
     .run();
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)), assigned_copies_unchanged: true };
 }

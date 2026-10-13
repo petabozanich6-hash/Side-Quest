@@ -4,7 +4,7 @@ Side-Quest is becoming an **Australia-wide homeschooling management and parent-t
 
 Families will build or bring their own lessons, assign activities to children, review work, and manage planning, resources, learning evidence and progress. The product no longer depends on building thousands of proprietary curriculum lessons. Do not present this app as a complete K–10 curriculum or as automatically compliant with each state's registration requirements.
 
-**Development status:** The family Lesson Builder, child lesson player, assignments, review, XP and plan limits are built and pass CI (build, TypeScript, worker tests and a browser end-to-end run). **Before this code is deployed, back up the live database and apply migration `0050` (`npm run db:migrate`), otherwise registration and lessons will error.** Billing and AI are not live. See `docs/SIDEQUEST-EXECUTION.md`.
+**Development status:** The family Lesson Builder, child lesson player, assignments, review, XP and plan limits are built and pass CI (build, TypeScript, worker tests and a browser end-to-end run). **Before this code is deployed, back up the live database and apply migrations `0050` and `0051` (`npm run db:migrate`), otherwise registration and lessons will error.** Billing is not live. AI lesson drafting is built for paid plans only (Cloudflare Workers AI) and needs migration 0051. See `docs/SIDEQUEST-EXECUTION.md`.
 
 ## Repository structure
 

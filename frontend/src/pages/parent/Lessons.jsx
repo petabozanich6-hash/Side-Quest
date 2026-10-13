@@ -82,6 +82,7 @@ export default function LessonsPage() {
             <div className="font-mono text-[10px] uppercase tracking-wider text-slate-500">
               {[l.learning_area, l.year_level].filter(Boolean).join(" · ") || "No subject yet"}
               {l.status === "draft" && <span className="ml-2 rounded-full bg-slate-100 border border-slate-200 px-2 py-0.5 normal-case tracking-normal text-slate-700">Draft</span>}
+              {l.ai_generated && <span className="ml-2 rounded-full bg-violet-100 border border-violet-200 px-2 py-0.5 normal-case tracking-normal text-violet-800">AI draft</span>}
             </div>
             <h3 className="font-display text-lg font-semibold text-slate-900 mt-1 leading-tight">{l.title}</h3>
             {l.duration_minutes ? <p className="text-xs text-slate-500 mt-1">{l.duration_minutes} minutes</p> : null}

@@ -20,6 +20,11 @@ export type Env = {
   BUCKET?: R2Bucket;
   /** Optional Cloudflare Email Service binding for outgoing email. */
   EMAIL?: EmailBinding;
+  /** Optional Cloudflare Workers AI binding (bind as AI). Paid-plan lesson drafting only. */
+  AI?: { run(model: string, input: Record<string, unknown>, options?: Record<string, unknown>): Promise<any> };
+  /** Optional AI Gateway id and model override for Workers AI calls. */
+  AI_GATEWAY_ID?: string;
+  AI_MODEL?: string;
   /** Optional sender address override (defaults to no-reply@sidequestlearning.app). */
   EMAIL_FROM?: string;
   /** Verified Email Routing destination that incoming support mail is forwarded to. */

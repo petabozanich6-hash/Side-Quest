@@ -205,3 +205,71 @@ test("deleting an assigned lesson archives it; drafts cannot be assigned", async
   const draft = await mk(db, fam, { title: "Draft", status: "draft" });
   assert.equal((await lb.assignLesson(db, fam, { student_id: s, lesson_id: draft.id }, NOW)).status, 409);
 });
+
+// ---------------------------------------------------------------- AI drafting (paid only)
+import * as aid from "../src/aiDraft.ts";
+const aiReply = (over = {}) => ({ response: JSON.stringify({
+  title: "Fractions intro", objectives: ["Name halves"], sections: [{ heading: "Halves", body: "Half is one of two equal parts." }],
+  activities: [{ title: "Cut an apple", instructions: "Cut it in half", offline: true }],
+  questions: [{ prompt: "What is half of 6?", type: "short", answer_key: "3" }],
+  quiz: [{ question: "Half of 4?", options: ["1", "2", "3"], correct_index: 1, explanation: "4 / 2" }],
+  duration_minutes: 20, offline_alternative: "", parent_notes: "n", resources: [{ type: "link", title: "x", url: "https://evil.example" }], status: "ready", ...over }) });
+const stub = (fn) => { const calls = []; return { calls, run: async (...a) => { calls.push(a); return fn ? fn(...a) : aiReply(); } }; };
+const req = (family, ai, extra = {}) => ({ familyId: family, userId: "u1", request: { topic: "Fractions", ...extra }, ...extra.opts });
+
+test("AI drafting: free preview, expired and cancelled are blocked before any AI call", async () => {
+  for (const [plan, trialStart] of [["FREE_PREVIEW"], ["FREE_PREVIEW", "2026-09-01T00:00:00Z"], ["CANCELLED"]]) {
+    const db = makeDb();
+    const fam = seed(db, { plan, trialStart: trialStart || NOW.toISOString() });
+    const ai = stub();
+    const r = await aid.draftLessonWithAi(db, ai, req(fam), NOW);
+    assert.equal(r.ok, false);
+    assert.equal(r.status, 402);
+    assert.equal(r.code, "UPGRADE_REQUIRED");
+    assert.equal(ai.calls.length, 0);
+    assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM ai_usage").get().n, 0);
+    assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lessons WHERE family_id = ?").get(fam).n, 0);
+  }
+});
+
+test("AI drafting: paid family gets an unreviewed AI-labelled draft with no links, and usage is recorded", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const ai = stub();
+  const r = await aid.draftLessonWithAi(db, ai, req(fam, ai, { learning_area: "Mathematics" }), NOW);
+  assert.ok(r.ok, JSON.stringify(r));
+  assert.equal(r.lesson.status, "draft");
+  assert.equal(r.lesson.ai_generated, true);
+  assert.equal(r.lesson.source, "ai");
+  assert.deepEqual(r.lesson.resources, []);
+  assert.equal(r.lesson.quiz[0].correct_index, 1);
+  assert.equal(r.usage.today, 1);
+  assert.equal(ai.calls.length, 1);
+  // Editing keeps the AI label; the parent marking it ready records a parent review.
+  const up = await lb.updateLesson(db, fam, r.lesson.id, { ...lesson({ title: "Edited" }), status: "ready" }, NOW);
+  assert.ok(up.ok);
+  assert.equal(up.lesson.ai_generated, true);
+  assert.equal(up.lesson.review_status, "parent_reviewed");
+});
+
+test("AI drafting: unavailable binding, bad output and quota", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_ANNUAL" });
+  const none = await aid.draftLessonWithAi(db, undefined, req(fam), NOW);
+  assert.equal(none.code, "AI_UNAVAILABLE");
+  const bad = await aid.draftLessonWithAi(db, stub(() => ({ response: "sorry, no" })), req(fam), NOW);
+  assert.equal(bad.code, "AI_FAILED");
+  const boom = await aid.draftLessonWithAi(db, stub(() => { throw new Error("x"); }), req(fam), NOW);
+  assert.equal(boom.code, "AI_FAILED");
+  assert.equal((await aid.aiUsage(db, fam, NOW)).today, 0); // failures don't use the allowance
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lessons WHERE family_id = ?").get(fam).n, 0);
+  const short = await aid.draftLessonWithAi(db, stub(), { familyId: fam, userId: "u", request: { topic: "a" } }, NOW);
+  assert.equal(short.status, 400);
+  for (let i = 0; i < aid.AI_LIMITS.perDay; i++) assert.ok((await aid.draftLessonWithAi(db, stub(), req(fam), NOW)).ok);
+  const over = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  assert.equal(over.status, 429);
+  assert.equal(over.code, "AI_QUOTA");
+  // Another family is unaffected.
+  const fam2 = seed(db, { plan: "ACTIVE_MONTHLY" });
+  assert.ok((await aid.draftLessonWithAi(db, stub(), req(fam2), NOW)).ok);
+});
