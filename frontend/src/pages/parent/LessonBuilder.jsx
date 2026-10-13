@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft, Plus, Trash2, Eye, Pencil, Save, Send } from "lucide-react";
 import { api } from "../../lib/api";
@@ -60,10 +60,22 @@ function toServer(f, status) {
   };
 }
 
+const EXAMPLE = () => ({
+  ...blank(),
+  title: "Halves and quarters", learning_area: "Mathematics", year_level: "Year 3", duration_minutes: "30",
+  objectives: ["I can split a shape into halves and quarters"],
+  sections: [{ heading: "What is a fraction?", body: "A half is one of two equal parts. A quarter is one of four equal parts. Fold a piece of paper in two to make halves, then in two again to make quarters." }],
+  activities: [{ title: "Fold a paper square", instructions: "Fold it into halves, then quarters. Colour one quarter.", offline: true }],
+  questions: [{ prompt: "How many quarters make a whole?", type: "short", answer_key: "Four" }],
+  quiz: [{ question: "Which is bigger, a half or a quarter?", options: ["A quarter", "A half"], correct_index: 1, explanation: "A half is made of two quarters." }],
+  parent_notes: "An example to show how a lesson looks. Change anything you like.", answer_key: "Four quarters make a whole. A half is bigger than a quarter.",
+});
+
 export default function LessonBuilder() {
   const { id } = useParams();
+  const [qs] = useSearchParams();
   const nav = useNavigate();
-  const [f, setF] = useState(blank());
+  const [f, setF] = useState(() => (!id && qs.get("example") ? EXAMPLE() : blank()));
   const [lessonId, setLessonId] = useState(id || null);
   const [preview, setPreview] = useState(false);
   const [busy, setBusy] = useState(false);
