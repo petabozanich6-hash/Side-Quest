@@ -27,11 +27,16 @@ const HELP_PLAIN = new Set(["Welcome, adventurer", "Still stuck?"]);
 function SectionBody({ s }) {
   return (
     <>
-      {s.p && <p className="text-stone-700 leading-relaxed">{s.p}</p>}
+      {s.p && <p className="mt-1 text-stone-700 leading-relaxed">{s.p}</p>}
       {s.items && (
         <ul className="mt-2 space-y-1.5 list-disc pl-5 text-stone-700 leading-relaxed">
           {s.items.map((it) => <li key={it}>{it}</li>)}
         </ul>
+      )}
+      {s.to && (
+        <p className="mt-2">
+          <Link to={s.to} className="font-semibold underline underline-offset-2" style={{ color: "#1F3B2D" }}>{s.linkLabel || "Read more"}</Link>
+        </p>
       )}
     </>
   );
@@ -114,12 +119,7 @@ export default function LegalPage({ base = "/parent/trust", publicView = false }
             {page.sections.map((s, i) => (
               <section key={`${s.h}-${i}`}>
                 <h2 className="font-display text-lg font-bold" style={{ color: "#1F3B2D" }}>{s.h}</h2>
-                {s.p && <p className="mt-1 text-stone-700 leading-relaxed">{s.p}</p>}
-                {s.items && (
-                  <ul className="mt-2 space-y-1.5 list-disc pl-5 text-stone-700 leading-relaxed">
-                    {s.items.map((it) => <li key={it}>{it}</li>)}
-                  </ul>
-                )}
+                <SectionBody s={s} />
               </section>
             ))}
           </div>
