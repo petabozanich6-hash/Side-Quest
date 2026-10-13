@@ -71,7 +71,7 @@ watch("parent", page);
 const pageErrors = [];
 page.on("pageerror", (e) => pageErrors.push(String(e).slice(0, 300)));
 
-let parentToken, lessonId, assignmentId, childToken, submissionId;
+let parentToken, lessonId, assignmentId, childToken, submissionId, xp0 = 0;
 
 await step("landing page loads and has no NSW-only marketing", async () => {
   await page.goto(BASE + "/"); await page.waitForLoadState("networkidle");
@@ -298,6 +298,7 @@ await step("I. parent sees it waiting, reviews it (with the answer key) and appr
   const m = await page.textContent('[data-testid=review-modal]');
   ok(m.includes("Four quarters"), "answers not shown to parent");
   ok(m.includes(SECRET), "parent cannot see their answer key");
+  xp0 = (await api("GET", "/dashboard/child", childToken)).json.xp;
   await page.fill('[data-testid=feedback-text]', "Lovely folding, Mia!");
   await page.click('[data-testid=approve-btn]');
   await page.waitForSelector(`[data-testid=waiting-${submissionId}]`, { state: "detached", timeout: 15000 });
@@ -305,14 +306,14 @@ await step("I. parent sees it waiting, reviews it (with the answer key) and appr
 
 await step("J. XP, progress and evidence update; XP is awarded exactly once", async () => {
   const dash = await api("GET", "/dashboard/child", childToken);
-  ok(dash.json.xp === 45, "expected 45 XP got " + dash.json.xp);
+  ok(dash.json.xp === xp0 + 45, `expected ${xp0} + 45 XP got ` + dash.json.xp);
   ok(dash.json.completed.length === 1, "completed list");
   const again = await api("POST", `/submissions/${submissionId}/feedback`, parentToken, { status: "demonstrated", feedback_text: "again" });
   ok(again.status === 200 && again.json.xp_awarded === 0, "XP awarded twice");
   const dash2 = await api("GET", "/dashboard/child", childToken);
-  ok(dash2.json.xp === 45, "XP changed on re-review");
+  ok(dash2.json.xp === xp0 + 45, "XP changed on re-review");
   await cpage.goto(BASE + "/child"); await cpage.waitForSelector('[data-testid=completed-section]');
-  ok((await cpage.textContent('[data-testid=stat-xp]')).trim() === "45", "XP not shown to child");
+  ok((await cpage.textContent('[data-testid=stat-xp]')).trim() === String(xp0 + 45), "XP not shown to child");
   await page.goto(BASE + "/parent/evidence"); await page.waitForLoadState("networkidle");
   ok((await page.textContent("body")).includes("Halves and quarters"), "evidence page missing the approved work");
   const pdash = await api("GET", "/dashboard/parent", parentToken);
@@ -373,7 +374,7 @@ await step("M. expired preview: cannot create or assign, but nothing is lost", a
   const kids = await api("GET", "/students", parentToken);
   ok((await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId })).status === 402, "can assign after expiry");
   ok((await api("GET", "/lessons", parentToken)).json.length >= 2, "lessons not readable after expiry");
-  ok((await api("GET", "/dashboard/child", childToken)).json.xp === 45, "child progress lost");
+  ok((await api("GET", "/dashboard/child", childToken)).json.xp === xp0 + 45, "child progress lost");
   await page.goto(BASE + "/parent/lessons"); await page.waitForSelector('[data-testid=expired-banner]');
   await shot("expired");
 });

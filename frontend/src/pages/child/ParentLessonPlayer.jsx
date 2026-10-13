@@ -27,6 +27,7 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
   const [reflection, setReflection] = useState(a.draft?.reflection || "");
   const [needsHelp, setNeedsHelp] = useState(false);
   const [quizOk, setQuizOk] = useState(a.quiz_passed === true);
+  const passedBefore = useRef(a.quiz_passed === true); // show the quiz again only if it was cleared in this visit
   const [saved, setSaved] = useState("");
   const [busy, setBusy] = useState(false);
   const first = useRef(true);
@@ -174,7 +175,7 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
       {hasQuiz && (
         <section className={card} data-testid="quiz-section">
           <h2 className="font-display text-xl font-semibold" style={INK}>Quest check</h2>
-          {quizOk ? (
+          {passedBefore.current ? (
             <p className="font-bold text-green-800" data-testid="quiz-passed">Quiz passed. Nice work!</p>
           ) : locked ? (
             <p className="text-sm text-stone-600">The quiz is closed.</p>
