@@ -9,7 +9,7 @@ export default function TrustSupport() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-10" data-testid="trust-support-hub">
       <h1 className="font-display text-3xl font-bold" style={{ color: "#1F3B2D" }}>Trust &amp; Support</h1>
-      <p className="mt-2 text-stone-600">Policies, help and the tools to manage your family's information.</p>
+      <p className="mt-2 text-stone-600">Policies, help and the tools to manage your family's information. <Link to="/about" className="font-semibold underline underline-offset-2" style={{ color: "#1F3B2D" }} data-testid="trust-about">About Side Quest</Link></p>
       <div className="mt-8 space-y-8">
         {GROUPS.map((g) => (
           <section key={g.id}>

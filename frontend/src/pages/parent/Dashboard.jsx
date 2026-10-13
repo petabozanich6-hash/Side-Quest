@@ -4,6 +4,7 @@ import { api } from "../../lib/api";
 import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2 } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
 import ReviewModal from "../../components/parent/ReviewModal";
+import { PRICING_SUMMARY } from "../../content/subscriptionMessaging";
 
 const Stat = ({ icon: Icon, label, value, testid, accent="#4A5D3A", href, to }) => {
   const body = (
@@ -139,7 +140,7 @@ export default function ParentDashboard() {
       <section className="paper-card-dark p-6 relative overflow-hidden" style={{backgroundColor:"#1F3B2D"}}>
         <div className="relative z-10 text-sm leading-relaxed" style={{color:"#E8E2D1"}}>
           <div className="font-display font-bold text-base mb-1" style={{color:"#F5EFE0"}}>Platform notice</div>
-          <p>Side Quest Learning is a planning, teaching and record-keeping support tool. Parents remain responsible for checking current official requirements, selecting an appropriate educational program, supervising learning and confirming alignment with the relevant curriculum and syllabus requirements. This platform is free. Paid resource options may be added by parents at their discretion.</p>
+          <p>Side Quest Learning is a planning, teaching and record-keeping support tool. Parents remain responsible for checking current official requirements, selecting an appropriate educational program, supervising learning and confirming alignment with the relevant curriculum and syllabus requirements. Side Quest is affordable, subscription-supported home education. {PRICING_SUMMARY} <Link to="/about" className="underline underline-offset-2 font-semibold" style={{color:"#D4A574"}} data-testid="dashboard-about">About Side Quest</Link></p>
         </div>
       </section>
 

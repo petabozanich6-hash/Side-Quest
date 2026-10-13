@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Fern, Branch, Leaf, Flower, Pet } from "../components/shared/Botanical";
+import { FUTURE_PRICING, PRICING_SUMMARY, SUBSCRIPTION_SUPPORT } from "../content/subscriptionMessaging";
 import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass, ArrowRight } from "lucide-react";
 
 const Feature = ({ icon: Icon, title, desc, tint = "#6B8A5B" }) => (
@@ -32,6 +33,7 @@ export default function Landing() {
             </div>
           </div>
           <nav className="flex items-center gap-3 sm:gap-4">
+            <Link to="/about" className="text-sm font-semibold" style={{color:"#52473A"}} data-testid="nav-about">About</Link>
             <Link to="/child-login" className="rounded-full px-5 py-2.5 text-sm font-bold hover:translate-y-[-1px] transition shadow-sm" data-testid="nav-child-login" style={{backgroundColor:"#C77B5B", color:"#FFF9EE"}}>Student sign in</Link>
             <Link to="/login" className="hidden sm:inline text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-login" style={{color:"#52473A"}}>Parent sign in</Link>
             <Link to="/register" className="rounded-full px-5 py-2.5 text-sm font-semibold hover:translate-y-[-1px] transition shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="nav-register">Create a family</Link>
@@ -74,7 +76,11 @@ export default function Landing() {
             </div>
           </div>
 
-          <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Free for homeschool families · Optional paid resources can be added later if parents want them.</p>
+          <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}} data-testid="subscription-support">{SUBSCRIPTION_SUPPORT}</p>
+          <div className="mt-2 max-w-xl text-xs leading-relaxed" style={{color:"#4A5D3A"}} data-testid="future-pricing">
+            <p>{PRICING_SUMMARY}</p>
+            <p className="mt-1">{FUTURE_PRICING}</p>
+          </div>
           <p className="mt-7 text-xs leading-relaxed max-w-xl" style={{color:"#7A6E5D"}}>
             A planning, teaching and record-keeping tool. Parents remain responsible for selecting an appropriate
             program and confirming alignment with current NESA requirements.
@@ -150,6 +156,7 @@ export default function Landing() {
 
       <footer className="relative z-10 border-t py-10 text-center text-xs" style={{color:"#7A6E5D", borderColor:"#D4C8A8"}}>
         <p>Side Quest Learning · Supports NSW initial curriculum · Architecture ready for other jurisdictions.</p>
+        <p className="mt-2"><Link to="/about" className="font-semibold underline underline-offset-2" style={{color:"#4A5D3A"}}>About</Link></p>
         <p className="mt-1 font-script text-base" style={{color:"#C77B5B"}}>Made with care for homeschool families.</p>
       </footer>
     </div>

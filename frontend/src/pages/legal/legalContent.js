@@ -1,7 +1,9 @@
 // DRAFT COPY - review before launch.
+import { FUTURE_PRICING, PRICING_SUMMARY, SUBSCRIPTION_SUPPORT } from "../../content/subscriptionMessaging";
+
 export const CONTACT_EMAIL = "support@sidequestlearning.app";
 export const PRIVACY_EMAIL = "support@sidequestlearning.app";
-export const LAST_UPDATED = "11 October 2026";
+export const LAST_UPDATED = "13 October 2026";
 
 export const GROUPS = [
   { id: "legal", title: "Legal", blurb: "The rules and the fine print, in plain language." },
@@ -84,7 +86,7 @@ export const PAGES = {
     summary: "The agreement between you and Side Quest.",
     sections: [
       { h: "In short", items: [
-        "Side Quest is a free, personal project built by a parent for home learning and shared with a small circle of homeschooling families.",
+        "Side Quest is affordable, subscription-supported home education, built by a parent for home learning and shared with a small circle of homeschooling families.",
         "You are responsible for your account, your children's use of it, and what you upload.",
         "Be kind, be safe, and do not misuse the service.",
         "I do my best to keep it running, but it is provided as is, so keep your own copies of anything important.",
@@ -115,7 +117,7 @@ export const PAGES = {
       ] },
       { h: "AI features", p: "Some features use AI to suggest hints, outcome links and lesson ideas. AI can be wrong. Suggestions are for you to review and are not advice, a grade or an official assessment. Please do not enter more personal information into AI features than is needed. See the AI Use page for details." },
       { h: "Learning content and curriculum", p: "Lessons, learning outcomes and mappings are provided as a guide. I do not guarantee they are complete, current or accepted by any education authority. You are responsible for meeting the home education requirements that apply to your family. See the Educational Disclaimer." },
-      { h: "Free service", p: "Side Quest is currently free. If that ever changes, I will tell you first and you will not be charged without agreeing to it." },
+      { h: "Subscription", p: `${SUBSCRIPTION_SUPPORT} ${PRICING_SUMMARY} ${FUTURE_PRICING} The About page explains this in full.` },
       { h: "Availability, changes and backups", p: "I aim to keep Side Quest running, but it is run by one person, so I cannot promise it will always be available, error free or kept forever. I may change, pause or remove features, or close the service, with notice where I reasonably can. Please keep your own copies of anything important, such as photos and records you need for reporting." },
       { h: "Suspending or ending access", p: "You can stop using Side Quest and delete your account at any time from the Trust & Support page. I may suspend or end an account if these terms are breached, if it puts others at risk, or if I close the service. When an account is deleted, its data is removed as described in the Privacy Policy." },
       { h: "Intellectual property", p: "The Side Quest name, design, code, artwork and original lesson content belong to me or are used with permission. You may use them through the service for your own family's learning, but not copy or redistribute them. Other resources you link to or save remain the property of their owners." },
@@ -231,7 +233,7 @@ export const PAGES = {
       { h: "Is Side Quest a school or a curriculum?", p: "No. It's a planning and record-keeping tool that supports your teaching. It doesn't replace it, and it isn't a school, a teacher or an education authority. You stay in charge of your child's education." },
       { h: "Who is it for?", p: "Parents and guardians aged 18 or over, and their children. Children use their own area under the supervision of the parent who set up their profile. Side Quest is currently shared with a small circle of homeschooling families." },
       { h: "Who makes it?", p: "One parent, in Australia, who built it for their own children and then shared it. It's a small personal project, not a company, so replies can take a few days." },
-      { h: "Is Side Quest free?", p: "Yes, it's free right now. If that ever changes, I'll tell you first and you won't be charged without agreeing to it." },
+      { h: "How is Side Quest supported?", p: `${SUBSCRIPTION_SUPPORT} ${PRICING_SUMMARY} ${FUTURE_PRICING}` },
       { h: "What do I need to use it?", p: "A parent account and a device with a web browser. Children don't need an email address. They sign in with the username and PIN you set up for them." },
 
       { h: "Setting up camp", items: [
