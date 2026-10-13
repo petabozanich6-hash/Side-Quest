@@ -506,6 +506,26 @@ export async function checkQuiz(
   return { ok: true, score, total, needed, passed: score >= needed, attempt, results };
 }
 
+export async function quizPassed(db: DB, user: { id: string }, a: any, lesson: any): Promise<boolean | null> {
+  const qs = mcQuestions(lesson);
+  if (!qs.length) return null; // no scored quiz
+  const needed = neededFor(qs.length, Number(lesson?.pass_mark) || 0.9);
+  return (await count(db, "SELECT COUNT(*) n FROM quiz_results WHERE assignment_id = ? AND child_id = ? AND score >= ?", a.id, user.id, needed)) > 0;
+}
+
+/** Saves a child's work in progress. Small and bounded; never changes status to submitted. */
+export async function saveDraft(db: DB, user: { id: string; family_id: string }, assignmentId: string, draft: unknown, now: Date = new Date()): Promise<Result<{ saved_at: string }>> {
+  const a = await db.prepare("SELECT id, status FROM assignments WHERE id = ? AND student_id = ? AND family_id = ?").bind(assignmentId, user.id, user.family_id).first<any>();
+  if (!a) return fail(404, "Assignment not found");
+  if (DONE_STATUSES.includes(a.status) || a.status === "submitted") return fail(409, "This lesson has already been handed in.", "ALREADY_SUBMITTED");
+  if (!draft || typeof draft !== "object" || Array.isArray(draft)) return fail(400, "Nothing to save");
+  const json = JSON.stringify(draft);
+  if (new TextEncoder().encode(json).length > 60000) return fail(400, "Your answers are too long to save. Please shorten them.");
+  const ts = nowIso(now);
+  await db.prepare("UPDATE assignments SET draft = ?, status = CASE WHEN status IN ('not_started','opened') THEN 'in_progress' ELSE status END, updated_at = ? WHERE id = ?").bind(json, ts, a.id).run();
+  return { ok: true, saved_at: ts };
+}
+
 // ---------------------------------------------------------------- submissions and review
 
 export async function submitWork(
@@ -520,11 +540,9 @@ export async function submitWork(
   if (a.status === "submitted") return fail(409, "You have already handed this in. It is waiting for your grown-up to look at it.", "ALREADY_SUBMITTED");
   if (!body.needs_help) {
     const { lesson } = await assignmentForChild(db, user, a.id);
-    const qs = mcQuestions(lesson);
-    if (qs.length) {
-      const needed = neededFor(qs.length, Number(lesson?.pass_mark) || 0.9);
-      const passed = await count(db, "SELECT COUNT(*) n FROM quiz_results WHERE assignment_id = ? AND child_id = ? AND score >= ?", a.id, user.id, needed);
-      if (!passed) return fail(409, "Pass the quiz first, then hand in your work. You can ask for help instead.", "QUIZ_NOT_PASSED");
+    const passed = await quizPassed(db, user, a, lesson);
+    {
+      if (passed === false) return fail(409, "Pass the quiz first, then hand in your work. You can ask for help instead.", "QUIZ_NOT_PASSED");
     }
   }
   const response = typeof body.response_text === "string" ? body.response_text.slice(0, 20000) : null;
@@ -539,6 +557,7 @@ export async function submitWork(
   const id = newId();
   const ts = nowIso(now);
   await db.batch([
+    db.prepare("UPDATE assignments SET draft = NULL WHERE id = ?").bind(a.id),
     db
       .prepare(
         "INSERT INTO submissions (id, family_id, assignment_id, student_id, lesson_id, response_text, reflection, file_ids, needs_help, status, submitted_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"

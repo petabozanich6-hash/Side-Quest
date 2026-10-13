@@ -156,8 +156,16 @@ test("full workflow: create, assign, snapshot survives edit, submit once, review
   assert.equal(JSON.stringify(good).includes("correct_index"), false);
   // another child in the same family cannot mark someone else's assignment
   assert.equal((await lb.checkQuiz(db, { id: "x", family_id: fam }, a.id, ["2"], NOW)).status, 404);
+  // draft is saved, survives, and is cleared on submit
+  const dr = await lb.saveDraft(db, user, a.id, { answers: ["half"] }, NOW);
+  assert.ok(dr.ok);
+  assert.equal(JSON.parse(db.raw.prepare("SELECT draft FROM assignments WHERE id=?").get(a.id).draft).answers[0], "half");
+  assert.equal(db.raw.prepare("SELECT status FROM assignments WHERE id=?").get(a.id).status, "in_progress");
+  assert.equal((await lb.saveDraft(db, { id: "x", family_id: fam }, a.id, { answers: [] }, NOW)).status, 404);
+  assert.equal(await lb.quizPassed(db, user, a, seen), true);
   // submit
   const sub = await lb.submitWork(db, { id: s, family_id: fam }, { assignment_id: a.id, response_text: "1" }, NOW);
+  assert.equal(db.raw.prepare("SELECT draft FROM assignments WHERE id=?").get(a.id).draft, null);
   assert.ok(sub.ok); assert.equal(sub.status, "submitted");
   assert.equal((await lb.submitWork(db, { id: s, family_id: fam }, { assignment_id: a.id, response_text: "again" }, NOW)).status, 409);
   // review

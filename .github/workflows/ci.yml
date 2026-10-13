@@ -42,13 +42,15 @@ jobs:
         run: |
           set -o pipefail
           CI=false npm --prefix frontend run build 2>&1 | tee ci-logs/build.log
-      - name: End-to-end workflow (local Worker + local D1)
+      - name: End-to-end workflow (local Worker + local D1 + real browser)
         id: e2e
         continue-on-error: true
         if: steps.build.outcome == 'success'
         run: |
           set -o pipefail
-          node worker/test/e2e/run.mjs 2>&1 | tee ci-logs/e2e.log
+          mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null && npm i playwright@1.49.1 2>&1 | tail -1 && npx playwright install --with-deps chromium 2>&1 | tail -2
+          cd "$GITHUB_WORKSPACE"
+          PW_PATH=/tmp/pw/node_modules/playwright/index.mjs timeout 900 node worker/test/e2e/run.mjs 2>&1 | tee ci-logs/e2e.log
       - name: Summary
         if: always()
         run: |

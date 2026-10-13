@@ -10,6 +10,8 @@ ALTER TABLE lessons ADD COLUMN archived_at TEXT;
 -- xp_awarded makes the review XP award idempotent.
 ALTER TABLE assignments ADD COLUMN lesson_snapshot TEXT;
 ALTER TABLE assignments ADD COLUMN lesson_version INTEGER;
+-- draft: the child's saved-in-progress answers, so a refresh or another device loses nothing.
+ALTER TABLE assignments ADD COLUMN draft TEXT;
 ALTER TABLE assignments ADD COLUMN xp_awarded INTEGER NOT NULL DEFAULT 0;
 
 -- Quiz attempts are tied to the assignment so submission can require a server-verified pass.

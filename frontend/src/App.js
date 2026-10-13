@@ -31,7 +31,7 @@ import TrustSupport from "./pages/parent/TrustSupport";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
-import ChildLesson from "./pages/child/ChildLesson";
+import ChildLessonRouter from "./pages/child/ChildLessonRouterRouter";
 import ChildPortfolio from "./pages/child/ChildPortfolio";
 import ChildCalendar from "./pages/child/ChildCalendar";
 import ChildAchievements from "./pages/child/ChildAchievements";
@@ -83,7 +83,7 @@ function Router() {
       </Route>
       <Route path="/child" element={<Guard role="child"><ChildLayout /></Guard>}>
         <Route index element={<ChildHome />} />
-        <Route path="lesson/:aid" element={<ChildLesson />} />
+        <Route path="lesson/:aid" element={<ChildLessonRouter />} />
         <Route path="portfolio" element={<ChildPortfolio />} />
         <Route path="calendar" element={<ChildCalendar />} />
         <Route path="achievements" element={<ChildAchievements />} />

@@ -84,6 +84,19 @@ export default function ChildHome() {
         <Link to="/child/calendar" className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-white border border-slate-300 px-4 py-2 text-sm font-semibold hover:border-slate-500" data-testid="view-calendar-link"><CalendarDays size={16}/> View calendar</Link>
       </section>
 
+      <section className="grid grid-cols-3 gap-3" data-testid="quest-stats">
+        <div className="rounded-2xl bg-white border border-slate-200 p-4 text-center"><div className="font-display text-2xl font-bold" data-testid="stat-xp">{data.xp ?? 0}</div><div className="text-xs opacity-70">XP earned</div></div>
+        <div className="rounded-2xl bg-white border border-slate-200 p-4 text-center"><div className="font-display text-2xl font-bold" data-testid="stat-done">{(data.completed || []).length}</div><div className="text-xs opacity-70">Quests complete</div></div>
+        <div className="rounded-2xl bg-white border border-slate-200 p-4 text-center"><div className="font-display text-2xl font-bold" data-testid="stat-waiting">{(data.waiting || []).length}</div><div className="text-xs opacity-70">Waiting for review</div></div>
+      </section>
+
+      {(data.waiting || []).length > 0 && (
+        <section data-testid="waiting-section">
+          <h2 className="font-display text-lg font-semibold">Handed in</h2>
+          <div className="space-y-2 mt-2">{data.waiting.map(w => <div key={w.id} className="rounded-xl bg-white border border-slate-200 px-4 py-3 text-sm">{w.lesson?.title} <span className="opacity-60">· waiting for your grown-up</span></div>)}</div>
+        </section>
+      )}
+
       {eventsReady && (
         <PetWelcome childId={user?.id} name={user?.name} today={scheduledToday.length} overdue={catchUp.length} ahead={workAhead.length} total={tasks.length} />
       )}
@@ -107,6 +120,12 @@ export default function ChildHome() {
           <Group title="Work ahead" hint="Planned for a later day, but you can start any of these now." items={workAhead} plannedOf={(a) => niceDate(nextDate[lessonOf(a)])} early />
           <Group title="Anytime" hint="No set day. Do them whenever you like." items={anytime} />
         </>
+      )}
+      {(data.completed || []).length > 0 && (
+        <section data-testid="completed-section">
+          <h2 className="font-display text-lg font-semibold">Completed quests</h2>
+          <div className="space-y-2 mt-2">{data.completed.map(cx => <div key={cx.id} className="rounded-xl bg-white border border-slate-200 px-4 py-3 text-sm">✅ {cx.lesson?.title}</div>)}</div>
+        </section>
       )}
     </div>
   );

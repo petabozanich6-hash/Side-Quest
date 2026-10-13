@@ -112,8 +112,31 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const student = await db.prepare(
       "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, extra FROM students WHERE id = ?"
     ).bind(u.id).first<any>();
+    const { results: doneRows } = await db.prepare(
+      "SELECT * FROM assignments WHERE student_id = ? AND status IN ('accepted','demonstrated','completed') ORDER BY updated_at DESC LIMIT 20"
+    ).bind(u.id).all<any>();
+    const completed = [];
+    for (const a of doneRows) {
+      const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      const l: any = lb.childSafeLesson(lb.assignmentLesson(a, live)) || {};
+      completed.push({ id: a.id, status: a.status, updated_at: a.updated_at, lesson: { title: l.title, learning_area: l.learning_area } });
+    }
+    const { results: waitRows } = await db.prepare(
+      "SELECT * FROM assignments WHERE student_id = ? AND status = 'submitted' ORDER BY updated_at DESC LIMIT 20"
+    ).bind(u.id).all<any>();
+    const waiting = [];
+    for (const a of waitRows) {
+      const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      const l: any = lb.assignmentLesson(a, live) || {};
+      waiting.push({ id: a.id, lesson: { title: l.title, learning_area: l.learning_area } });
+    }
+    const pet = await db.prepare("SELECT xp FROM pets WHERE student_id = ?").bind(u.id).first<{ xp: number }>().catch(() => null);
+    for (const a of pending) delete a.draft;
     return c.json({
       student: { ...studentOut(student), role: "child" },
+      completed,
+      waiting,
+      xp: pet?.xp ?? 0,
       today: pending.slice(0, 5),
       all_pending: pending,
       feedback,
@@ -192,6 +215,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       const l = lb.assignmentLesson(a, live);
       a.lesson = u.role === "child" ? lb.childSafeLesson(l) : l;
       delete a.lesson_snapshot;
+      delete a.draft;
     }
     return c.json(results);
   });
@@ -213,6 +237,12 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const l = lb.assignmentLesson(a, live);
     a.lesson = u.role === "child" ? lb.childSafeLesson(l) : l;
     delete a.lesson_snapshot;
+    if (u.role === "child") {
+      a.draft = parseJson(a.draft, null);
+      a.quiz_passed = await lb.quizPassed(c.env.DB, u, a, l);
+    } else {
+      delete a.draft;
+    }
     const { results } = await c.env.DB.prepare("SELECT * FROM submissions WHERE assignment_id = ? ORDER BY submitted_at DESC LIMIT 50").bind(a.id).all<any>();
     a.submissions = results.map(subOut);
     return c.json(a);
@@ -243,6 +273,14 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     if (!r.ok) return send(c, r);
     const { ok: _ok, ...out } = r;
     return c.json(out);
+  });
+
+  app.put("/api/assignments/:id/draft", auth, async (c) => {
+    const u = c.get("user");
+    if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await lb.saveDraft(c.env.DB, u, c.req.param("id"), b);
+    return r.ok ? c.json({ ok: true, saved_at: r.saved_at }) : send(c, r);
   });
 
   app.post("/api/assignments/:id/quiz-check", auth, async (c) => {

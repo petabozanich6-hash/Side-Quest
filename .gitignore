@@ -23,3 +23,8 @@ npm-debug.log*
 # lesson-excellence pipeline scratch
 lesson-excellence/.work/
 .work/
+
+.dev.vars
+wrangler.e2e.jsonc
+e2e-shots/
+ci-logs/
