@@ -206,7 +206,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
       {guided.length > 0 && (
         <section className={card} data-testid="guided-practice">
           <h2 className="font-display text-xl font-semibold" style={INK}>Try it together</h2>
-          <p className="text-sm text-stone-600">Work these out with your grown-up. Use the hint if you get stuck.</p>
+          <p className="text-sm text-stone-600">{l.delivery === "independent" ? "Work these out yourself, using the worked examples above. Use the hint if you get stuck." : "Work these out with your grown-up. Use the hint if you get stuck."}</p>
           {guided.map((g, i) => (
             <div key={i} className="rounded-xl border p-3 bg-white space-y-2" style={border}>
               <label htmlFor={`gp-${i}`} className="font-bold block">{i + 1}. {g.prompt}</label>
