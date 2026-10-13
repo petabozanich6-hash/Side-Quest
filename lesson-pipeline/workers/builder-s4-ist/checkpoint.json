@@ -1,6 +1,295 @@
 {
-  "generation": 0,
-  "history": [],
+  "generation": 48,
+  "history": [
+    {
+      "at": "2026-10-13T01:10:44.030951+00:00",
+      "event": "claimed",
+      "generation": 1,
+      "seed_key": "s5-information-software-technology-y9-w01-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:44.452996+00:00",
+      "event": "awaiting_review",
+      "generation": 2,
+      "seed_key": "s5-information-software-technology-y9-w01-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:44.454011+00:00",
+      "event": "claimed",
+      "generation": 3,
+      "seed_key": "s5-information-software-technology-y9-w01-l2"
+    },
+    {
+      "at": "2026-10-13T01:10:44.681986+00:00",
+      "event": "awaiting_review",
+      "generation": 4,
+      "seed_key": "s5-information-software-technology-y9-w01-l2"
+    },
+    {
+      "at": "2026-10-13T01:10:44.682905+00:00",
+      "event": "claimed",
+      "generation": 5,
+      "seed_key": "s5-information-software-technology-y9-w02-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:44.912013+00:00",
+      "event": "awaiting_review",
+      "generation": 6,
+      "seed_key": "s5-information-software-technology-y9-w02-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:44.912960+00:00",
+      "event": "claimed",
+      "generation": 7,
+      "seed_key": "s5-information-software-technology-y9-w02-l2"
+    },
+    {
+      "at": "2026-10-13T01:10:45.168096+00:00",
+      "event": "awaiting_review",
+      "generation": 8,
+      "seed_key": "s5-information-software-technology-y9-w02-l2"
+    },
+    {
+      "at": "2026-10-13T01:10:45.169194+00:00",
+      "event": "claimed",
+      "generation": 9,
+      "seed_key": "s5-information-software-technology-y9-w03-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:45.396625+00:00",
+      "event": "awaiting_review",
+      "generation": 10,
+      "seed_key": "s5-information-software-technology-y9-w03-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:45.397673+00:00",
+      "event": "claimed",
+      "generation": 11,
+      "seed_key": "s5-information-software-technology-y9-w03-l2"
+    },
+    {
+      "at": "2026-10-13T01:10:45.623368+00:00",
+      "event": "awaiting_review",
+      "generation": 12,
+      "seed_key": "s5-information-software-technology-y9-w03-l2"
+    },
+    {
+      "at": "2026-10-13T01:10:45.624595+00:00",
+      "event": "claimed",
+      "generation": 13,
+      "seed_key": "s5-information-software-technology-y9-w04-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:45.853349+00:00",
+      "event": "awaiting_review",
+      "generation": 14,
+      "seed_key": "s5-information-software-technology-y9-w04-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:45.854533+00:00",
+      "event": "claimed",
+      "generation": 15,
+      "seed_key": "s5-information-software-technology-y9-w04-l2"
+    },
+    {
+      "at": "2026-10-13T01:10:46.082144+00:00",
+      "event": "awaiting_review",
+      "generation": 16,
+      "seed_key": "s5-information-software-technology-y9-w04-l2"
+    },
+    {
+      "at": "2026-10-13T01:10:46.083492+00:00",
+      "event": "claimed",
+      "generation": 17,
+      "seed_key": "s5-information-software-technology-y9-w05-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:46.313772+00:00",
+      "event": "awaiting_review",
+      "generation": 18,
+      "seed_key": "s5-information-software-technology-y9-w05-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:46.315138+00:00",
+      "event": "claimed",
+      "generation": 19,
+      "seed_key": "s5-information-software-technology-y9-w05-l2"
+    },
+    {
+      "at": "2026-10-13T01:10:46.541777+00:00",
+      "event": "awaiting_review",
+      "generation": 20,
+      "seed_key": "s5-information-software-technology-y9-w05-l2"
+    },
+    {
+      "at": "2026-10-13T01:10:46.543204+00:00",
+      "event": "claimed",
+      "generation": 21,
+      "seed_key": "s5-information-software-technology-y9-w06-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:46.764896+00:00",
+      "event": "awaiting_review",
+      "generation": 22,
+      "seed_key": "s5-information-software-technology-y9-w06-l1"
+    },
+    {
+      "at": "2026-10-13T01:10:46.766194+00:00",
+      "event": "claimed",
+      "generation": 23,
+      "seed_key": "s5-information-software-technology-y9-w06-l2"
+    },
+    {
+      "at": "2026-10-13T01:10:46.989059+00:00",
+      "event": "awaiting_review",
+      "generation": 24,
+      "seed_key": "s5-information-software-technology-y9-w06-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:19.935530+00:00",
+      "event": "claimed",
+      "generation": 25,
+      "seed_key": "s5-information-software-technology-y9-w01-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:21.839213+00:00",
+      "event": "awaiting_review",
+      "generation": 26,
+      "seed_key": "s5-information-software-technology-y9-w01-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:21.842310+00:00",
+      "event": "claimed",
+      "generation": 27,
+      "seed_key": "s5-information-software-technology-y9-w01-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:22.451206+00:00",
+      "event": "awaiting_review",
+      "generation": 28,
+      "seed_key": "s5-information-software-technology-y9-w01-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:22.453589+00:00",
+      "event": "claimed",
+      "generation": 29,
+      "seed_key": "s5-information-software-technology-y9-w02-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:23.283631+00:00",
+      "event": "awaiting_review",
+      "generation": 30,
+      "seed_key": "s5-information-software-technology-y9-w02-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:23.288404+00:00",
+      "event": "claimed",
+      "generation": 31,
+      "seed_key": "s5-information-software-technology-y9-w02-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:23.717465+00:00",
+      "event": "awaiting_review",
+      "generation": 32,
+      "seed_key": "s5-information-software-technology-y9-w02-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:23.720304+00:00",
+      "event": "claimed",
+      "generation": 33,
+      "seed_key": "s5-information-software-technology-y9-w03-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:24.120684+00:00",
+      "event": "awaiting_review",
+      "generation": 34,
+      "seed_key": "s5-information-software-technology-y9-w03-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:24.122990+00:00",
+      "event": "claimed",
+      "generation": 35,
+      "seed_key": "s5-information-software-technology-y9-w03-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:24.462389+00:00",
+      "event": "awaiting_review",
+      "generation": 36,
+      "seed_key": "s5-information-software-technology-y9-w03-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:24.464256+00:00",
+      "event": "claimed",
+      "generation": 37,
+      "seed_key": "s5-information-software-technology-y9-w04-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:24.800693+00:00",
+      "event": "awaiting_review",
+      "generation": 38,
+      "seed_key": "s5-information-software-technology-y9-w04-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:24.802914+00:00",
+      "event": "claimed",
+      "generation": 39,
+      "seed_key": "s5-information-software-technology-y9-w04-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:25.547255+00:00",
+      "event": "awaiting_review",
+      "generation": 40,
+      "seed_key": "s5-information-software-technology-y9-w04-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:25.549572+00:00",
+      "event": "claimed",
+      "generation": 41,
+      "seed_key": "s5-information-software-technology-y9-w05-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:25.982352+00:00",
+      "event": "awaiting_review",
+      "generation": 42,
+      "seed_key": "s5-information-software-technology-y9-w05-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:25.984159+00:00",
+      "event": "claimed",
+      "generation": 43,
+      "seed_key": "s5-information-software-technology-y9-w05-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:26.334104+00:00",
+      "event": "awaiting_review",
+      "generation": 44,
+      "seed_key": "s5-information-software-technology-y9-w05-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:26.336132+00:00",
+      "event": "claimed",
+      "generation": 45,
+      "seed_key": "s5-information-software-technology-y9-w06-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:26.629999+00:00",
+      "event": "awaiting_review",
+      "generation": 46,
+      "seed_key": "s5-information-software-technology-y9-w06-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:26.632375+00:00",
+      "event": "claimed",
+      "generation": 47,
+      "seed_key": "s5-information-software-technology-y9-w06-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:26.974547+00:00",
+      "event": "awaiting_review",
+      "generation": 48,
+      "seed_key": "s5-information-software-technology-y9-w06-l2"
+    }
+  ],
   "lessons": {},
   "manifest_sha256": "f843560b163acfe6b1a703118a2d60e5bc0ac4841006bcd54f8df48a313c7e3f",
   "schema": 1,

@@ -1,5 +1,5 @@
 {
-  "generation": 24,
+  "generation": 48,
   "history": [
     {
       "at": "2026-10-13T01:05:58.289616+00:00",
@@ -144,6 +144,150 @@
       "event": "awaiting_review",
       "generation": 24,
       "seed_key": "s5-food-technology-y9-w06-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:19.940755+00:00",
+      "event": "claimed",
+      "generation": 25,
+      "seed_key": "s5-food-technology-y9-w11-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:21.782486+00:00",
+      "event": "awaiting_review",
+      "generation": 26,
+      "seed_key": "s5-food-technology-y9-w11-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:21.784672+00:00",
+      "event": "claimed",
+      "generation": 27,
+      "seed_key": "s5-food-technology-y9-w11-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:22.403029+00:00",
+      "event": "awaiting_review",
+      "generation": 28,
+      "seed_key": "s5-food-technology-y9-w11-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:22.406202+00:00",
+      "event": "claimed",
+      "generation": 29,
+      "seed_key": "s5-food-technology-y9-w12-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:23.199695+00:00",
+      "event": "awaiting_review",
+      "generation": 30,
+      "seed_key": "s5-food-technology-y9-w12-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:23.204338+00:00",
+      "event": "claimed",
+      "generation": 31,
+      "seed_key": "s5-food-technology-y9-w12-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:23.665617+00:00",
+      "event": "awaiting_review",
+      "generation": 32,
+      "seed_key": "s5-food-technology-y9-w12-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:23.668238+00:00",
+      "event": "claimed",
+      "generation": 33,
+      "seed_key": "s5-food-technology-y9-w13-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:24.067266+00:00",
+      "event": "awaiting_review",
+      "generation": 34,
+      "seed_key": "s5-food-technology-y9-w13-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:24.077691+00:00",
+      "event": "claimed",
+      "generation": 35,
+      "seed_key": "s5-food-technology-y9-w13-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:24.417940+00:00",
+      "event": "awaiting_review",
+      "generation": 36,
+      "seed_key": "s5-food-technology-y9-w13-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:24.420323+00:00",
+      "event": "claimed",
+      "generation": 37,
+      "seed_key": "s5-food-technology-y9-w14-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:24.752059+00:00",
+      "event": "awaiting_review",
+      "generation": 38,
+      "seed_key": "s5-food-technology-y9-w14-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:24.754643+00:00",
+      "event": "claimed",
+      "generation": 39,
+      "seed_key": "s5-food-technology-y9-w14-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:25.479233+00:00",
+      "event": "awaiting_review",
+      "generation": 40,
+      "seed_key": "s5-food-technology-y9-w14-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:25.500572+00:00",
+      "event": "claimed",
+      "generation": 41,
+      "seed_key": "s5-food-technology-y9-w15-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:25.965326+00:00",
+      "event": "awaiting_review",
+      "generation": 42,
+      "seed_key": "s5-food-technology-y9-w15-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:25.968677+00:00",
+      "event": "claimed",
+      "generation": 43,
+      "seed_key": "s5-food-technology-y9-w15-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:26.327884+00:00",
+      "event": "awaiting_review",
+      "generation": 44,
+      "seed_key": "s5-food-technology-y9-w15-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:26.331242+00:00",
+      "event": "claimed",
+      "generation": 45,
+      "seed_key": "s5-food-technology-y9-w16-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:26.628622+00:00",
+      "event": "awaiting_review",
+      "generation": 46,
+      "seed_key": "s5-food-technology-y9-w16-l1"
+    },
+    {
+      "at": "2026-10-13T01:21:26.631511+00:00",
+      "event": "claimed",
+      "generation": 47,
+      "seed_key": "s5-food-technology-y9-w16-l2"
+    },
+    {
+      "at": "2026-10-13T01:21:26.978722+00:00",
+      "event": "awaiting_review",
+      "generation": 48,
+      "seed_key": "s5-food-technology-y9-w16-l2"
     }
   ],
   "lessons": {
@@ -536,6 +680,402 @@
         "Owner release approval"
       ],
       "source_sha256": "f9311ce9e75362ac8714ced225734b3c1c23e40a2e4d2ea428361428be261af2",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w11-l1": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w11-l1/5bc100260b7e0c92d20c6d35216ea80c29991d2269dc8e06f666934af876e02b-cf4da70ca18d/baseline.json": "9f08aac0c1e7563c4b04083d761b56841e66bc8562bd8bdf43cc28b99cac1c2e",
+        "artifacts/s5-food-technology-y9-w11-l1/5bc100260b7e0c92d20c6d35216ea80c29991d2269dc8e06f666934af876e02b-cf4da70ca18d/bundle.json": "5bc100260b7e0c92d20c6d35216ea80c29991d2269dc8e06f666934af876e02b",
+        "artifacts/s5-food-technology-y9-w11-l1/5bc100260b7e0c92d20c6d35216ea80c29991d2269dc8e06f666934af876e02b-cf4da70ca18d/draft.sql": "da528f05d2df7b20077fd1ca07c1a6b71035b80c9ea7d3efc69ec9c7ed2d2091",
+        "artifacts/s5-food-technology-y9-w11-l1/5bc100260b7e0c92d20c6d35216ea80c29991d2269dc8e06f666934af876e02b-cf4da70ca18d/validation.json": "e7769f8cb7ba078ac661b76e0352ffc8b8a555393ad32dd4eb1b85ba39f6c0c1"
+      },
+      "attempts": 1,
+      "content_sha256": "fd7102e3a14beff05d79ae8aa8f6cbae6269694bb83eea5b00453deec45e5925",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "5bc100260b7e0c92d20c6d35216ea80c29991d2269dc8e06f666934af876e02b",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "d32c9c8570c381b8a5d1c99ca4f69f37d7eb49326c39fc40564354606f710132",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w11-l2": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w11-l2/786fdf4c9b9b045923fe8719bc5434a08db3970bb3edab5871cbb4133b5f243a-cf4da70ca18d/baseline.json": "904c8253770edcc82e976f412c55a7fba450eca370a929fdd2ebb1ca64ce436d",
+        "artifacts/s5-food-technology-y9-w11-l2/786fdf4c9b9b045923fe8719bc5434a08db3970bb3edab5871cbb4133b5f243a-cf4da70ca18d/bundle.json": "786fdf4c9b9b045923fe8719bc5434a08db3970bb3edab5871cbb4133b5f243a",
+        "artifacts/s5-food-technology-y9-w11-l2/786fdf4c9b9b045923fe8719bc5434a08db3970bb3edab5871cbb4133b5f243a-cf4da70ca18d/draft.sql": "20f34b959ce5b62f6d6e3122961586412095446a8331f3925fb8dc2b361b4ccc",
+        "artifacts/s5-food-technology-y9-w11-l2/786fdf4c9b9b045923fe8719bc5434a08db3970bb3edab5871cbb4133b5f243a-cf4da70ca18d/validation.json": "8ca92aa81c3ad380c714016814d047467b905525e34fa2b804196d0d7906fab4"
+      },
+      "attempts": 1,
+      "content_sha256": "9559ab32e069edc0b782ec73c46cd1a7372c7eb0fb88d7aa736e02f5c98111a8",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "786fdf4c9b9b045923fe8719bc5434a08db3970bb3edab5871cbb4133b5f243a",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "2ba71eba1a4fac04c9ff5996c8e22be3e13fe6a727a211026493ca3604b1ac0d",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w12-l1": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w12-l1/3fcb47975ee9c38f7a4e8f87cc414879866ac16c4ecdcae86e3597759c3a2f0e-cf4da70ca18d/baseline.json": "7175a846efef9f26fa8268ef9603d95e7c341b224cce51e426fb0689265a50cb",
+        "artifacts/s5-food-technology-y9-w12-l1/3fcb47975ee9c38f7a4e8f87cc414879866ac16c4ecdcae86e3597759c3a2f0e-cf4da70ca18d/bundle.json": "3fcb47975ee9c38f7a4e8f87cc414879866ac16c4ecdcae86e3597759c3a2f0e",
+        "artifacts/s5-food-technology-y9-w12-l1/3fcb47975ee9c38f7a4e8f87cc414879866ac16c4ecdcae86e3597759c3a2f0e-cf4da70ca18d/draft.sql": "f99463c025eea4ed07347444aa02d24dd9731292c574b8e583122662cd4b3b9b",
+        "artifacts/s5-food-technology-y9-w12-l1/3fcb47975ee9c38f7a4e8f87cc414879866ac16c4ecdcae86e3597759c3a2f0e-cf4da70ca18d/validation.json": "9896c69b46b0257ba9a0d5b2efa7dc22f0b0f565b93cb2c61b0804e3e4818426"
+      },
+      "attempts": 1,
+      "content_sha256": "d48a05d69e1a604c313f06d05d3e1e9898f729e3612a3bab237485e22f791249",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "3fcb47975ee9c38f7a4e8f87cc414879866ac16c4ecdcae86e3597759c3a2f0e",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "d0500ba619ce3404ba2f953edd592939735572b1ddaa3306042e9786a165fff5",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w12-l2": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w12-l2/55e3f50de3a298dccb9627bf694a00938579e60085f3dfbd6064ab85c3032ce8-cf4da70ca18d/baseline.json": "5c5c840e4bd2792d4acf8686b408124cace5ab2eda267b15e62ab9d48f106e6b",
+        "artifacts/s5-food-technology-y9-w12-l2/55e3f50de3a298dccb9627bf694a00938579e60085f3dfbd6064ab85c3032ce8-cf4da70ca18d/bundle.json": "55e3f50de3a298dccb9627bf694a00938579e60085f3dfbd6064ab85c3032ce8",
+        "artifacts/s5-food-technology-y9-w12-l2/55e3f50de3a298dccb9627bf694a00938579e60085f3dfbd6064ab85c3032ce8-cf4da70ca18d/draft.sql": "e65b193338f40a3196361e5265a62c70315f5c10fd21d67dd219c1542b048f1c",
+        "artifacts/s5-food-technology-y9-w12-l2/55e3f50de3a298dccb9627bf694a00938579e60085f3dfbd6064ab85c3032ce8-cf4da70ca18d/validation.json": "05dd32f1272ca0f11e7946bf88d40162520f051c9db7a6d9484199d0969961ec"
+      },
+      "attempts": 1,
+      "content_sha256": "c98d3a36da15b7d1de6951f37e5fcbfd7587331386a194cf23bfc7441df75eac",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "55e3f50de3a298dccb9627bf694a00938579e60085f3dfbd6064ab85c3032ce8",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "3e386e7dacaf022ffed3d09b0f92bd564e788664a594f83e279907d2e4c489bd",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w13-l1": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w13-l1/8a213368cf7ea4df9107621fdbf2e57262be446d7ca40932e4bb3b0aeb83894d-cf4da70ca18d/baseline.json": "ff22b631c83cdeb4a0a0d1dfba85c9b1588e3d6b95dbaaeb012ba66615b7fefd",
+        "artifacts/s5-food-technology-y9-w13-l1/8a213368cf7ea4df9107621fdbf2e57262be446d7ca40932e4bb3b0aeb83894d-cf4da70ca18d/bundle.json": "8a213368cf7ea4df9107621fdbf2e57262be446d7ca40932e4bb3b0aeb83894d",
+        "artifacts/s5-food-technology-y9-w13-l1/8a213368cf7ea4df9107621fdbf2e57262be446d7ca40932e4bb3b0aeb83894d-cf4da70ca18d/draft.sql": "cb83c09dde3190e06d98dc6b1179f49d149281e3aff5d681886191ad129cfde7",
+        "artifacts/s5-food-technology-y9-w13-l1/8a213368cf7ea4df9107621fdbf2e57262be446d7ca40932e4bb3b0aeb83894d-cf4da70ca18d/validation.json": "dfd7f407696528528177c4d35684dd1ae9e823aa1998c769d479459043d069af"
+      },
+      "attempts": 1,
+      "content_sha256": "672c3d203e125f2e77cb42f839c23e86647cc8c0aa1953bfba242d4aeafc176b",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "8a213368cf7ea4df9107621fdbf2e57262be446d7ca40932e4bb3b0aeb83894d",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "7bb04db9ca25a1882a698fa9f66ed3abbd6c08ca34af605d4b5dcafedc79a954",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w13-l2": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w13-l2/f175b0798b8a1c6ba3d9c881d17aea3e6618b1ea76eda34a28799d364e92a088-cf4da70ca18d/baseline.json": "c554be38ae0163790f472895636e8c96e045e4437b63ea660d88b1928fd7d2aa",
+        "artifacts/s5-food-technology-y9-w13-l2/f175b0798b8a1c6ba3d9c881d17aea3e6618b1ea76eda34a28799d364e92a088-cf4da70ca18d/bundle.json": "f175b0798b8a1c6ba3d9c881d17aea3e6618b1ea76eda34a28799d364e92a088",
+        "artifacts/s5-food-technology-y9-w13-l2/f175b0798b8a1c6ba3d9c881d17aea3e6618b1ea76eda34a28799d364e92a088-cf4da70ca18d/draft.sql": "5be4384b1fe5471f817b92eb76704a0e9ad351acb3c9ee3183def09e36fde1de",
+        "artifacts/s5-food-technology-y9-w13-l2/f175b0798b8a1c6ba3d9c881d17aea3e6618b1ea76eda34a28799d364e92a088-cf4da70ca18d/validation.json": "e21f4c19d4d15441f372f3ac8d1c5f4d4ce1030561b5462d16b08be42a2931b7"
+      },
+      "attempts": 1,
+      "content_sha256": "d2f16c59bb205bbc170f716ad0ab86600cc1a5f4fc3627fbba123239e321603f",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "f175b0798b8a1c6ba3d9c881d17aea3e6618b1ea76eda34a28799d364e92a088",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "c683b988bf7c8a758695f17d62ae295b653bbcbd9313f01de73fd63c6c2dc88b",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w14-l1": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w14-l1/61cc9d5588d87fe9b4b174678b49cbfb7e60eb1996b1b6166dcdb5beb9533c76-cf4da70ca18d/baseline.json": "50c6a66573ef9d4471d5af90336bd0c542c116e84775462332af0da5aa1cf9d0",
+        "artifacts/s5-food-technology-y9-w14-l1/61cc9d5588d87fe9b4b174678b49cbfb7e60eb1996b1b6166dcdb5beb9533c76-cf4da70ca18d/bundle.json": "61cc9d5588d87fe9b4b174678b49cbfb7e60eb1996b1b6166dcdb5beb9533c76",
+        "artifacts/s5-food-technology-y9-w14-l1/61cc9d5588d87fe9b4b174678b49cbfb7e60eb1996b1b6166dcdb5beb9533c76-cf4da70ca18d/draft.sql": "e270ad1fdda25bfc09217e8e7d96db31627738daa4d155e73d0a561159f0bd39",
+        "artifacts/s5-food-technology-y9-w14-l1/61cc9d5588d87fe9b4b174678b49cbfb7e60eb1996b1b6166dcdb5beb9533c76-cf4da70ca18d/validation.json": "22566fb19f5d297f7e7944422260d21e08fc4a27caee60d21ac57cfd45327729"
+      },
+      "attempts": 1,
+      "content_sha256": "e8d05cf9bc542b25e51e59118af85a997813f6404278b9dd041e4913e325ef18",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "61cc9d5588d87fe9b4b174678b49cbfb7e60eb1996b1b6166dcdb5beb9533c76",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "700a72ca7ac76db45cf922f704830106bf8cd2b4409b1cc247a9650b03af5cb0",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w14-l2": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w14-l2/62d4f9548c0d2e3a7e43a33f8679219f6744452c22ece44359d895a3dc0a2f9e-cf4da70ca18d/baseline.json": "6699cfa5723417dedb0bda30cb80bb16d6c1df496a7a746a85fb81c6cb59d341",
+        "artifacts/s5-food-technology-y9-w14-l2/62d4f9548c0d2e3a7e43a33f8679219f6744452c22ece44359d895a3dc0a2f9e-cf4da70ca18d/bundle.json": "62d4f9548c0d2e3a7e43a33f8679219f6744452c22ece44359d895a3dc0a2f9e",
+        "artifacts/s5-food-technology-y9-w14-l2/62d4f9548c0d2e3a7e43a33f8679219f6744452c22ece44359d895a3dc0a2f9e-cf4da70ca18d/draft.sql": "92feae339fd39c7c710d26d9b4c58ba52a87cfa0e017906b4dbae640d69042dd",
+        "artifacts/s5-food-technology-y9-w14-l2/62d4f9548c0d2e3a7e43a33f8679219f6744452c22ece44359d895a3dc0a2f9e-cf4da70ca18d/validation.json": "f0012be5d373fd31762d0ff77ee73f5bda5bd63968a553c16ba88ddca943a75d"
+      },
+      "attempts": 1,
+      "content_sha256": "f6ea888fae53e991cfad5131a218428aa3d62e4ebe75bf4d06ffbf09277801e6",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "62d4f9548c0d2e3a7e43a33f8679219f6744452c22ece44359d895a3dc0a2f9e",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "14c07fd6bce50e4f7f609baa123f797133188144f810718e2c3ee477682f887a",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w15-l1": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w15-l1/09cf06c5690fffae2450ee46174f5b442e2a0794778a61558a5a14dec5c005a7-cf4da70ca18d/baseline.json": "5b73394756b2b7cf56df0bf99acb76cceb3df94cf62b1a9287224e964e88cd2f",
+        "artifacts/s5-food-technology-y9-w15-l1/09cf06c5690fffae2450ee46174f5b442e2a0794778a61558a5a14dec5c005a7-cf4da70ca18d/bundle.json": "09cf06c5690fffae2450ee46174f5b442e2a0794778a61558a5a14dec5c005a7",
+        "artifacts/s5-food-technology-y9-w15-l1/09cf06c5690fffae2450ee46174f5b442e2a0794778a61558a5a14dec5c005a7-cf4da70ca18d/draft.sql": "e29033765d67e02f8258c45eaeb6793074975e61a9c2df3b0aaccea903909a3d",
+        "artifacts/s5-food-technology-y9-w15-l1/09cf06c5690fffae2450ee46174f5b442e2a0794778a61558a5a14dec5c005a7-cf4da70ca18d/validation.json": "f914c823fffa4a0f64a342fae15c387db9dd3a6cf2ede30bc42f864cacbc7734"
+      },
+      "attempts": 1,
+      "content_sha256": "34097d75bf043882b2392aac7aa288a3000b08324e2ea54cccfcbb0a8448b4e6",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "09cf06c5690fffae2450ee46174f5b442e2a0794778a61558a5a14dec5c005a7",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "72f08b0b6442b2cdf7cf4676dd6201f19b87c6c951fb29b2a3d75c3d68172b59",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w15-l2": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w15-l2/503dd6de5c938e7be0fb227b0d500def45770c599f80e4b41caf31b99cbcffa9-cf4da70ca18d/baseline.json": "6d3bc4ddf313d6f8b570c7365cc3bb64403842413fa9e6f3826053d94187e045",
+        "artifacts/s5-food-technology-y9-w15-l2/503dd6de5c938e7be0fb227b0d500def45770c599f80e4b41caf31b99cbcffa9-cf4da70ca18d/bundle.json": "503dd6de5c938e7be0fb227b0d500def45770c599f80e4b41caf31b99cbcffa9",
+        "artifacts/s5-food-technology-y9-w15-l2/503dd6de5c938e7be0fb227b0d500def45770c599f80e4b41caf31b99cbcffa9-cf4da70ca18d/draft.sql": "60207c71e65e8c93688d84230a3f37e8623f900a8de1cab4cd7b31807ca182fe",
+        "artifacts/s5-food-technology-y9-w15-l2/503dd6de5c938e7be0fb227b0d500def45770c599f80e4b41caf31b99cbcffa9-cf4da70ca18d/validation.json": "2667de6fbe2410a41eb9ab7bcf198722d249aa317552ec6284cc4c995da428a6"
+      },
+      "attempts": 1,
+      "content_sha256": "f4d21fde942d161c0033c3074aac861b47031f8ed8dfff7685cc9812ea849e77",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "503dd6de5c938e7be0fb227b0d500def45770c599f80e4b41caf31b99cbcffa9",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "70c65a44677976c487f60e72eb982d073fe99b606079b815af7241a607ed8be2",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w16-l1": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w16-l1/f23bb46a2a39f1c34e8f36a8c113c4b77e75ae187f1230d914f5de98c8ae3453-cf4da70ca18d/baseline.json": "1e5a43e00af7a6a048e3cd9bdffd5296860664c6144570d34641e0700bd7c99d",
+        "artifacts/s5-food-technology-y9-w16-l1/f23bb46a2a39f1c34e8f36a8c113c4b77e75ae187f1230d914f5de98c8ae3453-cf4da70ca18d/bundle.json": "f23bb46a2a39f1c34e8f36a8c113c4b77e75ae187f1230d914f5de98c8ae3453",
+        "artifacts/s5-food-technology-y9-w16-l1/f23bb46a2a39f1c34e8f36a8c113c4b77e75ae187f1230d914f5de98c8ae3453-cf4da70ca18d/draft.sql": "ccd87e78ea77ddb6ab9fc596e82e62c049cfb6816952f872ac7520a0ea6a3825",
+        "artifacts/s5-food-technology-y9-w16-l1/f23bb46a2a39f1c34e8f36a8c113c4b77e75ae187f1230d914f5de98c8ae3453-cf4da70ca18d/validation.json": "28373b44603c466b24808bc56786fc8792c80fc1c183593b7b19fbfb2b36002e"
+      },
+      "attempts": 1,
+      "content_sha256": "9145341a1ae04061bd9f18b65b8b99ecaf59439c6a8be9990eca130ed10ede56",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "f23bb46a2a39f1c34e8f36a8c113c4b77e75ae187f1230d914f5de98c8ae3453",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "d4d7cfb733992eb6e302a6773df0fa3bd08a87aa83ece9ad14e940d013a08dad",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-food-technology-y9-w16-l2": {
+      "artifacts": {
+        "artifacts/s5-food-technology-y9-w16-l2/2ae0747927fca83d85a762b8922ddf86ab8fd0ede40845aa8579e5bbb6d9940e-cf4da70ca18d/baseline.json": "325320852f7595c1ebe911fabd934b051410ad5c567c629fd9a2391f5c1d9df7",
+        "artifacts/s5-food-technology-y9-w16-l2/2ae0747927fca83d85a762b8922ddf86ab8fd0ede40845aa8579e5bbb6d9940e-cf4da70ca18d/bundle.json": "2ae0747927fca83d85a762b8922ddf86ab8fd0ede40845aa8579e5bbb6d9940e",
+        "artifacts/s5-food-technology-y9-w16-l2/2ae0747927fca83d85a762b8922ddf86ab8fd0ede40845aa8579e5bbb6d9940e-cf4da70ca18d/draft.sql": "56ac7802bef0ab4370dd83930281cad1ff502772dc9cd6bbb2b5d0054100b881",
+        "artifacts/s5-food-technology-y9-w16-l2/2ae0747927fca83d85a762b8922ddf86ab8fd0ede40845aa8579e5bbb6d9940e-cf4da70ca18d/validation.json": "07b2ab4776d8c23990a1fa82449e9684f25e034126760b213b3c055793fae747"
+      },
+      "attempts": 1,
+      "content_sha256": "33089eb281b9396bdedba0325e567cdd9c863d5a9545edbb6f06c3f086b2b7fa",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "2ae0747927fca83d85a762b8922ddf86ab8fd0ede40845aa8579e5bbb6d9940e",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "313431793b2515ab1f248ab34cd91867ae7d2ec707ea47accfd729f45108eba6",
       "validator_sha256": {
         "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
         "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",

@@ -1,7 +1,7 @@
 {
   "last_reconcile": {
-    "merged_count": 48,
-    "skipped_count": 882,
+    "merged_count": 24,
+    "skipped_count": 942,
     "workers": [
       "builder-s4-commerce",
       "builder-s4-dance",
@@ -25,7 +25,7 @@
       "builder-y8-eng"
     ]
   },
-  "last_reconcile_at": "2026-10-13T01:07:47.161224+00:00",
+  "last_reconcile_at": "2026-10-13T01:22:20.096940+00:00",
   "schema": 1,
   "updated_at": "2026-10-13T00:54:57.833867+00:00",
   "workers": {

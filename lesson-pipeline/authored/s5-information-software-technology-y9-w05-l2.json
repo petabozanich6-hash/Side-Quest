@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "CT5-DAT-01",
+      "lesson_evidence": "Data quality means noticing missing values, duplicated rows and implausible values before you trust a total.",
+      "scope_limit": "Single Stage 4 lesson: partial contribution only. Content-point mapping is pending human review. This authoring pass does not certify NESA alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-technology-7-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Data quality means noticing missing values, duplicated rows and implausible values before you trust a total.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same technology/design idea to a new object or material, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nSix book rows for one month are Ina 3, Jed 5, Kim blank, Ina 3 again, Lee 90 and Mo 4. Which row is missing, which is duplicated, which is implausible, and what is the usable total?\n\nFEEDBACK\nKim is missing, the second Ina row duplicates Ina 3, and 90 books in one month is implausible beside 3, 4 and 5. The usable total is 3 + 5 + 4 = 12, counting Ina once. A blank is not the same as zero, so writing 0 for Kim would invent a value that was never recorded.\n\nWATCH FOR\nA common mistake is to add every number in a table, including a duplicated person and an implausible value.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nOn paper, check six sticker rows: Rae 7, Sol 2, Rae 7 again, Tess blank, Uma 150 and Vic 5. Flag the missing, duplicated and implausible rows, then add each usable value once.\n\nWrite a short reflection naming one observation, criterion or step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Information and Software Technology",
+    "learning_intention": "Data quality means noticing missing values, duplicated rows and implausible values before you trust a total.",
+    "lesson_number": 10,
+    "lesson_role": "Apply",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: safe classroom tools/materials under teacher supervision",
+      "Device only when the lesson requires digital work"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "CT5-DAT-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: On paper, check six sticker rows: Rae 7, Sol 2, Rae 7 again, Tess blank, Uma 150 and Vic 5. Flag the missing, duplicated and implausible rows, then add each usable value once. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using missing on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: A common mistake is to add every number in a table, including a duplicated person and an implausible value.. Correction: Kim is missing, the second Ina row duplicates Ina 3, and 90 books in one month is implausible beside 3, 4 and 5.. Why it helps the audience is stated.\n\nParent: Likely misconception: A common mistake is to add every number in a table, including a duplicated person and an implausible value. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating missing on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with missing, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about missing with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for missing. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "This matches the taught method for missing. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Kim is missing, the second Ina row duplicates Ina 3, and 90 books in one month is implausible beside 3, 4 and 5",
+          "A common mistake is to add every number in a table, including a duplicated person and an implausible value",
+          "Ignore the observation or criteria and invent a more exciting result",
+          "Copy the model objects and call that independent work"
+        ],
+        "question": "Six book rows for one month are Ina 3, Jed 5, Kim blank, Ina 3 again, Lee 90 and Mo 4. Which row is missing, which is duplicated, which is implausible, and what is the usable total?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "This is the misconception to avoid for missing; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Careful use of duplicate with clear evidence",
+          "A common mistake is to add every number in a table, including a duplicated person and an implausible value",
+          "Data quality means noticing missing values, duplicated rows and implausible values before you trust a total",
+          "Kim is missing, the second Ina row duplicates Ina 3, and 90 books in one month is implausible beside 3, 4 and 5"
+        ],
+        "question": "Which statement is a common mistake when working with missing?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and a named duplicate, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name duplicate only, without linking it to missing",
+          "Apply missing to new material and name the duplicate used",
+          "Repeat the worked example wording with no new evidence",
+          "A common mistake is to add every number in a table, including a duplicated person and an implausible value"
+        ],
+        "question": "Which response best applies missing with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The stronger choice uses design criteria, safe making steps or test evidence appropriately for this lesson on missing. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Start making with no criteria or safety check",
+          "Call the first attempt finished without testing",
+          "A common mistake is to add every number in a table, including a duplicated person and an implausible value",
+          "Kim is missing, the second Ina row duplicates Ina 3, and 90 books in one month is implausible beside 3, 4 and 5"
+        ],
+        "question": "Which response best evaluates design criteria, safe making steps or test evidence when analysing missing?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Call the first attempt finished without testing",
+          "A common mistake is to add every number in a table, including a duplicated person and an implausible value",
+          "Name a criterion, safety step or test result and say how it improves missing",
+          "Start making with no criteria or safety check"
+        ],
+        "question": "Which evidence move best supports a claim about missing?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The stronger choice matches the taught idea (Data quality means noticing missing values, duplicated rows and) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Call the first attempt finished without testing",
+          "Six lesson step rows are Abe 800, Bea 750, Cal blank, Abe 800 again, Dee 25000 and Eve 900",
+          "A common mistake is to add every number in a table, including a duplicated person and an implausible value",
+          "Start making with no criteria or safety check"
+        ],
+        "question": "Which choice best applies this lesson idea about missing?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check criteria and safety, record a test result, and note one honest improvement",
+          "Invent missing details to make the answer sound complete"
+        ],
+        "question": "Which action keeps design criteria, safe making steps or test evidence accurate for missing?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "A common mistake is to add every number in a table, including a duplicated person and an implausible value",
+          "Name duplicate only, with no linked example",
+          "On paper, check six sticker rows: Rae 7, Sol 2, Rae 7 again, Tess blank, Uma 150 and Vic 5",
+          "Retype the worked example with no new example"
+        ],
+        "question": "Which independent response best applies missing to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about missing with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating missing on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using missing on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for missing. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with missing, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: A common mistake is to add every number in a table, including a duplicated person and an implausible value.. Correction: Kim is missing, the second Ina row duplicates Ina 3, and 90 books in one month is implausible beside 3, 4 and 5.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s5-information-software-technology-y9-w05-l2",
+    "sort_activity": null,
+    "source_note": "Catalogue learning area is Information and Software Technology. Proposed Year 7 alignment uses Computing Technology 7–10 (2022). Stage 4 may adjust Stage 5 outcomes (CT4-ADJ-01). Content-point mapping pending. Not NESA verified. No live network attacks or external logins are required.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S4",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise missing.",
+        "Read the mission before you start observing, designing or testing.",
+        "Keep the property, criterion or variable you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the observation, criterion or step that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore observations, criteria or fair tests.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread labels, measurements and sequence of steps.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact observation, criterion or test step before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key observations or criteria.",
+        "Say what each observation or criterion shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or method, not only how neat the drawing looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh object or context that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new objects or data."
+      ]
+    },
+    "subject": "Information and Software Technology",
+    "success_criteria": [
+      "I can use missing with a specific example from this lesson.",
+      "I can identify duplicate and explain why it matters.",
+      "I can practise implausible independently on a new prompt.",
+      "I can notice total needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Data quality means noticing missing values, duplicated rows and implausible values before you trust a total. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Data quality means noticing missing values, duplicated rows and implausible values before you trust a total",
+            "A claim unrelated to the observation, test or criteria"
+          ],
+          "question": "Which choice best shows accurate use of this idea about missing?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSix lesson step rows are Abe 800, Bea 750, Cal blank, Abe 800 again, Dee 25000 and Eve 900. Cal is missing, the second Abe row duplicates the first, and 25000 steps is implausible for one lesson beside 750, 800 and 900. The usable total adds each fair value once: 800 + 750 + 900 = 2450. Adding Abe twice makes 2450 + 800 = 3250, and adding 25000 to 2450 makes 27450, so both of those totals are unfair.\n\nTRY FIRST\nSix book rows for one month are Ina 3, Jed 5, Kim blank, Ina 3 again, Lee 90 and Mo 4. Which row is missing, which is duplicated, which is implausible, and what is the usable total?\n\nFEEDBACK\nKim is missing, the second Ina row duplicates Ina 3, and 90 books in one month is implausible beside 3, 4 and 5. The usable total is 3 + 5 + 4 = 12, counting Ina once. A blank is not the same as zero, so writing 0 for Kim would invent a value that was never recorded.",
+        "explain": "Data quality means noticing missing values, duplicated rows and implausible values before you trust a total.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "A common mistake is to add every number in a table, including a duplicated person and an implausible value. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Cal is blank, Abe is listed twice, and 25000 is implausible. Usable steps are 800 + 750 + 900 = 2450.",
+            "caption": "Leave out the missing row, count a duplicated person once, and exclude the implausible value.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Problems in six rows</text><text x=\"28\" y=\"78\">blank, twin Abe, and 25000</text><text x=\"358\" y=\"42\">Usable total</text><text x=\"358\" y=\"78\">800 + 750 + 900 = 2450</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which observation or criterion matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the observations, criteria or test steps that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Six lesson step rows are Abe 800, Bea 750, Cal blank, Abe 800 again, Dee 25000 and Eve 900. Cal is missing, the second A Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which observation or criterion matters most.\nJuno: Name the observations, criteria or test steps that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Six lesson step rows are Abe 800, Bea 750, Cal blank, Abe 800 again, Dee 25000 and Eve 900. Cal is missing, the second A Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim"
+          ],
+          "question": "Which choice best shows accurate use of this idea about missing?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSix lesson step rows are Abe 800, Bea 750, Cal blank, Abe 800 again, Dee 25000 and Eve 900. Cal is missing, the second Abe row duplicates the first, and 25000 steps is implausible for one lesson beside 750, 800 and 900. The usable total adds each fair value once: 800 + 750 + 900 = 2450. Adding Abe twice makes 2450 + 800 = 3250, and adding 25000 to 2450 makes 27450, so both of those totals are unfair. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show technology thinking. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "Adding Abe twice changes 2450 into 3250. Dee's 25000 steps is not a believable total for one lesson.",
+            "caption": "A fair total uses each believable recorded value once and does not invent a number for a blank.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Double-count</text><text x=\"28\" y=\"78\">adding Abe twice makes 3250</text><text x=\"358\" y=\"42\">Implausible</text><text x=\"358\" y=\"78\">25000 is not one lesson</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding",
+            "A guess with no evidence"
+          ],
+          "question": "Which choice best shows accurate use of this idea about missing?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nA common mistake is to add every number in a table, including a duplicated person and an implausible value. Here is a more productive model: Six lesson step rows are Abe 800, Bea 750, Cal blank, Abe 800 again, Dee 25000 and Eve 900. Cal is missing, the second Abe row duplicates the first, and 25000 steps is implausible for one lesson beside 750, 800 and 900. The usable total adds each fair value once: 800 + 750 + 900 = 2450. Adding Abe twice makes 2450 + 800 = 3250, and adding 25000 to 2450 makes 27450, so both of those totals are unfair.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nKim is missing, the second Ina row duplicates Ina 3, and 90 books in one month is implausible beside 3, 4 and 5. The usable total is 3 + 5 + 4 = 12, counting Ina once. A blank is not the same as zero, so writing 0 for Kim would invent a value that was never recorded.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. A common mistake is to add every number in a table, including a duplicated person and an implausible value. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A guess with no evidence",
+            "Use the same technology idea on a new place, person, source or context, not a copy of the worked example",
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best shows accurate use of this idea about missing?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nData quality means noticing missing values, duplicated rows and implausible values before you trust a total. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same technology idea as the model, but contain different evidence.",
+        "explain": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Transfer to a new investigation"
+      }
+    ],
+    "title": "Year 7, Lesson 10: Digital basics and data",
+    "unit_number": 1,
+    "unit_title": "Digital basics and data",
+    "week": 8,
+    "week_in_unit": 5,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nSix lesson step rows are Abe 800, Bea 750, Cal blank, Abe 800 again, Dee 25000 and Eve 900. Cal is missing, the second Abe row duplicates the first, and 25000 steps is implausible for one lesson beside 750, 800 and 900. The usable total adds each fair value once: 800 + 750 + 900 = 2450. Adding Abe twice makes 2450 + 800 = 3250, and adding 25000 to 2450 makes 27450, so both of those totals are unfair.\n\nWrite what makes this example accurate, naming the observations, criteria, properties or test steps used.",
+    "worked_visuals": [
+      {
+        "alt": "Cal is blank, Abe is listed twice, and 25000 is implausible. Usable steps are 800 + 750 + 900 = 2450.",
+        "caption": "Leave out the missing row, count a duplicated person once, and exclude the implausible value.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Problems in six rows</text><text x=\"28\" y=\"78\">blank, twin Abe, and 25000</text><text x=\"358\" y=\"42\">Usable total</text><text x=\"358\" y=\"78\">800 + 750 + 900 = 2450</text></g></svg>"
+      },
+      {
+        "alt": "Adding Abe twice changes 2450 into 3250. Dee's 25000 steps is not a believable total for one lesson.",
+        "caption": "A fair total uses each believable recorded value once and does not invent a number for a blank.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Double-count</text><text x=\"28\" y=\"78\">adding Abe twice makes 3250</text><text x=\"358\" y=\"42\">Implausible</text><text x=\"358\" y=\"78\">25000 is not one lesson</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 7"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Six book rows for one month are Ina 3, Jed 5, Kim blank, Ina 3 again, Lee 90 and Mo 4. Which row is missing, which is duplicated, which is implausible, and what is the usable total?"
+      ],
+      "independent_inputs": [
+        "On paper, check six sticker rows: Rae 7, Sol 2, Rae 7 again, Tess blank, Uma 150 and Vic 5. Flag the missing, duplicated and implausible rows, then add each usable value once."
+      ],
+      "model_inputs": [
+        "Six lesson step rows are Abe 800, Bea 750, Cal blank, Abe 800 again, Dee 25000 and Eve 900. Cal is missing, the second Abe row duplicates the first, and 25000 steps is implausible for one lesson beside 750, 800 and 900. The usable total adds each fair value once: 800 + 750 + 900 = 2450. Adding Abe twice makes 2450 + 800 = 3250, and adding 25000 to 2450 makes 27450, so both of those totals are unfair."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Kim is missing, the second Ina row duplicates Ina 3, and 90 books in one month is implausible beside 3, 4 and 5. The usable total is 3 + 5 + 4 = 12, counting Ina once. A blank is not the same as zero, so writing 0 for Kim would invent a value that was never recorded.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "Six book rows for one month are Ina 3, Jed 5, Kim blank, Ina 3 again, Lee 90 and Mo 4. Which row is missing, which is duplicated, which is implausible, and what is the usable total?",
+        "misconception": "A common mistake is to add every number in a table, including a duplicated person and an implausible value.",
+        "model": "Six lesson step rows are Abe 800, Bea 750, Cal blank, Abe 800 again, Dee 25000 and Eve 900. Cal is missing, the second Abe row duplicates the first, and 25000 steps is implausible for one lesson beside 750, 800 and 900. The usable total adds each fair value once: 800 + 750 + 900 = 2450. Adding Abe twice makes 2450 + 800 = 3250, and adding 25000 to 2450 makes 27450, so both of those totals are unfair.",
+        "rule": "Data quality means noticing missing values, duplicated rows and implausible values before you trust a total.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "List the key observations, sources or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show technology thinking.",
+        "model": "Six lesson step rows are Abe 800, Bea 750, Cal blank, Abe 800 again, Dee 25000 and Eve 900. Cal is missing, the second Abe row duplicates the first, and 25000 steps is implausible for one lesson beside 750, 800 and 900. The usable total adds each fair value once: 800 + 750 + 900 = 2450. Adding Abe twice makes 2450 + 800 = 3250, and adding 25000 to 2450 makes 27450, so both of those totals are unfair. Look at each observation, source detail or example that carries the idea.",
+        "rule": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "Kim is missing, the second Ina row duplicates Ina 3, and 90 books in one month is implausible beside 3, 4 and 5. The usable total is 3 + 5 + 4 = 12, counting Ina once. A blank is not the same as zero, so writing 0 for Kim would invent a value that was never recorded.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. A common mistake is to add every number in a table, including a duplicated person and an implausible value.",
+        "model": "A common mistake is to add every number in a table, including a duplicated person and an implausible value. Here is a more productive model: Six lesson step rows are Abe 800, Bea 750, Cal blank, Abe 800 again, Dee 25000 and Eve 900. Cal is missing, the second Abe row duplicates the first, and 25000 steps is implausible for one lesson beside 750, 800 and 900. The usable total adds each fair value once: 800 + 750 + 900 = 2450. Adding Abe twice makes 2450 + 800 = 3250, and adding 25000 to 2450 makes 27450, so both of those totals are unfair.",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "The new example should use the same technology idea as the model, but contain different evidence.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "Inquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "Data quality means noticing missing values, duplicated rows and implausible values before you trust a total. Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Cal is blank, Abe is listed twice, and 25000 is implausible. Usable steps are 800 + 750 + 900 = 2450.",
+        "teaches": "Leave out the missing row, count a duplicated person once, and exclude the implausible value."
+      },
+      {
+        "alt": "Adding Abe twice changes 2450 into 3250. Dee's 25000 steps is not a believable total for one lesson.",
+        "teaches": "A fair total uses each believable recorded value once and does not invent a number for a blank."
+      }
+    ]
+  }
+}

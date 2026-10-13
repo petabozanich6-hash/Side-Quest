@@ -1,7 +1,7 @@
 {
   "phase": "PHASE_1_WRITTEN_CORE",
   "hub": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline",
-  "hub_auto_validated": 2671,
+  "hub_auto_validated": 2719,
   "hub_human_gates": {
     "educationally_reviewed": 0,
     "nesa_verified": 0,
@@ -21,13 +21,13 @@
       "worktree_hint": null,
       "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-commerce",
       "owned": 100,
-      "authored": 12,
-      "auto_validated_worker_or_hub": 12,
-      "remaining": 88,
+      "authored": 24,
+      "auto_validated_worker_or_hub": 24,
+      "remaining": 76,
       "next_seed": "s5-commerce-y10-w01-l1",
-      "current_lesson": "s5-commerce-y9-w06-l2",
+      "current_lesson": "s5-commerce-y9-w16-l2",
       "phases": {
-        "awaiting_review": 12
+        "awaiting_review": 24
       },
       "blockers": [
         "Human educational/NESA/browser/release gates remain at 0"
@@ -89,13 +89,13 @@
       "worktree_hint": null,
       "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-drama",
       "owned": 100,
-      "authored": 12,
-      "auto_validated_worker_or_hub": 12,
-      "remaining": 88,
+      "authored": 24,
+      "auto_validated_worker_or_hub": 24,
+      "remaining": 76,
       "next_seed": "s5-drama-y10-w01-l1",
-      "current_lesson": "s5-drama-y9-w06-l2",
+      "current_lesson": "s5-drama-y9-w16-l2",
       "phases": {
-        "awaiting_review": 12
+        "awaiting_review": 24
       },
       "blockers": [
         "Human educational/NESA/browser/release gates remain at 0"
@@ -111,13 +111,13 @@
       "worktree_hint": null,
       "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-food",
       "owned": 100,
-      "authored": 12,
-      "auto_validated_worker_or_hub": 12,
-      "remaining": 88,
+      "authored": 24,
+      "auto_validated_worker_or_hub": 24,
+      "remaining": 76,
       "next_seed": "s5-food-technology-y10-w01-l1",
-      "current_lesson": "s5-food-technology-y9-w06-l2",
+      "current_lesson": "s5-food-technology-y9-w16-l2",
       "phases": {
-        "awaiting_review": 12
+        "awaiting_review": 24
       },
       "blockers": [
         "Human educational/NESA/browser/release gates remain at 0"
@@ -133,14 +133,14 @@
       "worktree_hint": null,
       "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-ist",
       "owned": 100,
-      "authored": 0,
-      "auto_validated_worker_or_hub": 0,
-      "remaining": 100,
+      "authored": 12,
+      "auto_validated_worker_or_hub": 12,
+      "remaining": 88,
       "next_seed": "s5-information-software-technology-y10-w01-l1",
-      "current_lesson": null,
+      "current_lesson": "s5-information-software-technology-y9-w06-l2",
       "phases": {},
       "blockers": [
-        "No auto-validated lessons in partition yet"
+        "Human educational/NESA/browser/release gates remain at 0"
       ]
     },
     {
@@ -176,13 +176,13 @@
       "worktree_hint": null,
       "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-visual",
       "owned": 100,
-      "authored": 12,
-      "auto_validated_worker_or_hub": 12,
-      "remaining": 88,
+      "authored": 24,
+      "auto_validated_worker_or_hub": 24,
+      "remaining": 76,
       "next_seed": "s5-visual-arts-y10-w01-l1",
-      "current_lesson": "s5-visual-arts-y9-w06-l2",
+      "current_lesson": "s5-visual-arts-y9-w16-l2",
       "phases": {
-        "awaiting_review": 12
+        "awaiting_review": 24
       },
       "blockers": [
         "Human educational/NESA/browser/release gates remain at 0"
@@ -485,8 +485,8 @@
   ],
   "partitions_updated_at": "2026-10-13T00:54:57.833867+00:00",
   "last_reconcile": {
-    "merged_count": 48,
-    "skipped_count": 882,
+    "merged_count": 24,
+    "skipped_count": 942,
     "workers": [
       "builder-s4-commerce",
       "builder-s4-dance",

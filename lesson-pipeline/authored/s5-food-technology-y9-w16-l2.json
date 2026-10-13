@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "FT5-NUT-01",
+      "lesson_evidence": "Nutrition goals for teens work best as small, specific changes (add fruit to lunch, drink water at recess) with adult/school support. Review after a week: what worked, what blocked you. Goals are not punishments and must respect culture, budget, and medical needs.",
+      "scope_limit": "Single Stage 4 lesson: partial contribution only. Content-point mapping is pending human review. This authoring pass does not certify NESA alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/tas/food-technology-7-10-2025/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Nutrition goals for teens work best as small, specific changes (add fruit to lunch, drink water at recess) with adult/school support. Review after a week: what worked, what blocked you. Goals are not punishments and must respect culture, budget, and medical needs.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same technology/design idea to a new object or material, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nWhy is “never eat sugar again starting tomorrow” usually weaker than “swap one soft drink for water at lunch four days this week”?\n\nFEEDBACK\nTiny specific swaps are measurable and sustainable; absolute bans often collapse and ignore balance.\n\nWATCH FOR\nSetting a goal that ignores allergy, culture, or budget. Real plans fit real households.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nWrite one specific one-week food or drink goal, one support you need from an adult, and one review question for Friday.\n\nWrite a short reflection naming one observation, criterion or step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Food Technology",
+    "learning_intention": "Nutrition goals for teens work best as small, specific changes (add fruit to lunch, drink water at recess) with adult/school support. Review after a week: what worked, what blocked you. Goals are not punishments and must respect culture, budget, and medical needs.",
+    "lesson_number": 24,
+    "lesson_role": "Apply",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: safe classroom tools/materials under teacher supervision",
+      "Device only when the lesson requires digital work"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "FT5-NUT-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Write one specific one-week food or drink goal, one support you need from an adult, and one review question for Friday. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using personal goal on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Setting a goal that ignores allergy, culture, or budget.. Correction: Tiny specific swaps are measurable and sustainable;. Why it helps the audience is stated.\n\nParent: Likely misconception: Setting a goal that ignores allergy, culture, or budget. Real plans fit real households. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating personal goal on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with personal goal, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about personal goal with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for personal goal. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "This matches the taught method for personal goal. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Setting a goal that ignores allergy, culture, or budget",
+          "Ignore the observation or criteria and invent a more exciting result",
+          "Copy the model objects and call that independent work",
+          "Tiny specific swaps are measurable and sustainable"
+        ],
+        "question": "Why is “never eat sugar again starting tomorrow” usually weaker than “swap one soft drink for water at lunch four days this week”?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "This is the misconception to avoid for personal goal; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Setting a goal that ignores allergy, culture, or budget",
+          "Nutrition goals for teens work best as small, specific changes (add fruit to lunch, drink water at recess) with",
+          "Tiny specific swaps are measurable and sustainable",
+          "Careful use of small change with clear evidence"
+        ],
+        "question": "Which statement is a common mistake when working with personal goal?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and a named small change, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name small change only, without linking it to personal goal",
+          "Apply personal goal to new material and name the small change used",
+          "Repeat the worked example wording with no new evidence",
+          "Setting a goal that ignores allergy, culture, or budget"
+        ],
+        "question": "Which response best applies personal goal with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The stronger choice uses design criteria, safe making steps or test evidence appropriately for this lesson on personal goal. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Start making with no criteria or safety check",
+          "Call the first attempt finished without testing",
+          "Setting a goal that ignores allergy, culture, or budget",
+          "Tiny specific swaps are measurable and sustainable"
+        ],
+        "question": "Which response best evaluates design criteria, safe making steps or test evidence when analysing personal goal?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name a criterion, safety step or test result and say how it improves personal goal",
+          "Start making with no criteria or safety check",
+          "Call the first attempt finished without testing",
+          "Setting a goal that ignores allergy, culture, or budget"
+        ],
+        "question": "Which evidence move best supports a claim about personal goal?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice matches the taught idea (Nutrition goals for teens work best as small, specific changes (add) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Goal: carry water every day for one week",
+          "Setting a goal that ignores allergy, culture, or budget",
+          "Start making with no criteria or safety check",
+          "Call the first attempt finished without testing"
+        ],
+        "question": "Which choice best applies this lesson idea about personal goal?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check criteria and safety, record a test result, and note one honest improvement",
+          "Invent missing details to make the answer sound complete"
+        ],
+        "question": "Which action keeps design criteria, safe making steps or test evidence accurate for personal goal?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Setting a goal that ignores allergy, culture, or budget",
+          "Name small change only, with no linked example",
+          "Write one specific one-week food or drink goal, one support you need from an adult, and one review question for Friday",
+          "Retype the worked example with no new example"
+        ],
+        "question": "Which independent response best applies personal goal to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about personal goal with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating personal goal on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using personal goal on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for personal goal. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with personal goal, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Setting a goal that ignores allergy, culture, or budget.. Correction: Tiny specific swaps are measurable and sustainable;. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s5-food-technology-y9-w16-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Year 7 alignment. Food Technology 7–10 (2025) Stage 4 may adjust Stage 5 outcomes (FT4-ADJ-01). Content-point mapping pending. Not NESA verified. Not medical advice. Practical cooking optional and adult-supervised.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S4",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise personal goal.",
+        "Read the mission before you start observing, designing or testing.",
+        "Keep the property, criterion or variable you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the observation, criterion or step that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore observations, criteria or fair tests.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread labels, measurements and sequence of steps.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact observation, criterion or test step before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key observations or criteria.",
+        "Say what each observation or criterion shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or method, not only how neat the drawing looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh object or context that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new objects or data."
+      ]
+    },
+    "subject": "Food Technology",
+    "success_criteria": [
+      "I can use personal goal with a specific example from this lesson.",
+      "I can identify small change and explain why it matters.",
+      "I can practise review independently on a new prompt.",
+      "I can notice support needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Nutrition goals for teens work best as small, specific changes (add fruit to lunch, drink water at recess) with adult/school support.",
+          "options": [
+            "Nutrition goals for teens work best as small, specific changes (add fruit to lunch, drink water at recess) with",
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding",
+            "A guess with no evidence"
+          ],
+          "question": "Which choice best shows accurate use of this idea about personal goal?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nGoal: carry water every day for one week. Review: five days succeeded; two days forgot bottle — next step is packing it beside the keys. Evidence beats a vague “eat better” promise.\n\nTRY FIRST\nWhy is “never eat sugar again starting tomorrow” usually weaker than “swap one soft drink for water at lunch four days this week”?\n\nFEEDBACK\nTiny specific swaps are measurable and sustainable; absolute bans often collapse and ignore balance.",
+        "explain": "Nutrition goals for teens work best as small, specific changes (add fruit to lunch, drink water at recess) with adult/school support. Review after a week: what worked, what blocked you. Goals are not punishments and must respect culture, budget, and medical needs.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Setting a goal that ignores allergy, culture, or budget. Real plans fit real households. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Two food choices side by side for the lesson idea.",
+            "caption": "Compare using the taught nutrition idea.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Idea</text><text x=\"28\" y=\"78\">A</text><text x=\"358\" y=\"42\">Compare</text><text x=\"358\" y=\"78\">B</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which observation or criterion matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the observations, criteria or test steps that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Goal: carry water every day for one week. Review: five days succeeded; two days forgot bottle — next step is packing it  Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which observation or criterion matters most.\nJuno: Name the observations, criteria or test steps that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Goal: carry water every day for one week. Review: five days succeeded; two days forgot bottle — next step is packing it  Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A claim unrelated to the observation, test or criteria"
+          ],
+          "question": "Which choice best shows accurate use of this idea about personal goal?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nGoal: carry water every day for one week. Review: five days succeeded; two days forgot bottle — next step is packing it beside the keys. Evidence beats a vague “eat better” promise. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show technology thinking. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "Use evidence from labels or habits before deciding.",
+            "caption": "Not medical advice — classroom food literacy.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Check</text><text x=\"28\" y=\"78\">label/habit</text><text x=\"358\" y=\"42\">Decide</text><text x=\"358\" y=\"78\">everyday pattern</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the observation, test or criteria"
+          ],
+          "question": "Which choice best shows accurate use of this idea about personal goal?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSetting a goal that ignores allergy, culture, or budget. Real plans fit real households. Here is a more productive model: Goal: carry water every day for one week. Review: five days succeeded; two days forgot bottle — next step is packing it beside the keys. Evidence beats a vague “eat better” promise.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nTiny specific swaps are measurable and sustainable; absolute bans often collapse and ignore balance.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. Setting a goal that ignores allergy, culture, or budget. Real plans fit real households. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A guess with no evidence",
+            "Use the same technology idea on a new place, person, source or context, not a copy of the worked example",
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best shows accurate use of this idea about personal goal?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nNutrition goals for teens work best as small, specific changes (add fruit to lunch, drink water at recess) with adult/school support. Review after a week: what worked, what blocked you. Goals are not punishments and must respect culture, budget, and medical needs. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same technology idea as the model, but contain different evidence.",
+        "explain": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Transfer to a new investigation"
+      }
+    ],
+    "title": "Year 7, Lesson 24: Nutrition and health",
+    "unit_number": 2,
+    "unit_title": "Nutrition and health",
+    "week": 19,
+    "week_in_unit": 6,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nGoal: carry water every day for one week. Review: five days succeeded; two days forgot bottle — next step is packing it beside the keys. Evidence beats a vague “eat better” promise.\n\nWrite what makes this example accurate, naming the observations, criteria, properties or test steps used.",
+    "worked_visuals": [
+      {
+        "alt": "Two food choices side by side for the lesson idea.",
+        "caption": "Compare using the taught nutrition idea.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Idea</text><text x=\"28\" y=\"78\">A</text><text x=\"358\" y=\"42\">Compare</text><text x=\"358\" y=\"78\">B</text></g></svg>"
+      },
+      {
+        "alt": "Use evidence from labels or habits before deciding.",
+        "caption": "Not medical advice — classroom food literacy.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Check</text><text x=\"28\" y=\"78\">label/habit</text><text x=\"358\" y=\"42\">Decide</text><text x=\"358\" y=\"78\">everyday pattern</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 7"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Why is “never eat sugar again starting tomorrow” usually weaker than “swap one soft drink for water at lunch four days this week”?"
+      ],
+      "independent_inputs": [
+        "Write one specific one-week food or drink goal, one support you need from an adult, and one review question for Friday."
+      ],
+      "model_inputs": [
+        "Goal: carry water every day for one week. Review: five days succeeded; two days forgot bottle — next step is packing it beside the keys. Evidence beats a vague “eat better” promise."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Tiny specific swaps are measurable and sustainable; absolute bans often collapse and ignore balance.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "Why is “never eat sugar again starting tomorrow” usually weaker than “swap one soft drink for water at lunch four days this week”?",
+        "misconception": "Setting a goal that ignores allergy, culture, or budget. Real plans fit real households.",
+        "model": "Goal: carry water every day for one week. Review: five days succeeded; two days forgot bottle — next step is packing it beside the keys. Evidence beats a vague “eat better” promise.",
+        "rule": "Nutrition goals for teens work best as small, specific changes (add fruit to lunch, drink water at recess) with adult/school support. Review after a week: what worked, what blocked you. Goals are not punishments and must respect culture, budget, and medical needs.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "List the key observations, sources or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show technology thinking.",
+        "model": "Goal: carry water every day for one week. Review: five days succeeded; two days forgot bottle — next step is packing it beside the keys. Evidence beats a vague “eat better” promise. Look at each observation, source detail or example that carries the idea.",
+        "rule": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "Tiny specific swaps are measurable and sustainable; absolute bans often collapse and ignore balance.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. Setting a goal that ignores allergy, culture, or budget. Real plans fit real households.",
+        "model": "Setting a goal that ignores allergy, culture, or budget. Real plans fit real households. Here is a more productive model: Goal: carry water every day for one week. Review: five days succeeded; two days forgot bottle — next step is packing it beside the keys. Evidence beats a vague “eat better” promise.",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "The new example should use the same technology idea as the model, but contain different evidence.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "Inquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "Nutrition goals for teens work best as small, specific changes (add fruit to lunch, drink water at recess) with adult/school support. Review after a week: what worked, what blocked you. Goals are not punishments and must respect culture, budget, and medical needs. Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Two food choices side by side for the lesson idea.",
+        "teaches": "Compare using the taught nutrition idea."
+      },
+      {
+        "alt": "Use evidence from labels or habits before deciding.",
+        "teaches": "Not medical advice — classroom food literacy."
+      }
+    ]
+  }
+}
