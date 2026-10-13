@@ -223,7 +223,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const u = c.get("user");
     const b: any = await c.req.json().catch(() => ({}));
     const r = await aid.draftLessonWithAi(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, request: b });
-    return r.ok ? c.json({ lesson: r.lesson, usage: r.usage }) : send(c, r);
+    return r.ok ? c.json({ lesson: r.lesson, usage: r.usage, warnings: r.warnings, model: r.model }) : send(c, r);
   });
 
   app.post("/api/lessons", auth, parent, async (c) => {

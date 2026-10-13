@@ -208,12 +208,8 @@ test("deleting an assigned lesson archives it; drafts cannot be assigned", async
 
 // ---------------------------------------------------------------- AI drafting (paid only)
 import * as aid from "../src/aiDraft.ts";
-const aiReply = (over = {}) => ({ response: JSON.stringify({
-  title: "Fractions intro", objectives: ["Name halves"], sections: [{ heading: "Halves", body: "Half is one of two equal parts." }],
-  activities: [{ title: "Cut an apple", instructions: "Cut it in half", offline: true }],
-  questions: [{ prompt: "What is half of 6?", type: "short", answer_key: "3" }],
-  quiz: [{ question: "Half of 4?", options: ["1", "2", "3"], correct_index: 1, explanation: "4 / 2" }],
-  duration_minutes: 20, offline_alternative: "", parent_notes: "n", resources: [{ type: "link", title: "x", url: "https://evil.example" }], status: "ready", ...over }) });
+const GARDEN = JSON.parse(readFileSync(new URL("../../frontend/src/data/exampleLesson.json", import.meta.url), "utf8"));
+const aiReply = (over = {}) => ({ response: JSON.stringify({ ...GARDEN, resources: [{ type: "link", title: "x", url: "https://evil.example" }], curriculum_refs: ["ACMNA999"], status: "ready", ...over }) });
 const stub = (fn) => { const calls = []; return { calls, run: async (...a) => { calls.push(a); return fn ? fn(...a) : aiReply(); } }; };
 const req = (family, ai, extra = {}) => ({ familyId: family, userId: "u1", request: { topic: "Fractions", ...extra }, ...extra.opts });
 
@@ -242,9 +238,16 @@ test("AI drafting: paid family gets an unreviewed AI-labelled draft with no link
   assert.equal(r.lesson.ai_generated, true);
   assert.equal(r.lesson.source, "ai");
   assert.deepEqual(r.lesson.resources, []);
-  assert.equal(r.lesson.quiz[0].correct_index, 1);
+  assert.deepEqual(r.warnings, []);
+  assert.equal(ai.calls.length, 1); // a good first reply needs no retry
   assert.equal(r.usage.today, 1);
-  assert.equal(ai.calls.length, 1);
+  assert.equal(r.lesson.delivery, "parent_guided");
+  assert.equal(r.lesson.worked_examples.length, 3);
+  assert.deepEqual(r.lesson.curriculum_refs, []); // invented codes are discarded
+  const q1 = r.lesson.quiz.find((q) => q.question === "What is 23 + 45?");
+  assert.equal(q1.options[q1.correct_index], "68"); // shuffling keeps the right answer marked
+  assert.equal(ai.calls[0][1].messages[0].role, "system");
+  assert.match(ai.calls[0][1].messages[1].content, /Specific learning goal|Topic: Fractions/);
   // Editing keeps the AI label; the parent marking it ready records a parent review.
   const up = await lb.updateLesson(db, fam, r.lesson.id, { ...lesson({ title: "Edited" }), status: "ready" }, NOW);
   assert.ok(up.ok);
@@ -324,4 +327,44 @@ test("evidence notes: family-scoped, searchable, date filtered; expired preview 
   assert.equal((await pl.listEvidenceNotes(db, fam, {})).length, 1);
   assert.equal((await pl.deleteEvidenceNote(db, other, n.note.id)).status, 404);
   assert.ok((await pl.deleteEvidenceNote(db, fam, n.note.id)).ok);
+});
+
+
+test("AI drafting: thin reply is retried once, then kept with honest warnings", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const thin = () => ({ response: JSON.stringify({ title: "Thin", objectives: ["a"], sections: [{ heading: "H", body: "Short." }], quiz: [{ question: "q", options: ["a", "b"], correct_index: 0 }] }) });
+  const ai = stub(() => thin());
+  const r = await aid.draftLessonWithAi(db, ai, { familyId: fam, userId: "u", request: { topic: "Fractions", duration_minutes: 60 } }, NOW);
+  assert.ok(r.ok);
+  assert.equal(ai.calls.length, 2);
+  assert.ok(r.warnings.length > 3);
+  assert.match(ai.calls[1][1].messages[1].content, /too thin/);
+  assert.equal(r.usage.today, 1); // the retry does not cost a second allowance
+  // thin first, rich second: the rich one wins
+  let n = 0;
+  const ai2 = stub(() => (n++ === 0 ? thin() : aiReply()));
+  const r2 = await aid.draftLessonWithAi(db, ai2, { familyId: fam, userId: "u", request: { topic: "Addition", duration_minutes: 60 } }, NOW);
+  assert.deepEqual(r2.warnings, []);
+  assert.equal(r2.lesson.sections.length, 5);
+});
+
+test("rich lessons keep teaching content for the parent but strip answers and the parent guide for the child", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const kid = child(db, fam);
+  const made = await lb.createLesson(db, fam, { ...GARDEN, status: "ready" }, NOW);
+  assert.ok(made.ok, JSON.stringify(made));
+  const a = (await lb.assignLesson(db, fam, { student_id: kid, lesson_id: made.lesson.id }, NOW)).assignment;
+  const row = db.raw.prepare("SELECT * FROM assignments WHERE id = ?").get(a.id);
+  const safe = lb.childSafeLesson(lb.assignmentLesson(row, null));
+  const json = JSON.stringify(safe);
+  assert.equal(safe.sections.length, 5);
+  assert.equal(safe.worked_examples.length, 3);
+  assert.ok(safe.guided_practice[0].hint);
+  for (const k of ["answer_key", "parent_script", "support", "evidence_suggestions", "parent_notes"]) assert.equal(safe[k], undefined, k);
+  assert.equal(safe.guided_practice[0].answer, undefined);
+  assert.ok(!json.includes("correct_index"));
+  assert.ok(!json.includes("Sam forgot to regroup"));
+  assert.ok(!json.includes("bean cups until"));
 });

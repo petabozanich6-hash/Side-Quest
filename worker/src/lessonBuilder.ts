@@ -205,6 +205,27 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
       };
     });
 
+    // Richer teaching content (all optional, so older lessons and simple hand-made lessons still validate).
+    const delivery = b.delivery === "parent_guided" ? "parent_guided" : "independent";
+    const strList = (v: unknown, max: number, len: number, label: string) => list(v, max, label).map((x, i) => text(x, len, `${label} ${i + 1}`, true));
+    const worked_examples = list(b.worked_examples, 10, "Worked examples").map((w, i) => {
+      const o = obj(w, `Worked example ${i + 1}`);
+      return {
+        title: text(o.title, 200, `Worked example ${i + 1} title`),
+        problem: text(o.problem, 1500, `Worked example ${i + 1} problem`, true),
+        steps: strList(o.steps, 15, 800, `Worked example ${i + 1} step`),
+        answer: text(o.answer, 800, `Worked example ${i + 1} answer`),
+      };
+    });
+    const guided_practice = list(b.guided_practice, 20, "Guided practice").map((g, i) => {
+      const o = obj(g, `Guided practice ${i + 1}`);
+      return {
+        prompt: text(o.prompt, 1500, `Guided practice ${i + 1}`, true),
+        hint: text(o.hint, 800, `Guided practice ${i + 1} hint`),
+        answer: text(o.answer, 1500, `Guided practice ${i + 1} answer`),
+      };
+    });
+
     const fileIds: string[] = [];
     const resources = list(b.resources, 20, "Resources").map((r, i) => {
       const o = obj(r, `Resource ${i + 1}`);
@@ -238,6 +259,15 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
       resources,
       duration_minutes: duration,
       curriculum_refs,
+      delivery,
+      introduction: text(b.introduction, 4000, "Introduction"),
+      worked_examples,
+      guided_practice,
+      support: text(b.support, 4000, "Support ideas"),
+      extension: text(b.extension, 4000, "Extension"),
+      materials: strList(b.materials, 20, 200, "Materials"),
+      parent_script: text(b.parent_script, 12000, "Parent teaching guide"),
+      evidence_suggestions: strList(b.evidence_suggestions, 10, 400, "Evidence suggestion"),
       offline_alternative: text(b.offline_alternative, 4000, "Offline alternative"),
       answer_key: text(b.answer_key, 8000, "Answer key"),
       parent_notes: text(b.parent_notes, 4000, "Parent notes"),
@@ -292,7 +322,8 @@ export function lessonOut(row: any) {
 export function childSafeLesson(l: any) {
   if (!l) return l;
   const copy: any = { ...l };
-  for (const k of ["answer_key", "parent_notes", "parent_check", "explicit_teaching", "curriculum_refs"]) delete copy[k];
+  for (const k of ["answer_key", "parent_notes", "parent_check", "explicit_teaching", "curriculum_refs", "parent_script", "support", "evidence_suggestions"]) delete copy[k];
+  if (Array.isArray(copy.guided_practice)) copy.guided_practice = copy.guided_practice.map((g: any) => ({ prompt: g.prompt, hint: g.hint }));
   if (Array.isArray(copy.questions)) copy.questions = copy.questions.map((q: any) => ({ prompt: q.prompt, type: q.type }));
   // Quiz correct answers stay on the server. The child's browser sends answers to the quiz-check route to be marked.
   if (Array.isArray(copy.quiz)) {

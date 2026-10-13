@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams, Link } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams, useLocation, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft, Plus, Trash2, Eye, Pencil, Save, Send, Sparkles } from "lucide-react";
 import { api } from "../../lib/api";
 import ScheduleModal from "../../components/parent/ScheduleModal";
+import ParentLessonPlayer from "../child/ParentLessonPlayer";
+import exampleLesson from "../../data/exampleLesson.json";
 
 const SUBJECTS = ["English", "Mathematics", "Science", "Humanities and Social Sciences", "Health and Physical Education", "The Arts", "Technologies", "Languages", "Life skills", "Other"];
 const YEARS = ["Kindergarten / Foundation", "Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6", "Year 7", "Year 8", "Year 9", "Year 10"];
@@ -13,14 +15,16 @@ const blank = () => ({
   title: "", learning_area: "", year_level: "", objectives: [""], sections: [{ heading: "", body: "" }],
   activities: [], questions: [], quiz: [], resources: [], duration_minutes: "", curriculum_refs: "",
   offline_alternative: "", answer_key: "", parent_notes: "", status: "draft",
+  delivery: "independent", introduction: "", materials: "", worked_examples: [], guided_practice: [],
+  support: "", extension: "", parent_script: "", evidence_suggestions: "",
 });
 
 const field = "mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:border-slate-500";
 const label = "text-xs font-semibold uppercase tracking-wider text-slate-500";
 
-function Card({ title, hint, children }) {
+function Card({ title, hint, children, wide }) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3">
+    <section className={`rounded-2xl border border-slate-200 bg-white p-5 space-y-3 ${wide ? "lg:col-span-2" : ""}`}>
       <div>
         <h2 className="font-display text-lg font-semibold text-slate-900">{title}</h2>
         {hint && <p className="text-xs text-slate-500 mt-0.5">{hint}</p>}
@@ -42,6 +46,12 @@ function fromServer(l) {
     duration_minutes: l.duration_minutes ?? "", curriculum_refs: (l.curriculum_refs || []).join("\n"),
     offline_alternative: l.offline_alternative && !l.activities?.some(a => a.offline) ? l.offline_alternative : (l.offline_alternative || ""),
     answer_key: l.answer_key || "", parent_notes: l.parent_notes || "", status: l.status || "draft",
+    delivery: l.delivery === "parent_guided" ? "parent_guided" : "independent",
+    introduction: l.introduction || "", materials: (l.materials || []).join("\n"),
+    worked_examples: (l.worked_examples || []).map(w => ({ title: w.title || "", problem: w.problem || "", steps: (w.steps || []).join("\n"), answer: w.answer || "" })),
+    guided_practice: (l.guided_practice || []).map(g => ({ prompt: g.prompt || "", hint: g.hint || "", answer: g.answer || "" })),
+    support: l.support || "", extension: l.extension || "", parent_script: l.parent_script || "",
+    evidence_suggestions: (l.evidence_suggestions || []).join("\n"),
   };
 }
 
@@ -58,19 +68,32 @@ function toServer(f, status) {
     duration_minutes: f.duration_minutes === "" ? null : Number(f.duration_minutes),
     curriculum_refs: f.curriculum_refs.split("\n").map(s => s.trim()).filter(Boolean),
     offline_alternative: f.offline_alternative, answer_key: f.answer_key, parent_notes: f.parent_notes,
+    delivery: f.delivery, introduction: f.introduction,
+    materials: lines(f.materials),
+    worked_examples: f.worked_examples.filter(w => w.problem.trim()).map(w => ({ title: w.title, problem: w.problem, steps: lines(w.steps), answer: w.answer })),
+    guided_practice: f.guided_practice.filter(g => g.prompt.trim()).map(g => ({ prompt: g.prompt, hint: g.hint, answer: g.answer })),
+    support: f.support, extension: f.extension, parent_script: f.parent_script,
+    evidence_suggestions: lines(f.evidence_suggestions),
   };
 }
+const lines = (t) => String(t || "").split("\n").map(x => x.trim()).filter(Boolean);
 
-const EXAMPLE = () => ({
-  ...blank(),
-  title: "Halves and quarters", learning_area: "Mathematics", year_level: "Year 3", duration_minutes: "30",
-  objectives: ["I can split a shape into halves and quarters"],
-  sections: [{ heading: "What is a fraction?", body: "A half is one of two equal parts. A quarter is one of four equal parts. Fold a piece of paper in two to make halves, then in two again to make quarters." }],
-  activities: [{ title: "Fold a paper square", instructions: "Fold it into halves, then quarters. Colour one quarter.", offline: true }],
-  questions: [{ prompt: "How many quarters make a whole?", type: "short", answer_key: "Four" }],
-  quiz: [{ question: "Which is bigger, a half or a quarter?", options: ["A quarter", "A half"], correct_index: 1, explanation: "A half is made of two quarters." }],
-  parent_notes: "An example to show how a lesson looks. Change anything you like.", answer_key: "Four quarters make a whole. A half is bigger than a quarter.",
-});
+/** The lesson as the child will see it: no answers, no parent guide. */
+function childView(f) {
+  const s = toServer(f, "draft");
+  const l = {
+    ...s,
+    child_mission: s.objectives[0] ? `Your mission: ${s.objectives[0]}` : "",
+    pass_mark: 0.7,
+    questions: s.questions.map(q => ({ prompt: q.prompt, type: q.type })),
+    guided_practice: s.guided_practice.map(g => ({ prompt: g.prompt, hint: g.hint })),
+    quiz: s.quiz.map(({ correct_index, explanation, ...q }) => ({ ...q, type: "multiple_choice" })),
+  };
+  for (const k of ["answer_key", "parent_notes", "parent_script", "support", "evidence_suggestions", "curriculum_refs"]) delete l[k];
+  return l;
+}
+
+const EXAMPLE = () => ({ ...fromServer(exampleLesson), status: "draft" });
 
 export default function LessonBuilder() {
   const { id } = useParams();
@@ -78,7 +101,10 @@ export default function LessonBuilder() {
   const nav = useNavigate();
   const [f, setF] = useState(() => (!id && qs.get("example") ? EXAMPLE() : blank()));
   const [lessonId, setLessonId] = useState(id || null);
-  const [preview, setPreview] = useState(false);
+  const [mode, setMode] = useState("edit"); // edit | preview | split
+  const preview = mode === "preview";
+  const loc = useLocation();
+  const aiWarnings = loc.state?.aiWarnings || [];
   const [busy, setBusy] = useState(false);
   const [assign, setAssign] = useState(null);
   const [students, setStudents] = useState([]);
@@ -129,11 +155,11 @@ export default function LessonBuilder() {
   if (!loaded) return <div className="p-8 text-sm text-slate-500">Loading…</div>;
 
   return (
-    <div className="p-4 sm:p-8 lg:p-10 max-w-4xl space-y-5" data-testid="lesson-builder">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-[1500px] space-y-5" data-testid="lesson-builder">
       <div>
         <Link to="/parent/lessons" className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> My lessons</Link>
-        <h1 className="font-display text-3xl font-bold text-slate-900">{lessonId ? "Edit lesson" : "Create a lesson"}</h1>
-        <p className="text-sm text-slate-600 mt-1">Write the lesson in your own words. Nothing technical needed. Save a draft any time.</p>
+        <h1 className="font-display text-3xl font-bold text-slate-900">{lessonId ? "Edit lesson" : qs.get("ai") ? "Build a lesson with AI" : "Create my own lesson"}</h1>
+        <p className="text-sm text-slate-600 mt-1">{qs.get("ai") ? "Tell us about your child and the topic. You can edit everything afterwards." : "Write the lesson in your own words, or open the example to see how a complete lesson looks. Save a draft any time."}</p>
         {plan && plan.effective_plan === "FREE_PREVIEW" && (
           <p className="mt-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-900" data-testid="preview-banner">
             Free preview: {plan.usage.lessons} of {plan.limits.maxLessons} lessons used. Preview ends {new Date(plan.trial_ends_at).toLocaleDateString()}.
@@ -146,18 +172,31 @@ export default function LessonBuilder() {
           <b>AI-generated draft.</b> Check every fact, answer and quiz question before you save it to your library. It is not checked against any curriculum.
         </p>
       )}
-      {!lessonId && !preview && plan && <AiPanel allowed={!!plan.limits?.aiGeneration} onDone={(l) => { toast.success("AI draft created. Please review it before assigning."); nav(`/parent/lessons/${l.id}/edit`); }} />}
+      {!lessonId && qs.get("ai") && plan && (
+        <>
+          <AiPanel allowed={!!plan.limits?.aiGeneration} onDone={(l, warnings) => { toast.success("AI draft created. Please review it before assigning."); nav(`/parent/lessons/${l.id}/edit`, { state: { aiWarnings: warnings || [] } }); }} />
+          <p className="text-sm text-slate-600">Or <Link to="/parent/lessons/new" className="underline font-semibold">create your own lesson from a blank page</Link>.</p>
+        </>
+      )}
+
+      {aiWarnings.length > 0 && (
+        <div className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="ai-warnings">
+          <b>This AI draft is thinner than it should be:</b> {aiWarnings.join("; ")}. Please expand it before using it, or try drafting again.
+        </div>
+      )}
 
       {error && <div role="alert" className="rounded-lg border border-rose-300 bg-rose-50 px-3 py-2 text-sm text-rose-800" data-testid="builder-error">{error} {upgrade && <Link to="/parent/plan" className="underline font-bold">See plans</Link>}</div>}
 
-      <div className="flex gap-2">
-        <button onClick={() => setPreview(false)} className={`rounded-full px-4 py-1.5 text-sm font-semibold border flex items-center gap-1 ${!preview ? "bg-slate-900 text-white border-slate-900" : "bg-white border-slate-300"}`}><Pencil size={14} /> Edit</button>
-        <button onClick={() => setPreview(true)} className={`rounded-full px-4 py-1.5 text-sm font-semibold border flex items-center gap-1 ${preview ? "bg-slate-900 text-white border-slate-900" : "bg-white border-slate-300"}`} data-testid="preview-tab"><Eye size={14} /> Preview</button>
-      </div>
+      {!(qs.get("ai") && !lessonId) && <div className="flex flex-wrap gap-2">
+        {[["edit", "Edit", Pencil, "edit-tab"], ["preview", "Preview as child", Eye, "preview-tab"], ["split", "Edit and preview side by side", Eye, "split-tab"]].map(([m, text, Icon, tid]) => (
+          <button key={m} onClick={() => setMode(m)} data-testid={tid} className={`${m === "split" ? "hidden xl:flex" : "flex"} rounded-full px-4 py-1.5 text-sm font-semibold border items-center gap-1 ${mode === m ? "bg-slate-900 text-white border-slate-900" : "bg-white border-slate-300"}`}><Icon size={14} /> {text}</button>
+        ))}
+      </div>}
 
-      {preview ? <Preview f={f} /> : (
-        <div className="space-y-5">
-          <Card title="The basics">
+      {(qs.get("ai") && !lessonId) ? null : preview ? <PreviewPane f={f} /> : (
+        <div className={mode === "split" ? "xl:grid xl:grid-cols-2 xl:gap-6 items-start" : ""}>
+        <div className={mode === "split" ? "space-y-5" : "grid lg:grid-cols-2 gap-5 items-start"}>
+          <Card title="The basics" wide>
             <div>
               <label className={label}>Lesson title</label>
               <input className={field} value={f.title} onChange={e => set("title", e.target.value)} maxLength={200} placeholder="e.g. Adding fractions with the same denominator" data-testid="b-title" />
@@ -184,6 +223,21 @@ export default function LessonBuilder() {
             </div>
           </Card>
 
+          <Card title="How is it taught?" hint="Parent-guided lessons come with a step-by-step teaching plan for you. Independent lessons speak straight to your child.">
+            <div className="flex flex-wrap gap-4 text-sm">
+              <label className="flex items-center gap-2"><input type="radio" name="delivery" checked={f.delivery === "parent_guided"} onChange={() => set("delivery", "parent_guided")} data-testid="b-delivery-parent" /> Parent-guided (you teach)</label>
+              <label className="flex items-center gap-2"><input type="radio" name="delivery" checked={f.delivery === "independent"} onChange={() => set("delivery", "independent")} data-testid="b-delivery-indep" /> Independent (child works alone)</label>
+            </div>
+            <div>
+              <label className={label}>Introduction (a hook to start the lesson)</label>
+              <textarea className={field} rows={3} value={f.introduction} onChange={e => set("introduction", e.target.value)} placeholder="A short scenario or question that makes your child curious" />
+            </div>
+            <div>
+              <label className={label}>Things you will need (one per line)</label>
+              <textarea className={field} rows={2} value={f.materials} onChange={e => set("materials", e.target.value)} placeholder={"Paper and pencil\nDried beans or buttons"} />
+            </div>
+          </Card>
+
           <Card title="What will your child learn?" hint="One or more goals, in plain words.">
             {f.objectives.map((o, i) => (
               <div key={i} className="flex gap-2">
@@ -194,7 +248,7 @@ export default function LessonBuilder() {
             <button onClick={() => setF(p => ({ ...p, objectives: [...p.objectives, ""] }))} className="text-sm font-semibold text-slate-700 flex items-center gap-1"><Plus size={14} /> Add another goal</button>
           </Card>
 
-          <Card title="Teach it" hint="Explain the idea the way you would at the table. Add as many parts as you need.">
+          <Card wide title="Teach it" hint="Explain the idea the way you would at the table. Add as many parts as you need.">
             {f.sections.map((s, i) => (
               <div key={i} className="rounded-xl border border-slate-200 p-3 space-y-2">
                 <input className={field} value={s.heading} onChange={e => upd("sections", i, { heading: e.target.value })} placeholder="Heading (optional), e.g. What is a fraction?" />
@@ -203,6 +257,33 @@ export default function LessonBuilder() {
               </div>
             ))}
             <button onClick={() => add("sections", { heading: "", body: "" })} className="text-sm font-semibold text-slate-700 flex items-center gap-1"><Plus size={14} /> Add a part</button>
+          </Card>
+
+          <Card wide title="Worked examples" hint="Show a problem solved one step at a time, so your child sees exactly how to do it. One step per line.">
+            {f.worked_examples.map((w, i) => (
+              <div key={i} className="rounded-xl border border-slate-200 p-3 space-y-2">
+                <input className={field} value={w.title} onChange={e => upd("worked_examples", i, { title: e.target.value })} placeholder="Title (optional), e.g. Regrouping the ones" />
+                <textarea className={field} rows={2} value={w.problem} onChange={e => upd("worked_examples", i, { problem: e.target.value })} placeholder="The problem" data-testid={`b-we-problem-${i}`} />
+                <textarea className={field} rows={4} value={w.steps} onChange={e => upd("worked_examples", i, { steps: e.target.value })} placeholder={"Step 1…\nStep 2…"} />
+                <input className={field} value={w.answer} onChange={e => upd("worked_examples", i, { answer: e.target.value })} placeholder="The answer" />
+                <button onClick={() => del("worked_examples", i)} className="text-xs text-rose-700 flex items-center gap-1"><Trash2 size={12} /> Remove</button>
+              </div>
+            ))}
+            <button onClick={() => add("worked_examples", { title: "", problem: "", steps: "", answer: "" })} className="text-sm font-semibold text-slate-700 flex items-center gap-1" data-testid="b-add-worked"><Plus size={14} /> Add a worked example</button>
+          </Card>
+
+          <Card wide title="Guided practice" hint="Questions to do together. The hint is shown if your child is stuck. The answer is only for you.">
+            {f.guided_practice.map((g, i) => (
+              <div key={i} className="rounded-xl border border-slate-200 p-3 space-y-2">
+                <textarea className={field} rows={2} value={g.prompt} onChange={e => upd("guided_practice", i, { prompt: e.target.value })} placeholder="Question" />
+                <div className="grid sm:grid-cols-2 gap-2">
+                  <input className={field} value={g.hint} onChange={e => upd("guided_practice", i, { hint: e.target.value })} placeholder="Hint (child can see)" />
+                  <input className={field} value={g.answer} onChange={e => upd("guided_practice", i, { answer: e.target.value })} placeholder="Answer (only you see this)" />
+                </div>
+                <button onClick={() => del("guided_practice", i)} className="text-xs text-rose-700 flex items-center gap-1"><Trash2 size={12} /> Remove</button>
+              </div>
+            ))}
+            <button onClick={() => add("guided_practice", { prompt: "", hint: "", answer: "" })} className="text-sm font-semibold text-slate-700 flex items-center gap-1" data-testid="b-add-guided"><Plus size={14} /> Add a practice question</button>
           </Card>
 
           <Card title="Links and videos" hint="Web addresses your child can open. YouTube and Vimeo videos play inside the lesson. Only links starting with https:// are accepted.">
@@ -216,6 +297,10 @@ export default function LessonBuilder() {
             ))}
             <button onClick={() => add("resources", { type: "link", title: "", url: "" })} className="text-sm font-semibold text-slate-700 flex items-center gap-1"><Plus size={14} /> Add a link or video</button>
             <p className="text-xs text-slate-500">Uploading worksheets and images will be available once file storage is switched on for your account.</p>
+          </Card>
+
+          <Card title="Extra challenge (optional)" hint="Shown to your child at the end as a bonus.">
+            <textarea className={field} rows={3} value={f.extension} onChange={e => set("extension", e.target.value)} placeholder="One or two harder tasks for a child who finishes early" />
           </Card>
 
           <Card title="Activities" hint="Things to do. Tick “off the screen” for hands-on activities.">
@@ -266,7 +351,21 @@ export default function LessonBuilder() {
             <button onClick={() => add("quiz", { question: "", options: ["", ""], correct_index: 0, explanation: "" })} className="text-sm font-semibold text-slate-700 flex items-center gap-1" data-testid="b-add-quiz"><Plus size={14} /> Add a quiz question</button>
           </Card>
 
-          <Card title="For you (children never see this)">
+          <Card wide title="For you (children never see this)">
+            <div>
+              <label className={label}>Parent teaching guide</label>
+              <textarea className={field} rows={8} value={f.parent_script} onChange={e => set("parent_script", e.target.value)} placeholder="Step-by-step: what to say, show and ask, with timings and common mistakes" data-testid="b-parent-script" />
+            </div>
+            <div className="grid md:grid-cols-2 gap-3">
+              <div>
+                <label className={label}>If your child struggles</label>
+                <textarea className={field} rows={4} value={f.support} onChange={e => set("support", e.target.value)} placeholder="Simpler examples, objects to use, smaller steps" />
+              </div>
+              <div>
+                <label className={label}>Evidence of learning (one per line)</label>
+                <textarea className={field} rows={4} value={f.evidence_suggestions} onChange={e => set("evidence_suggestions", e.target.value)} placeholder={"A photo of the finished work\nChild explains it back to you"} />
+              </div>
+            </div>
             <div>
               <label className={label}>Off-screen alternative</label>
               <textarea className={field} rows={2} value={f.offline_alternative} onChange={e => set("offline_alternative", e.target.value)} placeholder="A hands-on way to do this lesson without a screen" />
@@ -285,48 +384,43 @@ export default function LessonBuilder() {
             </div>
           </Card>
         </div>
+        {mode === "split" && <div className="hidden xl:block sticky top-4 max-h-[calc(100vh-2rem)] overflow-auto rounded-2xl"><PreviewPane f={f} /></div>}
+        </div>
       )}
 
-      <div className="sticky bottom-0 -mx-4 sm:mx-0 bg-white/95 backdrop-blur border-t sm:border sm:rounded-2xl border-slate-200 p-3 flex flex-wrap gap-2 justify-end">
+      {!(qs.get("ai") && !lessonId) && <div className="sticky bottom-0 -mx-4 sm:mx-0 bg-white/95 backdrop-blur border-t sm:border sm:rounded-2xl border-slate-200 p-3 flex flex-wrap gap-2 justify-end">
         <button disabled={busy} onClick={() => save("draft")} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold flex items-center gap-1 disabled:opacity-50" data-testid="b-save-draft"><Save size={14} /> Save draft</button>
         <button disabled={busy} onClick={() => save("ready")} className="rounded-full border border-slate-900 bg-white px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-save-library">Save to library</button>
         <button disabled={busy} onClick={saveAndAssign} className="rounded-full bg-slate-900 text-white px-4 py-2 text-sm font-semibold flex items-center gap-1 disabled:opacity-50" data-testid="b-save-assign"><Send size={14} /> Save and assign</button>
-      </div>
+      </div>}
 
       {assign && <ScheduleModal lesson={assign} students={students} onClose={() => { setAssign(null); nav("/parent/lessons"); }} />}
     </div>
   );
 }
 
-function Preview({ f }) {
+function PreviewPane({ f }) {
+  const lesson = childView(f);
+  const fake = { id: "preview", status: "not_started", lesson, submissions: [], draft: null, quiz_passed: false };
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 space-y-5" data-testid="builder-preview">
-      <p className="text-xs text-slate-500">This is what your child will read. Answers and your notes are hidden from them.</p>
-      <div>
-        <div className="font-mono text-[11px] uppercase tracking-wider text-slate-500">{[f.learning_area, f.year_level, f.duration_minutes && `${f.duration_minutes} min`].filter(Boolean).join(" · ")}</div>
-        <h2 className="font-display text-2xl font-bold text-slate-900">{f.title || "Untitled lesson"}</h2>
-      </div>
-      {f.objectives.some(Boolean) && <div><h3 className={label}>Your mission</h3><ul className="list-disc pl-5 text-sm">{f.objectives.filter(Boolean).map((o, i) => <li key={i}>{o}</li>)}</ul></div>}
-      {f.sections.filter(s => s.body.trim()).map((s, i) => <div key={i}>{s.heading && <h3 className="font-semibold">{s.heading}</h3>}<p className="text-sm whitespace-pre-wrap leading-relaxed">{s.body}</p></div>)}
-      {f.resources.filter(r => r.url).map((r, i) => <p key={i} className="text-sm">{r.type === "video" ? "Video" : "Link"}: {r.title || r.url}</p>)}
-      {f.activities.filter(a => a.title).map((a, i) => <div key={i}><h3 className="font-semibold">{a.title}{a.offline ? " (off the screen)" : ""}</h3><p className="text-sm whitespace-pre-wrap">{a.instructions}</p></div>)}
-      {f.questions.filter(q => q.prompt).map((q, i) => <div key={i}><p className="text-sm font-medium">{i + 1}. {q.prompt}</p><div className="mt-1 h-10 rounded-lg border border-dashed border-slate-300" /></div>)}
-      {f.quiz.filter(q => q.question).map((q, i) => <div key={i}><p className="text-sm font-medium">{q.question}</p>{q.options.filter(Boolean).map((o, j) => <div key={j} className="text-sm rounded-lg border border-slate-200 px-3 py-1.5 mt-1">{o}</div>)}</div>)}
+    <div className="rounded-2xl border border-slate-200 bg-[#F5EFE0] p-4 sm:p-6" data-testid="builder-preview">
+      <p className="text-xs text-slate-600 mb-3">This is exactly what your child will see. Answers and your teaching guide are hidden from them.</p>
+      <ParentLessonPlayer assignment={fake} preview />
     </div>
   );
 }
 
-
 function AiPanel({ allowed, onDone }) {
-  const [open, setOpen] = useState(false);
-  const [v, setV] = useState({ topic: "", learning_area: "", year_level: "", length: "standard", notes: "" });
+  const [open, setOpen] = useState(true);
+  const [v, setV] = useState({ year_level: "", learning_area: "", topic: "", goal: "", duration_minutes: "45", delivery: "parent_guided", interests: "", needs: "", notes: "" });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
-  const field = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm";
+  const field = "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm";
+  const lab = "text-xs font-semibold uppercase tracking-wider text-slate-500";
   if (!allowed) {
     return (
       <div className="rounded-xl border border-violet-200 bg-violet-50/60 p-4 text-sm" data-testid="ai-upsell">
-        <p className="font-semibold text-violet-900 flex items-center gap-1"><Sparkles size={16} /> Draft with AI</p>
+        <p className="font-semibold text-violet-900 flex items-center gap-1"><Sparkles size={16} /> Build with AI</p>
         <p className="text-slate-700 mt-1">AI lesson drafting is part of the paid Family Membership. Building lessons by hand works fully on the free preview. <Link to="/parent/plan" className="underline font-semibold">See plans</Link></p>
       </div>
     );
@@ -334,27 +428,36 @@ function AiPanel({ allowed, onDone }) {
   const go = async () => {
     setErr(""); setBusy(true);
     try {
-      const body = { ...v, stage: STAGE_OF[v.year_level] || "" };
+      const body = { ...v, duration_minutes: Number(v.duration_minutes), stage: STAGE_OF[v.year_level] || "" };
       const r = await api.post("/ai/lesson-draft", body);
-      onDone(r.data.lesson);
+      onDone(r.data.lesson, r.data.warnings);
     } catch (e) { setErr(e.response?.data?.detail || "Could not create a draft. You can still build the lesson by hand."); }
     finally { setBusy(false); }
   };
   return (
     <div className="rounded-xl border border-violet-200 bg-violet-50/60 p-4 space-y-3" data-testid="ai-panel">
-      <button onClick={() => setOpen(o => !o)} className="font-semibold text-violet-900 flex items-center gap-1" data-testid="ai-toggle"><Sparkles size={16} /> Draft with AI {open ? "−" : "+"}</button>
+      <button onClick={() => setOpen(o => !o)} className="font-semibold text-violet-900 flex items-center gap-1" data-testid="ai-toggle"><Sparkles size={16} /> Build with AI {open ? "−" : "+"}</button>
       {open && (
-        <div className="space-y-2">
-          <p className="text-xs text-slate-600">The AI writes a first draft for you to edit. It may make mistakes, so always check the facts and answers. Drafts are saved as drafts and are not linked to any curriculum.</p>
-          <input className={field} value={v.topic} onChange={e => setV({ ...v, topic: e.target.value })} placeholder="What should the lesson be about? e.g. Adding fractions with the same denominator" maxLength={300} data-testid="ai-topic" />
-          <div className="grid sm:grid-cols-3 gap-2">
-            <select className={field} value={v.learning_area} onChange={e => setV({ ...v, learning_area: e.target.value })}><option value="">Subject</option>{SUBJECTS.map(x => <option key={x}>{x}</option>)}</select>
-            <select className={field} value={v.year_level} onChange={e => setV({ ...v, year_level: e.target.value })}><option value="">Year level</option>{YEARS.map(x => <option key={x}>{x}</option>)}</select>
-            <select className={field} value={v.length} onChange={e => setV({ ...v, length: e.target.value })}><option value="short">Short (~15 min)</option><option value="standard">Standard (~30 min)</option><option value="detailed">Detailed (~45 min)</option></select>
+        <div className="space-y-3">
+          <p className="text-xs text-slate-600">An AI model writes a full first draft: introduction, teaching, worked examples, practice, questions and a quiz, plus a guide for you. It can make mistakes, so read it and check every fact and answer. Drafts are saved as drafts and are not checked against any curriculum. You can edit everything afterwards, or start from a blank lesson instead.</p>
+          <div className="grid md:grid-cols-3 gap-3">
+            <div><label className={lab}>Year level or age</label><input list="ai-years" className={field} value={v.year_level} onChange={e => setV({ ...v, year_level: e.target.value })} placeholder="Year 3, or age 8" data-testid="ai-year" /><datalist id="ai-years">{YEARS.map(y => <option key={y} value={y} />)}</datalist></div>
+            <div><label className={lab}>Subject</label><select className={field} value={v.learning_area} onChange={e => setV({ ...v, learning_area: e.target.value })} data-testid="ai-subject"><option value="">Choose…</option>{SUBJECTS.map(x => <option key={x}>{x}</option>)}</select></div>
+            <div><label className={lab}>Lesson length</label><select className={field} value={v.duration_minutes} onChange={e => setV({ ...v, duration_minutes: e.target.value })} data-testid="ai-minutes">{[15, 30, 45, 60, 90].map(m => <option key={m} value={m}>{m} minutes</option>)}</select></div>
           </div>
-          <textarea className={field} rows={2} value={v.notes} onChange={e => setV({ ...v, notes: e.target.value })} placeholder="Anything else? (optional) e.g. my child loves dinosaurs" maxLength={600} />
+          <div><label className={lab}>Topic</label><input className={field} value={v.topic} onChange={e => setV({ ...v, topic: e.target.value })} placeholder="e.g. Adding two-digit numbers with regrouping" maxLength={300} data-testid="ai-topic" /></div>
+          <div><label className={lab}>Specific learning goal (optional)</label><input className={field} value={v.goal} onChange={e => setV({ ...v, goal: e.target.value })} placeholder="e.g. Be able to add two 2-digit numbers when the ones make more than 10" maxLength={400} data-testid="ai-goal" /></div>
+          <div className="flex flex-wrap gap-4 text-sm">
+            <label className="flex items-center gap-2"><input type="radio" name="ai-delivery" checked={v.delivery === "parent_guided"} onChange={() => setV({ ...v, delivery: "parent_guided" })} data-testid="ai-parent" /> Parent-guided (I teach)</label>
+            <label className="flex items-center gap-2"><input type="radio" name="ai-delivery" checked={v.delivery === "independent"} onChange={() => setV({ ...v, delivery: "independent" })} data-testid="ai-indep" /> Independent (my child works alone)</label>
+          </div>
+          <div className="grid md:grid-cols-2 gap-3">
+            <div><label className={lab}>Child's interests (optional)</label><input className={field} value={v.interests} onChange={e => setV({ ...v, interests: e.target.value })} placeholder="e.g. gardening, dinosaurs, Minecraft" maxLength={300} data-testid="ai-interests" /></div>
+            <div><label className={lab}>Additional learning needs (optional)</label><input className={field} value={v.needs} onChange={e => setV({ ...v, needs: e.target.value })} placeholder="e.g. short attention span, dyslexia, needs extra time" maxLength={400} /></div>
+          </div>
+          <div><label className={lab}>Anything else the AI should know (optional)</label><textarea className={field} rows={2} value={v.notes} onChange={e => setV({ ...v, notes: e.target.value })} placeholder="e.g. We have no printer; use things from around the house" maxLength={800} /></div>
           {err && <p role="alert" className="text-sm text-rose-700" data-testid="ai-error">{err}</p>}
-          <button disabled={busy || v.topic.trim().length < 3} onClick={go} className="rounded-full bg-violet-700 text-white px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="ai-go">{busy ? "Drafting… this can take up to a minute" : "Create draft"}</button>
+          <button disabled={busy || v.topic.trim().length < 3} onClick={go} className="rounded-full bg-violet-700 text-white px-5 py-2 text-sm font-semibold disabled:opacity-50" data-testid="ai-go">{busy ? "Writing your lesson… this can take a minute or two" : "Create draft lesson"}</button>
         </div>
       )}
     </div>

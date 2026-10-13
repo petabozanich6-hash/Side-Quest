@@ -9,7 +9,7 @@ const ACCENT = { backgroundColor: "#C77B5B", color: "#FBF7EC" };
 const INK = { color: "#1F3B2D" };
 
 // Plays a lesson built by a parent: read, watch, do, answer, quiz, hand in.
-export default function ParentLessonPlayer({ assignment, onChanged }) {
+export default function ParentLessonPlayer({ assignment, onChanged, preview = false }) {
   const a = assignment;
   const l = a.lesson || {};
   const sections = l.sections || [];
@@ -17,6 +17,9 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
   const questions = l.questions || [];
   const resources = l.resources || [];
   const quiz = l.quiz || [];
+  const worked = l.worked_examples || [];
+  const guided = l.guided_practice || [];
+  const materials = l.materials || [];
   const hasQuiz = quiz.some((q) => q.type !== "short_answer" && Array.isArray(q.options));
 
   const locked = ["submitted", "accepted", "demonstrated", "completed"].includes(a.status);
@@ -25,6 +28,8 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
   const [answers, setAnswers] = useState(a.draft?.answers || {});
   const [checks, setChecks] = useState(a.draft?.checks || {});
   const [reflection, setReflection] = useState(a.draft?.reflection || "");
+  const [gp, setGp] = useState(a.draft?.guided || {});
+  const [hints, setHints] = useState({});
   const [needsHelp, setNeedsHelp] = useState(false);
   const [quizOk, setQuizOk] = useState(a.quiz_passed === true);
   const passedBefore = useRef(a.quiz_passed === true); // show the quiz again only if it was cleared in this visit
@@ -36,7 +41,7 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
   const fileRef = useRef(null);
   const first = useRef(true);
 
-  useEffect(() => { api.get("/features").then(r => setUploadsOn(!!r.data.uploads)).catch(() => {}); }, []);
+  useEffect(() => { if (preview) return; api.get("/features").then(r => setUploadsOn(!!r.data.uploads)).catch(() => {}); }, []);
 
   const upload = async (file) => {
     setUploading(true);
@@ -50,13 +55,14 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
 
   // Opening a lesson marks it as started.
   useEffect(() => {
-    if (a.status === "not_started") api.put(`/assignments/${a.id}/status?status=opened`).catch(() => {});
+    if (!preview && a.status === "not_started") api.put(`/assignments/${a.id}/status?status=opened`).catch(() => {});
     // eslint-disable-next-line
   }, []);
 
   const saveNow = async (silent) => {
+    if (preview) return;
     try {
-      await api.put(`/assignments/${a.id}/draft`, { answers, checks, reflection });
+      await api.put(`/assignments/${a.id}/draft`, { answers, checks, reflection, guided: gp });
       setSaved("Saved");
       if (!silent) toast.success("Your work is saved");
     } catch (e) {
@@ -67,13 +73,13 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
 
   // Save quietly a moment after the child stops typing, so a refresh loses nothing.
   useEffect(() => {
-    if (locked) return undefined;
+    if (locked || preview) return undefined;
     if (first.current) { first.current = false; return undefined; }
     setSaved("Saving…");
     const t = setTimeout(() => saveNow(true), 900);
     return () => clearTimeout(t);
     // eslint-disable-next-line
-  }, [answers, checks, reflection]);
+  }, [answers, checks, reflection, gp]);
 
   const unanswered = questions.filter((_, i) => !(answers[i] || "").trim()).length;
   const needsQuiz = hasQuiz && !quizOk;
@@ -83,6 +89,7 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
     setBusy(true);
     const lines = [];
     questions.forEach((q, i) => lines.push(`${i + 1}. ${q.prompt}\nAnswer: ${(answers[i] || "").trim() || "(no answer)"}`));
+    guided.forEach((g, i) => { if ((gp[i] || "").trim()) lines.push(`Practice ${i + 1}. ${g.prompt}\nMy working: ${gp[i].trim()}`); });
     const didIt = activities.filter((_, i) => checks[i]).map((x) => x.title);
     if (activities.length) lines.push(`Activities done: ${didIt.length ? didIt.join(", ") : "none ticked"}`);
     try {
@@ -135,12 +142,51 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
         </div>
       )}
 
+      {(l.introduction || materials.length > 0) && (
+        <section className={card} data-testid="intro">
+          {l.introduction && <p className="text-base leading-relaxed whitespace-pre-wrap">{l.introduction}</p>}
+          {materials.length > 0 && (
+            <div className="rounded-xl border p-3 bg-white" style={border}>
+              <p className="font-bold text-sm">You will need:</p>
+              <ul className="list-disc pl-5 text-sm text-stone-700">{materials.map((m, i) => <li key={i}>{m}</li>)}</ul>
+            </div>
+          )}
+        </section>
+      )}
+
       {sections.map((s, i) => (
         <section key={i} className={card} data-testid={`section-${i}`}>
           {s.heading && <h2 className="font-display text-xl font-semibold" style={INK}>{s.heading}</h2>}
           <p className="text-base leading-relaxed whitespace-pre-wrap">{s.body}</p>
         </section>
       ))}
+
+      {worked.length > 0 && (
+        <section className={card} data-testid="worked-examples">
+          <h2 className="font-display text-xl font-semibold" style={INK}>Watch how it is done</h2>
+          {worked.map((w, i) => (
+            <div key={i} className="rounded-xl border p-4 bg-white space-y-2" style={border} data-testid={`worked-${i}`}>
+              <p className="font-bold">{w.title ? `${w.title}: ` : `Example ${i + 1}: `}{w.problem}</p>
+              <ol className="list-decimal pl-5 space-y-1 text-base">{(w.steps || []).map((st, j) => <li key={j}>{st}</li>)}</ol>
+              {w.answer && <p className="font-bold" style={INK}>Answer: {w.answer}</p>}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {guided.length > 0 && (
+        <section className={card} data-testid="guided-practice">
+          <h2 className="font-display text-xl font-semibold" style={INK}>Try it together</h2>
+          <p className="text-sm text-stone-600">Work these out with your grown-up. Use the hint if you get stuck.</p>
+          {guided.map((g, i) => (
+            <div key={i} className="rounded-xl border p-3 bg-white space-y-2" style={border}>
+              <label htmlFor={`gp-${i}`} className="font-bold block">{i + 1}. {g.prompt}</label>
+              <textarea id={`gp-${i}`} rows={2} disabled={locked} value={gp[i] || ""} onChange={(e) => setGp({ ...gp, [i]: e.target.value })} className={area} style={border} placeholder="Show your working here" data-testid={`guided-${i}`} />
+              {g.hint && (hints[i] ? <p className="text-sm text-stone-700">💡 {g.hint}</p> : <button type="button" onClick={() => setHints({ ...hints, [i]: true })} className="text-sm font-bold underline" style={{ color: "#4A5D3A" }}>Need a hint?</button>)}
+            </div>
+          ))}
+        </section>
+      )}
 
       {resources.length > 0 && (
         <section className={card} data-testid="resources">
@@ -193,6 +239,8 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
           <h2 className="font-display text-xl font-semibold" style={INK}>Quest check</h2>
           {passedBefore.current ? (
             <p className="font-bold text-green-800" data-testid="quiz-passed">Quiz passed. Nice work!</p>
+          ) : preview ? (
+            <ol className="list-decimal pl-5 space-y-2 text-sm">{quiz.map((q, i) => <li key={i}><b>{q.question}</b><ul className="list-disc pl-5 text-stone-600">{(q.options || []).map((o, j) => <li key={j}>{o}</li>)}</ul></li>)}</ol>
           ) : locked ? (
             <p className="text-sm text-stone-600">The quiz is closed.</p>
           ) : (
@@ -201,7 +249,16 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
         </section>
       )}
 
-      {!locked && (
+      {l.extension && (
+        <section className={card} data-testid="extension">
+          <h2 className="font-display text-xl font-semibold" style={INK}>Extra challenge</h2>
+          <p className="text-base leading-relaxed whitespace-pre-wrap">{l.extension}</p>
+        </section>
+      )}
+
+      {preview && <p className="rounded-xl border border-dashed p-4 text-sm text-stone-600" style={border}>The quiz and the hand-in box appear here for your child. Nothing in this preview is saved.</p>}
+
+      {!locked && !preview && (
         <section className={card} data-testid="hand-in">
           <h2 className="font-display text-xl font-semibold" style={INK}>Hand it in</h2>
           <div>

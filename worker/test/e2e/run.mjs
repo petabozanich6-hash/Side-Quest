@@ -1,7 +1,7 @@
 // End-to-end check of the whole learning workflow against a real local Worker + local D1 + the built frontend,
 // driven through a real browser. Runs in CI (see .github/workflows/ci.yml). Never touches production.
 import { spawn, spawnSync } from "node:child_process";
-import { writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
+import { writeFileSync, mkdirSync, rmSync, existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const ROOT = resolve(new URL("../../../", import.meta.url).pathname);
@@ -426,6 +426,64 @@ await step("evidence: add a parent note, search it, export CSV with a date range
   ok(p.json.items.length === 0 && p.json.notes.length === 0, "date range not applied");
   const other = await api("GET", "/evidence-notes", parentToken);
   ok(other.json.length === 1, "note count");
+});
+
+await step("rich lesson: the Year 3 garden addition lesson teaches in the child's lesson page and keeps the parent guide and answers hidden", async () => {
+  const GARDEN = JSON.parse(readFileSync(resolve(ROOT, "frontend/src/data/exampleLesson.json"), "utf8"));
+  const reg = await api("POST", "/auth/register", null, { name: "Garden Fam", email: `garden-${stamp}@example.com`, password: pw });
+  const pt = reg.json.token;
+  const fam = JSON.parse(Buffer.from(pt.split(".")[1], "base64url").toString()).family_id;
+  sql(`UPDATE families SET plan='ACTIVE_MONTHLY' WHERE id='${fam}';`);
+  const un = `gk${stamp}`.slice(0, 14);
+  const ch = await api("POST", "/students", pt, { name: "Gus", username: un, pin: "4321", stage: "S2" });
+  ok(ch.status === 200, "child " + ch.status);
+  const les = await api("POST", "/lessons", pt, { ...GARDEN, status: "ready" });
+  ok(les.status === 200, "garden lesson rejected: " + JSON.stringify(les.json));
+  const asg = await api("POST", "/assignments", pt, { student_id: ch.json.id, lesson_id: les.json.id });
+  ok(asg.status === 200, "assign " + asg.status);
+  // AI is not connected in this local run: a paid family is told so plainly, nothing is invented.
+  const ai = await api("POST", "/ai/lesson-draft", pt, { topic: "Addition" });
+  ok(ai.status === 503 && ai.json.code === "AI_UNAVAILABLE", "expected honest AI_UNAVAILABLE, got " + ai.status);
+  // parent builder shows the wide editor with the full lesson
+  const pctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const page = await pctx.newPage();
+  await page.goto(BASE + "/login");
+  await page.fill('[data-testid=login-email]', `garden-${stamp}@example.com`); await page.fill('[data-testid=login-password]', pw);
+  await page.click('[data-testid=login-submit]'); await page.waitForURL("**/parent");
+  await page.goto(BASE + `/parent/lessons/${les.json.id}/edit`);
+  await page.waitForSelector("[data-testid=lesson-builder]");
+  ok(await page.inputValue("[data-testid=b-parent-script]").then(v => v.includes("Hook (0 to 5 min)")), "parent guide missing in editor");
+  await page.click("[data-testid=preview-tab]");
+  const pv = await page.textContent("[data-testid=builder-preview]");
+  ok(pv.includes("Watch how it is done") && pv.includes("Try it together") && !pv.includes("Hook (0 to 5 min)") && !pv.includes("Sam forgot to regroup"), "preview content/leak");
+  // child sees it
+  const mctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true });
+  const cp = await mctx.newPage();
+  await cp.goto(BASE + "/child-login");
+  await cp.fill('[data-testid=child-login-username]', un);
+  await cp.fill('[data-testid=child-login-pin]', "4321");
+  await cp.click('[data-testid=child-login-submit]');
+  await cp.waitForURL("**/child", { timeout: 20000 });
+  try { await cp.waitForSelector('[data-testid=pet-picker]', { timeout: 6000 }); await cp.click('[data-testid=pet-fox]'); await cp.fill('[data-testid=pet-name]', "Ember"); await cp.click('[data-testid=create-pet]'); } catch {}
+  await cp.goto(`${BASE}/child/lesson/${asg.json.id}`);
+  await cp.waitForSelector("[data-testid=lesson-title]", { timeout: 15000 });
+  const body = await cp.textContent("body");
+  for (const need of ["Imagine you have a vegie patch", "Tens and ones: how numbers are built", "Watch how it is done", "13 ones is more than 10, so regroup", "Try it together", "You will need:", "Extra challenge", "Work out 36 + 27"]) ok(body.includes(need), "child page missing: " + need);
+  for (const leak of ["Hook (0 to 5 min)", "Sam forgot to regroup", "If your child finds regrouping hard", "A photo of the bean cups", "63. Tens: 30", "Example lesson to show"]) ok(!body.includes(leak), "child page leaks: " + leak);
+  await cp.click("text=Need a hint?").catch(() => {});
+  await cp.screenshot({ path: `${SHOTS}/garden-lesson-child-mobile.png`, fullPage: true });
+  const tok = await cp.evaluate(() => localStorage.getItem("sq_token"));
+  const raw = JSON.stringify((await api("GET", `/assignments/${asg.json.id}`, tok)).json);
+  for (const leak of ["parent_script", "evidence_suggestions", "answer_key", "correct_index", "\"support\""]) ok(!raw.includes(leak), "API leaks " + leak);
+  ok((await api("GET", `/lessons/${les.json.id}`, tok)).status === 403, "child can read parent lesson");
+  // wide editor + side by side preview on desktop
+  await page.goto(BASE + `/parent/lessons/${les.json.id}/edit`);
+  await page.click("[data-testid=split-tab]");
+  const w = await page.evaluate(() => document.querySelector("[data-testid=lesson-builder]").getBoundingClientRect().width);
+  ok(w > 950, "builder is still a narrow column: " + w);
+  await page.waitForSelector("[data-testid=builder-preview]");
+  await page.screenshot({ path: `${SHOTS}/builder-split-desktop.png` });
+  await mctx.close(); await pctx.close();
 });
 
 await step("L. users cannot grant themselves a paid plan", async () => {

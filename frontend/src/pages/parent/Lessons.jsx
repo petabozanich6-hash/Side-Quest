@@ -64,7 +64,10 @@ export default function LessonsPage() {
           <h1 className="font-display text-3xl font-bold text-slate-900">My lessons</h1>
           <p className="text-sm text-slate-600 mt-1">Your family's lesson library. Create a lesson once, then assign it to any child.</p>
         </div>
-        <Link to="/parent/lessons/new" className="rounded-full bg-slate-900 text-white px-5 py-2.5 text-sm font-semibold flex items-center gap-1" data-testid="new-lesson"><Plus size={16} /> Create a lesson</Link>
+        <div className="flex flex-wrap gap-2">
+          <Link to="/parent/lessons/new" className="rounded-full bg-slate-900 text-white px-5 py-2.5 text-sm font-semibold flex items-center gap-1" data-testid="new-lesson"><Plus size={16} /> Create my own lesson</Link>
+          <Link to="/parent/lessons/new?ai=1" className="rounded-full border border-violet-300 bg-violet-50 text-violet-900 px-5 py-2.5 text-sm font-semibold" data-testid="new-lesson-ai">Build with AI</Link>
+        </div>
       </div>
 
       {plan && plan.effective_plan === "FREE_PREVIEW" && (

@@ -1,0 +1,223 @@
+{
+ "title": "Adding in the garden: tens, ones and regrouping",
+ "learning_area": "Mathematics",
+ "year_level": "Year 3",
+ "duration_minutes": 60,
+ "delivery": "parent_guided",
+ "objectives": [
+  "I can say how many tens and ones are in a two-digit number.",
+  "I can add two two-digit numbers by adding the tens and then the ones.",
+  "I can regroup 10 ones as 1 ten when the ones add up to 10 or more.",
+  "I can add a two-digit number to a three-digit number."
+ ],
+ "introduction": "Imagine you have a vegie patch and today is planting day. You have a tray with 47 tomato seedlings and your neighbour hands you another tray with 36 lettuce seedlings. Before you can decide how many holes to dig, you need to know how many seedlings there are altogether. Counting them one at a time would take ages, and you might lose your place! Today you will learn a quick, reliable way to add numbers like these in your head and on paper, the same way gardeners and shopkeepers do.",
+ "sections": [
+  {
+   "heading": "Tens and ones: how numbers are built",
+   "body": "Every two-digit number is made of tens and ones. Think of beans packed into little cups, with exactly 10 beans in each full cup. The number 47 means 4 full cups of ten and 7 loose beans left over: 4 tens and 7 ones, which is 40 + 7. The number 36 is 3 full cups and 6 loose beans: 3 tens and 6 ones, or 30 + 6. The digit on the left tells you how many tens, and the digit on the right tells you how many ones. This is called place value, and it is the secret behind adding quickly. When we know that 47 is really 40 and 7, we can pull numbers apart and put them back together without losing anything. Try it: how many tens and ones are in 52? (5 tens and 2 ones, so 50 + 2.)"
+  },
+  {
+   "heading": "Adding tens and ones separately",
+   "body": "Here is the first adding strategy. To add 24 + 35, split both numbers into tens and ones. 24 is 20 + 4 and 35 is 30 + 5. Now add the tens together: 20 + 30 = 50. Then add the ones together: 4 + 5 = 9. Finally put the two answers back together: 50 + 9 = 59. So 24 + 35 = 59. This works because adding is just collecting groups: we collected all the tens into one pile and all the ones into another pile, then joined the piles. Notice we always add the tens and ones separately first, and only join them at the very end. This strategy is called partitioning, which means splitting numbers into parts. It is a great way to check your thinking before you write anything down."
+  },
+  {
+   "heading": "What if the ones add up to 10 or more? Regrouping",
+   "body": "Sometimes the loose beans make more than a full cup! Let's add 47 + 36. Split the numbers: 47 is 40 + 7 and 36 is 30 + 6. Add the tens: 40 + 30 = 70. Add the ones: 7 + 6 = 13. But 13 ones is more than 10, so we can fill a cup: 13 ones is 1 ten and 3 ones. This is called regrouping (some people say 'trading' or 'carrying'). We trade 10 loose ones for 1 more ten. Now we have 70 + 10 + 3, which is 80 + 3 = 83. So 47 + 36 = 83. Whenever your ones total 10 or more, stop and ask: how many full tens can I make, and how many ones are left over? Then add the new ten to the tens you already have."
+  },
+  {
+   "heading": "Writing it down: the column method",
+   "body": "Once you understand regrouping, you can write the same idea in columns, which is quicker on paper. Write the bigger digits lined up: tens under tens and ones under ones. For 47 + 36, start with the ones column, because that is where regrouping happens. 7 + 6 = 13. Write the 3 in the ones column of the answer and carry the 1 ten by writing a small 1 above the tens column. Now add the tens column: 4 + 3 + the 1 you carried = 8. Write 8 in the tens column. The answer is 83, the same as before. The small 1 is not magic; it is the cup of ten you made from 13 loose beans. Always start with the ones and work to the left. Lining up the digits neatly is the most important habit for getting columns right."
+  },
+  {
+   "heading": "Bigger numbers: adding to a three-digit number",
+   "body": "The same method works for bigger numbers. Let's add 138 + 45. The number 138 has 1 hundred, 3 tens and 8 ones. The number 45 has 4 tens and 5 ones. Keep the hundred to one side because nothing is being added to it. Add the tens: 30 + 40 = 70. Add the ones: 8 + 5 = 13, which is 1 ten and 3 ones. Now collect everything: 100 + 70 + 10 + 3. That is 100 + 80 + 3 = 183. So 138 + 45 = 183. In columns you would start at the ones again: 8 + 5 = 13, write 3 and carry 1; then 3 + 4 + 1 = 8 tens; the hundred comes down unchanged. The steps never change, no matter how big the numbers get: ones first, regroup if you reach 10, then tens, then hundreds."
+  }
+ ],
+ "worked_examples": [
+  {
+   "title": "No regrouping needed",
+   "problem": "A gardener plants 24 carrots and 35 radishes. How many vegetables did she plant?",
+   "steps": [
+    "Write the sum: 24 + 35.",
+    "Split into tens and ones: 24 = 20 + 4 and 35 = 30 + 5.",
+    "Add the tens: 20 + 30 = 50.",
+    "Add the ones: 4 + 5 = 9.",
+    "Join the parts: 50 + 9 = 59."
+   ],
+   "answer": "She planted 59 vegetables."
+  },
+  {
+   "title": "Regrouping the ones",
+   "problem": "There are 47 tomato seedlings and 36 lettuce seedlings in the trays. How many seedlings are there altogether?",
+   "steps": [
+    "Write the sum: 47 + 36.",
+    "Split into tens and ones: 47 = 40 + 7 and 36 = 30 + 6.",
+    "Add the tens: 40 + 30 = 70.",
+    "Add the ones: 7 + 6 = 13.",
+    "13 ones is more than 10, so regroup: 13 = 1 ten + 3 ones.",
+    "Combine: 70 + 10 + 3 = 83."
+   ],
+   "answer": "There are 83 seedlings altogether."
+  },
+  {
+   "title": "A three-digit number plus a two-digit number",
+   "problem": "A sunflower patch has 138 seeds already sown. Then 45 more seeds are sown. How many seeds are in the patch?",
+   "steps": [
+    "Write the sum: 138 + 45.",
+    "Split 138 into 100 + 30 + 8 and 45 into 40 + 5.",
+    "Add the tens: 30 + 40 = 70.",
+    "Add the ones: 8 + 5 = 13, which is 1 ten and 3 ones.",
+    "Collect everything: 100 + 70 + 10 + 3.",
+    "100 + 70 + 10 = 180, and 180 + 3 = 183."
+   ],
+   "answer": "There are 183 seeds in the patch."
+  }
+ ],
+ "guided_practice": [
+  {
+   "prompt": "Mia plants 32 tomato seedlings and 25 lettuce seedlings. How many seedlings did she plant?",
+   "hint": "Split both numbers into tens and ones. Add the tens, then the ones.",
+   "answer": "57 (30 + 20 = 50; 2 + 5 = 7; 50 + 7 = 57)."
+  },
+  {
+   "prompt": "A gardener picks 28 carrots and 15 radishes. How many vegetables is that?",
+   "hint": "What do 8 + 5 make? Is that 10 or more? What do you do with the extra ten?",
+   "answer": "43 (20 + 10 = 30; 8 + 5 = 13; 30 + 13 = 43)."
+  },
+  {
+   "prompt": "In the morning 46 beans are picked. In the afternoon 38 more are picked. How many beans altogether?",
+   "hint": "Start with the ones: 6 + 8. Remember to regroup.",
+   "answer": "84 (40 + 30 = 70; 6 + 8 = 14; 70 + 14 = 84)."
+  },
+  {
+   "prompt": "Work out 59 + 27. Write it in columns.",
+   "hint": "9 + 7 = 16. Write the 6 and carry the 1 ten above the tens column.",
+   "answer": "86 (ones: 9 + 7 = 16, write 6 carry 1; tens: 5 + 2 + 1 = 8)."
+  },
+  {
+   "prompt": "A garden shop has 175 packets of seeds and gets 24 more. How many packets now?",
+   "hint": "Keep the 100 aside. Add the tens, then the ones.",
+   "answer": "199 (100 + 70 + 20 + 5 + 4 = 199: tens 70 + 20 = 90; ones 5 + 4 = 9; 100 + 90 + 9)."
+  },
+  {
+   "prompt": "Work out 267 + 38.",
+   "hint": "7 + 8 = 15, so you will regroup. Then add the tens, then bring the hundreds down.",
+   "answer": "305 (ones: 7 + 8 = 15, write 5 carry 1; tens: 6 + 3 + 1 = 10, write 0 carry 1; hundreds: 2 + 1 = 3)."
+  }
+ ],
+ "activities": [
+  {
+   "title": "Bean cups: build it, add it, regroup it",
+   "instructions": "1. Count out about 60 dried beans, buttons or pebbles. Put exactly 10 in each small cup or bowl to make 'tens'.\n2. Show 27 on the table: 2 full cups and 7 loose beans.\n3. Next to it show 18: 1 full cup and 8 loose beans.\n4. Push them together. You should have 3 full cups and 15 loose beans.\n5. Count out 10 of the loose beans and put them in a new cup. How many full cups and loose beans now? (4 cups and 5 loose.)\n6. Write what you did as a number sentence: 27 + 18 = 45.\n7. Try 36 + 29 the same way and write the answer.",
+   "offline": true
+  },
+  {
+   "title": "Plan a vegie patch",
+   "instructions": "1. Draw three garden beds on paper and label them A, B and C.\n2. Bed A has 34 plants, Bed B has 27 plants and Bed C has 19 plants. Draw or write the numbers in each bed.\n3. First add Bed A and Bed B. Show your working with tens and ones.\n4. Then add Bed C to your answer. Show your working again.\n5. Write a full sentence: 'There are ___ plants in the garden.'",
+   "offline": false
+  },
+  {
+   "title": "Write your own garden problems",
+   "instructions": "1. Write two addition story problems about a garden. Use two-digit numbers, and make at least one of them need regrouping.\n2. Solve them using partitioning or the column method.\n3. Swap with your grown-up. Solve each other's problems and check the answers match.",
+   "offline": false
+  }
+ ],
+ "questions": [
+  {
+   "prompt": "Work out 36 + 27. Show your working.",
+   "type": "short",
+   "answer_key": "63. Tens: 30 + 20 = 50. Ones: 6 + 7 = 13. 50 + 13 = 63."
+  },
+  {
+   "prompt": "In your own words, what do you do when the ones add up to 13?",
+   "type": "short",
+   "answer_key": "13 ones is 1 ten and 3 ones. Write the 3 in the ones place and add the extra ten to the tens column (regroup or carry)."
+  },
+  {
+   "prompt": "A gardener has 148 daisies and 35 tulips. How many flowers does she have in total?",
+   "type": "short",
+   "answer_key": "183. Tens: 40 + 30 = 70. Ones: 8 + 5 = 13. 100 + 70 + 13 = 183."
+  },
+  {
+   "prompt": "Work out 58 + 64 using the column method.",
+   "type": "short",
+   "answer_key": "122. Ones: 8 + 4 = 12, write 2 carry 1. Tens: 5 + 6 + 1 = 12, write 12. Answer 122."
+  },
+  {
+   "prompt": "Sam says 45 + 28 = 613. What mistake did Sam make, and what is the correct answer?",
+   "type": "short",
+   "answer_key": "Sam wrote 5 + 8 = 13 in the ones place without regrouping, and put 4 + 2 = 6 in front. The ones total 13 should be regrouped: write 3 and carry 1 ten. Tens: 4 + 2 + 1 = 7. Correct answer 73."
+  }
+ ],
+ "quiz": [
+  {
+   "question": "What is 23 + 45?",
+   "options": [
+    "68",
+    "58",
+    "78"
+   ],
+   "correct_index": 0,
+   "explanation": "Tens: 20 + 40 = 60. Ones: 3 + 5 = 8. 60 + 8 = 68."
+  },
+  {
+   "question": "You add the ones and get 14. What do you do?",
+   "options": [
+    "Write 14 in the ones place",
+    "Write 4 in the ones place and add 1 ten to the tens column",
+    "Ignore the 1 and keep the 4"
+   ],
+   "correct_index": 1,
+   "explanation": "14 ones is 1 ten and 4 ones, so the ten is regrouped into the tens column."
+  },
+  {
+   "question": "What is 39 + 24?",
+   "options": [
+    "53",
+    "73",
+    "63"
+   ],
+   "correct_index": 2,
+   "explanation": "Tens: 30 + 20 = 50. Ones: 9 + 4 = 13. 50 + 13 = 63."
+  },
+  {
+   "question": "What is 126 + 30?",
+   "options": [
+    "129",
+    "156",
+    "426"
+   ],
+   "correct_index": 1,
+   "explanation": "Only the tens change: 20 + 30 = 50, so 100 + 50 + 6 = 156."
+  },
+  {
+   "question": "What is 85 + 17?",
+   "options": [
+    "92",
+    "912",
+    "102"
+   ],
+   "correct_index": 2,
+   "explanation": "Tens: 80 + 10 = 90. Ones: 5 + 7 = 12. 90 + 12 = 102."
+  }
+ ],
+ "support": "If your child finds regrouping hard: (1) stay with the bean cups until they can explain the trade of 10 loose beans for 1 cup without help; (2) use numbers where the ones just reach 10, such as 8 + 2, 6 + 4, before trying 8 + 7; (3) write each tens and ones step on a separate line; (4) use graph paper so digits line up in columns; (5) go back to examples without regrouping, like 24 + 35, and only add one new idea at a time.",
+ "extension": "For a child who finishes early: (1) Add three numbers, such as 34 + 27 + 19, and explain the order you chose. (2) Invent a garden problem whose answer is exactly 100. (3) Find two numbers that have a 7 and a 6 in the ones place and add to a number between 80 and 90.",
+ "materials": [
+  "About 60 dried beans, buttons or small pebbles",
+  "Six small cups or bowls",
+  "Paper and a pencil",
+  "Coloured pencils (optional)",
+  "A real vegie patch or pot plants to count (optional)"
+ ],
+ "parent_script": "Before you start: gather the beans and cups. Aim for about 60 minutes. Sit beside your child and keep the written work in front of them.\n\n1. Hook (0 to 5 min): Read the introduction aloud. Ask: 'How could we find out how many seedlings there are without counting one by one?' Take a few guesses; do not correct yet.\n\n2. Tens and ones (5 to 12 min): Read section 1 aloud. Make 47 with the bean cups (4 full cups and 7 loose). Ask your child to make 36. Ask: 'How many tens? How many ones?' Repeat with 52 and 29 until they answer without hesitation.\n\n3. Add without regrouping (12 to 18 min): Read section 2. Work through worked example 1 together, writing each step on paper. Then ask them to explain in their own words why we add the tens and ones separately.\n\n4. Regrouping (18 to 28 min): Read section 3. Build 47 and 36 with the beans, push them together, and let them discover there are 13 loose beans. Ask, 'What could we do with 10 of these?' Let them make the new cup. Then work through worked example 2. Common mistake: writing 13 in the ones column. Gently ask, 'How many digits can sit in the ones place?'\n\n5. Column method (28 to 33 min): Read section 4 and show 47 + 36 in columns, lining digits up. Point at the carried 1 and say it is the new cup of ten.\n\n6. Guided practice (33 to 43 min): Do guided practice questions 1 to 4 together. Child writes; you only give the hint if they are stuck for more than a minute. For questions 5 and 6 (bigger numbers) read section 5 first and do worked example 3.\n\n7. Activities (43 to 53 min): Child does the bean cups activity and then plans the vegie patch. Walk away for a few minutes and check their working afterwards.\n\n8. Check understanding (53 to 60 min): Child answers the written questions and then the quiz on screen. Use the answer key to mark. Celebrate correct reasoning, not just correct answers. If they get fewer than 3 of the 5 quiz questions, repeat the bean cups and section 3 tomorrow before moving on.",
+ "evidence_suggestions": [
+  "A photo of the bean cups showing 27 + 18 regrouped into 4 cups and 5 loose beans.",
+  "The child's written working for the vegie patch plan (Bed A + Bed B + Bed C).",
+  "The child's own two garden story problems with solutions.",
+  "A short observation note: can the child explain what happens when the ones total 10 or more?"
+ ],
+ "answer_key": "Guided practice: 1) 57  2) 43  3) 84  4) 86  5) 199  6) 305.\nActivities: bean cups 27 + 18 = 45 and 36 + 29 = 65. Vegie patch: A + B = 34 + 27 = 61; 61 + C = 61 + 19 = 80, so 80 plants.\nQuestions: 1) 63  2) 13 ones = 1 ten and 3 ones; carry the ten  3) 183  4) 122  5) Sam forgot to regroup; the correct answer is 73.\nQuiz: 1) 68  2) write 4 and add 1 ten to the tens column  3) 63  4) 156  5) 102.",
+ "offline_alternative": "No screen needed for any part of this lesson except the final quiz. All the teaching, practice and activities can be done on paper with beans or buttons.",
+ "parent_notes": "Example lesson to show the depth a Side-Quest lesson should have. Edit anything you like or delete it."
+}
