@@ -30,7 +30,23 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
   const passedBefore = useRef(a.quiz_passed === true); // show the quiz again only if it was cleared in this visit
   const [saved, setSaved] = useState("");
   const [busy, setBusy] = useState(false);
+  const [uploadsOn, setUploadsOn] = useState(false);
+  const [files, setFiles] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef(null);
   const first = useRef(true);
+
+  useEffect(() => { api.get("/features").then(r => setUploadsOn(!!r.data.uploads)).catch(() => {}); }, []);
+
+  const upload = async (file) => {
+    setUploading(true);
+    try {
+      const fd = new FormData(); fd.append("file", file); fd.append("context", "submission");
+      const { data } = await api.post("/files/upload", fd);
+      setFiles((f) => [...f, data]);
+    } catch (e) { toast.error(e.response?.data?.detail || "Could not upload that file"); }
+    finally { setUploading(false); if (fileRef.current) fileRef.current.value = ""; }
+  };
 
   // Opening a lesson marks it as started.
   useEffect(() => {
@@ -74,7 +90,7 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
         assignment_id: a.id,
         response_text: lines.join("\n\n"),
         reflection: reflection.trim() || null,
-        file_ids: [],
+        file_ids: files.map((f) => f.id),
         needs_help: needsHelp,
       });
       toast.success(needsHelp ? "Sent for help" : "Handed in! Your grown-up will take a look.");
@@ -192,7 +208,15 @@ export default function ParentLessonPlayer({ assignment, onChanged }) {
             <label htmlFor="refl" className="font-bold text-sm">How did it go? (optional)</label>
             <textarea id="refl" rows={2} value={reflection} onChange={(e) => setReflection(e.target.value)} className={`mt-1 ${area}`} style={border} data-testid="reflection-text" />
           </div>
-          <p className="text-xs text-stone-500">Photo uploads are not available yet. Write what you did, or show your grown-up your paper work.</p>
+          {uploadsOn ? (
+            <div>
+              <input ref={fileRef} type="file" accept="image/*,application/pdf" className="hidden" onChange={(e) => e.target.files[0] && upload(e.target.files[0])} data-testid="file-input" />
+              <button type="button" onClick={() => fileRef.current?.click()} disabled={uploading} className="rounded-xl border-2 border-dashed w-full p-4 text-sm font-bold disabled:opacity-50" style={border} data-testid="upload-btn">{uploading ? "Uploading…" : "📷 Add a photo of your work"}</button>
+              {files.length > 0 && <ul className="mt-2 text-sm">{files.map((f) => <li key={f.id}>📎 {f.original_filename}</li>)}</ul>}
+            </div>
+          ) : (
+            <p className="text-xs text-stone-500" data-testid="no-uploads">Photo uploads are not available yet. Write what you did, or show your grown-up your paper work.</p>
+          )}
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={needsHelp} onChange={(e) => setNeedsHelp(e.target.checked)} data-testid="needs-help" /> I need help with this one</label>
           {!canSubmit && (
             <p className="text-sm text-amber-800" data-testid="submit-hint">

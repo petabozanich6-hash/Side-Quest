@@ -32,6 +32,7 @@ writeFileSync(`${ROOT}/.dev.vars`, "JWT_SECRET=e2e-only-secret-not-for-productio
 writeFileSync(`${ROOT}/wrangler.e2e.jsonc`, JSON.stringify({
   name: "side-quest-e2e", main: "./worker/src/index.ts", compatibility_date: "2025-10-01",
   assets: { directory: "./frontend/build", not_found_handling: "single-page-application", run_worker_first: ["/api/*"] },
+  r2_buckets: [{ binding: "BUCKET", bucket_name: "e2e-files" }],
   d1_databases: [{ binding: "DB", database_name: "e2e", database_id: "00000000-0000-0000-0000-000000000000", migrations_dir: "./worker/migrations" }],
 }));
 const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", "wrangler.e2e.jsonc", "--persist-to", STATE], { cwd: ROOT, encoding: "utf8" });
@@ -330,6 +331,21 @@ await step("editing the library lesson does not change the finished assignment (
   ok(up.status === 200, "edit failed " + up.status);
   const a = await api("GET", `/assignments/${assignmentId}`, childToken);
   ok(a.json.lesson.title === "Halves and quarters", "assignment changed after library edit");
+});
+
+await step("uploads: child can upload a photo, same family can read it, other families and unsafe types cannot", async () => {
+  const feat = await api("GET", "/features", childToken);
+  ok(feat.json.uploads === true, "uploads flag off with a bucket bound");
+  const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==", "base64");
+  const up = async (token, name, type, bytes) => { const fd = new FormData(); fd.append("file", new Blob([bytes], { type }), name); const r = await fetch(BASE + "/api/files/upload", { method: "POST", headers: { authorization: `Bearer ${token}` }, body: fd }); return { status: r.status, json: await r.json().catch(() => null) }; };
+  const ok1 = await up(childToken, "work.png", "image/png", png);
+  ok(ok1.status === 200 && ok1.json.id, "png upload failed " + ok1.status);
+  const get = (token, id) => fetch(`${BASE}/api/files/${id}?auth=${encodeURIComponent(token)}`);
+  ok((await get(parentToken, ok1.json.id)).status === 200, "parent cannot read child's upload");
+  const other = await api("POST", "/auth/register", null, { name: "Third", email: `family4-${stamp}@example.com`, password: pw });
+  ok((await get(other.json.token, ok1.json.id)).status === 404, "other family can read the upload");
+  ok((await up(childToken, "x.html", "text/html", "<script>alert(1)</script>")).status === 400, "html upload allowed");
+  ok((await up(childToken, "x.svg", "image/svg+xml", "<svg onload=alert(1)/>")).status === 400, "svg upload allowed");
 });
 
 await step("K. another family cannot see or touch this family's records", async () => {

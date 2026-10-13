@@ -3,7 +3,7 @@ import { applySpelling } from "./data/spelling";
 import * as lb from "./lessonBuilder";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
-type Env = { DB: D1Database; JWT_SECRET: string };
+type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket };
 type App = Hono<{ Bindings: Env; Variables: { user: AuthUser } }>;
 
 const nowIso = () => new Date().toISOString();
@@ -143,6 +143,8 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       cheers: ch.map(cheerOut),
     });
   });
+
+  app.get("/api/features", auth, (c) => c.json({ uploads: !!c.env.BUCKET }));
 
   // ---------- Account plan ----------
   app.get("/api/account/plan", auth, async (c) => {
@@ -324,7 +326,12 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const sl = lessonOut(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first());
     s.lesson = u.role === "child" ? lb.childSafeLesson(sl) : sl;
     s.student = await c.env.DB.prepare("SELECT id, name, username, stage, year_level, theme FROM students WHERE id = ?").bind(r.student_id).first();
+    const ids: string[] = Array.isArray(s.file_ids) ? s.file_ids.slice(0, 20) : [];
     s.files = [];
+    for (const fid of ids) {
+      const f = await c.env.DB.prepare("SELECT id, original_filename, content_type, size FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fid, u.family_id).first();
+      if (f) s.files.push(f);
+    }
     return c.json(s);
   });
 
