@@ -1,0 +1,54 @@
+{
+  "browser_review": "pending",
+  "content_sha256": "948a220113acad23f6b69acbfe5f0dc31fa476710c5b8ef6a003ca759af25b6b",
+  "educational_review": "pending",
+  "generated_stages": [
+    "accept",
+    "teach0",
+    "teach1",
+    "teach2",
+    "teach3",
+    "learn",
+    "guided",
+    "write",
+    "quiz",
+    "submit"
+  ],
+  "migration": {
+    "lessons": 1,
+    "results": [
+      {
+        "bytes": 22854,
+        "episodes": 1,
+        "stages": 10
+      }
+    ],
+    "sqlBytes": 23118,
+    "statementBytes": [
+      23117
+    ],
+    "statements": 1
+  },
+  "nesa": "pending",
+  "sqlite": {
+    "assignments_preserved": true,
+    "changed_rows": 1,
+    "idempotent": true,
+    "identity_and_metadata_preserved": true,
+    "largest_statement_bytes": 23041,
+    "neighbours_unchanged": 19201,
+    "target_rows": 1
+  },
+  "static_quality": "passed",
+  "structural": {
+    "bytes": 22854,
+    "episodes": 1,
+    "stages": 10
+  },
+  "validator_sha256": {
+    "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+    "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+    "scripts/gold-pipeline/validate.mjs": "27a9a5aa5c112bb6a3faace33752889594858880411bc2dad6367d94fdcbd464",
+    "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: Repeated study-behaviour assessment templates\n    at need (file:///Users/petab/Side-Quest/.worktrees/parallel-workers/scripts/gold-pipeline/validate.mjs:10:34)\n    at validateBundle (file:///Users/petab/Side-Quest/.worktrees/parallel-workers/scripts/gold-pipeline/validate.mjs:113:3)\n    at file:///Users/petab/Side-Quest/.worktrees/parallel-workers/scripts/gold-pipeline/validate.mjs:156:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)\n    at async node:internal/modules/esm/loader:647:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)",
+  "passed": false
+}

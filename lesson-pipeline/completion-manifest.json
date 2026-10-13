@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-13",
   "phase": "PHASE_1_WRITTEN_CORE",
-  "pipeline_auto_validated": 1731,
+  "pipeline_auto_validated": 1809,
   "human_gates": {
     "educationally_reviewed": 0,
     "nesa_verified": 0,
@@ -29,8 +29,8 @@
   "y4_english_complete_auto": true,
   "y4_maths_written_core_auto_validated": 160,
   "y4_maths_total": 160,
-  "next_resume": "parallel: builder-y7-hsie\u2192s4-hsie-y7-w26-l1; builder-y8-eng\u2192s4-eng-y8-w01-l3",
-  "note": "Parallel pilot passed (2+2). Hub 1731 auto-validated. Human gates 0.",
+  "next_resume": "parallel: Y7\u2192s4-pdhpe-y7-w07-l1; Y8\u2192s4-eng-y8-w10-l3",
+  "note": "Parallel production: hub auto-validated 1809. Y7 HSIE 80/80. Y7 PDHPE 12/80. Y8 Eng 38/160. Human gates 0.",
   "y4_maths_complete_auto": true,
   "y4_science_written_core_auto_validated": 80,
   "y4_science_total": 80,
@@ -54,25 +54,22 @@
   "y7_science_written_core_auto_validated": 80,
   "y7_science_total": 80,
   "y7_science_complete_auto": true,
-  "y7_hsie_written_core_auto_validated": 50,
+  "y7_hsie_written_core_auto_validated": 80,
   "y7_hsie_total": 80,
-  "y7_hsie_complete_auto": false,
+  "y7_hsie_complete_auto": true,
   "agent_partition": "stage2_year4_exclusive",
   "stage4_sequential_advance_stopped_by_y4_agent": true,
-  "y8_english_written_core_auto_validated": 2,
+  "y8_english_written_core_auto_validated": 38,
   "y8_english_total": 160,
   "y8_english_complete_auto": false,
   "parallel_workers": {
     "enabled": true,
     "quality_hardening_adopted": true,
     "pilot_status": "passed",
-    "pilot_lessons": [
-      "s4-hsie-y7-w25-l1",
-      "s4-hsie-y7-w25-l2",
-      "s4-eng-y8-w01-l1",
-      "s4-eng-y8-w01-l2"
-    ],
-    "streams": 4,
-    "note": "Human gates remain 0. Bulk assessment repair offline only."
-  }
+    "production_status": "active_dual_stream",
+    "session_note": "Y7 HSIE complete; PDHPE batch01 done; Y8 Eng through w10-l2"
+  },
+  "y7_pdhpe_written_core_auto_validated": 12,
+  "y7_pdhpe_total": 80,
+  "y7_pdhpe_complete_auto": false
 }

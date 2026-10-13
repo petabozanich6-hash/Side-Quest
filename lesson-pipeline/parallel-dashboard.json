@@ -1,7 +1,7 @@
 {
   "phase": "PHASE_1_WRITTEN_CORE",
   "hub": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline",
-  "hub_auto_validated": 1731,
+  "hub_auto_validated": 1809,
   "hub_human_gates": {
     "educationally_reviewed": 0,
     "nesa_verified": 0,
@@ -52,21 +52,23 @@
     },
     {
       "worker": "builder-y7-hsie",
-      "label": "S4 Y7 HSIE",
+      "label": "S4 Y7 (HSIE\u2192PDHPE\u2192Tech)",
       "seed_patterns": [
-        "s4-hsie-y7-*"
+        "s4-hsie-y7-*",
+        "s4-pdhpe-y7-*",
+        "s4-tech-y7-*"
       ],
       "branch_hint": "feature/gold-v2-builder-y7",
       "worktree_hint": ".worktrees/builder-y7",
       "state": "lesson-pipeline/workers/builder-y7-hsie",
-      "owned": 80,
-      "authored": 2,
-      "auto_validated_worker_or_hub": 50,
-      "remaining": 30,
-      "next_seed": "s4-hsie-y7-w26-l1",
-      "current_lesson": "s4-hsie-y7-w25-l2",
+      "owned": 260,
+      "authored": 44,
+      "auto_validated_worker_or_hub": 92,
+      "remaining": 168,
+      "next_seed": "s4-pdhpe-y7-w07-l1",
+      "current_lesson": "s4-hsie-y7-w39-l1",
       "phases": {
-        "awaiting_review": 2
+        "awaiting_review": 44
       },
       "blockers": [
         "Human educational/NESA/browser/release gates remain at 0"
@@ -82,28 +84,25 @@
       "worktree_hint": ".worktrees/builder-y8",
       "state": "lesson-pipeline/workers/builder-y8-eng",
       "owned": 160,
-      "authored": 2,
-      "auto_validated_worker_or_hub": 2,
-      "remaining": 158,
-      "next_seed": "s4-eng-y8-w01-l3",
-      "current_lesson": "s4-eng-y8-w01-l2",
+      "authored": 38,
+      "auto_validated_worker_or_hub": 38,
+      "remaining": 122,
+      "next_seed": "s4-eng-y8-w10-l3",
+      "current_lesson": "s4-eng-y8-w10-l2",
       "phases": {
-        "awaiting_review": 2
+        "awaiting_review": 38
       },
       "blockers": [
         "Human educational/NESA/browser/release gates remain at 0"
       ]
     }
   ],
-  "partitions_updated_at": "2026-10-13T00:03:52.161299+00:00",
+  "partitions_updated_at": "2026-10-13T01:00:00+00:00",
   "last_reconcile": {
-    "merged_count": 4,
-    "skipped_count": 0,
+    "merged_count": 1,
+    "skipped_count": 43,
     "workers": [
-      "builder-y3",
-      "builder-y4",
-      "builder-y7-hsie",
-      "builder-y8-eng"
+      "builder-y7-hsie"
     ]
   },
   "note": "Human gates are never advanced by reconcile; auto-validated \u2260 release approved."

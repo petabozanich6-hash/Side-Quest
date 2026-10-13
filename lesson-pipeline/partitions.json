@@ -1,17 +1,14 @@
 {
   "last_reconcile": {
-    "merged_count": 4,
-    "skipped_count": 0,
+    "merged_count": 1,
+    "skipped_count": 43,
     "workers": [
-      "builder-y3",
-      "builder-y4",
-      "builder-y7-hsie",
-      "builder-y8-eng"
+      "builder-y7-hsie"
     ]
   },
-  "last_reconcile_at": "2026-10-13T00:04:20.264041+00:00",
+  "last_reconcile_at": "2026-10-13T00:09:45.737241+00:00",
   "schema": 1,
-  "updated_at": "2026-10-13T00:03:52.161299+00:00",
+  "updated_at": "2026-10-13T01:00:00+00:00",
   "workers": {
     "builder-y3": {
       "branch": "feature/gold-v2-builder-y3",
@@ -42,9 +39,11 @@
       "branch": "feature/gold-v2-builder-y7",
       "created_at": "2026-10-13T00:03:51.704927+00:00",
       "id": "builder-y7-hsie",
-      "label": "S4 Y7 HSIE",
+      "label": "S4 Y7 (HSIE→PDHPE→Tech)",
       "seed_patterns": [
-        "s4-hsie-y7-*"
+        "s4-hsie-y7-*",
+        "s4-pdhpe-y7-*",
+        "s4-tech-y7-*"
       ],
       "state": "workers/builder-y7-hsie",
       "worktree": ".worktrees/builder-y7"

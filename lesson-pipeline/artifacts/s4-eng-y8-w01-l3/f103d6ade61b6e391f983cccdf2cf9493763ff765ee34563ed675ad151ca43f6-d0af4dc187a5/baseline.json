@@ -1,0 +1,333 @@
+{
+  "child_mission": "Explore control complex sentences and clauses through an original courtyard story. Make deliberate choices and explain them with precise evidence.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep the control complex sentences and clauses task, supporting notes or working, before-and-after revision, reflection and quiz result.",
+  "extension": "Take one reason sentence and one contrast sentence. Reorder each, preserving meaning and using the demonstrated punctuation.",
+  "guided_practice": "WE DO:\n1. Mark Sam / held in “Sam held the board”. This is the main statement.\n2. Mark Kai / needed in “because Kai needed both hands”. It is a dependent reason.\n3. Join them main-first and compare with the model: no comma is needed in this demonstrated reason order.\n4. Move the reason first. Compare: “Because Kai needed both hands, Sam held the board.”\n5. Choose although to link a setback and a successful outcome, then explain the contrast.\n6. Repair “When the exhibition opened.” with a complete main statement. Example after your attempt: “When the exhibition opened, the sign stayed visible.”",
+  "independent_task": "YOU DO: Control complex sentences and clauses task (about 25–30 minutes).\n1. Read the complete source or models included in this lesson.\n2. Write six complex sentences: two reason, two time and two contrast. Label subjects and verbs in three, reorder two using the model punctuation, and repair the supplied fragment “Because the sign fell.” Explain one revision.\n3. Show the evidence, planning or clause working behind two decisions.\n4. Reread or rehearse and improve one specific part. Explain the before-and-after change and its purpose.\n5. Answer the reflection. Work on paper or in the big box; type a clear record if you used paper. Uploads are optional.\nSuccess checklist: requested complete response; accurate event or clause relationships; supported choices; appropriate knowledge limits; explained revision; honest evidence record.",
+  "learning_area": "English",
+  "learning_intention": "We are learning to control complex sentences and clauses.",
+  "lesson_number": 3,
+  "lesson_role": "Language and vocabulary",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Copy or print the supplied source and models, complete the control complex sentences and clauses task on paper and rehearse where needed. Later type a clear evidence summary.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches control complex sentences and clauses through original narrative material and explicit language or craft modelling. Original content follows the repository’s topic sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of complete syllabus coverage.\n\nParent: Look for supported and qualified interpretation, controlled information access, complete clause relationships or accurate storytelling as appropriate. Do not treat fictional reliability analysis as a diagnosis of real people. The lesson itself supplies the teaching and feedback. Your role is access support and reviewing the evidence.\n\nParent: Accept logical complete examples using because, when and although. Introductory dependent clauses use the taught comma boundary. Model repair: Because the sign fell, Kai checked behind the board. A full stop alone does not repair the fragment.\n\nParent: Ten scored choices use the unchanged 90% threshold, requiring 9/10. The independent task and reflection supply written reasoning for manual review.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 2,
+      "explanation": "Was holding works as the clause’s verb group with Sam as subject.",
+      "options": [
+        "Sam was",
+        "Holding the board Sam",
+        "Was holding",
+        "Board only"
+      ],
+      "question": "Which is the verb group in “Sam was holding the board”?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The clause depends on a main statement to complete the reason relationship in this task.",
+      "options": [
+        "It contains no letters",
+        "It provides a dependent reason without its main statement",
+        "Every sentence must be long",
+        "Because can never occur in writing"
+      ],
+      "question": "Why is “Because Kai needed both hands” incomplete here?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "Although introduces a concession or contrast between the dependent clause and the main outcome.",
+      "options": [
+        "Because",
+        "When",
+        "And only",
+        "Although"
+      ],
+      "question": "Which word introduces contrast in the taught models?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "The introductory subordinate clause is followed by a comma and a complete main statement.",
+      "options": [
+        "Because Kai needed both hands, Sam held the board.",
+        "Because, Kai needed both hands Sam held the board.",
+        "Because Kai needed both hands.",
+        "Sam held, because the board."
+      ],
+      "question": "Which follows the demonstrated introductory-clause pattern?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Complex is a clause-structure description.",
+      "options": [
+        "Its printed length only",
+        "A main clause and a subordinate clause",
+        "Every long verb group",
+        "The number of adjectives"
+      ],
+      "question": "What makes a sentence complex in these models?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Because links a dependent reason to the main statement.",
+      "options": [
+        "Alphabet order",
+        "An unrelated comparison",
+        "Reason",
+        "Only a list of nouns"
+      ],
+      "question": "What relationship does because introduce?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "When can link the timing of a dependent event to the main event.",
+      "options": [
+        "Time",
+        "A guaranteed cause in every case",
+        "An adjective count",
+        "A replacement for all verbs"
+      ],
+      "question": "What relationship can when introduce?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The repair supplies a main statement after the dependent reason.",
+      "options": [
+        "Because the sign fell.",
+        "Because, the sign fell.",
+        "Because the sign.",
+        "Because the sign fell, Kai checked behind the board."
+      ],
+      "question": "Which fixes the supplied fragment?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The complete main-first reason model does not need a comma at that boundary.",
+      "options": [
+        "Sam held, the board because Kai needed both hands.",
+        "Sam held the board because Kai needed both hands.",
+        "Sam, held the board because.",
+        "Because Kai needed both hands."
+      ],
+      "question": "Which main-first reason sentence matches the model punctuation?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "A multiword verb group can belong to a single clause.",
+      "options": [
+        "Clauses have no subjects",
+        "Every auxiliary is a separate sentence",
+        "Several words may form one verb group in one clause",
+        "Only sentence length matters"
+      ],
+      "question": "Why count subject–verb units instead of verb-shaped words?",
+      "type": "multiple_choice"
+    }
+  ],
+  "response_prompt": "Which evidence or craft decision most affected your control complex sentences and clauses response, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s4-eng-y8-w01-l3",
+  "stage": "S4",
+  "stage_hints": {
+    "accept": [
+      "Read the mission about control complex sentences and clauses.",
+      "You will practise control complex sentences and clauses through models before making your own response.",
+      "Begin with the first explanation of control complex sentences and clauses; the examples remain available while you work."
+    ],
+    "guided": [
+      "Begin with the subject and verb in the main statement.",
+      "Identify the dependent unit and what its linking word contributes.",
+      "Join the units, then move the dependent unit first and test the demonstrated boundary."
+    ],
+    "learn": [
+      "Compare the main-first and introductory-clause models.",
+      "Mark the subject and verb in each unit before checking its boundary.",
+      "Reorder one complete pair and check that the link and comma still fit the demonstrated pattern."
+    ],
+    "quiz": [
+      "Return to the specific control complex sentences and clauses teaching step named by the question.",
+      "For a clause question, mark each subject and verb, then identify the linking relationship.",
+      "Use source evidence or the demonstrated clause test before choosing; do not select by how confident an option sounds."
+    ],
+    "submit": [
+      "Check that your control complex sentences and clauses task and working are present.",
+      "Include the control complex sentences and clauses reflection and any written reasoning you produced.",
+      "Send your control complex sentences and clauses evidence for review; type a clear record if you used paper."
+    ],
+    "teach0": [
+      "Look for who or what the statement concerns.",
+      "Find the action or state words working together.",
+      "Mark one subject–verb unit before deciding whether another clause begins."
+    ],
+    "teach1": [
+      "Read the clause by itself and notice what the relationship expects next.",
+      "Separate the dependent reason from the main action.",
+      "Attach a suitable main statement so the sentence expresses the complete relationship."
+    ],
+    "teach2": [
+      "Name the intended relationship before picking a linking word.",
+      "Distinguish reason, time and contrast.",
+      "Read the full sentence and check that the conjunction preserves that relationship."
+    ],
+    "teach3": [
+      "Identify the end of the introductory dependent clause.",
+      "Keep the main statement complete after it.",
+      "Use the model’s comma boundary and read both clauses together for meaning."
+    ],
+    "write": [
+      "Start with one main statement and a reason clause.",
+      "Use “____ because ____” and label the subject and verb in each part.",
+      "A partial opening is “Sam ____ because Kai ____.” Complete both clauses, then test and reorder your sentence using the model boundary."
+    ]
+  },
+  "subject": "English",
+  "success_criteria": [
+    "I can explain the key narrative or language idea.",
+    "I can use a specific example to support a decision.",
+    "I can apply the taught method to a complete response.",
+    "I can revise or qualify a choice and explain its effect."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "Was holding works as the clause’s verb group with Sam as subject.",
+        "options": [
+          "Sam was",
+          "Holding the board Sam",
+          "Was holding",
+          "Board only"
+        ],
+        "question": "Which is the verb group in “Sam was holding the board”?"
+      },
+      "example": "I DO:\n“Sam held the board because Kai needed both hands.”\nUnit one: Sam / held.\nUnit two: Kai / needed.\n“Sam was holding the board” is one subject with one multiword verb group.\n\nYOU TRY:\nIdentify the subject and verb in “The sign was visible”.\n\nCHECK:\nThe sign is the subject; was is the verb connecting it with the description visible. A verb can express state rather than movement.",
+      "explain": "**A clause contains a subject and a verb.**\nThe subject identifies who or what the clause is about; the verb expresses action or state. In “Kai checked the table”, Kai is the subject and checked is the verb.\n\n**A sentence can contain more than one clause.**\n“Sam held the board because Kai needed both hands” contains two subject–verb units. A long list of objects does not automatically create extra clauses.\n\n**A verb group may contain several words.**\n“Sam was holding the board” has the verb group was holding. Those words work together within one clause; counting verb-shaped words alone can overcount clauses.\n\nMark subject and verb before naming structure. This gives evidence for a clause count instead of judging only the sentence’s length.",
+      "icon": "🔎",
+      "notice": "Do not count every word in a verb group as a separate clause.",
+      "title": "Find the subject and verb in each clause",
+      "visual": [
+        {
+          "alt": "A clause diagram identifies a main action and a dependent reason, with a comma after an introductory subordinate clause.",
+          "caption": "Structure is about clause relationships, not length.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 224\"><rect width=\"420\" height=\"224\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Main: Sam held the board</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Reason: because Kai needed</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">both hands</text><text x=\"16\" y=\"172\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Introductory clause → comma</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "The clause depends on a main statement to complete the reason relationship in this task.",
+        "options": [
+          "It contains no letters",
+          "It provides a dependent reason without its main statement",
+          "Every sentence must be long",
+          "Because can never occur in writing"
+        ],
+        "question": "Why is “Because Kai needed both hands” incomplete here?"
+      },
+      "example": "I DO:\nMain: Sam held the board.\nSubordinate: because Kai needed both hands.\nComplete: Sam held the board because Kai needed both hands.\n\nYOU TRY:\nWhy is “Because Kai needed both hands” incomplete as the whole task sentence?\n\nCHECK:\nIt gives a reason but not the main action linked to that reason. Add the main clause rather than only a full stop.",
+      "explain": "**A main clause can stand as a complete statement in these models.**\n“Sam held the board” gives an independent idea. A subordinate clause depends on another clause for the complete sentence relationship.\n\n**A subordinating conjunction marks the relationship.**\nBecause Kai needed both hands gives a reason but leaves a reader waiting for the main statement. Words such as because, although and when can introduce dependent relationships.\n\n**A complex sentence combines a main and a subordinate clause.**\n“Sam held the board because Kai needed both hands” connects action with reason. Complex describes clause structure, not how difficult or long the sentence looks.\n\nRead the clauses separately to test their jobs, then together to check the complete meaning. Not every conjunction makes the same kind of structure.",
+      "icon": "🔎",
+      "notice": "A capital and full stop do not supply a missing main clause.",
+      "title": "Distinguish main and subordinate clauses"
+    },
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "Although introduces a concession or contrast between the dependent clause and the main outcome.",
+        "options": [
+          "Because",
+          "When",
+          "And only",
+          "Although"
+        ],
+        "question": "Which word introduces contrast in the taught models?"
+      },
+      "example": "I DO:\nReason: “Sam held the board because Kai needed both hands.”\nTime: “Kai found the sign when Sam suggested checking the gap.”\nContrast: “Although they lost time, the display was ready.”\n\nYOU TRY:\nLink a setback with a successful outcome using a contrast relationship.\n\nCHECK:\n“Although the sign fell, the display was ready on time” preserves the contrast. A reason conjunction would express a different connection.",
+      "explain": "**Different links carry different meanings.**\nBecause introduces reason; when can indicate time; although introduces contrast or concession. Replacing one with another can change the relationship even if the surrounding words stay similar.\n\n**Check the intended logic.**\n“Although the sign fell, the display was ready on time” contrasts a setback with a completed outcome. “The sign fell because the fan faced the table” suggests a cause; in the story this is an inference, so qualify it if making an analytical claim.\n\n**Preserve the level of certainty.**\nFor analysis, “The sign may have moved because the fan faced the table” avoids claiming an unobserved cause as proven. For original fiction, an author can establish a cause through the chosen narration.\n\nChoose the relationship before choosing the conjunction. A fluent sentence can still express the wrong reason, time or contrast.",
+      "icon": "🔎",
+      "notice": "The link changes meaning. Check whether the clause expresses the relationship you intended.",
+      "title": "Choose a conjunction for the intended relationship",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "Because Kai needed both hands gives a reason. Does it finish the whole statement by itself?",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Attach a main clause: Sam held the board. Together they make the reason relationship complete.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "If the reason comes first, I mark its boundary: Because Kai needed both hands, Sam held the board.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and identify each subject and verb before reordering your own clause pair.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Control complex sentences and clauses",
+            "transcript": "Pip: Because Kai needed both hands gives a reason. Does it finish the whole statement by itself?\nJuno: Attach a main clause: Sam held the board. Together they make the reason relationship complete.\nPip: If the reason comes first, I mark its boundary: Because Kai needed both hands, Sam held the board.\nJuno: Pause and identify each subject and verb before reordering your own clause pair."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "The introductory subordinate clause is followed by a comma and a complete main statement.",
+        "options": [
+          "Because Kai needed both hands, Sam held the board.",
+          "Because, Kai needed both hands Sam held the board.",
+          "Because Kai needed both hands.",
+          "Sam held, because the board."
+        ],
+        "question": "Which follows the demonstrated introductory-clause pattern?"
+      },
+      "example": "I DO:\nMain first: “Sam held the board because Kai needed both hands.”\nSubordinate first: “Because Kai needed both hands, Sam held the board.”\nThe meaning is preserved while the introductory clause is marked with a comma.\n\nYOU TRY:\nMove “although they lost time” to the beginning of a sentence about the display being ready.\n\nCHECK:\n“Although they lost time, the display was ready.” The comma follows the introductory clause; the main statement remains complete.",
+      "explain": "**The subordinate clause can come first.**\n“Because Kai needed both hands, Sam held the board.” In this model, a comma marks the end of the introductory subordinate clause before the main statement.\n\n**The main clause can come first too.**\n“Sam held the board because Kai needed both hands.” In this model, no comma is needed before the following reason clause. Other clause types can use different comma patterns; keep this task to the demonstrated structures.\n\n**Avoid fragments and comma splices.**\nDo not leave “Because Kai needed both hands” alone. Do not join two independent statements with only a comma and call that a complex sentence. Our target needs a subordinate relationship as well as a main clause.\n\nReorder one sentence and check that the cause, time or contrast remains clear. Punctuation should help the reader follow the structure, not replace a missing clause.",
+      "icon": "🔎",
+      "notice": "Check both structure and marks. Punctuation cannot turn an unfinished reason into a complete thought.",
+      "title": "Reorder clauses and punctuate the model"
+    }
+  ],
+  "title": "Year 8: Control complex sentences and clauses",
+  "unit_number": 1,
+  "unit_title": "Narrative craft and perspective",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Build and edit a complete set of complex sentences.\nReason: Sam held the board because Kai needed both hands.\nReason, reordered: Because Kai needed both hands, Sam held the board.\nTime: Kai found the sign when Sam suggested checking the gap.\nTime, reordered: When Sam suggested checking the gap, Kai found the sign.\nContrast: Although they lost time, the display was ready.\nContrast, main first: The display was ready although they lost time.\n\nCLAUSE LABELS\nSam / held and Kai / needed are two subject–verb units in the first sentence. Because introduces a dependent reason; Sam held the board is the main statement. Was ready is a verb group expressing a state in the contrast model.\n\nCOMMON MISTAKE AND FIX\n“Because the sign fell.” gives a dependent reason without its main statement. Repair: “Because the sign fell, Kai checked behind the board.” The repair supplies the main action and marks the introductory boundary.\n\nWHY IT WORKS\nThe linking word expresses the intended relationship, both clauses are present, and the punctuation follows the demonstrated order. Reordering does not replace the reason with a different event.",
+  "worked_visuals": [
+    {
+      "alt": "A clause diagram identifies a main action and a dependent reason, with a comma after an introductory subordinate clause.",
+      "caption": "Structure is about clause relationships, not length.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 224\"><rect width=\"420\" height=\"224\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Main: Sam held the board</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Reason: because Kai needed</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">both hands</text><text x=\"16\" y=\"172\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Introductory clause → comma</text></svg>"
+    }
+  ],
+  "year_level": "Year 8"
+}

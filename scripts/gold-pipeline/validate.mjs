@@ -64,8 +64,8 @@ export function validateBundle(bundle, baseline) {
   const seed=String(l.seed_key||'');
   const area=String(l.learning_area||l.subject||'').toLowerCase();
   const subjCode=(seed.match(/^s[24]-([a-z]+)-/)||[])[1]||'';
-  // HSIE seeds may carry History/Geography learning_area labels in Stage 4 catalogue rows.
-  const areaExpect={eng:['english'],mat:['math'],sci:['science'],hsie:['hsie','human','geograph','history'],pdhpe:['pdhpe','personal'],arts:['art','creative'],tech:['tech','design']};
+  // HSIE seeds may carry History/Geography/Inquiry learning_area labels in Stage 4 catalogue rows.
+  const areaExpect={eng:['english'],mat:['math'],sci:['science'],hsie:['hsie','human','geograph','history','inquir'],pdhpe:['pdhpe','personal'],arts:['art','creative'],tech:['tech','design']};
   if(subjCode&&areaExpect[subjCode]){
     need(areaExpect[subjCode].some(tok=>area.includes(tok)),
       `Learning area metadata mismatches seed subject: ${seed} / ${area}`);
@@ -108,8 +108,9 @@ export function validateBundle(bundle, baseline) {
         'Near-duplicate quiz prompts');
     }
   }
-  // Repeated generator template density: more than two study-meta stems fails even if wording varies.
-  const studyMeta=/practising |shows understanding|shows transfer|independent use of|feedback comment|respect and accuracy together/i;
+  // Repeated generator template density: more than one study-meta stem fails.
+  // Do not match bare "practising" alone — Stage 4 topics can legitimately use that word (e.g. rehearsals).
+  const studyMeta=/\b(a learner is practising|shows understanding|shows transfer|independent use of|feedback comment|respect and accuracy together|which approach best shows|which practice choice shows)\b/i;
   need(mc.filter(q=>studyMeta.test(q.question)).length<=1,'Repeated study-behaviour assessment templates');
   for(const q of written){
     need(text(q.sample_answer)&&text(q.marking_guide),'Written items need sample and marking guide');
