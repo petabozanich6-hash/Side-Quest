@@ -15,9 +15,12 @@ def L(seed, code, vocab, principle, model, guided, feedback, misconception, inde
                 independent=independent, subject='english')
 
 
-def write_batch(lessons, visuals, expected_count=None):
+def write_batch(lessons, visuals, expected_count=None, out_dir=None, label='Y7 English'):
     if expected_count is not None:
         assert len(lessons) == expected_count, f'expected {expected_count}, got {len(lessons)}'
+    from pathlib import Path
+    out = Path(out_dir) if out_dir else (ROOT / 'lesson-pipeline/authored')
+    out.mkdir(parents=True, exist_ok=True)
     db = reconstruct()
     try:
         for u in lessons:
@@ -43,8 +46,8 @@ def write_batch(lessons, visuals, expected_count=None):
                 bundle['curriculum'] = [dict(
                     code=u['code'], source=ENG_SOURCE, verification_status='pending',
                     lesson_evidence=u['principle'], scope_limit=scope)]
-            atomic_json(ROOT / 'lesson-pipeline/authored' / f"{u['seed_key']}.json", bundle)
-            print('Written Core Y7 English bundle:', u['seed_key'])
+            atomic_json(out / f"{u['seed_key']}.json", bundle)
+            print(f'Written Core {label} bundle:', u['seed_key'])
     finally:
         db.close()
 

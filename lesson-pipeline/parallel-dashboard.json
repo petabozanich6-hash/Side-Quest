@@ -1,0 +1,110 @@
+{
+  "phase": "PHASE_1_WRITTEN_CORE",
+  "hub": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline",
+  "hub_auto_validated": 1731,
+  "hub_human_gates": {
+    "educationally_reviewed": 0,
+    "nesa_verified": 0,
+    "browser_verified": 0,
+    "fully_approved": 0
+  },
+  "quality_hardening_adopted": true,
+  "builders": [
+    {
+      "worker": "builder-y3",
+      "label": "S2 Y3",
+      "seed_patterns": [
+        "s2-*-y3-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-y3",
+      "worktree_hint": ".worktrees/builder-y3",
+      "state": "lesson-pipeline/workers/builder-y3",
+      "owned": 639,
+      "authored": 0,
+      "auto_validated_worker_or_hub": 639,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": null,
+      "phases": {},
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    },
+    {
+      "worker": "builder-y4",
+      "label": "S2 Y4 repairs",
+      "seed_patterns": [
+        "s2-*-y4-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-y4",
+      "worktree_hint": ".worktrees/builder-y4",
+      "state": "lesson-pipeline/workers/builder-y4",
+      "owned": 640,
+      "authored": 0,
+      "auto_validated_worker_or_hub": 640,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": null,
+      "phases": {},
+      "blockers": [
+        "Y4 complete 640/640 \u2014 repairs only"
+      ]
+    },
+    {
+      "worker": "builder-y7-hsie",
+      "label": "S4 Y7 HSIE",
+      "seed_patterns": [
+        "s4-hsie-y7-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-y7",
+      "worktree_hint": ".worktrees/builder-y7",
+      "state": "lesson-pipeline/workers/builder-y7-hsie",
+      "owned": 80,
+      "authored": 2,
+      "auto_validated_worker_or_hub": 50,
+      "remaining": 30,
+      "next_seed": "s4-hsie-y7-w26-l1",
+      "current_lesson": "s4-hsie-y7-w25-l2",
+      "phases": {
+        "awaiting_review": 2
+      },
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    },
+    {
+      "worker": "builder-y8-eng",
+      "label": "S4 Y8 English",
+      "seed_patterns": [
+        "s4-eng-y8-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-y8",
+      "worktree_hint": ".worktrees/builder-y8",
+      "state": "lesson-pipeline/workers/builder-y8-eng",
+      "owned": 160,
+      "authored": 2,
+      "auto_validated_worker_or_hub": 2,
+      "remaining": 158,
+      "next_seed": "s4-eng-y8-w01-l3",
+      "current_lesson": "s4-eng-y8-w01-l2",
+      "phases": {
+        "awaiting_review": 2
+      },
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    }
+  ],
+  "partitions_updated_at": "2026-10-13T00:03:52.161299+00:00",
+  "last_reconcile": {
+    "merged_count": 4,
+    "skipped_count": 0,
+    "workers": [
+      "builder-y3",
+      "builder-y4",
+      "builder-y7-hsie",
+      "builder-y8-eng"
+    ]
+  },
+  "note": "Human gates are never advanced by reconcile; auto-validated \u2260 release approved."
+}

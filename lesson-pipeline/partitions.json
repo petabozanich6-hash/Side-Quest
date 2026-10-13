@@ -1,0 +1,64 @@
+{
+  "last_reconcile": {
+    "merged_count": 4,
+    "skipped_count": 0,
+    "workers": [
+      "builder-y3",
+      "builder-y4",
+      "builder-y7-hsie",
+      "builder-y8-eng"
+    ]
+  },
+  "last_reconcile_at": "2026-10-13T00:04:20.264041+00:00",
+  "schema": 1,
+  "updated_at": "2026-10-13T00:03:52.161299+00:00",
+  "workers": {
+    "builder-y3": {
+      "branch": "feature/gold-v2-builder-y3",
+      "created_at": "2026-10-13T00:03:51.836004+00:00",
+      "id": "builder-y3",
+      "label": "S2 Y3",
+      "seed_patterns": [
+        "s2-*-y3-*"
+      ],
+      "state": "workers/builder-y3",
+      "worktree": ".worktrees/builder-y3"
+    },
+    "builder-y4": {
+      "blockers": [
+        "Y4 complete 640/640 — repairs only"
+      ],
+      "branch": "feature/gold-v2-builder-y4",
+      "created_at": "2026-10-13T00:03:51.919544+00:00",
+      "id": "builder-y4",
+      "label": "S2 Y4 repairs",
+      "seed_patterns": [
+        "s2-*-y4-*"
+      ],
+      "state": "workers/builder-y4",
+      "worktree": ".worktrees/builder-y4"
+    },
+    "builder-y7-hsie": {
+      "branch": "feature/gold-v2-builder-y7",
+      "created_at": "2026-10-13T00:03:51.704927+00:00",
+      "id": "builder-y7-hsie",
+      "label": "S4 Y7 HSIE",
+      "seed_patterns": [
+        "s4-hsie-y7-*"
+      ],
+      "state": "workers/builder-y7-hsie",
+      "worktree": ".worktrees/builder-y7"
+    },
+    "builder-y8-eng": {
+      "branch": "feature/gold-v2-builder-y8",
+      "created_at": "2026-10-13T00:03:51.770687+00:00",
+      "id": "builder-y8-eng",
+      "label": "S4 Y8 English",
+      "seed_patterns": [
+        "s4-eng-y8-*"
+      ],
+      "state": "workers/builder-y8-eng",
+      "worktree": ".worktrees/builder-y8"
+    }
+  }
+}

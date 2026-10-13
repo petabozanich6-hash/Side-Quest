@@ -1,0 +1,9 @@
+{
+  "created_at": "2026-10-13T00:03:51.704927+00:00",
+  "id": "builder-y7-hsie",
+  "label": "S4 Y7 HSIE",
+  "seed_patterns": [
+    "s4-hsie-y7-*"
+  ],
+  "state": "workers/builder-y7-hsie"
+}

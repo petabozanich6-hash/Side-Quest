@@ -22,7 +22,10 @@ npm-debug.log*
 
 # Local pipeline locks and atomic-write temporaries; checkpoints/artifacts are tracked.
 lesson-pipeline/.pipeline.lock
+lesson-pipeline/workers/*/.pipeline.lock
 lesson-pipeline/**/.checkpoint-*.tmp
+# Worker inventory copies are regenerated from the hub via init-worker (avoid 6MB×N blobs).
+lesson-pipeline/workers/*/inventory.jsonl
 scripts/gold-pipeline/__pycache__/
 
 # Local agent worktrees (sibling checkouts under repo)

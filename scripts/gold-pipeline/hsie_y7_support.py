@@ -1,4 +1,6 @@
 """Shared helpers for Year 7 Stage 4 HSIE (History/Geography/Inquiry) Written Core."""
+from pathlib import Path
+
 from pipeline import ROOT, reconstruct, baseline_data, atomic_json
 from written_bundle import build_from_spec, pair_visual
 
@@ -18,9 +20,11 @@ def L(seed, code, vocab, principle, model, guided, feedback, misconception, inde
                 independent=independent, subject='hsie')
 
 
-def write_batch(lessons, visuals, expected_count=None):
+def write_batch(lessons, visuals, expected_count=None, out_dir=None):
     if expected_count is not None:
         assert len(lessons) == expected_count, f'expected {expected_count}, got {len(lessons)}'
+    out = Path(out_dir) if out_dir else (ROOT / 'lesson-pipeline/authored')
+    out.mkdir(parents=True, exist_ok=True)
     db = reconstruct()
     try:
         for u in lessons:
@@ -52,7 +56,7 @@ def write_batch(lessons, visuals, expected_count=None):
                 bundle['curriculum'] = [dict(
                     code=u['code'], source=source, verification_status='pending',
                     lesson_evidence=u['principle'], scope_limit=scope)]
-            atomic_json(ROOT / 'lesson-pipeline/authored' / f"{u['seed_key']}.json", bundle)
+            atomic_json(out / f"{u['seed_key']}.json", bundle)
             print('Written Core Y7 HSIE bundle:', u['seed_key'])
     finally:
         db.close()

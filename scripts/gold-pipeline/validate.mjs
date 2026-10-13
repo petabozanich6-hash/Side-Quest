@@ -64,7 +64,8 @@ export function validateBundle(bundle, baseline) {
   const seed=String(l.seed_key||'');
   const area=String(l.learning_area||l.subject||'').toLowerCase();
   const subjCode=(seed.match(/^s[24]-([a-z]+)-/)||[])[1]||'';
-  const areaExpect={eng:['english'],mat:['math'],sci:['science'],hsie:['hsie','human'],pdhpe:['pdhpe','personal'],arts:['art','creative']};
+  // HSIE seeds may carry History/Geography learning_area labels in Stage 4 catalogue rows.
+  const areaExpect={eng:['english'],mat:['math'],sci:['science'],hsie:['hsie','human','geograph','history'],pdhpe:['pdhpe','personal'],arts:['art','creative'],tech:['tech','design']};
   if(subjCode&&areaExpect[subjCode]){
     need(areaExpect[subjCode].some(tok=>area.includes(tok)),
       `Learning area metadata mismatches seed subject: ${seed} / ${area}`);

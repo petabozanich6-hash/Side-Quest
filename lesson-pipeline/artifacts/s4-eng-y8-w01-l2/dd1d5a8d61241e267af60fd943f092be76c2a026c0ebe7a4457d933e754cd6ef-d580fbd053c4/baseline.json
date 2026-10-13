@@ -1,0 +1,357 @@
+{
+  "child_mission": "Explore rewrite a scene from another perspective through an original courtyard story. Make deliberate choices and explain them with precise evidence.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep the rewrite a scene from another perspective task, supporting notes or working, before-and-after revision, reflection and quiz result.",
+  "extension": "Rewrite the same short discovery through Kai and Sam in two brief paragraphs. Explain what each can know and what each emphasises.",
+  "guided_practice": "WE DO:\n1. Write four shared events in order before inventing interior thoughts.\n2. Choose Sam’s third-person limited lens. List one seen action and one heard line.\n3. Rewrite “Sam knew Kai was embarrassed” without unmarked mind-reading. Compare: describe Kai looking at the sign and claiming the plan was already intended.\n4. Choose a practical detail such as the direction arrow. Explain how it changes emphasis.\n5. Draft a short discovery paragraph, then compare its sequence with the shared-event record.\n6. Explain one new thought as your creative choice rather than a source-confirmed fact.",
+  "independent_task": "YOU DO: Rewrite a scene from another perspective task (about 25–30 minutes).\n1. Read the complete source or models included in this lesson.\n2. Plan a shared-event record, then write 200–300 words from Sam’s first-person or third-person limited perspective. Preserve the incident, make two deliberate voice choices and explain a viewpoint revision.\n3. Show the evidence, planning or clause working behind two decisions.\n4. Reread or rehearse and improve one specific part. Explain the before-and-after change and its purpose.\n5. Answer the reflection. Work on paper or in the big box; type a clear record if you used paper. Uploads are optional.\nSuccess checklist: requested complete response; accurate event or clause relationships; supported choices; appropriate knowledge limits; explained revision; honest evidence record.",
+  "learning_area": "English",
+  "learning_intention": "We are learning to rewrite a scene from another perspective.",
+  "lesson_number": 2,
+  "lesson_role": "Writing",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Copy or print the supplied source and models, complete the rewrite a scene from another perspective task on paper and rehearse where needed. Later type a clear evidence summary.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches rewrite a scene from another perspective through original narrative material and explicit language or craft modelling. Original content follows the repository’s topic sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of complete syllabus coverage.\n\nParent: Look for supported and qualified interpretation, controlled information access, complete clause relationships or accurate storytelling as appropriate. Do not treat fictional reliability analysis as a diagnosis of real people. The lesson itself supplies the teaching and feedback. Your role is access support and reviewing the evidence.\n\nParent: A strong rewrite preserves the question, sign discovery and securing outcome. New interior thoughts are creative choices, not established source facts. The included Sam model uses third-person limited access and a practical emphasis.\n\nParent: Ten scored choices use the unchanged 90% threshold, requiring 9/10. The independent task and reflection supply written reasoning for manual review.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "planner_fields": [
+    {
+      "hint": "What must remain recognisable in this incident?",
+      "key": "events",
+      "label": "Shared events in order"
+    },
+    {
+      "hint": "Choose first-person Sam or third-person limited Sam. What can Sam see or hear?",
+      "key": "lens",
+      "label": "Lens and available information"
+    },
+    {
+      "hint": "Choose details, wording or a plausible thought to create your emphasis.",
+      "key": "voice",
+      "label": "Two voice choices and their purpose"
+    }
+  ],
+  "planner_intro": "Use short notes to separate shared events, available information and the voice choices you are creating.",
+  "planner_title": "Keep the event; change the lens",
+  "quiz": [
+    {
+      "correct_index": 3,
+      "explanation": "The incident stays recognisable through its shared events; viewpoint changes access, emphasis and interpretation.",
+      "options": [
+        "Every original judgement as a proven fact",
+        "Only the original title",
+        "No shared events at all",
+        "The central shared events and sequence"
+      ],
+      "question": "What should a same-incident perspective rewrite preserve?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Sam can hear the spoken question. The lens does not automatically provide direct access to Kai’s private thoughts.",
+      "options": [
+        "Sam knew every secret thought in Kai’s mind without explanation",
+        "Sam heard Kai ask where the sign was",
+        "The author becomes the sign",
+        "All characters share one hidden thought"
+      ],
+      "question": "Which sentence fits third-person limited Sam?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The selected task and action foreground preparation, supporting a practical voice through concrete decisions.",
+      "options": [
+        "Describe every character as perfect",
+        "Change the shared event to an unrelated race",
+        "Focus on securing the sign before visitors arrive",
+        "Repeat a personality label without action"
+      ],
+      "question": "Which choice can establish a practical voice?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Observable behaviour fits the lens and avoids unexplained knowledge of another character’s mind.",
+      "options": [
+        "Replace unobserved private thought with observable behaviour",
+        "Give Sam knowledge of every future event",
+        "Remove the incident’s shared outcome",
+        "Add a new secret as if the source confirmed it"
+      ],
+      "question": "Which revision improves viewpoint control?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "A new lens can change available observations and selected emphasis while preserving events.",
+      "options": [
+        "Every shared event must reverse",
+        "Information access and emphasis can change",
+        "The source proves new private thoughts",
+        "All pronouns disappear"
+      ],
+      "question": "What changes when a narrative perspective changes?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The writer may create them for the new version but should not treat them as source-confirmed facts.",
+      "options": [
+        "Independent source evidence",
+        "Facts about a real person",
+        "Creative fiction choices",
+        "A reason to remove all events"
+      ],
+      "question": "What are newly invented thoughts in the rewrite?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Preparing directions foregrounds practical readiness in this incident.",
+      "options": [
+        "Preparing entrance directions",
+        "An invented unrelated race",
+        "Knowing every secret thought",
+        "Changing the time without explanation"
+      ],
+      "question": "Which detail supports the Sam model’s priority?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The knowledge-access question checks consistency with the chosen lens.",
+      "options": [
+        "Count only the adjectives",
+        "Change every character into a villain",
+        "Remove all dialogue",
+        "Ask how the focal character knows each stated fact"
+      ],
+      "question": "What is a viewpoint-control check?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The wording distinguishes a plausible cause from direct observation.",
+      "options": [
+        "Sam watched the fall when the source never reports it",
+        "The fan could explain the movement, though Sam had not seen it fall",
+        "All private motives are proven",
+        "Kai’s accusation must be correct"
+      ],
+      "question": "Which wording preserves uncertainty?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Explaining choice and effect records the narrative purpose of a revision.",
+      "options": [
+        "Only the word count",
+        "The title and page colour",
+        "A specific craft choice with its effect on the reader’s focus",
+        "An invented source quotation"
+      ],
+      "question": "What should the revision explanation connect?",
+      "type": "multiple_choice"
+    }
+  ],
+  "response_prompt": "Which evidence or craft decision most affected your rewrite a scene from another perspective response, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s4-eng-y8-w01-l2",
+  "stage": "S4",
+  "stage_hints": {
+    "accept": [
+      "Read the mission about rewrite a scene from another perspective.",
+      "You will practise rewrite a scene from another perspective through models before making your own response.",
+      "Begin with the first explanation of rewrite a scene from another perspective; the examples remain available while you work."
+    ],
+    "guided": [
+      "Start with the four shared events before drafting through Sam.",
+      "List one seen action and one heard line available through the chosen lens.",
+      "Revise an unobserved thought into behaviour or a qualified interpretation, keeping the event sequence intact."
+    ],
+    "learn": [
+      "Read the Sam model beside the shared-event notes.",
+      "Find an observation and a newly created interior choice, keeping their labels separate.",
+      "Explain how the practical emphasis changes the telling without replacing the incident."
+    ],
+    "plan": [
+      "Begin with the shared-event box before inventing a motive.",
+      "Record one directly reported action, then decide what the Sam lens can know.",
+      "Add a voice choice that changes emphasis while keeping the event record stable."
+    ],
+    "quiz": [
+      "Return to the specific rewrite a scene from another perspective teaching step named by the question.",
+      "For a perspective question, check which information the chosen focal character can access.",
+      "Use source evidence or the demonstrated clause test before choosing; do not select by how confident an option sounds."
+    ],
+    "submit": [
+      "Check that your rewrite a scene from another perspective task and working are present.",
+      "Include the rewrite a scene from another perspective reflection and any written reasoning you produced.",
+      "Send your rewrite a scene from another perspective evidence for review; type a clear record if you used paper."
+    ],
+    "teach0": [
+      "Reread the incident’s directly reported actions.",
+      "Put an unsupported interpretation in a separate note from shared events.",
+      "Preserve the event sequence, then label any new interior thought as a creative choice."
+    ],
+    "teach1": [
+      "Identify whose perceptions anchor this version.",
+      "Keep observed actions separate from another character’s private thoughts.",
+      "Write what the focal character can see or hear before adding a qualified interpretation."
+    ],
+    "teach2": [
+      "Look at the details selected for the focal character.",
+      "Choose a priority that connects to an action in this incident.",
+      "Use one concrete action and a brief thought to establish voice without a sweeping personality claim."
+    ],
+    "teach3": [
+      "Compare each sentence with the chosen viewpoint’s access.",
+      "Find an unsupported claim about another character’s private thought.",
+      "Replace it with behaviour, a qualified inference or a clearly chosen thought of the focal character."
+    ],
+    "write": [
+      "Record the shared events before inventing Sam’s interior thoughts.",
+      "Begin “Sam arrived at ____ to ____.” Choose an opening consistent with the incident.",
+      "A partial opening is “Near the garden gate, Sam noticed ____.” Continue with only the information available through your chosen lens."
+    ]
+  },
+  "subject": "English",
+  "success_criteria": [
+    "I can explain the key narrative or language idea.",
+    "I can use a specific example to support a decision.",
+    "I can apply the taught method to a complete response.",
+    "I can revise or qualify a choice and explain its effect."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "The incident stays recognisable through its shared events; viewpoint changes access, emphasis and interpretation.",
+        "options": [
+          "Every original judgement as a proven fact",
+          "Only the original title",
+          "No shared events at all",
+          "The central shared events and sequence"
+        ],
+        "question": "What should a same-incident perspective rewrite preserve?"
+      },
+      "example": "READ THE ORIGINAL SCENE\nTHE LAST SIGN\nI was the first one ready for the courtyard exhibition. I am sure of that. My phone said 9:12 when I put it down, and the opening was not until ten. The others were still moving tables.\nThe blue sign beside our display had vanished. Sam was standing near the garden gate with a roll of tape. That made the answer obvious: Sam must have taken it. I had watched our table all morning, so there was no other explanation.\n“Where did you put the sign?” I asked.\nSam glanced towards the gate. “I came through there at five past nine. I taped up the directions first.”\n“That is not what I asked.”\nSam set the tape on a chair. “I haven’t moved your sign. Have you looked behind the board?”\nI knew it could not be behind the board. I had put it neatly on the table. Still, I bent down because Sam was waiting. A blue edge showed in the narrow gap. I pulled out the sign. The fan on the windowsill was pointing straight at the display.\nSam held the board while I placed the sign back. “We can tape the corners,” Sam said.\nI said that was what I had planned to do anyway. Then I noticed the time again. Between writing messages and checking a game score, I had spent several minutes looking at my phone with my back to the table. Perhaps all morning was not quite the right description.\nAt ten, the exhibition opened. The sign stayed in place. I told the first visitor we had solved a small problem together, which sounded better than explaining how certain I had been.\n\nI DO:\nShared event: the blue sign is found behind the board.\nKai’s interpretation: Sam must have taken it.\nCreative choice for a Sam rewrite: Sam wants visitors to find the gate. This motive is plausible fiction, not a verified fact about an unseen real person.\n\nYOU TRY:\nLabel the fan’s role carefully: what is seen, and what is inferred?\n\nCHECK:\nThe fan faces the display. Its draught is a plausible explanation for the paper’s movement, but neither narrator reports watching the sign fall.",
+      "explain": "**Perspective is the position from which a story is perceived.**\nA different narrator can notice different details and attach different meanings to the same events. Changing perspective does not require changing every shared event.\n\n**Make an event record first.**\nRead The Last Sign below. Record what is directly reported: Sam has tape, Kai asks about the missing sign, the sign is behind the board, and they secure it. Separately label Kai’s unsupported accusation as an interpretation.\n\n**Distinguish fact constraints from creative choices.**\nIn a perspective rewrite, you may invent plausible thoughts for Sam because you are writing original fiction. Those invented thoughts are not evidence that the source proved Sam felt that way.\n\nKeep the agreed sequence stable when the task asks for the same incident. The creative change is the account’s access and emphasis, not an unexplained replacement of the central event.",
+      "icon": "🔎",
+      "notice": "Creative thoughts belong to the rewrite. Do not present them as source evidence in an analytical response.",
+      "title": "Separate shared events from private interpretations",
+      "visual": [
+        {
+          "alt": "A perspective diagram separates shared events from the focal character’s available information and selected voice details.",
+          "caption": "Change access and emphasis while preserving the incident.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Shared events stay recognisable</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Lens: Sam’s observations</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Voice: selected practical details</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "Sam can hear the spoken question. The lens does not automatically provide direct access to Kai’s private thoughts.",
+        "options": [
+          "Sam knew every secret thought in Kai’s mind without explanation",
+          "Sam heard Kai ask where the sign was",
+          "The author becomes the sign",
+          "All characters share one hidden thought"
+        ],
+        "question": "Which sentence fits third-person limited Sam?"
+      },
+      "example": "I DO:\nThird-person limited: “Sam saw Kai put the phone down and look at the empty space.”\nWithin that lens, I can invent Sam’s thought about getting ready. I avoid “Kai secretly wanted to blame someone” as an unmarked fact about Kai’s mind.\n\nYOU TRY:\nRewrite one observed action through Sam’s lens without claiming Kai’s private motive.\n\nCHECK:\n“Kai asked where the sign was” preserves something Sam hears. An interpretation can be added cautiously, but it should not become unexplained mind-reading.",
+      "explain": "**Viewpoint controls what the narration can know.**\nA first-person Sam uses I to report Sam’s experience. A third-person limited Sam uses the name or pronouns while staying with Sam’s perceptions and thoughts. Neither automatically knows Kai’s private thoughts.\n\n**Choose one lens for the scene.**\nIf using third-person limited, describe what Sam sees and hears, and choose plausible interior thought for Sam. Avoid suddenly stating what Kai secretly thinks without marking a different narrative choice.\n\n**Report behaviour before inferring motive.**\nSam can see Kai holding a phone. Sam cannot directly observe the contents of Kai’s mind. Use a cautious interpretation or leave the action to speak for itself.\n\nA consistent lens helps a reader know which information is available. Precision matters more than adding I to every sentence.",
+      "icon": "🔎",
+      "notice": "Changing pronouns alone does not create a controlled perspective. Check access to information.",
+      "title": "Choose a viewpoint and control access"
+    },
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "The selected task and action foreground preparation, supporting a practical voice through concrete decisions.",
+        "options": [
+          "Describe every character as perfect",
+          "Change the shared event to an unrelated race",
+          "Focus on securing the sign before visitors arrive",
+          "Repeat a personality label without action"
+        ],
+        "question": "Which choice can establish a practical voice?"
+      },
+      "example": "I DO:\n“Sam chose not to argue about whose idea it was. The visitors would soon arrive, and the sign needed to stay visible.”\nThis invented thought foregrounds practical preparation. It is a narrative choice, not proof that Sam always behaves that way.\n\nYOU TRY:\nChoose one detail Sam might prioritise in the courtyard and explain how it supports the voice.\n\nCHECK:\nAn arrow near the entrance can support a concern with helping visitors find the route. Keep the priority linked to an action.",
+      "explain": "**Voice is the impression created by the telling.**\nWord choice, sentence patterns and selected details can suggest attitude and priorities. A practical account may attend to signs, visitors and the next action; a defensive account may emphasise certainty and personal credit.\n\n**Choose a coherent priority.**\nFor Sam, one creative choice is focusing on preparing the entrance. Select details about arrows and securing corners to support that priority. You do not need to make Sam flawless or turn Kai into a villain.\n\n**Show a thought through a decision.**\nSam can decide not to argue about credit because visitors will arrive soon. An action and brief thought can establish voice more precisely than a label such as nice.\n\nKeep language consistent with the chosen lens and purpose. A new perspective should reveal a different emphasis while remaining part of the same incident.",
+      "icon": "🔎",
+      "notice": "A different perspective can complicate the incident without reversing every judgement into its opposite.",
+      "title": "Build a distinct voice through choices",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "If I rewrite through Sam, can I state every secret thought Kai has?",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Choose the lens. Sam can observe the question and discovery, but a limited viewpoint does not automatically enter another mind.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "I can preserve the shared events while selecting Sam’s practical priority. New interior thoughts are my fiction choices.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and revise one unobserved thought into a visible action or qualified interpretation.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Rewrite a scene from another perspective",
+            "transcript": "Pip: If I rewrite through Sam, can I state every secret thought Kai has?\nJuno: Choose the lens. Sam can observe the question and discovery, but a limited viewpoint does not automatically enter another mind.\nPip: I can preserve the shared events while selecting Sam’s practical priority. New interior thoughts are my fiction choices.\nJuno: Pause and revise one unobserved thought into a visible action or qualified interpretation."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "Observable behaviour fits the lens and avoids unexplained knowledge of another character’s mind.",
+        "options": [
+          "Replace unobserved private thought with observable behaviour",
+          "Give Sam knowledge of every future event",
+          "Remove the incident’s shared outcome",
+          "Add a new secret as if the source confirmed it"
+        ],
+        "question": "Which revision improves viewpoint control?"
+      },
+      "example": "I DO:\nBefore: “Sam knew Kai was embarrassed.”\nAfter: “Kai looked at the sign and said it had been the plan all along.”\nReason: the revision reports visible or audible behaviour instead of unexplained access to Kai’s private feeling.\n\nYOU TRY:\nChoose a sentence in your draft and test how the focal character could know it.\n\nCHECK:\nIf the knowledge is not available through the chosen lens, revise it into observation, qualified inference or your own focal character’s thought.",
+      "explain": "**Compare the rewrite with the event record.**\nCheck the arrival time stated by Sam, the question, discovery and secured corners. If you change an event intentionally, it becomes an adaptation rather than the same-incident rewrite requested here.\n\n**Check access sentence by sentence.**\nAsk how Sam knows each stated fact. A perception, spoken line or chosen interior thought should fit the viewpoint. Remove unmarked access to another mind.\n\n**Explain the perspective’s effect.**\nName a detail or wording choice and what it makes the reader notice. For example, preparing directions may shift attention from blame to a shared task.\n\nShow one before-and-after revision with a reason. That records your craft decision more clearly than saying you made it sound better.",
+      "icon": "🔎",
+      "notice": "An effect explanation links a craft choice with a reader’s focus. It is not only a plot summary.",
+      "title": "Revise for continuity and explain the effect"
+    }
+  ],
+  "title": "Year 8: Rewrite a scene from another perspective",
+  "unit_number": 1,
+  "unit_title": "Narrative craft and perspective",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Keep the shared incident but select a new lens.\nSHARED-EVENT NOTES\nSam prepares directions; Kai asks about the missing sign; the sign is found behind the board; the corners are secured before opening.\n\nCOMPLETE THIRD-PERSON LIMITED SAM MODEL\nBEFORE THE OPENING\nSam reached the courtyard at five past nine carrying tape for the direction signs. The exhibition would open at ten, and visitors needed to find the garden gate. Sam fixed an arrow near the entrance, then looked towards the display tables.\nKai stood beside a model with a phone in hand. A few minutes later, Kai put the phone down and looked at the empty space beside the board.\n“Where did you put the sign?” Kai asked.\nSam followed the glance towards the roll of tape. “I haven’t moved your sign. Have you looked behind the board?”\nKai bent down and drew out the blue sign. The fan faced the table; its draught could explain the paper’s movement, although Sam had not seen it fall.\nSam held the board while Kai replaced the sign. “We can tape the corners.”\n“That was my plan,” Kai said.\nSam chose not to argue about whose idea it was. The visitors would soon arrive, and the sign needed to stay visible. At ten, the corners were secure and both displays were ready.\n\nWHY IT WORKS\nThe model keeps the recognisable events while selecting Sam’s observations and a practical preparation priority. The interior choice not to argue is newly created fiction, not evidence that the source established Sam’s private motive.\n\nCOMMON MISTAKE AND FIX\n“Sam knew Kai secretly felt ashamed” gives unmarked access to Kai’s mind. Replace it with visible behaviour or dialogue, or use a clearly qualified interpretation.\n\nREVISION EXPLANATION\nI foregrounded directions and securing corners so the incident centres on preparation rather than the narrator’s certainty about blame.",
+  "worked_visuals": [
+    {
+      "alt": "A perspective diagram separates shared events from the focal character’s available information and selected voice details.",
+      "caption": "Change access and emphasis while preserving the incident.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Shared events stay recognisable</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Lens: Sam’s observations</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Voice: selected practical details</text></svg>"
+    }
+  ],
+  "year_level": "Year 8"
+}

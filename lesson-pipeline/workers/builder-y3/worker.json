@@ -1,0 +1,9 @@
+{
+  "created_at": "2026-10-13T00:03:51.836004+00:00",
+  "id": "builder-y3",
+  "label": "S2 Y3",
+  "seed_patterns": [
+    "s2-*-y3-*"
+  ],
+  "state": "workers/builder-y3"
+}
