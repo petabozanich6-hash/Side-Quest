@@ -1,252 +1,147 @@
-# s3-mat-y6-w01-l2 — Place value and expanded form
+# Place value and expanded form
 
-**Year:** 6 | **Stage:** 3 | **Subject:** Mathematics | **Week:** 1 | **Lesson:** 2 | **Unit:** Large numbers and estimation | **Role:** Strategies  
-**Existing title:** Place value and expanded form  
-**Existing attached outcome codes:** The source migration `worker/migrations/0013_s3_maths_program.sql` inserts `outcome_codes: []` for this Coming Soon lesson. **Do not invent a code.** If the live database contains a later attached outcome, Cursor must retain it unchanged.  
-**Manuscript status:** FULL INSTRUCTIONAL DRAFT — ready for implementation preview, not owner-approved.  
-**Target time:** about 55–65 minutes, with optional break.  
-**Materials:** pencil and paper or digital working space; optional printable place-value grid. No video.
+**Lesson ID:** s3-mat-y6-w01-l2 · **Year:** 6 · **Stage:** 3 · **Mathematics** · **Week 1, Lesson 2** · **Unit:** Large numbers and estimation · **Role:** Strategies · **Time:** approximately 60 minutes. Existing curriculum outcomes must be preserved exactly as stored in Side-Quest; do not add outcome codes. **No reflections.**
 
-## 1. Student opening — the mystery of the missing zeros (5 min)
+## A museum with two very different treasures
 
-**Pip:** “I found two treasure records. One says 4,306,052 coins. The other says 4,360,052. They look almost the same. Are they?”
+A fictional museum has two digital records. One records **4,306,052** ancient coins. The other records **4,360,052**. The numbers look almost identical: they contain the same digits, apart from the order of a zero and a six. Yet the difference between the records is **54,000 coins**.
 
-**Juno:** “The digits are almost the same, but where a digit sits changes what it is worth. Let's investigate before we count any treasure.”
+How can moving just two digits change the amount so much?
 
-**Try first:** In `4,306,052`, what is the value of the digit `3`? Choose: 3, 3,000, 30,000, or 300,000. Write *why* you chose it.
+Our number system gives every digit two pieces of information: *which digit it is* and *where it sits*. A six in the ones column means six objects. A six in the thousands column means six groups of a thousand. Moving a digit changes the amount it represents, even though its shape stays the same.
 
-**Feedback:** Correct: **300,000**. The 3 is in the hundred-thousands place. If you chose 3, you named the digit, not its value. If you chose 30,000 or 3,000, you counted too few places from the right. We will use a place-value chart to make this visible.
+The museum problem is not solved by counting how many digits are nonzero. Both records contain five nonzero digits. We need to understand the *value of each position*. That is what place value and expanded form make visible.
 
-**Today's mission:** Explain the value of each digit in a large whole number, write numbers in expanded form, rebuild numbers from expanded form, and spot errors caused by missing zeros.
+## Why the columns matter
 
-**Success looks like:** I can (1) identify a digit's value, (2) expand a large number correctly, (3) rebuild it without losing zero placeholders, and (4) explain why my answer makes sense.
+A digit is one of the symbols 0–9. Our decimal, or **base-ten**, number system uses positions that increase by a factor of ten as we move left. Ten ones make one ten; ten tens make one hundred; ten hundreds make one thousand. This pattern continues through ten-thousands, hundred-thousands and millions.
 
-## 2. Teaching — a digit has a face value and a place value (9 min)
+Study the number **4,306,052** in a place-value chart:
 
-A **digit** is one symbol from 0 to 9. Its **face value** is the digit itself. Its **place value** depends on its position in the number.
-
-Read positions from right to left:
-
-| Millions | Hundred thousands | Ten thousands | Thousands | Hundreds | Tens | Ones |
+| Millions | Hundred-thousands | Ten-thousands | Thousands | Hundreds | Tens | Ones |
 |---:|---:|---:|---:|---:|---:|---:|
 | 4 | 3 | 0 | 6 | 0 | 5 | 2 |
 
-This chart represents **4,306,052**.
+The 4 stands for **4,000,000**. The 3 stands for **300,000**. The 6 stands for **6,000**, while the 5 stands for **50** and the 2 stands for **2**. The two zeros have no positive value of their own in this sum, but they perform a crucial job in the numeral: they keep the other digits in the correct columns.
 
-- The 4 means **4,000,000**, not 4.
-- The 3 means **300,000**, not 3,000.
-- The 0 in ten-thousands means **no ten-thousands**.
-- The 6 means **6,000**.
-- The 0 in hundreds means **no hundreds**.
-- The 5 means **50**.
-- The 2 means **2**.
+To see this, compare **4,306,052** with **4,360,052**. Both start with four million and three hundred thousand. In the first number, the ten-thousands column contains zero and the thousands column contains six. In the second, the ten-thousands column contains six and the thousands column contains zero. Six ten-thousands are worth **60,000**, while six thousands are worth **6,000**. Replacing 6,000 with 60,000 increases the total by **54,000**. That explains the museum's discrepancy.
 
-Our number system is **base ten**: moving one column left makes a digit worth ten times as much; moving one column right makes it worth one-tenth as much. Compare the digit 6 in 6, 60, 600, 6,000 and 60,000. The digit stays the same; the amount it represents changes.
+A useful way to test your understanding is to ask what happens if the digit changes but the column stays fixed. In **4,306,052**, replacing the 6 in the thousands column with a 7 adds **1,000**, not 1 or 10. You are increasing the number of thousands by one.
 
-**Pause and think:** In 4,306,052, would replacing the digit 6 with 7 add 1, 10, 100 or 1,000?  
-**Answer:** 1,000, because the thousands column increases from 6,000 to 7,000.
+## What zero does—and what it does not do
 
-### Why zero matters
+Consider **604,020** and **64,020**. The first is six hundred and four thousand and twenty. The second is sixty-four thousand and twenty. Removing the zero between the 6 and 4 does not simply make the number one digit shorter. It shifts the 6 from the hundred-thousands column to the ten-thousands column. Its value changes from 600,000 to 60,000.
 
-Zero is not “nothing to worry about.” It holds a place so the other digits keep their correct values.
+That is why we cannot simply ignore zeros when writing large numbers. The zero in the ten-thousands column of 4,306,052 means there are no additional groups of ten thousand *in that column*. It is still necessary to preserve the places of the 3 and the 6.
 
-Compare **604,020** with **64,020**:
+There is an important distinction between **a zero term** and **a zero placeholder**. When we add place values together, adding zero does not change the total, so we usually omit zero terms. But when we write a numeral in standard form, we keep zeros wherever they are needed to preserve the positions of other digits.
 
-- 604,020 = six hundred four thousand and twenty.
-- 64,020 = sixty-four thousand and twenty.
+## Expanded form reveals the hidden addition
 
-Removing a zero has moved the 6 from the hundred-thousands place to the ten-thousands place. The number is now much smaller.
-
-**Misconception check:** Does the zero in 604,020 contribute a positive amount to the sum? No. Does its position matter in the written numeral? Absolutely.
-
-## 3. Teaching — expanded form (8 min)
-
-**Standard form** is the usual numeral: **4,306,052**.
-
-**Expanded form** writes the number as a sum of the values of its nonzero digits:
+The museum's first record, **4,306,052**, is written in **standard form**: the familiar numeral. We can write the same quantity as an addition of its nonzero place values:
 
 **4,306,052 = 4,000,000 + 300,000 + 6,000 + 50 + 2.**
 
-To expand a number:
-1. Write the number in a place-value chart.
-2. Identify each nonzero digit and its column.
-3. Write the full value of that digit.
-4. Add the values together, largest first.
-5. Check that recombining them gives the original number.
+This is **expanded form**. Each term tells us exactly what one digit contributes to the total. If we add the terms, we recover the original number. That gives us a reliable way to check our work.
 
-You can omit a **zero-value term** from the sum, but you must keep zeros where needed when you write the standard numeral.
+Notice that we do not write 4 + 3 + 6 + 5 + 2. That would add the digits' face values and give only 20. Expanded form uses their *place values*: four million, three hundred thousand, six thousand, fifty and two.
 
-### Worked example A: expand 70,040,009
+### Worked example 1: expand a number with several zeros
 
-| Ten millions | Millions | Hundred thousands | Ten thousands | Thousands | Hundreds | Tens | Ones |
-|---:|---:|---:|---:|---:|---:|---:|---:|
-| 7 | 0 | 0 | 4 | 0 | 0 | 0 | 9 |
+Expand **7,040,608**.
 
-The nonzero values are **70,000,000**, **40,000** and **9**.
+Begin by reading the groups: 7 | 040 | 608. This is seven million, forty thousand, six hundred and eight. The 4 is in the ten-thousands column, so its value is **40,000**. The 6 is in the hundreds column, so its value is **600**. The 8 is in the ones column.
 
-So **70,040,009 = 70,000,000 + 40,000 + 9**.
+Therefore:
 
-**Why isn't the 4 worth 4,000?** It is in the ten-thousands column, so it means four groups of 10,000: 40,000.
+**7,040,608 = 7,000,000 + 40,000 + 600 + 8.**
 
-### Worked example B: rebuild a number
+To check, add the parts in stages. Seven million plus forty thousand is 7,040,000. Adding six hundred gives 7,040,600. Adding eight gives **7,040,608**. The zeros were not lost; they are already accounted for in the values of the terms.
 
-**8,000,000 + 20,000 + 600 + 5**
+**A common wrong answer** is 7,000,000 + 4,000 + 600 + 8 = 7,004,608. The student has mistaken the ten-thousands digit for a thousands digit. The resulting total is 36,000 too small. To repair the error, locate the 4 in the chart before writing its value.
 
-Place each part in its column: 8 millions, 2 ten-thousands, 6 hundreds, 5 ones. The unmentioned columns contain zero.
+### Worked example 2: rebuild a number from expanded form
 
-The numeral is **8,020,605**, not 8,206,005.
+Suppose a catalogue gives this quantity:
 
-Check: 8,020,605 has 8,000,000 + 20,000 + 600 + 5.
+**5,000,000 + 80,000 + 3,000 + 400 + 9.**
 
-### Worked example C: explain an error
+We need to write it as one numeral. It can help to fill the columns from left to right. The millions digit is 5. There are no hundred-thousands, so write 0 there. Eight ten-thousands give 8; three thousands give 3; four hundreds give 4. There are no tens, so write 0, and the ones digit is 9.
 
-A student writes: **604,020 = 600,000 + 4,000 + 200**.
+The resulting numeral is **5,083,409**.
 
-**Juno:** “The first two terms are right. But 200 means two hundreds. The numeral has zero hundreds and two tens.”
+Check it by expanding the numeral again: 5,000,000 + 80,000 + 3,000 + 400 + 9. Every term matches. If you had written 5,834,9 or 5,834,009, the digits would not occupy the intended places.
 
-Correct: **604,020 = 600,000 + 4,000 + 20**.
+### Worked example 3: the same value in a different grouping
 
-## 4. Guided practice — we solve it together (10 min)
+Not every correct representation has to list one term per column. Consider **6,300,000**. It is six million plus three hundred thousand. It is also **63 × 100,000**, because sixty-three groups of one hundred thousand make 6,300,000.
 
-Show one question at a time. Allow students to write or select an answer, request a hint, and retry. Never reveal the correct answer before an attempt unless the student explicitly requests the worked solution.
+Similarly, **4,520,000 = 452 × 10,000**. Multiplying 452 by 10,000 shifts the digits four places to the left, giving four million five hundred and twenty thousand. This is a form of regrouping, not the usual place-by-place expanded form. Both representations can be correct, but you must know which form a question requests.
 
-**G1 — Find a digit's value.** In **9,508,143**, what is the value of the digit **5**?  
-Hint 1: Locate the 5 in the place-value chart. Hint 2: It is in the hundred-thousands column.  
-**Answer:** 500,000.  
-Wrong-answer feedback: 5 is the face value; 50,000 confuses hundred-thousands with ten-thousands; 5,000 confuses it with thousands.
+The crucial rule is that *equivalent representations have the same total value*. You can check equivalence by calculating the total or rebuilding the standard numeral.
 
-**G2 — Expand a number.** Complete: **3,204,070 = 3,000,000 + ___ + 4,000 + ___**.  
-Hint: Which nonzero digits are left?  
-**Answer:** 200,000 and 70.  
-Feedback: The 2 means two hundred-thousands; the 7 means seven tens. Zero hundreds and zero ones do not need separate addition terms.
+## Guided practice: complete the missing reasoning
 
-**G3 — Rebuild.** Write in standard form: **6,000,000 + 90,000 + 800 + 3**.  
-Hint: Write the place-value columns from millions to ones before filling them.  
-**Answer:** 6,090,803.  
-If answer is 6,908,003: The 9 belongs in ten-thousands, not hundred-thousands; the 8 belongs in hundreds, not thousands.
+**Question 1.** In **8,205,014**, what is the value of the 2? First locate it: the 2 is in the ______ column. **Answer:** hundred-thousands. Its value is **200,000**. If you answered 20,000, you moved one place too far right.
 
-**G4 — Explain why.** Is **2,030,400** equal to **2,000,000 + 30,000 + 400**?  
-**Answer:** Yes. The 2 is millions, 3 is ten-thousands, 4 is hundreds. The other places have zero value.  
-Model explanation: “Each term matches a nonzero digit's position, and their sum is 2,030,400.”
+**Question 2.** Expand **3,090,070**. Begin with 3,000,000. The 9 is in the ______ column, so add ______. The 7 is in the ______ column, so add ______. **Answer:** ten-thousands; 90,000; tens; 70. Full expanded form: **3,000,000 + 90,000 + 70**.
 
-**G5 — Spot the mistake.** Pip says **5,007,060 = 5,000,000 + 7,000 + 600**. What needs correcting?  
-**Answer:** The final term must be **60**, not 600. The digit 6 is in the tens place. Correct expansion: 5,000,000 + 7,000 + 60.  
-Feedback: The written zero in the hundreds place tells us there are no hundreds.
+**Question 3.** Rebuild **9,000,000 + 600,000 + 5,000 + 30 + 1**. Fill all seven columns, including zeros. **Answer:** **9,605,031**. Check that the hundreds digit is zero and the tens digit is three.
 
-## 5. Independent practice — your turn (12 min)
+**Question 4.** Which is greater: **2,304,060** or **2,340,060**? The millions and hundred-thousands digits match. At the ten-thousands place, the first has 0 and the second has 4. Therefore **2,340,060** is greater. This comparison also confirms that place value, not the sum of the digits, determines the number's size.
 
-Students answer before opening solutions. Accept numerically equivalent expansions when every term is a correct place-value contribution, but request standard expanded form for the main response.
+**Question 5.** A student writes **4,070,005 = 4,000,000 + 7,000 + 5**. Is the equation correct? **No.** The 7 is in the ten-thousands column. The correct expansion is **4,000,000 + 70,000 + 5**. Rebuilding the student's incorrect sum gives 4,007,005, exposing the mistake.
 
-**I1.** What is the value of 8 in **18,402,006**?  
-**Answer:** 8,000,000. Explanation: 8 is in the millions place.
+## Independent practice: the catalogue challenge
 
-**I2.** Expand **6,050,304**.  
-**Answer:** 6,000,000 + 50,000 + 300 + 4.
+Write your answer before revealing the key. Show the value of the important digit or a place-value check where requested.
 
-**I3.** Expand **40,700,020**.  
-**Answer:** 40,000,000 + 700,000 + 20.
+**A.** Give the value of the 8 in **6,081,204**. **Answer:** 80,000. **Hint:** Read the middle group as 081 thousand.
 
-**I4.** Write in standard form: **9,000,000 + 400,000 + 2,000 + 10 + 6**.  
-**Answer:** 9,402,016.
+**B.** Give the value of the 5 in **5,009,700**. **Answer:** 5,000,000. **Hint:** The first digit is in the millions column.
 
-**I5.** Write in standard form: **30,000,000 + 80,000 + 900 + 7**.  
-**Answer:** 30,080,907.
+**C.** Expand **2,406,030**. **Answer:** 2,000,000 + 400,000 + 6,000 + 30.
 
-**I6.** Explain why **7,020,005** is not the same as **7,200,005**.  
-**Model:** In the first number the 2 means 20,000; in the second it means 200,000. The second number is 180,000 greater.
+**D.** Expand **9,008,502**. **Answer:** 9,000,000 + 8,000 + 500 + 2.
 
-**I7.** A student writes **2,405,080 = 2,000,000 + 400,000 + 5,000 + 800**. Identify the error and correct the expansion.  
-**Answer:** The last term should be 80, not 800. Correct: 2,000,000 + 400,000 + 5,000 + 80.
+**E.** Rebuild **7,000,000 + 20,000 + 600 + 4**. **Answer:** 7,020,604.
 
-**I8.** Construct the largest whole number you can with digits **0, 2, 4, 6, 8, 9**, using each once, and write its expanded form.  
-**Answer:** 986,420 = 900,000 + 80,000 + 6,000 + 400 + 20.  
-**Reasoning:** To make the largest number, place the largest available digit in the highest-value column first.
+**F.** Rebuild **3,000,000 + 900,000 + 90 + 8**. **Answer:** 3,900,098.
 
-### Feedback logic
+**G.** Find the missing value: **8,040,006 = 8,000,000 + ___ + 6**. **Answer:** 40,000.
 
-- Wrong by a factor of ten: “Check which column the digit belongs in. Move one place left to multiply its value by ten.”
-- Missing internal zeros in standard form: “Build every place-value column, including the empty ones. A zero keeps later digits in their correct places.”
-- Correct numeral but incorrect expansion: “Your number is right; now show the value of each nonzero digit, not just the digit itself.”
-- Correct explanation: “You identified both the digit's column and its value. That is the reasoning we need.”
+**H.** Is **4,500,000** equal to **45 × 100,000**? **Answer:** Yes; 45 hundred-thousands equal 4,500,000.
 
-## 6. Application — repair the museum's labels (7 min)
+**I.** A learner expands 6,700,204 as 6,000,000 + 70,000 + 200 + 4. Explain the mistake and correct it. **Answer:** The 7 is in the hundred-thousands place, so it contributes 700,000. Correct form: 6,000,000 + 700,000 + 200 + 4.
 
-A museum stores collection counts as sums so staff can check large records. Three labels have been mixed up.
+**J.** Explain why **6,070,005** and **6,700,005** are different even though both use the same nonzero digits. **Answer:** The 7 is worth 70,000 in the first and 700,000 in the second. The second number is 630,000 greater.
 
-**Record A:** 4,000,000 + 600,000 + 30,000 + 2,000 + 90 + 1  
-**Record B:** 8,000,000 + 500,000 + 700 + 4  
-**Record C:** 20,000,000 + 40,000 + 6,000 + 50
+## Application: a space-probe data archive
 
-**Task 1:** Write each as a standard numeral.  
-**Answers:** A **4,632,091**; B **8,500,704**; C **20,046,050**.
+An imaginary space probe sends the number **8,504,070** as its count of recorded signals. An engineer wants to check whether a second system, which stores the count as **8,000,000 + 500,000 + 4,000 + 70**, agrees.
 
-**Task 2:** A printed label says Record C is **20,460,050**. Explain why that is wrong.  
-**Model:** The sum has 40,000 and 6,000, which together make 46,000. The incorrect label puts 4 in the hundred-thousands place, changing 40,000 to 400,000.
+Start by checking each column. The first representation has eight million, five hundred thousand, four thousand and seventy. The second lists exactly those contributions. They are **equivalent**.
 
-**Task 3 — challenge:** Change **one digit** in Record B's standard numeral so the collection count increases by exactly **10,000**. State the new numeral and why.  
-**Answer:** **8,510,704**. Change the ten-thousands digit from 0 to 1. The number increases by 10,000.
+A third system displays **8,540,070**. It is not equivalent: it contains four ten-thousands rather than four thousands. The difference is **36,000**. This is why precise place value matters in records. A small-looking transcription change can alter the meaning of the data.
 
-**Assessment rubric:** 1 point each for three correct numerals; 2 for correct place-value error explanation; 2 for valid 10,000 change with explanation. Total 7.
+**Application task:** A fourth system displays **8,000,000 + 50,000 + 4,000 + 70**. Write its standard form and explain whether it agrees with the first. **Answer:** **8,054,070**. It does not agree because it has 50,000 rather than 500,000; it is **450,000 less** than 8,504,070.
 
-## 7. Exit assessment — show what you know (7 min)
+## End-of-lesson assessment — 12 points
 
-Do these without hints first.
+**1 (2).** What is the value of the 6 in **4,060,215**? **60,000.** Award one point for identifying the ten-thousands column and one for its value.
 
-**E1 (1 pt):** In **12,307,045**, what is the value of 3?  
-**Answer:** 300,000.
+**2 (2).** Expand **7,305,008**. **7,000,000 + 300,000 + 5,000 + 8.** Award two for all correct values, one for a single place error.
 
-**E2 (2 pts):** Expand **5,060,209**.  
-**Answer:** 5,000,000 + 60,000 + 200 + 9.  
-Mark 2 for all correct terms, 1 for mostly correct with one place error.
+**3 (2).** Rebuild **2,000,000 + 80,000 + 700 + 9**. **2,080,709.** Award one for the correct digits and one for correct zero placeholders.
 
-**E3 (2 pts):** Write **7,000,000 + 400,000 + 30,000 + 8** in standard form.  
-**Answer:** 7,430,008.  
-Mark 2 for correct numeral, 1 for correct nonzero digits but one missing zero.
+**4 (2).** Correct the false equation **5,040,020 = 5,000,000 + 4,000 + 20**. **5,000,000 + 40,000 + 20.** Award one for identifying the error and one for correcting it.
 
-**E4 (2 pts):** Explain why **3,005,020** cannot be expanded as **3,000,000 + 5,000 + 200**.  
-**Model:** The numeral contains two tens, which is 20, not two hundreds. Correct: 3,000,000 + 5,000 + 20.  
-Mark 1 for identifying the place error, 1 for correct expansion.
+**5 (2).** Explain why **3,060,000** is not equal to **3,600,000**. **The 6 represents 60,000 in the first and 600,000 in the second.** Award points for identifying both place values.
 
-**E5 (2 pts):** A number is **6,000,000 + 80,000 + 900 + 4**. A student writes **6,809,004**. Give the correct number and explain the student's mistake.  
-**Answer:** **6,080,904**. The 8 belongs in the ten-thousands column and the 9 in hundreds; the student shifted both into higher places.  
-Mark 1 for correct numeral and 1 for explanation.
+**6 (2).** Show whether **72 × 100,000** is equal to **7,200,000**. **Yes; 72 groups of 100,000 make 7,200,000.** Award points for a correct calculation and explanation.
 
-**Total:** 9 points. **8–9:** ready to move on. **6–7:** revisit the wrong type of question and retry an equivalent item. **0–5:** return to the place-value chart and guided examples before continuing. These thresholds are instructional guidance, not a validated psychometric scale.
+**Feedback routes:** If the student misses 1 or 5, revisit the column chart and physically locate the digit. If 2 or 4 is wrong, rebuild each expanded term into standard form to locate the missing place. If 3 is wrong, place a zero in every empty column before reading the numeral. If 6 is wrong, group the value into hundred-thousands and verify by multiplication. A score of 10–12 indicates strong readiness; 7–9 suggests targeted correction; below 7 calls for guided re-teaching of the worked examples.
 
-### Targeted reteaching
+## Visual and implementation specification
 
-- Missed E1: revisit the digit-value chart, then identify the 4 in 14,200,000 (**4,000,000**).
-- Missed E2: expand 2,040,106 (**2,000,000 + 40,000 + 100 + 6**).
-- Missed E3: rebuild 3,000,000 + 20,000 + 50 + 1 (**3,020,051**).
-- Missed E4/E5: compare 5,006,070 and 5,060,700, identifying how the 6 and 7 shift value.
-
-## 8. Reflection and next lesson (2 min)
-
-Complete: “A zero is important in a large number because ______.”  
-**Model:** “It holds an empty place so other digits stay in the correct columns.”
-
-**Juno:** “You can now unpack a number into the value of each digit and put it back together without losing its zeros.”
-
-**Next lesson:** Comparing and ordering large numbers. We will use place value to decide which of two large numbers is greater and explain why.
-
-## 9. Static image and interaction briefs for Cursor
-
-**Image 1 — place-value grid:** Accessible HTML/SVG or raster diagram showing `4,306,052` across seven labelled columns; visually distinguish zero columns and nonzero contributions. **Alt:** “Place-value chart for 4,306,052: four millions, three hundred-thousands, zero ten-thousands, six thousands, zero hundreds, five tens, two ones.” No decorative character required.
-
-**Image 2 — zero comparison:** Side-by-side `604,020` and `64,020` with corresponding place-value grids and a callout identifying the shifted 6. **Alt:** “Removing a zero changes the position of the 6 from hundred-thousands to ten-thousands.”
-
-**Interaction A:** Place digits into labelled columns. Validate both the digit and its column; do not accept visually shifted digits as correct.
-
-**Interaction B:** Expanded-form input supports separated terms and equivalent ordering; canonical display uses descending place value. Check numeric value *and* requested place-value decomposition, not sum alone.
-
-**Interaction C:** Error-spotting question with selection of incorrect term plus written correction. For free text, use a rubric or human review rather than claiming exact semantic grading.
-
-**Interaction D:** Exit ticket persists answers and score; retry presents the targeted reteaching prompt. Do not lock the learner out on a low score.
-
-**Accessibility:** keyboard operable controls, labelled place-value cells, high contrast, visible focus, accessible text alternatives, no reliance on colour alone, written equivalent to any drag interaction.
-
-**Parent/teacher note:** Students who consistently lose zeros may benefit from physically drawing every column before writing the numeral. Ask “Which column is this digit in?” rather than simply saying “Count your zeros.”
-
-## 10. Implementation and editorial status
-
-This manuscript supplies complete initial student-facing teaching, exact activities, answer keys and feedback. Cursor must implement it without rewriting the teaching. The owner has not reviewed this draft; preserve the existing Coming Soon title and attached outcomes as stored in the app. No video or video placeholder is needed.
+Provide an accessible seven-column place-value chart for 4,306,052, with text labels for every place and a second chart for 4,360,052. Highlight the 6 moving from thousands to ten-thousands; accompanying text must explicitly state the change from 6,000 to 60,000 and the 54,000 difference. Provide a worked expansion graphic showing 7,040,608 broken into four correctly aligned nonzero terms. Alt text must name the digits, their places and the corresponding values, not merely say “place-value chart”. Students may enter numbers using digits with or without grouping commas. Keep every teaching paragraph, worked solution and misconception explanation. Do not add reflection tasks or video.
