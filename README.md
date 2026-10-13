@@ -1,28 +1,24 @@
 # Side-Quest Learning
 
-Side-Quest is an **Australia-wide homeschool planning and learning-management platform**. Families build or bring their own lessons and resources, assign work to children, review submissions, and keep progress and learning evidence. It is **not** marketed as a complete proprietary curriculum.
+Side-Quest is becoming an **Australia-wide homeschooling management and parent-to-child learning platform**.
 
-## Current architecture
+Families will build or bring their own lessons, assign activities to children, review work, and manage planning, resources, learning evidence and progress. The product no longer depends on building thousands of proprietary curriculum lessons. Do not present this app as a complete K–10 curriculum or as automatically compliant with each state's registration requirements.
 
-- `frontend/`: React, Create React App and CRACO. Separate parent and child experiences.
-- `worker/`: Cloudflare Worker API (Hono, D1, TypeScript); all API routes are under `/api/*`.
-- `worker/src/lessonBuilder.ts`: family-owned lesson creation, assignments, review, entitlements and child-safe lesson views (alongside `worker/src/core.ts`).
-- `worker/migrations/`: historical migration chain **required for existing databases**, including past curriculum seed data. Do not delete or rewrite applied migrations.
-- `wrangler.jsonc`: single deployment configuration; the Worker also serves the built frontend.
+**Development status:** The family Lesson Builder, child lesson player, assignments, review, XP and plan limits are built and pass CI (build, TypeScript, worker tests and a browser end-to-end run). **Before this code is deployed, back up the live database and apply migration `0050` (`npm run db:migrate`), otherwise registration and lessons will error.** Billing and AI are not live. See `docs/SIDEQUEST-EXECUTION.md`.
 
-The frontend accesses the API on the same origin (`/api`). Authentication, data separation and entitlement enforcement belong on the server.
+## Repository structure
 
-**Current decisions, verified status, launch blockers and next action:** [`docs/SIDEQUEST-EXECUTION.md`](docs/SIDEQUEST-EXECUTION.md).
+- `frontend/` — React single-page app (Create React App, CRACO), parent and child interfaces.
+- `worker/` — Cloudflare Worker (Hono + D1, TypeScript) for `/api/*`, authentication, assignments, portfolios and progress.
+- `worker/migrations/` — historical **database migration chain**, including large retired prewritten curriculum seeds. **Keep these migration files unchanged until a tested replacement/baseline strategy is approved.** Removing them may break fresh database setup or migration history for existing databases.
+- `wrangler.jsonc` — Worker deploy configuration, D1 binding and static frontend settings.
+- `docs/CLOUDFLARE_MIGRATION.md` — existing platform hosting/migration notes.
 
-## Product scope
+The 2026 prewritten curriculum project has been **cancelled**. Its independent `lesson-bank/`, `lesson-excellence/`, old authoring/checking scripts, stage plans, drafts, lesson reviews and inventory exports are removed from the *current working tree*. They are still recoverable through Git history. Their deletion does **not** delete historical database rows or rewrite commit history.
 
-A parent can create and reuse lessons, assign them to children, and review submitted work. Children see a separate lesson and quest experience; submissions connect to progress and evidence. State-specific regulatory compliance and curriculum alignment are not automatically guaranteed.
+## Development
 
-An old curriculum-production effort and its offline authoring assets were discontinued in October 2026. Its source archives, inventory files, validators and lesson-production scripts were removed from the active tree on a dedicated cleanup branch. They remain recoverable in previous Git commits. Historical lesson records embedded in the D1 migration chain are **intentionally preserved** and are hidden from the family lesson library in current application code.
-
-## Local development
-
-Requires Node 20+ and the dependencies defined in the lockfiles.
+Requires Node 20+, an appropriate Cloudflare local development environment, and the committed lockfiles:
 
 ```bash
 npm ci
@@ -30,30 +26,30 @@ npm --prefix worker ci
 npm --prefix frontend ci --legacy-peer-deps
 echo 'JWT_SECRET=dev-secret-change-me' > .dev.vars
 npm run db:migrate:local
-npm --prefix frontend run build
+CI=false npm --prefix frontend run build
 npm run dev
 ```
 
-Then open `http://localhost:8787`. Use `npm --prefix frontend start` for React hot reload with an appropriate local API proxy.
+Open `http://localhost:8787`.
 
-## Checks
+Useful verification:
 
 ```bash
-npm run test:worker
 npm run typecheck
+npm run test:worker
 CI=false npm --prefix frontend run build
 npx wrangler deploy --dry-run
 BASE_URL=http://localhost:8787 npm run smoke
 ```
 
-The GitHub Actions workflow also exercises tests, build and local end-to-end checks. Passing tests do not replace a real browser walkthrough, mobile check or security review.
-
 ## Production safeguards
 
-**Never automatically deploy or migrate the live database as part of ordinary cleanup.** Before applying new migrations, export and back up remote D1 data, confirm migration status, test against staging and obtain explicit approval.
+Do not delete or rewrite applied D1 migrations or production lesson/assignment data to simplify the repository. Before any new live database changes, take a private backup, test in staging and obtain explicit owner approval:
 
 ```bash
 npx wrangler d1 export sidequest-db1 --remote --output backup.sql
 ```
 
-Do not publish this backup. Cloudflare R2 is required for real file uploads; a placeholder or link field is not an upload service. Billing is not live until separately integrated and tested. For domain/deployment setup, use the Cloudflare Worker settings and the existing `wrangler.jsonc`; do not assume a build implies a safe launch.
+Cloudflare R2 uploads and subscription payments require separately configured services. No deployment, domain change or live migration is implied by this documentation/content cleanup.
+
+Refer to the development branch's `docs/SIDEQUEST-EXECUTION.md` for the current implementation priorities and tested capabilities.
