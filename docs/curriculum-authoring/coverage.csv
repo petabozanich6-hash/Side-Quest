@@ -1,6 +1,6 @@
 lesson_id,title,manuscript_status,manuscript_path,review_status
-s3-mat-y5-w01-l1,Reading and writing numbers to the millions,full_draft,docs/curriculum-authoring/lessons/s3-mat-y5-w01-l1.md,owner_review_pending
-s3-mat-y5-w01-l2,Place value charts and expanded form,full_draft,docs/curriculum-authoring/lessons/s3-mat-y5-w01-l2.md,owner_review_pending
-s3-mat-y6-w01-l2,Place value and expanded form,full_draft,docs/curriculum-authoring/lessons/s3-mat-y6-w01-l2.md,owner_review_pending
-s3-mat-y6-w01-l3,Comparing and ordering large numbers,full_draft,docs/curriculum-authoring/lessons/s3-mat-y6-w01-l3.md,owner_review_pending
-s3-mat-y6-w01-l4,Number sense warm-ups,full_draft,docs/curriculum-authoring/lessons/s3-mat-y6-w01-l4.md,owner_review_pending
+s3-mat-y5-w01-l1,Reading and writing numbers to the millions,rewrite_required,docs/curriculum-authoring/lessons/s3-mat-y5-w01-l1.md,owner_rejected_outline_style
+s3-mat-y5-w01-l2,Place value charts and expanded form,rewrite_required,docs/curriculum-authoring/lessons/s3-mat-y5-w01-l2.md,owner_rejected_outline_style
+s3-mat-y6-w01-l2,Place value and expanded form,rewrite_required,docs/curriculum-authoring/lessons/s3-mat-y6-w01-l2.md,owner_rejected_outline_style
+s3-mat-y6-w01-l3,Comparing and ordering large numbers,rewrite_required,docs/curriculum-authoring/lessons/s3-mat-y6-w01-l3.md,owner_rejected_outline_style
+s3-mat-y6-w01-l4,Number sense warm-ups,rewrite_required,docs/curriculum-authoring/lessons/s3-mat-y6-w01-l4.md,owner_rejected_outline_style
