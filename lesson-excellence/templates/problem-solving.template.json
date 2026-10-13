@@ -1,0 +1,146 @@
+{
+  "_guidance": "Problem-solving: teach a reusable plan (understand, plan, do, check). Worked examples must show the thinking, not just the calculation. Include problems with extra or missing information, and ask learners to justify and verify.",
+  "schema_version": "1.0.0",
+  "lesson_id": "<deterministic-id>",
+  "title": "<Specific, outcome-focused title>",
+  "subject": "<subject>",
+  "domain": "<strand or domain>",
+  "level": "<year or stage>",
+  "lesson_type": "problem-solving",
+  "version": "0.1.0",
+  "status": "draft",
+  "learning_objectives": [
+    "<Measurable verb> + <what> + <condition or criterion>"
+  ],
+  "prerequisites": [
+    {
+      "skill": "<skill needed>",
+      "lesson_id": "<optional id>",
+      "quick_check": "<one question that proves the skill>"
+    }
+  ],
+  "activation_prompt": {
+    "prompt": "<question linking to prior knowledge>",
+    "purpose": "<why this prompt>",
+    "expected_responses": [
+      "<likely answer>"
+    ]
+  },
+  "core_explanation": {
+    "summary": "<60+ chars, plain language, one idea at a time>",
+    "key_points": [
+      "<point>",
+      "<point>"
+    ],
+    "vocabulary": [
+      {
+        "term": "<term>",
+        "definition": "<child-friendly definition>"
+      }
+    ],
+    "analogies_or_representations": [
+      "<concrete model>"
+    ]
+  },
+  "worked_examples": [
+    {
+      "problem": "<problem>",
+      "steps": [
+        {
+          "action": "<what to do>",
+          "reasoning": "<why>"
+        },
+        {
+          "action": "<what to do>",
+          "reasoning": "<why>"
+        }
+      ],
+      "answer": "<answer>",
+      "common_slip": "<typical error>"
+    }
+  ],
+  "guided_practice": [
+    {
+      "task": "<task>",
+      "hints": [
+        "<hint that does not give the answer>"
+      ],
+      "solution": "<solution>"
+    }
+  ],
+  "independent_practice": [
+    {
+      "task": "<task>",
+      "answer": "<answer>",
+      "rationale": "<why>",
+      "difficulty": "foundation"
+    }
+  ],
+  "misconceptions_and_corrections": [
+    {
+      "misconception": "<wrong belief>",
+      "why_it_happens": "<cause>",
+      "correction": "<what to say or do>"
+    }
+  ],
+  "formative_checks": [
+    {
+      "question": "<question>",
+      "type": "short-answer",
+      "correct_answer": "<answer>",
+      "rationale": "<why correct>",
+      "objective_index": 0,
+      "feedback_if_wrong": "<next step for the learner>"
+    }
+  ],
+  "mastery_criteria": {
+    "threshold_percent": 80,
+    "evidence": [
+      "<observable evidence>"
+    ],
+    "description": "<what mastery looks like>"
+  },
+  "remediation_plan": {
+    "triggers": [
+      "<when to remediate>"
+    ],
+    "steps": [
+      "<reteach step>",
+      "<recheck step>"
+    ],
+    "reteach_approach": "<different representation>"
+  },
+  "extension_challenge": {
+    "task": "<open task that transfers the skill>",
+    "success_looks_like": "<criteria>"
+  },
+  "lesson_summary": {
+    "recap": "<30+ chars>",
+    "key_takeaways": [
+      "<takeaway>",
+      "<takeaway>"
+    ]
+  },
+  "retrieval_practice": [
+    {
+      "prompt": "<question>",
+      "answer": "<answer>",
+      "review_after_days": [
+        1,
+        3,
+        7
+      ]
+    }
+  ],
+  "inclusivity_notes": [
+    "<access or language support>"
+  ],
+  "transfer_tasks": [
+    "<new-context task>"
+  ],
+  "estimated_time_minutes": 30,
+  "difficulty": "beginner",
+  "tags": [
+    "<tag>"
+  ]
+}

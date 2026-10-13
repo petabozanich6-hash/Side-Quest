@@ -1,0 +1,281 @@
+{
+  "schema_version": "1.0.0",
+  "lesson_id": "gold-y4-maths-column-addition-procedural",
+  "title": "Column addition with regrouping",
+  "subject": "Mathematics",
+  "domain": "Number and Algebra",
+  "level": "Year 4",
+  "lesson_type": "procedural",
+  "version": "1.0.0",
+  "status": "excellent",
+  "learning_objectives": [
+    "Calculate the sum of two 3-digit numbers using the column method with regrouping.",
+    "Explain why a ten or hundred is carried to the next column.",
+    "Check an addition answer by estimating with rounded numbers."
+  ],
+  "prerequisites": [
+    {
+      "skill": "Know place value to hundreds",
+      "quick_check": "What is the value of the 4 in 347?"
+    },
+    {
+      "skill": "Add single-digit numbers to make totals up to 18",
+      "quick_check": "What is 8 + 9?"
+    }
+  ],
+  "activation_prompt": {
+    "prompt": "You have 27 stickers and a friend gives you 15 more. How could you find the total without counting every sticker?",
+    "purpose": "Activates mental strategies for adding tens and ones, which column addition formalises.",
+    "expected_responses": [
+      "20 + 10 and 7 + 5",
+      "42"
+    ]
+  },
+  "core_explanation": {
+    "summary": "Column addition lines up numbers by place value so we add ones with ones, tens with tens and hundreds with hundreds. When a column adds to ten or more, we regroup: we keep the ones digit in that column and carry the extra ten or hundred to the next column on the left.",
+    "key_points": [
+      "Line up digits by place value, ones under ones.",
+      "Always start from the ones column on the right.",
+      "If a column totals 10 or more, write the ones digit and carry 1 to the next column.",
+      "Estimate first, then check the answer is close."
+    ],
+    "vocabulary": [
+      {
+        "term": "regroup",
+        "definition": "Exchange 10 of one place value for 1 of the next place value up."
+      },
+      {
+        "term": "sum",
+        "definition": "The answer when numbers are added."
+      }
+    ],
+    "analogies_or_representations": [
+      "Ten ones sticks bundle into one tens stick, which is exactly what carrying does."
+    ]
+  },
+  "worked_examples": [
+    {
+      "problem": "Calculate 246 + 138.",
+      "steps": [
+        {
+          "action": "Estimate: 250 + 140 = 390.",
+          "reasoning": "An estimate tells us roughly how big the answer should be."
+        },
+        {
+          "action": "Ones: 6 + 8 = 14. Write 4, carry 1 ten.",
+          "reasoning": "14 ones is 1 ten and 4 ones."
+        },
+        {
+          "action": "Tens: 4 + 3 + 1 (carried) = 8. Write 8.",
+          "reasoning": "We include the carried ten so no value is lost."
+        },
+        {
+          "action": "Hundreds: 2 + 1 = 3. Write 3.",
+          "reasoning": "No regrouping is needed in this column."
+        }
+      ],
+      "answer": "384",
+      "common_slip": "Forgetting to add the carried 1 in the tens column, giving 374."
+    },
+    {
+      "problem": "Calculate 587 + 346.",
+      "steps": [
+        {
+          "action": "Estimate: 600 + 350 = 950.",
+          "reasoning": "Rounding makes a quick check for later."
+        },
+        {
+          "action": "Ones: 7 + 6 = 13. Write 3, carry 1 ten.",
+          "reasoning": "13 ones is 1 ten and 3 ones."
+        },
+        {
+          "action": "Tens: 8 + 4 + 1 = 13. Write 3, carry 1 hundred.",
+          "reasoning": "13 tens is 1 hundred and 3 tens."
+        },
+        {
+          "action": "Hundreds: 5 + 3 + 1 = 9. Write 9.",
+          "reasoning": "The carried hundred is added with the hundreds digits."
+        }
+      ],
+      "answer": "933",
+      "common_slip": "Writing 13 in a single column instead of splitting it into a digit and a carry."
+    }
+  ],
+  "guided_practice": [
+    {
+      "task": "Calculate 365 + 227 using the column method. Estimate first.",
+      "hints": [
+        "Start with the ones: 5 + 7.",
+        "Remember to add the carried digit in the next column."
+      ],
+      "solution": "592 (estimate 400 + 200 = 600; ones 12 carry 1; tens 6+2+1=9; hundreds 3+2=5)"
+    },
+    {
+      "task": "Calculate 478 + 245.",
+      "hints": [
+        "Both the ones and the tens columns need regrouping.",
+        "Write the carry small above the next column."
+      ],
+      "solution": "723"
+    }
+  ],
+  "independent_practice": [
+    {
+      "task": "Calculate 124 + 235.",
+      "answer": "359",
+      "rationale": "No regrouping is needed, which builds fluency in the layout.",
+      "difficulty": "foundation"
+    },
+    {
+      "task": "Calculate 256 + 178.",
+      "answer": "434",
+      "rationale": "Ones 6+8=14 and tens 5+7+1=13 both regroup.",
+      "difficulty": "core"
+    },
+    {
+      "task": "Calculate 639 + 284.",
+      "answer": "923",
+      "rationale": "Regrouping in ones and tens.",
+      "difficulty": "core"
+    },
+    {
+      "task": "Calculate 495 + 507.",
+      "answer": "1002",
+      "rationale": "Regrouping in every column creates a 4-digit sum.",
+      "difficulty": "stretch"
+    },
+    {
+      "task": "A student wrote 358 + 267 = 515. Find and fix the mistake.",
+      "answer": "The carry was missed in the tens column. The correct sum is 625.",
+      "rationale": "Error analysis builds understanding of why carrying matters.",
+      "difficulty": "stretch"
+    }
+  ],
+  "misconceptions_and_corrections": [
+    {
+      "misconception": "Digits can be added in any order across columns, such as hundreds first.",
+      "why_it_happens": "Learners read left to right.",
+      "correction": "Begin at the ones because regrouping moves value to the left. Starting on the left would need the carry afterwards."
+    },
+    {
+      "misconception": "A carry is written as part of the answer digit, such as writing 14 in the ones column.",
+      "why_it_happens": "They treat each column as the whole number.",
+      "correction": "Each column holds one digit. Ten ones becomes 1 ten, so we write the ones digit and carry 1."
+    }
+  ],
+  "formative_checks": [
+    {
+      "question": "In 246 + 138, what do you write in the ones column and what do you carry?",
+      "type": "short-answer",
+      "correct_answer": "Write 4 and carry 1 ten",
+      "rationale": "6 + 8 = 14, which is 1 ten and 4 ones.",
+      "objective_index": 0,
+      "feedback_if_wrong": "Add 6 + 8 first, then split the answer into tens and ones."
+    },
+    {
+      "question": "Why do we carry 1 to the tens column when ones add to 14?",
+      "type": "explain",
+      "correct_answer": "Because 14 ones is 1 ten and 4 ones, and the ten belongs in the tens column.",
+      "rationale": "Links the procedure to place value so it is not a memorised trick.",
+      "objective_index": 1,
+      "feedback_if_wrong": "Think about bundling ten ones sticks into one tens stick."
+    },
+    {
+      "question": "A good estimate for 398 + 205 is:",
+      "type": "multiple-choice",
+      "options": [
+        "500",
+        "600",
+        "700"
+      ],
+      "correct_answer": "600",
+      "rationale": "398 is about 400 and 205 is about 200, giving about 600.",
+      "objective_index": 2,
+      "feedback_if_wrong": "Round each number to the nearest hundred, then add."
+    }
+  ],
+  "mastery_criteria": {
+    "threshold_percent": 80,
+    "evidence": [
+      "Answers at least 4 of 5 independent column additions correctly",
+      "Explains a carry using place value in a sentence"
+    ],
+    "description": "The learner completes 3-digit column addition accurately, states why carrying works and uses an estimate to check."
+  },
+  "remediation_plan": {
+    "triggers": [
+      "Fewer than 4 of 5 correct",
+      "Misaligned columns in two or more answers"
+    ],
+    "steps": [
+      "Rework two problems with place value blocks to show each regroup physically.",
+      "Use grid paper so every digit sits in its own box, then redo practice.",
+      "Retest with three new problems before moving on."
+    ],
+    "reteach_approach": "Concrete blocks, then pictorial, then abstract column method."
+  },
+  "extension_challenge": {
+    "task": "Make the largest possible sum using the digits 1 to 6 once each to build two 3-digit numbers. Prove that no larger sum exists.",
+    "success_looks_like": "Finds 642 + 531 = 1173 (or an equally large pair) by placing the largest digits in the hundreds and then tens places, and justifies the choice using place value."
+  },
+  "lesson_summary": {
+    "recap": "Column addition adds from the ones column leftwards, carrying whenever a column reaches ten, and an estimate confirms the answer is sensible.",
+    "key_takeaways": [
+      "Line up place values.",
+      "Add from the right and carry when a column reaches 10.",
+      "Estimate to check."
+    ]
+  },
+  "retrieval_practice": [
+    {
+      "prompt": "Which column do you add first, and why?",
+      "answer": "The ones column, because regrouping moves value to the left.",
+      "review_after_days": [
+        1,
+        3,
+        7
+      ]
+    },
+    {
+      "prompt": "Calculate 148 + 75.",
+      "answer": "223",
+      "review_after_days": [
+        1,
+        3,
+        7
+      ]
+    },
+    {
+      "prompt": "What does carrying 1 into the tens column mean?",
+      "answer": "It stands for 10 ones regrouped as 1 ten.",
+      "review_after_days": [
+        3,
+        7,
+        14
+      ]
+    }
+  ],
+  "inclusivity_notes": [
+    "Offer grid paper and coloured place-value columns for learners with fine-motor or visual-processing needs.",
+    "Number contexts are neutral and avoid assumptions about money or possessions."
+  ],
+  "transfer_tasks": [
+    "Use column addition to total the distance of a two-leg trip, such as 285 km + 349 km."
+  ],
+  "estimated_time_minutes": 40,
+  "difficulty": "intermediate",
+  "tags": [
+    "addition",
+    "regrouping",
+    "place-value",
+    "year-4",
+    "maths"
+  ],
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-10-13",
+      "change": "Initial gold-standard version."
+    }
+  ]
+}

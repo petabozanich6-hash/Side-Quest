@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidequestlearning.app/schemas/lesson.schema.json",
+  "title": "Canonical Lesson (teaching content only)",
+  "description": "Content-only lesson. No presentation or UI fields. Every section is required.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "lesson_id", "title", "subject", "level", "lesson_type", "version",
+    "learning_objectives", "prerequisites", "activation_prompt", "core_explanation",
+    "worked_examples", "guided_practice", "independent_practice", "misconceptions_and_corrections",
+    "formative_checks", "mastery_criteria", "remediation_plan", "extension_challenge",
+    "lesson_summary", "retrieval_practice", "estimated_time_minutes", "difficulty", "tags"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "lesson_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Deterministic, lowercase, hyphenated. Derived from source path via scripts/pipeline.mjs (slug + 8 hex of sha1)."
+    },
+    "title": { "type": "string", "minLength": 5, "maxLength": 120 },
+    "subject": { "type": "string", "minLength": 2 },
+    "domain": { "type": "string", "minLength": 2 },
+    "level": { "type": "string", "minLength": 1, "description": "e.g. 'Year 3', 'Stage 2', 'Beginner'." },
+    "lesson_type": { "enum": ["concept", "procedural", "problem-solving", "review", "mini-project"] },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$", "description": "Semver of the lesson content." },
+    "status": { "enum": ["draft", "good", "excellent"] },
+    "source": { "type": "object", "description": "Provenance of migrated lessons (free-form: path, hash)." },
+    "learning_objectives": {
+      "type": "array", "minItems": 1, "maxItems": 5,
+      "items": { "type": "string", "minLength": 15 },
+      "x-validation": "Each objective must start with a measurable verb (see scripts/lib/verbs.mjs); no 'understand', 'know', 'appreciate'."
+    },
+    "prerequisites": {
+      "type": "array", "minItems": 0,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["skill", "quick_check"],
+        "properties": {
+          "skill": { "type": "string", "minLength": 3 },
+          "lesson_id": { "type": "string" },
+          "quick_check": { "type": "string", "minLength": 5 }
+        }
+      },
+      "description": "Use an empty array only when the lesson genuinely has none."
+    },
+    "activation_prompt": {
+      "type": "object", "additionalProperties": false, "required": ["prompt", "purpose"],
+      "properties": {
+        "prompt": { "type": "string", "minLength": 15 },
+        "purpose": { "type": "string", "minLength": 10 },
+        "expected_responses": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "core_explanation": {
+      "type": "object", "additionalProperties": false, "required": ["summary", "key_points"],
+      "properties": {
+        "summary": { "type": "string", "minLength": 60 },
+        "key_points": { "type": "array", "minItems": 2, "maxItems": 7, "items": { "type": "string", "minLength": 8 } },
+        "vocabulary": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["term", "definition"],
+            "properties": { "term": { "type": "string" }, "definition": { "type": "string", "minLength": 5 } }
+          }
+        },
+        "analogies_or_representations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "worked_examples": {
+      "type": "array", "minItems": 2,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["problem", "steps", "answer"],
+        "properties": {
+          "problem": { "type": "string", "minLength": 10 },
+          "steps": {
+            "type": "array", "minItems": 2,
+            "items": {
+              "type": "object", "additionalProperties": false, "required": ["action", "reasoning"],
+              "properties": { "action": { "type": "string", "minLength": 3 }, "reasoning": { "type": "string", "minLength": 5 } }
+            }
+          },
+          "answer": { "type": "string", "minLength": 1 },
+          "common_slip": { "type": "string" }
+        }
+      }
+    },
+    "guided_practice": {
+      "type": "array", "minItems": 2,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["task", "hints", "solution"],
+        "properties": {
+          "task": { "type": "string", "minLength": 10 },
+          "hints": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 5 } },
+          "solution": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "independent_practice": {
+      "type": "array", "minItems": 4,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["task", "answer", "difficulty"],
+        "properties": {
+          "task": { "type": "string", "minLength": 10 },
+          "answer": { "type": "string", "minLength": 1 },
+          "rationale": { "type": "string" },
+          "difficulty": { "enum": ["foundation", "core", "stretch"] }
+        }
+      }
+    },
+    "misconceptions_and_corrections": {
+      "type": "array", "minItems": 2,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["misconception", "why_it_happens", "correction"],
+        "properties": {
+          "misconception": { "type": "string", "minLength": 10 },
+          "why_it_happens": { "type": "string", "minLength": 10 },
+          "correction": { "type": "string", "minLength": 10 }
+        }
+      }
+    },
+    "formative_checks": {
+      "type": "array", "minItems": 3,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["question", "type", "correct_answer", "rationale", "objective_index"],
+        "properties": {
+          "question": { "type": "string", "minLength": 10 },
+          "type": { "enum": ["multiple-choice", "short-answer", "true-false", "ordering", "explain"] },
+          "options": { "type": "array", "minItems": 2, "items": { "type": "string" } },
+          "correct_answer": { "type": "string", "minLength": 1 },
+          "rationale": { "type": "string", "minLength": 15 },
+          "objective_index": { "type": "integer", "minimum": 0, "description": "Index into learning_objectives; must be in range." },
+          "feedback_if_wrong": { "type": "string" }
+        }
+      }
+    },
+    "mastery_criteria": {
+      "type": "object", "additionalProperties": false, "required": ["threshold_percent", "evidence", "description"],
+      "properties": {
+        "threshold_percent": { "type": "integer", "minimum": 60, "maximum": 100 },
+        "evidence": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 5 } },
+        "description": { "type": "string", "minLength": 15 }
+      }
+    },
+    "remediation_plan": {
+      "type": "object", "additionalProperties": false, "required": ["triggers", "steps"],
+      "properties": {
+        "triggers": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 5 } },
+        "steps": { "type": "array", "minItems": 2, "items": { "type": "string", "minLength": 10 } },
+        "reteach_approach": { "type": "string" }
+      }
+    },
+    "extension_challenge": {
+      "type": "object", "additionalProperties": false, "required": ["task", "success_looks_like"],
+      "properties": {
+        "task": { "type": "string", "minLength": 20 },
+        "success_looks_like": { "type": "string", "minLength": 10 }
+      }
+    },
+    "lesson_summary": {
+      "type": "object", "additionalProperties": false, "required": ["recap", "key_takeaways"],
+      "properties": {
+        "recap": { "type": "string", "minLength": 30 },
+        "key_takeaways": { "type": "array", "minItems": 2, "maxItems": 5, "items": { "type": "string", "minLength": 8 } }
+      }
+    },
+    "retrieval_practice": {
+      "type": "array", "minItems": 3,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["prompt", "answer", "review_after_days"],
+        "properties": {
+          "prompt": { "type": "string", "minLength": 10 },
+          "answer": { "type": "string", "minLength": 1 },
+          "review_after_days": { "type": "array", "minItems": 1, "items": { "type": "integer", "minimum": 1 } }
+        }
+      }
+    },
+    "inclusivity_notes": {
+      "type": "array", "items": { "type": "string" },
+      "description": "Optional but scored: accessibility, language support, culturally neutral contexts."
+    },
+    "transfer_tasks": {
+      "type": "array", "items": { "type": "string" },
+      "description": "Optional but scored: apply the skill in a new context."
+    },
+    "estimated_time_minutes": { "type": "integer", "minimum": 5, "maximum": 120 },
+    "difficulty": { "enum": ["beginner", "intermediate", "advanced"] },
+    "tags": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 2 } },
+    "changelog": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["version", "date", "change"],
+        "properties": { "version": { "type": "string" }, "date": { "type": "string" }, "change": { "type": "string" } }
+      }
+    }
+  }
+}
