@@ -163,7 +163,7 @@ app.get("/api/auth/me", requireAuth, (c) => c.json(c.get("user")));
 app.get("/api/students", requireAuth, requireParent, async (c) => {
   const { results } = await c.env.DB.prepare(`SELECT ${STUDENT_SELECT} FROM students WHERE family_id = ?`)
     .bind(c.get("user").family_id).all<any>();
-  return c.json(results.map((r) => studentOut(r)));
+  return c.json(results.map((r) => studentOut(r, true)));
 });
 
 app.post("/api/students", requireAuth, requireParent, async (c) => {
@@ -187,7 +187,7 @@ app.post("/api/students", requireAuth, requireParent, async (c) => {
     "INSERT INTO students (id, family_id, name, username, pin_hash, birth_year, stage, year_level, theme, interests, notes, created_at, extra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
   ).bind(id, c.get("user").family_id, name, username, await hashSecret(pin), b.birth_year ?? null, stage, b.year_level ?? null, theme, interests, b.notes ?? null, nowIso(), JSON.stringify(studentExtraFromBody(b, stage))).run();
   const created = await c.env.DB.prepare(`SELECT ${STUDENT_SELECT} FROM students WHERE id = ?`).bind(id).first<any>();
-  return c.json(studentOut(created));
+  return c.json(studentOut(created, true));
 });
 
 registerCore(app, requireAuth, requireParent);

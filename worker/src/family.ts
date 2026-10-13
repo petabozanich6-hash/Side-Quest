@@ -42,11 +42,15 @@ const EDITABLE_EVENT_FIELDS = new Set([
 export const STUDENT_SELECT =
   "id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, extra";
 
+import { cleanPrefs } from "./aiRequest";
+import type { LearningPrefs } from "./aiRequest";
+
 type StudentExtra = {
   subject_levels?: Record<string, string>;
   electives?: Array<Record<string, unknown>>;
   stage_name?: string;
   band?: string;
+  prefs?: LearningPrefs;
 };
 
 type StudentRow = {
@@ -101,6 +105,7 @@ export function studentExtraFromBody(body: Record<string, unknown>, stage: strin
   const next: StudentExtra = { ...existing };
   if ("subject_levels" in body) next.subject_levels = isRecord(body.subject_levels) ? (body.subject_levels as Record<string, string>) : {};
   if ("electives" in body) next.electives = Array.isArray(body.electives) ? (body.electives as Array<Record<string, unknown>>) : [];
+  if ("prefs" in body) next.prefs = cleanPrefs(body.prefs);
   next.subject_levels ??= existing?.subject_levels ?? {};
   next.electives ??= existing?.electives ?? [];
   next.stage_name = meta?.name ?? existing?.stage_name ?? stage;
@@ -108,7 +113,7 @@ export function studentExtraFromBody(body: Record<string, unknown>, stage: strin
   return next;
 }
 
-export function studentOut(row: StudentRow | null) {
+export function studentOut(row: StudentRow | null, withPrefs = false) {
   if (!row) return null;
   const extra = parseJson<StudentExtra>(row.extra, {});
   const meta = stageMeta(row.stage);
@@ -127,6 +132,7 @@ export function studentOut(row: StudentRow | null) {
     interests: parseJson(row.interests, [] as string[]),
     notes: row.notes,
     electives: extra.electives ?? [],
+    ...(withPrefs ? { prefs: extra.prefs ?? {} } : {}),
     created_at: row.created_at,
   };
 }
@@ -442,7 +448,8 @@ export function registerFamily(app: App, g: Guards) {
     const student = studentOut(
       await c.env.DB.prepare(`SELECT ${STUDENT_SELECT} FROM students WHERE id = ? AND family_id = ?`)
         .bind(c.req.param("sid"), c.get("user").family_id)
-        .first<StudentRow>()
+        .first<StudentRow>(),
+      c.get("user").role === "parent"
     );
     return student ? c.json(student) : c.json({ detail: "Not found" }, 404);
   });
@@ -497,7 +504,8 @@ export function registerFamily(app: App, g: Guards) {
     const student = studentOut(
       await c.env.DB.prepare(`SELECT ${STUDENT_SELECT} FROM students WHERE id = ? AND family_id = ?`)
         .bind(sid, c.get("user").family_id)
-        .first<StudentRow>()
+        .first<StudentRow>(),
+      true
     );
     return c.json(student);
   });

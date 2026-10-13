@@ -223,7 +223,27 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const u = c.get("user");
     const b: any = await c.req.json().catch(() => ({}));
     const r = await aid.draftLessonWithAi(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, request: b });
-    return r.ok ? c.json({ lesson: r.lesson, usage: r.usage, warnings: r.warnings, model: r.model }) : send(c, r);
+    return r.ok ? c.json({ lesson: r.lesson, usage: r.usage, warnings: r.warnings, model: r.model, assumptions: r.assumptions }) : send(c, r);
+  });
+
+  app.post("/api/ai/lesson-refine", auth, parent, async (c) => {
+    const u = c.get("user");
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await aid.refineLessonWithAi(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, lessonId: String(b.lesson_id || ""), instruction: b.instruction, target: b.target });
+    return r.ok ? c.json(r) : send(c, r);
+  });
+
+  app.post("/api/ai/series-plan", auth, parent, async (c) => {
+    const u = c.get("user");
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await aid.planSeriesWithAi(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, request: b });
+    return r.ok ? c.json(r) : send(c, r);
+  });
+
+  app.post("/api/lessons/:id/apply-patch", auth, parent, async (c) => {
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await aid.applyLessonPatch(c.env.DB, c.get("user").family_id, c.req.param("id"), b.patch);
+    return r.ok ? c.json(r.lesson) : send(c, r);
   });
 
   app.post("/api/lessons", auth, parent, async (c) => {

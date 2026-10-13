@@ -425,3 +425,98 @@ test("rich lessons keep teaching content for the parent but strip answers and th
   assert.ok(!json.includes("Sam forgot to regroup"));
   assert.ok(!json.includes("bean cups until"));
 });
+
+// ---------------------------------------------------------------- zero-burden builder: sentence + child profile
+import { parseRequestText, resolveRequest } from "../src/aiRequest.ts";
+
+test("one-sentence requests are understood (subject, year, minutes, theme, delivery, count)", () => {
+  const a = parseRequestText("Create a one-hour Year 3 maths lesson about addition using gardening as the theme.");
+  assert.deepEqual([a.topic, a.minutes, a.year, a.theme, a.area, a.count], ["addition", 60, "Year 3", "gardening", "Mathematics", undefined]);
+  const b = parseRequestText("Create a one-hour Year 7 lesson introducing negative integers. My child works independently.");
+  assert.deepEqual([b.topic, b.minutes, b.year, b.delivery, b.area], ["negative integers", 60, "Year 7", "independent", "Mathematics"]);
+  const c = parseRequestText("Create four science lessons about the solar system for my Year 5 child next week.");
+  assert.deepEqual([c.count, c.year, c.area, c.topic], [4, "Year 5", "Science", "the solar system"]);
+  assert.equal(parseRequestText("Make a lesson from https://example.com/x about volcanoes").links, true);
+});
+
+test("the child's saved profile changes the lesson request; the parent's words win over the profile", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const put = (id, year, interests, prefs) => db.raw.prepare("INSERT INTO students (id,family_id,name,username,pin_hash,stage,year_level,interests,extra,created_at) VALUES (?,?,?,?,?,?,?,?,?,?)")
+    .run(id, fam, id, id, "x", "S2", year, JSON.stringify(interests), JSON.stringify({ prefs }), NOW.toISOString());
+  put("A", "3", ["Harry Potter"], { delivery: "parent_guided", reading: "supported", duration_minutes: 30 });
+  put("B", "7", ["gaming", "fantasy"], { delivery: "independent", complexity: "challenging", equipment: "laptop, ruler" });
+  const ask = async (sid, text) => { const ai = stub(); const r = await aid.draftLessonWithAi(db, ai, { familyId: fam, userId: "u", request: { request: text, student_id: sid } }, NOW); return { r, prompt: ai.calls[0]?.[1].messages.at(-1).content }; };
+  const a = await ask("A", "Create a lesson about addition");
+  const b = await ask("B", "Create a lesson about addition");
+  assert.ok(a.r.ok && b.r.ok, JSON.stringify([a.r, b.r]));
+  assert.match(a.prompt, /Year 3/); assert.match(a.prompt, /PARENT-GUIDED/); assert.match(a.prompt, /about 30 minutes/); assert.match(a.prompt, /needs support/); assert.match(a.prompt, /Harry Potter/);
+  assert.match(b.prompt, /Year 7/); assert.match(b.prompt, /INDEPENDENT/); assert.match(b.prompt, /challengingly/); assert.match(b.prompt, /laptop, ruler/); assert.match(b.prompt, /gaming/);
+  assert.equal(a.r.assumptions.minutes, 30);
+  assert.equal(b.r.lesson.stage, "S4");
+  // the sentence overrides the profile
+  const c = await ask("A", "Create a one-hour Year 3 lesson about addition. My child works independently.");
+  assert.match(c.prompt, /INDEPENDENT/); assert.match(c.prompt, /about 60 minutes/);
+  // another family's child cannot be used
+  const other = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const x = await aid.draftLessonWithAi(db, stub(), { familyId: other, userId: "u", request: { request: "a lesson about fractions", student_id: "A" } }, NOW);
+  assert.equal(x.status, 404);
+  // a bare link is never pretended to be read; theme is passed as a theme, not as copied content
+  const link = await aid.draftLessonWithAi(db, stub(), { familyId: fam, userId: "u", request: { request: "https://example.com/page" } }, NOW);
+  assert.equal(link.code, "LINK_NOT_READ");
+  assert.match((await ask("A", "A lesson about addition using Harry Potter as the theme")).prompt, /THEME: Harry Potter[\s\S]*do not imply any affiliation/);
+});
+
+test("changes are previewed first, touch only the named parts, count separately, and apply keeps manual edits", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const made = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  const id = made.lesson.id;
+  // the parent edits the title by hand
+  assert.ok((await lb.updateLesson(db, fam, id, { ...made.lesson, title: "My own title" }, NOW)).ok);
+  const patchReply = { response: JSON.stringify({ worked_examples: [...GARDEN.worked_examples, { title: "Extra", problem: "What is 10 + 5?", steps: ["Start at 10.", "Count on 5 to reach 15."], answer: "15" }] }) };
+  const ai = stub(() => patchReply);
+  const r = await aid.refineLessonWithAi(db, ai, { familyId: fam, userId: "u", lessonId: id, instruction: "Add more worked examples" }, NOW);
+  assert.ok(r.ok, JSON.stringify(r));
+  assert.deepEqual(r.keys, ["worked_examples"]);
+  assert.equal(r.patch.worked_examples.length, GARDEN.worked_examples.length + 1);
+  const stored = db.raw.prepare("SELECT data FROM lessons WHERE id = ?").get(id);
+  assert.equal(JSON.parse(stored.data).worked_examples.length, GARDEN.worked_examples.length); // nothing saved yet
+  const used = await aid.aiUsage(db, fam, NOW);
+  assert.deepEqual([used.today, used.changes_today], [1, 1]);
+  const ap = await aid.applyLessonPatch(db, fam, id, { ...r.patch, owner: "x", status: "archived" }, NOW);
+  assert.ok(ap.ok, JSON.stringify(ap));
+  assert.equal(ap.lesson.title, "My own title");
+  assert.equal(ap.lesson.worked_examples.length, GARDEN.worked_examples.length + 1);
+  assert.equal(ap.lesson.status, "draft");
+  // empty/failed reply leaves the lesson alone and costs nothing
+  const bad = await aid.refineLessonWithAi(db, stub(() => ({ response: "no" })), { familyId: fam, userId: "u", lessonId: id, instruction: "Make it easier" }, NOW);
+  assert.equal(bad.code, "AI_FAILED");
+  assert.equal((await aid.aiUsage(db, fam, NOW)).changes_today, 1);
+  // free families and other families' lessons are refused
+  const free = seed(makeDb(), {});
+  assert.equal((await aid.refineLessonWithAi(db, stub(), { familyId: seed(db, { plan: "FREE_PREVIEW" }), userId: "u", lessonId: id, instruction: "Make it easier" }, NOW)).status, 402);
+  assert.equal((await aid.refineLessonWithAi(db, stub(), { familyId: seed(db, { plan: "ACTIVE_MONTHLY" }), userId: "u", lessonId: id, instruction: "Make it easier" }, NOW)).status, 404);
+  void free;
+});
+
+test("series planning checks the allowance up front and returns the right number of lessons", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const plan = { response: JSON.stringify({ series_title: "Our Solar System", lessons: [1, 2, 3, 4].map((n) => ({ title: `Lesson ${n}`, goal: `Goal ${n}` })) }) };
+  const r = await aid.planSeriesWithAi(db, stub(() => plan), { familyId: fam, userId: "u", request: { request: "Create four science lessons about the solar system for my Year 5 child next week." } }, NOW);
+  assert.ok(r.ok, JSON.stringify(r));
+  assert.equal(r.lessons.length, 4);
+  assert.equal(r.usage.today, 0); // planning is not a lesson draft
+  const none = await aid.planSeriesWithAi(db, stub(), { familyId: fam, userId: "u", request: { request: "Create science lessons about the solar system" } }, NOW);
+  assert.equal(none.status, 400);
+  for (let i = 0; i < 8; i++) assert.ok((await aid.draftLessonWithAi(db, stub(), req(fam), NOW)).ok);
+  const over = await aid.planSeriesWithAi(db, stub(() => plan), { familyId: fam, userId: "u", request: { request: "four science lessons about the solar system" } }, NOW);
+  assert.equal(over.code, "AI_QUOTA");
+  const free = await aid.planSeriesWithAi(db, stub(), { familyId: seed(db, { plan: "FREE_PREVIEW" }), userId: "u", request: { request: "four science lessons about space" } }, NOW);
+  assert.equal(free.status, 402);
+  // a lesson drafted as part of a series is told its place in the sequence
+  const ai = stub();
+  await aid.draftLessonWithAi(db, ai, { familyId: seed(db, { plan: "ACTIVE_MONTHLY" }), userId: "u", request: { request: "four science lessons about the solar system", series: { index: 1, titles: ["The Sun", "The planets", "Moons", "Orbits"], goals: [] } } }, NOW);
+  assert.match(ai.calls[0][1].messages.at(-1).content, /Topic: The planets[\s\S]*lesson 2 of 4[\s\S]*Earlier lessons: The Sun/);
+});
