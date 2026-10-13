@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-CWT-01",
+      "lesson_evidence": "Punctuate dialogue with quotation marks and place speech punctuation correctly.",
+      "scope_limit": "Individual Written Core lesson contributes partial evidence; independently verify syllabus content-point alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Punctuate dialogue with quotation marks and place speech punctuation correctly.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Keep the independent response and two written check responses; record oral retelling or performance where required by the task.",
+    "explicit_teaching": null,
+    "extension": "Create a new example using a completely different character or setting, show the same skill, then explain to another person how you checked its accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "WE DO — attempt each prompt before comparing to the feedback.\n1. Add quotation marks: Mila said I can help you.\nCOMPARE: Mila said, \"I can help you.\"\n2. Punctuate the spoken question: where is the library asked Sam.\nCOMPARE: \"Where is the library?\" asked Sam.\n3. Punctuate: Ben whispered the torch is failing.\nCOMPARE: Ben whispered, \"The torch is failing.\"\n4. Write two lines where a child asks a price and a shopkeeper answers.\nCOMPARE: Each speaker begins on a new line with their own quotation marks.",
+    "hoard_words": null,
+    "independent_task": "YOU DO — complete the following substantial original task, not a copied model.\nWrite six lines of original dialogue between a child and a shopkeeper. Include a question, a statement and a new paragraph when the speaker changes. Check every quotation mark.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Punctuate dialogue with quotation marks and place speech punctuation correctly.",
+    "lesson_number": 3,
+    "lesson_role": "Language and spelling",
+    "materials": [
+      "Paper or typing area",
+      "Pencil for optional evidence"
+    ],
+    "offline_alternative": "Use paper to copy only the original independent prompt; have the child respond in writing or orally as required. Save a photograph or brief parent observation for the learning record.",
+    "outcome_codes": [
+      "EN2-CWT-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Write six lines of original dialogue between a child and a shopkeeper. Include a question, a statement and a new paragraph when the speaker changes. Check every quotation mark. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using dialogue on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Do not put the speaker tag inside the quotation marks unless those words are spoken.. Correction: Mila said, \"I can help you.\". Why it helps the audience is stated.\n\nParent: Likely misconception: Do not put the speaker tag inside the quotation marks unless those words are spoken. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating dialogue on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with dialogue, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about dialogue with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for dialogue. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "This matches the taught method for dialogue. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Mila said, \"I can help you.\"",
+          "Do not put the speaker tag inside the quotation marks unless those words are spoken.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
+        ],
+        "question": "Punctuate the spoken question: where is the library asked Sam. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "This is the misconception to avoid for dialogue; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Punctuate dialogue with quotation marks and place speech punctuation correctly.",
+          "Mila said, \"I can help you.\"",
+          "Careful use of quotation and point to the words or even with clear evidence.",
+          "Do not put the speaker tag inside the quotation marks unless those words are spoken."
+        ],
+        "question": "Which statement is a common mistake when working with dialogue?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and a named quotation and point to the words or even, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Do not put the speaker tag inside the quotation marks unless those words are spoken.",
+          "Name quotation and point to the words or even only, without linking it to dialogue.",
+          "Apply dialogue to new material and name the quotation and point to the words or even used.",
+          "Repeat the worked example wording with no new evidence."
+        ],
+        "question": "Which response best applies dialogue with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries dialogue. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "Do not put the speaker tag inside the quotation marks unless those words are spoken.",
+          "Point to exact words in the sentence that show dialogue and say what they do."
+        ],
+        "question": "Read: \"After the blackout, Tess lit a candle and read the crumpled note.\" Which choice best uses dialogue from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Mila said, \"I can help you.\"",
+          "Do not put the speaker tag inside the quotation marks unless those words are spoken.",
+          "Copy a model sentence from another story unchanged.",
+          "Name quotation and point to the words or even without linking it to any words in the text."
+        ],
+        "question": "Which statement correctly applies the lesson idea about dialogue?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Lengthen the answer with adjectives while keeping the same idea.",
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged."
+        ],
+        "question": "In a new text, what should you do first to analyse quotation and point to the words or even?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea.",
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess."
+        ],
+        "question": "Which revision actually improves meaning for dialogue?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new.",
+          "Do not put the speaker tag inside the quotation marks unless those words are spoken.",
+          "Use a fresh sentence or text and explain one precise choice about dialogue."
+        ],
+        "question": "Which response shows accurate use of dialogue on fresh material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about dialogue with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating dialogue on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using dialogue on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for dialogue. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with dialogue, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Do not put the speaker tag inside the quotation marks unless those words are spoken.. Correction: Mila said, \"I can help you.\". Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Submit your original independent work and your brief explanation of the key choices you made.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w05-l3",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; compare the existing Coming Soon card and official syllabus content points before marking verified.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise dialogue.",
+        "Read the mission before you start writing or speaking.",
+        "Your goal is: Punctuate dialogue with quotation marks and place speech punctuation correctly."
+      ],
+      "guided": [
+        "Attempt each guided prompt without looking ahead.",
+        "Compare your attempt with the supplied specific feedback.",
+        "Guided comparison: \"Where is the library?\" asked Sam."
+      ],
+      "learn": [
+        "Study the first worked demonstration carefully.",
+        "Name the exact words or events that make it work.",
+        "Demonstration: \"Where is my hat?\" asked Ben. The spoken question sits inside the quotation marks."
+      ],
+      "quiz": [
+        "Read the whole question and eliminate misconceptions.",
+        "Prefer the option that quotes or uses actual evidence.",
+        "Likely trap: Forgetting the comma can make the sentence harder to read, though meaning still depends on the quotes."
+      ],
+      "submit": [
+        "Include your own response and a short reason.",
+        "Proofread names, sequence and punctuation before sending.",
+        "Success looks like: Punctuate dialogue with quotation marks and place speech punctuation correctly."
+      ],
+      "teach0": [
+        "Focus on mark the spoken words.",
+        "Hold this teaching point: Quotation marks show the exact words a character says.",
+        "Worked comparison: Mila said, \"I can help you.\""
+      ],
+      "teach1": [
+        "Focus on keep speech punctuation inside the marks.",
+        "Hold this teaching point: Question marks and full stops that belong to the spoken words stay inside the quotation marks.",
+        "Worked comparison: \"Where is the library?\" asked Sam."
+      ],
+      "teach2": [
+        "Focus on use a comma with a speaker tag when needed.",
+        "Hold this teaching point: When a tag such as said Mila introduces a statement, a comma often appears before the opening quote.",
+        "Worked comparison: Ben whispered, \"The torch is failing.\""
+      ],
+      "teach3": [
+        "Focus on start a new line when the speaker changes.",
+        "Hold this teaching point: A new paragraph for a new speaker helps readers follow the conversation.",
+        "Worked comparison: Each speaker begins on a new line with their own quotation marks."
+      ],
+      "write": [
+        "Use the independent instructions, not the model words.",
+        "Give an original response and the reason behind it.",
+        "Independent reminder: Write six lines of original dialogue between a child and a shopkeeper. Include a question, a statement and a new paragraph when the speaker changes. Check every"
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use dialogue with a specific example from this lesson.",
+      "I can identify quotation and point to the words or events that support it.",
+      "I can practise speaker independently on a new prompt.",
+      "I can notice punctuation needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Ignore the task and choose an unrelated detail.",
+            "Copy every sentence exactly without explaining it.",
+            "Use the example and explain the clue or language choice before trying dialogue independently.",
+            "Add a made-up event and describe it as a fact."
+          ],
+          "question": "Which choice best applies this lesson idea about dialogue with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\n\"Where is my hat?\" asked Ben. The spoken question sits inside the quotation marks.\n\nYOUR SMALL TRY\nAdd quotation marks: Mila said I can help you.\n\nCOMPARE AND CORRECT\nMila said, \"I can help you.\"",
+        "explain": "Quotation marks show the exact words a character says.\n\nQuotation marks show the exact words a character says. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nDo not put the speaker tag inside the quotation marks unless those words are spoken. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Mark the spoken words",
+        "visual": [
+          {
+            "alt": "Quoted question Where is my hat beside speaker tag asked Ben.",
+            "caption": "Quotation marks enclose the spoken words.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Spoken words</text><text x=\"28\" y=\"78\">Where is my hat?</text><text x=\"358\" y=\"42\">Speaker tag</text><text x=\"358\" y=\"78\">asked Ben</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I read the first example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or events that carry the meaning before you copy a conclusion.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "So I should try the small prompt myself, then compare it with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: \"Where is my hat?\" asked Ben. The spoken question sits inside the quotation marks. Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I read the first example, but I am not sure which detail matters most.\nJuno: Name the exact words or events that carry the meaning before you copy a conclusion.\nPip: So I should try the small prompt myself, then compare it with the feedback.\nJuno: Pause here. Use this model: \"Where is my hat?\" asked Ben. The spoken question sits inside the quotation marks. Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Add a made-up event and describe it as a fact.",
+            "Use the example and explain the clue or language choice before trying quotation independently.",
+            "Ignore the task and choose an unrelated detail.",
+            "Copy every sentence exactly without explaining it."
+          ],
+          "question": "Which choice best applies this lesson idea about dialogue with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nThe question mark in \"Where is my hat?\" belongs to the question Ben asks.\n\nYOUR SMALL TRY\nPunctuate the spoken question: where is the library asked Sam.\n\nCOMPARE AND CORRECT\n\"Where is the library?\" asked Sam.",
+        "explain": "Question marks and full stops that belong to the spoken words stay inside the quotation marks.\n\nQuestion marks and full stops that belong to the spoken words stay inside the quotation marks. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nA question mark still belongs to a question even when a speaker tag follows. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Keep speech punctuation inside the marks",
+        "visual": [
+          {
+            "alt": "Shopkeeper question on one line and child answer on a new line.",
+            "caption": "Start a new paragraph when the speaker changes.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">One speaker</text><text x=\"28\" y=\"78\">Can I help?</text><text x=\"358\" y=\"42\">New line</text><text x=\"358\" y=\"78\">Yes, please</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Add a made-up event and describe it as a fact.",
+            "Use the example and explain the clue or language choice before trying speaker independently.",
+            "Ignore the task and choose an unrelated detail.",
+            "Copy every sentence exactly without explaining it."
+          ],
+          "question": "Which choice best applies this lesson idea about dialogue with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nMila said, \"I can help you.\" The comma comes after said.\n\nYOUR SMALL TRY\nPunctuate: Ben whispered the torch is failing.\n\nCOMPARE AND CORRECT\nBen whispered, \"The torch is failing.\"",
+        "explain": "When a tag such as said Mila introduces a statement, a comma often appears before the opening quote.\n\nWhen a tag such as said Mila introduces a statement, a comma often appears before the opening quote. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nForgetting the comma can make the sentence harder to read, though meaning still depends on the quotes. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Use a comma with a speaker tag when needed"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Add a made-up event and describe it as a fact.",
+            "Use the example and explain the clue or language choice before trying punctuation independently.",
+            "Ignore the task and choose an unrelated detail.",
+            "Copy every sentence exactly without explaining it."
+          ],
+          "question": "Which choice best applies this lesson idea about dialogue with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\n\"Can I help?\" asked the shopkeeper.\n\n\"Yes, please,\" said Mina.\n\nYOUR SMALL TRY\nWrite two lines where a child asks a price and a shopkeeper answers.\n\nCOMPARE AND CORRECT\nEach speaker begins on a new line with their own quotation marks.",
+        "explain": "A new paragraph for a new speaker helps readers follow the conversation.\n\nA new paragraph for a new speaker helps readers follow the conversation. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nRunning two speakers into one paragraph makes turn-taking unclear. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Start a new line when the speaker changes"
+      }
+    ],
+    "title": "Year 3, Week 5, Lesson 3: Punctuating dialogue",
+    "unit_number": 1,
+    "unit_title": "Narrative: story elements and planning",
+    "week": 5,
+    "week_in_unit": 5,
+    "word_challenges": null,
+    "worked_example": "I DO — \"Where is my hat?\" asked Ben. The spoken question sits inside the quotation marks.\n\nNow look for the exact evidence in the words or actions. The question mark in \"Where is my hat?\" belongs to the question Ben asks.",
+    "worked_visuals": [
+      {
+        "alt": "Quoted question Where is my hat beside speaker tag asked Ben.",
+        "caption": "Quotation marks enclose the spoken words.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Spoken words</text><text x=\"28\" y=\"78\">Where is my hat?</text><text x=\"358\" y=\"42\">Speaker tag</text><text x=\"358\" y=\"78\">asked Ben</text></g></svg>"
+      },
+      {
+        "alt": "Shopkeeper question on one line and child answer on a new line.",
+        "caption": "Start a new paragraph when the speaker changes.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">One speaker</text><text x=\"28\" y=\"78\">Can I help?</text><text x=\"358\" y=\"42\">New line</text><text x=\"358\" y=\"78\">Yes, please</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Punctuate the spoken question: where is the library asked Sam."
+      ],
+      "independent_inputs": [
+        "Write six lines of original dialogue between a child and a shopkeeper. Include a question, a statement and a new paragraph when the speaker changes. Check every quotation mark."
+      ],
+      "model_inputs": [
+        "\"Where is my hat?\" asked Ben. The spoken question sits inside the quotation marks."
+      ]
+    },
+    "review_questions": [
+      "Verify original Coming Soon outcome and syllabus content point against NESA English K–10 2022.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Mila said, \"I can help you.\"",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Add quotation marks: Mila said I can help you.",
+        "misconception": "Do not put the speaker tag inside the quotation marks unless those words are spoken.",
+        "model": "\"Where is my hat?\" asked Ben. The spoken question sits inside the quotation marks.",
+        "rule": "Quotation marks show the exact words a character says.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "\"Where is the library?\" asked Sam.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Punctuate the spoken question: where is the library asked Sam.",
+        "misconception": "A question mark still belongs to a question even when a speaker tag follows.",
+        "model": "The question mark in \"Where is my hat?\" belongs to the question Ben asks.",
+        "rule": "Question marks and full stops that belong to the spoken words stay inside the quotation marks.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Ben whispered, \"The torch is failing.\"",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Punctuate: Ben whispered the torch is failing.",
+        "misconception": "Forgetting the comma can make the sentence harder to read, though meaning still depends on the quotes.",
+        "model": "Mila said, \"I can help you.\" The comma comes after said.",
+        "rule": "When a tag such as said Mila introduces a statement, a comma often appears before the opening quote.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Each speaker begins on a new line with their own quotation marks.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Write two lines where a child asks a price and a shopkeeper answers.",
+        "misconception": "Running two speakers into one paragraph makes turn-taking unclear.",
+        "model": "\"Can I help?\" asked the shopkeeper.\n\n\"Yes, please,\" said Mina.",
+        "rule": "A new paragraph for a new speaker helps readers follow the conversation.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Quoted question Where is my hat beside speaker tag asked Ben.",
+        "teaches": "Quotation marks enclose the spoken words."
+      },
+      {
+        "alt": "Shopkeeper question on one line and child answer on a new line.",
+        "teaches": "Start a new paragraph when the speaker changes."
+      }
+    ]
+  }
+}

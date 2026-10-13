@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-RECOM-01",
+      "lesson_evidence": "Use headings, glossaries and indexes to locate and understand information.",
+      "scope_limit": "Individual Written Core lesson contributes partial evidence; independently verify syllabus content-point alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Use headings, glossaries and indexes to locate and understand information.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Keep the independent response and two written check responses; record oral retelling or performance where required by the task.",
+    "explicit_teaching": null,
+    "extension": "Create a new example using a completely different character or setting, show the same skill, then explain to another person how you checked its accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "WE DO — attempt each prompt before comparing to the feedback.\n1. Which heading would likely help you find where koalas live: Food, Habitat or Glossary?\nCOMPARE: Habitat. Food would more likely discuss diet.\n2. Which feature helps most when you need the meaning of invertebrate?\nCOMPARE: A glossary definition. An index points to pages, not definitions.\n3. Would an index or a glossary better help you find every page that mentions claws?\nCOMPARE: An index lists page references; a glossary explains meanings.\n4. For each need, name the best feature: define burrow; find pages about diet; jump to a Shelter section.\nCOMPARE: Glossary; index; heading/contents.",
+    "hoard_words": null,
+    "independent_task": "YOU DO — complete the following substantial original task, not a copied model.\nCreate a two-page mini-information text about a local animal with two headings, four glossary definitions and a short alphabetised index. Explain when a reader would use each feature.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Use headings, glossaries and indexes to locate and understand information.",
+    "lesson_number": 1,
+    "lesson_role": "Reading",
+    "materials": [
+      "Paper or typing area",
+      "Pencil for optional evidence"
+    ],
+    "offline_alternative": "Use paper to copy only the original independent prompt; have the child respond in writing or orally as required. Save a photograph or brief parent observation for the learning record.",
+    "outcome_codes": [
+      "EN2-RECOM-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Create a two-page mini-information text about a local animal with two headings, four glossary definitions and a short alphabetised index. Explain when a reader would use each feature. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using heading on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: A heading organises ideas;. Correction: Habitat. Food would more likely discuss diet.. Why it helps the audience is stated.\n\nParent: Likely misconception: A heading organises ideas; it does not prove every sentence under it is accurate. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating heading on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with heading, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about heading with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for heading. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 2,
+        "explanation": "This matches the taught method for heading. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "Habitat. Food would more likely discuss diet.",
+          "A heading organises ideas;"
+        ],
+        "question": "Which feature helps most when you need the meaning of invertebrate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "This is the misconception to avoid for heading; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Habitat. Food would more likely discuss diet.",
+          "Careful use of glossary and point to the words or event with clear evidence.",
+          "A heading organises ideas;",
+          "Use headings, glossaries and indexes to locate and understand information."
+        ],
+        "question": "Which statement is a common mistake when working with heading?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and a named glossary and point to the words or event, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Repeat the worked example wording with no new evidence.",
+          "A heading organises ideas;",
+          "Name glossary and point to the words or event only, without linking it to heading.",
+          "Apply heading to new material and name the glossary and point to the words or event used."
+        ],
+        "question": "Which response best applies heading with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries heading. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Point to exact words in the sentence that show heading and say what they do.",
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "A heading organises ideas;"
+        ],
+        "question": "Read: \"After the blackout, Tess lit a candle and read the crumpled note.\" Which choice best uses heading from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Habitat. Food would more likely discuss diet.",
+          "A heading organises ideas;",
+          "Copy a model sentence from another story unchanged.",
+          "Name glossary and point to the words or event without linking it to any words in the text."
+        ],
+        "question": "Which statement correctly applies the lesson idea about heading?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Lengthen the answer with adjectives while keeping the same idea.",
+          "Locate a specific word, phrase or structural clue before deciding."
+        ],
+        "question": "In a new text, what should you do first to analyse glossary and point to the words or event?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
+        ],
+        "question": "Which revision actually improves meaning for heading?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "A heading organises ideas;",
+          "Use a fresh sentence or text and explain one precise choice about heading.",
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new."
+        ],
+        "question": "Which response shows accurate use of heading on fresh material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about heading with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating heading on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using heading on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for heading. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with heading, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: A heading organises ideas;. Correction: Habitat. Food would more likely discuss diet.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Submit your original independent work and your brief explanation of the key choices you made.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w06-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; compare the existing Coming Soon card and official syllabus content points before marking verified.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise heading.",
+        "Read the mission before you start writing or speaking.",
+        "Your goal is: Use headings, glossaries and indexes to locate and understand information."
+      ],
+      "guided": [
+        "Attempt each guided prompt without looking ahead.",
+        "Compare your attempt with the supplied specific feedback.",
+        "Guided comparison: A glossary definition. An index points to pages, not definitions."
+      ],
+      "learn": [
+        "Study the first worked demonstration carefully.",
+        "Name the exact words or events that make it work.",
+        "Demonstration: To learn about echidna food, I scan for a heading such as \"Feeding\" before reading every page."
+      ],
+      "quiz": [
+        "Read the whole question and eliminate misconceptions.",
+        "Prefer the option that quotes or uses actual evidence.",
+        "Likely trap: Indexes help location; they do not rewrite the information for you."
+      ],
+      "submit": [
+        "Include your own response and a short reason.",
+        "Proofread names, sequence and punctuation before sending.",
+        "Success looks like: Use headings, glossaries and indexes to locate and understand information."
+      ],
+      "teach0": [
+        "Focus on scan headings to find a section.",
+        "Hold this teaching point: Headings group information so a reader can jump to the needed part.",
+        "Worked comparison: Habitat. Food would more likely discuss diet."
+      ],
+      "teach1": [
+        "Focus on use a glossary for word meanings.",
+        "Hold this teaching point: A glossary defines important subject words, usually near the end of an information text.",
+        "Worked comparison: A glossary definition. An index points to pages, not definitions."
+      ],
+      "teach2": [
+        "Focus on use an index to find page references.",
+        "Hold this teaching point: An index lists topics alphabetically with page numbers so you can find where a word appears.",
+        "Worked comparison: An index lists page references; a glossary explains meanings."
+      ],
+      "teach3": [
+        "Focus on choose the right feature for the job.",
+        "Hold this teaching point: Match the question to the feature: meaning, location or section overview.",
+        "Worked comparison: Glossary; index; heading/contents."
+      ],
+      "write": [
+        "Use the independent instructions, not the model words.",
+        "Give an original response and the reason behind it.",
+        "Independent reminder: Create a two-page mini-information text about a local animal with two headings, four glossary definitions and a short alphabetised index. Explain when a reader "
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use heading with a specific example from this lesson.",
+      "I can identify glossary and point to the words or events that support it.",
+      "I can practise index independently on a new prompt.",
+      "I can notice feature needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying heading independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which choice best applies this lesson idea about heading with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nTo learn about echidna food, I scan for a heading such as \"Feeding\" before reading every page.\n\nYOUR SMALL TRY\nWhich heading would likely help you find where koalas live: Food, Habitat or Glossary?\n\nCOMPARE AND CORRECT\nHabitat. Food would more likely discuss diet.",
+        "explain": "Headings group information so a reader can jump to the needed part.\n\nHeadings group information so a reader can jump to the needed part. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nA heading organises ideas; it does not prove every sentence under it is accurate. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Scan headings to find a section",
+        "visual": [
+          {
+            "alt": "Heading Feeding beside a glossary definition for invertebrate.",
+            "caption": "Headings locate sections; glossaries explain words.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Heading</text><text x=\"28\" y=\"78\">Feeding</text><text x=\"358\" y=\"42\">Glossary</text><text x=\"358\" y=\"78\">invertebrate = ...</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I read the first example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or events that carry the meaning before you copy a conclusion.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "So I should try the small prompt myself, then compare it with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: To learn about echidna food, I scan for a heading such as \"Feeding\" before reading every page. Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I read the first example, but I am not sure which detail matters most.\nJuno: Name the exact words or events that carry the meaning before you copy a conclusion.\nPip: So I should try the small prompt myself, then compare it with the feedback.\nJuno: Pause here. Use this model: To learn about echidna food, I scan for a heading such as \"Feeding\" before reading every page. Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying glossary independently."
+          ],
+          "question": "Which choice best applies this lesson idea about heading with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nIf I know the word habitat appears but not its meaning, the glossary can define it.\n\nYOUR SMALL TRY\nWhich feature helps most when you need the meaning of invertebrate?\n\nCOMPARE AND CORRECT\nA glossary definition. An index points to pages, not definitions.",
+        "explain": "A glossary defines important subject words, usually near the end of an information text.\n\nA glossary defines important subject words, usually near the end of an information text. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nGuessing a technical word without checking can create a false fact. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Use a glossary for word meanings",
+        "visual": [
+          {
+            "alt": "Index entry echidna with page numbers for locating information.",
+            "caption": "An index points to pages; it does not define the word.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Index</text><text x=\"28\" y=\"78\">echidna 4, 9</text><text x=\"358\" y=\"42\">Purpose</text><text x=\"358\" y=\"78\">find page numbers</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying index independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which choice best applies this lesson idea about heading with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nI look up echidna in the index to find the pages that mention it, then read those sections.\n\nYOUR SMALL TRY\nWould an index or a glossary better help you find every page that mentions claws?\n\nCOMPARE AND CORRECT\nAn index lists page references; a glossary explains meanings.",
+        "explain": "An index lists topics alphabetically with page numbers so you can find where a word appears.\n\nAn index lists topics alphabetically with page numbers so you can find where a word appears. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nIndexes help location; they do not rewrite the information for you. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Use an index to find page references"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying feature independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which choice best applies this lesson idea about heading with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nMeaning → glossary. Page finding → index. Section topic → heading or contents.\n\nYOUR SMALL TRY\nFor each need, name the best feature: define burrow; find pages about diet; jump to a Shelter section.\n\nCOMPARE AND CORRECT\nGlossary; index; heading/contents.",
+        "explain": "Match the question to the feature: meaning, location or section overview.\n\nMatch the question to the feature: meaning, location or section overview. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nUsing the wrong feature wastes time and may miss the answer. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Choose the right feature for the job"
+      }
+    ],
+    "title": "Year 3, Week 6, Lesson 1: Text features: headings, glossary and index",
+    "unit_number": 2,
+    "unit_title": "Information reports",
+    "week": 6,
+    "week_in_unit": 1,
+    "word_challenges": null,
+    "worked_example": "I DO — To learn about echidna food, I scan for a heading such as \"Feeding\" before reading every page.\n\nNow look for the exact evidence in the words or actions. If I know the word habitat appears but not its meaning, the glossary can define it.",
+    "worked_visuals": [
+      {
+        "alt": "Heading Feeding beside a glossary definition for invertebrate.",
+        "caption": "Headings locate sections; glossaries explain words.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Heading</text><text x=\"28\" y=\"78\">Feeding</text><text x=\"358\" y=\"42\">Glossary</text><text x=\"358\" y=\"78\">invertebrate = ...</text></g></svg>"
+      },
+      {
+        "alt": "Index entry echidna with page numbers for locating information.",
+        "caption": "An index points to pages; it does not define the word.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Index</text><text x=\"28\" y=\"78\">echidna 4, 9</text><text x=\"358\" y=\"42\">Purpose</text><text x=\"358\" y=\"78\">find page numbers</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Which feature helps most when you need the meaning of invertebrate?"
+      ],
+      "independent_inputs": [
+        "Create a two-page mini-information text about a local animal with two headings, four glossary definitions and a short alphabetised index. Explain when a reader would use each feature."
+      ],
+      "model_inputs": [
+        "To learn about echidna food, I scan for a heading such as \"Feeding\" before reading every page."
+      ]
+    },
+    "review_questions": [
+      "Verify original Coming Soon outcome and syllabus content point against NESA English K–10 2022.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Habitat. Food would more likely discuss diet.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Which heading would likely help you find where koalas live: Food, Habitat or Glossary?",
+        "misconception": "A heading organises ideas; it does not prove every sentence under it is accurate.",
+        "model": "To learn about echidna food, I scan for a heading such as \"Feeding\" before reading every page.",
+        "rule": "Headings group information so a reader can jump to the needed part.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "A glossary definition. An index points to pages, not definitions.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Which feature helps most when you need the meaning of invertebrate?",
+        "misconception": "Guessing a technical word without checking can create a false fact.",
+        "model": "If I know the word habitat appears but not its meaning, the glossary can define it.",
+        "rule": "A glossary defines important subject words, usually near the end of an information text.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "An index lists page references; a glossary explains meanings.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Would an index or a glossary better help you find every page that mentions claws?",
+        "misconception": "Indexes help location; they do not rewrite the information for you.",
+        "model": "I look up echidna in the index to find the pages that mention it, then read those sections.",
+        "rule": "An index lists topics alphabetically with page numbers so you can find where a word appears.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Glossary; index; heading/contents.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "For each need, name the best feature: define burrow; find pages about diet; jump to a Shelter section.",
+        "misconception": "Using the wrong feature wastes time and may miss the answer.",
+        "model": "Meaning → glossary. Page finding → index. Section topic → heading or contents.",
+        "rule": "Match the question to the feature: meaning, location or section overview.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Heading Feeding beside a glossary definition for invertebrate.",
+        "teaches": "Headings locate sections; glossaries explain words."
+      },
+      {
+        "alt": "Index entry echidna with page numbers for locating information.",
+        "teaches": "An index points to pages; it does not define the word."
+      }
+    ]
+  }
+}

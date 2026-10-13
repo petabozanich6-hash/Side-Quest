@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-RECOM-01",
+      "lesson_evidence": "Infer unstated meaning by combining textual clues with careful reasoning.",
+      "scope_limit": "Individual Written Core lesson contributes partial evidence; independently verify syllabus content-point alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Infer unstated meaning by combining textual clues with careful reasoning.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Keep the independent response and two written check responses; record oral retelling or performance where required by the task.",
+    "explicit_teaching": null,
+    "extension": "Create a new example using a completely different character or setting, show the same skill, then explain to another person how you checked its accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "WE DO — attempt each prompt before comparing to the feedback.\n1. Infer why \"Ari reached for a jumper when the wind grew sharp\".\nCOMPARE: Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper.\n2. What might \"Suri checked the road twice and kept holding her envelope\" suggest?\nCOMPARE: She may be anxious about delivering something or waiting for someone. Both behaviours suggest concern, but the text is not specific.\n3. Complete: \"I think the shop is closing because the sign says CLOSED and the worker turns the lights off.\"\nCOMPARE: Conclusion: shop is closing or closed. Evidence: sign and lights, not a guess about the worker's mood.\n4. A child smiles at a note. Name two possible feelings and what extra clue would help decide.\nCOMPARE: Pride or amusement are plausible; reading the note or seeing the child's next action would help.",
+    "hoard_words": null,
+    "independent_task": "YOU DO — complete the following substantial original task, not a copied model.\nRead: \"The hall was silent. Theo clutched a folded paper, glanced at the stage and took a long breath. When his name was called, he stood up.\" Write three inferences about Theo or the situation, quote a specific clue for each, explain which inference is strongest and suggest one new detail that could change your interpretation.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Infer unstated meaning by combining textual clues with careful reasoning.",
+    "lesson_number": 1,
+    "lesson_role": "Reading",
+    "materials": [
+      "Paper or typing area",
+      "Pencil for optional evidence"
+    ],
+    "offline_alternative": "Use paper to copy only the original independent prompt; have the child respond in writing or orally as required. Save a photograph or brief parent observation for the learning record.",
+    "outcome_codes": [
+      "EN2-RECOM-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Read: \"The hall was silent. Theo clutched a folded paper, glanced at the stage and took a long breath. When his name was called, he stood up.\" Write three inferences about Theo or the situation, quote a specific clue for Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using fact on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Do not call an inferred feeling a stated fact when the text never names it.. Correction: Ari likely felt cold or expected to feel cold.. Why it helps the audience is stated.\n\nParent: Likely misconception: Do not call an inferred feeling a stated fact when the text never names it. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating fact on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with fact, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about fact with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for fact. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "This matches the taught method for fact. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Do not call an inferred feeling a stated fact when the text never names it.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "Ari likely felt cold or expected to feel cold."
+        ],
+        "question": "What might \"Suri checked the road twice and kept holding her envelope\" suggest?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "This is the misconception to avoid for fact; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ari likely felt cold or expected to feel cold.",
+          "Careful use of inference and point to the words or even with clear evidence.",
+          "Do not call an inferred feeling a stated fact when the text never names it.",
+          "Infer unstated meaning by combining textual clues with careful reasoning."
+        ],
+        "question": "Which statement is a common mistake when working with fact?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and a named inference and point to the words or even, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Apply fact to new material and name the inference and point to the words or even used.",
+          "Repeat the worked example wording with no new evidence.",
+          "Do not call an inferred feeling a stated fact when the text never names it.",
+          "Name inference and point to the words or even only, without linking it to fact."
+        ],
+        "question": "Which response best applies fact with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries fact. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "Do not call an inferred feeling a stated fact when the text never names it.",
+          "Point to exact words in the sentence that show fact and say what they do."
+        ],
+        "question": "Read: \"After the blackout, Tess lit a candle and read the crumpled note.\" Which choice best uses fact from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Do not call an inferred feeling a stated fact when the text never names it.",
+          "Copy a model sentence from another story unchanged.",
+          "Name inference and point to the words or even without linking it to any words in the text.",
+          "Ari likely felt cold or expected to feel cold."
+        ],
+        "question": "Which statement correctly applies the lesson idea about fact?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Lengthen the answer with adjectives while keeping the same idea."
+        ],
+        "question": "In a new text, what should you do first to analyse inference and point to the words or even?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
+        ],
+        "question": "Which revision actually improves meaning for fact?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Do not call an inferred feeling a stated fact when the text never names it.",
+          "Use a fresh sentence or text and explain one precise choice about fact.",
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new."
+        ],
+        "question": "Which response shows accurate use of fact on fresh material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about fact with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating fact on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using fact on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for fact. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with fact, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Do not call an inferred feeling a stated fact when the text never names it.. Correction: Ari likely felt cold or expected to feel cold.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Submit your original independent work and your brief explanation of the key choices you made.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w04-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; compare the existing Coming Soon card and official syllabus content points before marking verified.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise fact.",
+        "Read the mission before you start writing or speaking.",
+        "Your goal is: Infer unstated meaning by combining textual clues with careful reasoning."
+      ],
+      "guided": [
+        "Attempt each guided prompt without looking ahead.",
+        "Compare your attempt with the supplied specific feedback.",
+        "Guided comparison: She may be anxious about delivering something or waiting for someone. Both behaviours suggest concern, but the text is not specific."
+      ],
+      "learn": [
+        "Study the first worked demonstration carefully.",
+        "Name the exact words or events that make it work.",
+        "Demonstration: Text: \"Nia wiped her muddy shoes before entering.\" Fact: shoes were muddy and she wiped them. Inference: she wanted to avoid making the floo"
+      ],
+      "quiz": [
+        "Read the whole question and eliminate misconceptions.",
+        "Prefer the option that quotes or uses actual evidence.",
+        "Likely trap: Avoid quoting a clue that does not actually support the conclusion."
+      ],
+      "submit": [
+        "Include your own response and a short reason.",
+        "Proofread names, sequence and punctuation before sending.",
+        "Success looks like: Infer unstated meaning by combining textual clues with careful reasoning."
+      ],
+      "teach0": [
+        "Focus on separate what the text says from what you infer.",
+        "Hold this teaching point: A statement gives a fact directly; an inference is a reasonable conclusion based on clues. State both, so a reader can s",
+        "Worked comparison: Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper."
+      ],
+      "teach1": [
+        "Focus on gather more than one useful clue.",
+        "Hold this teaching point: Good inferences become stronger when several clues point towards the same idea; one clue may have different explanations",
+        "Worked comparison: She may be anxious about delivering something or waiting for someone. Both behaviours suggest concern, but the text is n"
+      ],
+      "teach2": [
+        "Focus on explain the bridge between evidence and conclusion.",
+        "Hold this teaching point: A strong answer follows: I infer __ because the text says __ and I know __. That final step is reasoning, not an invente",
+        "Worked comparison: Conclusion: shop is closing or closed. Evidence: sign and lights, not a guess about the worker's mood."
+      ],
+      "teach3": [
+        "Focus on revise or limit an inference when evidence is weak.",
+        "Hold this teaching point: Two explanations can fit one clue. Look for confirming details and admit what you cannot tell yet.",
+        "Worked comparison: Pride or amusement are plausible; reading the note or seeing the child's next action would help."
+      ],
+      "write": [
+        "Use the independent instructions, not the model words.",
+        "Give an original response and the reason behind it.",
+        "Independent reminder: Read: \"The hall was silent. Theo clutched a folded paper, glanced at the stage and took a long breath. When his name was called, he stood up.\" Write three infer"
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use fact with a specific example from this lesson.",
+      "I can identify inference and point to the words or events that support it.",
+      "I can practise evidence independently on a new prompt.",
+      "I can notice interpretation needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying fact independently."
+          ],
+          "question": "Which choice best applies this lesson idea about fact with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nText: \"Nia wiped her muddy shoes before entering.\" Fact: shoes were muddy and she wiped them. Inference: she wanted to avoid making the floor dirty. The text does not directly state that reason.\n\nYOUR SMALL TRY\nInfer why \"Ari reached for a jumper when the wind grew sharp\".\n\nCOMPARE AND CORRECT\nAri likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper.",
+        "explain": "A statement gives a fact directly; an inference is a reasonable conclusion based on clues. State both, so a reader can see your reasoning.\n\nA statement gives a fact directly; an inference is a reasonable conclusion based on clues. State both, so a reader can see your reasoning. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nDo not call an inferred feeling a stated fact when the text never names it. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Separate what the text says from what you infer",
+        "visual": [
+          {
+            "alt": "Stated fact of wiping muddy shoes beside the inference that Nia wanted a clean floor.",
+            "caption": "An inference is a reasoned conclusion; the text did not name the reason.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Stated fact</text><text x=\"28\" y=\"78\">Nia wiped her muddy shoes</text><text x=\"358\" y=\"42\">Inference</text><text x=\"358\" y=\"78\">She did not want a dirty floor</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I read the first example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or events that carry the meaning before you copy a conclusion.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "So I should try the small prompt myself, then compare it with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Text: \"Nia wiped her muddy shoes before entering.\" Fact: shoes were muddy and she wiped them. Inference: she wanted to a Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I read the first example, but I am not sure which detail matters most.\nJuno: Name the exact words or events that carry the meaning before you copy a conclusion.\nPip: So I should try the small prompt myself, then compare it with the feedback.\nJuno: Pause here. Use this model: Text: \"Nia wiped her muddy shoes before entering.\" Fact: shoes were muddy and she wiped them. Inference: she wanted to a Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying inference independently."
+          ],
+          "question": "Which choice best applies this lesson idea about fact with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\n\"The empty lunchbox rattled. Jax looked at the clock and sighed.\" I infer Jax is hungry or disappointed. An empty box, clock-check and sigh together support the idea.\n\nYOUR SMALL TRY\nWhat might \"Suri checked the road twice and kept holding her envelope\" suggest?\n\nCOMPARE AND CORRECT\nShe may be anxious about delivering something or waiting for someone. Both behaviours suggest concern, but the text is not specific.",
+        "explain": "Good inferences become stronger when several clues point towards the same idea; one clue may have different explanations.\n\nGood inferences become stronger when several clues point towards the same idea; one clue may have different explanations. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nDo not turn one vague clue into a certain explanation. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Gather more than one useful clue",
+        "visual": [
+          {
+            "alt": "Empty lunchbox, clock glance and sigh supporting the idea that Jax may be hungry.",
+            "caption": "Several clues pointing the same way make an inference stronger.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Several clues</text><text x=\"28\" y=\"78\">empty lunchbox, clock, sigh</text><text x=\"358\" y=\"42\">Stronger idea</text><text x=\"358\" y=\"78\">Jax may be hungry</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Use the example and explain the clue or language choice before trying evidence independently.",
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail."
+          ],
+          "question": "Which choice best applies this lesson idea about fact with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\n\"The grass glittered white at dawn.\" I infer frost is possible because white glitter on early morning grass often comes from ice crystals in cold weather. But it could be another source; I need more context.\n\nYOUR SMALL TRY\nComplete: \"I think the shop is closing because the sign says CLOSED and the worker turns the lights off.\"\n\nCOMPARE AND CORRECT\nConclusion: shop is closing or closed. Evidence: sign and lights, not a guess about the worker's mood.",
+        "explain": "A strong answer follows: I infer __ because the text says __ and I know __. That final step is reasoning, not an invented quote.\n\nA strong answer follows: I infer __ because the text says __ and I know __. That final step is reasoning, not an invented quote. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nAvoid quoting a clue that does not actually support the conclusion. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Explain the bridge between evidence and conclusion"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Add a made-up event and describe it as a fact.",
+            "Use the example and explain the clue or language choice before trying interpretation independently.",
+            "Ignore the task and choose an unrelated detail.",
+            "Copy every sentence exactly without explaining it."
+          ],
+          "question": "Which choice best applies this lesson idea about fact with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\n\"The puppy hid under a chair.\" It may be frightened, tired or playing. If the next line mentions thunder, fear becomes a stronger inference.\n\nYOUR SMALL TRY\nA child smiles at a note. Name two possible feelings and what extra clue would help decide.\n\nCOMPARE AND CORRECT\nPride or amusement are plausible; reading the note or seeing the child's next action would help.",
+        "explain": "Two explanations can fit one clue. Look for confirming details and admit what you cannot tell yet.\n\nTwo explanations can fit one clue. Look for confirming details and admit what you cannot tell yet. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nA confident answer is not automatically accurate when details are missing. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Revise or limit an inference when evidence is weak"
+      }
+    ],
+    "title": "Year 3, Week 4, Lesson 1: Inference from clues",
+    "unit_number": 1,
+    "unit_title": "Narrative: story elements and planning",
+    "week": 4,
+    "week_in_unit": 4,
+    "word_challenges": null,
+    "worked_example": "I DO — Text: \"Nia wiped her muddy shoes before entering.\" Fact: shoes were muddy and she wiped them. Inference: she wanted to avoid making the floor dirty. The text does not directly state that reason.\n\nNow look for the exact evidence in the words or actions. \"The empty lunchbox rattled. Jax looked at the clock and sighed.\" I infer Jax is hungry or disappointed. An empty box, clock-check and sigh together support the idea.",
+    "worked_visuals": [
+      {
+        "alt": "Stated fact of wiping muddy shoes beside the inference that Nia wanted a clean floor.",
+        "caption": "An inference is a reasoned conclusion; the text did not name the reason.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Stated fact</text><text x=\"28\" y=\"78\">Nia wiped her muddy shoes</text><text x=\"358\" y=\"42\">Inference</text><text x=\"358\" y=\"78\">She did not want a dirty floor</text></g></svg>"
+      },
+      {
+        "alt": "Empty lunchbox, clock glance and sigh supporting the idea that Jax may be hungry.",
+        "caption": "Several clues pointing the same way make an inference stronger.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Several clues</text><text x=\"28\" y=\"78\">empty lunchbox, clock, sigh</text><text x=\"358\" y=\"42\">Stronger idea</text><text x=\"358\" y=\"78\">Jax may be hungry</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "What might \"Suri checked the road twice and kept holding her envelope\" suggest?"
+      ],
+      "independent_inputs": [
+        "Read: \"The hall was silent. Theo clutched a folded paper, glanced at the stage and took a long breath. When his name was called, he stood up.\" Write three inferences about Theo or the situation, quote a specific clue for each, explain which inference is strongest and suggest one new detail that could change your interpretation."
+      ],
+      "model_inputs": [
+        "Text: \"Nia wiped her muddy shoes before entering.\" Fact: shoes were muddy and she wiped them. Inference: she wanted to avoid making the floor dirty. The text does not directly state that reason."
+      ]
+    },
+    "review_questions": [
+      "Verify original Coming Soon outcome and syllabus content point against NESA English K–10 2022.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Ari likely felt cold or expected to feel cold. Clues: sharp wind and reaching for a jumper.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Infer why \"Ari reached for a jumper when the wind grew sharp\".",
+        "misconception": "Do not call an inferred feeling a stated fact when the text never names it.",
+        "model": "Text: \"Nia wiped her muddy shoes before entering.\" Fact: shoes were muddy and she wiped them. Inference: she wanted to avoid making the floor dirty. The text does not directly state that reason.",
+        "rule": "A statement gives a fact directly; an inference is a reasonable conclusion based on clues. State both, so a reader can see your reasoning.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "She may be anxious about delivering something or waiting for someone. Both behaviours suggest concern, but the text is not specific.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "What might \"Suri checked the road twice and kept holding her envelope\" suggest?",
+        "misconception": "Do not turn one vague clue into a certain explanation.",
+        "model": "\"The empty lunchbox rattled. Jax looked at the clock and sighed.\" I infer Jax is hungry or disappointed. An empty box, clock-check and sigh together support the idea.",
+        "rule": "Good inferences become stronger when several clues point towards the same idea; one clue may have different explanations.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Conclusion: shop is closing or closed. Evidence: sign and lights, not a guess about the worker's mood.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Complete: \"I think the shop is closing because the sign says CLOSED and the worker turns the lights off.\"",
+        "misconception": "Avoid quoting a clue that does not actually support the conclusion.",
+        "model": "\"The grass glittered white at dawn.\" I infer frost is possible because white glitter on early morning grass often comes from ice crystals in cold weather. But it could be another source; I need more context.",
+        "rule": "A strong answer follows: I infer __ because the text says __ and I know __. That final step is reasoning, not an invented quote.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Pride or amusement are plausible; reading the note or seeing the child's next action would help.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "A child smiles at a note. Name two possible feelings and what extra clue would help decide.",
+        "misconception": "A confident answer is not automatically accurate when details are missing.",
+        "model": "\"The puppy hid under a chair.\" It may be frightened, tired or playing. If the next line mentions thunder, fear becomes a stronger inference.",
+        "rule": "Two explanations can fit one clue. Look for confirming details and admit what you cannot tell yet.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Stated fact of wiping muddy shoes beside the inference that Nia wanted a clean floor.",
+        "teaches": "An inference is a reasoned conclusion; the text did not name the reason."
+      },
+      {
+        "alt": "Empty lunchbox, clock glance and sigh supporting the idea that Jax may be hungry.",
+        "teaches": "Several clues pointing the same way make an inference stronger."
+      }
+    ]
+  }
+}

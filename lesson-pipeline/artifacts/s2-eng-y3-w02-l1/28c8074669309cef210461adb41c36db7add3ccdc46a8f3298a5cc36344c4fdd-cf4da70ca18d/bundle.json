@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-RECOM-01",
+      "lesson_evidence": "Recognise how characters, settings and connected events create a complete narrative.",
+      "scope_limit": "Individual Written Core lesson contributes partial evidence; independently verify syllabus content-point alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Recognise how characters, settings and connected events create a complete narrative.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Keep the independent response and two written check responses; record oral retelling or performance where required by the task.",
+    "explicit_teaching": null,
+    "extension": "Create a new example using a completely different character or setting, show the same skill, then explain to another person how you checked its accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "WE DO — attempt each prompt before comparing to the feedback.\n1. In \"The koala waited for rain\", name the character and one likely goal.\nCOMPARE: The koala is the character; it may need water or cooler weather. The goal is an inference, not a fact unless the text says so.\n2. Find a place and time clue in \"At midnight, lanterns glowed outside the campsite\".\nCOMPARE: At midnight is the time; outside the campsite locates the scene. The lanterns contribute atmosphere.\n3. Explain why this event follows the first: \"A storm snapped the tent rope. Dad grabbed the spare rope.\"\nCOMPARE: Dad acts because the storm damaged the rope; the second event responds to the problem.\n4. Identify character, setting and connected events: \"At the fair, Anya dropped her ticket but found it under a bench.\"\nCOMPARE: Anya is the character; the fair is the setting; she loses then finds her ticket. The loss causes the search.",
+    "hoard_words": null,
+    "independent_task": "YOU DO — complete the following substantial original task, not a copied model.\nRead this original text: \"At the town garden, Noor planted a sunflower seed. A curious crow uncovered it. Noor placed smooth stones around the pot, and the seed stayed safe.\" Identify the character, place, problem, response and ending; quote one phrase as evidence for each. Write a new four-sentence story where the setting changes what the character must do.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Recognise how characters, settings and connected events create a complete narrative.",
+    "lesson_number": 1,
+    "lesson_role": "Reading",
+    "materials": [
+      "Paper or typing area",
+      "Pencil for optional evidence"
+    ],
+    "offline_alternative": "Use paper to copy only the original independent prompt; have the child respond in writing or orally as required. Save a photograph or brief parent observation for the learning record.",
+    "outcome_codes": [
+      "EN2-RECOM-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Read this original text: \"At the town garden, Noor planted a sunflower seed. A curious crow uncovered it. Noor placed smooth stones around the pot, and the seed stayed safe.\" Identify the character, place, problem, respo Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using character on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: A narrator and a character are not automatically the same person.. Correction: The koala is the character; it may need water or cooler weather.. Why it helps the audience is stated.\n\nParent: Likely misconception: A narrator and a character are not automatically the same person. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating character on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with character, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about character with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for character. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "This matches the taught method for character. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "A narrator and a character are not automatically the same person.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "The koala is the character;"
+        ],
+        "question": "Find a place and time clue in \"At midnight, lanterns glowed outside the campsite\". Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "This is the misconception to avoid for character; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Careful use of setting and point to the words or events with clear evidence.",
+          "A narrator and a character are not automatically the same person.",
+          "Recognise how characters, settings and connected events create a complete narrative.",
+          "The koala is the character;"
+        ],
+        "question": "Which statement is a common mistake when working with character?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and a named setting and point to the words or events, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Apply character to new material and name the setting and point to the words or events used.",
+          "Repeat the worked example wording with no new evidence.",
+          "A narrator and a character are not automatically the same person.",
+          "Name setting and point to the words or events only, without linking it to character."
+        ],
+        "question": "Which response best applies character with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries character. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "A narrator and a character are not automatically the same person.",
+          "Point to exact words in the sentence that show character and say what they do."
+        ],
+        "question": "Read: \"At dawn, Mina whispered to her goat as frost glittered on the fence.\" Which choice best uses character from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Copy a model sentence from another story unchanged.",
+          "Name setting and point to the words or events without linking it to any words in the text.",
+          "The koala is the character;",
+          "A narrator and a character are not automatically the same person."
+        ],
+        "question": "Which statement correctly applies the lesson idea about character?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Locate a specific word, phrase or structural clue before deciding.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Lengthen the answer with adjectives while keeping the same idea."
+        ],
+        "question": "In a new text, what should you do first to analyse setting and point to the words or events?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea.",
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess."
+        ],
+        "question": "Which revision actually improves meaning for character?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Change fonts and claim the work is new.",
+          "A narrator and a character are not automatically the same person.",
+          "Use a fresh sentence or text and explain one precise choice about character.",
+          "Retype the worked model as the final answer."
+        ],
+        "question": "Which response shows accurate use of character on fresh material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about character with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating character on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using character on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for character. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with character, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: A narrator and a character are not automatically the same person.. Correction: The koala is the character; it may need water or cooler weather.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Submit your original independent work and your brief explanation of the key choices you made.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y3-w02-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; compare the existing Coming Soon card and official syllabus content points before marking verified.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise character.",
+        "Read the mission before you start writing or speaking.",
+        "Your goal is: Recognise how characters, settings and connected events create a complete narrative."
+      ],
+      "guided": [
+        "Attempt each guided prompt without looking ahead.",
+        "Compare your attempt with the supplied specific feedback.",
+        "Guided comparison: At midnight is the time; outside the campsite locates the scene. The lanterns contribute atmosphere."
+      ],
+      "learn": [
+        "Study the first worked demonstration carefully.",
+        "Name the exact words or events that make it work.",
+        "Demonstration: In \"Aria searched for her missing compass\", Aria is the character and recovering the compass is her goal. Her decision to search starts the "
+      ],
+      "quiz": [
+        "Read the whole question and eliminate misconceptions.",
+        "Prefer the option that quotes or uses actual evidence.",
+        "Likely trap: If events could be shuffled with no effect, explain what links them."
+      ],
+      "submit": [
+        "Include your own response and a short reason.",
+        "Proofread names, sequence and punctuation before sending.",
+        "Success looks like: Recognise how characters, settings and connected events create a complete narrative."
+      ],
+      "teach0": [
+        "Focus on meet the character.",
+        "Hold this teaching point: A character is a person, animal or imagined being who takes part in a story. Look for what a character wants and does, n",
+        "Worked comparison: The koala is the character; it may need water or cooler weather. The goal is an inference, not a fact unless the text sa"
+      ],
+      "teach1": [
+        "Focus on build a setting from clues.",
+        "Hold this teaching point: Setting means where and when a story takes place. Details such as heat, shadows and signs help readers picture the scene",
+        "Worked comparison: At midnight is the time; outside the campsite locates the scene. The lanterns contribute atmosphere."
+      ],
+      "teach2": [
+        "Focus on follow the plot as cause and effect.",
+        "Hold this teaching point: A plot is not just a list of actions: usually one event creates a problem or changes what a character does next.",
+        "Worked comparison: Dad acts because the storm damaged the rope; the second event responds to the problem."
+      ],
+      "teach3": [
+        "Focus on explain the three elements together.",
+        "Hold this teaching point: Character, setting and plot work together: what a character wants in a particular place helps create the events. Cite ev",
+        "Worked comparison: Anya is the character; the fair is the setting; she loses then finds her ticket. The loss causes the search."
+      ],
+      "write": [
+        "Use the independent instructions, not the model words.",
+        "Give an original response and the reason behind it.",
+        "Independent reminder: Read this original text: \"At the town garden, Noor planted a sunflower seed. A curious crow uncovered it. Noor placed smooth stones around the pot, and the seed"
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use character with a specific example from this lesson.",
+      "I can identify setting and point to the words or events that support it.",
+      "I can practise plot independently on a new prompt.",
+      "I can notice evidence needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Add a made-up event and describe it as a fact.",
+            "Use the example and explain the clue or language choice before trying character independently.",
+            "Ignore the task and choose an unrelated detail.",
+            "Copy every sentence exactly without explaining it."
+          ],
+          "question": "Which choice best applies this lesson idea about character with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nIn \"Aria searched for her missing compass\", Aria is the character and recovering the compass is her goal. Her decision to search starts the action.\n\nYOUR SMALL TRY\nIn \"The koala waited for rain\", name the character and one likely goal.\n\nCOMPARE AND CORRECT\nThe koala is the character; it may need water or cooler weather. The goal is an inference, not a fact unless the text says so.",
+        "explain": "A character is a person, animal or imagined being who takes part in a story. Look for what a character wants and does, not only a name.\n\nA character is a person, animal or imagined being who takes part in a story. Look for what a character wants and does, not only a name. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nA narrator and a character are not automatically the same person. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Meet the character",
+        "visual": [
+          {
+            "alt": "Character Aria searching for a compass contrasted with jetty setting clues before sunrise.",
+            "caption": "A character wants something; setting tells where and when that wanting happens.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Character + goal</text><text x=\"28\" y=\"78\">Aria searches for a compass</text><text x=\"358\" y=\"42\">Setting clues</text><text x=\"358\" y=\"78\">before sunrise on a jetty</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I read the first example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or events that carry the meaning before you copy a conclusion.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "So I should try the small prompt myself, then compare it with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: In \"Aria searched for her missing compass\", Aria is the character and recovering the compass is her goal. Her decision t Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I read the first example, but I am not sure which detail matters most.\nJuno: Name the exact words or events that carry the meaning before you copy a conclusion.\nPip: So I should try the small prompt myself, then compare it with the feedback.\nJuno: Pause here. Use this model: In \"Aria searched for her missing compass\", Aria is the character and recovering the compass is her goal. Her decision t Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Ignore the task and choose an unrelated detail.",
+            "Copy every sentence exactly without explaining it.",
+            "Use the example and explain the clue or language choice before trying setting independently.",
+            "Add a made-up event and describe it as a fact."
+          ],
+          "question": "Which choice best applies this lesson idea about character with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\n\"Before sunrise, the jetty was slippery with sea spray\" tells time (before sunrise) and place (the jetty). Both influence what characters can safely do.\n\nYOUR SMALL TRY\nFind a place and time clue in \"At midnight, lanterns glowed outside the campsite\".\n\nCOMPARE AND CORRECT\nAt midnight is the time; outside the campsite locates the scene. The lanterns contribute atmosphere.",
+        "explain": "Setting means where and when a story takes place. Details such as heat, shadows and signs help readers picture the scene.\n\nSetting means where and when a story takes place. Details such as heat, shadows and signs help readers picture the scene. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nA mood word alone does not reliably establish a physical setting. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Build a setting from clues",
+        "visual": [
+          {
+            "alt": "Plot linked as a lost library book causing a search of the bus and a recovery.",
+            "caption": "Plot is cause and effect, not a shuffled list of actions.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Problem</text><text x=\"28\" y=\"78\">library book is lost</text><text x=\"358\" y=\"42\">Response</text><text x=\"358\" y=\"78\">search the bus then find it</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Add a made-up event and describe it as a fact.",
+            "Use the example and explain the clue or language choice before trying plot independently.",
+            "Ignore the task and choose an unrelated detail.",
+            "Copy every sentence exactly without explaining it."
+          ],
+          "question": "Which choice best applies this lesson idea about character with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\nMika loses the library book (problem), searches the bus (response), and finds it with the driver (resolution). The search happens because of the loss.\n\nYOUR SMALL TRY\nExplain why this event follows the first: \"A storm snapped the tent rope. Dad grabbed the spare rope.\"\n\nCOMPARE AND CORRECT\nDad acts because the storm damaged the rope; the second event responds to the problem.",
+        "explain": "A plot is not just a list of actions: usually one event creates a problem or changes what a character does next.\n\nA plot is not just a list of actions: usually one event creates a problem or changes what a character does next. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nIf events could be shuffled with no effect, explain what links them. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Follow the plot as cause and effect"
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "The best approach uses the specific concept, evidence and reasoning before practising independently; copying or inventing unsupported facts does not show understanding.",
+          "options": [
+            "Copy every sentence exactly without explaining it.",
+            "Add a made-up event and describe it as a fact.",
+            "Ignore the task and choose an unrelated detail.",
+            "Use the example and explain the clue or language choice before trying evidence independently."
+          ],
+          "question": "Which choice best applies this lesson idea about character with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WATCH MY THINKING\n\"At the rocky beach, Eli chased his escaping bucket and caught it before the tide.\" Character: Eli. Setting: rocky beach and rising tide. Plot: bucket escapes, Eli chases and retrieves it.\n\nYOUR SMALL TRY\nIdentify character, setting and connected events: \"At the fair, Anya dropped her ticket but found it under a bench.\"\n\nCOMPARE AND CORRECT\nAnya is the character; the fair is the setting; she loses then finds her ticket. The loss causes the search.",
+        "explain": "Character, setting and plot work together: what a character wants in a particular place helps create the events. Cite evidence from the text.\n\nCharacter, setting and plot work together: what a character wants in a particular place helps create the events. Cite evidence from the text. This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive. Read the model closely: which particular word, event or detail changes the meaning? Try explaining the same decision to someone else without repeating the model sentence. Then compare your new attempt with the feedback and revise anything that does not fit the actual evidence.",
+        "icon": "📖",
+        "notice": "WATCH OUT\nDo not invent a missing ending and present it as a stated event. Re-read the prompt and correct the misunderstanding before moving on.",
+        "title": "Explain the three elements together"
+      }
+    ],
+    "title": "Year 3, Week 2, Lesson 1: Story elements: character, setting and plot",
+    "unit_number": 1,
+    "unit_title": "Narrative: story elements and planning",
+    "week": 2,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "I DO — In \"Aria searched for her missing compass\", Aria is the character and recovering the compass is her goal. Her decision to search starts the action.\n\nNow look for the exact evidence in the words or actions. \"Before sunrise, the jetty was slippery with sea spray\" tells time (before sunrise) and place (the jetty). Both influence what characters can safely do.",
+    "worked_visuals": [
+      {
+        "alt": "Character Aria searching for a compass contrasted with jetty setting clues before sunrise.",
+        "caption": "A character wants something; setting tells where and when that wanting happens.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Character + goal</text><text x=\"28\" y=\"78\">Aria searches for a compass</text><text x=\"358\" y=\"42\">Setting clues</text><text x=\"358\" y=\"78\">before sunrise on a jetty</text></g></svg>"
+      },
+      {
+        "alt": "Plot linked as a lost library book causing a search of the bus and a recovery.",
+        "caption": "Plot is cause and effect, not a shuffled list of actions.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Problem</text><text x=\"28\" y=\"78\">library book is lost</text><text x=\"358\" y=\"42\">Response</text><text x=\"358\" y=\"78\">search the bus then find it</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Find a place and time clue in \"At midnight, lanterns glowed outside the campsite\"."
+      ],
+      "independent_inputs": [
+        "Read this original text: \"At the town garden, Noor planted a sunflower seed. A curious crow uncovered it. Noor placed smooth stones around the pot, and the seed stayed safe.\" Identify the character, place, problem, response and ending; quote one phrase as evidence for each. Write a new four-sentence story where the setting changes what the character must do."
+      ],
+      "model_inputs": [
+        "In \"Aria searched for her missing compass\", Aria is the character and recovering the compass is her goal. Her decision to search starts the action."
+      ]
+    },
+    "review_questions": [
+      "Verify original Coming Soon outcome and syllabus content point against NESA English K–10 2022.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "The koala is the character; it may need water or cooler weather. The goal is an inference, not a fact unless the text says so.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "In \"The koala waited for rain\", name the character and one likely goal.",
+        "misconception": "A narrator and a character are not automatically the same person.",
+        "model": "In \"Aria searched for her missing compass\", Aria is the character and recovering the compass is her goal. Her decision to search starts the action.",
+        "rule": "A character is a person, animal or imagined being who takes part in a story. Look for what a character wants and does, not only a name.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "At midnight is the time; outside the campsite locates the scene. The lanterns contribute atmosphere.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Find a place and time clue in \"At midnight, lanterns glowed outside the campsite\".",
+        "misconception": "A mood word alone does not reliably establish a physical setting.",
+        "model": "\"Before sunrise, the jetty was slippery with sea spray\" tells time (before sunrise) and place (the jetty). Both influence what characters can safely do.",
+        "rule": "Setting means where and when a story takes place. Details such as heat, shadows and signs help readers picture the scene.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Dad acts because the storm damaged the rope; the second event responds to the problem.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Explain why this event follows the first: \"A storm snapped the tent rope. Dad grabbed the spare rope.\"",
+        "misconception": "If events could be shuffled with no effect, explain what links them.",
+        "model": "Mika loses the library book (problem), searches the bus (response), and finds it with the driver (resolution). The search happens because of the loss.",
+        "rule": "A plot is not just a list of actions: usually one event creates a problem or changes what a character does next.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      },
+      {
+        "feedback": "Anya is the character; the fair is the setting; she loses then finds her ticket. The loss causes the search.",
+        "fix": "Re-read the prompt and correct the misunderstanding before moving on.",
+        "guided_attempt": "Identify character, setting and connected events: \"At the fair, Anya dropped her ticket but found it under a bench.\"",
+        "misconception": "Do not invent a missing ending and present it as a stated event.",
+        "model": "\"At the rocky beach, Eli chased his escaping bucket and caught it before the tide.\" Character: Eli. Setting: rocky beach and rising tide. Plot: bucket escapes, Eli chases and retrieves it.",
+        "rule": "Character, setting and plot work together: what a character wants in a particular place helps create the events. Cite evidence from the text.",
+        "why": "This matters because a reader or listener can only understand your ideas when you notice how the language works, test your understanding on specific examples and explain the evidence for your choice. Keep the meaning of the original text rather than changing facts to make an answer sound impressive."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Character Aria searching for a compass contrasted with jetty setting clues before sunrise.",
+        "teaches": "A character wants something; setting tells where and when that wanting happens."
+      },
+      {
+        "alt": "Plot linked as a lost library book causing a search of the bus and a recovery.",
+        "teaches": "Plot is cause and effect, not a shuffled list of actions."
+      }
+    ]
+  }
+}
