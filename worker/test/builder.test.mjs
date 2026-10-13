@@ -361,6 +361,8 @@ test("rich lessons keep teaching content for the parent but strip answers and th
   const json = JSON.stringify(safe);
   assert.equal(safe.sections.length, 5);
   assert.equal(safe.worked_examples.length, 3);
+  assert.equal(safe.materials.length, 5);
+  assert.ok(safe.introduction.length > 100);
   assert.ok(safe.guided_practice[0].hint);
   for (const k of ["answer_key", "parent_script", "support", "evidence_suggestions", "parent_notes"]) assert.equal(safe[k], undefined, k);
   assert.equal(safe.guided_practice[0].answer, undefined);

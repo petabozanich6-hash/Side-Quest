@@ -41,7 +41,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const fileRef = useRef(null);
   const first = useRef(true);
 
-  useEffect(() => { if (preview) return; api.get("/features").then(r => setUploadsOn(!!r.data.uploads)).catch(() => {}); }, []);
+  useEffect(() => { if (preview) return; api.get("/features").then(r => setUploadsOn(!!r.data.uploads)).catch(() => {}); }, [preview]);
 
   const upload = async (file) => {
     setUploading(true);

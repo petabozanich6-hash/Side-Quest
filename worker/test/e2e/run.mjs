@@ -132,7 +132,7 @@ await step("C. parent builds a lesson in the builder, previews it and saves it t
   await page.fill('input[placeholder="Quiz question"]', "Which is bigger, a half or a quarter?");
   const opts = page.locator('input[placeholder^="Option "]');
   await opts.nth(0).fill("A quarter"); await opts.nth(1).fill("A half");
-  await page.locator('input[type=radio]').nth(1).check();
+  await page.locator('input[type=radio][name^="correct-"]').nth(1).check();
   await page.fill('textarea[placeholder="Answers and what to look for"]', SECRET + " answer sheet");
   await page.click('[data-testid=preview-tab]');
   const prev = await page.textContent('[data-testid=builder-preview]');

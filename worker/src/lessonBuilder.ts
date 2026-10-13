@@ -306,7 +306,6 @@ export function toLessonData(c: CleanLesson): Record<string, unknown> {
     steps: b.activities.map((a: any) => ({ title: a.title, detail: a.instructions })),
     independent_task: taskLines.join("\n"),
     offline_alternative: offlineText,
-    materials: [],
   };
 }
 
