@@ -160,7 +160,8 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const { results } = await c.env.DB.prepare(
       "SELECT s.*, a.lesson_snapshot FROM submissions s JOIN assignments a ON a.id = s.assignment_id WHERE s.family_id = ? AND s.student_id = ? AND s.status IN ('accepted','demonstrated') AND (? = '' OR s.reviewed_at >= ?) AND (? = '' OR s.reviewed_at <= ?) ORDER BY s.reviewed_at DESC LIMIT 500"
     ).bind(u.family_id, sid, from, from, to, to).all<any>();
-    const noteRows = await pl.listEvidenceNotes(c.env.DB, u.family_id, { student_id: sid, from: from || undefined, to: to ? to.slice(0, 10) : undefined });
+    // Tolerate a database that hasn't had migration 0052 applied yet.
+    const noteRows = await pl.listEvidenceNotes(c.env.DB, u.family_id, { student_id: sid, from: from || undefined, to: to ? to.slice(0, 10) : undefined }).catch(() => [] as any[]);
     const total = results.length + noteRows.length;
     const rows = limits.fullExports ? results : results.slice(0, 1);
     const items = [];
