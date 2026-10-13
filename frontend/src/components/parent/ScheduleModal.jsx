@@ -15,6 +15,7 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
   const [weekdays, setWeekdays] = useState([1, 2, 3, 4, 5]);
   const [busy, setBusy] = useState(false);
   const lesson = fixed || lessons.find(l => l.id === lessonId);
+  const choices = lessons.filter(l => l.status === "ready");
 
   const dates = useMemo(() => {
     if (!start) return [];
@@ -38,7 +39,12 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
     setBusy(true);
     try {
       for (const sid of picked) {
-        await api.post("/assignments", { student_id: sid, lesson_id: lesson.id, support_level: "green" });
+        try {
+          await api.post("/assignments", { student_id: sid, lesson_id: lesson.id, support_level: "green" });
+        } catch (e) {
+          // Already assigned and not finished: just add the extra days to the planner.
+          if (e.response?.data?.code !== "ALREADY_ASSIGNED") throw e;
+        }
         for (let i = 0; i < dates.length; i++) {
           await api.post("/calendar", {
             title: dates.length > 1 ? `${lesson.title} \u00b7 Day ${i + 1} of ${dates.length}` : lesson.title,
@@ -75,7 +81,7 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
             <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">Lesson</label>
             <select value={lessonId} onChange={e => setLessonId(e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" data-testid="sch-lesson">
               <option value="">Choose a lesson\u2026</option>
-              {lessons.map(l => <option key={l.id} value={l.id}>{l.title}</option>)}
+              {choices.map(l => <option key={l.id} value={l.id}>{l.title}</option>)}
             </select>
           </div>
         )}
