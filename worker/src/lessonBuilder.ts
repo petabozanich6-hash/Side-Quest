@@ -294,6 +294,13 @@ export function childSafeLesson(l: any) {
   const copy: any = { ...l };
   for (const k of ["answer_key", "parent_notes", "parent_check", "explicit_teaching", "curriculum_refs"]) delete copy[k];
   if (Array.isArray(copy.questions)) copy.questions = copy.questions.map((q: any) => ({ prompt: q.prompt, type: q.type }));
+  // Quiz correct answers stay on the server. The child's browser sends answers to the quiz-check route to be marked.
+  if (Array.isArray(copy.quiz)) {
+    copy.quiz = copy.quiz.map((q: any) => {
+      const { correct_index: _c, correct: _k, answer: _a, ...rest } = q || {};
+      return rest;
+    });
+  }
   return copy;
 }
 
@@ -457,6 +464,48 @@ export async function assignLesson(
   return { ok: true, assignment: await db.prepare("SELECT id, family_id, student_id, lesson_id, due_date, scheduled_date, support_level, parent_notes, status, lesson_version, created_at FROM assignments WHERE id = ?").bind(id).first() };
 }
 
+// ---------------------------------------------------------------- quiz marking (server side)
+
+const mcQuestions = (lesson: any): any[] => (Array.isArray(lesson?.quiz) ? lesson.quiz : []).filter((q: any) => q && q.type !== "short_answer" && Array.isArray(q.options));
+const neededFor = (total: number, passMark: number) => Math.ceil(total * passMark - 1e-9);
+
+async function assignmentForChild(db: DB, user: { id: string; family_id: string }, assignmentId: unknown) {
+  const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND student_id = ? AND family_id = ?").bind(String(assignmentId ?? ""), user.id, user.family_id).first<any>();
+  if (!a) return { a: null, lesson: null };
+  const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first<any>();
+  return { a, lesson: assignmentLesson(a, live) };
+}
+
+/** Marks multiple-choice answers on the server. The child sends the option text they chose for each question, in order. */
+export async function checkQuiz(
+  db: DB,
+  user: { id: string; family_id: string },
+  assignmentId: unknown,
+  answers: unknown,
+  now: Date = new Date()
+): Promise<Result<{ score: number; total: number; needed: number; passed: boolean; attempt: number; results: { question_index: number; is_correct: boolean; explanation: string }[] }>> {
+  const { a, lesson } = await assignmentForChild(db, user, assignmentId);
+  if (!a) return fail(404, "Assignment not found");
+  if (DONE_STATUSES.includes(a.status)) return fail(409, "This lesson has already been finished.", "ALREADY_DONE");
+  const qs = mcQuestions(lesson);
+  if (!qs.length) return fail(400, "This lesson has no multiple-choice quiz.");
+  const given = Array.isArray(answers) ? answers : [];
+  const results = qs.map((q, i) => {
+    const picked = typeof given[i] === "string" ? given[i] : null;
+    const ok = picked !== null && typeof q.correct_index === "number" && q.options[q.correct_index] === picked;
+    return { question_index: i, is_correct: ok, explanation: String(q.explanation || "") };
+  });
+  const score = results.filter((r) => r.is_correct).length;
+  const total = qs.length;
+  const needed = neededFor(total, Number(lesson?.pass_mark) || 0.9);
+  const attempt = (await count(db, "SELECT COUNT(*) n FROM quiz_results WHERE assignment_id = ? AND child_id = ?", a.id, user.id)) + 1;
+  await db
+    .prepare("INSERT INTO quiz_results (id, family_id, lesson_id, child_id, assignment_id, score, total, results, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+    .bind(newId(), user.family_id, a.lesson_id, user.id, a.id, score, total, JSON.stringify(results.map((r) => ({ question_index: r.question_index, is_correct: r.is_correct }))), nowIso(now))
+    .run();
+  return { ok: true, score, total, needed, passed: score >= needed, attempt, results };
+}
+
 // ---------------------------------------------------------------- submissions and review
 
 export async function submitWork(
@@ -469,6 +518,15 @@ export async function submitWork(
   if (!a) return fail(404, "Assignment not found");
   if (DONE_STATUSES.includes(a.status)) return fail(409, "This lesson has already been reviewed and finished.", "ALREADY_DONE");
   if (a.status === "submitted") return fail(409, "You have already handed this in. It is waiting for your grown-up to look at it.", "ALREADY_SUBMITTED");
+  if (!body.needs_help) {
+    const { lesson } = await assignmentForChild(db, user, a.id);
+    const qs = mcQuestions(lesson);
+    if (qs.length) {
+      const needed = neededFor(qs.length, Number(lesson?.pass_mark) || 0.9);
+      const passed = await count(db, "SELECT COUNT(*) n FROM quiz_results WHERE assignment_id = ? AND child_id = ? AND score >= ?", a.id, user.id, needed);
+      if (!passed) return fail(409, "Pass the quiz first, then hand in your work. You can ask for help instead.", "QUIZ_NOT_PASSED");
+    }
+  }
   const response = typeof body.response_text === "string" ? body.response_text.slice(0, 20000) : null;
   const reflection = typeof body.reflection === "string" ? body.reflection.slice(0, 4000) : null;
   const fileIds = Array.isArray(body.file_ids) ? body.file_ids.filter((x) => typeof x === "string").slice(0, 20) : [];

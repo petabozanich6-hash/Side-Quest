@@ -144,6 +144,18 @@ test("full workflow: create, assign, snapshot survives edit, submit once, review
   const safe = lb.childSafeLesson(seen);
   assert.equal(safe.answer_key, undefined); assert.equal(safe.parent_notes, undefined);
   assert.ok(safe.questions.every((q) => q.answer_key === undefined));
+  assert.ok(safe.quiz.every((q) => q.correct_index === undefined), "quiz answers must not reach the child");
+  // quiz is marked on the server and must be passed before handing in
+  const user = { id: s, family_id: fam };
+  assert.equal((await lb.submitWork(db, user, { assignment_id: a.id, response_text: "1" }, NOW)).code, "QUIZ_NOT_PASSED");
+  const bad = await lb.checkQuiz(db, user, a.id, ["1"], NOW);
+  assert.ok(bad.ok); assert.equal(bad.passed, false);
+  assert.equal((await lb.submitWork(db, user, { assignment_id: a.id, response_text: "1" }, NOW)).code, "QUIZ_NOT_PASSED");
+  const good = await lb.checkQuiz(db, user, a.id, ["2"], NOW);
+  assert.ok(good.ok); assert.equal(good.passed, true); assert.equal(good.attempt, 2);
+  assert.equal(JSON.stringify(good).includes("correct_index"), false);
+  // another child in the same family cannot mark someone else's assignment
+  assert.equal((await lb.checkQuiz(db, { id: "x", family_id: fam }, a.id, ["2"], NOW)).status, 404);
   // submit
   const sub = await lb.submitWork(db, { id: s, family_id: fam }, { assignment_id: a.id, response_text: "1" }, NOW);
   assert.ok(sub.ok); assert.equal(sub.status, "submitted");

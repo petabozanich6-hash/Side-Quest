@@ -245,6 +245,16 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     return c.json(out);
   });
 
+  app.post("/api/assignments/:id/quiz-check", auth, async (c) => {
+    const u = c.get("user");
+    if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await lb.checkQuiz(c.env.DB, u, c.req.param("id"), b.answers);
+    if (!r.ok) return send(c, r);
+    const { ok: _ok, ...out } = r;
+    return c.json(out);
+  });
+
   app.get("/api/submissions", auth, async (c) => {
     const u = c.get("user");
     let sql = "SELECT * FROM submissions WHERE family_id = ?";

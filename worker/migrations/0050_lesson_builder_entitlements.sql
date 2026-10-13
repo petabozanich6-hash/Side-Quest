@@ -12,6 +12,9 @@ ALTER TABLE assignments ADD COLUMN lesson_snapshot TEXT;
 ALTER TABLE assignments ADD COLUMN lesson_version INTEGER;
 ALTER TABLE assignments ADD COLUMN xp_awarded INTEGER NOT NULL DEFAULT 0;
 
+-- Quiz attempts are tied to the assignment so submission can require a server-verified pass.
+ALTER TABLE quiz_results ADD COLUMN assignment_id TEXT;
+
 -- Families: account entitlement state. Only the server (or the owner via the database) can change it.
 -- States: FREE_PREVIEW, PREVIEW_EXPIRED, ACTIVE_MONTHLY, ACTIVE_ANNUAL, PAST_DUE, CANCELLED, INTERNAL.
 ALTER TABLE families ADD COLUMN plan TEXT NOT NULL DEFAULT 'FREE_PREVIEW';

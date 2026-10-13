@@ -1,29 +1,47 @@
 import React, { useState } from "react";
+import { api } from "../../lib/api";
 
-export default function QuestQuiz({ quiz = [], passMark = 0.9, onResult, shortAnswers = {}, onShortAnswers = () => {} }) {
+export default function QuestQuiz({ quiz = [], passMark = 0.9, assignmentId, onResult, shortAnswers = {}, onShortAnswers = () => {} }) {
   const questions = quiz.filter((q) => q.type !== "short_answer");
   const [answers, setAnswers] = useState({});
   const [checked, setChecked] = useState(false);
   const [attempt, setAttempt] = useState(1);
+  const [server, setServer] = useState(null); // answers are marked on the server; the browser never holds the correct answers
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
 
   const total = questions.length;
   if (total === 0) return null;
 
   const needed = Math.ceil(total * passMark - 1e-9);
-  const score = questions.filter((q, i) => answers[i] === q.correct_index).length;
-  const passed = score >= needed;
+  const score = server ? server.score : 0;
+  const passed = !!server?.passed;
+  const okAt = (i) => !!server?.results?.[i]?.is_correct;
   const shortQuestions = quiz.map((question, index) => ({ question, index })).filter(({ question }) => question.type === "short_answer");
   const complete = questions.every((_, i) => typeof answers[i] === "number") && shortQuestions.every(({ index }) => (shortAnswers[index] || "").trim().length > 0);
   const percent = Math.round((score / total) * 100);
 
-  const check = () => {
-    setChecked(true);
-    onResult?.({ score, total, needed, passed, attempt, percent });
+  const check = async () => {
+    setBusy(true);
+    setError("");
+    try {
+      const { data } = await api.post(`/assignments/${assignmentId}/quiz-check`, {
+        answers: questions.map((q, i) => (q.options || [])[answers[i]] ?? null),
+      });
+      setServer(data);
+      setChecked(true);
+      onResult?.({ score: data.score, total: data.total, needed: data.needed, passed: data.passed, attempt: data.attempt, percent: Math.round((data.score / data.total) * 100) });
+    } catch (e) {
+      setError(e.response?.data?.detail || "Could not check your answers. Please try again.");
+    } finally {
+      setBusy(false);
+    }
   };
 
   const retry = () => {
     setAnswers({});
     setChecked(false);
+    setServer(null);
     setAttempt((n) => n + 1);
     onResult?.(null);
   };
@@ -53,7 +71,7 @@ export default function QuestQuiz({ quiz = [], passMark = 0.9, onResult, shortAn
               <div className="mt-3 space-y-2">
                 {(question.options || []).map((option, oi) => {
                   const isSelected = selected === oi;
-                  const isCorrect = oi === question.correct_index;
+                  const isCorrect = okAt(qi);
 
                   let cls =
                     "w-full text-left px-3 py-2 rounded-lg border transition";
@@ -84,15 +102,15 @@ export default function QuestQuiz({ quiz = [], passMark = 0.9, onResult, shortAn
                 })}
               </div>
 
-              {checked && selected !== question.correct_index && (
+              {checked && !okAt(qi) && (
                 <p className="mt-2 text-sm text-stone-700">
-                  Not quite. Hint: {question.explanation}
+                  Not quite. Hint: {server?.results?.[qi]?.explanation}
                 </p>
               )}
 
-              {checked && passed && selected === question.correct_index && (
+              {checked && passed && okAt(qi) && (
                 <p className="mt-2 text-sm text-stone-700">
-                  {question.explanation}
+                  {server?.results?.[qi]?.explanation}
                 </p>
               )}
             </div>
@@ -107,15 +125,16 @@ export default function QuestQuiz({ quiz = [], passMark = 0.9, onResult, shortAn
         ))}
       </div>
 
+      {error && <p role="alert" className="mt-3 text-sm text-red-700">{error}</p>}
       {!checked ? (
         <button
           type="button"
           onClick={check}
-          disabled={!complete}
+          disabled={!complete || busy}
           className="mt-4 rounded-full px-5 py-2 text-sm font-bold disabled:opacity-50"
           style={{ backgroundColor: "#1F3B2D", color: "#F5EFE0" }}
         >
-          {complete ? "Check my answers" : "Answer every question to check"}
+          {busy ? "Checking…" : complete ? "Check my answers" : "Answer every question to check"}
         </button>
       ) : passed ? (
         <div className="mt-4 rounded-xl bg-green-50 border border-green-200 p-4 text-green-900">

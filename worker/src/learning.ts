@@ -82,55 +82,6 @@ export function registerLearning(app: App, g: Guards) {
     }
   }
 
-  app.post("/api/lessons/:lesson_id/quiz", g.auth, async (c) => {
-    const body: any = await c.req.json().catch(() => ({}));
-    const answers = Array.isArray(body.answers) ? body.answers : [];
-    const user = c.get("user");
-    const lessonRow = await getLesson(c.env.DB, user.family_id, c.req.param("lesson_id"));
-    if (!lessonRow) return c.json({ detail: "Lesson not found" }, 404);
-
-    const quiz = jsonArray(lessonJson(lessonRow).quiz);
-    const results = [];
-    let correct_count = 0;
-    for (const [index, answer] of answers.entries()) {
-      if (index >= quiz.length) continue;
-      const question: any = quiz[index] || {};
-      const is_correct = answer === question.correct_index;
-      if (is_correct) correct_count += 1;
-      results.push({
-        question_index: index,
-        selected: answer,
-        correct_index: question.correct_index,
-        is_correct,
-        explanation: question.explanation || "",
-      });
-    }
-
-    const result = {
-      id: newId(),
-      family_id: user.family_id,
-      lesson_id: c.req.param("lesson_id"),
-      child_id: user.id,
-      score: correct_count,
-      total: quiz.length,
-      results,
-      completed_at: nowIso(),
-    };
-    await c.env.DB.prepare(
-      "INSERT INTO quiz_results (id, family_id, lesson_id, child_id, score, total, results, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-    ).bind(
-      result.id,
-      result.family_id,
-      result.lesson_id,
-      result.child_id,
-      result.score,
-      result.total,
-      JSON.stringify(result.results),
-      result.completed_at
-    ).run();
-    return c.json(result);
-  });
-
   app.post("/api/lessons/:lesson_id/evidence", g.auth, async (c) => {
     const body: any = await c.req.json().catch(() => ({}));
     const user = c.get("user");
