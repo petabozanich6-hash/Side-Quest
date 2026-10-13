@@ -468,14 +468,29 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   await cp.goto(`${BASE}/child/lesson/${asg.json.id}`);
   await cp.waitForSelector("[data-testid=lesson-title]", { timeout: 15000 });
   const body = await cp.textContent("body");
-  for (const need of ["Imagine you have a vegie patch", "Tens and ones: how numbers are built", "Watch how it is done", "13 ones is more than 10, so regroup", "Try it together", "You will need:", "Extra challenge", "Work out 36 + 27"]) ok(body.includes(need), "child page missing: " + need);
-  for (const leak of ["Hook (0 to 5 min)", "Sam forgot to regroup", "If your child finds regrouping hard", "A photo of the bean cups", "63. Tens: 30", "Example lesson to show"]) ok(!body.includes(leak), "child page leaks: " + leak);
+  for (const need of ["Imagine you have a vegie patch", "Tens and ones: how numbers are built", "Watch how it is done", "13 ones is more than 10, so regroup", "Try it together", "You will need:", "Extra challenge", "Work out 36 + 27", "Why this matters:", "Before you start, you should already know:", "Watch out for these mistakes", "Writing the whole 13 in the ones place", "Remember", "Let's remember the three big ideas", "Add Bed A and Bed B: 34 + 27"]) ok(body.includes(need), "child page missing: " + need);
+  for (const leak of ["Hook (0 to 5 min)", "Sam forgot to regroup", "If your child finds regrouping hard", "A photo of the bean cups", "63. Tens: 30", "Reference example (not AI output)", "Concept: adding two-digit", "How many tens and how many ones are in 47?", "4 cups and 5 loose beans. 27 + 18 = 45"]) ok(!body.includes(leak), "child page leaks: " + leak);
   await cp.click("text=Need a hint?").catch(() => {});
   await cp.screenshot({ path: `${SHOTS}/garden-lesson-child-mobile.png`, fullPage: true });
   const tok = await cp.evaluate(() => localStorage.getItem("sq_token"));
   const raw = JSON.stringify((await api("GET", `/assignments/${asg.json.id}`, tok)).json);
   for (const leak of ["parent_script", "evidence_suggestions", "answer_key", "correct_index", "\"support\""]) ok(!raw.includes(leak), "API leaks " + leak);
   ok((await api("GET", `/lessons/${les.json.id}`, tok)).status === 403, "child can read parent lesson");
+  // Year 7 independent reference lesson: same pipeline, written straight to the student
+  const Y7 = JSON.parse(readFileSync(resolve(ROOT, "frontend/src/data/referenceYear7Integers.json"), "utf8"));
+  const les7 = await api("POST", "/lessons", pt, { ...Y7, status: "ready" });
+  ok(les7.status === 200, "year 7 lesson rejected: " + JSON.stringify(les7.json));
+  const asg7 = await api("POST", "/assignments", pt, { student_id: ch.json.id, lesson_id: les7.json.id });
+  ok(asg7.status === 200, "assign y7 " + asg7.status);
+  await cp.goto(`${BASE}/child/lesson/${asg7.json.id}`);
+  await cp.waitForSelector("[data-testid=lesson-title]", { timeout: 15000 });
+  const b7 = await cp.textContent("body");
+  for (const need of ["Negative numbers: counting below zero", "What is a negative number?", "The number line", "Opposites and distance from zero", "Ordering temperatures", "Adding across zero", "Why this matters:", "Watch out for these mistakes", "Temperature detective", "Write the five places in order from coldest to warmest.", "Money story", "Remember", "Challenge yourself"]) ok(b7.includes(need), "y7 child page missing: " + need);
+  for (const leak of ["Concept: negative integers", "Suggested check-ins", "If you find this hard:", "Charlotte Pass (\u22128), Thredbo", "Sam moved the wrong way", "Which is greater, \u22129 or \u22122, and how do you know?"]) ok(!b7.includes(leak), "y7 child page leaks: " + leak);
+  await cp.screenshot({ path: `${SHOTS}/year7-lesson-child-mobile.png`, fullPage: true });
+  const raw7 = JSON.stringify((await api("GET", `/assignments/${asg7.json.id}`, tok)).json);
+  for (const leak of ["teaching_plan", "teaching_questions", "parent_script", "Charlotte Pass (\u22128), Thredbo (\u22125)"]) ok(!raw7.includes(leak), "y7 API leaks " + leak);
+
   // wide editor + side by side preview on desktop
   await page.goto(BASE + `/parent/lessons/${les.json.id}/edit`);
   await page.click("[data-testid=split-tab]");

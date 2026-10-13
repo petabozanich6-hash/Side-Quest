@@ -20,6 +20,9 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const worked = l.worked_examples || [];
   const guided = l.guided_practice || [];
   const materials = l.materials || [];
+  const texts = l.texts || [];
+  const mistakes = l.misconceptions || [];
+  const prior = l.prior_knowledge || [];
   const hasQuiz = quiz.some((q) => q.type !== "short_answer" && Array.isArray(q.options));
 
   const locked = ["submitted", "accepted", "demonstrated", "completed"].includes(a.status);
@@ -142,9 +145,16 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
         </div>
       )}
 
-      {(l.introduction || materials.length > 0) && (
+      {(l.introduction || materials.length > 0 || l.why_it_matters || prior.length > 0) && (
         <section className={card} data-testid="intro">
           {l.introduction && <p className="text-base leading-relaxed whitespace-pre-wrap">{l.introduction}</p>}
+          {l.why_it_matters && <p className="text-base leading-relaxed"><b>Why this matters:</b> {l.why_it_matters}</p>}
+          {prior.length > 0 && (
+            <div>
+              <p className="font-bold text-sm">Before you start, you should already know:</p>
+              <ul className="list-disc pl-5 text-sm text-stone-700">{prior.map((m, i) => <li key={i}>{m}</li>)}</ul>
+            </div>
+          )}
           {materials.length > 0 && (
             <div className="rounded-xl border p-3 bg-white" style={border}>
               <p className="font-bold text-sm">You will need:</p>
@@ -153,6 +163,13 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
           )}
         </section>
       )}
+
+      {texts.map((t, i) => (
+        <section key={`t${i}`} className={card} data-testid={`text-${i}`}>
+          <h2 className="font-display text-xl font-semibold" style={INK}>{t.kind === "source" ? "Source: " : t.kind === "data" ? "Data: " : "Read: "}{t.title}</h2>
+          <p className="text-base leading-relaxed whitespace-pre-wrap rounded-xl border p-4 bg-white" style={border}>{t.content}</p>
+        </section>
+      ))}
 
       {sections.map((s, i) => (
         <section key={i} className={card} data-testid={`section-${i}`}>
@@ -169,6 +186,18 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
               <p className="font-bold">{w.title ? `${w.title}: ` : `Example ${i + 1}: `}{w.problem}</p>
               <ol className="list-decimal pl-5 space-y-1 text-base">{(w.steps || []).map((st, j) => <li key={j}>{st}</li>)}</ol>
               {w.answer && <p className="font-bold" style={INK}>Answer: {w.answer}</p>}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {mistakes.length > 0 && (
+        <section className={card} data-testid="mistakes">
+          <h2 className="font-display text-xl font-semibold" style={INK}>Watch out for these mistakes</h2>
+          {mistakes.map((m, i) => (
+            <div key={i} className="rounded-xl border p-3 bg-white" style={border}>
+              <p className="font-bold">{m.mistake}</p>
+              {m.fix && <p className="text-sm text-stone-700 mt-1 whitespace-pre-wrap">{m.fix}</p>}
             </div>
           ))}
         </section>
@@ -215,10 +244,18 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
               <span>
                 <span className="block font-bold">{x.title}{x.offline ? " (off the screen)" : ""}</span>
                 {x.instructions && <span className="block text-sm text-stone-700 whitespace-pre-wrap">{x.instructions}</span>}
+                {(x.tasks || []).length > 0 && <ol className="mt-2 list-decimal pl-5 space-y-1 text-sm text-stone-800">{x.tasks.map((t, j) => <li key={j}>{t.prompt}</li>)}</ol>}
               </span>
             </label>
           ))}
           <p className="text-xs text-stone-500">Tick each one when you have done it.</p>
+        </section>
+      )}
+
+      {l.consolidation && (
+        <section className={card} data-testid="consolidation">
+          <h2 className="font-display text-xl font-semibold" style={INK}>Remember</h2>
+          <p className="text-base leading-relaxed whitespace-pre-wrap">{l.consolidation}</p>
         </section>
       )}
 

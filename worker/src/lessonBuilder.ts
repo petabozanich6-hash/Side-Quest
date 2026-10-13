@@ -180,6 +180,11 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
         title: text(o.title, 200, `Activity ${i + 1} title`, true),
         instructions: text(o.instructions, 4000, `Activity ${i + 1} instructions`),
         offline: o.offline === true,
+        // The actual questions of a worksheet-style task, so nothing refers to material that doesn't exist.
+        tasks: list(o.tasks, 30, `Activity ${i + 1} tasks`).map((t, j) => {
+          const to = obj(t, `Activity ${i + 1} task ${j + 1}`);
+          return { prompt: text(to.prompt, 1500, `Activity ${i + 1} task ${j + 1}`, true), answer: text(to.answer, 1500, `Activity ${i + 1} task ${j + 1} answer`) };
+        }),
       };
     });
     const questions = list(b.questions, 50, "Questions").map((q, i) => {
@@ -226,6 +231,19 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
       };
     });
 
+    const misconceptions = list(b.misconceptions, 10, "Common mistakes").map((m, i) => {
+      const o = obj(m, `Common mistake ${i + 1}`);
+      return { mistake: text(o.mistake, 600, `Common mistake ${i + 1}`, true), fix: text(o.fix, 1200, `Common mistake ${i + 1} correction`) };
+    });
+    const teaching_questions = list(b.teaching_questions, 20, "Questions to ask").map((m, i) => {
+      const o = obj(m, `Question to ask ${i + 1}`);
+      return { ask: text(o.ask, 600, `Question to ask ${i + 1}`, true), expected: text(o.expected, 1200, `Expected response ${i + 1}`) };
+    });
+    const texts = list(b.texts, 6, "Texts and sources").map((m, i) => {
+      const o = obj(m, `Text ${i + 1}`);
+      return { title: text(o.title, 200, `Text ${i + 1} title`), kind: ["text", "source", "data"].includes(String(o.kind)) ? String(o.kind) : "text", content: text(o.content, 8000, `Text ${i + 1}`, true) };
+    });
+
     const fileIds: string[] = [];
     const resources = list(b.resources, 20, "Resources").map((r, i) => {
       const o = obj(r, `Resource ${i + 1}`);
@@ -260,6 +278,13 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
       duration_minutes: duration,
       curriculum_refs,
       delivery,
+      teaching_plan: text(b.teaching_plan, 3000, "Teaching plan"),
+      why_it_matters: text(b.why_it_matters, 2000, "Why it matters"),
+      prior_knowledge: strList(b.prior_knowledge, 10, 300, "Prior knowledge"),
+      misconceptions,
+      teaching_questions,
+      texts,
+      consolidation: text(b.consolidation, 4000, "Wrap-up"),
       introduction: text(b.introduction, 4000, "Introduction"),
       worked_examples,
       guided_practice,
@@ -321,7 +346,10 @@ export function lessonOut(row: any) {
 export function childSafeLesson(l: any) {
   if (!l) return l;
   const copy: any = { ...l };
-  for (const k of ["answer_key", "parent_notes", "parent_check", "explicit_teaching", "curriculum_refs", "parent_script", "support", "evidence_suggestions"]) delete copy[k];
+  for (const k of ["answer_key", "parent_notes", "parent_check", "explicit_teaching", "curriculum_refs", "parent_script", "support", "evidence_suggestions", "teaching_plan"]) delete copy[k];
+  delete copy.teaching_questions; // parent-only: what to ask and what to expect
+  delete copy.ai_flags;
+  if (Array.isArray(copy.activities)) copy.activities = copy.activities.map((a: any) => ({ ...a, tasks: Array.isArray(a?.tasks) ? a.tasks.map((t: any) => ({ prompt: t.prompt })) : a?.tasks }));
   if (Array.isArray(copy.guided_practice)) copy.guided_practice = copy.guided_practice.map((g: any) => ({ prompt: g.prompt, hint: g.hint }));
   if (Array.isArray(copy.questions)) copy.questions = copy.questions.map((q: any) => ({ prompt: q.prompt, type: q.type }));
   // Quiz correct answers stay on the server. The child's browser sends answers to the quiz-check route to be marked.
@@ -375,7 +403,7 @@ export async function listLessons(db: DB, familyId: string, opts: { archived?: b
 
 export const AI_FLAGS = { source: "ai", ai_generated: true, review_status: "ai_draft_needs_review" };
 
-export async function createLesson(db: DB, familyId: string, input: unknown, now: Date = new Date(), opts: { ai?: boolean } = {}): Promise<Result<{ lesson: any }>> {
+export async function createLesson(db: DB, familyId: string, input: unknown, now: Date = new Date(), opts: { ai?: boolean; flags?: string[] } = {}): Promise<Result<{ lesson: any }>> {
   const clean = sanitizeLessonInput(input);
   if (!clean.ok) return clean;
   const { limits } = await getEntitlement(db, familyId, now);
@@ -391,7 +419,7 @@ export async function createLesson(db: DB, familyId: string, input: unknown, now
     .prepare(
       "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, ?, ?, 1, ?, ?)"
     )
-    .bind(id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(opts.ai ? AI_FLAGS : {}) }), ts, ts)
+    .bind(id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(opts.ai ? { ...AI_FLAGS, ai_flags: opts.flags || [] } : {}) }), ts, ts)
     .run();
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)) };
 }
@@ -408,7 +436,7 @@ export async function updateLesson(db: DB, familyId: string, id: string, input: 
   if (bad) return bad;
   await db
     .prepare("UPDATE lessons SET title = ?, stage = ?, learning_area = ?, status = ?, data = ?, version = version + 1, updated_at = ? WHERE id = ? AND family_id = ?")
-    .bind(clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(parseJson<any>(row.data, {}).ai_generated ? { source: "ai", ai_generated: true, review_status: clean.value.status === "ready" ? "parent_reviewed" : "ai_draft_needs_review" } : {}) }), nowIso(now), id, familyId)
+    .bind(clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(parseJson<any>(row.data, {}).ai_generated ? { source: "ai", ai_generated: true, review_status: clean.value.status === "ready" ? "parent_reviewed" : "ai_draft_needs_review", ai_flags: clean.value.status === "ready" ? [] : parseJson<any>(row.data, {}).ai_flags || [] } : {}) }), nowIso(now), id, familyId)
     .run();
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)), assigned_copies_unchanged: true };
 }

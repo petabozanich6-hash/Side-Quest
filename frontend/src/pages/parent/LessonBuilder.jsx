@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams, useLocation, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft, Plus, Trash2, Eye, Pencil, Save, Send, Sparkles } from "lucide-react";
@@ -6,6 +6,7 @@ import { api } from "../../lib/api";
 import ScheduleModal from "../../components/parent/ScheduleModal";
 import ParentLessonPlayer from "../child/ParentLessonPlayer";
 import exampleLesson from "../../data/exampleLesson.json";
+import exampleY7 from "../../data/referenceYear7Integers.json";
 
 const SUBJECTS = ["English", "Mathematics", "Science", "Humanities and Social Sciences", "Health and Physical Education", "The Arts", "Technologies", "Languages", "Life skills", "Other"];
 const YEARS = ["Kindergarten / Foundation", "Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6", "Year 7", "Year 8", "Year 9", "Year 10"];
@@ -17,6 +18,7 @@ const blank = () => ({
   offline_alternative: "", answer_key: "", parent_notes: "", status: "draft",
   delivery: "independent", introduction: "", materials: "", worked_examples: [], guided_practice: [],
   support: "", extension: "", parent_script: "", evidence_suggestions: "",
+  teaching_plan: "", why_it_matters: "", prior_knowledge: "", misconceptions: [], teaching_questions: [], texts: [], consolidation: "", ai_flags: [],
 });
 
 const field = "mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:border-slate-500";
@@ -36,12 +38,13 @@ function Card({ title, hint, children, wide }) {
 
 function fromServer(l) {
   return {
-    ai_generated: !!l.ai_generated,
     ...blank(),
+    ai_generated: !!l.ai_generated,
+    ai_flags: l.ai_flags || [],
     title: l.title || "", learning_area: l.learning_area || "", year_level: l.year_level || "",
     objectives: l.objectives?.length ? l.objectives : [""],
     sections: l.sections?.length ? l.sections : [{ heading: "", body: "" }],
-    activities: l.activities || [], questions: l.questions || [], quiz: l.quiz || [],
+    activities: (l.activities || []).map(a => ({ ...a, tasks: a.tasks || [] })), questions: l.questions || [], quiz: l.quiz || [],
     resources: (l.resources || []).map(r => ({ type: r.type === "video" ? "video" : "link", title: r.title || "", url: r.url || "" })),
     duration_minutes: l.duration_minutes ?? "", curriculum_refs: (l.curriculum_refs || []).join("\n"),
     offline_alternative: l.offline_alternative && !l.activities?.some(a => a.offline) ? l.offline_alternative : (l.offline_alternative || ""),
@@ -52,6 +55,11 @@ function fromServer(l) {
     guided_practice: (l.guided_practice || []).map(g => ({ prompt: g.prompt || "", hint: g.hint || "", answer: g.answer || "" })),
     support: l.support || "", extension: l.extension || "", parent_script: l.parent_script || "",
     evidence_suggestions: (l.evidence_suggestions || []).join("\n"),
+    teaching_plan: l.teaching_plan || "", why_it_matters: l.why_it_matters || "", prior_knowledge: (l.prior_knowledge || []).join("\n"),
+    misconceptions: (l.misconceptions || []).map(m => ({ mistake: m.mistake || "", fix: m.fix || "" })),
+    teaching_questions: (l.teaching_questions || []).map(m => ({ ask: m.ask || "", expected: m.expected || "" })),
+    texts: (l.texts || []).map(t => ({ title: t.title || "", kind: t.kind || "text", content: t.content || "" })),
+    consolidation: l.consolidation || "",
   };
 }
 
@@ -61,7 +69,7 @@ function toServer(f, status) {
     status,
     objectives: f.objectives.map(s => s.trim()).filter(Boolean),
     sections: f.sections.filter(s => s.body.trim()).map(s => ({ heading: s.heading, body: s.body })),
-    activities: f.activities.filter(a => a.title.trim()).map(a => ({ title: a.title, instructions: a.instructions || "", offline: !!a.offline })),
+    activities: f.activities.filter(a => a.title.trim()).map(a => ({ title: a.title, instructions: a.instructions || "", offline: !!a.offline, tasks: (a.tasks || []).filter(t => t.prompt.trim()).map(t => ({ prompt: t.prompt, answer: t.answer || "" })) })),
     questions: f.questions.filter(q => q.prompt.trim()).map(q => ({ prompt: q.prompt, type: q.type === "long" ? "long" : "short", answer_key: q.answer_key || "" })),
     quiz: f.quiz.filter(q => q.question.trim()).map(q => ({ question: q.question, options: q.options.filter(o => o.trim()), correct_index: q.correct_index, explanation: q.explanation || "" })),
     resources: f.resources.filter(r => r.title.trim() && r.url.trim()).map(r => ({ type: r.type, title: r.title, url: r.url })),
@@ -74,6 +82,11 @@ function toServer(f, status) {
     guided_practice: f.guided_practice.filter(g => g.prompt.trim()).map(g => ({ prompt: g.prompt, hint: g.hint, answer: g.answer })),
     support: f.support, extension: f.extension, parent_script: f.parent_script,
     evidence_suggestions: lines(f.evidence_suggestions),
+    teaching_plan: f.teaching_plan, why_it_matters: f.why_it_matters, prior_knowledge: lines(f.prior_knowledge),
+    misconceptions: f.misconceptions.filter(m => m.mistake.trim()).map(m => ({ mistake: m.mistake, fix: m.fix })),
+    teaching_questions: f.teaching_questions.filter(m => m.ask.trim()).map(m => ({ ask: m.ask, expected: m.expected })),
+    texts: f.texts.filter(t => t.content.trim()).map(t => ({ title: t.title, kind: t.kind, content: t.content })),
+    consolidation: f.consolidation,
   };
 }
 const lines = (t) => String(t || "").split("\n").map(x => x.trim()).filter(Boolean);
@@ -87,19 +100,20 @@ function childView(f) {
     pass_mark: 0.7,
     questions: s.questions.map(q => ({ prompt: q.prompt, type: q.type })),
     guided_practice: s.guided_practice.map(g => ({ prompt: g.prompt, hint: g.hint })),
+    activities: s.activities.map(a => ({ ...a, tasks: a.tasks.map(t => ({ prompt: t.prompt })) })),
     quiz: s.quiz.map(({ correct_index, explanation, ...q }) => ({ ...q, type: "multiple_choice" })),
   };
-  for (const k of ["answer_key", "parent_notes", "parent_script", "support", "evidence_suggestions", "curriculum_refs"]) delete l[k];
+  for (const k of ["answer_key", "parent_notes", "parent_script", "support", "evidence_suggestions", "curriculum_refs", "teaching_plan", "teaching_questions"]) delete l[k];
   return l;
 }
 
-const EXAMPLE = () => ({ ...fromServer(exampleLesson), status: "draft" });
+const EXAMPLE = (which) => ({ ...fromServer(which === "y7" ? exampleY7 : exampleLesson), status: "draft" });
 
 export default function LessonBuilder() {
   const { id } = useParams();
   const [qs] = useSearchParams();
   const nav = useNavigate();
-  const [f, setF] = useState(() => (!id && qs.get("example") ? EXAMPLE() : blank()));
+  const [f, setF] = useState(() => (!id && qs.get("example") ? EXAMPLE(qs.get("example")) : blank()));
   const [lessonId, setLessonId] = useState(id || null);
   const [mode, setMode] = useState("edit"); // edit | preview | split
   const preview = mode === "preview";
@@ -121,6 +135,10 @@ export default function LessonBuilder() {
         .catch(e => { setError(e.response?.data?.detail || "Could not open this lesson"); setLoaded(true); });
     }
   }, [id]);
+
+  const exampleKey = qs.get("example");
+  const firstEx = useRef(true);
+  useEffect(() => { if (firstEx.current) { firstEx.current = false; return; } if (!id && exampleKey) setF(EXAMPLE(exampleKey)); /* eslint-disable-next-line */ }, [exampleKey]);
 
   const set = (k, v) => setF(p => ({ ...p, [k]: v }));
   const upd = (k, i, patch) => setF(p => ({ ...p, [k]: p[k].map((x, j) => (j === i ? { ...x, ...patch } : x)) }));
@@ -159,7 +177,7 @@ export default function LessonBuilder() {
       <div>
         <Link to="/parent/lessons" className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> My lessons</Link>
         <h1 className="font-display text-3xl font-bold text-slate-900">{lessonId ? "Edit lesson" : qs.get("ai") ? "Build a lesson with AI" : "Create my own lesson"}</h1>
-        <p className="text-sm text-slate-600 mt-1">{qs.get("ai") ? "Tell us about your child and the topic. You can edit everything afterwards." : "Write the lesson in your own words, or open the example to see how a complete lesson looks. Save a draft any time."}</p>
+        <p className="text-sm text-slate-600 mt-1">{qs.get("ai") ? "Tell us about your child and the topic. You can edit everything afterwards." : <>Write the lesson in your own words. Save a draft any time. To see how complete lessons look: <Link className="underline" to="/parent/lessons/new?example=1">Year 3 parent-guided example</Link> · <Link className="underline" to="/parent/lessons/new?example=y7">Year 7 independent example</Link>.</>}</p>
         {plan && plan.effective_plan === "FREE_PREVIEW" && (
           <p className="mt-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-900" data-testid="preview-banner">
             Free preview: {plan.usage.lessons} of {plan.limits.maxLessons} lessons used. Preview ends {new Date(plan.trial_ends_at).toLocaleDateString()}.
@@ -179,9 +197,10 @@ export default function LessonBuilder() {
         </>
       )}
 
-      {aiWarnings.length > 0 && (
+      {(f.ai_flags || []).length > 0 && f.status !== "ready" && (
         <div className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="ai-warnings">
-          <b>This AI draft is thinner than it should be:</b> {aiWarnings.join("; ")}. Please expand it before using it, or try drafting again.
+          <b>Please review these parts of the AI draft before using it:</b>
+          <ul className="list-disc pl-5 mt-1">{f.ai_flags.map((x, i) => <li key={i}>{x}</li>)}</ul>
         </div>
       )}
 
@@ -233,6 +252,14 @@ export default function LessonBuilder() {
               <textarea className={field} rows={3} value={f.introduction} onChange={e => set("introduction", e.target.value)} placeholder="A short scenario or question that makes your child curious" />
             </div>
             <div>
+              <label className={label}>Why this matters</label>
+              <textarea className={field} rows={2} value={f.why_it_matters} onChange={e => set("why_it_matters", e.target.value)} placeholder="Why is this worth learning?" />
+            </div>
+            <div>
+              <label className={label}>What your child should already know (one per line)</label>
+              <textarea className={field} rows={2} value={f.prior_knowledge} onChange={e => set("prior_knowledge", e.target.value)} />
+            </div>
+            <div>
               <label className={label}>Things you will need (one per line)</label>
               <textarea className={field} rows={2} value={f.materials} onChange={e => set("materials", e.target.value)} placeholder={"Paper and pencil\nDried beans or buttons"} />
             </div>
@@ -257,6 +284,20 @@ export default function LessonBuilder() {
               </div>
             ))}
             <button onClick={() => add("sections", { heading: "", body: "" })} className="text-sm font-semibold text-slate-700 flex items-center gap-1"><Plus size={14} /> Add a part</button>
+          </Card>
+
+          <Card wide title="Readings and sources" hint="Full texts, source accounts or data your lesson uses, so nothing refers to material that doesn't exist.">
+            {f.texts.map((t, i) => (
+              <div key={i} className="rounded-xl border border-slate-200 p-3 space-y-2">
+                <div className="grid sm:grid-cols-[1fr_140px] gap-2">
+                  <input className={field} value={t.title} onChange={e => upd("texts", i, { title: e.target.value })} placeholder="Title" />
+                  <select className={field} value={t.kind} onChange={e => upd("texts", i, { kind: e.target.value })}><option value="text">Reading</option><option value="source">Source</option><option value="data">Data</option></select>
+                </div>
+                <textarea className={field} rows={6} value={t.content} onChange={e => upd("texts", i, { content: e.target.value })} placeholder="The full text" />
+                <button onClick={() => del("texts", i)} className="text-xs text-rose-700 flex items-center gap-1"><Trash2 size={12} /> Remove</button>
+              </div>
+            ))}
+            <button onClick={() => add("texts", { title: "", kind: "text", content: "" })} className="text-sm font-semibold text-slate-700 flex items-center gap-1"><Plus size={14} /> Add a reading or source</button>
           </Card>
 
           <Card wide title="Worked examples" hint="Show a problem solved one step at a time, so your child sees exactly how to do it. One step per line.">
@@ -286,6 +327,21 @@ export default function LessonBuilder() {
             <button onClick={() => add("guided_practice", { prompt: "", hint: "", answer: "" })} className="text-sm font-semibold text-slate-700 flex items-center gap-1" data-testid="b-add-guided"><Plus size={14} /> Add a practice question</button>
           </Card>
 
+          <Card wide title="Common mistakes" hint="Mistakes children often make, and how to fix each one. Your child sees these.">
+            {f.misconceptions.map((m, i) => (
+              <div key={i} className="rounded-xl border border-slate-200 p-3 space-y-2">
+                <input className={field} value={m.mistake} onChange={e => upd("misconceptions", i, { mistake: e.target.value })} placeholder="The mistake" />
+                <textarea className={field} rows={2} value={m.fix} onChange={e => upd("misconceptions", i, { fix: e.target.value })} placeholder="How to correct it" />
+                <button onClick={() => del("misconceptions", i)} className="text-xs text-rose-700 flex items-center gap-1"><Trash2 size={12} /> Remove</button>
+              </div>
+            ))}
+            <button onClick={() => add("misconceptions", { mistake: "", fix: "" })} className="text-sm font-semibold text-slate-700 flex items-center gap-1"><Plus size={14} /> Add a common mistake</button>
+          </Card>
+
+          <Card title="Wrap-up" hint="Revisit the key ideas at the end. Your child sees this.">
+            <textarea className={field} rows={4} value={f.consolidation} onChange={e => set("consolidation", e.target.value)} placeholder="The essential knowledge in a few sentences" />
+          </Card>
+
           <Card title="Links and videos" hint="Web addresses your child can open. YouTube and Vimeo videos play inside the lesson. Only links starting with https:// are accepted.">
             {f.resources.map((r, i) => (
               <div key={i} className="grid sm:grid-cols-[110px_1fr_1.5fr_auto] gap-2 items-center">
@@ -308,13 +364,20 @@ export default function LessonBuilder() {
               <div key={i} className="rounded-xl border border-slate-200 p-3 space-y-2">
                 <input className={field} value={a.title} onChange={e => upd("activities", i, { title: e.target.value })} placeholder="Activity name" />
                 <textarea className={field} rows={3} value={a.instructions} onChange={e => upd("activities", i, { instructions: e.target.value })} placeholder="What should your child do?" />
+                {(a.tasks || []).map((t, k) => (
+                  <div key={k} className="grid sm:grid-cols-2 gap-2">
+                    <input className={field} value={t.prompt} onChange={e => upd("activities", i, { tasks: a.tasks.map((x, y) => (y === k ? { ...x, prompt: e.target.value } : x)) })} placeholder={`Task ${k + 1}: the actual question or step`} />
+                    <div className="flex gap-2"><input className={field} value={t.answer} onChange={e => upd("activities", i, { tasks: a.tasks.map((x, y) => (y === k ? { ...x, answer: e.target.value } : x)) })} placeholder="Answer (only you see this)" /><button onClick={() => upd("activities", i, { tasks: a.tasks.filter((_, y) => y !== k) })} aria-label="Remove task" className="text-slate-400 hover:text-rose-600"><Trash2 size={14} /></button></div>
+                  </div>
+                ))}
+                <button onClick={() => upd("activities", i, { tasks: [...(a.tasks || []), { prompt: "", answer: "" }] })} className="text-xs font-semibold text-slate-700">+ Add a task or question to this activity</button>
                 <div className="flex items-center justify-between">
                   <label className="text-sm flex items-center gap-2"><input type="checkbox" checked={!!a.offline} onChange={e => upd("activities", i, { offline: e.target.checked })} /> Off the screen (hands-on)</label>
                   <button onClick={() => del("activities", i)} className="text-xs text-rose-700 flex items-center gap-1"><Trash2 size={12} /> Remove</button>
                 </div>
               </div>
             ))}
-            <button onClick={() => add("activities", { title: "", instructions: "", offline: false })} className="text-sm font-semibold text-slate-700 flex items-center gap-1" data-testid="b-add-activity"><Plus size={14} /> Add an activity</button>
+            <button onClick={() => add("activities", { title: "", instructions: "", offline: false, tasks: [] })} className="text-sm font-semibold text-slate-700 flex items-center gap-1" data-testid="b-add-activity"><Plus size={14} /> Add an activity</button>
           </Card>
 
           <Card title="Questions" hint="Your child types an answer. Add the answer if you want it for marking. Children never see it.">
@@ -352,6 +415,20 @@ export default function LessonBuilder() {
           </Card>
 
           <Card wide title="For you (children never see this)">
+            <div>
+              <label className={label}>Teaching plan (how the lesson is sequenced)</label>
+              <textarea className={field} rows={3} value={f.teaching_plan} onChange={e => set("teaching_plan", e.target.value)} />
+            </div>
+            <div>
+              <label className={label}>Questions to ask while teaching, and what to expect</label>
+              {f.teaching_questions.map((m, i) => (
+                <div key={i} className="grid sm:grid-cols-2 gap-2 mt-2">
+                  <input className={field} value={m.ask} onChange={e => upd("teaching_questions", i, { ask: e.target.value })} placeholder="Ask…" />
+                  <div className="flex gap-2"><input className={field} value={m.expected} onChange={e => upd("teaching_questions", i, { expected: e.target.value })} placeholder="Expected answer" /><button onClick={() => del("teaching_questions", i)} aria-label="Remove question" className="text-slate-400 hover:text-rose-600"><Trash2 size={14} /></button></div>
+                </div>
+              ))}
+              <button onClick={() => add("teaching_questions", { ask: "", expected: "" })} className="mt-2 text-xs font-semibold text-slate-700">+ Add a question</button>
+            </div>
             <div>
               <label className={label}>Parent teaching guide</label>
               <textarea className={field} rows={8} value={f.parent_script} onChange={e => set("parent_script", e.target.value)} placeholder="Step-by-step: what to say, show and ask, with timings and common mistakes" data-testid="b-parent-script" />

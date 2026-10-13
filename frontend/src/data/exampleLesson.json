@@ -109,12 +109,36 @@
   {
    "title": "Bean cups: build it, add it, regroup it",
    "instructions": "1. Count out about 60 dried beans, buttons or pebbles. Put exactly 10 in each small cup or bowl to make 'tens'.\n2. Show 27 on the table: 2 full cups and 7 loose beans.\n3. Next to it show 18: 1 full cup and 8 loose beans.\n4. Push them together. You should have 3 full cups and 15 loose beans.\n5. Count out 10 of the loose beans and put them in a new cup. How many full cups and loose beans now? (4 cups and 5 loose.)\n6. Write what you did as a number sentence: 27 + 18 = 45.\n7. Try 36 + 29 the same way and write the answer.",
-   "offline": true
+   "offline": true,
+   "tasks": [
+    {
+     "prompt": "Make 27 and 18 with cups and loose beans, push them together and regroup. How many cups and loose beans now? Write the number sentence.",
+     "answer": "4 cups and 5 loose beans. 27 + 18 = 45."
+    },
+    {
+     "prompt": "Do 36 + 29 the same way. Write the number sentence.",
+     "answer": "36 + 29 = 65 (6 cups and 5 loose beans after regrouping)."
+    }
+   ]
   },
   {
    "title": "Plan a vegie patch",
    "instructions": "1. Draw three garden beds on paper and label them A, B and C.\n2. Bed A has 34 plants, Bed B has 27 plants and Bed C has 19 plants. Draw or write the numbers in each bed.\n3. First add Bed A and Bed B. Show your working with tens and ones.\n4. Then add Bed C to your answer. Show your working again.\n5. Write a full sentence: 'There are ___ plants in the garden.'",
-   "offline": false
+   "offline": false,
+   "tasks": [
+    {
+     "prompt": "Add Bed A and Bed B: 34 + 27. Show your working with tens and ones.",
+     "answer": "61 (30 + 20 = 50; 4 + 7 = 11; 50 + 11 = 61)."
+    },
+    {
+     "prompt": "Now add Bed C to your answer: 61 + 19.",
+     "answer": "80 (60 + 10 = 70; 1 + 9 = 10; 70 + 10 = 80)."
+    },
+    {
+     "prompt": "Write a full sentence saying how many plants there are in the garden.",
+     "answer": "There are 80 plants in the garden."
+    }
+   ]
   },
   {
    "title": "Write your own garden problems",
@@ -219,5 +243,49 @@
  ],
  "answer_key": "Guided practice: 1) 57  2) 43  3) 84  4) 86  5) 199  6) 305.\nActivities: bean cups 27 + 18 = 45 and 36 + 29 = 65. Vegie patch: A + B = 34 + 27 = 61; 61 + C = 61 + 19 = 80, so 80 plants.\nQuestions: 1) 63  2) 13 ones = 1 ten and 3 ones; carry the ten  3) 183  4) 122  5) Sam forgot to regroup; the correct answer is 73.\nQuiz: 1) 68  2) write 4 and add 1 ten to the tens column  3) 63  4) 156  5) 102.",
  "offline_alternative": "No screen needed for any part of this lesson except the final quiz. All the teaching, practice and activities can be done on paper with beans or buttons.",
- "parent_notes": "Example lesson to show the depth a Side-Quest lesson should have. Edit anything you like or delete it."
+ "parent_notes": "Reference example (not AI output) showing the depth a Side-Quest lesson should reach. Edit anything you like or delete it.",
+ "why_it_matters": "Adding is one of the jobs you will do most in life: counting plants, money, distances, time. Quick, reliable addition with tens and ones is the foundation for every bigger calculation your child will meet, from multiplication to fractions. Understanding why regrouping works, not just how, is what stops children getting stuck later.",
+ "prior_knowledge": [
+  "Can count to 100 and read two-digit numbers.",
+  "Knows that a two-digit number has a tens digit and a ones digit.",
+  "Can add single-digit numbers, such as 7 + 6, either from memory or by counting on."
+ ],
+ "misconceptions": [
+  {
+   "mistake": "Writing the whole 13 in the ones place, so 47 + 36 becomes 713 or 7 + 6 = 13 with nothing carried.",
+   "fix": "Go back to the bean cups. Show that the ones place can only hold 9 loose beans before they must be packed into a cup of ten. Ask: 'How many loose beans can sit in the ones place?' Then regroup 13 into 1 ten and 3 ones before writing anything."
+  },
+  {
+   "mistake": "Forgetting to add the carried ten, so 47 + 36 comes out as 73.",
+   "fix": "Point to the small 1 above the tens column and call it 'the new cup'. Tell your child to touch every digit in the tens column, including the small one, before writing the tens answer."
+  },
+  {
+   "mistake": "Lining digits up from the left instead of by place value, so 138 + 45 is written with the 4 under the 1.",
+   "fix": "Draw ones, tens and hundreds boxes on the page and place one digit per box. Always start at the right-hand end of the number."
+  }
+ ],
+ "consolidation": "Let's remember the three big ideas. First, every two-digit number is made of tens and ones, so 47 is 40 and 7. Second, we can add the tens and the ones separately and then join the answers. Third, when the ones add up to 10 or more, we regroup: 10 ones become 1 ten, and that ten joins the tens column. These ideas work for any size of number, whether you are counting seedlings or adding up a shop bill.",
+ "teaching_questions": [
+  {
+   "ask": "How many tens and how many ones are in 47?",
+   "expected": "4 tens and 7 ones, or 40 and 7."
+  },
+  {
+   "ask": "Why do we add the tens separately from the ones?",
+   "expected": "Because tens and ones are different sized groups; we collect all the tens into one pile and all the ones into another and then join the piles."
+  },
+  {
+   "ask": "What happens when the ones add up to more than 9?",
+   "expected": "We make a new ten out of 10 of the ones and move it into the tens column, leaving the extra ones behind."
+  },
+  {
+   "ask": "How could you check that 47 + 36 = 83 is right?",
+   "expected": "Add in the other order (36 + 47), use bean cups, or estimate: 50 + 40 is about 90, so 83 is sensible."
+  },
+  {
+   "ask": "What is the small 1 above the tens column in the column method?",
+   "expected": "It is the ten we made from 13 loose ones: the new cup."
+  }
+ ],
+ "teaching_plan": "Concept: adding two-digit (and simple three-digit) numbers by working with tens and ones. Prior knowledge: place value of two-digit numbers and single-digit addition facts. Progression: (1) build numbers from tens and ones with beans; (2) add tens and ones separately when no regrouping is needed; (3) meet ones that total 10 or more and regroup them as a new ten; (4) record the same idea with the column method; (5) extend to a three-digit number plus a two-digit number. Likely misconceptions: writing 13 in the ones place, forgetting the carried ten, and lining digits up by the left edge. Assessment: written questions that mirror the worked examples, a spot-the-mistake question and a short quiz."
 }

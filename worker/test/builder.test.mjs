@@ -246,8 +246,12 @@ test("AI drafting: paid family gets an unreviewed AI-labelled draft with no link
   assert.deepEqual(r.lesson.curriculum_refs, []); // invented codes are discarded
   const q1 = r.lesson.quiz.find((q) => q.question === "What is 23 + 45?");
   assert.equal(q1.options[q1.correct_index], "68"); // shuffling keeps the right answer marked
-  assert.equal(ai.calls[0][1].messages[0].role, "system");
-  assert.match(ai.calls[0][1].messages[1].content, /Specific learning goal|Topic: Fractions/);
+  const msgs = ai.calls[0][1].messages;
+  assert.equal(msgs[0].role, "system");
+  assert.equal(msgs.length, 4); // system + one reference example (user, assistant) + the real request
+  assert.match(msgs[3].content, /Topic: Fractions/);
+  assert.match(msgs[3].content, /DIFFERENT topic/);
+  assert.equal(ai.calls[0][1].max_tokens, 8000);
   // Editing keeps the AI label; the parent marking it ready records a parent review.
   const up = await lb.updateLesson(db, fam, r.lesson.id, { ...lesson({ title: "Edited" }), status: "ready" }, NOW);
   assert.ok(up.ok);
@@ -330,23 +334,69 @@ test("evidence notes: family-scoped, searchable, date filtered; expired preview 
 });
 
 
-test("AI drafting: thin reply is retried once, then kept with honest warnings", async () => {
+test("AI drafting: a thin reply gets one targeted repair; an unfixable one is refused, not saved", async () => {
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
   const thin = () => ({ response: JSON.stringify({ title: "Thin", objectives: ["a"], sections: [{ heading: "H", body: "Short." }], quiz: [{ question: "q", options: ["a", "b"], correct_index: 0 }] }) });
   const ai = stub(() => thin());
   const r = await aid.draftLessonWithAi(db, ai, { familyId: fam, userId: "u", request: { topic: "Fractions", duration_minutes: 60 } }, NOW);
-  assert.ok(r.ok);
-  assert.equal(ai.calls.length, 2);
-  assert.ok(r.warnings.length > 3);
-  assert.match(ai.calls[1][1].messages[1].content, /too thin/);
-  assert.equal(r.usage.today, 1); // the retry does not cost a second allowance
-  // thin first, rich second: the rich one wins
+  assert.equal(r.ok, false);
+  assert.equal(r.code, "AI_FAILED");
+  assert.match(r.detail, /wasn't good enough/);
+  assert.equal(ai.calls.length, 2); // draft + one repair, never more
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lessons WHERE family_id = ?").get(fam).n, 0);
+  assert.equal((await aid.aiUsage(db, fam, NOW)).today, 0);
+  // thin first, then a repair that supplies the missing parts: kept, with only the soft flags that remain
   let n = 0;
-  const ai2 = stub(() => (n++ === 0 ? thin() : aiReply()));
+  const ai2 = stub((model, input) => {
+    if (n++ === 0) return thin();
+    assert.match(input.messages[1].content, /reviewer found these problems/);
+    return aiReply(); // the repair returns the full set of keys; the matching ones are merged
+  });
   const r2 = await aid.draftLessonWithAi(db, ai2, { familyId: fam, userId: "u", request: { topic: "Addition", duration_minutes: 60 } }, NOW);
-  assert.deepEqual(r2.warnings, []);
+  assert.ok(r2.ok, JSON.stringify(r2));
+  assert.equal(ai2.calls.length, 2);
   assert.equal(r2.lesson.sections.length, 5);
+  assert.deepEqual(r2.lesson.ai_flags, r2.warnings);
+});
+
+test("reference lessons meet the generator's own quality gate and match the frontend copies", async () => {
+  const { REFERENCE_PARENT_GUIDED, REFERENCE_INDEPENDENT } = await import("../src/data/referenceLessons.ts");
+  const B = JSON.parse(readFileSync(new URL("../../frontend/src/data/referenceYear7Integers.json", import.meta.url), "utf8"));
+  assert.deepEqual(REFERENCE_PARENT_GUIDED, GARDEN);
+  assert.deepEqual(REFERENCE_INDEPENDENT, B);
+  for (const [ref, delivery] of [[GARDEN, "parent_guided"], [B, "independent"]]) {
+    const spec = { topic: ref.title, area: "Mathematics", year: ref.year_level, goal: "", minutes: 60, delivery, interests: "", needs: "", notes: "" };
+    const d = aid.normaliseDraft(ref, spec);
+    assert.deepEqual(aid.qualityIssues(d, spec).map((i) => i.msg), [], delivery);
+    // both are accepted by the same sanitiser the manual builder uses, with nothing shortened
+    const clean = lb.sanitizeLessonInput({ ...ref, status: "ready" });
+    assert.ok(clean.ok, JSON.stringify(clean));
+    assert.equal(clean.value.builder.sections.length, ref.sections.length);
+    assert.equal(clean.value.builder.sections[0].body, ref.sections[0].body);
+    assert.equal(clean.value.builder.misconceptions.length, ref.misconceptions.length);
+  }
+});
+
+test("quality gate catches fake resources, vague activities, wrong arithmetic and a missing student voice", () => {
+  const spec = { topic: "t", area: "Mathematics", year: "Year 5", goal: "", minutes: 30, delivery: "independent", interests: "", needs: "", notes: "" };
+  const d = aid.normaliseDraft(JSON.parse(aiReply().response), { ...spec, minutes: 60, delivery: "parent_guided" });
+  const bad = { ...d, activities: [{ title: "Worksheet time", instructions: "Complete the worksheet.", offline: false, tasks: [] }, d.activities[0]], sections: d.sections.map((s) => ({ ...s, body: s.body.replace(/\byou(r|rs|rself)?\b/gi, "the child") + " 12 + 15 = 28." })) };
+  const msgs = aid.qualityIssues(bad, { ...spec, minutes: 60, delivery: "independent" }).map((i) => i.msg).join(" | ");
+  assert.match(msgs, /too vague/);
+  assert.match(msgs, /worksheet/i);
+  assert.match(msgs, /12 \+ 15 = 28/);
+  assert.match(msgs, /directly to the student/);
+  assert.deepEqual(aid.arithmeticErrors(["100 + 70 + 10 + 3 = 183.", "3 \u2212 9 = \u22126", "2 \u00d7 3 + 4 = 10", "10 \u2212 4 \u2212 3 = 4"]), ["10 \u2212 4 \u2212 3 = 4"]);
+});
+
+test("truncated model output is salvaged to the last complete item", () => {
+  const cut = '{"title":"T","sections":[{"heading":"A","body":"one"},{"heading":"B","body":"tw';
+  const got = aid.extractJson(cut);
+  assert.equal(got.title, "T");
+  assert.equal(got.sections[0].body, "one");
+  assert.equal(got.sections[1].body, undefined); // the cut-off item has no usable body and is dropped later
+  assert.equal(aid.extractJson("no json here"), null);
 });
 
 test("rich lessons keep teaching content for the parent but strip answers and the parent guide for the child", async () => {
@@ -361,10 +411,15 @@ test("rich lessons keep teaching content for the parent but strip answers and th
   const json = JSON.stringify(safe);
   assert.equal(safe.sections.length, 5);
   assert.equal(safe.worked_examples.length, 3);
+  assert.equal(safe.teaching_questions, undefined);
+  assert.equal(safe.teaching_plan, undefined);
+  assert.equal(safe.activities[1].tasks[0].answer, undefined);
+  assert.ok(safe.activities[1].tasks[0].prompt);
   assert.equal(safe.materials.length, 5);
   assert.ok(safe.introduction.length > 100);
   assert.ok(safe.guided_practice[0].hint);
   for (const k of ["answer_key", "parent_script", "support", "evidence_suggestions", "parent_notes"]) assert.equal(safe[k], undefined, k);
+  assert.ok(!json.includes("4 cups and 5 loose beans. 27 + 18 = 45"));
   assert.equal(safe.guided_practice[0].answer, undefined);
   assert.ok(!json.includes("correct_index"));
   assert.ok(!json.includes("Sam forgot to regroup"));
