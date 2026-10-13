@@ -17,6 +17,9 @@ import ChildrenPage from "./pages/parent/Children";
 import CurriculumPage from "./pages/parent/Curriculum";
 import LessonsPage from "./pages/parent/Lessons";
 import LessonBuilder from "./pages/parent/LessonBuilder";
+import MakeLesson from "./pages/parent/MakeLesson";
+import LessonReview from "./pages/parent/LessonReview";
+import LessonPrint from "./pages/parent/LessonPrint";
 import UpgradePage from "./pages/parent/Upgrade";
 import AssignmentsPage from "./pages/parent/Assignments";
 import ResourcesPage from "./pages/parent/Resources";
@@ -62,6 +65,7 @@ function Router() {
       <Route path="/child-login" element={<ChildLogin />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/legal/:slug" element={<LegalPage publicView />} />
+      <Route path="/print/lesson/:id" element={<Guard role="parent"><LessonPrint /></Guard>} />
       <Route path="/parent" element={<Guard role="parent"><ParentLayout /></Guard>}>
         <Route index element={<ParentDashboard />} />
         <Route path="children" element={<ChildrenPage />} />
@@ -70,7 +74,9 @@ function Router() {
         <Route path="lessons" element={<LessonsPage />} />
         <Route path="plan" element={<UpgradePage />} />
         <Route path="assignments" element={<AssignmentsPage />} />
+        <Route path="lessons/make" element={<MakeLesson />} />
         <Route path="lessons/new" element={<LessonBuilder />} />
+        <Route path="lessons/:id/review" element={<LessonReview />} />
         <Route path="lessons/:id/edit" element={<LessonBuilder />} />
         <Route path="lessons/:id" element={<LessonDetail />} />
         <Route path="resources" element={<ResourcesPage />} />

@@ -476,6 +476,11 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   const raw = JSON.stringify((await api("GET", `/assignments/${asg.json.id}`, tok)).json);
   for (const leak of ["parent_script", "evidence_suggestions", "answer_key", "correct_index", "\"support\""]) ok(!raw.includes(leak), "API leaks " + leak);
   ok((await api("GET", `/lessons/${les.json.id}`, tok)).status === 403, "child can read parent lesson");
+  // learning preferences are saved for the parent and never reach the child
+  const putP = await api("PUT", `/students/${ch.json.id}`, pt, { interests: ["gardening"], prefs: { delivery: "independent", duration_minutes: 30, support_areas: "long passages", bogus: "x" } });
+  ok(putP.status === 200 && putP.json.prefs.delivery === "independent" && putP.json.prefs.duration_minutes === 30 && !("bogus" in putP.json.prefs), "prefs not saved: " + JSON.stringify(putP.json));
+  ok((await api("GET", "/students", pt)).json.find(x => x.id === ch.json.id).prefs.support_areas === "long passages", "parent list lacks prefs");
+  ok(!JSON.stringify((await api("GET", `/students/${ch.json.id}`, tok)).json).includes("prefs"), "child can see learning preferences");
   // Year 7 independent reference lesson: same pipeline, written straight to the student
   const Y7 = JSON.parse(readFileSync(resolve(ROOT, "frontend/src/data/referenceYear7Integers.json"), "utf8"));
   const les7 = await api("POST", "/lessons", pt, { ...Y7, status: "ready" });
@@ -498,6 +503,37 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   ok(w > 950, "builder is still a narrow column: " + w);
   await page.waitForSelector("[data-testid=builder-preview]");
   await page.screenshot({ path: `${SHOTS}/builder-split-desktop.png` });
+
+  // Zero-burden flow: server routes are honest without AI; the one-box page, review page and print page work.
+  for (const [path, body] of [["/ai/lesson-refine", { lesson_id: les.json.id, instruction: "Make it easier" }], ["/ai/series-plan", { request: "four science lessons about the solar system" }]]) {
+    const x = await api("POST", path, pt, body);
+    ok(x.status === 503 && x.json.code === "AI_UNAVAILABLE", `expected honest AI_UNAVAILABLE from ${path}, got ${x.status}`);
+  }
+  const link = await api("POST", "/ai/lesson-draft", pt, { request: "https://example.com/some-page" });
+  ok(link.status === 400 && link.json.code === "LINK_NOT_READ", "links are not pretended to be read: " + link.status);
+  await page.goto(BASE + "/parent/lessons/make");
+  await page.waitForSelector("[data-testid=make-for-me]");
+  await page.click("[data-testid=mk-example] >> nth=0");
+  await page.selectOption("[data-testid=mk-child]", ch.json.id).catch(() => {});
+  await page.click("[data-testid=mk-go]");
+  await page.waitForSelector("[data-testid=mk-error]", { timeout: 20000 });
+  ok((await page.textContent("[data-testid=mk-error]")).includes("not switched on"), "make page shows an honest error");
+  await page.screenshot({ path: `${SHOTS}/make-lesson-desktop.png` });
+  await page.goto(BASE + `/parent/lessons/${les.json.id}/review`);
+  await page.waitForSelector("[data-testid=review-actions]");
+  const rv = await page.textContent("[data-testid=lesson-document]");
+  ok(rv.includes("Worked examples") && rv.includes("Hook (0 to 5 min)") && rv.includes("Answer:"), "review shows teaching, guide and answers to the parent");
+  for (const t of ["r-assign", "r-refine", "r-edit", "r-later", "r-print"]) ok(await page.isVisible(`[data-testid=${t}]`), "missing button " + t);
+  await page.click("[data-testid=r-refine]");
+  await page.click("[data-testid=refine-chip] >> nth=0");
+  await page.click("[data-testid=refine-go]");
+  await page.waitForSelector("[data-testid=refine-error]", { timeout: 20000 });
+  await page.screenshot({ path: `${SHOTS}/review-desktop.png`, fullPage: true });
+  await page.goto(BASE + `/print/lesson/${les.json.id}`);
+  await page.waitForSelector("[data-testid=print-page]");
+  const ws = await page.textContent("[data-testid=lesson-document]");
+  ok(ws.includes("Name:") && !ws.includes("Hook (0 to 5 min)") && !ws.includes("Answer:"), "printed worksheet has no answers or parent guide");
+  await page.screenshot({ path: `${SHOTS}/print-worksheet.png`, fullPage: true });
   await mctx.close(); await pctx.close();
 });
 

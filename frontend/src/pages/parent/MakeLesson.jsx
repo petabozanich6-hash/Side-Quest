@@ -1,0 +1,207 @@
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { Sparkles, Hammer, FileText, ArrowLeft, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { api } from "../../lib/api";
+import { isoLocal } from "../../components/parent/ScheduleModal";
+
+const EXAMPLES = [
+  "Create a one-hour Year 3 maths lesson about addition using gardening as the theme.",
+  "Create a one-hour Year 7 lesson introducing negative integers. My child works independently.",
+  "Create four science lessons about the solar system for my Year 5 child next week.",
+];
+const SERIES = /(?<!year\s)\b(two|three|four|five|six|[2-6])\s+(?:[\w-]+\s+){0,4}?lessons?\b/i;
+const STEPS = ["Planning what to teach and in what order…", "Writing the explanations and worked examples…", "Writing the practice, activities and quiz…", "Checking the answers and the teaching…"];
+
+function Progress({ label }) {
+  const [sec, setSec] = useState(0);
+  useEffect(() => { const t = setInterval(() => setSec(s => s + 1), 1000); return () => clearInterval(t); }, []);
+  return (
+    <div className="rounded-xl border border-violet-200 bg-violet-50 p-4" role="status" data-testid="make-progress">
+      <p className="font-semibold text-violet-900 flex items-center gap-2"><Loader2 className="animate-spin" size={18} /> {label}</p>
+      <p className="text-sm text-slate-700 mt-1">{STEPS[Math.min(STEPS.length - 1, Math.floor(sec / 18))]}</p>
+      <p className="text-xs text-slate-500 mt-1">This usually takes one to two minutes ({sec}s so far). Please keep this page open.</p>
+    </div>
+  );
+}
+
+export default function MakeLesson() {
+  const nav = useNavigate();
+  const [plan, setPlan] = useState(null);
+  const [students, setStudents] = useState([]);
+  const [student, setStudent] = useState("");
+  const [text, setText] = useState("");
+  const [resource, setResource] = useState("");
+  const [showRes, setShowRes] = useState(false);
+  const [busy, setBusy] = useState("");
+  const [err, setErr] = useState("");
+  const [outline, setOutline] = useState(null); // multi-lesson plan awaiting confirmation
+  const [made, setMade] = useState([]); // multi-lesson results
+  const leaving = useRef(false);
+
+  useEffect(() => {
+    api.get("/account/plan").then(r => setPlan(r.data)).catch(() => setPlan({ limits: {} }));
+    api.get("/students").then(r => { setStudents(r.data); if (r.data.length === 1) setStudent(r.data[0].id); }).catch(() => {});
+  }, []);
+  useEffect(() => {
+    const warn = e => { if (busy && !leaving.current) { e.preventDefault(); e.returnValue = ""; } };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [busy]);
+
+  const child = students.find(s => s.id === student);
+  const body = (extra = {}) => ({ request: text.trim(), student_id: student || undefined, source_text: resource.trim() || undefined, ...extra });
+  const fail = e => setErr(e.response?.data?.detail || "Something went wrong. Nothing was used from your allowance. You can try again, or build the lesson yourself.");
+
+  const create = async () => {
+    setErr("");
+    if (students.length > 1 && !student) { setErr("Choose which child this lesson is for."); return; }
+    if (SERIES.test(text) && !resource.trim()) {
+      setBusy("plan");
+      try { const r = await api.post("/ai/series-plan", body()); setOutline(r.data); }
+      catch (e) { fail(e); }
+      finally { setBusy(""); }
+      return;
+    }
+    setBusy("one");
+    try {
+      const r = await api.post("/ai/lesson-draft", body());
+      leaving.current = true;
+      nav(`/parent/lessons/${r.data.lesson.id}/review`, { state: { assumptions: { ...r.data.assumptions, child: child?.name }, warnings: r.data.warnings, studentId: student || undefined } });
+    } catch (e) { fail(e); setBusy(""); }
+  };
+
+  const createAll = async () => {
+    setErr(""); setBusy("series"); setMade([]);
+    const titles = outline.lessons.map(l => l.title), goals = outline.lessons.map(l => l.goal);
+    const out = [];
+    for (let i = 0; i < outline.lessons.length; i++) {
+      let done = null, last = "";
+      for (let attempt = 0; attempt < 2 && !done; attempt++) {
+        try {
+          const r = await api.post("/ai/lesson-draft", body({ series: { index: i, titles, goals } }));
+          done = r.data;
+        } catch (e) { last = e.response?.data?.detail || "That lesson could not be written."; if (e.response?.data?.code === "AI_QUOTA" || e.response?.status === 402) break; }
+      }
+      out.push(done ? { ok: true, lesson: done.lesson, title: outline.lessons[i].title } : { ok: false, title: outline.lessons[i].title, error: last });
+      setMade([...out]);
+      if (!done && /allowance|limit|AI drafts|plan/i.test(last)) break;
+    }
+    setBusy("");
+  };
+
+  const suggestDates = n => {
+    const d = new Date(); const out = [];
+    // "next week": the weekdays of the coming Monday onwards
+    d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7));
+    while (out.length < n) { if (d.getDay() !== 0 && d.getDay() !== 6) out.push(isoLocal(d)); d.setDate(d.getDate() + 1); }
+    return out;
+  };
+  const assignAll = async () => {
+    const good = made.filter(m => m.ok);
+    const dates = suggestDates(good.length);
+    setBusy("assign");
+    try {
+      for (let i = 0; i < good.length; i++) {
+        const l = good[i].lesson;
+        await api.put(`/lessons/${l.id}`, { ...l, status: "ready" });
+        if (student) {
+          await api.post("/assignments", { student_id: student, lesson_id: l.id, support_level: "green" }).catch(e => { if (e.response?.data?.code !== "ALREADY_ASSIGNED") throw e; });
+          await api.post("/calendar", { title: l.title, date: dates[i], event_type: "lesson", student_id: student, linked_lesson_id: l.id, duration_minutes: Number(l.duration_minutes) || 45, notes: "" });
+        }
+      }
+      toast.success(student ? `Assigned and scheduled for ${child?.name || "your child"}` : "Saved to your library");
+      nav(student ? "/parent/assignments" : "/parent/lessons");
+    } catch (e) { toast.error(e.response?.data?.detail || "Could not finish assigning. Your lessons are saved as drafts."); }
+    finally { setBusy(""); }
+  };
+
+  if (!plan) return <div className="p-8 text-sm text-slate-500">Loading…</div>;
+  const allowed = !!plan.limits?.aiGeneration;
+  const field = "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base";
+
+  return (
+    <div className="p-4 sm:p-6 lg:p-8 max-w-3xl space-y-6" data-testid="make-lesson">
+      <div>
+        <Link to="/parent/lessons" className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> My lessons</Link>
+        <h1 className="font-display text-3xl font-bold text-slate-900">Make a lesson</h1>
+        <p className="text-sm text-slate-600 mt-1">Tell Side-Quest what you want in your own words. It writes the teaching, the examples, the practice and the quiz, ready for you to read and assign.</p>
+      </div>
+
+      {!allowed ? (
+        <div className="rounded-2xl border border-violet-200 bg-violet-50/70 p-5 text-sm space-y-3" data-testid="ai-upsell">
+          <p className="font-semibold text-violet-900 flex items-center gap-1"><Sparkles size={16} /> Make it for me</p>
+          <p className="text-slate-700">Having Side-Quest write the whole lesson for you is part of the paid Family Membership. The free preview includes the full lesson builder, so you can still create lessons yourself.</p>
+          <div className="flex gap-2 flex-wrap"><Link to="/parent/plan" className="rounded-full bg-violet-700 text-white px-4 py-2 font-semibold">See plans</Link><Link to="/parent/lessons/new" className="rounded-full border border-slate-900 bg-white px-4 py-2 font-semibold">Build one myself</Link></div>
+        </div>
+      ) : outline ? (
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-4" data-testid="series-plan">
+          <h2 className="font-display text-xl font-bold">{outline.title}</h2>
+          <p className="text-sm text-slate-600">Here is the plan for {outline.count} lessons of about {outline.minutes} minutes. Each one builds on the last. Change any title or goal first if you like.</p>
+          <ol className="space-y-3">
+            {outline.lessons.map((l, i) => (
+              <li key={i} className="rounded-lg border border-slate-200 p-3">
+                <input disabled={!!busy || made.length > 0} value={l.title} onChange={e => setOutline(o => ({ ...o, lessons: o.lessons.map((x, j) => j === i ? { ...x, title: e.target.value } : x) }))} className="w-full font-semibold border-b border-dashed border-slate-300 focus:outline-none" data-testid="series-title" />
+                <input disabled={!!busy || made.length > 0} value={l.goal} onChange={e => setOutline(o => ({ ...o, lessons: o.lessons.map((x, j) => j === i ? { ...x, goal: e.target.value } : x) }))} className="w-full text-sm text-slate-600 mt-1 focus:outline-none" />
+                {made[i] && (made[i].ok
+                  ? <p className="text-sm text-emerald-700 flex items-center gap-1 mt-1"><CheckCircle2 size={14} /> Written. <Link className="underline" to={`/parent/lessons/${made[i].lesson.id}/review`} state={{ studentId: student || undefined, assumptions: { child: child?.name } }}>Read it</Link></p>
+                  : <p className="text-sm text-rose-700 flex items-center gap-1 mt-1"><AlertCircle size={14} /> {made[i].error}</p>)}
+              </li>
+            ))}
+          </ol>
+          {busy === "series" && <Progress label={`Writing lesson ${Math.min(made.length + 1, outline.count)} of ${outline.count}…`} />}
+          {err && <p role="alert" className="text-sm text-rose-700">{err}</p>}
+          <p className="text-xs text-slate-500">This uses {outline.count} of your {outline.usage.limit_per_day - outline.usage.today} lesson drafts left today ({outline.usage.limit_per_month - outline.usage.month} left this month). It is the same as writing {outline.count} single lessons.</p>
+          {made.length === 0 && busy !== "series" && (
+            <div className="flex gap-2 flex-wrap">
+              <button onClick={createAll} className="rounded-full bg-violet-700 text-white px-5 py-2.5 text-sm font-semibold" data-testid="series-go">Write all {outline.count} lessons</button>
+              <button onClick={() => setOutline(null)} className="rounded-full border border-slate-400 bg-white px-5 py-2.5 text-sm font-semibold">Back</button>
+            </div>
+          )}
+          {made.length > 0 && busy !== "series" && (
+            <div className="flex gap-2 flex-wrap">
+              {made.some(m => m.ok) && <button disabled={busy === "assign"} onClick={assignAll} className="rounded-full bg-emerald-700 text-white px-5 py-2.5 text-sm font-semibold disabled:opacity-50" data-testid="series-assign">{student ? `Assign all to ${child?.name || "my child"}, one a day from next Monday` : "Save all to my library"}</button>}
+              <Link to="/parent/lessons" className="rounded-full border border-slate-400 bg-white px-5 py-2.5 text-sm font-semibold">Save for later</Link>
+              {made.some(m => !m.ok) && <button onClick={() => { setMade([]); }} className="rounded-full border border-slate-400 bg-white px-5 py-2.5 text-sm font-semibold">Try the plan again</button>}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="rounded-2xl border-2 border-violet-300 bg-white p-5 sm:p-6 space-y-4 shadow-sm" data-testid="make-for-me">
+          <h2 className="font-display text-xl font-bold flex items-center gap-2"><Sparkles size={20} className="text-violet-700" /> Make it for me</h2>
+          <div>
+            <label className="font-semibold text-slate-900" htmlFor="mk-text">What would you like to teach?</label>
+            <textarea id="mk-text" rows={3} value={text} onChange={e => setText(e.target.value)} maxLength={1200} className={`${field} mt-1`} placeholder={EXAMPLES[0]} data-testid="mk-text" disabled={!!busy} />
+            <div className="flex flex-wrap gap-2 mt-2">{EXAMPLES.map(x => <button key={x} type="button" onClick={() => setText(x)} className="text-xs rounded-full border border-slate-300 bg-slate-50 px-3 py-1 text-left" data-testid="mk-example">{x}</button>)}</div>
+          </div>
+          <div>
+            <label className="font-semibold text-slate-900" htmlFor="mk-child">Who is this for?</label>
+            <select id="mk-child" value={student} onChange={e => setStudent(e.target.value)} className={`${field} mt-1`} data-testid="mk-child" disabled={!!busy}>
+              <option value="">{students.length ? "Choose a child…" : "No children added yet"}</option>
+              {students.map(s => <option key={s.id} value={s.id}>{s.name}{s.year_level ? ` (Year ${s.year_level})` : ""}</option>)}
+            </select>
+            <p className="text-xs text-slate-500 mt-1">Side-Quest uses your child's year level, interests and saved preferences automatically. <Link to="/parent/children" className="underline">Update their preferences</Link></p>
+          </div>
+          <div>
+            <button type="button" onClick={() => setShowRes(s => !s)} className="text-sm font-semibold text-violet-800 flex items-center gap-1" data-testid="mk-res-toggle"><FileText size={14} /> {showRes ? "Hide" : "Have a worksheet, passage or notes to use?"}</button>
+            {showRes && (
+              <div className="mt-2 space-y-1">
+                <textarea rows={6} value={resource} onChange={e => setResource(e.target.value)} maxLength={20000} className={field} placeholder="Paste the text of your worksheet, passage or notes here. Side-Quest will add the teaching, worked examples and practice around it, and keep your material as an activity." data-testid="mk-resource" disabled={!!busy} />
+                <p className="text-xs text-slate-500">Paste text only for now. Uploading PDFs and reading web links is not available yet, because links cannot be read reliably.</p>
+              </div>
+            )}
+          </div>
+          {busy ? <Progress label={busy === "plan" ? "Planning your lessons…" : "Writing your lesson…"} /> : (
+            <button onClick={create} disabled={text.trim().length < 5} className="w-full sm:w-auto rounded-full bg-violet-700 text-white px-8 py-3 text-base font-bold disabled:opacity-50" data-testid="mk-go">Create My Lesson</button>
+          )}
+          {err && <p role="alert" className="text-sm text-rose-700" data-testid="mk-error">{err}</p>}
+        </div>
+      )}
+
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 flex items-center justify-between gap-3 flex-wrap">
+        <div><p className="font-semibold flex items-center gap-2"><Hammer size={16} /> I'll build it myself</p><p className="text-sm text-slate-600">Write the lesson yourself in the full editor, with a live preview.</p></div>
+        <Link to="/parent/lessons/new" className="rounded-full border border-slate-900 px-5 py-2 text-sm font-semibold" data-testid="mk-manual">Open the editor</Link>
+      </div>
+    </div>
+  );
+}

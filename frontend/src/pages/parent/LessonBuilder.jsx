@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams, useSearchParams, useLocation, Link } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams, Link, Navigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Plus, Trash2, Eye, Pencil, Save, Send, Sparkles } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Eye, Pencil, Save, Send } from "lucide-react";
 import { api } from "../../lib/api";
 import ScheduleModal from "../../components/parent/ScheduleModal";
 import ParentLessonPlayer from "../child/ParentLessonPlayer";
@@ -117,8 +117,8 @@ export default function LessonBuilder() {
   const [lessonId, setLessonId] = useState(id || null);
   const [mode, setMode] = useState("edit"); // edit | preview | split
   const preview = mode === "preview";
-  const loc = useLocation();
-  const aiWarnings = loc.state?.aiWarnings || [];
+  const baseline = useRef(null);
+  const [autosaved, setAutosaved] = useState(null);
   const [busy, setBusy] = useState(false);
   const [assign, setAssign] = useState(null);
   const [students, setStudents] = useState([]);
@@ -140,6 +140,23 @@ export default function LessonBuilder() {
   const firstEx = useRef(true);
   useEffect(() => { if (firstEx.current) { firstEx.current = false; return; } if (!id && exampleKey) setF(EXAMPLE(exampleKey)); /* eslint-disable-next-line */ }, [exampleKey]);
 
+  useEffect(() => { if (loaded && baseline.current === null) baseline.current = JSON.stringify(f); /* eslint-disable-next-line */ }, [loaded]);
+  const dirty = loaded && baseline.current !== null && JSON.stringify(f) !== baseline.current;
+  const live = useRef({});
+  live.current = { f, lessonId, busy };
+  useEffect(() => {
+    const warn = e => { if (live.current.dirtyNow) { e.preventDefault(); e.returnValue = ""; } };
+    window.addEventListener("beforeunload", warn);
+    // Autosave drafts that already exist; never touches lessons marked ready.
+    const t = setInterval(async () => {
+      const { f: cur, lessonId: lid, busy: b } = live.current;
+      if (!lid || b || cur.status === "ready" || !cur.title.trim() || JSON.stringify(cur) === baseline.current) return;
+      try { await api.put(`/lessons/${lid}`, toServer(cur, "draft")); baseline.current = JSON.stringify(cur); setAutosaved(new Date()); } catch { /* keep the unsaved warning */ }
+    }, 30000);
+    return () => { window.removeEventListener("beforeunload", warn); clearInterval(t); };
+  }, []);
+  live.current.dirtyNow = dirty;
+
   const set = (k, v) => setF(p => ({ ...p, [k]: v }));
   const upd = (k, i, patch) => setF(p => ({ ...p, [k]: p[k].map((x, j) => (j === i ? { ...x, ...patch } : x)) }));
   const add = (k, item) => setF(p => ({ ...p, [k]: [...p[k], item] }));
@@ -154,6 +171,7 @@ export default function LessonBuilder() {
       const r = lessonId ? await api.put(`/lessons/${lessonId}`, body) : await api.post("/lessons", body);
       setLessonId(r.data.id);
       set("status", status);
+      baseline.current = JSON.stringify({ ...f, status });
       if (!lessonId) nav(`/parent/lessons/${r.data.id}/edit`, { replace: true });
       toast.success(status === "ready" ? "Saved to your library" : "Draft saved");
       return r.data;
@@ -170,14 +188,15 @@ export default function LessonBuilder() {
     if (saved) setAssign(saved);
   };
 
+  if (qs.get("ai") && !id) return <Navigate to="/parent/lessons/make" replace />;
   if (!loaded) return <div className="p-8 text-sm text-slate-500">Loading…</div>;
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-[1500px] space-y-5" data-testid="lesson-builder">
       <div>
-        <Link to="/parent/lessons" className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> My lessons</Link>
-        <h1 className="font-display text-3xl font-bold text-slate-900">{lessonId ? "Edit lesson" : qs.get("ai") ? "Build a lesson with AI" : "Create my own lesson"}</h1>
-        <p className="text-sm text-slate-600 mt-1">{qs.get("ai") ? "Tell us about your child and the topic. You can edit everything afterwards." : <>Write the lesson in your own words. Save a draft any time. To see how complete lessons look: <Link className="underline" to="/parent/lessons/new?example=1">Year 3 parent-guided example</Link> · <Link className="underline" to="/parent/lessons/new?example=y7">Year 7 independent example</Link>.</>}</p>
+        <Link to="/parent/lessons" onClick={e => { if (dirty && !window.confirm("You have unsaved changes. Leave without saving?")) e.preventDefault(); }} className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> My lessons</Link>
+        <h1 className="font-display text-3xl font-bold text-slate-900">{lessonId ? "Edit lesson" : "Build a lesson myself"}</h1>
+        <p className="text-sm text-slate-600 mt-1"><>Write the lesson in your own words. Save a draft any time. Prefer not to write it? <Link className="underline font-semibold" to="/parent/lessons/make">Let Side-Quest make it for you</Link>. To see how complete lessons look: <Link className="underline" to="/parent/lessons/new?example=1">Year 3 parent-guided example</Link> · <Link className="underline" to="/parent/lessons/new?example=y7">Year 7 independent example</Link>.</></p>
         {plan && plan.effective_plan === "FREE_PREVIEW" && (
           <p className="mt-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-900" data-testid="preview-banner">
             Free preview: {plan.usage.lessons} of {plan.limits.maxLessons} lessons used. Preview ends {new Date(plan.trial_ends_at).toLocaleDateString()}.
@@ -190,13 +209,6 @@ export default function LessonBuilder() {
           <b>AI-generated draft.</b> Check every fact, answer and quiz question before you save it to your library. It is not checked against any curriculum.
         </p>
       )}
-      {!lessonId && qs.get("ai") && plan && (
-        <>
-          <AiPanel allowed={!!plan.limits?.aiGeneration} onDone={(l, warnings) => { toast.success("AI draft created. Please review it before assigning."); nav(`/parent/lessons/${l.id}/edit`, { state: { aiWarnings: warnings || [] } }); }} />
-          <p className="text-sm text-slate-600">Or <Link to="/parent/lessons/new" className="underline font-semibold">create your own lesson from a blank page</Link>.</p>
-        </>
-      )}
-
       {(f.ai_flags || []).length > 0 && f.status !== "ready" && (
         <div className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="ai-warnings">
           <b>Please review these parts of the AI draft before using it:</b>
@@ -206,13 +218,13 @@ export default function LessonBuilder() {
 
       {error && <div role="alert" className="rounded-lg border border-rose-300 bg-rose-50 px-3 py-2 text-sm text-rose-800" data-testid="builder-error">{error} {upgrade && <Link to="/parent/plan" className="underline font-bold">See plans</Link>}</div>}
 
-      {!(qs.get("ai") && !lessonId) && <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2">
         {[["edit", "Edit", Pencil, "edit-tab"], ["preview", "Preview as child", Eye, "preview-tab"], ["split", "Edit and preview side by side", Eye, "split-tab"]].map(([m, text, Icon, tid]) => (
           <button key={m} onClick={() => setMode(m)} data-testid={tid} className={`${m === "split" ? "hidden xl:flex" : "flex"} rounded-full px-4 py-1.5 text-sm font-semibold border items-center gap-1 ${mode === m ? "bg-slate-900 text-white border-slate-900" : "bg-white border-slate-300"}`}><Icon size={14} /> {text}</button>
         ))}
-      </div>}
+      </div>
 
-      {(qs.get("ai") && !lessonId) ? null : preview ? <PreviewPane f={f} /> : (
+      {preview ? <PreviewPane f={f} /> : (
         <div className={mode === "split" ? "xl:grid xl:grid-cols-2 xl:gap-6 items-start" : ""}>
         <div className={mode === "split" ? "space-y-5" : "grid lg:grid-cols-2 gap-5 items-start"}>
           <Card title="The basics" wide>
@@ -465,11 +477,13 @@ export default function LessonBuilder() {
         </div>
       )}
 
-      {!(qs.get("ai") && !lessonId) && <div className="sticky bottom-0 -mx-4 sm:mx-0 bg-white/95 backdrop-blur border-t sm:border sm:rounded-2xl border-slate-200 p-3 flex flex-wrap gap-2 justify-end">
+      <div className="sticky bottom-0 -mx-4 sm:mx-0 bg-white/95 backdrop-blur border-t sm:border sm:rounded-2xl border-slate-200 p-3 flex flex-wrap items-center gap-2 justify-end">
+        <span className="mr-auto text-xs text-slate-500" data-testid="save-state">{dirty ? "Unsaved changes" : autosaved ? `Draft autosaved at ${autosaved.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : ""}</span>
+        {lessonId && <button disabled={busy} onClick={async () => { const r = await save(f.status === "ready" ? "ready" : "draft"); if (r) nav(`/parent/lessons/${r.id}/review`); }} className="rounded-full border border-violet-300 bg-violet-50 px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-review-ai">Review and ask AI to change something</button>}
         <button disabled={busy} onClick={() => save("draft")} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold flex items-center gap-1 disabled:opacity-50" data-testid="b-save-draft"><Save size={14} /> Save draft</button>
         <button disabled={busy} onClick={() => save("ready")} className="rounded-full border border-slate-900 bg-white px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-save-library">Save to library</button>
         <button disabled={busy} onClick={saveAndAssign} className="rounded-full bg-slate-900 text-white px-4 py-2 text-sm font-semibold flex items-center gap-1 disabled:opacity-50" data-testid="b-save-assign"><Send size={14} /> Save and assign</button>
-      </div>}
+      </div>
 
       {assign && <ScheduleModal lesson={assign} students={students} onClose={() => { setAssign(null); nav("/parent/lessons"); }} />}
     </div>
@@ -483,60 +497,6 @@ function PreviewPane({ f }) {
     <div className="rounded-2xl border border-slate-200 bg-[#F5EFE0] p-4 sm:p-6" data-testid="builder-preview">
       <p className="text-xs text-slate-600 mb-3">This is exactly what your child will see. Answers and your teaching guide are hidden from them.</p>
       <ParentLessonPlayer assignment={fake} preview />
-    </div>
-  );
-}
-
-function AiPanel({ allowed, onDone }) {
-  const [open, setOpen] = useState(true);
-  const [v, setV] = useState({ year_level: "", learning_area: "", topic: "", goal: "", duration_minutes: "45", delivery: "parent_guided", interests: "", needs: "", notes: "" });
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState("");
-  const field = "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm";
-  const lab = "text-xs font-semibold uppercase tracking-wider text-slate-500";
-  if (!allowed) {
-    return (
-      <div className="rounded-xl border border-violet-200 bg-violet-50/60 p-4 text-sm" data-testid="ai-upsell">
-        <p className="font-semibold text-violet-900 flex items-center gap-1"><Sparkles size={16} /> Build with AI</p>
-        <p className="text-slate-700 mt-1">AI lesson drafting is part of the paid Family Membership. Building lessons by hand works fully on the free preview. <Link to="/parent/plan" className="underline font-semibold">See plans</Link></p>
-      </div>
-    );
-  }
-  const go = async () => {
-    setErr(""); setBusy(true);
-    try {
-      const body = { ...v, duration_minutes: Number(v.duration_minutes), stage: STAGE_OF[v.year_level] || "" };
-      const r = await api.post("/ai/lesson-draft", body);
-      onDone(r.data.lesson, r.data.warnings);
-    } catch (e) { setErr(e.response?.data?.detail || "Could not create a draft. You can still build the lesson by hand."); }
-    finally { setBusy(false); }
-  };
-  return (
-    <div className="rounded-xl border border-violet-200 bg-violet-50/60 p-4 space-y-3" data-testid="ai-panel">
-      <button onClick={() => setOpen(o => !o)} className="font-semibold text-violet-900 flex items-center gap-1" data-testid="ai-toggle"><Sparkles size={16} /> Build with AI {open ? "−" : "+"}</button>
-      {open && (
-        <div className="space-y-3">
-          <p className="text-xs text-slate-600">An AI model writes a full first draft: introduction, teaching, worked examples, practice, questions and a quiz, plus a guide for you. It can make mistakes, so read it and check every fact and answer. Drafts are saved as drafts and are not checked against any curriculum. You can edit everything afterwards, or start from a blank lesson instead.</p>
-          <div className="grid md:grid-cols-3 gap-3">
-            <div><label className={lab}>Year level or age</label><input list="ai-years" className={field} value={v.year_level} onChange={e => setV({ ...v, year_level: e.target.value })} placeholder="Year 3, or age 8" data-testid="ai-year" /><datalist id="ai-years">{YEARS.map(y => <option key={y} value={y} />)}</datalist></div>
-            <div><label className={lab}>Subject</label><select className={field} value={v.learning_area} onChange={e => setV({ ...v, learning_area: e.target.value })} data-testid="ai-subject"><option value="">Choose…</option>{SUBJECTS.map(x => <option key={x}>{x}</option>)}</select></div>
-            <div><label className={lab}>Lesson length</label><select className={field} value={v.duration_minutes} onChange={e => setV({ ...v, duration_minutes: e.target.value })} data-testid="ai-minutes">{[15, 30, 45, 60, 90].map(m => <option key={m} value={m}>{m} minutes</option>)}</select></div>
-          </div>
-          <div><label className={lab}>Topic</label><input className={field} value={v.topic} onChange={e => setV({ ...v, topic: e.target.value })} placeholder="e.g. Adding two-digit numbers with regrouping" maxLength={300} data-testid="ai-topic" /></div>
-          <div><label className={lab}>Specific learning goal (optional)</label><input className={field} value={v.goal} onChange={e => setV({ ...v, goal: e.target.value })} placeholder="e.g. Be able to add two 2-digit numbers when the ones make more than 10" maxLength={400} data-testid="ai-goal" /></div>
-          <div className="flex flex-wrap gap-4 text-sm">
-            <label className="flex items-center gap-2"><input type="radio" name="ai-delivery" checked={v.delivery === "parent_guided"} onChange={() => setV({ ...v, delivery: "parent_guided" })} data-testid="ai-parent" /> Parent-guided (I teach)</label>
-            <label className="flex items-center gap-2"><input type="radio" name="ai-delivery" checked={v.delivery === "independent"} onChange={() => setV({ ...v, delivery: "independent" })} data-testid="ai-indep" /> Independent (my child works alone)</label>
-          </div>
-          <div className="grid md:grid-cols-2 gap-3">
-            <div><label className={lab}>Child's interests (optional)</label><input className={field} value={v.interests} onChange={e => setV({ ...v, interests: e.target.value })} placeholder="e.g. gardening, dinosaurs, Minecraft" maxLength={300} data-testid="ai-interests" /></div>
-            <div><label className={lab}>Additional learning needs (optional)</label><input className={field} value={v.needs} onChange={e => setV({ ...v, needs: e.target.value })} placeholder="e.g. short attention span, dyslexia, needs extra time" maxLength={400} /></div>
-          </div>
-          <div><label className={lab}>Anything else the AI should know (optional)</label><textarea className={field} rows={2} value={v.notes} onChange={e => setV({ ...v, notes: e.target.value })} placeholder="e.g. We have no printer; use things from around the house" maxLength={800} /></div>
-          {err && <p role="alert" className="text-sm text-rose-700" data-testid="ai-error">{err}</p>}
-          <button disabled={busy || v.topic.trim().length < 3} onClick={go} className="rounded-full bg-violet-700 text-white px-5 py-2 text-sm font-semibold disabled:opacity-50" data-testid="ai-go">{busy ? "Writing your lesson… this can take a minute or two" : "Create draft lesson"}</button>
-        </div>
-      )}
     </div>
   );
 }

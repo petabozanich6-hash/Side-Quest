@@ -123,7 +123,7 @@ export default function ParentDashboard() {
       <section>
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Jump in</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Quick to="/parent/lessons/new" icon={BookOpen} label="Create my own lesson" desc="Build a lesson in your own words, or with AI, then assign it" tint="#C77B5B" testid="quick-create-lesson"/>
+          <Quick to="/parent/lessons/make" icon={BookOpen} label="Make a lesson" desc="Describe what to teach and Side-Quest writes it, or build one yourself" tint="#C77B5B" testid="quick-create-lesson"/>
           <Quick to="/parent/children" icon={Plus} label="Add a student" desc="Set up a child with username and PIN" tint="#4A5D3A" testid="quick-add-student"/>
           <Quick to="/parent/side-quest" icon={Wand2} label="Create a Side Quest" desc="Seasonal or interest-themed lessons mapped to outcomes" tint="#D4A574" testid="quick-sidequest"/>
           <Quick to="/parent/life-learning" icon={Trees} label="Log life learning" desc="Baking, bushwalks, projects — map them to outcomes" tint="#6B8A5B" testid="quick-life"/>

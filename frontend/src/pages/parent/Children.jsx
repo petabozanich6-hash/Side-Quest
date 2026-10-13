@@ -156,6 +156,10 @@ function EditDialog({ student, onClose, onSaved }) {
     birth_year: student.birth_year ?? "",
     pin: "",
   });
+  const sp = student.prefs || {};
+  const [interests, setInterests] = useState((student.interests || []).join(", "));
+  const [prefs, setPrefs] = useState({ duration_minutes: sp.duration_minutes || "", delivery: sp.delivery || "", reading: sp.reading || "", complexity: sp.complexity || "", activity_types: (sp.activity_types || []).join(", "), support_areas: sp.support_areas || "", extension_areas: sp.extension_areas || "", equipment: sp.equipment || "", other: sp.other || "" });
+  const setP = (k, v) => setPrefs(p => ({ ...p, [k]: v }));
   const [busy, setBusy] = useState(false);
   const stage = STAGES.find(s => s.code === f.stage);
 
@@ -175,6 +179,8 @@ function EditDialog({ student, onClose, onSaved }) {
         stage: f.stage,
         year_level: f.year_level || null,
         birth_year: f.birth_year === "" ? null : Number(f.birth_year),
+        interests: interests.split(",").map(x => x.trim()).filter(Boolean).slice(0, 12),
+        prefs: { ...prefs, duration_minutes: prefs.duration_minutes ? Number(prefs.duration_minutes) : undefined, activity_types: prefs.activity_types.split(",").map(x => x.trim()).filter(Boolean) },
       });
       if (f.pin) await api.put(`/students/${student.id}/pin`, { pin: f.pin });
       toast.success("Saved");
@@ -207,6 +213,24 @@ function EditDialog({ student, onClose, onSaved }) {
           </div>
           <F label="Birth year (optional)"><input type="number" value={f.birth_year} onChange={e=>setF({...f, birth_year: e.target.value})} className="input" data-testid="e-birth"/></F>
           <F label="New PIN (leave blank to keep the current one)"><input type="password" minLength={4} autoComplete="new-password" value={f.pin} onChange={e=>setF({...f, pin: e.target.value})} className="input" data-testid="e-pin"/></F>
+          <details className="rounded-xl border border-stone-300 p-3" data-testid="prefs-details">
+            <summary className="cursor-pointer text-sm font-bold" style={{color:"#1F3B2D"}}>Learning preferences (optional)</summary>
+            <p className="text-xs text-stone-500 mt-2">Only what you choose to enter. Side-Quest uses this to make lessons that suit {student.name}. It is private to your family and never shown to your child.</p>
+            <div className="mt-3 space-y-3">
+              <F label="Interests (separate with commas)"><input value={interests} onChange={e=>setInterests(e.target.value)} className="input" placeholder="e.g. Harry Potter, gardening, Minecraft" data-testid="p-interests"/></F>
+              <div className="grid grid-cols-2 gap-3">
+                <F label="Usual lesson length"><select value={prefs.duration_minutes} onChange={e=>setP("duration_minutes", e.target.value)} className="input" data-testid="p-minutes"><option value="">No preference</option>{[15,30,45,60,90].map(m => <option key={m} value={m}>{m} minutes</option>)}</select></F>
+                <F label="Usually learns"><select value={prefs.delivery} onChange={e=>setP("delivery", e.target.value)} className="input" data-testid="p-delivery"><option value="">No preference</option><option value="parent_guided">With me (parent-guided)</option><option value="independent">Independently</option></select></F>
+                <F label="Reading confidence"><select value={prefs.reading} onChange={e=>setP("reading", e.target.value)} className="input"><option value="">No preference</option><option value="supported">Needs support</option><option value="typical">Typical for their age</option><option value="confident">Confident</option></select></F>
+                <F label="Explanations should be"><select value={prefs.complexity} onChange={e=>setP("complexity", e.target.value)} className="input"><option value="">No preference</option><option value="simpler">Simpler</option><option value="standard">Standard</option><option value="challenging">Challenging</option></select></F>
+              </div>
+              <F label="Activities they enjoy"><input value={prefs.activity_types} onChange={e=>setP("activity_types", e.target.value)} className="input" placeholder="e.g. hands-on, drawing, games, writing"/></F>
+              <F label="Needs extra support with"><input value={prefs.support_areas} onChange={e=>setP("support_areas", e.target.value)} className="input" placeholder="e.g. long reading passages, fractions"/></F>
+              <F label="Enjoys extra challenge with"><input value={prefs.extension_areas} onChange={e=>setP("extension_areas", e.target.value)} className="input" placeholder="e.g. puzzles, science"/></F>
+              <F label="Equipment you usually have"><input value={prefs.equipment} onChange={e=>setP("equipment", e.target.value)} className="input" placeholder="e.g. no printer, tablet, craft supplies"/></F>
+              <F label="Anything else"><input value={prefs.other} onChange={e=>setP("other", e.target.value)} className="input" placeholder="e.g. prefers short activities"/></F>
+            </div>
+          </details>
           {f.stage !== student.stage && <p className="text-xs text-stone-500">Changing the stage doesn't change the subjects already chosen for this child.</p>}
         </div>
         <button disabled={busy} className="mt-5 w-full rounded-full py-3 text-sm font-bold disabled:opacity-50" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="edit-save">{busy ? "Saving…" : "Save changes"}</button>

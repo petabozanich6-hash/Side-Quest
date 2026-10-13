@@ -65,8 +65,8 @@ export default function LessonsPage() {
           <p className="text-sm text-slate-600 mt-1">Your family's lesson library. Create a lesson once, then assign it to any child.</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Link to="/parent/lessons/new" className="rounded-full bg-slate-900 text-white px-5 py-2.5 text-sm font-semibold flex items-center gap-1" data-testid="new-lesson"><Plus size={16} /> Create my own lesson</Link>
-          <Link to="/parent/lessons/new?ai=1" className="rounded-full border border-violet-300 bg-violet-50 text-violet-900 px-5 py-2.5 text-sm font-semibold" data-testid="new-lesson-ai">Build with AI</Link>
+          <Link to="/parent/lessons/make" className="rounded-full bg-violet-700 text-white px-5 py-2.5 text-sm font-semibold flex items-center gap-1" data-testid="new-lesson-ai"><Plus size={16} /> Make a lesson for me</Link>
+          <Link to="/parent/lessons/new" className="rounded-full border border-slate-900 bg-white px-5 py-2.5 text-sm font-semibold" data-testid="new-lesson">I'll build it myself</Link>
         </div>
       </div>
 

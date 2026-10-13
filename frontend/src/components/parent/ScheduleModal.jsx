@@ -7,9 +7,9 @@ export const isoLocal = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).pa
 const parse = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export default function ScheduleModal({ lesson: fixed, lessons = [], students = [], onClose, onDone }) {
+export default function ScheduleModal({ lesson: fixed, lessons = [], students = [], defaultStudents = [], onClose, onDone }) {
   const [lessonId, setLessonId] = useState(fixed?.id || "");
-  const [picked, setPicked] = useState([]);
+  const [picked, setPicked] = useState(defaultStudents);
   const [start, setStart] = useState(isoLocal(new Date()));
   const [end, setEnd] = useState("");
   const [weekdays, setWeekdays] = useState([1, 2, 3, 4, 5]);
