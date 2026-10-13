@@ -273,3 +273,55 @@ test("AI drafting: unavailable binding, bad output and quota", async () => {
   const fam2 = seed(db, { plan: "ACTIVE_MONTHLY" });
   assert.ok((await aid.draftLessonWithAi(db, stub(), req(fam2), NOW)).ok);
 });
+
+// ---------------------------------------------------------------- assignment management + evidence notes
+import * as pl from "../src/planning.ts";
+
+test("assignments: move dates, reassign and cancel only before work starts; other families blocked", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const k1 = child(db, fam), k2 = child(db, fam);
+  const l = await mk(db, fam);
+  const a = (await lb.assignLesson(db, fam, { student_id: k1, lesson_id: l.id }, NOW)).assignment;
+  const moved = await pl.updateAssignment(db, fam, a.id, { scheduled_date: "2026-11-02", due_date: "2026-11-05" });
+  assert.ok(moved.ok); assert.equal(moved.assignment.scheduled_date, "2026-11-02");
+  assert.equal((await pl.updateAssignment(db, fam, a.id, { due_date: "tomorrow" })).status, 400);
+  const other = seed(db, { plan: "ACTIVE_MONTHLY" });
+  assert.equal((await pl.updateAssignment(db, other, a.id, { due_date: "2026-11-05" })).status, 404);
+  assert.equal((await pl.cancelAssignment(db, other, a.id)).status, 404);
+  assert.equal((await pl.reassignAssignment(db, other, a.id, k2)).status, 404);
+  const re = await pl.reassignAssignment(db, fam, a.id, k2);
+  assert.ok(re.ok); assert.equal(re.assignment.student_id, k2);
+  // a child from another family can't be targeted
+  const stranger = child(db, other);
+  assert.equal((await pl.reassignAssignment(db, fam, a.id, stranger)).status, 404);
+  // started work cannot be reassigned or cancelled
+  db.raw.prepare("UPDATE assignments SET status='in_progress' WHERE id=?").run(a.id);
+  assert.equal((await pl.cancelAssignment(db, fam, a.id)).code, "STARTED");
+  assert.equal((await pl.reassignAssignment(db, fam, a.id, k1)).code, "STARTED");
+  // untouched ones can be cancelled
+  const b = (await lb.assignLesson(db, fam, { student_id: k1, lesson_id: l.id }, NOW)).assignment;
+  assert.ok((await pl.cancelAssignment(db, fam, b.id)).ok);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE id=?").get(b.id).n, 0);
+});
+
+test("evidence notes: family-scoped, searchable, date filtered; expired preview keeps reading but cannot add", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "FREE_PREVIEW" });
+  const kid = child(db, fam);
+  const n = await pl.createEvidenceNote(db, fam, { student_id: kid, title: "Zoo excursion", notes: "Saw koalas", learning_area: "Science", occurred_on: "2026-10-01" }, NOW);
+  assert.ok(n.ok);
+  assert.equal((await pl.createEvidenceNote(db, fam, { student_id: kid, title: "" }, NOW)).status, 400);
+  const other = seed(db, { plan: "ACTIVE_MONTHLY" });
+  assert.equal((await pl.createEvidenceNote(db, other, { student_id: kid, title: "x" }, NOW)).status, 404);
+  assert.equal((await pl.createEvidenceNote(db, fam, { student_id: kid, title: "x", file_ids: ["nope"] }, NOW)).code, "FILE_NOT_FOUND");
+  assert.equal((await pl.listEvidenceNotes(db, fam, { q: "koala" })).length, 1);
+  assert.equal((await pl.listEvidenceNotes(db, fam, { q: "dinosaur" })).length, 0);
+  assert.equal((await pl.listEvidenceNotes(db, fam, { from: "2026-10-02" })).length, 0);
+  assert.equal((await pl.listEvidenceNotes(db, other, {})).length, 0);
+  const later = new Date(NOW.getTime() + 10 * 86400000);
+  assert.equal((await pl.createEvidenceNote(db, fam, { student_id: kid, title: "Later" }, later)).status, 402);
+  assert.equal((await pl.listEvidenceNotes(db, fam, {})).length, 1);
+  assert.equal((await pl.deleteEvidenceNote(db, other, n.note.id)).status, 404);
+  assert.ok((await pl.deleteEvidenceNote(db, fam, n.note.id)).ok);
+});

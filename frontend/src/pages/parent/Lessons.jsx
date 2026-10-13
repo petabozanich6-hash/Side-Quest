@@ -12,6 +12,11 @@ export default function LessonsPage() {
   const [plan, setPlan] = useState(null);
   const [showArchived, setShowArchived] = useState(false);
   const [query, setQuery] = useState("");
+  const [fSubject, setFSubject] = useState("");
+  const [fYear, setFYear] = useState("");
+  const [fStatus, setFStatus] = useState("");
+  const [fChild, setFChild] = useState("");
+  const [assignedTo, setAssignedTo] = useState({});
   const [assignOpen, setAssignOpen] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -26,6 +31,11 @@ export default function LessonsPage() {
   useEffect(() => {
     api.get("/students").then(r => setStudents(r.data)).catch(() => {});
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {});
+    api.get("/assignments").then(r => {
+      const m = {};
+      (r.data || []).forEach(a => { (m[a.student_id] = m[a.student_id] || new Set()).add(a.lesson_id); });
+      setAssignedTo(m);
+    }).catch(() => {});
   }, []);
 
   const act = async (fn, okMsg) => {
@@ -36,8 +46,16 @@ export default function LessonsPage() {
   const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const shown = lessons.filter(l => {
     const t = [l.title, l.learning_area, l.year_level, ...(l.objectives || [])].join(" ").toLowerCase();
+    if (fSubject && l.learning_area !== fSubject) return false;
+    if (fYear && l.year_level !== fYear) return false;
+    if (fStatus === "draft" && l.status !== "draft") return false;
+    if (fStatus === "ready" && l.status !== "ready") return false;
+    if (fChild && !(assignedTo[fChild] && assignedTo[fChild].has(l.id))) return false;
     return terms.every(w => t.includes(w));
   });
+  const subjects = [...new Set(lessons.map(l => l.learning_area).filter(Boolean))].sort();
+  const years = [...new Set(lessons.map(l => l.year_level).filter(Boolean))].sort();
+  const sel = "rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm";
 
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-6" data-testid="lessons-page">
@@ -71,6 +89,10 @@ export default function LessonsPage() {
             className="w-full rounded-xl border border-slate-300 bg-white pl-9 pr-9 py-2.5 text-sm focus:outline-none focus:border-slate-500" data-testid="lesson-search" />
           {query && <button onClick={() => setQuery("")} aria-label="Clear search" className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"><X size={14} /></button>}
         </div>
+        <select className={sel} value={fSubject} onChange={e => setFSubject(e.target.value)} aria-label="Filter by subject" data-testid="filter-subject"><option value="">All subjects</option>{subjects.map(x => <option key={x}>{x}</option>)}</select>
+        <select className={sel} value={fYear} onChange={e => setFYear(e.target.value)} aria-label="Filter by year level" data-testid="filter-year"><option value="">All year levels</option>{years.map(x => <option key={x}>{x}</option>)}</select>
+        <select className={sel} value={fStatus} onChange={e => setFStatus(e.target.value)} aria-label="Filter by status" data-testid="filter-status"><option value="">Drafts and saved</option><option value="draft">Drafts only</option><option value="ready">Saved (ready) only</option></select>
+        {students.length > 0 && <select className={sel} value={fChild} onChange={e => setFChild(e.target.value)} aria-label="Filter by child" data-testid="filter-child"><option value="">Any child</option>{students.map(st => <option key={st.id} value={st.id}>Assigned to {st.name}</option>)}</select>}
         <button onClick={() => setShowArchived(v => !v)} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold" data-testid="toggle-archived">{showArchived ? "Show current lessons" : "Show archived"}</button>
       </div>
 

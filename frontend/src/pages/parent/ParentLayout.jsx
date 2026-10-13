@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, Menu, X } from "lucide-react";
+import { Compass, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, Menu, X, ClipboardList } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
@@ -13,6 +13,7 @@ const nav = [
   { to: "/parent/children", icon: Users, label: "Children", testid: "nav-children" },
   { to: "/parent/curriculum", icon: GraduationCap, label: "Curriculum", testid: "nav-curriculum" },
   { to: "/parent/lessons", icon: BookOpen, label: "My lessons", testid: "nav-lessons" },
+  { to: "/parent/assignments", icon: ClipboardList, label: "Assignments", testid: "nav-assignments" },
   { to: "/parent/learning-plans", icon: FileCheck, label: "Learning plans", testid: "nav-plans" },
   { to: "/parent/reading-log", icon: BookOpen, label: "Reading log", testid: "nav-reading" },
   { to: "/parent/word-hoard", icon: Sparkles, label: "Word Hoard", testid: "nav-word-hoard" },

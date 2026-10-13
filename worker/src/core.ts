@@ -2,6 +2,7 @@ import type { Hono, MiddlewareHandler } from "hono";
 import { applySpelling } from "./data/spelling";
 import * as lb from "./lessonBuilder";
 import * as aid from "./aiDraft";
+import * as pl from "./planning";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
 type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string };
@@ -154,10 +155,13 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const student = await c.env.DB.prepare("SELECT id, name, stage, year_level FROM students WHERE id = ? AND family_id = ?").bind(sid, u.family_id).first<any>();
     if (!student) return c.json({ detail: "Student not found" }, 404);
     const { limits } = await lb.getEntitlement(c.env.DB, u.family_id);
+    const from = /^\d{4}-\d{2}-\d{2}$/.test(c.req.query("from") || "") ? c.req.query("from")! : "";
+    const to = /^\d{4}-\d{2}-\d{2}$/.test(c.req.query("to") || "") ? c.req.query("to")! + "T23:59:59.999Z" : "";
     const { results } = await c.env.DB.prepare(
-      "SELECT s.*, a.lesson_snapshot FROM submissions s JOIN assignments a ON a.id = s.assignment_id WHERE s.family_id = ? AND s.student_id = ? AND s.status IN ('accepted','demonstrated') ORDER BY s.reviewed_at DESC LIMIT 500"
-    ).bind(u.family_id, sid).all<any>();
-    const total = results.length;
+      "SELECT s.*, a.lesson_snapshot FROM submissions s JOIN assignments a ON a.id = s.assignment_id WHERE s.family_id = ? AND s.student_id = ? AND s.status IN ('accepted','demonstrated') AND (? = '' OR s.reviewed_at >= ?) AND (? = '' OR s.reviewed_at <= ?) ORDER BY s.reviewed_at DESC LIMIT 500"
+    ).bind(u.family_id, sid, from, from, to, to).all<any>();
+    const noteRows = await pl.listEvidenceNotes(c.env.DB, u.family_id, { student_id: sid, from: from || undefined, to: to ? to.slice(0, 10) : undefined });
+    const total = results.length + noteRows.length;
     const rows = limits.fullExports ? results : results.slice(0, 1);
     const items = [];
     for (const r of rows) {
@@ -175,7 +179,18 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
         response_text: r.response_text, reflection: r.reflection, parent_feedback: r.parent_feedback, next_step: r.next_step, files,
       });
     }
-    return c.json({ student, items, total, limited: !limits.fullExports && total > items.length, generated_at: nowIso() });
+    const notes = [];
+    if (limits.fullExports || !items.length) {
+      for (const n of limits.fullExports ? noteRows : noteRows.slice(0, 1 - items.length)) {
+        const files = [];
+        for (const fid of n.file_ids.slice(0, 10)) {
+          const f = await c.env.DB.prepare("SELECT id, original_filename FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fid, u.family_id).first<any>();
+          if (f) files.push({ id: f.id, name: f.original_filename });
+        }
+        notes.push({ id: n.id, title: n.title, learning_area: n.learning_area || "", notes: n.notes || "", occurred_on: n.occurred_on, files });
+      }
+    }
+    return c.json({ student, items, notes, total, limited: !limits.fullExports && total > items.length + notes.length, from: from || null, to: c.req.query("to") || null, generated_at: nowIso() });
   });
 
   // ---------- Account plan ----------
@@ -272,6 +287,33 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const b: any = await c.req.json().catch(() => ({}));
     const r = await lb.assignLesson(c.env.DB, c.get("user").family_id, b);
     return r.ok ? c.json(r.assignment) : send(c, r);
+  });
+
+  app.put("/api/assignments/:id", auth, parent, async (c) => {
+    const r = await pl.updateAssignment(c.env.DB, c.get("user").family_id, c.req.param("id"), await c.req.json().catch(() => ({})));
+    return r.ok ? c.json(r.assignment) : send(c, r);
+  });
+  app.post("/api/assignments/:id/reassign", auth, parent, async (c) => {
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await pl.reassignAssignment(c.env.DB, c.get("user").family_id, c.req.param("id"), b.student_id);
+    return r.ok ? c.json(r.assignment) : send(c, r);
+  });
+  app.delete("/api/assignments/:id", auth, parent, async (c) => {
+    const r = await pl.cancelAssignment(c.env.DB, c.get("user").family_id, c.req.param("id"));
+    return r.ok ? c.json({ ok: true }) : send(c, r);
+  });
+
+  // ---------- Evidence not tied to a lesson (excursions, observations, projects) ----------
+  app.get("/api/evidence-notes", auth, parent, async (c) => {
+    return c.json(await pl.listEvidenceNotes(c.env.DB, c.get("user").family_id, { student_id: c.req.query("student_id") || undefined, q: c.req.query("q") || undefined, from: c.req.query("from") || undefined, to: c.req.query("to") || undefined }));
+  });
+  app.post("/api/evidence-notes", auth, parent, async (c) => {
+    const r = await pl.createEvidenceNote(c.env.DB, c.get("user").family_id, await c.req.json().catch(() => ({})));
+    return r.ok ? c.json(r.note) : send(c, r);
+  });
+  app.delete("/api/evidence-notes/:id", auth, parent, async (c) => {
+    const r = await pl.deleteEvidenceNote(c.env.DB, c.get("user").family_id, c.req.param("id"));
+    return r.ok ? c.json({ ok: true }) : send(c, r);
   });
 
   app.get("/api/assignments/:id", auth, async (c) => {

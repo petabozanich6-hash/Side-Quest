@@ -316,7 +316,7 @@ async function ownLesson(db: DB, familyId: string, id: string) {
   return db.prepare("SELECT * FROM lessons WHERE id = ? AND family_id = ?").bind(id, familyId).first<any>();
 }
 
-async function checkFiles(db: DB, familyId: string, ids: string[]): Promise<Fail | null> {
+export async function checkFiles(db: DB, familyId: string, ids: string[]): Promise<Fail | null> {
   for (const id of ids) {
     const f = await db.prepare("SELECT id FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(id, familyId).first();
     if (!f) return fail(400, "One of the attached files could not be found. Please upload it again.", "FILE_NOT_FOUND");

@@ -390,6 +390,44 @@ await step("AI drafting: free preview is blocked by the server and the builder s
   ok(!n.json.some(l => l.ai_generated), "AI lesson exists for a free family");
 });
 
+await step("assignments page: change dates and cancel an unstarted assignment", async () => {
+  const kids = await api("GET", "/students", parentToken);
+  const made = await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId });
+  ok(made.status === 200, "could not assign again after finishing: " + made.status);
+  const id = made.json.id;
+  await page.goto(BASE + "/parent/assignments"); await page.waitForSelector(`[data-testid=asg-${id}]`);
+  ok((await page.textContent("[data-testid=assignments-page]")).includes("Completed"), "finished assignment not shown as Completed");
+  await page.click(`[data-testid=asg-move-${id}]`);
+  await page.fill("[data-testid=asg-date-planned]", "2026-11-03");
+  await page.click("[data-testid=asg-save-dates]");
+  await page.waitForFunction(async ([i]) => { const t = localStorage.getItem("sq_token"); const r = await fetch("/api/assignments/" + i, { headers: { Authorization: "Bearer " + t } }); return (await r.json()).scheduled_date === "2026-11-03"; }, [id]);
+  page.once("dialog", (d) => d.accept());
+  await page.click(`[data-testid=asg-cancel-${id}]`);
+  await page.waitForSelector(`[data-testid=asg-${id}]`, { state: "detach" });
+  ok((await api("GET", "/assignments/" + id, parentToken)).status === 404, "cancelled assignment still exists");
+  // the finished one cannot be cancelled
+  ok((await api("DELETE", "/assignments/" + assignmentId, parentToken)).status === 409, "started work could be cancelled");
+});
+
+await step("evidence: add a parent note, search it, export CSV with a date range", async () => {
+  await page.goto(BASE + "/parent/evidence"); await page.waitForSelector("[data-testid=evidence-notes]");
+  await page.fill("[data-testid=note-title]", "Museum excursion");
+  await page.fill("[data-testid=note-text]", "Looked at fossils with Mia");
+  await page.click("[data-testid=note-save]");
+  await page.waitForSelector("text=Museum excursion");
+  await page.fill("[data-testid=evidence-search]", "fossil");
+  ok((await page.textContent("[data-testid=evidence-notes]")).includes("Museum excursion"), "search lost the note");
+  await page.fill("[data-testid=evidence-search]", "zzzz");
+  ok(!(await page.textContent("ul")).includes("Museum excursion"), "search did not filter");
+  const kids = await api("GET", "/students", parentToken);
+  const [dl] = await Promise.all([page.waitForEvent("download"), page.click(`[data-testid=csv-${kids.json[0].id}]`)]);
+  ok(dl.suggestedFilename().endsWith(".csv"), "csv name");
+  const p = await api("GET", `/portfolio?student_id=${kids.json[0].id}&from=2999-01-01`, parentToken);
+  ok(p.json.items.length === 0 && p.json.notes.length === 0, "date range not applied");
+  const other = await api("GET", "/evidence-notes", parentToken);
+  ok(other.json.length === 1, "note count");
+});
+
 await step("L. users cannot grant themselves a paid plan", async () => {
   const r = await api("PUT", "/account/plan", parentToken, { plan: "ACTIVE_MONTHLY" });
   ok(r.status === 404 || r.status === 405, "plan update route exists: " + r.status);
