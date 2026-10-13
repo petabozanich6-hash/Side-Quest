@@ -344,7 +344,7 @@ export function qualityIssues(d: Draft, spec: Spec): Issue[] {
   if (cut) add({ keys: ["sections", "introduction", "consolidation"], msg: `a passage seems to be cut off mid-sentence ("...${cut.trim().slice(-40)}")`, repair: true });
   if (d.quiz.length >= 3) {
     const taught = new Set((`${d.sections.map((x) => x.body).join(" ")} ${d.worked_examples.map((x) => `${x.problem} ${x.steps.join(" ")}`).join(" ")} ${d.texts.map((x) => x.content).join(" ")}`.toLowerCase().match(/[a-z]{5,}/g)) || []);
-    const linked = d.quiz.filter((q) => (q.question.toLowerCase().match(/[a-z]{5,}/g) || []).some((w) => taught.has(w)) || /\d/.test(q.question)).length;
+    const linked = d.quiz.filter((q) => (q.question.toLowerCase().match(/[a-z]{5,}/g) || []).some((w: string) => taught.has(w)) || /\d/.test(q.question)).length;
     if (linked < d.quiz.length * 0.5) add({ keys: ["quiz"], msg: "the quiz questions don't seem to match what the lesson teaches", repair: true });
   }
   const bad = arithmeticErrors([...d.sections.map((s) => s.body), ...d.worked_examples.flatMap((x) => [...x.steps, x.answer]), ...d.guided_practice.map((g) => g.answer), ...d.questions.map((q) => q.answer_key), d.answer_key, ...d.activities.flatMap((a) => a.tasks.map((t) => t.answer)), ...d.quiz.map((q) => q.explanation)]);

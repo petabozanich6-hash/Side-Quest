@@ -532,7 +532,7 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   await page.goto(BASE + `/print/lesson/${les.json.id}`);
   await page.waitForSelector("[data-testid=print-page]");
   const ws = await page.textContent("[data-testid=lesson-document]");
-  ok(ws.includes("Name:") && !ws.includes("Hook (0 to 5 min)") && !ws.includes("Answer:"), "printed worksheet has no answers or parent guide");
+  ok(ws.includes("Name:") && !ws.includes("Hook (0 to 5 min)") && !ws.includes("Sam forgot to regroup") && !ws.includes("63. Tens: 30") && !ws.includes("If your child finds regrouping hard"), "printed worksheet has no answers or parent guide");
   await page.screenshot({ path: `${SHOTS}/print-worksheet.png`, fullPage: true });
   await mctx.close(); await pctx.close();
 });
