@@ -22,6 +22,7 @@ const nav = [
   { to: "/parent/resources", icon: Library, label: "Resources", testid: "nav-resources" },
   { to: "/parent/calendar", icon: Calendar, label: "Calendar", testid: "nav-calendar" },
   { to: "/parent/audit", icon: ShieldAlert, label: "Audit", testid: "nav-audit" },
+  { to: "/parent/plan", icon: Sparkles, label: "Plan", testid: "nav-plan" },
   { to: "/parent/trust", icon: LifeBuoy, label: "Trust & Support", testid: "nav-trust" },
 ];
 

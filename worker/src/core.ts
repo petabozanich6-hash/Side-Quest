@@ -146,6 +146,37 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
 
   app.get("/api/features", auth, (c) => c.json({ uploads: !!c.env.BUCKET }));
 
+  // ---------- Portfolio export (parent only) ----------
+  app.get("/api/portfolio", auth, parent, async (c) => {
+    const u = c.get("user");
+    const sid = c.req.query("student_id") || "";
+    const student = await c.env.DB.prepare("SELECT id, name, stage, year_level FROM students WHERE id = ? AND family_id = ?").bind(sid, u.family_id).first<any>();
+    if (!student) return c.json({ detail: "Student not found" }, 404);
+    const { limits } = await lb.getEntitlement(c.env.DB, u.family_id);
+    const { results } = await c.env.DB.prepare(
+      "SELECT s.*, a.lesson_snapshot FROM submissions s JOIN assignments a ON a.id = s.assignment_id WHERE s.family_id = ? AND s.student_id = ? AND s.status IN ('accepted','demonstrated') ORDER BY s.reviewed_at DESC LIMIT 500"
+    ).bind(u.family_id, sid).all<any>();
+    const total = results.length;
+    const rows = limits.fullExports ? results : results.slice(0, 1);
+    const items = [];
+    for (const r of rows) {
+      const live = r.lesson_snapshot ? null : await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first();
+      const l: any = lb.assignmentLesson({ lesson_snapshot: r.lesson_snapshot }, live) || {};
+      const fileIds: string[] = parseJson(r.file_ids, []);
+      const files = [];
+      for (const fid of fileIds.slice(0, 20)) {
+        const f = await c.env.DB.prepare("SELECT id, original_filename FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fid, u.family_id).first<any>();
+        if (f) files.push({ id: f.id, name: f.original_filename });
+      }
+      items.push({
+        id: r.id, title: l.title || "Lesson", learning_area: l.learning_area || "", year_level: l.year_level || "",
+        submitted_at: r.submitted_at, reviewed_at: r.reviewed_at, status: r.status,
+        response_text: r.response_text, reflection: r.reflection, parent_feedback: r.parent_feedback, next_step: r.next_step, files,
+      });
+    }
+    return c.json({ student, items, total, limited: !limits.fullExports && total > items.length, generated_at: nowIso() });
+  });
+
   // ---------- Account plan ----------
   app.get("/api/account/plan", auth, async (c) => {
     return c.json(await lb.planSummary(c.env.DB, c.get("user").family_id));

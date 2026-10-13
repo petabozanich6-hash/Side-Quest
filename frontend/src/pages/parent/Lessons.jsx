@@ -51,12 +51,12 @@ export default function LessonsPage() {
 
       {plan && plan.effective_plan === "FREE_PREVIEW" && (
         <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900" data-testid="preview-banner">
-          Free preview until {new Date(plan.trial_ends_at).toLocaleDateString()}: {plan.usage.lessons} of {plan.limits.maxLessons} lessons, {plan.usage.children} of {plan.limits.maxChildren} child profile, {plan.usage.activeAssignments} of {plan.limits.maxActiveAssignments} active assignments.
+          Free preview until {new Date(plan.trial_ends_at).toLocaleDateString()}: {plan.usage.lessons} of {plan.limits.maxLessons} lessons, {plan.usage.children} of {plan.limits.maxChildren} child profile, {plan.usage.activeAssignments} of {plan.limits.maxActiveAssignments} active assignments. <Link to="/parent/plan" className="underline font-bold">See plans</Link>
         </div>
       )}
       {plan && plan.effective_plan === "PREVIEW_EXPIRED" && (
         <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900" data-testid="expired-banner">
-          Your free preview has ended. Your lessons and your children's progress are all kept. A Family Membership will be needed to create and assign lessons.
+          Your free preview has ended. Your lessons and your children's progress are all kept. A Family Membership will be needed to create and assign lessons. <Link to="/parent/plan" className="underline font-bold">See plans</Link>
         </div>
       )}
 

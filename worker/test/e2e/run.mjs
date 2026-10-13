@@ -319,6 +319,12 @@ await step("J. XP, progress and evidence update; XP is awarded exactly once", as
   ok(shown >= xp0 + 45 && shown <= nowXp, `XP shown to child (${shown}) should include the 45 awarded (before ${xp0}, now ${nowXp})`);
   await page.goto(BASE + "/parent/evidence"); await page.waitForLoadState("networkidle");
   ok((await page.textContent("body")).includes("Halves and quarters"), "evidence page missing the approved work");
+  const kidsNow = await api("GET", "/students", parentToken);
+  const pf = await api("GET", `/portfolio?student_id=${kidsNow.json[0].id}`, parentToken);
+  ok(pf.status === 200 && pf.json.items.length === 1 && pf.json.items[0].title === "Halves and quarters", "portfolio export missing the approved work");
+  ok(pf.json.items[0].response_text.includes("Four quarters") && pf.json.items[0].parent_feedback.includes("Lovely"), "portfolio missing answers or comment");
+  ok(!JSON.stringify(pf.json).includes(SECRET), "portfolio leaks the answer key");
+  ok((await api("GET", `/portfolio?student_id=${kidsNow.json[0].id}`, childToken)).status === 403, "child can export portfolio");
   const pdash = await api("GET", "/dashboard/parent", parentToken);
   ok(pdash.json.students[0].completed === 1, "parent dashboard progress");
   await cpage.goto(`${BASE}/child/lesson/${assignmentId}`); await cpage.waitForSelector('[data-testid=reviewed-note]');
@@ -395,6 +401,12 @@ await step("M. expired preview: cannot create or assign, but nothing is lost", a
   ok((await api("GET", "/dashboard/child", childToken)).json.xp >= xp0 + 45, "child progress lost");
   await page.goto(BASE + "/parent/lessons"); await page.waitForSelector('[data-testid=expired-banner]');
   await shot("expired");
+});
+
+await step("plan page explains the preview and that billing is not open", async () => {
+  await page.goto(BASE + "/parent/plan"); await page.waitForSelector('[data-testid=billing-status]');
+  const t = await page.textContent("body");
+  ok(t.includes("not open yet") && t.includes("Free preview"), "plan page content");
 });
 
 await step("N. mobile layouts of the main parent pages do not overflow", async () => {

@@ -17,6 +17,7 @@ import ChildrenPage from "./pages/parent/Children";
 import CurriculumPage from "./pages/parent/Curriculum";
 import LessonsPage from "./pages/parent/Lessons";
 import LessonBuilder from "./pages/parent/LessonBuilder";
+import UpgradePage from "./pages/parent/Upgrade";
 import ResourcesPage from "./pages/parent/Resources";
 import EvidencePage from "./pages/parent/Evidence";
 import CalendarPage from "./pages/parent/CalendarPage";
@@ -66,6 +67,7 @@ function Router() {
         <Route path="children/:sid" element={<ChildOverviewPage />} />
         <Route path="curriculum" element={<CurriculumPage />} />
         <Route path="lessons" element={<LessonsPage />} />
+        <Route path="plan" element={<UpgradePage />} />
         <Route path="lessons/new" element={<LessonBuilder />} />
         <Route path="lessons/:id/edit" element={<LessonBuilder />} />
         <Route path="lessons/:id" element={<LessonDetail />} />

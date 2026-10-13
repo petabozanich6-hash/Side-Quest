@@ -83,6 +83,7 @@ export default function LessonBuilder() {
   const [students, setStudents] = useState([]);
   const [plan, setPlan] = useState(null);
   const [error, setError] = useState("");
+  const [upgrade, setUpgrade] = useState(false);
   const [loaded, setLoaded] = useState(!id);
 
   useEffect(() => {
@@ -114,6 +115,7 @@ export default function LessonBuilder() {
     } catch (e) {
       const d = e.response?.data;
       setError(d?.detail || "Could not save. Please try again.");
+      setUpgrade(d?.code === "UPGRADE_REQUIRED");
       return null;
     } finally { setBusy(false); }
   };
@@ -138,7 +140,7 @@ export default function LessonBuilder() {
         )}
       </div>
 
-      {error && <div role="alert" className="rounded-lg border border-rose-300 bg-rose-50 px-3 py-2 text-sm text-rose-800" data-testid="builder-error">{error}</div>}
+      {error && <div role="alert" className="rounded-lg border border-rose-300 bg-rose-50 px-3 py-2 text-sm text-rose-800" data-testid="builder-error">{error} {upgrade && <Link to="/parent/plan" className="underline font-bold">See plans</Link>}</div>}
 
       <div className="flex gap-2">
         <button onClick={() => setPreview(false)} className={`rounded-full px-4 py-1.5 text-sm font-semibold border flex items-center gap-1 ${!preview ? "bg-slate-900 text-white border-slate-900" : "bg-white border-slate-300"}`}><Pencil size={14} /> Edit</button>
