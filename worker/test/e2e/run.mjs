@@ -14,11 +14,14 @@ const { chromium } = await import(PW);
 
 const results = [];
 let page;
+let cpage;
 let shotN = 0;
-const shot = async (name) => { try { await page.screenshot({ path: `${SHOTS}/${String(++shotN).padStart(2, "0")}-${name}.png`, fullPage: true }); } catch {} };
+const shot = async (name, p) => { try { await (p || page).screenshot({ path: `${SHOTS}/${String(++shotN).padStart(2, "0")}-${name}.png`, fullPage: true }); } catch {} };
+const badResponses = [];
+const watch = (label, p) => p.on("response", (r) => { if (r.status() >= 400 && r.url().includes("/api/")) badResponses.push(`${label} ${r.status()} ${r.request().method()} ${r.url().replace(BASE, "")}`); });
 async function step(name, fn) {
   try { await fn(); results.push({ name, ok: true }); console.log(`PASS ${name}`); }
-  catch (e) { results.push({ name, ok: false, err: String(e.message || e).slice(0, 600) }); console.log(`FAIL ${name}\n     ${String(e.message || e).slice(0, 600)}`); await shot("FAIL-" + name.replace(/\W+/g, "-").slice(0, 40)); }
+  catch (e) { results.push({ name, ok: false, err: String(e.message || e).slice(0, 600) }); console.log(`FAIL ${name}\n     ${String(e.message || e).slice(0, 600)}`); await shot("FAIL-" + name.replace(/\W+/g, "-").slice(0, 40)); if (cpage) await shot("FAILchild-" + name.replace(/\W+/g, "-").slice(0, 40), cpage); }
 }
 const ok = (c, m) => { if (!c) throw new Error(m || "assertion failed"); };
 
@@ -64,6 +67,7 @@ const kid = { name: "Mia", username: `mia${stamp}`.slice(0, 16), pin: "4321" };
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 page = await ctx.newPage();
+watch("parent", page);
 const pageErrors = [];
 page.on("pageerror", (e) => pageErrors.push(String(e).slice(0, 300)));
 
@@ -192,7 +196,8 @@ await step("E. parent assigns the lesson to the child through the UI", async () 
 
 // ---- child
 const cctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true });
-const cpage = await cctx.newPage();
+cpage = await cctx.newPage();
+watch("child", cpage);
 const cErrors = []; cpage.on("pageerror", (e) => cErrors.push(String(e).slice(0, 300)));
 const noOverflow = async (p, label) => {
   const w = await p.evaluate(() => ({ s: document.documentElement.scrollWidth, i: window.innerWidth }));
@@ -205,8 +210,12 @@ await step("F. child signs in on a phone-sized screen and sees the dashboard", a
   await cpage.fill('[data-testid=child-login-pin]', kid.pin);
   await cpage.click('[data-testid=child-login-submit]');
   await cpage.waitForURL("**/child", { timeout: 20000 });
-  await cpage.waitForSelector(`[data-testid=task-${assignmentId}]`, { timeout: 15000 });
   childToken = await cpage.evaluate(() => localStorage.getItem("sq_token"));
+  try { await cpage.waitForSelector(`[data-testid=task-${assignmentId}]`, { timeout: 15000 }); }
+  catch (e) {
+    const d = await api("GET", "/dashboard/child", childToken);
+    throw new Error(`task card not shown. url=${cpage.url()} token=${!!childToken} dashboard=${d.status} ${JSON.stringify(d.json).slice(0, 300)} body=${(await cpage.textContent("body")).slice(0, 300)}`);
+  }
   await noOverflow(cpage, "child dashboard");
   ok(await cpage.isVisible('[data-testid=quest-stats]'), "stats strip missing");
   await cpage.screenshot({ path: `${SHOTS}/child-dashboard-mobile.png`, fullPage: true });
@@ -375,6 +384,7 @@ await step("N. mobile layouts of the main parent pages do not overflow", async (
 });
 
 ok(true);
+console.log("\nHTTP errors seen by browsers:\n" + badResponses.slice(0, 40).join("\n"));
 console.log("\nbrowser errors (parent):", JSON.stringify(pageErrors.slice(0, 5)));
 console.log("browser errors (child):", JSON.stringify(cErrors.slice(0, 5)));
 await browser.close(); stop();
