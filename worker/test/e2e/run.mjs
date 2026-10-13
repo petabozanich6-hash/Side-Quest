@@ -210,6 +210,13 @@ await step("F. child signs in on a phone-sized screen and sees the dashboard", a
   await cpage.fill('[data-testid=child-login-pin]', kid.pin);
   await cpage.click('[data-testid=child-login-submit]');
   await cpage.waitForURL("**/child", { timeout: 20000 });
+  // A first-time child chooses a pet companion before anything else.
+  try {
+    await cpage.waitForSelector('[data-testid=pet-picker]', { timeout: 6000 });
+    await cpage.click('[data-testid=pet-fox]');
+    await cpage.fill('[data-testid=pet-name]', "Ember");
+    await cpage.click('[data-testid=create-pet]');
+  } catch { /* already has a pet */ }
   childToken = await cpage.evaluate(() => localStorage.getItem("sq_token"));
   try { await cpage.waitForSelector(`[data-testid=task-${assignmentId}]`, { timeout: 15000 }); }
   catch (e) {
