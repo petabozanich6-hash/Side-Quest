@@ -40,7 +40,7 @@ Known curriculum risk: placeholder rows mix older 2012 outcome codes with new 20
 
 ## 4. Approved product direction
 
-**Content scope (changed 13 Oct 2026, latest instruction, wins over anything below):** 200 carefully curated lessons per education year, to the Lesson Standard v2 already in the repo. K-10 is 2,200 lessons (11 years); adding Years 11-12 would make 2,600. Years to cover and the split across subjects are still to be confirmed by the owner. The other 17,000+ queued placeholder rows are not to be authored; they are not deleted.
+**Content scope (changed 13 Oct 2026, latest instruction, wins over anything below):** Kindergarten to Year 10 (11 year groups), 150 carefully curated lessons per year group across all core subjects = 1,650 lessons, to the Lesson Standard v2 already in the repo. Lessons may be cross-curricular, covering verified outcomes from more than one subject. Years 11-12 are out of scope. The other 17,000+ queued placeholder rows are not to be authored; they are not deleted. Proposed split per year (owner to confirm): English 45, Mathematics 45, Science and Technology 20, HSIE 20, PDHPE 10, Creative Arts 10, with about 20-30 of the 150 cross-curricular and mapped to outcomes in two or more subjects. 150 lessons is a curated core spine, not full syllabus coverage; the app must say so.
 
 Supersedes the all-lessons plan (19,202 / 4,902 individually authored lessons is cancelled; reuse existing work, delete none).
 
@@ -101,4 +101,4 @@ Exemplar module authoring (no npm needed).
 
 ## 11. Exact next task
 
-Agree the 200-lesson blueprint for Year 7 and Year 3 (subject split and sequence, owner to confirm), then author the Year 7 Mathematics "Integers" lessons in the lesson-excellence schema; validate with `npm run lessons:validate` and `npm run lessons:score`; then wire it into the app once npm access is available.
+Agree the 150-lesson blueprint for Year 7 and Year 3 (subject split and sequence, owner to confirm), then author the Year 7 Mathematics "Integers" lessons in the lesson-excellence schema; validate with `npm run lessons:validate` and `npm run lessons:score`; then wire it into the app once npm access is available.
