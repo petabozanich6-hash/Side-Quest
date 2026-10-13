@@ -1,0 +1,323 @@
+{
+  "child_mission": "Become a Story Tracker! Follow Nia’s envelope mission and discover how a storyteller can change the order without changing the events.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep the event map, numbered timeline, flashback explanation, opening comparison, revision, reflection and written quiz responses.",
+  "extension": "Rewrite the first two sentences to begin at the courtyard gate, then explain what background your reader would need next.",
+  "guided_practice": "WE DO: Prepare a reading response with help.\n1. Reread the story’s opening and ending. Say the goal, then check: returning the invitation in time.\n2. Write four event notes. Put them in happened order before comparing the model timeline above.\n3. Underline the move-back and return signals. Explain where each takes the reader.\n4. Complete “The earlier paragraph explains ____.” Try first. A useful completion names how she found the invitation, rather than only repeating kitchen.\n5. Compare openings. Begin “The library opening may make a reader wonder ____ because ____.” Use a detail to fill the reason.\n6. Check that your explanation describes the writing’s effect without inventing an event. Your wording can differ from the model.",
+  "independent_task": "YOU DO: Story Tracker response (about 20 minutes).\nUse the two complete envelope versions in this lesson; you need no outside text.\n1. Write a goal, obstacle, response and outcome map for Nia.\n2. Make a numbered four-event timeline in the order events happened.\n3. Identify the flashback’s starting words and the return signal. Explain what background the earlier event provides.\n4. Write three or four sentences comparing the openings. Include one specific detail and a possible effect on a reader.\n5. Reread: have you confused happened order with told order? Improve one note or explanation and say why.\nYou can work on paper or in the big box. For paper work, type a summary including the timeline and your comparison. Check: accurate events; clear time signals; evidence for an effect; one explained improvement.",
+  "learning_area": "English",
+  "learning_intention": "We are learning to follow story events, recognise a flashback and explain how an opening affects a reader.",
+  "lesson_number": 1,
+  "lesson_role": "Reading",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Print or copy both original versions. Mark the time clues, make the timeline and compare openings on paper. Later type a summary and complete the quiz.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches narrative event connections, event versus telling order, a signalled flashback and evidence-based comparison. These lessons follow the repository’s Year 4 narrative sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of full syllabus coverage. All texts are original.\n\nParent: Look for accurate timelines and a detail supporting a possible reader effect; do not require the learner to prefer one version. The lesson supplies teaching, models and feedback. Support access and review the evidence; do not teach the steps for the child.\n\nParent: Eight multiple-choice answers are scored. The unchanged 90% threshold requires 8/8. Two written responses are reviewed manually. Model for question 9: The deadline may make a reader wonder whether Nia will find her brother before he leaves. Model for question 10: It tells an earlier morning event after the library opening, and Now returns to the library moment.\n\nParent: The worked example is a complete task model. Accept other precise comparisons. Statements about reader response should be supported possibilities, not universal claims.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 1,
+      "explanation": "A goal is what a character wants to achieve; it helps explain their actions.",
+      "options": [
+        "The colour of every object",
+        "What the character wants to achieve",
+        "The number of paragraphs",
+        "The reader’s name"
+      ],
+      "question": "What is a character’s goal?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The notice says the club has moved, so the expected meeting room is not the correct place.",
+      "options": [
+        "The envelope changes colour",
+        "She has no name",
+        "The club has moved to the courtyard",
+        "The kitchen table disappears"
+      ],
+      "question": "What creates Nia’s location problem?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "The morning discovery happens before the library visit even though the flashback tells it later.",
+      "options": [
+        "Finding the envelope in the kitchen",
+        "Reading the library notice",
+        "Giving the invitation to her brother",
+        "Entering through the courtyard gate"
+      ],
+      "question": "Which event happens first in the story world?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "Telling order is presentation order; it can differ from when events happened.",
+      "options": [
+        "Only the time on a clock",
+        "How many people read a book",
+        "The order of alphabet letters",
+        "The order the writer presents events"
+      ],
+      "question": "What does telling order describe?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Earlier that morning signals a move back before the library opening.",
+      "options": [
+        "Beside the gate",
+        "Earlier that morning",
+        "Blue envelope",
+        "Reading club"
+      ],
+      "question": "Which phrase signals the move to an earlier event?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Now returns the telling from the earlier kitchen event to the current library action.",
+      "options": [
+        "A new unrelated narrator",
+        "The end of every possible story",
+        "A return to the library moment",
+        "A change in the envelope’s colour"
+      ],
+      "question": "What does Now signal after the kitchen paragraph?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "The kitchen event explains the invitation’s discovery and purpose.",
+      "options": [
+        "How Nia found the invitation",
+        "Why every library closes forever",
+        "An invented future race",
+        "A different outcome"
+      ],
+      "question": "What does the flashback explain?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The time-order version begins with discovery; the flashback version begins at the library with five minutes remaining.",
+      "options": [
+        "Both versions have different main outcomes",
+        "A flashback is required in every story",
+        "The chronological version hides the discovery until last",
+        "One gives background first; the other begins with a deadline"
+      ],
+      "question": "Which comparison is supported by the texts?",
+      "type": "multiple_choice"
+    },
+    {
+      "explanation": "The time pressure supports a possible reader question rather than a vague judgement.",
+      "marking_guide": "Accept a possible urgency or reader-question effect linked to the five-minute deadline.",
+      "question": "Explain how the opening’s five-minute detail may affect a reader.",
+      "sample_answer": "The deadline may make a reader wonder whether Nia will find her brother before he leaves.",
+      "type": "short_answer"
+    },
+    {
+      "explanation": "A flashback changes telling order by showing an event before the current moment.",
+      "marking_guide": "Accept the move back to an earlier event, supported by a time clue or the return.",
+      "question": "Explain why the kitchen paragraph is a flashback.",
+      "sample_answer": "It tells an earlier morning event after the library opening, and Now returns to the library moment.",
+      "type": "short_answer"
+    }
+  ],
+  "response_prompt": "Which time clue or story detail most helped you understand the writer’s structure?",
+  "review_status": "unreviewed",
+  "seed_key": "s2-eng-y4-w01-l1",
+  "stage": "S2",
+  "stage_hints": {
+    "accept": [
+      "Read Nia’s mission and the goal about following story time.",
+      "You will compare two tellings of the envelope events before making your own timeline.",
+      "Begin with Nia’s goal; later the time clues will help you separate happened order from told order."
+    ],
+    "guided": [
+      "Start with the opening goal and ending outcome.",
+      "Make four brief event notes before writing the comparison.",
+      "Fill one gap in “This opening may make a reader wonder ____ because ____.”"
+    ],
+    "learn": [
+      "Compare the event map with the actual actions.",
+      "Check the timeline against the morning paragraph.",
+      "Use the model’s labels to find a place where told order differs from happened order."
+    ],
+    "quiz": [
+      "Return to the steps about time order and evidence.",
+      "Check whether the question asks when an event happened or when it is told.",
+      "For an effect, find a specific detail before choosing or writing the explanation."
+    ],
+    "submit": [
+      "Check your event map, timeline and opening comparison.",
+      "Include the time-clue explanation and one improvement with its reason.",
+      "Send your Story Tracker response and reflection; a typed summary can record paper work."
+    ],
+    "teach0": [
+      "Reread what Nia wants before naming the obstacle.",
+      "Separate the problem from the action she takes about it.",
+      "Use goal → obstacle → response → outcome to organise the events."
+    ],
+    "teach1": [
+      "Look at the difference between happened and told.",
+      "Find the earliest event using the morning clue.",
+      "Ask what Nia must do before she can carry the envelope; use that connection to start the timeline."
+    ],
+    "teach2": [
+      "Find the paragraph that leaves the library moment.",
+      "Mark a move-back clue and a return clue separately.",
+      "Explain where the reader goes in each paragraph before naming the structure."
+    ],
+    "teach3": [
+      "Reread the opening sentence and deadline.",
+      "Choose one detail that could create a question for a reader.",
+      "Link the writer’s opening choice to a detail and a possible reader response."
+    ],
+    "write": [
+      "Start with the character’s goal and a four-event list.",
+      "Begin the comparison “This version starts when ____.”",
+      "A partial opening is “The writer begins at ____. The detail ____ may make a reader ____.” Supply your own evidence."
+    ]
+  },
+  "subject": "English",
+  "success_criteria": [
+    "I can identify a character’s goal and obstacle.",
+    "I can put events in the order they happened.",
+    "I can recognise a signalled flashback.",
+    "I can explain an opening using a detail from the text."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "Following the signs is the action she takes after learning the meeting has moved. The other notes name details without explaining her response.",
+        "options": [
+          "She has a blue envelope",
+          "She follows the signs to the courtyard",
+          "The library has shelves",
+          "The invitation has a name"
+        ],
+        "question": "Which note explains Nia’s response to the changed location?"
+      },
+      "example": "READ THE COMPLETE ORIGINAL STORY\nTHE BLUE ENVELOPE\nNia stood outside the library meeting room with a blue envelope. The doors would close for the reading club in five minutes. She wanted to return the invitation before her brother left without it.\nEarlier that morning, Nia had found the envelope under their kitchen table. Her brother had put it there while searching for a pencil. She had noticed his name and decided to bring it to the library.\nNow she checked the meeting-room door. A notice said the club had moved to the courtyard. Nia followed the signs past the shelves. She found her brother beside the courtyard gate and handed him the envelope. He read the invitation, then held the gate while they went in together.\n\nI DO:\nNia’s goal is returning the invitation in time. The empty meeting-room location creates a problem, so she reads the notice and follows the signs. Her response leads to finding her brother.\n\nYOU TRY:\nWhich action shows that Nia deals with the changed location? Find the words before reading on.\n\nCHECK:\nShe follows the signs past the shelves. That action connects the notice to reaching the courtyard; it is more useful evidence than simply naming the envelope.",
+      "explain": "**A narrative tells connected events.**\nA character often wants something: this is a goal. An obstacle gets in the way. The character’s response leads to a consequence, or what happens next. The ending tells the outcome. These questions help you follow many stories, although not every story uses exactly the same pattern.\n\n**Read for actions and reasons.**\nRead the whole story below once. Then ask: What does Nia want? What gets in her way? What does she do about it? Notice how the events connect rather than only collecting objects mentioned in the text.\n\n**Check the ending against the goal.**\nNia wants to return an invitation before her brother leaves. Giving him the envelope answers that goal. The courtyard gate is a place in the story; naming it alone would not explain the outcome.\n\nUse the text as evidence. If a feeling or reason is not stated, use the actions to make a careful suggestion instead of treating a guess as a fact.",
+      "icon": "📖",
+      "notice": "A story map records what changes and why. A list of objects does not show those connections.",
+      "title": "Track the goal, obstacle and response"
+    },
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "The morning kitchen event happened before the library visit. Earlier that morning signals that move back in time.",
+        "options": [
+          "Nia hands over the envelope",
+          "The brother holds the courtyard gate",
+          "Nia finds the envelope under the kitchen table",
+          "Nia reads the library notice"
+        ],
+        "question": "Which event happened earliest, even though it is told later?"
+      },
+      "example": "I DO:\nTelling order: at the meeting room → kitchen memory → courtyard search.\nEvent order: find envelope in kitchen → bring it to library → read notice → find brother.\nThe kitchen event is told second but happened first.\n\nYOU TRY:\nWhich comes first in event order: carrying the envelope or finding it? Explain how you know.\n\nCHECK:\nFinding comes first because Nia needs the envelope before she can bring it. You used a connection between actions, as well as the time clue.",
+      "explain": "**Two orders can be different.**\nEvent order is the order things happened in the story world. Telling order is the order the writer presents them. A story can begin later, then explain an earlier event.\n\n**Use a timeline to rebuild event order.**\nFind the earliest event. Ask what must happen before the next one: Nia must find the envelope before she can carry it to the library. The club notice comes before following the signs. Number the events in that order.\n\n**Time words are clues.**\nEarlier that morning takes us back before the opening outside the room. Now brings us to the opening’s time again. The paragraph’s place on the page does not prove that its event happened after the previous paragraph.\n\nIf you are unsure, reread the transition and use the character’s actions to check. Do not reorder events merely to match the order you first read them.",
+      "icon": "📖",
+      "notice": "Keep two labels: happened and told. This avoids confusing the first paragraph with the earliest event.",
+      "title": "Separate event order from telling order",
+      "visual": [
+        {
+          "alt": "Event order moves from finding the envelope to bringing it, reading the notice and finding the brother. Telling order starts at the library, goes back to the kitchen and returns.",
+          "caption": "Label the two orders before numbering.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 224\"><rect width=\"420\" height=\"224\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">EVENT ORDER</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Find → bring → read → find</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">TELLING ORDER</text><text x=\"16\" y=\"172\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Library → kitchen → library</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "The earlier event supplies the background needed to understand her library goal. A flashback is a choice, not a rule for every story.",
+        "options": [
+          "To invent a second unrelated story",
+          "To remove the library ending",
+          "To prove all stories need a memory",
+          "To explain how Nia found the invitation she is carrying"
+        ],
+        "question": "What is the main job of the kitchen flashback here?"
+      },
+      "example": "I DO:\nOpening moment: Nia at the library room.\nMove back: “Earlier that morning...” begins the kitchen event.\nReturn: “Now she checked...” takes us back to the library action.\nThe earlier paragraph explains the envelope’s purpose.\n\nYOU TRY:\nFind the return signal. Say what action follows it.\n\nCHECK:\nNow signals the return; checking the meeting-room door follows. Naming both the signal and action shows you followed the transition.",
+      "explain": "**A flashback shows an earlier event.**\nWhen a story moves back from its current moment to something earlier, that part is a flashback. Here it explains how Nia got the envelope. It adds information the opening has not yet supplied.\n\n**Look for the move and the return.**\nMark the words Earlier that morning. Then find Now. Those signals help a reader know when the story leaves the library moment and when it returns. A memory can be longer in other stories; this one is one paragraph.\n\n**A flashback still belongs to the story.**\nIt is not a new ending or a random extra event. The kitchen action explains why the invitation matters and why Nia is carrying it. The writer connects the earlier event to the present goal.\n\n**Check meaning, not just one word.**\nAn ordinary sentence containing yesterday is not always a full flashback. Ask whether the telling actually moves to an earlier event and then follows that event. Use the whole passage.",
+      "icon": "📖",
+      "notice": "A flashback changes the telling order. It does not change which event happened first in the story world.",
+      "title": "Spot a flashback and return",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "The story starts at the library. Did the kitchen event happen later just because I read it second?",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Check Earlier that morning. It moves back to when Nia found the envelope. That happened before she carried it.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "So I need one order for the events and another for the telling. Now signals the return to the library.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause here. Trace the discovery, journey and search in event order. Then notice the question created by the library opening.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Two orders, one envelope",
+            "transcript": "Pip: The story starts at the library. Did the kitchen event happen later just because I read it second?\nJuno: Check Earlier that morning. It moves back to when Nia found the envelope. That happened before she carried it.\nPip: So I need one order for the events and another for the telling. Now signals the return to the library.\nJuno: Pause here. Trace the discovery, journey and search in event order. Then notice the question created by the library opening."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "The deadline is evidence for a possible feeling of urgency. The other choices repeat a judgement or make an unsupported rule.",
+        "options": [
+          "The five-minute deadline may make a reader wonder whether Nia will arrive in time",
+          "The story is good because it is good",
+          "Every narrative must begin at a library",
+          "A flashback always changes the ending"
+        ],
+        "question": "Which explanation links an opening detail to its effect?"
+      },
+      "example": "READ THE TIME-ORDER VERSION\nTHE BLUE ENVELOPE: TIME ORDER\nThat morning, Nia found a blue envelope under the kitchen table. Her brother had left his invitation there while searching for a pencil. She decided to bring it to the library.\nLater, Nia stood outside the meeting room. The reading-club doors would close in five minutes. She wanted to return the invitation before her brother left without it. A notice said the club had moved to the courtyard.\nNia followed the signs past the shelves. She found her brother beside the courtyard gate and handed him the envelope. He read the invitation, then held the gate while they went in together.\n\nI DO:\nThe flashback version begins at the meeting room. The detail “five minutes” may make a reader wonder whether Nia will find her brother in time. The time-order version explains the envelope’s discovery first, so the reader has that background before the library visit.\n\nYOU TRY:\nExplain what the time-order opening helps the reader understand first.\n\nCHECK:\nIt explains how Nia found the invitation and why she brings it. An answer using that discovery is more precise than saying the opening is simply good.",
+      "explain": "**A writer chooses where to begin.**\nThe time-order version below begins with the discovery. It helps the reader follow the events from their start. The flashback version begins near the club’s closing time; the reader first meets a goal with time pressure.\n\n**Explain an effect carefully.**\nUse three parts: the choice, a detail and what it may make a reader notice or wonder. “It is exciting” is too vague by itself. The five-minute detail explains why the library opening can create urgency.\n\n**There is more than one useful structure.**\nOne opening is not automatically better. A chronological opening may be clearer for one purpose; a later opening may create a question before explaining background. Compare the effects instead of declaring that every story must use a flashback.\n\nReread both endings too. These versions keep the same main events and outcome. Changing the telling order does not require inventing a new event.",
+      "icon": "📖",
+      "notice": "Support an effect with a specific detail. Use may when describing a possible reader response.",
+      "title": "Compare two openings with evidence"
+    }
+  ],
+  "title": "Year 4: Follow a story through time",
+  "unit_number": 1,
+  "unit_title": "Narrative: suspense, point of view and voice",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Build a complete reading response using the original story.\nTHE BLUE ENVELOPE\nNia stood outside the library meeting room with a blue envelope. The doors would close for the reading club in five minutes. She wanted to return the invitation before her brother left without it.\nEarlier that morning, Nia had found the envelope under their kitchen table. Her brother had put it there while searching for a pencil. She had noticed his name and decided to bring it to the library.\nNow she checked the meeting-room door. A notice said the club had moved to the courtyard. Nia followed the signs past the shelves. She found her brother beside the courtyard gate and handed him the envelope. He read the invitation, then held the gate while they went in together.\n\nMY EVENT MAP\nGoal: return the invitation before her brother leaves.\nObstacle: the meeting has moved from the expected room.\nResponse: read the notice and follow the signs.\nOutcome: hand over the envelope and enter with her brother.\n\nMY TIMELINE\n1. Nia finds the envelope in the kitchen.\n2. She brings it to the library.\n3. She reads the changed-location notice.\n4. She finds her brother and gives him the envelope.\n\nMY STRUCTURE EXPLANATION\nThe writer begins at the library, then uses a flashback beginning Earlier that morning to explain the invitation. Now returns to the library. The opening’s five-minute deadline may make a reader wonder whether Nia will complete her goal in time. The chronological version gives the discovery first, so the reader knows the background sooner.\n\nCOMMON MISTAKE AND FIX\n“Nia found the envelope after arriving at the library because that paragraph is second.” I fix this by checking Earlier that morning and rebuilding event order. Paragraph order and event order are different here.",
+  "worked_visuals": [
+    {
+      "alt": "A structure explanation identifies the opening choice, uses the five-minute detail and suggests a possible reader question.",
+      "caption": "Choice → detail → possible effect.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Choice: begin at the library</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Detail: five minutes remain</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Effect: will she arrive in time?</text></svg>"
+    }
+  ],
+  "year_level": "Year 4"
+}

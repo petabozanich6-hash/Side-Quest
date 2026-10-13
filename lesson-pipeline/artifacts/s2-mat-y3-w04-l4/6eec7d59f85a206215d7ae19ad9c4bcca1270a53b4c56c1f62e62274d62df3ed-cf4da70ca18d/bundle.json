@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "MA2-RN-01",
+      "lesson_evidence": "Unit review connects reading, partitioning, comparing and estimating so place-value ideas work together.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Unit review connects reading, partitioning, comparing and estimating so place-value ideas work together.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same method to a larger number or a new context, then compare two solution paths for accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nQuick review: value of 6 in 6,308; order 2,085 and 2,805; estimate 2,990 + 20.\n\nFEEDBACK\n6,000; 2,085 < 2,805; about 3,010 (or 3,000).\n\nWATCH FOR\nReviewing only final answers without place reasons misses the unit focus.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nComplete a 12-item unit check-in mixing partition, compare, number-line placement and estimate-vs-exact. Self-mark with place reasons and list two skills to practise next.\n\nWrite a short reflection naming one step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Mathematics",
+    "learning_intention": "Unit review connects reading, partitioning, comparing and estimating so place-value ideas work together.",
+    "lesson_number": 4,
+    "lesson_role": "Fluency and review",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: place-value chart or number line"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "MA2-RN-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 12-item unit check-in mixing partition, compare, number-line placement and estimate-vs-exact. Self-mark with place reasons and list two skills to practise next. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for review; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Reviewing only final answers without place reasons misses the unit focus.. Correction uses 6,000; 2,085 < 2,805; about 3,010 (or 3,000).. Why: restores accurate review.\n\nParent: Likely misconception: Reviewing only final answers without place reasons misses the unit focus. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses review with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with review, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for review, and names places/values. Reject copied model numbers. / Accept a named misconception about review, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 1,
+        "explanation": "This matches the taught method for review. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "A method that skips the key step taught in this lesson",
+          "6,000; 2,085 < 2,805; about 3,010 (or 3,000)",
+          "Reviewing only final answers without place reasons misses the unit focus",
+          "A claim that names no evidence from the lesson material"
+        ],
+        "question": "Quick review: value of 6 in 6,308; order 2,085 and 2,805; estimate 2,990 + 20. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "This is the misconception to avoid for review; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Careful use of place value and explain why it matters with clear evidence",
+          "Reviewing only final answers without place reasons misses the unit focus",
+          "Unit review connects reading, partitioning, comparing and estimating so place-value ideas work together",
+          "6,000; 2,085 < 2,805; about 3,010 (or 3,000)"
+        ],
+        "question": "Which statement is a common mistake when working with review?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and a named place value and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Repeat the worked example wording with no new evidence",
+          "Reviewing only final answers without place reasons misses the unit focus",
+          "Name place value and explain why it matters only, without linking it to review",
+          "Apply review to new material and name the place value and explain why it matters used"
+        ],
+        "question": "Which response best applies review with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Change digits to look neater without checking place value",
+          "Reviewing only final answers without place reasons misses the unit focus",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working"
+        ],
+        "question": "Which working best supports a correct answer for this lesson on review?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The correct statement applies the taught review method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "6,000; 2,085 < 2,805; about 3,010 (or 3,000)",
+          "Reviewing only final answers without place reasons misses the unit focus",
+          "Read 6 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 6 and 6,308 as interchangeable"
+        ],
+        "question": "Using the method for review, which statement is true?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed"
+        ],
+        "question": "If two methods disagree on a review problem with numbers such as 6 and 6,308, what should you check first?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Reviewing only final answers without place reasons misses the unit focus",
+          "Use the same review method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 6 and 6,308 as the answer",
+          "Change only handwriting and keep the same numbers"
+        ],
+        "question": "Solve a fresh review problem that uses different numbers from the worked model and explain one key step.?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Unit review connects reading, partitioning, comparing and estimating so place-value ideas work together",
+          "6,000; 2,085 < 2,805; about 3,010 (or 3,000)",
+          "Label units when comparing 6 with 6,308",
+          "Reviewing only final answers without place reasons misses the unit focus"
+        ],
+        "question": "Which error is the lesson warning against for review?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for review, and names places/values. Reject copied model numbers.",
+        "question": "Solve one fresh problem that uses review with different numbers from the worked model. Show working and name the places or values that matter.",
+        "sample_answer": "Sample: new numbers solved with visible working for review; key places/values named. Do not award marks for retyping the model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a named misconception about review, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
+        "question": "Describe one likely mistake with review, show corrected working, and say why the correction works.",
+        "sample_answer": "Sample misconception: Reviewing only final answers without place reasons misses the unit focus.. Correction uses 6,000; 2,085 < 2,805; about 3,010 (or 3,000).. Why: restores accurate review.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent working and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-mat-y3-w04-l4",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA mathematics alignment using verified outcome code wording where recorded in lesson-pipeline/sources; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise review.",
+        "Read the mission before you start calculating.",
+        "Keep the place or unit you are working with in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your working with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the place or distance that carries the method.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore place value or working.",
+        "Prefer accurate method over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your working and reason are both present.",
+        "Proofread digits, places and operation signs.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact place, value or distance before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key numbers.",
+        "Say what each number represents in the method.",
+        "A final answer alone is weaker than labelled working."
+      ],
+      "teach2": [
+        "Compare a weak attempt with stronger working.",
+        "Change the value or method, not only how neat it looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose fresh numbers that still use the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original working and a short reason.",
+        "Save work that shows the skill on new numbers."
+      ]
+    },
+    "subject": "Number and Algebra",
+    "success_criteria": [
+      "I can use review with a specific example from this lesson.",
+      "I can identify place value and explain why it matters.",
+      "I can practise compare independently on a new prompt.",
+      "I can notice partition needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Unit review connects reading, partitioning, comparing and estimating so place-value ideas work together.",
+          "options": [
+            "An answer copied without understanding",
+            "Unit review connects reading, partitioning, comparing and estimating so place-value ideas work together",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
+          ],
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nReview chain: partition 4,070 → compare with 4,700 → estimate 4,070 + 800 ≈ 4,900 → exact 4,870 near the estimate.\n\nTRY FIRST\nQuick review: value of 6 in 6,308; order 2,085 and 2,805; estimate 2,990 + 20.\n\nFEEDBACK\n6,000; 2,085 < 2,805; about 3,010 (or 3,000).",
+        "explain": "Unit review connects reading, partitioning, comparing and estimating so place-value ideas work together.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Reviewing only final answers without place reasons misses the unit focus. Correct the value or method, not just the appearance of the digits.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Unit skills linked in one review chain.",
+            "caption": "Reasons stay with every answer.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Review chain</text><text x=\"28\" y=\"78\">partition → compare → estimate</text><text x=\"358\" y=\"42\">Example</text><text x=\"358\" y=\"78\">4,070 vs 4,700</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which number or place matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the places, values or distances that carry the method before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Review chain: partition 4,070 → compare with 4,700 → estimate 4,070 + 800 ≈ 4,900 → exact 4,870 near the estimate. Then write your own working.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which number or place matters most.\nJuno: Name the places, values or distances that carry the method before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Review chain: partition 4,070 → compare with 4,700 → estimate 4,070 + 800 ≈ 4,900 → exact 4,870 near the estimate. Then write your own working."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+          "options": [
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid"
+          ],
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nReview chain: partition 4,070 → compare with 4,700 → estimate 4,070 + 800 ≈ 4,900 → exact 4,870 near the estimate. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
+        "explain": "Make the method visible: name the values, places or steps you used and say why that step is valid.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only the final answer without working does not show the method. Correct the value or method, not just the appearance of the digits.",
+        "title": "Show the working",
+        "visual": [
+          {
+            "alt": "Mixed check-in items for the place-value unit.",
+            "caption": "List skills still needing practice.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Quick items</text><text x=\"28\" y=\"78\">value; order; estimate</text><text x=\"358\" y=\"42\">Focus</text><text x=\"358\" y=\"78\">place reasons, not bare digits</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
+          "options": [
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Use an intentionally incorrect attempt as a comparison",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nReviewing only final answers without place reasons misses the unit focus. Here is a more productive model: Review chain: partition 4,070 → compare with 4,700 → estimate 4,070 + 800 ≈ 4,900 → exact 4,870 near the estimate.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\n6,000; 2,085 < 2,805; about 3,010 (or 3,000).",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the answer without repairing the method does not fix the error. Reviewing only final answers without place reasons misses the unit focus. Correct the value or method, not just the appearance of the digits.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
+          "options": [
+            "An answer copied without understanding",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
+          ],
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nUnit review connects reading, partitioning, comparing and estimating so place-value ideas work together. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",
+        "explain": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new numbers. Correct the value or method, not just the appearance of the digits.",
+        "title": "Transfer to a new problem"
+      }
+    ],
+    "title": "Year 3, Week 4, Lesson 4: Unit review and check-in",
+    "unit_number": 1,
+    "unit_title": "Whole numbers and place value",
+    "week": 4,
+    "week_in_unit": 4,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nReview chain: partition 4,070 → compare with 4,700 → estimate 4,070 + 800 ≈ 4,900 → exact 4,870 near the estimate.\n\nWrite what makes this example accurate, naming the places, values or distances used.",
+    "worked_visuals": [
+      {
+        "alt": "Unit skills linked in one review chain.",
+        "caption": "Reasons stay with every answer.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Review chain</text><text x=\"28\" y=\"78\">partition → compare → estimate</text><text x=\"358\" y=\"42\">Example</text><text x=\"358\" y=\"78\">4,070 vs 4,700</text></g></svg>"
+      },
+      {
+        "alt": "Mixed check-in items for the place-value unit.",
+        "caption": "List skills still needing practice.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Quick items</text><text x=\"28\" y=\"78\">value; order; estimate</text><text x=\"358\" y=\"42\">Focus</text><text x=\"358\" y=\"78\">place reasons, not bare digits</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Quick review: value of 6 in 6,308; order 2,085 and 2,805; estimate 2,990 + 20."
+      ],
+      "independent_inputs": [
+        "Complete a 12-item unit check-in mixing partition, compare, number-line placement and estimate-vs-exact. Self-mark with place reasons and list two skills to practise next."
+      ],
+      "model_inputs": [
+        "Review chain: partition 4,070 → compare with 4,700 → estimate 4,070 + 800 ≈ 4,900 → exact 4,870 near the estimate."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "6,000; 2,085 < 2,805; about 3,010 (or 3,000).",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Quick review: value of 6 in 6,308; order 2,085 and 2,805; estimate 2,990 + 20.",
+        "misconception": "Reviewing only final answers without place reasons misses the unit focus.",
+        "model": "Review chain: partition 4,070 → compare with 4,700 → estimate 4,070 + 800 ≈ 4,900 → exact 4,870 near the estimate.",
+        "rule": "Unit review connects reading, partitioning, comparing and estimating so place-value ideas work together.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The most useful working names the quantities and the reason for each step, not only the final answer.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Write the key numbers from the model and say what each one represents in the method.",
+        "misconception": "Writing only the final answer without working does not show the method.",
+        "model": "Review chain: partition 4,070 → compare with 4,700 → estimate 4,070 + 800 ≈ 4,900 → exact 4,870 near the estimate. Look at each number, place or distance that carries the method.",
+        "rule": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "6,000; 2,085 < 2,805; about 3,010 (or 3,000).",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Describe why the warned-against approach gives the wrong value or meaning, then write corrected working.",
+        "misconception": "Changing the answer without repairing the method does not fix the error. Reviewing only final answers without place reasons misses the unit focus.",
+        "model": "Reviewing only final answers without place reasons misses the unit focus. Here is a more productive model: Review chain: partition 4,070 → compare with 4,700 → estimate 4,070 + 800 ≈ 4,900 → exact 4,870 near the estimate.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The new problem should use the same method as the model, but contain different numbers.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Solve one fresh problem that uses the same skill and write a short reason for your answer.",
+        "misconception": "Repeating the worked example cannot show transfer to new numbers.",
+        "model": "Unit review connects reading, partitioning, comparing and estimating so place-value ideas work together. Now choose different numbers to show you can transfer the method.",
+        "rule": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Unit skills linked in one review chain.",
+        "teaches": "Reasons stay with every answer."
+      },
+      {
+        "alt": "Mixed check-in items for the place-value unit.",
+        "teaches": "List skills still needing practice."
+      }
+    ]
+  }
+}

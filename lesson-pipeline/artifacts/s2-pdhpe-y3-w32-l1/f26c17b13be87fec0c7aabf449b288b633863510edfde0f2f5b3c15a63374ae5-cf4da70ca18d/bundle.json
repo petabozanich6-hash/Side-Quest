@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "PH2-MSP-01",
+      "lesson_evidence": "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking). Tuck rolls and forward rolls are taught by a teacher or coach with mats and supervision. For safe jumping and landing, bend the knees, land on the balls of the feet, keep feet about shoulder-width apart, arms forward and chest up. Never jump from high places. Stop if you feel pain or dizziness or someone is in the way.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking). Tuck rolls and forward rolls are taught by a teacher or coach with mats and supervision. For safe jumping and landing, bend the knees, land on the balls of the feet, keep feet about shoulder-width apart, arms forward and chest up. Never jump from high places. Stop if you feel pain or dizziness or someone is in the way.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nA child jumps off a high step and lands with straight legs. Write what the problem is and a safer way.\n\nFEEDBACK\nStraight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the feet with arms forward.\n\nWATCH FOR\nThinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nOn a mat or soft grass with an adult nearby, practise a log roll, an egg roll and five low jumps with soft landings. Record a technique score from 1 to 3 for each (shape, control, landing). Use cue words and stop if anything hurts.\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.",
+    "interactive_activities": null,
+    "learning_area": "PDHPE",
+    "learning_intention": "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking). Tuck rolls and forward rolls are taught by a teacher or coach with mats and supervision. For safe jumping and landing, bend the knees, land on the balls of the feet, keep feet about shoulder-width apart, arms forward and chest up. Never jump from high places. Stop if you feel pain or dizziness or someone is in the way.",
+    "lesson_number": 1,
+    "lesson_role": "Learn and discuss",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Clear, safe movement space with an adult nearby for any physical activity",
+      "Optional: soft ball, cushion or water bottle"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "PH2-MSP-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: On a mat or soft grass with an adult nearby, practise a log roll, an egg roll and five low jumps with soft landings. Record a technique score from 1 to 3 for each (shape, control, landing). Use cue words and stop if anyt Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using log roll on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking a big jump from a high place is better.. Correction: Straight legs and a high drop send a lot of force into the joints.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating log roll on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with log roll, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about log roll with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for log roll. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 2,
+        "explanation": "This matches the taught method for log roll. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Straight legs and a high drop send a lot of force into the joints",
+          "Thinking a big jump from a high place is better"
+        ],
+        "question": "A child jumps off a high step and lands with straight legs. Write what the problem is and a safer way. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "This is the misconception to avoid for log roll; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Careful use of egg roll and explain why it matters with clear evidence",
+          "Thinking a big jump from a high place is better",
+          "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an",
+          "Straight legs and a high drop send a lot of force into the joints"
+        ],
+        "question": "Which statement is a common mistake when working with log roll?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and a named egg roll and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Apply log roll to new material and name the egg roll and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking a big jump from a high place is better",
+          "Name egg roll and explain why it matters only, without linking it to log roll"
+        ],
+        "question": "Which response best applies log roll with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on log roll. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Straight legs and a high drop send a lot of force into the joints",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking a big jump from a high place is better"
+        ],
+        "question": "Which response best uses safe, healthy or respectful choices for log roll?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Thinking a big jump from a high place is better",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with log roll",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty"
+        ],
+        "question": "Which evidence move best supports a claim about log roll?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The stronger choice matches the taught idea (Safe rolling starts with simple, low-risk rolls on a mat, such as a log) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Thinking a big jump from a high place is better",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll"
+        ],
+        "question": "Which choice best applies this lesson idea about log roll?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
+        ],
+        "question": "Which action keeps safe, healthy or respectful choices accurate for log roll?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "On a mat or soft grass with an adult nearby, practise a log roll, an egg roll and five low jumps with soft landings",
+          "Retype the worked example with no new example",
+          "Thinking a big jump from a high place is better",
+          "Name egg roll and explain why it matters only, with no linked example"
+        ],
+        "question": "Which independent response best applies log roll to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about log roll with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating log roll on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using log roll on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for log roll. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with log roll, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Thinking a big jump from a high place is better.. Correction: Straight legs and a high drop send a lot of force into the joints.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-pdhpe-y3-w32-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending human review. Physical activities are optional, adult-supervised and adaptable; no child is required to share personal details.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise log roll.",
+        "Read the mission before you start moving or deciding.",
+        "Keep your own safety and everyone's inclusion in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not keep everyone safe and included."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the cue or rule that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore safety, consent or inclusion.",
+        "Prefer a reasoned, respectful choice over one that merely looks fun."
+      ],
+      "submit": [
+        "Confirm that your reasons and reflection are both present.",
+        "Proofread names, steps and safety words.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact cue, rule or choice before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key cues.",
+        "Say what each cue does for safety, health or friendship.",
+        "A final label alone is weaker than a stated reason."
+      ],
+      "teach2": [
+        "Compare an unsafe or unkind choice with a better one.",
+        "Change the choice or strategy, not only the words.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, game or situation that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original reasons and a short reflection.",
+        "Save work that shows the skill in a new situation."
+      ]
+    },
+    "subject": "Movement Skill and Performance",
+    "success_criteria": [
+      "I can use log roll with a specific example from this lesson.",
+      "I can identify egg roll and explain why it matters.",
+      "I can practise soft landing independently on a new prompt.",
+      "I can notice low jumps needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking).",
+          "options": [
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about log roll with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and rock gently from side to side. Jump and land: bend the knees, jump up, land on the balls of the feet with knees bent and arms forward, then hold for 2 seconds. Safety: a clear space, a mat and an adult nearby.\n\nTRY FIRST\nA child jumps off a high step and lands with straight legs. Write what the problem is and a safer way.\n\nFEEDBACK\nStraight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the feet with arms forward.",
+        "explain": "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking). Tuck rolls and forward rolls are taught by a teacher or coach with mats and supervision. For safe jumping and landing, bend the knees, land on the balls of the feet, keep feet about shoulder-width apart, arms forward and chest up. Never jump from high places. Stop if you feel pain or dizziness or someone is in the way.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk. Change the choice or strategy, not just the wording.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "Two safe mat rolls.",
+            "caption": "Start with low-risk rolls.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Log roll</text><text x=\"28\" y=\"78\">body straight, sideways</text><text x=\"358\" y=\"42\">Egg roll</text><text x=\"358\" y=\"78\">curled up, rock</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which cue or rule matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the cues, rules or choices that keep everyone safe and included before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: cur Then write your own reasons.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which cue or rule matters most.\nJuno: Name the cues, rules or choices that keep everyone safe and included before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: cur Then write your own reasons."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+          "options": [
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
+          ],
+          "question": "Which choice best applies this lesson idea about log roll with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and rock gently from side to side. Jump and land: bend the knees, jump up, land on the balls of the feet with knees bent and arms forward, then hold for 2 seconds. Safety: a clear space, a mat and an adult nearby. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "explain": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without a reason does not show PDHPE thinking. Change the choice or strategy, not just the wording.",
+        "title": "Show the reasoning",
+        "visual": [
+          {
+            "alt": "Soft and hard landings.",
+            "caption": "Bend the knees.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Soft landing</text><text x=\"28\" y=\"78\">bent knees, arms forward</text><text x=\"358\" y=\"42\">Hard landing</text><text x=\"358\" y=\"78\">straight legs</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
+          "options": [
+            "An answer copied without understanding",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
+          ],
+          "question": "Which choice best applies this lesson idea about log roll with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nThinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk. Here is a more helpful example: Example on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and rock gently from side to side. Jump and land: bend the knees, jump up, land on the balls of the feet with knees bent and arms forward, then hold for 2 seconds. Safety: a clear space, a mat and an adult nearby.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nStraight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the feet with arms forward.",
+        "explain": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without changing the choice does not fix the error. Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk. Change the choice or strategy, not just the wording.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
+          "options": [
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about log roll with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSafe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking). Tuck rolls and forward rolls are taught by a teacher or coach with mats and supervision. For safe jumping and landing, bend the knees, land on the balls of the feet, keep feet about shoulder-width apart, arms forward and chest up. Never jump from high places. Stop if you feel pain or dizziness or someone is in the way. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "explain": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new situation. Change the choice or strategy, not just the wording.",
+        "title": "Transfer to a new situation"
+      }
+    ],
+    "title": "Year 3, Week 32, Lesson 1: Rolling, jumping and landing safely",
+    "unit_number": 7,
+    "unit_title": "Gymnastics and dance",
+    "week": 32,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and rock gently from side to side. Jump and land: bend the knees, jump up, land on the balls of the feet with knees bent and arms forward, then hold for 2 seconds. Safety: a clear space, a mat and an adult nearby.\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.",
+    "worked_visuals": [
+      {
+        "alt": "Two safe mat rolls.",
+        "caption": "Start with low-risk rolls.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Log roll</text><text x=\"28\" y=\"78\">body straight, sideways</text><text x=\"358\" y=\"42\">Egg roll</text><text x=\"358\" y=\"78\">curled up, rock</text></g></svg>"
+      },
+      {
+        "alt": "Soft and hard landings.",
+        "caption": "Bend the knees.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Soft landing</text><text x=\"28\" y=\"78\">bent knees, arms forward</text><text x=\"358\" y=\"42\">Hard landing</text><text x=\"358\" y=\"78\">straight legs</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "A child jumps off a high step and lands with straight legs. Write what the problem is and a safer way."
+      ],
+      "independent_inputs": [
+        "On a mat or soft grass with an adult nearby, practise a log roll, an egg roll and five low jumps with soft landings. Record a technique score from 1 to 3 for each (shape, control, landing). Use cue words and stop if anything hurts."
+      ],
+      "model_inputs": [
+        "Example on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and rock gently from side to side. Jump and land: bend the knees, jump up, land on the balls of the feet with knees bent and arms forward, then hold for 2 seconds. Safety: a clear space, a mat and an adult nearby."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Straight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the feet with arms forward.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "A child jumps off a high step and lands with straight legs. Write what the problem is and a safer way.",
+        "misconception": "Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk.",
+        "model": "Example on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and rock gently from side to side. Jump and land: bend the knees, jump up, land on the balls of the feet with knees bent and arms forward, then hold for 2 seconds. Safety: a clear space, a mat and an adult nearby.",
+        "rule": "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking). Tuck rolls and forward rolls are taught by a teacher or coach with mats and supervision. For safe jumping and landing, bend the knees, land on the balls of the feet, keep feet about shoulder-width apart, arms forward and chest up. Never jump from high places. Stop if you feel pain or dizziness or someone is in the way.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.",
+        "misconception": "Writing only a final label without a reason does not show PDHPE thinking.",
+        "model": "Example on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and rock gently from side to side. Jump and land: bend the knees, jump up, land on the balls of the feet with knees bent and arms forward, then hold for 2 seconds. Safety: a clear space, a mat and an adult nearby. Look at each cue, rule or choice that carries the idea.",
+        "rule": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "Straight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the feet with arms forward.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.",
+        "misconception": "Changing the wording without changing the choice does not fix the error. Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk.",
+        "model": "Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk. Here is a more helpful example: Example on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and rock gently from side to side. Jump and land: bend the knees, jump up, land on the balls of the feet with knees bent and arms forward, then hold for 2 seconds. Safety: a clear space, a mat and an adult nearby.",
+        "rule": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new situation.",
+        "model": "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking). Tuck rolls and forward rolls are taught by a teacher or coach with mats and supervision. For safe jumping and landing, bend the knees, land on the balls of the feet, keep feet about shoulder-width apart, arms forward and chest up. Never jump from high places. Stop if you feel pain or dizziness or someone is in the way. Now choose a different situation to show you can transfer the idea.",
+        "rule": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Two safe mat rolls.",
+        "teaches": "Start with low-risk rolls."
+      },
+      {
+        "alt": "Soft and hard landings.",
+        "teaches": "Bend the knees."
+      }
+    ]
+  }
+}

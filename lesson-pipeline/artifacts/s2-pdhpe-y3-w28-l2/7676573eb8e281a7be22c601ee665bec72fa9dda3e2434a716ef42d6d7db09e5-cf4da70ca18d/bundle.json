@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "PH2-RRS-02",
+      "lesson_evidence": "A safety network is a group of trusted people who can help when you feel unsafe or worried. Choose people you can reach in different places and at different times, such as family members, a teacher, a school counsellor or a neighbour, and write them on the fingers of one hand. If an adult does not listen, tell another until someone helps. Kids Helpline (1800 55 1800) offers free, private counselling for young people, and in an emergency call 000.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "A safety network is a group of trusted people who can help when you feel unsafe or worried. Choose people you can reach in different places and at different times, such as family members, a teacher, a school counsellor or a neighbour, and write them on the fingers of one hand. If an adult does not listen, tell another until someone helps. Kids Helpline (1800 55 1800) offers free, private counselling for young people, and in an emergency call 000.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nYou feel unsafe at a friend's house and want to go home. Who could you contact and how?\n\nFEEDBACK\nAsk to use the phone, or message a safe adult such as a parent, and say, 'I want to come home.' If it is an emergency, call 000. Having a plan for different places means there is always a way to get help.\n\nWATCH FOR\nThinking you must only tell one person. If one adult does not help, keep telling until someone does.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nDraw your safety hand with five trusted people or services and write where and when you could contact each. Practise saying 'I feel unsafe, can you help me?' to a family member. Include 000 and Kids Helpline.\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.",
+    "interactive_activities": null,
+    "learning_area": "PDHPE",
+    "learning_intention": "A safety network is a group of trusted people who can help when you feel unsafe or worried. Choose people you can reach in different places and at different times, such as family members, a teacher, a school counsellor or a neighbour, and write them on the fingers of one hand. If an adult does not listen, tell another until someone helps. Kids Helpline (1800 55 1800) offers free, private counselling for young people, and in an emergency call 000.",
+    "lesson_number": 2,
+    "lesson_role": "Practise and apply",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Clear, safe movement space with an adult nearby for any physical activity",
+      "Optional: soft ball, cushion or water bottle"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "PH2-RRS-02"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Draw your safety hand with five trusted people or services and write where and when you could contact each. Practise saying 'I feel unsafe, can you help me?' to a family member. Include 000 and Kids Helpline. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a safety network on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking you must only tell one person.. Correction: Ask to use the phone, or message a safe adult such as a parent, and say, 'I want to come home.' If it is an emergency. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking you must only tell one person. If one adult does not help, keep telling until someone does. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a safety network on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a safety network, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a safety network with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a safety network. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "This matches the taught method for a safety network. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Thinking you must only tell one person",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Ask to use the phone, or message a safe adult such as a parent, and say, 'I want to come home.' If it is an emergency"
+        ],
+        "question": "You feel unsafe at a friend's house and want to go home. Who could you contact and how?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "This is the misconception to avoid for a safety network; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Careful use of a trusted person and explain why it matt with clear evidence",
+          "Thinking you must only tell one person",
+          "A safety network is a group of trusted people who can help when you feel unsafe or worried",
+          "Ask to use the phone, or message a safe adult such as a parent, and say, 'I want to come home.' If it is an emergency"
+        ],
+        "question": "Which statement is a common mistake when working with a safety network?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and a named a trusted person and explain why it matt, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Repeat the worked example wording with no new evidence",
+          "Thinking you must only tell one person",
+          "Name a trusted person and explain why it matt only, without linking it to a safety network",
+          "Apply a safety network to new material and name the a trusted person and explain why it matt used"
+        ],
+        "question": "Which response best applies a safety network with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on a safety network. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking you must only tell one person",
+          "Ask to use the phone, or message a safe adult such as a parent, and say, 'I want to come home.' If it is an emergency"
+        ],
+        "question": "Which response best uses safe, healthy or respectful choices for a safety network?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Thinking you must only tell one person",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with a safety network",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty"
+        ],
+        "question": "Which evidence move best supports a claim about a safety network?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The stronger choice matches the taught idea (A safety network is a group of trusted people who can help when you) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example: Priya's safety hand",
+          "Thinking you must only tell one person"
+        ],
+        "question": "Which choice best applies this lesson idea about a safety network?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
+        ],
+        "question": "Which action keeps safe, healthy or respectful choices accurate for a safety network?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name a trusted person and explain why it matt only, with no linked example",
+          "Draw your safety hand with five trusted people or services and write where and when you could contact each",
+          "Retype the worked example with no new example",
+          "Thinking you must only tell one person"
+        ],
+        "question": "Which independent response best applies a safety network to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about a safety network with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating a safety network on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using a safety network on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a safety network. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with a safety network, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Thinking you must only tell one person.. Correction: Ask to use the phone, or message a safe adult such as a parent, and say, 'I want to come home.' If it is an emergency. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-pdhpe-y3-w28-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending human review. Physical activities are optional, adult-supervised and adaptable; no child is required to share personal details.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise a safety network.",
+        "Read the mission before you start moving or deciding.",
+        "Keep your own safety and everyone's inclusion in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not keep everyone safe and included."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the cue or rule that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore safety, consent or inclusion.",
+        "Prefer a reasoned, respectful choice over one that merely looks fun."
+      ],
+      "submit": [
+        "Confirm that your reasons and reflection are both present.",
+        "Proofread names, steps and safety words.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact cue, rule or choice before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key cues.",
+        "Say what each cue does for safety, health or friendship.",
+        "A final label alone is weaker than a stated reason."
+      ],
+      "teach2": [
+        "Compare an unsafe or unkind choice with a better one.",
+        "Change the choice or strategy, not only the words.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, game or situation that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original reasons and a short reflection.",
+        "Save work that shows the skill in a new situation."
+      ]
+    },
+    "subject": "Healthy, Safe and Active Lifestyles",
+    "success_criteria": [
+      "I can use a safety network with a specific example from this lesson.",
+      "I can identify a trusted person and explain why it matters.",
+      "I can practise keep telling independently on a new prompt.",
+      "I can notice emergency help needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "A safety network is a group of trusted people who can help when you feel unsafe or worried.",
+          "options": [
+            "A safety network is a group of trusted people who can help when you feel unsafe or worried",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
+          ],
+          "question": "Which choice best applies this lesson idea about a safety network with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Priya's safety hand. Thumb: Mum, at home. Pointer: Aunty Lena next door. Middle: Ms Carter at school. Ring: the school counsellor. Little finger: Kids Helpline on 1800 55 1800. When she felt worried on the way home she told Ms Carter, who helped straight away.\n\nTRY FIRST\nYou feel unsafe at a friend's house and want to go home. Who could you contact and how?\n\nFEEDBACK\nAsk to use the phone, or message a safe adult such as a parent, and say, 'I want to come home.' If it is an emergency, call 000. Having a plan for different places means there is always a way to get help.",
+        "explain": "A safety network is a group of trusted people who can help when you feel unsafe or worried. Choose people you can reach in different places and at different times, such as family members, a teacher, a school counsellor or a neighbour, and write them on the fingers of one hand. If an adult does not listen, tell another until someone helps. Kids Helpline (1800 55 1800) offers free, private counselling for young people, and in an emergency call 000.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Thinking you must only tell one person. If one adult does not help, keep telling until someone does. Change the choice or strategy, not just the wording.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "A safety hand.",
+            "caption": "Five people to tell.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Hand</text><text x=\"28\" y=\"78\">five trusted people</text><text x=\"358\" y=\"42\">Number</text><text x=\"358\" y=\"78\">Kids Helpline 1800 55 1800</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which cue or rule matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the cues, rules or choices that keep everyone safe and included before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example: Priya's safety hand. Thumb: Mum, at home. Pointer: Aunty Lena next door. Middle: Ms Carter at school. Ring: the Then write your own reasons.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which cue or rule matters most.\nJuno: Name the cues, rules or choices that keep everyone safe and included before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example: Priya's safety hand. Thumb: Mum, at home. Pointer: Aunty Lena next door. Middle: Ms Carter at school. Ring: the Then write your own reasons."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+          "options": [
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
+          ],
+          "question": "Which choice best applies this lesson idea about a safety network with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Priya's safety hand. Thumb: Mum, at home. Pointer: Aunty Lena next door. Middle: Ms Carter at school. Ring: the school counsellor. Little finger: Kids Helpline on 1800 55 1800. When she felt worried on the way home she told Ms Carter, who helped straight away. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "explain": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without a reason does not show PDHPE thinking. Change the choice or strategy, not just the wording.",
+        "title": "Show the reasoning",
+        "visual": [
+          {
+            "alt": "Emergency help.",
+            "caption": "Keep telling.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Emergency</text><text x=\"28\" y=\"78\">call 000</text><text x=\"358\" y=\"42\">Keep telling</text><text x=\"358\" y=\"78\">until someone helps</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
+          "options": [
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Use an intentionally unsafe or unhelpful choice as a comparison"
+          ],
+          "question": "Which choice best applies this lesson idea about a safety network with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nThinking you must only tell one person. If one adult does not help, keep telling until someone does. Here is a more helpful example: Example: Priya's safety hand. Thumb: Mum, at home. Pointer: Aunty Lena next door. Middle: Ms Carter at school. Ring: the school counsellor. Little finger: Kids Helpline on 1800 55 1800. When she felt worried on the way home she told Ms Carter, who helped straight away.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nAsk to use the phone, or message a safe adult such as a parent, and say, 'I want to come home.' If it is an emergency, call 000. Having a plan for different places means there is always a way to get help.",
+        "explain": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without changing the choice does not fix the error. Thinking you must only tell one person. If one adult does not help, keep telling until someone does. Change the choice or strategy, not just the wording.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
+          "options": [
+            "An answer copied without understanding",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
+          ],
+          "question": "Which choice best applies this lesson idea about a safety network with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nA safety network is a group of trusted people who can help when you feel unsafe or worried. Choose people you can reach in different places and at different times, such as family members, a teacher, a school counsellor or a neighbour, and write them on the fingers of one hand. If an adult does not listen, tell another until someone helps. Kids Helpline (1800 55 1800) offers free, private counselling for young people, and in an emergency call 000. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "explain": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new situation. Change the choice or strategy, not just the wording.",
+        "title": "Transfer to a new situation"
+      }
+    ],
+    "title": "Year 3, Week 28, Lesson 2: Safety networks: who can help",
+    "unit_number": 6,
+    "unit_title": "Staying safe",
+    "week": 28,
+    "week_in_unit": 3,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample: Priya's safety hand. Thumb: Mum, at home. Pointer: Aunty Lena next door. Middle: Ms Carter at school. Ring: the school counsellor. Little finger: Kids Helpline on 1800 55 1800. When she felt worried on the way home she told Ms Carter, who helped straight away.\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.",
+    "worked_visuals": [
+      {
+        "alt": "A safety hand.",
+        "caption": "Five people to tell.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Hand</text><text x=\"28\" y=\"78\">five trusted people</text><text x=\"358\" y=\"42\">Number</text><text x=\"358\" y=\"78\">Kids Helpline 1800 55 1800</text></g></svg>"
+      },
+      {
+        "alt": "Emergency help.",
+        "caption": "Keep telling.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Emergency</text><text x=\"28\" y=\"78\">call 000</text><text x=\"358\" y=\"42\">Keep telling</text><text x=\"358\" y=\"78\">until someone helps</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "You feel unsafe at a friend's house and want to go home. Who could you contact and how?"
+      ],
+      "independent_inputs": [
+        "Draw your safety hand with five trusted people or services and write where and when you could contact each. Practise saying 'I feel unsafe, can you help me?' to a family member. Include 000 and Kids Helpline."
+      ],
+      "model_inputs": [
+        "Example: Priya's safety hand. Thumb: Mum, at home. Pointer: Aunty Lena next door. Middle: Ms Carter at school. Ring: the school counsellor. Little finger: Kids Helpline on 1800 55 1800. When she felt worried on the way home she told Ms Carter, who helped straight away."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Ask to use the phone, or message a safe adult such as a parent, and say, 'I want to come home.' If it is an emergency, call 000. Having a plan for different places means there is always a way to get help.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "You feel unsafe at a friend's house and want to go home. Who could you contact and how?",
+        "misconception": "Thinking you must only tell one person. If one adult does not help, keep telling until someone does.",
+        "model": "Example: Priya's safety hand. Thumb: Mum, at home. Pointer: Aunty Lena next door. Middle: Ms Carter at school. Ring: the school counsellor. Little finger: Kids Helpline on 1800 55 1800. When she felt worried on the way home she told Ms Carter, who helped straight away.",
+        "rule": "A safety network is a group of trusted people who can help when you feel unsafe or worried. Choose people you can reach in different places and at different times, such as family members, a teacher, a school counsellor or a neighbour, and write them on the fingers of one hand. If an adult does not listen, tell another until someone helps. Kids Helpline (1800 55 1800) offers free, private counselling for young people, and in an emergency call 000.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.",
+        "misconception": "Writing only a final label without a reason does not show PDHPE thinking.",
+        "model": "Example: Priya's safety hand. Thumb: Mum, at home. Pointer: Aunty Lena next door. Middle: Ms Carter at school. Ring: the school counsellor. Little finger: Kids Helpline on 1800 55 1800. When she felt worried on the way home she told Ms Carter, who helped straight away. Look at each cue, rule or choice that carries the idea.",
+        "rule": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "Ask to use the phone, or message a safe adult such as a parent, and say, 'I want to come home.' If it is an emergency, call 000. Having a plan for different places means there is always a way to get help.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.",
+        "misconception": "Changing the wording without changing the choice does not fix the error. Thinking you must only tell one person. If one adult does not help, keep telling until someone does.",
+        "model": "Thinking you must only tell one person. If one adult does not help, keep telling until someone does. Here is a more helpful example: Example: Priya's safety hand. Thumb: Mum, at home. Pointer: Aunty Lena next door. Middle: Ms Carter at school. Ring: the school counsellor. Little finger: Kids Helpline on 1800 55 1800. When she felt worried on the way home she told Ms Carter, who helped straight away.",
+        "rule": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new situation.",
+        "model": "A safety network is a group of trusted people who can help when you feel unsafe or worried. Choose people you can reach in different places and at different times, such as family members, a teacher, a school counsellor or a neighbour, and write them on the fingers of one hand. If an adult does not listen, tell another until someone helps. Kids Helpline (1800 55 1800) offers free, private counselling for young people, and in an emergency call 000. Now choose a different situation to show you can transfer the idea.",
+        "rule": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "A safety hand.",
+        "teaches": "Five people to tell."
+      },
+      {
+        "alt": "Emergency help.",
+        "teaches": "Keep telling."
+      }
+    ]
+  }
+}

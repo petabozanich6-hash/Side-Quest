@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "PH2-IHW-01",
+      "lesson_evidence": "Water can be fun but it can be dangerous. Always swim with an adult watching, swim between the red and yellow flags at the beach, never swim alone and ask an adult before going near water. In the sun use the five Ss: slip on a shirt, slop on SPF 30 or higher broad-spectrum sunscreen, slap on a broad-brimmed hat, seek shade and slide on sunglasses. Reapply sunscreen every two hours and after swimming. In Australia, UV rays can burn skin quickly even on cool or cloudy days.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Water can be fun but it can be dangerous. Always swim with an adult watching, swim between the red and yellow flags at the beach, never swim alone and ask an adult before going near water. In the sun use the five Ss: slip on a shirt, slop on SPF 30 or higher broad-spectrum sunscreen, slap on a broad-brimmed hat, seek shade and slide on sunglasses. Reapply sunscreen every two hours and after swimming. In Australia, UV rays can burn skin quickly even on cool or cloudy days.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nA cloudy day at the beach looks cool, so a friend says they do not need sun protection. Write one sentence correcting them and name two of the five Ss they should still use.\n\nFEEDBACK\nUV rays can pass through cloud and cause sunburn even when it is cool. They should still slip on a shirt and slap on a hat, and they can also use sunscreen and shade.\n\nWATCH FOR\nBelieving you cannot burn on cloudy or cool days. UV is not the same as heat, so protection is still needed when the UV index is 3 or above.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nMake a beach and sun safety poster with the five Ss and four water safety rules. Add a list of what to pack and a sentence for each rule saying why it matters. Teach the rules to someone younger.\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.",
+    "interactive_activities": null,
+    "learning_area": "PDHPE",
+    "learning_intention": "Water can be fun but it can be dangerous. Always swim with an adult watching, swim between the red and yellow flags at the beach, never swim alone and ask an adult before going near water. In the sun use the five Ss: slip on a shirt, slop on SPF 30 or higher broad-spectrum sunscreen, slap on a broad-brimmed hat, seek shade and slide on sunglasses. Reapply sunscreen every two hours and after swimming. In Australia, UV rays can burn skin quickly even on cool or cloudy days.",
+    "lesson_number": 1,
+    "lesson_role": "Learn and discuss",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Clear, safe movement space with an adult nearby for any physical activity",
+      "Optional: soft ball, cushion or water bottle"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "PH2-IHW-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Make a beach and sun safety poster with the five Ss and four water safety rules. Add a list of what to pack and a sentence for each rule saying why it matters. Teach the rules to someone younger. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using water safety on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing you cannot burn on cloudy or cool days.. Correction: UV rays can pass through cloud and cause sunburn even when it is cool.. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing you cannot burn on cloudy or cool days. UV is not the same as heat, so protection is still needed when the UV index is 3 or above. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating water safety on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with water safety, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about water safety with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for water safety. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "This matches the taught method for water safety. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "UV rays can pass through cloud and cause sunburn even when it is cool",
+          "Believing you cannot burn on cloudy or cool days",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
+        ],
+        "question": "A cloudy day at the beach looks cool, so a friend says they do not need sun protection. Write one sentence correcting them and name two of the five Ss they should still use. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "This is the misconception to avoid for water safety; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Believing you cannot burn on cloudy or cool days",
+          "Water can be fun but it can be dangerous",
+          "UV rays can pass through cloud and cause sunburn even when it is cool",
+          "Careful use of the red and yellow flags and explain why with clear evidence"
+        ],
+        "question": "Which statement is a common mistake when working with water safety?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and a named the red and yellow flags and explain why, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Believing you cannot burn on cloudy or cool days",
+          "Name the red and yellow flags and explain why only, without linking it to water safety",
+          "Apply water safety to new material and name the the red and yellow flags and explain why used",
+          "Repeat the worked example wording with no new evidence"
+        ],
+        "question": "Which response best applies water safety with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on water safety. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Believing you cannot burn on cloudy or cool days",
+          "UV rays can pass through cloud and cause sunburn even when it is cool",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty"
+        ],
+        "question": "Which response best uses safe, healthy or respectful choices for water safety?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Believing you cannot burn on cloudy or cool days",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with water safety"
+        ],
+        "question": "Which evidence move best supports a claim about water safety?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The stronger choice matches the taught idea (Water can be fun but it can be dangerous.) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example: Lee and her family go to the beach",
+          "Believing you cannot burn on cloudy or cool days"
+        ],
+        "question": "Which choice best applies this lesson idea about water safety?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
+        ],
+        "question": "Which action keeps safe, healthy or respectful choices accurate for water safety?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name the red and yellow flags and explain why only, with no linked example",
+          "Make a beach and sun safety poster with the five Ss and four water safety rules",
+          "Retype the worked example with no new example",
+          "Believing you cannot burn on cloudy or cool days"
+        ],
+        "question": "Which independent response best applies water safety to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about water safety with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating water safety on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using water safety on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for water safety. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with water safety, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Believing you cannot burn on cloudy or cool days.. Correction: UV rays can pass through cloud and cause sunburn even when it is cool.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-pdhpe-y3-w27-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending human review. Physical activities are optional, adult-supervised and adaptable; no child is required to share personal details.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise water safety.",
+        "Read the mission before you start moving or deciding.",
+        "Keep your own safety and everyone's inclusion in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not keep everyone safe and included."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the cue or rule that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore safety, consent or inclusion.",
+        "Prefer a reasoned, respectful choice over one that merely looks fun."
+      ],
+      "submit": [
+        "Confirm that your reasons and reflection are both present.",
+        "Proofread names, steps and safety words.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact cue, rule or choice before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key cues.",
+        "Say what each cue does for safety, health or friendship.",
+        "A final label alone is weaker than a stated reason."
+      ],
+      "teach2": [
+        "Compare an unsafe or unkind choice with a better one.",
+        "Change the choice or strategy, not only the words.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, game or situation that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original reasons and a short reflection.",
+        "Save work that shows the skill in a new situation."
+      ]
+    },
+    "subject": "Healthy, Safe and Active Lifestyles",
+    "success_criteria": [
+      "I can use water safety with a specific example from this lesson.",
+      "I can identify the red and yellow flags and explain why it matters.",
+      "I can practise the five Ss independently on a new prompt.",
+      "I can notice sunscreen needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Water can be fun but it can be dangerous.",
+          "options": [
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Water can be fun but it can be dangerous"
+          ],
+          "question": "Which choice best applies this lesson idea about water safety with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Lee and her family go to the beach. They find the red and yellow flags and swim between them with an adult watching. Sun safety: a long-sleeve rash shirt, sunscreen on all uncovered skin (reapplied every two hours and after swimming), a hat, shade under the umbrella in the middle of the day and sunglasses.\n\nTRY FIRST\nA cloudy day at the beach looks cool, so a friend says they do not need sun protection. Write one sentence correcting them and name two of the five Ss they should still use.\n\nFEEDBACK\nUV rays can pass through cloud and cause sunburn even when it is cool. They should still slip on a shirt and slap on a hat, and they can also use sunscreen and shade.",
+        "explain": "Water can be fun but it can be dangerous. Always swim with an adult watching, swim between the red and yellow flags at the beach, never swim alone and ask an adult before going near water. In the sun use the five Ss: slip on a shirt, slop on SPF 30 or higher broad-spectrum sunscreen, slap on a broad-brimmed hat, seek shade and slide on sunglasses. Reapply sunscreen every two hours and after swimming. In Australia, UV rays can burn skin quickly even on cool or cloudy days.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Believing you cannot burn on cloudy or cool days. UV is not the same as heat, so protection is still needed when the UV index is 3 or above. Change the choice or strategy, not just the wording.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "Beach water safety.",
+            "caption": "Never swim alone.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Flags</text><text x=\"28\" y=\"78\">swim between red and yellow</text><text x=\"358\" y=\"42\">Adult</text><text x=\"358\" y=\"78\">watching at all times</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which cue or rule matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the cues, rules or choices that keep everyone safe and included before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example: Lee and her family go to the beach. They find the red and yellow flags and swim between them with an adult watc Then write your own reasons.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which cue or rule matters most.\nJuno: Name the cues, rules or choices that keep everyone safe and included before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example: Lee and her family go to the beach. They find the red and yellow flags and swim between them with an adult watc Then write your own reasons."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+          "options": [
+            "An answer copied without understanding",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
+          ],
+          "question": "Which choice best applies this lesson idea about water safety with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Lee and her family go to the beach. They find the red and yellow flags and swim between them with an adult watching. Sun safety: a long-sleeve rash shirt, sunscreen on all uncovered skin (reapplied every two hours and after swimming), a hat, shade under the umbrella in the middle of the day and sunglasses. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "explain": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without a reason does not show PDHPE thinking. Change the choice or strategy, not just the wording.",
+        "title": "Show the reasoning",
+        "visual": [
+          {
+            "alt": "The five Ss.",
+            "caption": "Cloud does not stop UV.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Slip slop slap</text><text x=\"28\" y=\"78\">shirt, sunscreen, hat</text><text x=\"358\" y=\"42\">Seek slide</text><text x=\"358\" y=\"78\">shade and sunglasses</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
+          "options": [
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
+          ],
+          "question": "Which choice best applies this lesson idea about water safety with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nBelieving you cannot burn on cloudy or cool days. UV is not the same as heat, so protection is still needed when the UV index is 3 or above. Here is a more helpful example: Example: Lee and her family go to the beach. They find the red and yellow flags and swim between them with an adult watching. Sun safety: a long-sleeve rash shirt, sunscreen on all uncovered skin (reapplied every two hours and after swimming), a hat, shade under the umbrella in the middle of the day and sunglasses.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nUV rays can pass through cloud and cause sunburn even when it is cool. They should still slip on a shirt and slap on a hat, and they can also use sunscreen and shade.",
+        "explain": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without changing the choice does not fix the error. Believing you cannot burn on cloudy or cool days. UV is not the same as heat, so protection is still needed when the UV index is 3 or above. Change the choice or strategy, not just the wording.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
+          "options": [
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
+          ],
+          "question": "Which choice best applies this lesson idea about water safety with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nWater can be fun but it can be dangerous. Always swim with an adult watching, swim between the red and yellow flags at the beach, never swim alone and ask an adult before going near water. In the sun use the five Ss: slip on a shirt, slop on SPF 30 or higher broad-spectrum sunscreen, slap on a broad-brimmed hat, seek shade and slide on sunglasses. Reapply sunscreen every two hours and after swimming. In Australia, UV rays can burn skin quickly even on cool or cloudy days. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "explain": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new situation. Change the choice or strategy, not just the wording.",
+        "title": "Transfer to a new situation"
+      }
+    ],
+    "title": "Year 3, Week 27, Lesson 1: Water safety and sun safety",
+    "unit_number": 6,
+    "unit_title": "Staying safe",
+    "week": 27,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample: Lee and her family go to the beach. They find the red and yellow flags and swim between them with an adult watching. Sun safety: a long-sleeve rash shirt, sunscreen on all uncovered skin (reapplied every two hours and after swimming), a hat, shade under the umbrella in the middle of the day and sunglasses.\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.",
+    "worked_visuals": [
+      {
+        "alt": "Beach water safety.",
+        "caption": "Never swim alone.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Flags</text><text x=\"28\" y=\"78\">swim between red and yellow</text><text x=\"358\" y=\"42\">Adult</text><text x=\"358\" y=\"78\">watching at all times</text></g></svg>"
+      },
+      {
+        "alt": "The five Ss.",
+        "caption": "Cloud does not stop UV.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Slip slop slap</text><text x=\"28\" y=\"78\">shirt, sunscreen, hat</text><text x=\"358\" y=\"42\">Seek slide</text><text x=\"358\" y=\"78\">shade and sunglasses</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "A cloudy day at the beach looks cool, so a friend says they do not need sun protection. Write one sentence correcting them and name two of the five Ss they should still use."
+      ],
+      "independent_inputs": [
+        "Make a beach and sun safety poster with the five Ss and four water safety rules. Add a list of what to pack and a sentence for each rule saying why it matters. Teach the rules to someone younger."
+      ],
+      "model_inputs": [
+        "Example: Lee and her family go to the beach. They find the red and yellow flags and swim between them with an adult watching. Sun safety: a long-sleeve rash shirt, sunscreen on all uncovered skin (reapplied every two hours and after swimming), a hat, shade under the umbrella in the middle of the day and sunglasses."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "UV rays can pass through cloud and cause sunburn even when it is cool. They should still slip on a shirt and slap on a hat, and they can also use sunscreen and shade.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "A cloudy day at the beach looks cool, so a friend says they do not need sun protection. Write one sentence correcting them and name two of the five Ss they should still use.",
+        "misconception": "Believing you cannot burn on cloudy or cool days. UV is not the same as heat, so protection is still needed when the UV index is 3 or above.",
+        "model": "Example: Lee and her family go to the beach. They find the red and yellow flags and swim between them with an adult watching. Sun safety: a long-sleeve rash shirt, sunscreen on all uncovered skin (reapplied every two hours and after swimming), a hat, shade under the umbrella in the middle of the day and sunglasses.",
+        "rule": "Water can be fun but it can be dangerous. Always swim with an adult watching, swim between the red and yellow flags at the beach, never swim alone and ask an adult before going near water. In the sun use the five Ss: slip on a shirt, slop on SPF 30 or higher broad-spectrum sunscreen, slap on a broad-brimmed hat, seek shade and slide on sunglasses. Reapply sunscreen every two hours and after swimming. In Australia, UV rays can burn skin quickly even on cool or cloudy days.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.",
+        "misconception": "Writing only a final label without a reason does not show PDHPE thinking.",
+        "model": "Example: Lee and her family go to the beach. They find the red and yellow flags and swim between them with an adult watching. Sun safety: a long-sleeve rash shirt, sunscreen on all uncovered skin (reapplied every two hours and after swimming), a hat, shade under the umbrella in the middle of the day and sunglasses. Look at each cue, rule or choice that carries the idea.",
+        "rule": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "UV rays can pass through cloud and cause sunburn even when it is cool. They should still slip on a shirt and slap on a hat, and they can also use sunscreen and shade.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.",
+        "misconception": "Changing the wording without changing the choice does not fix the error. Believing you cannot burn on cloudy or cool days. UV is not the same as heat, so protection is still needed when the UV index is 3 or above.",
+        "model": "Believing you cannot burn on cloudy or cool days. UV is not the same as heat, so protection is still needed when the UV index is 3 or above. Here is a more helpful example: Example: Lee and her family go to the beach. They find the red and yellow flags and swim between them with an adult watching. Sun safety: a long-sleeve rash shirt, sunscreen on all uncovered skin (reapplied every two hours and after swimming), a hat, shade under the umbrella in the middle of the day and sunglasses.",
+        "rule": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new situation.",
+        "model": "Water can be fun but it can be dangerous. Always swim with an adult watching, swim between the red and yellow flags at the beach, never swim alone and ask an adult before going near water. In the sun use the five Ss: slip on a shirt, slop on SPF 30 or higher broad-spectrum sunscreen, slap on a broad-brimmed hat, seek shade and slide on sunglasses. Reapply sunscreen every two hours and after swimming. In Australia, UV rays can burn skin quickly even on cool or cloudy days. Now choose a different situation to show you can transfer the idea.",
+        "rule": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Beach water safety.",
+        "teaches": "Never swim alone."
+      },
+      {
+        "alt": "The five Ss.",
+        "teaches": "Cloud does not stop UV."
+      }
+    ]
+  }
+}

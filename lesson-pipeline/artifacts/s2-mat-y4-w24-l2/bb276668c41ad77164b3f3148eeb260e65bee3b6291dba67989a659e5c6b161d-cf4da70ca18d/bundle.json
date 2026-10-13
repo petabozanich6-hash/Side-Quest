@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "MA2-GM-01",
+      "lesson_evidence": "Area and perimeter word problems require choosing the correct measure: covering → area; fencing/border → perimeter.",
+      "scope_limit": "Proposed for empty seed mapping using verified MA2-RN-01 wording in lesson-pipeline/sources/nesa-ma2-rn-01.json where that code is used; content-point mapping remains pending.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Area and perimeter word problems require choosing the correct measure: covering → area; fencing/border → perimeter.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same method to a larger number or a new context, then compare two solution paths for accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nDo you need area or perimeter: paint a wall; put a fence around a yard? Solve one of each with numbers you choose.\n\nFEEDBACK\nPaint → area; fence → perimeter; any correct calculated examples.\n\nWATCH FOR\nSolving a fencing problem with l×w alone answers the wrong question.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nSolve fourteen mixed area/perimeter problems. Label A or P before calculating each time.\n\nWrite a short reflection naming one step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Mathematics",
+    "learning_intention": "Area and perimeter word problems require choosing the correct measure: covering → area; fencing/border → perimeter.",
+    "lesson_number": 2,
+    "lesson_role": "Strategies",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: place-value chart or number line"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "MA2-GM-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Solve fourteen mixed area/perimeter problems. Label A or P before calculating each time. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for area; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Solving a fencing problem with l×w alone answers the wrong question.. Correction uses Paint → area; fence → perimeter; any correct calculated examples.. Why: restores accurate area.\n\nParent: Likely misconception: Solving a fencing problem with l×w alone answers the wrong question. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses area with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with area, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for area, and names places/values. Reject copied model numbers. / Accept a named misconception about area, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 1,
+        "explanation": "This matches the taught method for area. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "A method that skips the key step taught in this lesson",
+          "Paint → area; fence → perimeter; any correct calculated examples",
+          "Solving a fencing problem with l×w alone answers the wrong question",
+          "A claim that names no evidence from the lesson material"
+        ],
+        "question": "Do you need area or perimeter: paint a wall; put a fence around a yard? Solve one of each with numbers you choose. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "This is the misconception to avoid for area; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Area and perimeter word problems require choosing the correct measure: covering → area",
+          "Paint → area; fence → perimeter; any correct calculated examples",
+          "Careful use of perimeter and explain why it matters with clear evidence",
+          "Solving a fencing problem with l×w alone answers the wrong question"
+        ],
+        "question": "Which statement is a common mistake when working with area?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and a named perimeter and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name perimeter and explain why it matters only, without linking it to area",
+          "Apply area to new material and name the perimeter and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Solving a fencing problem with l×w alone answers the wrong question"
+        ],
+        "question": "Which response best applies area with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Solving a fencing problem with l×w alone answers the wrong question",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value"
+        ],
+        "question": "Which working best supports a correct answer for this lesson on area?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The correct statement applies the taught area method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Paint → area; fence → perimeter; any correct calculated examples",
+          "Solving a fencing problem with l×w alone answers the wrong question",
+          "Read 4 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 4 and 3 as interchangeable"
+        ],
+        "question": "Using the method for area, which statement is true?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either"
+        ],
+        "question": "If two methods disagree on a area problem with numbers such as 4 and 3, what should you check first?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Retype the worked model numbers 4 and 3 as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Solving a fencing problem with l×w alone answers the wrong question",
+          "Use the same area method on new numbers and name the places or values that matter"
+        ],
+        "question": "Solve a fresh area problem that uses different numbers from the worked model and explain one key step.?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Paint → area; fence → perimeter; any correct calculated examples",
+          "Label units when comparing 4 with 3",
+          "Solving a fencing problem with l×w alone answers the wrong question",
+          "Area and perimeter word problems require choosing the correct measure: covering → area"
+        ],
+        "question": "Which error is the lesson warning against for area?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for area, and names places/values. Reject copied model numbers.",
+        "question": "Solve one fresh problem that uses area with different numbers from the worked model. Show working and name the places or values that matter.",
+        "sample_answer": "Sample: new numbers solved with visible working for area; key places/values named. Do not award marks for retyping the model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a named misconception about area, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
+        "question": "Describe one likely mistake with area, show corrected working, and say why the correction works.",
+        "sample_answer": "Sample misconception: Solving a fencing problem with l×w alone answers the wrong question.. Correction uses Paint → area; fence → perimeter; any correct calculated examples.. Why: restores accurate area.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent working and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-mat-y4-w24-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA mathematics alignment using verified outcome code wording where recorded in lesson-pipeline/sources; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise area.",
+        "Read the mission before you start calculating.",
+        "Keep the place or unit you are working with in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your working with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the place or distance that carries the method.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore place value or working.",
+        "Prefer accurate method over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your working and reason are both present.",
+        "Proofread digits, places and operation signs.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact place, value or distance before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key numbers.",
+        "Say what each number represents in the method.",
+        "A final answer alone is weaker than labelled working."
+      ],
+      "teach2": [
+        "Compare a weak attempt with stronger working.",
+        "Change the value or method, not only how neat it looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose fresh numbers that still use the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original working and a short reason.",
+        "Save work that shows the skill on new numbers."
+      ]
+    },
+    "subject": "Measurement and Space",
+    "success_criteria": [
+      "I can use area with a specific example from this lesson.",
+      "I can identify perimeter and explain why it matters.",
+      "I can practise word problem independently on a new prompt.",
+      "I can notice choose needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Area and perimeter word problems require choosing the correct measure: covering → area; fencing/border → perimeter.",
+          "options": [
+            "Area and perimeter word problems require choosing the correct measure: covering → area",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
+          ],
+          "question": "Which choice best applies this lesson idea about area with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nCarpet for a 4 m by 3 m room → area 12 m². Ribbon around a 4-by-3 photo → perimeter 14 units.\n\nTRY FIRST\nDo you need area or perimeter: paint a wall; put a fence around a yard? Solve one of each with numbers you choose.\n\nFEEDBACK\nPaint → area; fence → perimeter; any correct calculated examples.",
+        "explain": "Area and perimeter word problems require choosing the correct measure: covering → area; fencing/border → perimeter.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Solving a fencing problem with l×w alone answers the wrong question. Correct the value or method, not just the appearance of the digits.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Choose area or perimeter in stories.",
+            "caption": "Label A or P first.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Cover / paint</text><text x=\"28\" y=\"78\">area</text><text x=\"358\" y=\"42\">Fence / border</text><text x=\"358\" y=\"78\">perimeter</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which number or place matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the places, values or distances that carry the method before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Carpet for a 4 m by 3 m room → area 12 m². Ribbon around a 4-by-3 photo → perimeter 14 units. Then write your own working.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which number or place matters most.\nJuno: Name the places, values or distances that carry the method before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Carpet for a 4 m by 3 m room → area 12 m². Ribbon around a 4-by-3 photo → perimeter 14 units. Then write your own working."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
+          ],
+          "question": "Which choice best applies this lesson idea about area with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nCarpet for a 4 m by 3 m room → area 12 m². Ribbon around a 4-by-3 photo → perimeter 14 units. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
+        "explain": "Make the method visible: name the values, places or steps you used and say why that step is valid.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only the final answer without working does not show the method. Correct the value or method, not just the appearance of the digits.",
+        "title": "Show the working",
+        "visual": [
+          {
+            "alt": "Story measure choice.",
+            "caption": "Fourteen mixed problems.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Carpet</text><text x=\"28\" y=\"78\">l×w</text><text x=\"358\" y=\"42\">Ribbon</text><text x=\"358\" y=\"78\">add sides</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
+          "options": [
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Use an intentionally incorrect attempt as a comparison"
+          ],
+          "question": "Which choice best applies this lesson idea about area with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSolving a fencing problem with l×w alone answers the wrong question. Here is a more productive model: Carpet for a 4 m by 3 m room → area 12 m². Ribbon around a 4-by-3 photo → perimeter 14 units.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nPaint → area; fence → perimeter; any correct calculated examples.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the answer without repairing the method does not fix the error. Solving a fencing problem with l×w alone answers the wrong question. Correct the value or method, not just the appearance of the digits.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
+          "options": [
+            "An answer copied without understanding",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
+          ],
+          "question": "Which choice best applies this lesson idea about area with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nArea and perimeter word problems require choosing the correct measure: covering → area; fencing/border → perimeter. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",
+        "explain": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new numbers. Correct the value or method, not just the appearance of the digits.",
+        "title": "Transfer to a new problem"
+      }
+    ],
+    "title": "Year 4, Week 24, Lesson 2: Area and perimeter problems",
+    "unit_number": 6,
+    "unit_title": "Length, perimeter and area",
+    "week": 24,
+    "week_in_unit": 4,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nCarpet for a 4 m by 3 m room → area 12 m². Ribbon around a 4-by-3 photo → perimeter 14 units.\n\nWrite what makes this example accurate, naming the places, values or distances used.",
+    "worked_visuals": [
+      {
+        "alt": "Choose area or perimeter in stories.",
+        "caption": "Label A or P first.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Cover / paint</text><text x=\"28\" y=\"78\">area</text><text x=\"358\" y=\"42\">Fence / border</text><text x=\"358\" y=\"78\">perimeter</text></g></svg>"
+      },
+      {
+        "alt": "Story measure choice.",
+        "caption": "Fourteen mixed problems.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Carpet</text><text x=\"28\" y=\"78\">l×w</text><text x=\"358\" y=\"42\">Ribbon</text><text x=\"358\" y=\"78\">add sides</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 4"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Do you need area or perimeter: paint a wall; put a fence around a yard? Solve one of each with numbers you choose."
+      ],
+      "independent_inputs": [
+        "Solve fourteen mixed area/perimeter problems. Label A or P before calculating each time."
+      ],
+      "model_inputs": [
+        "Carpet for a 4 m by 3 m room → area 12 m². Ribbon around a 4-by-3 photo → perimeter 14 units."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Paint → area; fence → perimeter; any correct calculated examples.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Do you need area or perimeter: paint a wall; put a fence around a yard? Solve one of each with numbers you choose.",
+        "misconception": "Solving a fencing problem with l×w alone answers the wrong question.",
+        "model": "Carpet for a 4 m by 3 m room → area 12 m². Ribbon around a 4-by-3 photo → perimeter 14 units.",
+        "rule": "Area and perimeter word problems require choosing the correct measure: covering → area; fencing/border → perimeter.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The most useful working names the quantities and the reason for each step, not only the final answer.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Write the key numbers from the model and say what each one represents in the method.",
+        "misconception": "Writing only the final answer without working does not show the method.",
+        "model": "Carpet for a 4 m by 3 m room → area 12 m². Ribbon around a 4-by-3 photo → perimeter 14 units. Look at each number, place or distance that carries the method.",
+        "rule": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "Paint → area; fence → perimeter; any correct calculated examples.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Describe why the warned-against approach gives the wrong value or meaning, then write corrected working.",
+        "misconception": "Changing the answer without repairing the method does not fix the error. Solving a fencing problem with l×w alone answers the wrong question.",
+        "model": "Solving a fencing problem with l×w alone answers the wrong question. Here is a more productive model: Carpet for a 4 m by 3 m room → area 12 m². Ribbon around a 4-by-3 photo → perimeter 14 units.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The new problem should use the same method as the model, but contain different numbers.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Solve one fresh problem that uses the same skill and write a short reason for your answer.",
+        "misconception": "Repeating the worked example cannot show transfer to new numbers.",
+        "model": "Area and perimeter word problems require choosing the correct measure: covering → area; fencing/border → perimeter. Now choose different numbers to show you can transfer the method.",
+        "rule": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Choose area or perimeter in stories.",
+        "teaches": "Label A or P first."
+      },
+      {
+        "alt": "Story measure choice.",
+        "teaches": "Fourteen mixed problems."
+      }
+    ]
+  }
+}

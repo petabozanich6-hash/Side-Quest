@@ -11,6 +11,172 @@
   "quality_hardening_adopted": true,
   "builders": [
     {
+      "worker": "builder-s4-commerce",
+      "label": "S4 Commerce Y7\u2013Y8",
+      "seed_patterns": [
+        "s5-commerce-y9-*",
+        "s5-commerce-y10-*"
+      ],
+      "branch_hint": null,
+      "worktree_hint": null,
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-commerce",
+      "owned": 100,
+      "authored": 0,
+      "auto_validated_worker_or_hub": 0,
+      "remaining": 100,
+      "next_seed": "s5-commerce-y10-w01-l1",
+      "current_lesson": null,
+      "phases": {},
+      "blockers": [
+        "No auto-validated lessons in partition yet"
+      ]
+    },
+    {
+      "worker": "builder-s4-dance",
+      "label": "S4 Dance Y7\u2013Y8",
+      "seed_patterns": [
+        "s5-dance-y9-*",
+        "s5-dance-y10-*"
+      ],
+      "branch_hint": null,
+      "worktree_hint": null,
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-dance",
+      "owned": 100,
+      "authored": 0,
+      "auto_validated_worker_or_hub": 0,
+      "remaining": 100,
+      "next_seed": "s5-dance-y10-w01-l1",
+      "current_lesson": null,
+      "phases": {},
+      "blockers": [
+        "No auto-validated lessons in partition yet"
+      ]
+    },
+    {
+      "worker": "builder-s4-design",
+      "label": "S4 Design and Technology Y7\u2013Y8",
+      "seed_patterns": [
+        "s5-design-technology-*"
+      ],
+      "branch_hint": null,
+      "worktree_hint": null,
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-design",
+      "owned": 100,
+      "authored": 0,
+      "auto_validated_worker_or_hub": 0,
+      "remaining": 100,
+      "next_seed": "s5-design-technology-y10-w01-l1",
+      "current_lesson": null,
+      "phases": {},
+      "blockers": [
+        "No auto-validated lessons in partition yet"
+      ]
+    },
+    {
+      "worker": "builder-s4-drama",
+      "label": "S4 Drama Y7\u2013Y8",
+      "seed_patterns": [
+        "s5-drama-y9-*",
+        "s5-drama-y10-*"
+      ],
+      "branch_hint": null,
+      "worktree_hint": null,
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-drama",
+      "owned": 100,
+      "authored": 0,
+      "auto_validated_worker_or_hub": 0,
+      "remaining": 100,
+      "next_seed": "s5-drama-y10-w01-l1",
+      "current_lesson": null,
+      "phases": {},
+      "blockers": [
+        "No auto-validated lessons in partition yet"
+      ]
+    },
+    {
+      "worker": "builder-s4-food",
+      "label": "S4 Food Technology Y7\u2013Y8",
+      "seed_patterns": [
+        "s5-food-technology-*"
+      ],
+      "branch_hint": null,
+      "worktree_hint": null,
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-food",
+      "owned": 100,
+      "authored": 0,
+      "auto_validated_worker_or_hub": 0,
+      "remaining": 100,
+      "next_seed": "s5-food-technology-y10-w01-l1",
+      "current_lesson": null,
+      "phases": {},
+      "blockers": [
+        "No auto-validated lessons in partition yet"
+      ]
+    },
+    {
+      "worker": "builder-s4-ist",
+      "label": "S4 Information and Software Technology Y7\u2013Y8",
+      "seed_patterns": [
+        "s5-information-software-*"
+      ],
+      "branch_hint": null,
+      "worktree_hint": null,
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-ist",
+      "owned": 100,
+      "authored": 0,
+      "auto_validated_worker_or_hub": 0,
+      "remaining": 100,
+      "next_seed": "s5-information-software-technology-y10-w01-l1",
+      "current_lesson": null,
+      "phases": {},
+      "blockers": [
+        "No auto-validated lessons in partition yet"
+      ]
+    },
+    {
+      "worker": "builder-s4-music",
+      "label": "S4 Music Y7\u2013Y8",
+      "seed_patterns": [
+        "s5-music-y9-*",
+        "s5-music-y10-*"
+      ],
+      "branch_hint": null,
+      "worktree_hint": null,
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-music",
+      "owned": 100,
+      "authored": 12,
+      "auto_validated_worker_or_hub": 12,
+      "remaining": 88,
+      "next_seed": "s5-music-y10-w01-l1",
+      "current_lesson": "s5-music-y9-w06-l2",
+      "phases": {
+        "awaiting_review": 12
+      },
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    },
+    {
+      "worker": "builder-s4-visual",
+      "label": "S4 Visual Arts Y7\u2013Y8",
+      "seed_patterns": [
+        "s5-visual-arts-*"
+      ],
+      "branch_hint": null,
+      "worktree_hint": null,
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-s4-visual",
+      "owned": 100,
+      "authored": 0,
+      "auto_validated_worker_or_hub": 0,
+      "remaining": 100,
+      "next_seed": "s5-visual-arts-y10-w01-l1",
+      "current_lesson": null,
+      "phases": {},
+      "blockers": [
+        "No auto-validated lessons in partition yet"
+      ]
+    },
+    {
       "worker": "builder-tech-01",
       "label": "S4 Y8 Tech w05\u2013w09",
       "seed_patterns": [
@@ -305,7 +471,7 @@
       ]
     }
   ],
-  "partitions_updated_at": "2026-10-13T00:22:23.172592+00:00",
+  "partitions_updated_at": "2026-10-13T00:54:57.833867+00:00",
   "last_reconcile": {
     "merged_count": 21,
     "skipped_count": 24,

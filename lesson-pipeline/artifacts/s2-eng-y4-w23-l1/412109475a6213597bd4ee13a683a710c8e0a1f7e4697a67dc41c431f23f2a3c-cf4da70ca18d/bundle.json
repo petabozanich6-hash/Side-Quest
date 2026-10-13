@@ -1,0 +1,445 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN2-RECOM-01",
+      "lesson_evidence": "Relationships and character change are shown through actions, dialogue and responses over time; readers track how one character affects another.",
+      "scope_limit": "Partial contribution; confirm content points for each listed code.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    },
+    {
+      "code": "EN2-UARL-01",
+      "lesson_evidence": "Relationships and character change are shown through actions, dialogue and responses over time; readers track how one character affects another.",
+      "scope_limit": "Partial contribution; confirm content points for each listed code.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Relationships and character change are shown through actions, dialogue and responses over time; readers track how one character affects another.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same strategy to an unfamiliar topic or audience, then compare the effect of two different choices.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nWhat evidence shows change if a character first hides and later asks for help?\n\nFEEDBACK\nCompare early hiding with later asking; quote both moments.\n\nCHECK\nSaying a character \"got nicer\" without evidence is unsupported.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nChart one relationship across a text: early behaviour, later behaviour and a quoted turning point. Explain the change in four sentences.\n\nWrite a short reflection describing one specific revision you made and why.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Relationships and character change are shown through actions, dialogue and responses over time; readers track how one character affects another.",
+    "lesson_number": 1,
+    "lesson_role": "Reading",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "EN2-RECOM-01",
+      "EN2-UARL-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Chart one relationship across a text: early behaviour, later behaviour and a quoted turning point. Explain the change in four sentences. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using relationship on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Saying a character \"got nicer\" without evidence is unsupported.. Correction: Compare early hiding with later asking;. Why it helps the audience is stated.\n\nParent: Likely misconception: Saying a character \"got nicer\" without evidence is unsupported. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating relationship on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with relationship, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about relationship with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for relationship. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 1,
+        "explanation": "This matches the taught method for relationship. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "A method that skips the key step taught in this lesson",
+          "Compare early hiding with later asking",
+          "Saying a character \"got nicer\" without evidence is unsupported",
+          "A claim that names no evidence from the lesson material"
+        ],
+        "question": "What evidence shows change if a character first hides and later asks for help?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "This is the misconception to avoid for relationship; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Compare early hiding with later asking",
+          "Careful use of character change and explain why it matt with clear evidence",
+          "Saying a character \"got nicer\" without evidence is unsupported",
+          "Relationships and character change are shown through actions, dialogue and responses over time"
+        ],
+        "question": "Which statement is a common mistake when working with relationship?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and a named character change and explain why it matt, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Saying a character \"got nicer\" without evidence is unsupported",
+          "Name character change and explain why it matt only, without linking it to relationship",
+          "Apply relationship to new material and name the character change and explain why it matt used",
+          "Repeat the worked example wording with no new evidence"
+        ],
+        "question": "Which response best applies relationship with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries relationship. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore the sentence and invent a more exciting event",
+          "Say the writing is good without naming any words",
+          "Saying a character \"got nicer\" without evidence is unsupported",
+          "Point to exact words in the sentence that show relationship and say what they do"
+        ],
+        "question": "Read: \"In the dusty shed, Lila oiled the bike chain before the race.\" Which choice best uses relationship from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Compare early hiding with later asking",
+          "Saying a character \"got nicer\" without evidence is unsupported",
+          "Copy a model sentence from another story unchanged",
+          "Name character change and explain why it matt without linking it to any words in the text"
+        ],
+        "question": "Which statement correctly applies the lesson idea about relationship?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Locate a specific word, phrase or structural clue before deciding",
+          "Guess from the title alone with no textual clue",
+          "Copy a model sentence from another story unchanged",
+          "Lengthen the answer with adjectives while keeping the same idea"
+        ],
+        "question": "In a new text, what should you do first to analyse character change and explain why it matt?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Add adjectives without fixing the wrong idea",
+          "Make the answer longer while keeping the same mistake",
+          "Delete the evidence that disagreed with your first guess",
+          "Change the inaccurate idea or missing evidence, not only the length"
+        ],
+        "question": "Which revision actually improves meaning for relationship?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Change fonts and claim the work is new",
+          "Saying a character \"got nicer\" without evidence is unsupported",
+          "Use a fresh sentence or text and explain one precise choice about relationship",
+          "Retype the worked model as the final answer"
+        ],
+        "question": "Which response shows accurate use of relationship on fresh material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about relationship with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating relationship on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using relationship on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for relationship. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with relationship, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Saying a character \"got nicer\" without evidence is unsupported.. Correction: Compare early hiding with later asking;. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent task and reflection, with explanations where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-eng-y4-w23-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; verify content points before acceptance.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise relationship.",
+        "Read the mission before you start writing or speaking.",
+        "Keep the audience and purpose in mind as you work."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reason with the feedback.",
+        "Adjust anything that does not match the evidence."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the wording that carries the meaning.",
+        "Then explain the choice without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore the example.",
+        "Prefer evidence over wording that merely sounds clever."
+      ],
+      "submit": [
+        "Check that your response and reason are both present.",
+        "Proofread names, sequence and punctuation.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact word or action before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and underline one useful detail.",
+        "Say what that detail helps a reader understand.",
+        "A vague compliment is weaker than quoted evidence."
+      ],
+      "teach2": [
+        "Compare a weak attempt with a stronger revision.",
+        "Change meaning or accuracy, not only length.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh topic that still uses the same skill.",
+        "Explain one decision in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include an original response and a short reason.",
+        "Save work that shows the skill on new content."
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use relationship with a specific example from this lesson.",
+      "I can identify character change and explain why it matters.",
+      "I can practise evidence independently on a new prompt.",
+      "I can notice interaction needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Relationships and character change are shown through actions, dialogue and responses over time; readers track how one character affects another.",
+          "options": [
+            "A guess with no explanation",
+            "A claim unrelated to the text",
+            "Relationships and character change are shown through actions, dialogue and responses over time",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about relationship with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nEarly: Noor snaps at her brother. Later: she shares her spare torch after he helps carry books. Change: more patient. Evidence: dialogue and action, not a label alone.\n\nTRY FIRST\nWhat evidence shows change if a character first hides and later asks for help?\n\nFEEDBACK\nCompare early hiding with later asking; quote both moments.",
+        "explain": "Relationships and character change are shown through actions, dialogue and responses over time; readers track how one character affects another.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Saying a character \"got nicer\" without evidence is unsupported. Correct the meaning, not just the appearance.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Character change across a relationship.",
+            "caption": "Quote a turning point.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Early</text><text x=\"28\" y=\"78\">snaps at brother</text><text x=\"358\" y=\"42\">Later</text><text x=\"358\" y=\"78\">shares spare torch</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or actions that carry the meaning before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Early: Noor snaps at her brother. Later: she shares her spare torch after he helps carry books. Change: more patient. Ev Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which detail matters most.\nJuno: Name the exact words or actions that carry the meaning before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Early: Noor snaps at her brother. Later: she shares her spare torch after he helps carry books. Change: more patient. Ev Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
+          "options": [
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does",
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation"
+          ],
+          "question": "Which choice best applies this lesson idea about relationship with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nEarly: Noor snaps at her brother. Later: she shares her spare torch after he helps carry books. Change: more patient. Evidence: dialogue and action, not a label alone. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
+        "explain": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Saying a choice is good without naming the actual detail does not show understanding. Correct the meaning, not just the appearance.",
+        "title": "Explain the evidence",
+        "visual": [
+          {
+            "alt": "Change chart contrasted with unsupported labels.",
+            "caption": "Track how characters affect each other.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Chart</text><text x=\"28\" y=\"78\">early → turn → later</text><text x=\"358\" y=\"42\">Weak</text><text x=\"358\" y=\"78\">got nicer with no proof</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
+          "options": [
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation",
+            "Use an intentionally incorrect attempt as a comparison"
+          ],
+          "question": "Which choice best applies this lesson idea about relationship with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSaying a character \"got nicer\" without evidence is unsupported. Here is a more productive model: Early: Noor snaps at her brother. Later: she shares her spare torch after he helps carry books. Change: more patient. Evidence: dialogue and action, not a label alone.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nCompare early hiding with later asking; quote both moments.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "A superficial change in length or appearance does not repair meaning. Saying a character \"got nicer\" without evidence is unsupported. Correct the meaning, not just the appearance.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
+          "options": [
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation",
+            "Use the method on a new topic, not a reworded copy of the example"
+          ],
+          "question": "Which choice best applies this lesson idea about relationship with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nRelationships and character change are shown through actions, dialogue and responses over time; readers track how one character affects another. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",
+        "explain": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new content. Correct the meaning, not just the appearance.",
+        "title": "Transfer to an independent example"
+      }
+    ],
+    "title": "Year 4, Week 23, Lesson 1: Relationships and character change",
+    "unit_number": 5,
+    "unit_title": "Novel study 2",
+    "week": 23,
+    "week_in_unit": 3,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nEarly: Noor snaps at her brother. Later: she shares her spare torch after he helps carry books. Change: more patient. Evidence: dialogue and action, not a label alone.\n\nExplain what makes this example accurate and effective, identifying its specific wording.",
+    "worked_visuals": [
+      {
+        "alt": "Character change across a relationship.",
+        "caption": "Quote a turning point.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Early</text><text x=\"28\" y=\"78\">snaps at brother</text><text x=\"358\" y=\"42\">Later</text><text x=\"358\" y=\"78\">shares spare torch</text></g></svg>"
+      },
+      {
+        "alt": "Change chart contrasted with unsupported labels.",
+        "caption": "Track how characters affect each other.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Chart</text><text x=\"28\" y=\"78\">early → turn → later</text><text x=\"358\" y=\"42\">Weak</text><text x=\"358\" y=\"78\">got nicer with no proof</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 4"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "What evidence shows change if a character first hides and later asks for help?"
+      ],
+      "independent_inputs": [
+        "Chart one relationship across a text: early behaviour, later behaviour and a quoted turning point. Explain the change in four sentences."
+      ],
+      "model_inputs": [
+        "Early: Noor snaps at her brother. Later: she shares her spare torch after he helps carry books. Change: more patient. Evidence: dialogue and action, not a label alone."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Compare early hiding with later asking; quote both moments.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "What evidence shows change if a character first hides and later asks for help?",
+        "misconception": "Saying a character \"got nicer\" without evidence is unsupported.",
+        "model": "Early: Noor snaps at her brother. Later: she shares her spare torch after he helps carry books. Change: more patient. Evidence: dialogue and action, not a label alone.",
+        "rule": "Relationships and character change are shown through actions, dialogue and responses over time; readers track how one character affects another.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "The most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Underline or quote one precise detail in the model and explain its effect.",
+        "misconception": "Saying a choice is good without naming the actual detail does not show understanding.",
+        "model": "Early: Noor snaps at her brother. Later: she shares her spare torch after he helps carry books. Change: more patient. Evidence: dialogue and action, not a label alone. Think about how this word or relationship creates meaning.",
+        "rule": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "Compare early hiding with later asking; quote both moments.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Describe why the warned-against approach would weaken your work, then write a corrected version.",
+        "misconception": "A superficial change in length or appearance does not repair meaning. Saying a character \"got nicer\" without evidence is unsupported.",
+        "model": "Saying a character \"got nicer\" without evidence is unsupported. Here is a more productive model: Early: Noor snaps at her brother. Later: she shares her spare torch after he helps carry books. Change: more patient. Evidence: dialogue and action, not a label alone.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "The new example should meet the same purpose as the model, but contain original material.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Make one fresh example demonstrating the skill and explain your main choice.",
+        "misconception": "Repeating the worked example cannot show transfer to new content.",
+        "model": "Relationships and character change are shown through actions, dialogue and responses over time; readers track how one character affects another. Now choose different people, facts or text to show you can transfer the idea.",
+        "rule": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Character change across a relationship.",
+        "teaches": "Quote a turning point."
+      },
+      {
+        "alt": "Change chart contrasted with unsupported labels.",
+        "teaches": "Track how characters affect each other."
+      }
+    ]
+  }
+}

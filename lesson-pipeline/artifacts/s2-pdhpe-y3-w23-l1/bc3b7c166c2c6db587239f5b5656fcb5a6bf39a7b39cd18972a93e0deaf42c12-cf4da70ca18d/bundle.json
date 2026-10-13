@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "PH2-MSP-01",
+      "lesson_evidence": "Strategy is a plan to help a team succeed. In games, using space means moving into open areas, spreading out to make room for passes and closing gaps when defending. Strategies are decided before the game and changed during it based on what is happening. A good strategy is fair, uses everyone and follows the rules.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Strategy is a plan to help a team succeed. In games, using space means moving into open areas, spreading out to make room for passes and closing gaps when defending. Strategies are decided before the game and changed during it based on what is happening. A good strategy is fair, uses everyone and follows the rules.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nA team bunches together near the goal. Suggest a strategy that uses space better and say why it works.\n\nFEEDBACK\nSpread out so passes can go to open teammates and defenders have more ground to cover. Bunching means one defender can mark everybody. Spreading uses the whole space.\n\nWATCH FOR\nBelieving the ball should always go to the player closest to the goal. Passing to open space or to a free teammate often works better.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nDraw a game space and plan two strategies for attack and two for defence. Play a mini game with family, use each strategy, record what happened in a table and choose the strongest.\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.",
+    "interactive_activities": null,
+    "learning_area": "PDHPE",
+    "learning_intention": "Strategy is a plan to help a team succeed. In games, using space means moving into open areas, spreading out to make room for passes and closing gaps when defending. Strategies are decided before the game and changed during it based on what is happening. A good strategy is fair, uses everyone and follows the rules.",
+    "lesson_number": 1,
+    "lesson_role": "Learn and discuss",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Clear, safe movement space with an adult nearby for any physical activity",
+      "Optional: soft ball, cushion or water bottle"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "PH2-MSP-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Draw a game space and plan two strategies for attack and two for defence. Play a mini game with family, use each strategy, record what happened in a table and choose the strongest. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using strategy on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing the ball should always go to the player closest to the goal.. Correction: Spread out so passes can go to open teammates and defenders have more ground to cover.. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing the ball should always go to the player closest to the goal. Passing to open space or to a free teammate often works better. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating strategy on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with strategy, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about strategy with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for strategy. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "This matches the taught method for strategy. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Believing the ball should always go to the player closest to the goal",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Spread out so passes can go to open teammates and defenders have more ground to cover"
+        ],
+        "question": "A team bunches together near the goal. Suggest a strategy that uses space better and say why it works. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "This is the misconception to avoid for strategy; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Careful use of using space and explain why it matters with clear evidence",
+          "Believing the ball should always go to the player closest to the goal",
+          "Strategy is a plan to help a team succeed",
+          "Spread out so passes can go to open teammates and defenders have more ground to cover"
+        ],
+        "question": "Which statement is a common mistake when working with strategy?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and a named using space and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name using space and explain why it matters only, without linking it to strategy",
+          "Apply strategy to new material and name the using space and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Believing the ball should always go to the player closest to the goal"
+        ],
+        "question": "Which response best applies strategy with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on strategy. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Believing the ball should always go to the player closest to the goal",
+          "Spread out so passes can go to open teammates and defenders have more ground to cover"
+        ],
+        "question": "Which response best uses safe, healthy or respectful choices for strategy?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Use a put-down and call it honesty",
+          "Believing the ball should always go to the player closest to the goal",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with strategy",
+          "Choose the fastest option even when it ignores safety"
+        ],
+        "question": "Which evidence move best supports a claim about strategy?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The stronger choice matches the taught idea (Strategy is a plan to help a team succeed.) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Use a put-down and call it honesty",
+          "Example: a team of three plays against another team of three",
+          "Believing the ball should always go to the player closest to the goal",
+          "Choose the fastest option even when it ignores safety"
+        ],
+        "question": "Which choice best applies this lesson idea about strategy?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete"
+        ],
+        "question": "Which action keeps safe, healthy or respectful choices accurate for strategy?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Retype the worked example with no new example",
+          "Believing the ball should always go to the player closest to the goal",
+          "Name using space and explain why it matters only, with no linked example",
+          "Draw a game space and plan two strategies for attack and two for defence"
+        ],
+        "question": "Which independent response best applies strategy to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about strategy with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating strategy on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using strategy on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for strategy. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with strategy, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Believing the ball should always go to the player closest to the goal.. Correction: Spread out so passes can go to open teammates and defenders have more ground to cover.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-pdhpe-y3-w23-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending human review. Physical activities are optional, adult-supervised and adaptable; no child is required to share personal details.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise strategy.",
+        "Read the mission before you start moving or deciding.",
+        "Keep your own safety and everyone's inclusion in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not keep everyone safe and included."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the cue or rule that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore safety, consent or inclusion.",
+        "Prefer a reasoned, respectful choice over one that merely looks fun."
+      ],
+      "submit": [
+        "Confirm that your reasons and reflection are both present.",
+        "Proofread names, steps and safety words.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact cue, rule or choice before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key cues.",
+        "Say what each cue does for safety, health or friendship.",
+        "A final label alone is weaker than a stated reason."
+      ],
+      "teach2": [
+        "Compare an unsafe or unkind choice with a better one.",
+        "Change the choice or strategy, not only the words.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, game or situation that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original reasons and a short reflection.",
+        "Save work that shows the skill in a new situation."
+      ]
+    },
+    "subject": "Movement Skill and Performance",
+    "success_criteria": [
+      "I can use strategy with a specific example from this lesson.",
+      "I can identify using space and explain why it matters.",
+      "I can practise spreading out independently on a new prompt.",
+      "I can notice closing gaps needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Strategy is a plan to help a team succeed.",
+          "options": [
+            "An answer copied without understanding",
+            "Strategy is a plan to help a team succeed",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
+          ],
+          "question": "Which choice best applies this lesson idea about strategy with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: a team of three plays against another team of three. Strategy: spread out in a triangle to give passing options, move to empty space after passing and close the gap between defenders when the other team has the ball. After round 1 they see the left side is empty and move a player there.\n\nTRY FIRST\nA team bunches together near the goal. Suggest a strategy that uses space better and say why it works.\n\nFEEDBACK\nSpread out so passes can go to open teammates and defenders have more ground to cover. Bunching means one defender can mark everybody. Spreading uses the whole space.",
+        "explain": "Strategy is a plan to help a team succeed. In games, using space means moving into open areas, spreading out to make room for passes and closing gaps when defending. Strategies are decided before the game and changed during it based on what is happening. A good strategy is fair, uses everyone and follows the rules.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Believing the ball should always go to the player closest to the goal. Passing to open space or to a free teammate often works better. Change the choice or strategy, not just the wording.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "Bunching and spreading.",
+            "caption": "Use the whole space.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Bunched</text><text x=\"28\" y=\"78\">one defender covers all</text><text x=\"358\" y=\"42\">Spread out</text><text x=\"358\" y=\"78\">passes have room</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which cue or rule matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the cues, rules or choices that keep everyone safe and included before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example: a team of three plays against another team of three. Strategy: spread out in a triangle to give passing options Then write your own reasons.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which cue or rule matters most.\nJuno: Name the cues, rules or choices that keep everyone safe and included before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example: a team of three plays against another team of three. Strategy: spread out in a triangle to give passing options Then write your own reasons."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+          "options": [
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
+          ],
+          "question": "Which choice best applies this lesson idea about strategy with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: a team of three plays against another team of three. Strategy: spread out in a triangle to give passing options, move to empty space after passing and close the gap between defenders when the other team has the ball. After round 1 they see the left side is empty and move a player there. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "explain": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without a reason does not show PDHPE thinking. Change the choice or strategy, not just the wording.",
+        "title": "Show the reasoning",
+        "visual": [
+          {
+            "alt": "Attack and defence strategy.",
+            "caption": "Plan both ends.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Attack</text><text x=\"28\" y=\"78\">triangle, move after pass</text><text x=\"358\" y=\"42\">Defence</text><text x=\"358\" y=\"78\">close the gaps</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
+          "options": [
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Use an intentionally unsafe or unhelpful choice as a comparison"
+          ],
+          "question": "Which choice best applies this lesson idea about strategy with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nBelieving the ball should always go to the player closest to the goal. Passing to open space or to a free teammate often works better. Here is a more helpful example: Example: a team of three plays against another team of three. Strategy: spread out in a triangle to give passing options, move to empty space after passing and close the gap between defenders when the other team has the ball. After round 1 they see the left side is empty and move a player there.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nSpread out so passes can go to open teammates and defenders have more ground to cover. Bunching means one defender can mark everybody. Spreading uses the whole space.",
+        "explain": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without changing the choice does not fix the error. Believing the ball should always go to the player closest to the goal. Passing to open space or to a free teammate often works better. Change the choice or strategy, not just the wording.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
+          "options": [
+            "An answer copied without understanding",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
+          ],
+          "question": "Which choice best applies this lesson idea about strategy with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nStrategy is a plan to help a team succeed. In games, using space means moving into open areas, spreading out to make room for passes and closing gaps when defending. Strategies are decided before the game and changed during it based on what is happening. A good strategy is fair, uses everyone and follows the rules. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "explain": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new situation. Change the choice or strategy, not just the wording.",
+        "title": "Transfer to a new situation"
+      }
+    ],
+    "title": "Year 3, Week 23, Lesson 1: Using space and strategy",
+    "unit_number": 5,
+    "unit_title": "Games and sports: teamwork and fair play",
+    "week": 23,
+    "week_in_unit": 3,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample: a team of three plays against another team of three. Strategy: spread out in a triangle to give passing options, move to empty space after passing and close the gap between defenders when the other team has the ball. After round 1 they see the left side is empty and move a player there.\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.",
+    "worked_visuals": [
+      {
+        "alt": "Bunching and spreading.",
+        "caption": "Use the whole space.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Bunched</text><text x=\"28\" y=\"78\">one defender covers all</text><text x=\"358\" y=\"42\">Spread out</text><text x=\"358\" y=\"78\">passes have room</text></g></svg>"
+      },
+      {
+        "alt": "Attack and defence strategy.",
+        "caption": "Plan both ends.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Attack</text><text x=\"28\" y=\"78\">triangle, move after pass</text><text x=\"358\" y=\"42\">Defence</text><text x=\"358\" y=\"78\">close the gaps</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "A team bunches together near the goal. Suggest a strategy that uses space better and say why it works."
+      ],
+      "independent_inputs": [
+        "Draw a game space and plan two strategies for attack and two for defence. Play a mini game with family, use each strategy, record what happened in a table and choose the strongest."
+      ],
+      "model_inputs": [
+        "Example: a team of three plays against another team of three. Strategy: spread out in a triangle to give passing options, move to empty space after passing and close the gap between defenders when the other team has the ball. After round 1 they see the left side is empty and move a player there."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Spread out so passes can go to open teammates and defenders have more ground to cover. Bunching means one defender can mark everybody. Spreading uses the whole space.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "A team bunches together near the goal. Suggest a strategy that uses space better and say why it works.",
+        "misconception": "Believing the ball should always go to the player closest to the goal. Passing to open space or to a free teammate often works better.",
+        "model": "Example: a team of three plays against another team of three. Strategy: spread out in a triangle to give passing options, move to empty space after passing and close the gap between defenders when the other team has the ball. After round 1 they see the left side is empty and move a player there.",
+        "rule": "Strategy is a plan to help a team succeed. In games, using space means moving into open areas, spreading out to make room for passes and closing gaps when defending. Strategies are decided before the game and changed during it based on what is happening. A good strategy is fair, uses everyone and follows the rules.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.",
+        "misconception": "Writing only a final label without a reason does not show PDHPE thinking.",
+        "model": "Example: a team of three plays against another team of three. Strategy: spread out in a triangle to give passing options, move to empty space after passing and close the gap between defenders when the other team has the ball. After round 1 they see the left side is empty and move a player there. Look at each cue, rule or choice that carries the idea.",
+        "rule": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "Spread out so passes can go to open teammates and defenders have more ground to cover. Bunching means one defender can mark everybody. Spreading uses the whole space.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.",
+        "misconception": "Changing the wording without changing the choice does not fix the error. Believing the ball should always go to the player closest to the goal. Passing to open space or to a free teammate often works better.",
+        "model": "Believing the ball should always go to the player closest to the goal. Passing to open space or to a free teammate often works better. Here is a more helpful example: Example: a team of three plays against another team of three. Strategy: spread out in a triangle to give passing options, move to empty space after passing and close the gap between defenders when the other team has the ball. After round 1 they see the left side is empty and move a player there.",
+        "rule": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new situation.",
+        "model": "Strategy is a plan to help a team succeed. In games, using space means moving into open areas, spreading out to make room for passes and closing gaps when defending. Strategies are decided before the game and changed during it based on what is happening. A good strategy is fair, uses everyone and follows the rules. Now choose a different situation to show you can transfer the idea.",
+        "rule": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Bunching and spreading.",
+        "teaches": "Use the whole space."
+      },
+      {
+        "alt": "Attack and defence strategy.",
+        "teaches": "Plan both ends."
+      }
+    ]
+  }
+}

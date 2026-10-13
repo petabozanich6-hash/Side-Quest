@@ -1,0 +1,334 @@
+{
+  "child_mission": "Prepare a purposeful reading and a considered response. Use the story’s meaning to guide delivery, then test your interpretation against another supported view.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep excerpt notes, delivery choice and rehearsal observation, discussion response, reflection and quiz result. Record solo versus observed practice and any communication support.",
+  "extension": "Write a response that fairly combines the strongest supported part of View A with View B. Explain what each contributes without forcing complete agreement.",
+  "guided_practice": "WE DO: Prepare one excerpt and one response.\n1. Choose Ari’s proposal and following narration. Identify the speaker, action and central reasoning before choosing delivery.\n2. Mark one brief thought pause and one optional emphasis. Read twice; explain one change.\n3. Paraphrase View B from the teaching example without making it stronger than it is. Suggestion after your try: the view argues that Mara’s concern about unclear signage has evidence too.\n4. Ask a clarification question about evidence or scope. For example, ask whether the interpretation explains only the initial confusion or also the ending.\n5. Draft a response with a short detail and explanation. You can build on the view or qualify it.\n6. Reflect: did the alternative make you notice a detail you had ignored? Explain rather than merely saying you agree.",
+  "independent_task": "YOU DO: Reading and discussion preparation (about 25–30 minutes).\nUse The Side Entrance, included above. This task can be completed independently.\n1. Choose an excerpt of about 60–90 words. Identify speakers and explain its meaning in two short notes.\n2. Plan a pace, pause or emphasis choice with a reason. Rehearse twice and note one improvement. A listener or recording is optional; use your usual communication method if speaking is inaccessible.\n3. State your interpretation of Mara’s response in one or two sentences, with a supporting detail.\n4. Respond in about 120–180 words to View A or View B from the lesson. Paraphrase fairly, ask one useful clarification question, and build, qualify or disagree with evidence.\n5. Reflect on whether the other view changed or sharpened your claim.\nSuccess checklist: accurate reading preparation; purposeful delivery choice; fair representation; precise evidence; explained response; honest evidence description.\nIn the big box include the excerpt reference, preparation notes, rehearsal change and discussion response. Say whether practice was solo or observed. Paper work can be summarised in text; uploads are optional.",
+  "learning_area": "English",
+  "learning_intention": "We are learning to read a short narrative passage clearly and discuss interpretations through evidence, clarification and reflection.",
+  "lesson_number": 4,
+  "lesson_role": "Speaking and listening",
+  "materials": [
+    "All texts and examples are included in this lesson",
+    "Optional: paper and a pen for notes"
+  ],
+  "offline_alternative": "Copy or print the story and two practice views. Prepare an excerpt, rehearse and draft the response on paper. Later type a summary and complete the quiz.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches meaningful reading preparation, purposeful rehearsal, evidence-based response, fair paraphrase, clarification and reflective qualification. The lesson follows the repository’s Year 7 narrative unit. Exact outcome codes are empty because a current Stage 4 code mapping was not verified from the accessible official page; do not claim full outcome coverage. All practice texts are original fiction.\n\nParent: Assess oral delivery or actual listening only if observed or recorded. A solo written rehearsal demonstrates preparation and reasoning, not a live interaction.\n\nParent: No partner, recording, upload, accent or acting style is required. Accept the learner’s usual communication support and note what was actually demonstrated. The lesson supplies the instruction, models and practice. The ten-question quiz is multiple-choice and the unchanged 90% threshold requires 9/10. Written analysis and reflection are part of the independent task, not automatically scored by the quiz.\n\nParent: A strong response to View A can accept the early dismissal while using permission-seeking and the final acknowledgement to qualify it. A response to View B may recognise the signage concern while explaining that checking remains a useful action. Reflection model: the ending made me narrow an all-or-nothing personality claim to a change within this incident.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 2,
+      "explanation": "Understanding the meaning and speaker helps delivery communicate the actual text.",
+      "options": [
+        "A dramatic voice chosen before reading",
+        "Ignoring the speaker",
+        "The passage’s meaning, speaker and relevant words",
+        "Inventing a different event"
+      ],
+      "question": "What should guide reading-aloud preparation?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "A paraphrase preserves the idea’s meaning while changing wording. It should not distort the view.",
+      "options": [
+        "Express another idea accurately in your own words",
+        "Make it more extreme before rejecting it",
+        "Copy an unrelated title",
+        "Replace the story’s ending"
+      ],
+      "question": "What does paraphrase mean here?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The change has a specific clarity purpose and preserves the text.",
+      "options": [
+        "Read every event faster regardless of meaning",
+        "Treat every word as a separate paragraph",
+        "Change the dialogue’s words to suit your voice",
+        "Slow a rushed reason so a listener can follow it"
+      ],
+      "question": "Which is a purposeful pace decision?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The connected phrasing makes the order of Ari’s reasoning easier to follow.",
+      "options": [
+        "It is always the longest phrase",
+        "It helps the listener follow the relationship between checking and deciding",
+        "It removes all punctuation rules",
+        "It proves the hall never opens"
+      ],
+      "question": "Why keep “before deciding it’s closed” as a connected thought?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Accurate representation is necessary before agreement, qualification or disagreement.",
+      "options": [
+        "Insult its author",
+        "Claim only one view can exist",
+        "Represent what the view actually says",
+        "Invent evidence for it"
+      ],
+      "question": "What should a fair response to another view do first?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "The question checks the scope of the claim without attacking the person.",
+      "options": [
+        "Do you mean the initial response or the whole behaviour?",
+        "Why are you always wrong?",
+        "Can we ignore all details?",
+        "Does disagreement prove a bad personality?"
+      ],
+      "question": "Which question usefully clarifies an interpretation?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "A reasoned disagreement examines the interpretation through evidence rather than personal attack.",
+      "options": [
+        "Replace reasons with volume",
+        "Dismiss every alternative immediately",
+        "Refuse to read the view",
+        "Explain a different interpretation using relevant evidence"
+      ],
+      "question": "How can a student disagree respectfully?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Her acknowledgement and constructive request provide contrasting evidence about her later response.",
+      "options": [
+        "The story contains concrete",
+        "She acknowledges Ari’s point and asks to improve the sign",
+        "The model is made of cardboard",
+        "The hall has a foyer"
+      ],
+      "question": "Which ending detail complicates “Mara rejects all advice”?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "A plan records intentions. Actual delivery or interaction needs separate observed or recorded evidence.",
+      "options": [
+        "An observed oral performance",
+        "Proof of listening to a real partner",
+        "Intended preparation and choices",
+        "Every person’s reaction"
+      ],
+      "question": "What does a written delivery plan demonstrate by itself?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Reflection explains the effect of considered evidence, whether the final view changes or is retained.",
+      "options": [
+        "Explain why a view was kept, qualified or changed after considering evidence",
+        "Only say the learner was right",
+        "Copy another view without a reason",
+        "Guarantee the first reading was perfect"
+      ],
+      "question": "What can a useful reflection do?",
+      "type": "multiple_choice"
+    }
+  ],
+  "response_prompt": "Which rehearsal observation or alternative interpretation most affected your final response, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s4-eng-y7-w01-l4",
+  "stage": "S4",
+  "stage_hints": {
+    "accept": [
+      "Read the challenge and notice preparation, delivery and reasoning as separate parts.",
+      "Begin by understanding one excerpt before planning its performance.",
+      "Keep notes for a delivery choice and a supported interpretation as you progress."
+    ],
+    "guided": [
+      "Begin with the selected excerpt’s meaning and speaker.",
+      "Choose one delivery change, then paraphrase the practice view separately.",
+      "Ask a scope or evidence question before adding your own supported response."
+    ],
+    "learn": [
+      "Read the whole story and model response before judging the alternative.",
+      "Locate the early comment and later actions the model compares.",
+      "Explain how the later evidence affects the scope of the initial interpretation."
+    ],
+    "quiz": [
+      "Return to preparation, delivery, fair response or evidence description as needed.",
+      "Distinguish intended choices from what was actually observed.",
+      "Evaluate whether each option preserves the text and examines reasoning rather than attacking a person."
+    ],
+    "submit": [
+      "Check that preparation notes and response reasoning are present.",
+      "Include the reflection and identify whether practice was solo or observed.",
+      "Submit a clear text record of your choices and response; keep any paper work for review."
+    ],
+    "teach0": [
+      "Look back at the speaker and narration in the extract.",
+      "Clarify a word and identify the connected thought before marking a pause.",
+      "Say what the passage means, then group words so that relationship remains clear."
+    ],
+    "teach1": [
+      "Look back at a rehearsal change with an explicit purpose.",
+      "Choose one rushed or unclear phrase rather than changing every tool at once.",
+      "Try the phrase twice and compare how a listener could follow the important reasoning."
+    ],
+    "teach2": [
+      "Look back at accurate representation before evaluation.",
+      "State the other view’s scope and ask what evidence supports it.",
+      "Use “I understand this view as ____. The detail ____ leads me to ____.” Supply your own reason."
+    ],
+    "teach3": [
+      "Look back at the initial-idea and considered-evidence chain.",
+      "Find a detail that supports or complicates the first claim.",
+      "Explain whether you keep, narrow or change the view and why; describe the evidence you actually produced."
+    ],
+    "write": [
+      "Prepare the excerpt first, then state your own claim.",
+      "Begin the discussion response “This view focuses on ____.” Represent it fairly.",
+      "A partial response opening is “I read this interpretation as ____. One detail I would consider is ____.” Finish with your own evidence and reasoning."
+    ]
+  },
+  "subject": "English",
+  "success_criteria": [
+    "I can prepare a passage by checking meaning and word groups.",
+    "I can choose a delivery change with a reason.",
+    "I can support an interpretation with a precise detail.",
+    "I can respond to another view accurately and respectfully.",
+    "I can explain how rehearsal or another interpretation affected my response."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "Meaning and speaker information guide purposeful delivery. Skipping or guessing can distort the passage.",
+        "options": [
+          "Skip the narration",
+          "Guess the ending from one word",
+          "Copy a dramatic voice regardless of meaning",
+          "Check the passage’s meaning, speaker and unfamiliar words"
+        ],
+        "question": "What should you do before choosing a delivery style?"
+      },
+      "example": "I DO:\n“We can check before deciding it’s closed.” Ari picked up his folder. He did not touch Mara’s model.\n\nI identify Ari’s spoken line and the following narrated actions. I keep before deciding it’s closed as a connected thought rather than stopping after each word.\nI consider the meaning: Ari proposes checking the assumption. The narrated action also preserves Mara’s responsibility for her model.\n\nYOU TRY:\nRead “There’s a table for models at the back,” the volunteer said. “Take your time.”\nIdentify the spoken words and narration before rehearsing.\n\nCHECK:\nThe volunteer’s two spoken lines are separated by the narration the volunteer said. Read the full passage so a listener can follow who is speaking.",
+      "explain": "**Reading aloud starts with understanding.**\nRead the chosen passage quietly first. Identify who speaks, what happens and which words need attention. Do not select a dramatic voice before checking the meaning.\n\n**Separate narrator and dialogue.**\nQuotation marks mark a character’s spoken words. The surrounding narration can describe actions or qualify how we understand the line. Read those words too rather than treating the speech as a separate story.\n\n**Clarify unfamiliar words in this text.**\nA foyer is an entrance space inside a building. An exhibitor is someone showing work at an exhibition. An assumption is something accepted without checking it here. Use these meanings in the passage; do not guess a new event from an unfamiliar word.\n\n**Group words into meaningful phrases.**\nA phrase is a meaningful word group. Keep a group such as before deciding it’s closed together enough for its relationship to be heard. Punctuation and meaning can guide brief pauses.\n\nMark two or three practice cues if helpful. A slash can remind you of a pause, but it is not part of the original text to pronounce.",
+      "icon": "📖",
+      "notice": "Meaningful grouping matters more than making every comma the same length of pause. Keep practice marks out of the spoken text.",
+      "title": "Prepare meaning before delivery"
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "A purposeful change has an explainable effect on clarity or interpretation. Loudness alone, invented content or an accent requirement do not establish that.",
+        "options": [
+          "It is linked to how a listener follows the meaning",
+          "It is louder on every word",
+          "It adds events not written",
+          "It guarantees one required accent"
+        ],
+        "question": "What makes a rehearsal change purposeful?"
+      },
+      "example": "I DO:\nFirst try: I rush Ari’s words before deciding it’s closed, so the important order is unclear.\nChange: I give check a little emphasis and read the reason at a steady pace.\nSecond try: the listener can follow that checking comes before the conclusion.\n\nCOMMON MISTAKE:\nIncreasing volume on every word does not fix a rushed connection. I focus on the particular meaning I want heard.\n\nYOU TRY:\nRead “Take your time” twice. Choose a comfortable pace that matches the volunteer’s reassurance in context.\n\nCHECK:\nYou might use a calm, steady delivery. Explain how your choice fits the line rather than claiming everyone must perform it identically.",
+      "explain": "**Delivery should serve a listener’s understanding.**\nPace is speed, volume is loudness and pitch is how high or low the voice sounds. Emphasis gives a selected word extra prominence. A pause can separate thoughts or give an important relationship time to register.\n\n**Make a supported choice.**\nAri’s proposal to check can use a steady pace so its reasoning is clear. Mara’s repeated handle-pulling may suggest frustration, but you should explain the chosen reading from context rather than treating every line as a shout.\n\n**Keep accuracy.**\nUse a comfortable voice, say the written words clearly and do not replace them to fit a performance. There is no required accent or acting style.\n\n**Rehearse twice with a purpose.**\nFirst check word accuracy and grouping. Then choose one delivery change: slow a rushed reason, give a key word prominence or adjust an unhelpful pause. Compare the effect in your second attempt.\n\nExplain your choice: “I changed ____ so the listener could ____.” An improvement should have a reason, not only sound different.",
+      "icon": "📖",
+      "notice": "Select one change you can explain. Different natural voices can communicate the same supported meaning.",
+      "title": "Choose delivery and rehearse a change"
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "The question asks about the evidence for an interpretation. The other responses dismiss or personalise without examining reasoning.",
+        "options": [
+          "You must be wrong because I disagree",
+          "Which detail supports your interpretation of her response?",
+          "Nobody can have another view",
+          "Your idea proves something about your whole personality"
+        ],
+        "question": "Which response best asks for useful clarification?"
+      },
+      "example": "PRACTICE VIEW A:\n“Mara’s comment about the sign sounds dismissive because she says it could mean anywhere before checking.”\nPRACTICE VIEW B:\n“Her concern is also reasonable because she misses the small arrow, and Ari later agrees the sign could be clearer.”\n\nI DO:\nAccurate paraphrase: View A focuses on the quick initial dismissal.\nClarification: “Are you describing only her first response, or her whole behaviour?”\nResponse: “I agree about the first response, but the final permission-seeking action suggests she later tries to improve the problem.”\n\nYOU TRY:\nRespond to View B using a specific detail. Try before reading on.\n\nCHECK:\nA useful response may agree, disagree or qualify, provided it represents View B accurately and explains relevant evidence. “That view is stupid” does not test its reasoning.",
+      "explain": "**Discussion develops ideas, not only opinions.**\nA claim is an interpretation you offer about the story. Support it with a precise action or short quotation, then explain how the evidence relates to the claim.\n\n**Understand a different view first.**\nParaphrase means expressing someone’s idea accurately in your own words. Before agreeing or disagreeing, state what the other interpretation actually says. Do not make it more extreme to dismiss it.\n\n**Ask a clarification question.**\n“Which detail supports that view?” or “Do you mean her initial response or her final action?” can help locate the difference. A question is more useful when it addresses reasoning rather than insulting a person.\n\n**Respond with a link.**\nYou can build on a view, qualify it or offer a different interpretation. Use evidence for your response. Respect does not require agreement; it requires dealing fairly with the stated idea.\n\nIf working alone, use the supplied practice views as a discussion rehearsal. This prepares responses but is different evidence from listening to an actual partner.",
+      "icon": "📖",
+      "notice": "Evaluate the interpretation, not the person. A disagreement should state a reason and refer to the story.",
+      "title": "Discuss a claim with evidence",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "Another reader interprets the character differently. Should I dismiss the idea immediately?",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Paraphrase it accurately first, then ask which detail supports the reasoning.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "I can agree, qualify or disagree using evidence instead of criticising the person.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try. Write a fair response to one different interpretation of the story.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Disagreement can improve an interpretation",
+            "transcript": "Pip: Another reader interprets the character differently. Should I dismiss the idea immediately?\nJuno: Paraphrase it accurately first, then ask which detail supports the reasoning.\nPip: I can agree, qualify or disagree using evidence instead of criticising the person.\nJuno: Pause and try. Write a fair response to one different interpretation of the story."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "The reflection identifies evidence and explains a proportionate change. The other choices ignore reasoning or misdescribe evidence.",
+        "options": [
+          "I was right, so no evidence mattered",
+          "My plan proves an observed performance even if nobody heard it",
+          "Another view means I must copy it without thinking",
+          "I narrowed my claim after considering her later constructive action"
+        ],
+        "question": "Which reflection shows consideration of contrasting evidence?"
+      },
+      "example": "I DO:\nInitial claim: “Mara rejects advice.”\nEvidence considered: she later says Ari was right about checking and asks to improve the sign.\nRevised claim: “Mara initially resists the suggestion, then recognises its value and responds constructively.”\nReason: the revised wording accounts for both early dialogue and later actions.\n\nFor delivery, I record the planned pace change and what I noticed in rehearsal. If no one heard it, I do not label the written plan as an observed performance.\n\nYOU TRY:\nQualify a claim that describes Mara’s entire personality using only one early comment.\n\nCHECK:\nNarrow it to the early response and consider the ending. A retained interpretation is fine when you explain why the evidence still supports it.",
+      "explain": "**Another view can sharpen your interpretation.**\nYou do not have to abandon a claim whenever someone disagrees. Consider the new evidence and decide whether to keep, qualify or change the idea. Explain the reason.\n\n**Keep the scope accurate.**\n“Mara is always dismissive” goes beyond the story. “Her first response sounds dismissive, but her later action is constructive” recognises contrasting evidence without pretending the incident proves her whole personality.\n\n**Use a short reflection chain.**\nInitial idea → evidence or feedback considered → revised or retained idea with a reason. This shows your thinking, not just a statement that you improved.\n\n**Separate evidence types.**\nA written delivery plan shows what you intended. An observed or recorded reading can show what you actually did. A solo response to practice views shows discussion preparation, not proof that you listened to a real person.\n\nComplete this lesson independently when needed. Use your usual communication support and describe it honestly so a reviewer knows which skills the evidence demonstrates.",
+      "icon": "📖",
+      "notice": "Reflection can explain a retained view as well as a changed one. State the evidence and its effect on your reasoning.",
+      "title": "Reflect, revise and keep evidence honest",
+      "visual": [
+        {
+          "alt": "A reflection moves from an initial interpretation through considered evidence to keeping, qualifying or changing it with a reason.",
+          "caption": "Do not confuse agreement with reflection.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 224\"><rect width=\"420\" height=\"224\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Initial interpretation</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">New evidence considered</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Keep / qualify / change</text><text x=\"16\" y=\"172\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Explain the reason</text></svg>"
+        }
+      ]
+    }
+  ],
+  "title": "Year 7: Read aloud and discuss with evidence",
+  "unit_number": 1,
+  "unit_title": "Narrative: short stories and voice",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Use the full original story for preparation.\nTHE SIDE ENTRANCE\n\nMara reached the community hall twenty minutes before the student exhibition opened. She had spent the week building a cardboard model and wanted it on a table before anyone arrived. Through the front glass she could see chairs, a folded display board and an empty foyer. The door would not move.\n\n“They said we could bring our work early,” she told Ari. She pulled the handle again. In the glass, her model’s crooked roof looked more noticeable than it had at home.\n\nAri set down his folder and checked the message on his phone. “It says side entrance for exhibitors.”\n\nMara looked along the wall. A small paper arrow pointed towards the corner, but she had walked straight past it. “That could mean anywhere,” she said.\n\n“We can check before deciding it’s closed.” Ari picked up his folder. He did not touch Mara’s model.\n\nAt the side door, a volunteer was holding the frame open while another student carried a painting through. Warm light fell across the concrete. Mara stopped adjusting the roof and stepped forward.\n\n“There’s a table for models at the back,” the volunteer said. “Take your time.”\n\nInside, Mara found a space and placed the model beside a bridge made from paddle-pop sticks. Nobody commented on her roof. Ari put his folder on the neighbouring table.\n\nMara took the paper arrow from the outside wall, showed it to the volunteer and asked whether they could add a second arrow near the front handle. With permission, she placed the new sign where the next student would see it before pulling.\n\nWhen she came back, Ari was straightening his display label. “You were right about checking,” she said. He looked up. “And you were right that the sign could be clearer.”\n\nMODEL DELIVERY NOTE\nFor Ari’s proposal to check before deciding, I will keep the reason connected and give check a little prominence. This helps a listener follow his measured response. I will compare word clarity in two rehearsals instead of making every line louder.\n\nMODEL DISCUSSION RESPONSE\nView A identifies a dismissive early comment. I agree that “That could mean anywhere” resists Ari’s suggestion. However, the ending complicates a claim that Mara simply rejects advice: she acknowledges his point and asks permission to improve the sign. I would qualify the claim to describe an initial response followed by a constructive change.\n\nWHY IT WORKS\nThe response accurately represents the other view, supplies evidence and explains a qualification. It does not need to declare one reader the winner.\n\nCOMMON MISTAKE AND FIX\n“View A says Mara is a terrible person” exaggerates the stated interpretation. Fix: paraphrase its actual focus on her early response before evaluating it.",
+  "worked_visuals": [
+    {
+      "alt": "Discussion preparation paraphrases a view, asks about evidence or scope, responds with detail and reflects on the reasoning.",
+      "caption": "Fair representation comes before disagreement.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 224\"><rect width=\"420\" height=\"224\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Paraphrase the view fairly</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Ask about evidence or scope</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Respond with a precise detail</text><text x=\"16\" y=\"172\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Reflect on the reasoning</text></svg>"
+    }
+  ],
+  "year_level": "Year 7"
+}

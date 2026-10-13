@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "ST2-SCI-01",
+      "lesson_evidence": "Weathering breaks rocks into smaller pieces in place; erosion moves weathered material by water, wind or ice.",
+      "scope_limit": "Proposed Stage 2 NESA Science and Technology alignment using catalogue outcome codes; content-point mapping remains pending.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/science/science-and-technology-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Weathering breaks rocks into smaller pieces in place; erosion moves weathered material by water, wind or ice.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same science idea to a new object or material, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nWhich process: rock crumbling on a cliff face without moving far; pebbles carried along a creek bed?\n\nFEEDBACK\nWeathering; erosion.\n\nWATCH FOR\nUsing weathering and erosion as identical words hides the “break vs move” difference.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nFind or photograph four local examples (or use provided images). Label each weathering or erosion and name the agent (water/wind/ice/plants) when clear.\n\nWrite a short reflection naming one observation or step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Science and Technology",
+    "learning_intention": "Weathering breaks rocks into smaller pieces in place; erosion moves weathered material by water, wind or ice.",
+    "lesson_number": 1,
+    "lesson_role": "Investigate",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: safe everyday objects for observation"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "ST2-SCI-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Find or photograph four local examples (or use provided images). Label each weathering or erosion and name the agent (water/wind/ice/plants) when clear. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about weathering linked to that evidence.\n\nParent: Written model 2: Sample misconception: Using weathering and erosion as identical words hides the “break vs move” difference.. Correction: Weathering; erosion. with evidence.\n\nParent: Likely misconception: Using weathering and erosion as identical words hides the “break vs move” difference. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses weathering. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about weathering, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about weathering. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for weathering. Reject wording changes that leave the same error..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "This matches the taught method for weathering. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Using weathering and erosion as identical words hides the “break vs move” difference",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Weathering; erosion"
+        ],
+        "question": "Which process: rock crumbling on a cliff face without moving far; pebbles carried along a creek bed?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "This is the misconception to avoid for weathering; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Using weathering and erosion as identical words hides the “break vs move” difference",
+          "Weathering breaks rocks into smaller pieces in place",
+          "Weathering; erosion",
+          "Careful use of erosion and explain why it matters with clear evidence"
+        ],
+        "question": "Which statement is a common mistake when working with weathering?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and a named erosion and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name erosion and explain why it matters only, without linking it to weathering",
+          "Apply weathering to new material and name the erosion and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Using weathering and erosion as identical words hides the “break vs move” difference"
+        ],
+        "question": "Which response best applies weathering with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation",
+          "Using weathering and erosion as identical words hides the “break vs move” difference",
+          "Use observable features or measurements as evidence, not appearance alone"
+        ],
+        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which claim about weathering is most trustworthy?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "A label copied from the title with no evidence",
+          "Using weathering and erosion as identical words hides the “break vs move” difference",
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation"
+        ],
+        "question": "Which record best supports a science claim about weathering?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The strongest choice applies the taught idea about weathering with evidence. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "Weathering; erosion",
+          "Using weathering and erosion as identical words hides the “break vs move” difference"
+        ],
+        "question": "Using this science idea — Weathering breaks rocks into smaller pieces in place; — which choice is strongest?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result"
+        ],
+        "question": "Which investigation design best tests an idea about weathering?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Using weathering and erosion as identical words hides the “break vs move” difference",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about weathering should change with it",
+          "Any exciting story about the object must be true"
+        ],
+        "question": "Which prediction about weathering can be checked with evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about weathering. Reject title-only labels with no observation.",
+        "question": "Investigate or describe a fresh example (not the worked objects) that uses weathering. Record evidence and explain how it supports your claim.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about weathering linked to that evidence.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for weathering. Reject wording changes that leave the same error.",
+        "question": "Name one science misconception about weathering, correct it with evidence, and say why the correction works.",
+        "sample_answer": "Sample misconception: Using weathering and erosion as identical words hides the “break vs move” difference.. Correction: Weathering; erosion. with evidence.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-sci-y4-w07-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA Science and Technology alignment using catalogue outcome codes; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise weathering.",
+        "Read the mission before you start observing or testing.",
+        "Keep the property or variable you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the observation or step that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore observations or fair tests.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread labels, measurements and sequence of steps.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact observation or test step before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key observations.",
+        "Say what each observation shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or method, not only how neat the drawing looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh object or context that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new objects or data."
+      ]
+    },
+    "subject": "Earth and Space",
+    "success_criteria": [
+      "I can use weathering with a specific example from this lesson.",
+      "I can identify erosion and explain why it matters.",
+      "I can practise rock independently on a new prompt.",
+      "I can notice soil needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Weathering breaks rocks into smaller pieces in place; erosion moves weathered material by water, wind or ice. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding",
+            "Weathering breaks rocks into smaller pieces in place",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
+          ],
+          "question": "Which choice best applies this lesson idea about weathering with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nWater in cracks freezes and widens cracks (weathering). A stream carries sand downstream (erosion). Both reshape land over time.\n\nTRY FIRST\nWhich process: rock crumbling on a cliff face without moving far; pebbles carried along a creek bed?\n\nFEEDBACK\nWeathering; erosion.",
+        "explain": "Weathering breaks rocks into smaller pieces in place; erosion moves weathered material by water, wind or ice.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Using weathering and erosion as identical words hides the “break vs move” difference. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Weathering vs erosion.",
+            "caption": "Break ≠ move.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Weathering</text><text x=\"28\" y=\"78\">breaks in place</text><text x=\"358\" y=\"42\">Erosion</text><text x=\"358\" y=\"78\">moves material</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which observation matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the observations, properties or test steps that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Water in cracks freezes and widens cracks (weathering). A stream carries sand downstream (erosion). Both reshape land ov Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which observation matters most.\nJuno: Name the observations, properties or test steps that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Water in cracks freezes and widens cracks (weathering). A stream carries sand downstream (erosion). Both reshape land ov Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
+          "options": [
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
+          ],
+          "question": "Which choice best applies this lesson idea about weathering with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nWater in cracks freezes and widens cracks (weathering). A stream carries sand downstream (erosion). Both reshape land over time. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show science thinking. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "Agent examples.",
+            "caption": "Four labelled examples.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Freeze crack</text><text x=\"28\" y=\"78\">weathering</text><text x=\"358\" y=\"42\">Stream sand</text><text x=\"358\" y=\"78\">erosion</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
+          "options": [
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about weathering with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nUsing weathering and erosion as identical words hides the “break vs move” difference. Here is a more productive model: Water in cracks freezes and widens cracks (weathering). A stream carries sand downstream (erosion). Both reshape land over time.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nWeathering; erosion.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. Using weathering and erosion as identical words hides the “break vs move” difference. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
+          "options": [
+            "An answer copied without understanding",
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
+          ],
+          "question": "Which choice best applies this lesson idea about weathering with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nWeathering breaks rocks into smaller pieces in place; erosion moves weathered material by water, wind or ice. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",
+        "explain": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Transfer to a new investigation"
+      }
+    ],
+    "title": "Year 4, Week 7, Lesson 1: Weathering and erosion",
+    "unit_number": 2,
+    "unit_title": "Earth surface and weather",
+    "week": 7,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nWater in cracks freezes and widens cracks (weathering). A stream carries sand downstream (erosion). Both reshape land over time.\n\nWrite what makes this example accurate, naming the observations, properties or test steps used.",
+    "worked_visuals": [
+      {
+        "alt": "Weathering vs erosion.",
+        "caption": "Break ≠ move.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Weathering</text><text x=\"28\" y=\"78\">breaks in place</text><text x=\"358\" y=\"42\">Erosion</text><text x=\"358\" y=\"78\">moves material</text></g></svg>"
+      },
+      {
+        "alt": "Agent examples.",
+        "caption": "Four labelled examples.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Freeze crack</text><text x=\"28\" y=\"78\">weathering</text><text x=\"358\" y=\"42\">Stream sand</text><text x=\"358\" y=\"78\">erosion</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 4"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Which process: rock crumbling on a cliff face without moving far; pebbles carried along a creek bed?"
+      ],
+      "independent_inputs": [
+        "Find or photograph four local examples (or use provided images). Label each weathering or erosion and name the agent (water/wind/ice/plants) when clear."
+      ],
+      "model_inputs": [
+        "Water in cracks freezes and widens cracks (weathering). A stream carries sand downstream (erosion). Both reshape land over time."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Weathering; erosion.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Which process: rock crumbling on a cliff face without moving far; pebbles carried along a creek bed?",
+        "misconception": "Using weathering and erosion as identical words hides the “break vs move” difference.",
+        "model": "Water in cracks freezes and widens cracks (weathering). A stream carries sand downstream (erosion). Both reshape land over time.",
+        "rule": "Weathering breaks rocks into smaller pieces in place; erosion moves weathered material by water, wind or ice.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "List the key observations, sources or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show science thinking.",
+        "model": "Water in cracks freezes and widens cracks (weathering). A stream carries sand downstream (erosion). Both reshape land over time. Look at each observation, source detail or example that carries the idea.",
+        "rule": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "Weathering; erosion.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. Using weathering and erosion as identical words hides the “break vs move” difference.",
+        "model": "Using weathering and erosion as identical words hides the “break vs move” difference. Here is a more productive model: Water in cracks freezes and widens cracks (weathering). A stream carries sand downstream (erosion). Both reshape land over time.",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "The new example should use the same science idea as the model, but contain different evidence.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Inquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "Weathering breaks rocks into smaller pieces in place; erosion moves weathered material by water, wind or ice. Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Weathering vs erosion.",
+        "teaches": "Break ≠ move."
+      },
+      {
+        "alt": "Agent examples.",
+        "teaches": "Four labelled examples."
+      }
+    ]
+  }
+}

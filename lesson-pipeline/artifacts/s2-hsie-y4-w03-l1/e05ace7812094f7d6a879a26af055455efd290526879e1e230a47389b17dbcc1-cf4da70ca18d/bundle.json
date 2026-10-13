@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "HS2-HIS-01",
+      "lesson_evidence": "Dutch and other early European visitors reached parts of the Australian coastline before the British colony of 1788. Encounters with First Nations Peoples, when recorded, must be read carefully as one-sided written sources; oral histories held by Communities are not ours to invent.",
+      "scope_limit": "Proposed Stage 2 NESA HSIE alignment using catalogue outcome codes (HS2-*); content-point mapping and local First Nations protocols remain pending human review.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/hsie/hsie-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Dutch and other early European visitors reached parts of the Australian coastline before the British colony of 1788. Encounters with First Nations Peoples, when recorded, must be read carefully as one-sided written sources; oral histories held by Communities are not ours to invent.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same HSIE idea to a new place or source, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nWhy must we treat a European journal of first contact as a limited source?\n\nFEEDBACK\nIt shows one side’s view, may misunderstand First Nations actions and leaves out Community knowledge not written there.\n\nWATCH FOR\nRetelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and unequal power in the records.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nUsing two published sources, complete a contact card: European group, region in general terms, date range, what the written source claims and one question you would ask a First Nations educator. No invented dialogue.\n\nWrite a short reflection naming one source or idea you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "HSIE",
+    "learning_intention": "Dutch and other early European visitors reached parts of the Australian coastline before the British colony of 1788. Encounters with First Nations Peoples, when recorded, must be read carefully as one-sided written sources; oral histories held by Communities are not ours to invent.",
+    "lesson_number": 1,
+    "lesson_role": "Investigate",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: local map, photo or interview notes"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "HS2-HIS-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Using two published sources, complete a contact card: European group, region in general terms, date range, what the written source claims and one question you would ask a First Nations educator. No invented dialogue. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using Dutch on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and. Correction: It shows one side’s view, may misunderstand First Nations actions and leaves out Community knowledge not written there.. Why it helps the audience is stated.\n\nParent: Likely misconception: Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and unequal power in the records. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating Dutch on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with Dutch, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about Dutch with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for Dutch. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "This matches the taught method for Dutch. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "It shows one side’s view, may misunderstand First Nations actions and leaves out Community knowledge not written there",
+          "Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
+        ],
+        "question": "Why must we treat a European journal of first contact as a limited source?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "This is the misconception to avoid for Dutch; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Careful use of visitor and explain why it matters with clear evidence",
+          "Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and",
+          "Dutch and other early European visitors reached parts of the Australian coastline before the British colony of 1788",
+          "It shows one side’s view, may misunderstand First Nations actions and leaves out Community knowledge not written there"
+        ],
+        "question": "Which statement is a common mistake when working with Dutch?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and a named visitor and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Apply Dutch to new material and name the visitor and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and",
+          "Name visitor and explain why it matters only, without linking it to Dutch"
+        ],
+        "question": "Which response best applies Dutch with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on Dutch. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and",
+          "It shows one side’s view, may misunderstand First Nations actions and leaves out Community knowledge not written there"
+        ],
+        "question": "Which response best uses sources, places or historical/geographic evidence for Dutch?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Copy a classmate’s sentence with no local detail",
+          "Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and",
+          "Name a specific source or place detail and say what it shows about Dutch",
+          "Make a bigger claim without naming any source or place detail"
+        ],
+        "question": "Which evidence move best supports a claim about Dutch?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The stronger choice matches the taught idea (Dutch and other early European visitors reached parts of the Australian) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Example: a class uses a published school source about a Dutch voyage along a western or northern coast (as named in",
+          "Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and"
+        ],
+        "question": "Which choice best applies this lesson idea about Dutch?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details",
+          "Invent missing details to make the answer sound complete"
+        ],
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for Dutch?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name visitor and explain why it matters only, with no linked example",
+          "Using two published sources, complete a contact card: European group, region in general terms, date range, what the",
+          "Retype the worked example with no new example",
+          "Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and"
+        ],
+        "question": "Which independent response best applies Dutch to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about Dutch with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating Dutch on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using Dutch on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for Dutch. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with Dutch, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and. Correction: It shows one side’s view, may misunderstand First Nations actions and leaves out Community knowledge not written there.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-hsie-y4-w03-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA HSIE alignment using catalogue outcome codes (HS2-*); content-point mapping and local First Nations protocols remain pending human review.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise Dutch.",
+        "Read the mission before you start mapping or using sources.",
+        "Keep the place, people or source you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the source or place detail that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore sources or respectful practice.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread names, places, dates and sequence.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact source detail or place feature before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key evidence.",
+        "Say what each source or place detail shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or use of sources, not only how neat the poster looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, person or source that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new sources or places."
+      ]
+    },
+    "subject": "History",
+    "success_criteria": [
+      "I can use Dutch with a specific example from this lesson.",
+      "I can identify visitor and explain why it matters.",
+      "I can practise coast independently on a new prompt.",
+      "I can notice encounter needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Dutch and other early European visitors reached parts of the Australian coastline before the British colony of 1788.",
+          "options": [
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Dutch and other early European visitors reached parts of the Australian coastline before the British colony of 1788",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about Dutch with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: a class uses a published school source about a Dutch voyage along a western or northern coast (as named in that source). They record ship, approximate date and that the land was already occupied. They do not invent dialogue or Dreaming interpretations.\n\nTRY FIRST\nWhy must we treat a European journal of first contact as a limited source?\n\nFEEDBACK\nIt shows one side’s view, may misunderstand First Nations actions and leaves out Community knowledge not written there.",
+        "explain": "Dutch and other early European visitors reached parts of the Australian coastline before the British colony of 1788. Encounters with First Nations Peoples, when recorded, must be read carefully as one-sided written sources; oral histories held by Communities are not ours to invent.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and unequal power in the records. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Early coastal visitors.",
+            "caption": "No invented dialogue.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Early visitors</text><text x=\"28\" y=\"78\">Dutch and others</text><text x=\"358\" y=\"42\">Limit</text><text x=\"358\" y=\"78\">one-sided journals</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which source or place detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the sources, map features or community examples that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Example: a class uses a published school source about a Dutch voyage along a western or northern coast (as named in that Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which source or place detail matters most.\nJuno: Name the sources, map features or community examples that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Example: a class uses a published school source about a Dutch voyage along a western or northern coast (as named in that Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding",
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
+          ],
+          "question": "Which choice best applies this lesson idea about Dutch with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: a class uses a published school source about a Dutch voyage along a western or northern coast (as named in that source). They record ship, approximate date and that the land was already occupied. They do not invent dialogue or Dreaming interpretations. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show HSIE thinking. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "Limited European record.",
+            "caption": "Two sources.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Contact card</text><text x=\"28\" y=\"78\">questions for educator</text><text x=\"358\" y=\"42\">Risk</text><text x=\"358\" y=\"78\">adventure-only story</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
+          "options": [
+            "An answer copied without understanding",
+            "Use an intentionally incorrect claim as a comparison",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
+          ],
+          "question": "Which choice best applies this lesson idea about Dutch with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nRetelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and unequal power in the records. Here is a more productive model: Example: a class uses a published school source about a Dutch voyage along a western or northern coast (as named in that source). They record ship, approximate date and that the land was already occupied. They do not invent dialogue or Dreaming interpretations.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nIt shows one side’s view, may misunderstand First Nations actions and leaves out Community knowledge not written there.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and unequal power in the records. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
+          "options": [
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example"
+          ],
+          "question": "Which choice best applies this lesson idea about Dutch with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nDutch and other early European visitors reached parts of the Australian coastline before the British colony of 1788. Encounters with First Nations Peoples, when recorded, must be read carefully as one-sided written sources; oral histories held by Communities are not ours to invent. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",
+        "explain": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Transfer to a new inquiry"
+      }
+    ],
+    "title": "Year 4, Week 3, Lesson 1: Dutch and other early visitors to Australia",
+    "unit_number": 1,
+    "unit_title": "First contacts and exploration",
+    "week": 3,
+    "week_in_unit": 3,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample: a class uses a published school source about a Dutch voyage along a western or northern coast (as named in that source). They record ship, approximate date and that the land was already occupied. They do not invent dialogue or Dreaming interpretations.\n\nWrite what makes this example accurate, naming the sources, places or community details used.",
+    "worked_visuals": [
+      {
+        "alt": "Early coastal visitors.",
+        "caption": "No invented dialogue.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Early visitors</text><text x=\"28\" y=\"78\">Dutch and others</text><text x=\"358\" y=\"42\">Limit</text><text x=\"358\" y=\"78\">one-sided journals</text></g></svg>"
+      },
+      {
+        "alt": "Limited European record.",
+        "caption": "Two sources.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Contact card</text><text x=\"28\" y=\"78\">questions for educator</text><text x=\"358\" y=\"42\">Risk</text><text x=\"358\" y=\"78\">adventure-only story</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 4"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Why must we treat a European journal of first contact as a limited source?"
+      ],
+      "independent_inputs": [
+        "Using two published sources, complete a contact card: European group, region in general terms, date range, what the written source claims and one question you would ask a First Nations educator. No invented dialogue."
+      ],
+      "model_inputs": [
+        "Example: a class uses a published school source about a Dutch voyage along a western or northern coast (as named in that source). They record ship, approximate date and that the land was already occupied. They do not invent dialogue or Dreaming interpretations."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "It shows one side’s view, may misunderstand First Nations actions and leaves out Community knowledge not written there.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Why must we treat a European journal of first contact as a limited source?",
+        "misconception": "Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and unequal power in the records.",
+        "model": "Example: a class uses a published school source about a Dutch voyage along a western or northern coast (as named in that source). They record ship, approximate date and that the land was already occupied. They do not invent dialogue or Dreaming interpretations.",
+        "rule": "Dutch and other early European visitors reached parts of the Australian coastline before the British colony of 1788. Encounters with First Nations Peoples, when recorded, must be read carefully as one-sided written sources; oral histories held by Communities are not ours to invent.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "List the key observations, sources or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show HSIE thinking.",
+        "model": "Example: a class uses a published school source about a Dutch voyage along a western or northern coast (as named in that source). They record ship, approximate date and that the land was already occupied. They do not invent dialogue or Dreaming interpretations. Look at each observation, source detail or example that carries the idea.",
+        "rule": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "It shows one side’s view, may misunderstand First Nations actions and leaves out Community knowledge not written there.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and unequal power in the records.",
+        "model": "Retelling contact as a friendly adventure story without First Nations perspectives hides conflict, confusion and unequal power in the records. Here is a more productive model: Example: a class uses a published school source about a Dutch voyage along a western or northern coast (as named in that source). They record ship, approximate date and that the land was already occupied. They do not invent dialogue or Dreaming interpretations.",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "The new example should use the same HSIE idea as the model, but contain different evidence.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Inquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "Dutch and other early European visitors reached parts of the Australian coastline before the British colony of 1788. Encounters with First Nations Peoples, when recorded, must be read carefully as one-sided written sources; oral histories held by Communities are not ours to invent. Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Early coastal visitors.",
+        "teaches": "No invented dialogue."
+      },
+      {
+        "alt": "Limited European record.",
+        "teaches": "Two sources."
+      }
+    ]
+  }
+}

@@ -1,0 +1,334 @@
+{
+  "child_mission": "Investigate how a sentence works before changing it. Identify its nouns and verb group, then choose a purpose and structure that suit a narrative moment.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep noun/verb analyses, purpose examples, compound/complex examples with clause explanations, reflection and quiz result.",
+  "extension": "Write a simple sentence with a two-word verb group and a compound sentence. Explain why counting the words in a verb group does not identify the number of independent clauses.",
+  "guided_practice": "WE DO: Work with “Ari could help. Mara held the model.”\n1. Identify nouns before comparing: Ari and Mara name particular characters; model names a thing.\n2. Identify the verb groups: could help and held. Do not split could from help when naming the group.\n3. Turn “Mara held the model” into a question. One option is “Did Mara hold the model?” Notice that the helping verb and main form change together.\n4. Join the original statements as a compound: “Ari could help, and Mara held the model.” Each part can stand independently.\n5. For a new fictional version, use because only if you intend and support a reason, such as “Because Ari could help, Mara let him hold the model.” Explain that this version changes the event instead of presenting it as an unchanged copy.\n6. State one purpose and one structure separately. Your explanation should refer to the actual wording.",
+  "independent_task": "YOU DO: Sentence Investigator task (about 25–30 minutes).\nPractice passage: “Mara waited by the door. Ari had checked the message. The side entrance was open. Mara carried the model inside.”\n1. List two proper nouns and two common nouns, identifying what they name. If a name repeats, it is still the same noun; choose Mara and Ari rather than claiming duplicates are new examples.\n2. Identify the verb group in each sentence. Include had with checked.\n3. Create a question and a command about the model or entrance. Explain each communicative purpose.\n4. Combine two supplied events into a compound sentence. Show the two parts that can stand alone.\n5. Write a complex sentence linking a reason or time relationship you deliberately intend. Name the dependent part. Explain if your new fictional version changes any event.\n6. Check: nouns identified in context; verb groups complete; purpose separate from structure; relationships sensible; marks checked.\nType the examples and explanations in the big box, or work on paper and type a clear summary of your analyses. Do not increase length merely to make a sentence sound advanced.",
+  "learning_area": "English",
+  "learning_intention": "We are learning to identify core word functions and compare sentence purposes and structures in narrative writing.",
+  "lesson_number": 3,
+  "lesson_role": "Language and vocabulary",
+  "materials": [
+    "All texts and examples are included in this lesson",
+    "Optional: paper and a pen for notes"
+  ],
+  "offline_alternative": "Copy the practice passage onto paper. Mark nouns, underline complete verb groups and write the new examples with explanations. Later type a summary and complete the quiz.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches core noun and verb functions, sentence purposes and introductory clause structures in context. The lesson follows the repository’s Year 7 narrative unit. Exact outcome codes are empty because a current Stage 4 code mapping was not verified from the accessible official page; do not claim full outcome coverage. All practice texts are original fiction.\n\nParent: Look for explanations rather than labels copied from a list. A multiword verb group is distinguished from two independent clauses. Commands can have an understood subject.\n\nParent: Let the learner complete one analysis pass at a time. More complex wording is not a quality goal by itself. A purposeful narrative revision may change an event, but the learner should acknowledge that choice. The lesson supplies the instruction, models and practice. The ten-question quiz is multiple-choice and the unchanged 90% threshold requires 9/10. Written analysis and reflection are part of the independent task, not automatically scored by the quiz.\n\nParent: Task models: proper nouns Mara/Ari; common nouns door/message/entrance/model; verb groups waited, had checked, was, carried. Question: Is the entrance open? Command: Check the model. Compound: Ari had checked the message, and Mara waited by the door. Complex time example: After Ari had checked the message, Mara carried the model inside. Accept other correctly explained versions.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 3,
+      "explanation": "Model names a class of thing. Mara is a particular name and carried is the verb.",
+      "options": [
+        "Mara",
+        "Carried",
+        "The",
+        "Model"
+      ],
+      "question": "Which is a common noun in “Mara carried the model”?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Uncertainty names an abstract idea and functions as a noun in the sentence.",
+      "options": [
+        "Every long word is a noun",
+        "It names an idea acting as the subject here",
+        "It describes the roof’s colour",
+        "It must be a proper name"
+      ],
+      "question": "Why is uncertainty a noun in “The uncertainty slowed Mara”?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The light faded uses light as a noun; they light the room uses it as a verb. Function depends on the sentence.",
+      "options": [
+        "It can never be used in a sentence",
+        "It is always a proper noun",
+        "It can function as a noun or verb in different sentences",
+        "Its spelling decides every function"
+      ],
+      "question": "Why must light be considered in context?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Had and waited form the verb group. Mara is the subject.",
+      "options": [
+        "Had waited",
+        "Mara only",
+        "Waited Mara",
+        "Had Mara"
+      ],
+      "question": "Which is the whole verb group in “Mara had waited”?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "Verbs can express states or relationships; they need not name a visible action.",
+      "options": [
+        "Fragile must move",
+        "Every descriptive word is a verb",
+        "The sentence has no verb",
+        "It expresses a state or relationship rather than visible movement"
+      ],
+      "question": "Why is is a verb in “The model is fragile”?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The wording asks about the entrance’s state. It does not by itself direct an action or guarantee access.",
+      "options": [
+        "Directs someone to open it",
+        "Asks a question about the entrance",
+        "Lists two independent clauses",
+        "Guarantees everyone can enter"
+      ],
+      "question": "What does “Is the entrance open?” do in the example?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The direction establishes its command function; the exclamation mark adds emphasis.",
+      "options": [
+        "All punctuation is irrelevant",
+        "Every short sentence is a question",
+        "It directs an understood addressee, despite its emphatic mark",
+        "It contains no action"
+      ],
+      "question": "Why can “Check the sign!” remain a command?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Mara waited by the door has one independent clause. The other examples combine clauses.",
+      "options": [
+        "Mara waited by the door",
+        "Mara waited, but Ari left",
+        "Because Mara waited, Ari checked",
+        "After Ari checked, Mara entered"
+      ],
+      "question": "Which is simple in the examples taught?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "Both sides can stand alone and but connects them, making the taught compound example.",
+      "options": [
+        "Because the door was locked",
+        "The waiting student",
+        "Mara waited by the door",
+        "Mara waited, but Ari checked the message"
+      ],
+      "question": "Which example connects two independent clauses?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The because clause is dependent and supplies a reason for the main clause. Complexity is a clause relationship, not mere length.",
+      "options": [
+        "It has more letters than every other sentence",
+        "It combines a dependent reason clause with a main clause",
+        "It is an exclamation",
+        "Every word is a noun"
+      ],
+      "question": "What makes “Because the door was locked, Mara waited” complex?",
+      "type": "multiple_choice"
+    }
+  ],
+  "response_prompt": "Which sentence choice made a relationship clearer, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s4-eng-y7-w01-l3",
+  "stage": "S4",
+  "stage_hints": {
+    "accept": [
+      "Read the challenge and separate word jobs from sentence choices.",
+      "Begin with nouns in context before analysing whole structures.",
+      "Keep headings for nouns, verb groups, purpose and structure so your explanations do not mix them."
+    ],
+    "guided": [
+      "Start by identifying the named people and thing.",
+      "Keep the helper with its main verb before joining sentences.",
+      "Test each original statement independently, then explain the relationship your new connector creates."
+    ],
+    "learn": [
+      "Analyse the original passage before reading its revisions.",
+      "Compare word functions and purpose first, then the clause relationships.",
+      "Explain whether a revision keeps events the same or deliberately changes them."
+    ],
+    "quiz": [
+      "Return to the word-function, purpose or structure explanation matching the question.",
+      "Separate what a word does from how clauses connect.",
+      "For a structure choice, test clause independence; for a purpose choice, examine the wording and intended communication."
+    ],
+    "submit": [
+      "Check that examples and their explanations are both present.",
+      "Include your reflection and distinguish deliberate event changes from unchanged combinations.",
+      "If you worked on paper, type the key analyses and example sentences, and keep the original notes."
+    ],
+    "teach0": [
+      "Look back at what a word names and how it functions here.",
+      "Distinguish a particular name from a class or idea.",
+      "Read the whole sentence before labelling a word that can have more than one job."
+    ],
+    "teach1": [
+      "Look back at a complete verb group rather than one word.",
+      "Find the action or state and check whether a helper belongs with it.",
+      "Name the subject, then the whole group expressing the action or relationship."
+    ],
+    "teach2": [
+      "Look back at communication and clause structure as separate questions.",
+      "Ask whether the example informs, asks, directs or expresses a strong response.",
+      "Use wording and context alongside punctuation; do not let one end mark decide everything."
+    ],
+    "teach3": [
+      "Look back at which clause can stand independently.",
+      "Find each subject and verb group, then check the joining relationship.",
+      "Test an opening reason or time clause on its own before locating the main idea that completes it."
+    ],
+    "write": [
+      "Use the task headings and complete one analysis pass first.",
+      "Begin “Nouns: ____ names ____. Verb group: ____.”",
+      "A response opening can be “In the first sentence, the noun ____ identifies ____.” Finish that analysis before changing the sentence."
+    ]
+  },
+  "subject": "English",
+  "success_criteria": [
+    "I can distinguish a common noun from a proper noun in context.",
+    "I can identify an action or state and its verb group.",
+    "I can explain the purpose of a statement, question, command or exclamation.",
+    "I can compare simple, compound and complex structures in the examples.",
+    "I can explain a purposeful sentence revision."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "Mara is the particular character’s name. Hall is a common noun; entered is a verb.",
+        "options": [
+          "Entered",
+          "The",
+          "Hall",
+          "Mara"
+        ],
+        "question": "Which word is a proper noun in “Mara entered the hall”?"
+      },
+      "example": "I DO:\nSentence: “Mara placed the model in the hall.”\nMara: a proper noun naming a particular character.\nModel and hall: common nouns naming a thing and place.\n\nMore precise group: “the cardboard model”. The noun remains model; cardboard supplies information about it.\n\nYOU TRY:\nFind the noun in “The uncertainty slowed Mara.” Compare your answer before reading on.\n\nCHECK:\nUncertainty names an idea and Mara names the character. Slowed gives the action or effect. A word about an idea can still be a noun.",
+      "explain": "**A noun names a person, place, thing or idea.**\nCommon nouns name a class, such as student, hall or model. Proper nouns identify particular names, such as Mara. Proper names normally begin with capitals. An abstract noun names an idea or quality, such as uncertainty.\n\nThese labels describe different features: uncertainty is an abstract common noun, while Mara is a proper noun. Do not assume each word can belong to only one category.\n\n**Find the noun’s role.**\nIn “Mara carried the model”, Mara is who the clause is about and model names what she carries. A noun can appear inside a larger group: “the crooked cardboard model” contains the noun model with describing words around it.\n\n**Use context, not spelling alone.**\nSome words can do different jobs. “The light faded” uses light as a noun. “They light the room” uses light as a verb. Decide from what the word is doing in this sentence.\n\nWhen revising fiction, a specific noun can help a reader picture the scene. Check that added specificity fits the situation rather than inventing a different object.",
+      "icon": "📖",
+      "notice": "Do not identify a noun only because it is long or important. Explain what it names and what it does in the sentence.",
+      "title": "Identify nouns in context"
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "Could and check form the verb group. The other words identify a person or object rather than the whole group.",
+        "options": [
+          "The message",
+          "Could check",
+          "Ari only",
+          "Message check"
+        ],
+        "question": "What is the verb group in “Ari could check the message”?"
+      },
+      "example": "I DO:\n“Mara had waited beside the door.”\nSubject: Mara.\nVerb group: had waited. I keep both words when identifying the group.\nPlace information: beside the door.\n\nCOMPARE:\n“The model is fragile.” Is is a verb even though nothing moves. Fragile describes the model.\n\nYOU TRY:\nIdentify the verb group in “Ari could check the message.”\n\nCHECK:\nCould check is the group. Could adds possibility; check names the action. Message is the noun naming what may be checked.",
+      "explain": "**Verbs express more than movement.**\nA verb can express an action, such as carried, or a state/relationship, such as is in “The model is fragile”. Looking only for visible movement will miss some verbs.\n\n**Check the whole verb group.**\nIn “Mara had waited”, had helps form the verb group had waited. In “Ari could help”, could and help work together. Helping verbs can add time or possibility information.\n\n**Connect the verb with its subject.**\nIn our statement examples, identify who or what the clause is about, then the verb group. “The students were waiting” connects a plural subject with were waiting. Use a form that fits the intended subject and time.\n\n**Choose a verb for the intended action.**\n“Mara moved to the entrance” can become hurried if haste is intended, or approached if the emphasis is getting closer. The alternatives are not identical. A more specific verb should preserve or deliberately develop your meaning.\n\nRead the sentence after changing a verb. Do not add a dramatic action that contradicts the event you meant to describe.",
+      "icon": "📖",
+      "notice": "A verb group may have more than one word. Include a helping verb where it belongs, and distinguish the group from surrounding description.",
+      "title": "Find actions, states and verb groups"
+    },
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "The wording directs someone to check. The exclamation mark adds emphasis but does not remove the command’s function.",
+        "options": [
+          "Every exclamation mark proves a question",
+          "It contains no verb",
+          "It directs an understood addressee to act",
+          "Every short sentence is a statement"
+        ],
+        "question": "Why is “Check the model!” a command in this example?"
+      },
+      "example": "I DO:\nNeutral information: “The side entrance is open.”\nUncertainty: “Is the side entrance open?”\nDirection: “Try the side entrance.”\nStrong response: “What a relief this is!”\n\nThese are choices about communication, not a rule that every scene needs all four types.\n\nYOU TRY:\nTurn “The label is clear” into a question and a direction to someone who should check it.\n\nCHECK:\n“Is the label clear?” asks. “Check the label” directs. A full stop or emphatic exclamation mark can finish the direction according to context.",
+      "explain": "**Purpose and structure are different questions.**\nHere, sentence purpose means what the sentence does for communication. Our examples use four common types: a statement gives information; a question asks; a command directs; an exclamation expresses a strong response.\n\n**Compare one situation.**\nStatement: “The model is ready.”\nQuestion: “Is the model ready?”\nCommand: “Check the model.”\nExclamation: “What a careful repair that was!”\n\nThe command can omit an expressed you because the addressee is understood. Do not label it incomplete merely because the person is not written.\n\n**Read beyond the end mark.**\nPunctuation helps, but does not do all the classification. “Check the model!” is still directing someone, with strong emphasis. A statement can also carry an exclamation mark. Look at wording and purpose, not only the final symbol.\n\n**Choose for the narrative moment.**\nA character’s question can reveal uncertainty; a command can show a request or direction. Decide what the character means before selecting the form.",
+      "icon": "📖",
+      "notice": "A purpose label does not tell you how many clauses the sentence contains. Keep purpose and grammatical structure separate.",
+      "title": "Choose a sentence’s communicative purpose",
+      "visual": [
+        {
+          "alt": "Sentence purpose and clause structure answer different questions; punctuation is a clue rather than the whole classification.",
+          "caption": "Explain both with the actual wording.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">PURPOSE: what it communicates</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">STRUCTURE: how clauses connect</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">An end mark is only a clue.</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "Mara waited and Ari checked the message are independent clauses joined by but. The other choices are a dependent fragment or one independent clause.",
+        "options": [
+          "Mara waited, but Ari checked the message",
+          "Because Mara waited",
+          "Mara waited by the door",
+          "The patient student waited"
+        ],
+        "question": "Which example is a compound sentence as taught here?"
+      },
+      "example": "I DO:\nSimple: “Ari read the message.” One independent clause.\nCompound: “Ari read the message, and Mara looked for the arrow.” Two independent clauses joined by and.\nComplex: “After Ari read the message, Mara looked for the arrow.” The opening after clause depends on the main clause and organises the timing.\n\nCOMMON MISTAKE:\n“After Ari read the message.” leaves the dependent part without its main idea in this practice task. I add what follows.\n\nYOU TRY:\nJoin “The door was locked” and “Mara waited” to explain a reason.\n\nCHECK:\n“Because the door was locked, Mara waited” links the reason and main clause. Another accurate arrangement is possible. Do not join unrelated facts with because merely to make a complex structure.",
+      "explain": "**A clause contains a verb and usually a subject.**\nIn our statement examples, “Mara waited” can stand as a complete sentence: it is an independent clause. “Because Mara waited” gives a reason but depends on another clause to complete the intended sentence.\n\n**A simple sentence has one independent clause.**\n“Mara waited by the door.” It can still contain detail. “Mara had waited by the door” still has one independent clause, even though its verb group has two words. Two words in a verb group do not prove a compound sentence.\n\n**A compound sentence connects independent clauses.**\n“Mara waited, but Ari checked the message.” Mara waited and Ari checked the message can each stand alone. But connects them, and the comma marks the boundary in this model.\n\n**A complex sentence includes a dependent clause.**\n“Because the front door would not open, Mara waited.” The because clause depends on the main clause. It explains a reason. Put the opening dependent part with its main idea rather than leaving it stranded.\n\n**Choose according to meaning.**\nOne clear action may suit a simple sentence; a contrast can suit a compound; a reason can suit a complex. Complexity is not automatically better. Identify the relationship you need.",
+      "icon": "📖",
+      "notice": "Count clauses and identify their independence, not just the number of verbs or words. Use a sentence type because it serves a relationship.",
+      "title": "Compare simple, compound and complex structures",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "A sentence can ask a question, but that does not tell me how many clauses it contains.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Purpose asks what it communicates. Structure asks how its clauses work together.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "I will identify the verb groups and check which clauses can stand independently.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try. Explain one sentence’s purpose and structure as two separate observations.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Sentence purpose is not clause structure",
+            "transcript": "Pip: A sentence can ask a question, but that does not tell me how many clauses it contains.\nJuno: Purpose asks what it communicates. Structure asks how its clauses work together.\nPip: I will identify the verb groups and check which clauses can stand independently.\nJuno: Pause and try. Explain one sentence’s purpose and structure as two separate observations."
+          }
+        }
+      ]
+    }
+  ],
+  "title": "Year 7: Use nouns, verbs and sentence types deliberately",
+  "unit_number": 1,
+  "unit_title": "Narrative: short stories and voice",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Analyse and revise a short passage.\nORIGINAL\nMara waited. Ari had checked the message. The entrance was on the side.\n\nWORD FUNCTIONS\nMara and Ari are proper nouns. Message and entrance are common nouns. Had checked is a verb group; was expresses a relationship in the final statement.\n\nPURPOSE\nThe original sentences are statements. A character could instead ask “Is the entrance on the side?” if that uncertainty suits the moment.\n\nSTRUCTURE AND REVISION\n“After Ari had checked the message, Mara looked towards the side entrance.”\nThe opening after clause depends on the main clause. The complex structure makes the timing explicit. This is a revised fictional passage; I deliberately change Mara’s action from waiting to looking, so I should explain that change rather than pretend the wording preserves every event unchanged.\n\nMEANING-PRESERVING ALTERNATIVE\n“Ari had checked the message, and Mara waited.” This compound structure combines the stated actions without inventing a new movement.\n\nCOMMON MISTAKE AND FIX\nCalling had checked two separate clauses only because it has two words misses the verb group. I find the whole group and its subject before counting clauses.",
+  "worked_visuals": [
+    {
+      "alt": "Three structural examples: a simple sentence has one independent clause, a compound connects independent clauses, and a complex combines a main clause with a dependent clause.",
+      "caption": "Identify the relationship before choosing the form.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Simple: one independent clause</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Compound: independent + independent</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Complex: main + dependent</text></svg>"
+    }
+  ],
+  "year_level": "Year 7"
+}

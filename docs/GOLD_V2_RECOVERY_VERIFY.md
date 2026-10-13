@@ -66,7 +66,7 @@ Interpretation (do not collapse these):
 |---|---|
 | drafted | 2599 |
 | automated_validation_passed (any validator generation) | 2599 |
-| automated_validation_passed **matching current validator hash** | ~839+ (rising as revalidation runs; `requires_revalidation` was ~1760) |
+| automated_validation_passed **matching current validator hash** | **2599** (`requires_revalidation` = 0) |
 | educationally_reviewed | **0** |
 | nesa_verified | **0** |
 | browser_verified | **0** |
@@ -120,9 +120,7 @@ partitions exist.
 
 ## NEXT ACTION
 
-1. **Continue revalidation** of the 2599 hub lessons against the current
-   validator (`pipeline.py run --limit 16` loops) until
-   `requires_revalidation` ≈ 0.
+1. ~~Revalidation catch-up~~ **done** (2599/2599 current validator).
 2. **Owner decision** on the 2300 `s5-*` electives tagged Stage 4: keep in
    Phase 1, re-stage as S5, or defer.
 3. If electives stay in scope, provision new exclusive partitions + subject

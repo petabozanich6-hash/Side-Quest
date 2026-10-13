@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "HS2-HIS-01",
+      "lesson_evidence": "Reflection looks back at what was learned, which skills grew and what to do next. A reflection uses evidence from work, such as a map, a source record or a presentation, to show strengths and a next goal.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/hsie/hsie-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Reflection looks back at what was learned, which skills grew and what to do next. A reflection uses evidence from work, such as a map, a source record or a presentation, to show strengths and a next goal.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same HSIE idea to a new place or source, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nChoose one piece of your work and write a strength and a next goal with the evidence.\n\nFEEDBACK\nThe strength and goal must each point to a named piece of work, for example a map, a timeline or a source record.\n\nWATCH FOR\nSaying \"I was good at everything\" with no evidence does not help you improve.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nChoose four pieces of HSIE work from different units. For each write the skill it shows, one strength and one next goal. Choose the piece you are proudest of and give a reason.\n\nWrite a short reflection naming one source or idea you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "HSIE",
+    "learning_intention": "Reflection looks back at what was learned, which skills grew and what to do next. A reflection uses evidence from work, such as a map, a source record or a presentation, to show strengths and a next goal.",
+    "lesson_number": 1,
+    "lesson_role": "Investigate",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: local map, photo or interview notes"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "HS2-HIS-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose four pieces of HSIE work from different units. For each write the skill it shows, one strength and one next goal. Choose the piece you are proudest of and give a reason. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using reflect on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Saying \"I was good at everything\" with no evidence does not help you improve.. Correction: The strength and goal must each point to a named piece of work, for example a map, a timeline or a source record.. Why it helps the audience is stated.\n\nParent: Likely misconception: Saying \"I was good at everything\" with no evidence does not help you improve. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating reflect on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with reflect, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about reflect with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for reflect. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "This matches the taught method for reflect. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Saying \"I was good at everything\" with no evidence does not help you improve",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "The strength and goal must each point to a named piece of work, for example a map, a timeline or a source record"
+        ],
+        "question": "Choose one piece of your work and write a strength and a next goal with the evidence. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "This is the misconception to avoid for reflect; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "The strength and goal must each point to a named piece of work, for example a map, a timeline or a source record",
+          "Careful use of strength and explain why it matters with clear evidence",
+          "Saying \"I was good at everything\" with no evidence does not help you improve",
+          "Reflection looks back at what was learned, which skills grew and what to do next"
+        ],
+        "question": "Which statement is a common mistake when working with reflect?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and a named strength and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Apply reflect to new material and name the strength and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Saying \"I was good at everything\" with no evidence does not help you improve",
+          "Name strength and explain why it matters only, without linking it to reflect"
+        ],
+        "question": "Which response best applies reflect with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on reflect. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Saying \"I was good at everything\" with no evidence does not help you improve",
+          "The strength and goal must each point to a named piece of work, for example a map, a timeline or a source record",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail"
+        ],
+        "question": "Which response best uses sources, places or historical/geographic evidence for reflect?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Saying \"I was good at everything\" with no evidence does not help you improve",
+          "Name a specific source or place detail and say what it shows about reflect"
+        ],
+        "question": "Which evidence move best supports a claim about reflect?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice matches the taught idea (Reflection looks back at what was learned, which skills grew and what) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Example reflection: \"My strength was using sources, shown by my source records in week 37",
+          "Saying \"I was good at everything\" with no evidence does not help you improve",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail"
+        ],
+        "question": "Which choice best applies this lesson idea about reflect?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
+        ],
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for reflect?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name strength and explain why it matters only, with no linked example",
+          "Choose four pieces of HSIE work from different units",
+          "Retype the worked example with no new example",
+          "Saying \"I was good at everything\" with no evidence does not help you improve"
+        ],
+        "question": "Which independent response best applies reflect to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about reflect with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating reflect on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using reflect on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for reflect. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with reflect, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Saying \"I was good at everything\" with no evidence does not help you improve.. Correction: The strength and goal must each point to a named piece of work, for example a map, a timeline or a source record.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-hsie-y3-w40-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA HSIE alignment using catalogue outcome codes (HS2-*); content-point mapping and local First Nations protocols remain pending human review.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise reflect.",
+        "Read the mission before you start mapping or using sources.",
+        "Keep the place, people or source you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the source or place detail that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore sources or respectful practice.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread names, places, dates and sequence.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact source detail or place feature before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key evidence.",
+        "Say what each source or place detail shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or use of sources, not only how neat the poster looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, person or source that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new sources or places."
+      ]
+    },
+    "subject": "Historical and Geographical Inquiry",
+    "success_criteria": [
+      "I can use reflect with a specific example from this lesson.",
+      "I can identify strength and explain why it matters.",
+      "I can practise goal independently on a new prompt.",
+      "I can notice evidence needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Reflection looks back at what was learned, which skills grew and what to do next.",
+          "options": [
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Reflection looks back at what was learned, which skills grew and what to do next"
+          ],
+          "question": "Which choice best applies this lesson idea about reflect with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample reflection: \"My strength was using sources, shown by my source records in week 37. My next goal is to ask better follow-up questions during an interview. Evidence: the interview notes where my questions were all closed.\"\n\nTRY FIRST\nChoose one piece of your work and write a strength and a next goal with the evidence.\n\nFEEDBACK\nThe strength and goal must each point to a named piece of work, for example a map, a timeline or a source record.",
+        "explain": "Reflection looks back at what was learned, which skills grew and what to do next. A reflection uses evidence from work, such as a map, a source record or a presentation, to show strengths and a next goal.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Saying \"I was good at everything\" with no evidence does not help you improve. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Strength and goal with evidence.",
+            "caption": "Point to named work.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Strength</text><text x=\"28\" y=\"78\">source records, week 37</text><text x=\"358\" y=\"42\">Goal</text><text x=\"358\" y=\"78\">better follow-up questions</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which source or place detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the sources, map features or community examples that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Example reflection: \"My strength was using sources, shown by my source records in week 37. My next goal is to ask better Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which source or place detail matters most.\nJuno: Name the sources, map features or community examples that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Example reflection: \"My strength was using sources, shown by my source records in week 37. My next goal is to ask better Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
+          "options": [
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
+          ],
+          "question": "Which choice best applies this lesson idea about reflect with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample reflection: \"My strength was using sources, shown by my source records in week 37. My next goal is to ask better follow-up questions during an interview. Evidence: the interview notes where my questions were all closed.\" Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show HSIE thinking. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "Choosing pieces to reflect on.",
+            "caption": "Cover different units.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Proud</text><text x=\"28\" y=\"78\">one piece and a reason</text><text x=\"358\" y=\"42\">Units</text><text x=\"358\" y=\"78\">four pieces from four units</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
+          "options": [
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use an intentionally incorrect claim as a comparison"
+          ],
+          "question": "Which choice best applies this lesson idea about reflect with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSaying \"I was good at everything\" with no evidence does not help you improve. Here is a more productive model: Example reflection: \"My strength was using sources, shown by my source records in week 37. My next goal is to ask better follow-up questions during an interview. Evidence: the interview notes where my questions were all closed.\"\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nThe strength and goal must each point to a named piece of work, for example a map, a timeline or a source record.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. Saying \"I was good at everything\" with no evidence does not help you improve. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
+          "options": [
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about reflect with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nReflection looks back at what was learned, which skills grew and what to do next. A reflection uses evidence from work, such as a map, a source record or a presentation, to show strengths and a next goal. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",
+        "explain": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Transfer to a new inquiry"
+      }
+    ],
+    "title": "Year 3, Week 40, Lesson 1: Year 3 HSIE reflection",
+    "unit_number": 8,
+    "unit_title": "Inquiry project",
+    "week": 40,
+    "week_in_unit": 5,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample reflection: \"My strength was using sources, shown by my source records in week 37. My next goal is to ask better follow-up questions during an interview. Evidence: the interview notes where my questions were all closed.\"\n\nWrite what makes this example accurate, naming the sources, places or community details used.",
+    "worked_visuals": [
+      {
+        "alt": "Strength and goal with evidence.",
+        "caption": "Point to named work.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Strength</text><text x=\"28\" y=\"78\">source records, week 37</text><text x=\"358\" y=\"42\">Goal</text><text x=\"358\" y=\"78\">better follow-up questions</text></g></svg>"
+      },
+      {
+        "alt": "Choosing pieces to reflect on.",
+        "caption": "Cover different units.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Proud</text><text x=\"28\" y=\"78\">one piece and a reason</text><text x=\"358\" y=\"42\">Units</text><text x=\"358\" y=\"78\">four pieces from four units</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Choose one piece of your work and write a strength and a next goal with the evidence."
+      ],
+      "independent_inputs": [
+        "Choose four pieces of HSIE work from different units. For each write the skill it shows, one strength and one next goal. Choose the piece you are proudest of and give a reason."
+      ],
+      "model_inputs": [
+        "Example reflection: \"My strength was using sources, shown by my source records in week 37. My next goal is to ask better follow-up questions during an interview. Evidence: the interview notes where my questions were all closed.\""
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "The strength and goal must each point to a named piece of work, for example a map, a timeline or a source record.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Choose one piece of your work and write a strength and a next goal with the evidence.",
+        "misconception": "Saying \"I was good at everything\" with no evidence does not help you improve.",
+        "model": "Example reflection: \"My strength was using sources, shown by my source records in week 37. My next goal is to ask better follow-up questions during an interview. Evidence: the interview notes where my questions were all closed.\"",
+        "rule": "Reflection looks back at what was learned, which skills grew and what to do next. A reflection uses evidence from work, such as a map, a source record or a presentation, to show strengths and a next goal.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "List the key observations, sources or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show HSIE thinking.",
+        "model": "Example reflection: \"My strength was using sources, shown by my source records in week 37. My next goal is to ask better follow-up questions during an interview. Evidence: the interview notes where my questions were all closed.\" Look at each observation, source detail or example that carries the idea.",
+        "rule": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "The strength and goal must each point to a named piece of work, for example a map, a timeline or a source record.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. Saying \"I was good at everything\" with no evidence does not help you improve.",
+        "model": "Saying \"I was good at everything\" with no evidence does not help you improve. Here is a more productive model: Example reflection: \"My strength was using sources, shown by my source records in week 37. My next goal is to ask better follow-up questions during an interview. Evidence: the interview notes where my questions were all closed.\"",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "The new example should use the same HSIE idea as the model, but contain different evidence.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Inquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "Reflection looks back at what was learned, which skills grew and what to do next. A reflection uses evidence from work, such as a map, a source record or a presentation, to show strengths and a next goal. Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Strength and goal with evidence.",
+        "teaches": "Point to named work."
+      },
+      {
+        "alt": "Choosing pieces to reflect on.",
+        "teaches": "Cover different units."
+      }
+    ]
+  }
+}

@@ -1,0 +1,340 @@
+{
+  "child_mission": "Become a Storyteller! Turn a short story into clear cue notes, rehearse it and make one purposeful improvement to your telling.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep four cues, delivery plan, retelling wording or summary, rehearsal explanation, evidence-type label, reflection and written quiz responses.",
+  "extension": "Retell the same events with a different opening, then explain what background a listener needs to follow the new order.",
+  "guided_practice": "WE DO: Build and practise one connected telling.\n1. Write the first cue: Eli, game, visible finish. Say an opening that introduces all three ideas; compare with the model only after your try.\n2. Write a problem cue that includes both falls. Explain why the repeated failure matters.\n3. Write a response cue. Turn stand + book into a complete idea describing where the book goes.\n4. Add an outcome cue and explain the sign’s effect on the players.\n5. Tell from the four cues. Choose one pace or pause change and try the relevant event again.\n6. Explain the change using “I changed ____ so a listener could ____.” Check event accuracy against the original story.\nPractising alone is fine. A partner, recording or uploaded file is optional.",
+  "independent_task": "YOU DO: Storytelling and rehearsal record (about 20–25 minutes).\nUse The Windy Sign, included above.\n1. Read the complete story. Prepare four short cue notes: beginning, problem, response, outcome. The printable is optional; ordinary paper or typed notes work too.\n2. Plan one pace, pause or emphasis choice that supports meaning. Explain its purpose in a short note.\n3. Tell the story from the cues in your own words. Keep the important events and use your usual communication support. A listener or recording is optional.\n4. Check accuracy and clarity. Choose one useful change and tell it again. If a written communication format is your usual method, practise communicating the connected story in that format and label it.\n5. In the big box include your four cues, retelling wording or summary, and the change with its reason. State whether practice was solo, observed, recorded or in a written format.\n6. Keep any paper cue sheet for review; an upload is not required.\nCheck: introduced character and goal; accurate problem and response; connected outcome; helpful cue notes; purposeful delivery plan; explained improvement; honest evidence label.",
+  "learning_area": "English",
+  "learning_intention": "We are learning to select connected events, tell them clearly from cue notes and explain a rehearsal improvement.",
+  "lesson_number": 4,
+  "lesson_role": "Speaking and handwriting",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Use the optional cue sheet or copy the story on paper. Prepare notes and practise two tellings away from the screen, then type a summary and complete the quiz later.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches connected oral retelling, cue notes, purposeful delivery, rehearsal and accurate evidence descriptions. These lessons follow the repository’s Year 4 narrative sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of full syllabus coverage. All texts are original.\n\nParent: Assess actual oral clarity only if heard or recorded. Typed plans show preparation, not observed speaking. Accept the child’s usual communication supports and label the evidence produced. The lesson supplies teaching, models and feedback. Support access and review the evidence; do not teach the steps for the child.\n\nParent: Eight multiple-choice answers are scored. The unchanged 90% threshold requires 8/8. Two written responses are reviewed manually. Model for question 9: Eli made a cardboard stand and placed a book across its base so the sign stayed visible. Model for question 10: I slowed the stand-and-book explanation so a listener could follow how the sign stayed up.\n\nParent: The complete model preserves the second failure, response and outcome. No partner, accent, acting style, upload or recording is required. A listener can give optional feedback, but the solo route supplies self-checks. Do not claim actual listening to another person from solo practice.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "printable_resource": {
+    "instructions": "Read the original story, then write a few reminder words in each box. Use them for two tellings away from the screen. Note one change and label solo or observed practice.",
+    "passage": "THE WINDY SIGN\nEli was preparing a treasure-hunt game in the courtyard. He wanted everyone to find the finish beside the garden bed. He wrote FINISH on a card and placed it on a chair.\nBefore the game began, a gust blew the card face down. Eli could still see the chair, but the players would not know what it marked. He tried standing the card up again. It fell a second time.\nEli looked at the materials on the table. He folded a cardboard stand, slid the card into it and placed a book across the stand’s base. When the next gust came, the word stayed visible. Eli checked the route, then called the players to begin. At the finish, they followed the sign and found the final clue.",
+    "prompts": [
+      "Beginning: person, place and goal",
+      "Problem: what fails, and why",
+      "Response: what the character tries next",
+      "Outcome: what happens to the goal",
+      "Rehearsal: my change, reason and evidence type"
+    ],
+    "title": "The Windy Sign: storytelling cue sheet"
+  },
+  "quiz": [
+    {
+      "correct_index": 1,
+      "explanation": "Introducing the character gives the listener a clear reference for the later pronoun.",
+      "options": [
+        "Every sentence must use a name",
+        "The listener needs to know who the pronoun means",
+        "It removes the story’s goal",
+        "It changes the wind"
+      ],
+      "question": "Why introduce Eli before saying he?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The repeated failure explains the choice to use a stand and book; it is a connected event here.",
+      "options": [
+        "It is an unrelated decoration",
+        "It changes the sign into a map",
+        "It explains why Eli tries a different arrangement",
+        "Every story must repeat an action twice"
+      ],
+      "question": "Why keep the second fall in a retelling?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "The cue points to the materials and action used to stabilise the sign.",
+      "options": [
+        "Stand + book across base",
+        "Only blue",
+        "Every punctuation mark",
+        "An unrelated race"
+      ],
+      "question": "Which cue best prompts the response?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The cue supports memory; the spoken explanation provides the event and meaning.",
+      "options": [
+        "Say only its letters",
+        "Replace the story’s ending",
+        "Never look at it again",
+        "Glance at it and explain the event in a full idea"
+      ],
+      "question": "How should you use a cue?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Pace is delivery speed, which can affect whether the listener follows the event.",
+      "options": [
+        "Only the number of characters",
+        "How quickly you communicate the telling",
+        "The colour of the notes",
+        "An invented outcome"
+      ],
+      "question": "What does pace describe?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The pause can mark an important transition while keeping related words together.",
+      "options": [
+        "Stop between every word",
+        "Pause only inside a person’s name",
+        "Briefly mark the move from repeated failure to a new plan",
+        "Never pause for any reason"
+      ],
+      "question": "Which pause choice helps here?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Including the original solution accurately checks meaning, separately from delivery choices.",
+      "options": [
+        "Whether the solution event was included correctly",
+        "Whether every word was loud",
+        "Whether the paper was coloured",
+        "Whether all cues were decorated"
+      ],
+      "question": "Which check concerns story accuracy?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "A cue plan records preparation; observed or recorded delivery needs separate evidence.",
+      "options": [
+        "A performance heard by a real listener",
+        "Proof of recorded audio",
+        "Every audience reaction",
+        "Preparation and intended choices"
+      ],
+      "question": "What does a written cue plan show by itself?",
+      "type": "multiple_choice"
+    },
+    {
+      "explanation": "The cue becomes a full explanation of how the response addresses the wind problem.",
+      "marking_guide": "Accept an accurate explanation of the stand, weighted base and purpose.",
+      "question": "Turn the cue “stand + book across base” into a connected story event.",
+      "sample_answer": "Eli made a cardboard stand and placed a book across its base so the sign stayed visible.",
+      "type": "short_answer"
+    },
+    {
+      "explanation": "The explanation identifies what changed and how it supports understanding.",
+      "marking_guide": "Accept an actual specific accuracy or delivery improvement with a reason, without requiring identical wording.",
+      "question": "Explain one purposeful rehearsal improvement.",
+      "sample_answer": "I slowed the stand-and-book explanation so a listener could follow how the sign stayed up.",
+      "type": "short_answer"
+    }
+  ],
+  "response_prompt": "What did your second practice make clearer, and what evidence do you have of that change?",
+  "review_status": "unreviewed",
+  "seed_key": "s2-eng-y4-w01-l4",
+  "stage": "S2",
+  "stage_hints": {
+    "accept": [
+      "Read the goal about cues and a clearer second telling.",
+      "The whole Windy Sign story is included; you can rehearse independently.",
+      "Begin by following Eli’s goal and response, then turn the events into short cue notes."
+    ],
+    "guided": [
+      "Begin by introducing the person and game goal.",
+      "Prepare the problem and response cues on separate lines.",
+      "Use “The first plan did not work because ____.” Then explain what the character tries next."
+    ],
+    "learn": [
+      "Read the original story before the model telling.",
+      "Match the four cues to the corresponding events.",
+      "Check whether the model preserves the reason for the changed plan, not just the objects."
+    ],
+    "quiz": [
+      "Return to event selection, cues, delivery or evidence as needed.",
+      "Check whether a choice concerns accurate content or how it is communicated.",
+      "For a written explanation, name the actual action or improvement and give its purpose."
+    ],
+    "submit": [
+      "Check the four cues and your rehearsal explanation.",
+      "Include the delivery plan and label solo, observed, recorded or written practice accurately.",
+      "Send the storytelling record and reflection; keep a paper cue sheet for later review if you used one."
+    ],
+    "teach0": [
+      "Reread the goal and the failed first arrangement.",
+      "Choose actions that explain why the character changes plans.",
+      "Make a person-and-goal note, then problem, response and outcome notes."
+    ],
+    "teach1": [
+      "Look back at a cue becoming a complete idea.",
+      "Choose a few words naming the event and its important action.",
+      "Glance at one note, explain that event, then move to the next note."
+    ],
+    "teach2": [
+      "Look at the pause and steady-pace example.",
+      "Choose one important event and keep its related words together.",
+      "Try that event twice, changing one delivery choice to help the meaning."
+    ],
+    "teach3": [
+      "Look back at the separate accuracy and delivery checks.",
+      "Name one skipped event, unclear reference or rushed explanation.",
+      "Try a repair, then explain what changed and why; label the evidence you actually made."
+    ],
+    "write": [
+      "Prepare the four cue notes before rehearsing.",
+      "Begin “Eli was preparing ____ and needed ____.”",
+      "A partial opening is “In the courtyard, Eli wanted ____.” Complete the goal from the story, then continue in your own words."
+    ]
+  },
+  "subject": "English",
+  "success_criteria": [
+    "I can introduce a character, place and goal.",
+    "I can keep the important events connected.",
+    "I can use cue notes instead of reading every word.",
+    "I can choose a helpful pace, pause or emphasis.",
+    "I can explain an improvement and describe my evidence honestly."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "The fallen card explains why the players would not recognise the finish and why Eli needs another arrangement.",
+        "options": [
+          "Wind makes the finish card fall face down",
+          "A list of all colours",
+          "Only the word courtyard",
+          "An invented broken bicycle"
+        ],
+        "question": "Which note preserves the story’s main problem?"
+      },
+      "example": "READ THE COMPLETE ORIGINAL STORY\nTHE WINDY SIGN\nEli was preparing a treasure-hunt game in the courtyard. He wanted everyone to find the finish beside the garden bed. He wrote FINISH on a card and placed it on a chair.\nBefore the game began, a gust blew the card face down. Eli could still see the chair, but the players would not know what it marked. He tried standing the card up again. It fell a second time.\nEli looked at the materials on the table. He folded a cardboard stand, slid the card into it and placed a book across the stand’s base. When the next gust came, the word stayed visible. Eli checked the route, then called the players to begin. At the finish, they followed the sign and found the final clue.\n\nI DO:\nBeginning: Eli prepares a game and needs a visible finish sign.\nProblem: wind blows the card face down; standing it up again fails.\nResponse: he makes a stand and weights its base.\nOutcome: the sign stays visible and the players find the finish.\n\nYOU TRY:\nWhich event explains why simply standing the card up is not enough?\n\nCHECK:\nIt falls a second time. Keeping that failed attempt helps a listener understand why Eli changes his plan.",
+      "explain": "**Storytelling helps someone follow an event.**\nA listener cannot always look back at a page. Introduce the person, situation and goal, then explain the problem, response and outcome. These parts give your telling a route.\n\n**Read and understand before preparing.**\nRead the complete original story below. Eli wants a visible finish sign for his game. The wind makes the first arrangement fail. His stand and book change the result. Notice the cause-and-response connection, not only the order of objects.\n\n**Keep important events; reduce small details.**\nYou do not have to memorise every sentence. A retelling keeps the story’s meaning in your own words. You can shorten a description while preserving the problem and solution. Do not remove the failed first attempt if it explains why Eli tries a different approach.\n\n**Introduce before using pronouns.**\nStart with Eli rather than an unexplained he. After the listener knows who he is, he can refer to him clearly. If another person enters, make references clear again.",
+      "icon": "📖",
+      "notice": "An object list is not a telling. Include what happens and why the character responds.",
+      "title": "Choose the events your listener needs"
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "A cue prompts a fuller spoken idea. It supports memory without requiring a full written script.",
+        "options": [
+          "To replace every story event with one vague word",
+          "To remind you of an event you will explain",
+          "To require memorising the original punctuation",
+          "To change the outcome randomly"
+        ],
+        "question": "What is the job of a cue note?"
+      },
+      "example": "I DO:\nCue: “Wind: card falls twice.”\nSpoken idea: “The wind blew the sign face down. Eli stood it up, but it fell again.”\nCue: “Stand + book.”\nSpoken idea: “So Eli made a cardboard stand and put a book across its base.”\nThe notes prompt the meaning rather than every exact word.\n\nYOU TRY:\nTurn “End: visible sign, players finish” into one or two spoken sentences.\n\nCHECK:\nOne possibility: “The sign stayed visible in the wind. The players followed it to the finish.” Keep the outcome even if your words differ.",
+      "explain": "**A cue is a reminder.**\nCue notes use a few useful words to prompt a fuller idea. “Wind: card falls twice” can remind you to explain the failed arrangement. “Card” alone may be too vague; a full paragraph may tempt you to read every word.\n\n**Use one event per line or box.**\nPut the beginning first, then the problem, response and outcome. Leave enough space to find each note at a glance. You can use paper, the printable cue sheet or your usual accessible note format.\n\n**Practise the look-and-tell routine.**\nGlance at one cue, then explain that event in a complete idea. Look back for the next cue when needed. You can choose different wording each time if the meaning stays accurate. Looking at a note is useful, not a failure.\n\n**Connect events for the listener.**\nWords such as but, so and finally can show the relationship between events. Use them where they help; do not add finally before the problem just because it sounds like a storytelling word.",
+      "icon": "📖",
+      "notice": "A cue should be short enough to scan and specific enough to remind you of the event.",
+      "title": "Turn event notes into spoken ideas",
+      "visual": [
+        {
+          "alt": "Two cues prompt complete explanations: wind and two falls explain failure; stand and book explain the response.",
+          "caption": "Glance → explain → next cue.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 224\"><rect width=\"420\" height=\"224\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">CUE: wind, card falls twice</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">TELL: explain the failed attempt</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">CUE: stand + book</text><text x=\"16\" y=\"172\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">TELL: explain how it helps</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "A steady explanation helps the listener follow how the materials solve the problem. The other changes disrupt or replace the meaning.",
+        "options": [
+          "Shout every word without explaining",
+          "Pause inside every small word group",
+          "Give the stand-and-book explanation a steady pace",
+          "Invent a louder unrelated event"
+        ],
+        "question": "Which delivery choice supports understanding the solution?"
+      },
+      "example": "I DO:\nI say: “It fell again. [brief pause] So Eli tried a different plan.”\nThe pause marks the move from repeated failure to a new response. I keep “tried a different plan” connected.\nI give “a book across the base” a steady pace so the listener understands how the stand stays put.\n\nYOU TRY:\nTell the response event twice. On the second attempt, slow only the explanation of the book’s place.\n\nCHECK:\nCould you hear the connection between the book and the stand? If not, clarify the words before adding more emphasis. Volume alone will not supply the missing relationship.",
+      "explain": "**Delivery is how you communicate the telling.**\nPace is your speed. A pause is a brief stop. Emphasis makes a chosen word or phrase stand out. Use these choices to help a listener follow an important event, not to show off an acting voice.\n\n**Keep related words together.**\nSay “the finish sign” as a connected group. A pause between every word breaks the thought apart. A brief pause after explaining the second failure can give the listener time before the new solution.\n\n**Give the response enough time.**\nIf you rush “stand and book”, the listener may miss how the solution works. Slow that event a little and clearly say the book weights the base. Speaking loudly does not replace explaining the action.\n\n**Try a choice, then compare.**\nTell one part twice. First use your ordinary delivery; then change one pace, pause or emphasis choice. Ask whether the event becomes easier to understand. Keep the change if it helps. No special accent, dramatic voice or recording is required.",
+      "icon": "📖",
+      "notice": "Make one purposeful change at a time. You can communicate clearly in your own voice and with your usual support.",
+      "title": "Choose delivery that supports meaning",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "My cue says stand and book. If I say only those words, will the listener understand the solution?",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Explain the action: Eli makes a stand and puts a book across its base. The cue reminds you; it is not the whole telling.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "I can slow that explanation and keep the important word groups connected.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Then rehearse the story again. Check both event accuracy and delivery. If you practise alone, describe it as solo practice.",
+                    "who": "juno"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and turn one short cue into a full idea. Try it twice and explain one useful change.",
+                    "who": "pip"
+                  }
+                ]
+              }
+            ],
+            "title": "A note becomes a telling",
+            "transcript": "Pip: My cue says stand and book. If I say only those words, will the listener understand the solution?\nJuno: Explain the action: Eli makes a stand and puts a book across its base. The cue reminds you; it is not the whole telling.\nPip: I can slow that explanation and keep the important word groups connected.\nJuno: Then rehearse the story again. Check both event accuracy and delivery. If you practise alone, describe it as solo practice.\nPip: Pause and turn one short cue into a full idea. Try it twice and explain one useful change."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "The reflection names the change and explains how it helps the listener follow the story. The other statements lack reasoning or misdescribe evidence.",
+        "options": [
+          "It was better because it was better",
+          "My notes prove a performance nobody heard",
+          "I changed every event without checking",
+          "I restored the solution event so the outcome made sense"
+        ],
+        "question": "Which reflection explains a purposeful improvement?"
+      },
+      "example": "I DO:\nFirst attempt: I jump from “the sign fell” to “players began”. The solution disappears.\nRevision: I add the stand-and-book cue and explain the action.\nSecond attempt: I slow that explanation and keep “across the base” together.\nReflection: “I restored the solution event and gave it more time so the ending made sense.”\n\nYOU TRY:\nChoose one part of your own practice to improve. Tell it again, then describe the difference.\n\nCHECK:\nName an actual event or delivery choice and its purpose. If your first attempt was clear, describe the check that confirmed it instead of inventing an error.",
+      "explain": "**Rehearsal is practice with a purpose.**\nTell the whole story once from your cues. Notice a specific problem: perhaps you skipped the second fall, used an unclear pronoun or rushed the solution. Pick one thing to improve rather than trying to judge everything at once.\n\n**Review meaning and delivery separately.**\nAsk: Did I keep the main events accurate? Then ask: Were the words clear and the important event easy to follow? A fluent telling can still miss a key event, and an accurate plan does not guarantee clear delivery.\n\n**Try again and explain the change.**\n“I added the failed second attempt so the different solution makes sense” describes a content improvement. “I slowed the solution so the book’s position was clear” describes a delivery improvement. Give a reason, not only “it was better”.\n\n**Describe what was actually produced.**\nYou can practise independently without a listener or recording. A written cue plan demonstrates preparation. An observed or recorded telling can demonstrate actual delivery. If no one heard it, label your evidence as solo practice and describe what you noticed yourself. Use your usual communication method if speaking is inaccessible.",
+      "icon": "📖",
+      "notice": "Written preparation and observed speaking show different skills. Keep the evidence description accurate.",
+      "title": "Rehearse, review and improve honestly"
+    }
+  ],
+  "title": "Year 4: Tell a story your listener can follow",
+  "unit_number": 1,
+  "unit_title": "Narrative: suspense, point of view and voice",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Prepare and rehearse a complete telling.\nTHE WINDY SIGN\nEli was preparing a treasure-hunt game in the courtyard. He wanted everyone to find the finish beside the garden bed. He wrote FINISH on a card and placed it on a chair.\nBefore the game began, a gust blew the card face down. Eli could still see the chair, but the players would not know what it marked. He tried standing the card up again. It fell a second time.\nEli looked at the materials on the table. He folded a cardboard stand, slid the card into it and placed a book across the stand’s base. When the next gust came, the word stayed visible. Eli checked the route, then called the players to begin. At the finish, they followed the sign and found the final clue.\n\nMY FOUR CUES\nEli: finish sign for game\nWind: card falls twice\nResponse: stand + book across base\nOutcome: sign visible, players finish\n\nMY CONNECTED TELLING\n“Eli was preparing a treasure hunt and needed a visible finish sign. The wind blew the card face down. He stood it up, but it fell again. So Eli made a cardboard stand and put a book across its base. This time the sign stayed visible. The players followed it to the finish and found the last clue.”\n\nMY DELIVERY PLAN\nI introduce Eli before using he. I pause briefly after the second fall, then give the new solution enough time. I keep a book across its base connected so the listener hears how it helps.\n\nCOMMON MISTAKE AND FIX\n“Eli had a card and a chair and a book” lists objects but loses the response. I replace the list with what he does and how the sign stays visible.\n\nMY REHEARSAL NOTE\nOn my first solo practice I skipped the second fall. I added it back so the reason for changing plans was clear. I would need an actual observed or recorded telling to claim evidence of delivery beyond my own report.",
+  "worked_visuals": [
+    {
+      "alt": "A rehearsal checklist separates accurate story events from delivery, improves one thing and labels the evidence honestly.",
+      "caption": "Preparation and performance are reviewed separately.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 224\"><rect width=\"420\" height=\"224\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Accuracy: keep connected events</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Delivery: support the meaning</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Rehearse: change one thing</text><text x=\"16\" y=\"172\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Evidence: say what you produced</text></svg>"
+    }
+  ],
+  "year_level": "Year 4"
+}

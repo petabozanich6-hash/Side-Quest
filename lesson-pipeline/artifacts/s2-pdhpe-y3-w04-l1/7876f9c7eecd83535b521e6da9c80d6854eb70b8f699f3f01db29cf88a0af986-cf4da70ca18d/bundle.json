@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "PH2-SMI-01",
+      "lesson_evidence": "Asking for help is a smart, strong choice, not a weakness. Different problems need different helpers: a teacher for schoolwork, a family member for home problems, a doctor or nurse for health, and a trusted adult straight away if anyone feels unsafe. A clear help request says who you are asking, what the problem is and what kind of help you need. If the first helper cannot help, ask another.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Asking for help is a smart, strong choice, not a weakness. Different problems need different helpers: a teacher for schoolwork, a family member for home problems, a doctor or nurse for health, and a trusted adult straight away if anyone feels unsafe. A clear help request says who you are asking, what the problem is and what kind of help you need. If the first helper cannot help, ask another.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nTom's new shoes hurt his feet during sport and he feels shy about telling anyone. Who could he ask, and what would he say?\n\nFEEDBACK\nHe could ask the sport teacher or a trusted adult: 'My shoes are hurting my feet, can I sit out and rest?' Pain is a body signal that deserves attention. The request names who, the problem and the help.\n\nWATCH FOR\nThinking that asking for help means you have failed or will bother people. Everyone needs help sometimes, and trusted adults want to know.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nList six problems (schoolwork, the playground, feeling sad, a lost item, feeling unwell and something online that upset you). For each, choose a helper and write one clear help sentence. Mark which problems need an adult straight away.\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.",
+    "interactive_activities": null,
+    "learning_area": "PDHPE",
+    "learning_intention": "Asking for help is a smart, strong choice, not a weakness. Different problems need different helpers: a teacher for schoolwork, a family member for home problems, a doctor or nurse for health, and a trusted adult straight away if anyone feels unsafe. A clear help request says who you are asking, what the problem is and what kind of help you need. If the first helper cannot help, ask another.",
+    "lesson_number": 1,
+    "lesson_role": "Learn and discuss",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Clear, safe movement space with an adult nearby for any physical activity",
+      "Optional: soft ball, cushion or water bottle"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "PH2-SMI-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: List six problems (schoolwork, the playground, feeling sad, a lost item, feeling unwell and something online that upset you). For each, choose a helper and write one clear help sentence. Mark which problems need an adult Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using asking for help on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that asking for help means you have failed or will bother people.. Correction: He could ask the sport teacher or a trusted adult: 'My shoes are hurting my feet, can I sit out and rest?' Pain is a. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that asking for help means you have failed or will bother people. Everyone needs help sometimes, and trusted adults want to know. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating asking for help on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with asking for help, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about asking for help with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for asking for help. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 2,
+        "explanation": "This matches the taught method for asking for help. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "He could ask the sport teacher or a trusted adult: 'My shoes are hurting my feet, can I sit out and rest?' Pain is a",
+          "Thinking that asking for help means you have failed or will bother people"
+        ],
+        "question": "Tom's new shoes hurt his feet during sport and he feels shy about telling anyone. Who could he ask, and what would he say?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "This is the misconception to avoid for asking for help; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "He could ask the sport teacher or a trusted adult: 'My shoes are hurting my feet, can I sit out and rest?' Pain is a",
+          "Careful use of a trusted helper and explain why it matt with clear evidence",
+          "Thinking that asking for help means you have failed or will bother people",
+          "Asking for help is a smart, strong choice, not a weakness"
+        ],
+        "question": "Which statement is a common mistake when working with asking for help?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and a named a trusted helper and explain why it matt, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Repeat the worked example wording with no new evidence",
+          "Thinking that asking for help means you have failed or will bother people",
+          "Name a trusted helper and explain why it matt only, without linking it to asking for help",
+          "Apply asking for help to new material and name the a trusted helper and explain why it matt used"
+        ],
+        "question": "Which response best applies asking for help with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on asking for help. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "He could ask the sport teacher or a trusted adult: 'My shoes are hurting my feet, can I sit out and rest?' Pain is a",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking that asking for help means you have failed or will bother people"
+        ],
+        "question": "Which response best uses safe, healthy or respectful choices for asking for help?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with asking for help",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking that asking for help means you have failed or will bother people"
+        ],
+        "question": "Which evidence move best supports a claim about asking for help?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The stronger choice matches the taught idea (Asking for help is a smart, strong choice, not a weakness.) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Use a put-down and call it honesty",
+          "Example: Ana does not understand a maths question",
+          "Thinking that asking for help means you have failed or will bother people",
+          "Choose the fastest option even when it ignores safety"
+        ],
+        "question": "Which choice best applies this lesson idea about asking for help?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice"
+        ],
+        "question": "Which action keeps safe, healthy or respectful choices accurate for asking for help?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name a trusted helper and explain why it matt only, with no linked example",
+          "List six problems (schoolwork, the playground, feeling sad, a lost item, feeling unwell and something online that upset",
+          "Retype the worked example with no new example",
+          "Thinking that asking for help means you have failed or will bother people"
+        ],
+        "question": "Which independent response best applies asking for help to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about asking for help with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating asking for help on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using asking for help on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for asking for help. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with asking for help, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Thinking that asking for help means you have failed or will bother people.. Correction: He could ask the sport teacher or a trusted adult: 'My shoes are hurting my feet, can I sit out and rest?' Pain is a. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-pdhpe-y3-w04-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending human review. Physical activities are optional, adult-supervised and adaptable; no child is required to share personal details.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise asking for help.",
+        "Read the mission before you start moving or deciding.",
+        "Keep your own safety and everyone's inclusion in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not keep everyone safe and included."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the cue or rule that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore safety, consent or inclusion.",
+        "Prefer a reasoned, respectful choice over one that merely looks fun."
+      ],
+      "submit": [
+        "Confirm that your reasons and reflection are both present.",
+        "Proofread names, steps and safety words.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact cue, rule or choice before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key cues.",
+        "Say what each cue does for safety, health or friendship.",
+        "A final label alone is weaker than a stated reason."
+      ],
+      "teach2": [
+        "Compare an unsafe or unkind choice with a better one.",
+        "Change the choice or strategy, not only the words.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, game or situation that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original reasons and a short reflection.",
+        "Save work that shows the skill in a new situation."
+      ]
+    },
+    "subject": "Health, Wellbeing and Relationships",
+    "success_criteria": [
+      "I can use asking for help with a specific example from this lesson.",
+      "I can identify a trusted helper and explain why it matters.",
+      "I can practise a clear request independently on a new prompt.",
+      "I can notice an adult straight away needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Asking for help is a smart, strong choice, not a weakness.",
+          "options": [
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Asking for help is a smart, strong choice, not a weakness",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about asking for help with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Ana does not understand a maths question. Helper: her teacher. Request: 'Mr Lee, can you show me the first step of question 4? I get stuck at the division.' She names the problem and the help she needs. If Mr Lee is busy, she asks a classmate or waits and asks again.\n\nTRY FIRST\nTom's new shoes hurt his feet during sport and he feels shy about telling anyone. Who could he ask, and what would he say?\n\nFEEDBACK\nHe could ask the sport teacher or a trusted adult: 'My shoes are hurting my feet, can I sit out and rest?' Pain is a body signal that deserves attention. The request names who, the problem and the help.",
+        "explain": "Asking for help is a smart, strong choice, not a weakness. Different problems need different helpers: a teacher for schoolwork, a family member for home problems, a doctor or nurse for health, and a trusted adult straight away if anyone feels unsafe. A clear help request says who you are asking, what the problem is and what kind of help you need. If the first helper cannot help, ask another.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Thinking that asking for help means you have failed or will bother people. Everyone needs help sometimes, and trusted adults want to know. Change the choice or strategy, not just the wording.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "A problem matched to a helper.",
+            "caption": "Match problem to helper.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Problem</text><text x=\"28\" y=\"78\">shoes hurt in sport</text><text x=\"358\" y=\"42\">Helper</text><text x=\"358\" y=\"78\">sport teacher</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which cue or rule matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the cues, rules or choices that keep everyone safe and included before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example: Ana does not understand a maths question. Helper: her teacher. Request: 'Mr Lee, can you show me the first step Then write your own reasons.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which cue or rule matters most.\nJuno: Name the cues, rules or choices that keep everyone safe and included before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example: Ana does not understand a maths question. Helper: her teacher. Request: 'Mr Lee, can you show me the first step Then write your own reasons."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+          "options": [
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about asking for help with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: Ana does not understand a maths question. Helper: her teacher. Request: 'Mr Lee, can you show me the first step of question 4? I get stuck at the division.' She names the problem and the help she needs. If Mr Lee is busy, she asks a classmate or waits and asks again. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "explain": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without a reason does not show PDHPE thinking. Change the choice or strategy, not just the wording.",
+        "title": "Show the reasoning",
+        "visual": [
+          {
+            "alt": "Help requests and urgent help.",
+            "caption": "Unsafe means tell now.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Request</text><text x=\"28\" y=\"78\">who, problem, help needed</text><text x=\"358\" y=\"42\">Unsafe</text><text x=\"358\" y=\"78\">tell an adult at once</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
+          "options": [
+            "An answer copied without understanding",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
+          ],
+          "question": "Which choice best applies this lesson idea about asking for help with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nThinking that asking for help means you have failed or will bother people. Everyone needs help sometimes, and trusted adults want to know. Here is a more helpful example: Example: Ana does not understand a maths question. Helper: her teacher. Request: 'Mr Lee, can you show me the first step of question 4? I get stuck at the division.' She names the problem and the help she needs. If Mr Lee is busy, she asks a classmate or waits and asks again.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nHe could ask the sport teacher or a trusted adult: 'My shoes are hurting my feet, can I sit out and rest?' Pain is a body signal that deserves attention. The request names who, the problem and the help.",
+        "explain": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without changing the choice does not fix the error. Thinking that asking for help means you have failed or will bother people. Everyone needs help sometimes, and trusted adults want to know. Change the choice or strategy, not just the wording.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
+          "options": [
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example"
+          ],
+          "question": "Which choice best applies this lesson idea about asking for help with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nAsking for help is a smart, strong choice, not a weakness. Different problems need different helpers: a teacher for schoolwork, a family member for home problems, a doctor or nurse for health, and a trusted adult straight away if anyone feels unsafe. A clear help request says who you are asking, what the problem is and what kind of help you need. If the first helper cannot help, ask another. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "explain": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new situation. Change the choice or strategy, not just the wording.",
+        "title": "Transfer to a new situation"
+      }
+    ],
+    "title": "Year 3, Week 4, Lesson 1: Asking for help and who can help",
+    "unit_number": 1,
+    "unit_title": "Feelings and wellbeing",
+    "week": 4,
+    "week_in_unit": 4,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample: Ana does not understand a maths question. Helper: her teacher. Request: 'Mr Lee, can you show me the first step of question 4? I get stuck at the division.' She names the problem and the help she needs. If Mr Lee is busy, she asks a classmate or waits and asks again.\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.",
+    "worked_visuals": [
+      {
+        "alt": "A problem matched to a helper.",
+        "caption": "Match problem to helper.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Problem</text><text x=\"28\" y=\"78\">shoes hurt in sport</text><text x=\"358\" y=\"42\">Helper</text><text x=\"358\" y=\"78\">sport teacher</text></g></svg>"
+      },
+      {
+        "alt": "Help requests and urgent help.",
+        "caption": "Unsafe means tell now.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Request</text><text x=\"28\" y=\"78\">who, problem, help needed</text><text x=\"358\" y=\"42\">Unsafe</text><text x=\"358\" y=\"78\">tell an adult at once</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Tom's new shoes hurt his feet during sport and he feels shy about telling anyone. Who could he ask, and what would he say?"
+      ],
+      "independent_inputs": [
+        "List six problems (schoolwork, the playground, feeling sad, a lost item, feeling unwell and something online that upset you). For each, choose a helper and write one clear help sentence. Mark which problems need an adult straight away."
+      ],
+      "model_inputs": [
+        "Example: Ana does not understand a maths question. Helper: her teacher. Request: 'Mr Lee, can you show me the first step of question 4? I get stuck at the division.' She names the problem and the help she needs. If Mr Lee is busy, she asks a classmate or waits and asks again."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "He could ask the sport teacher or a trusted adult: 'My shoes are hurting my feet, can I sit out and rest?' Pain is a body signal that deserves attention. The request names who, the problem and the help.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Tom's new shoes hurt his feet during sport and he feels shy about telling anyone. Who could he ask, and what would he say?",
+        "misconception": "Thinking that asking for help means you have failed or will bother people. Everyone needs help sometimes, and trusted adults want to know.",
+        "model": "Example: Ana does not understand a maths question. Helper: her teacher. Request: 'Mr Lee, can you show me the first step of question 4? I get stuck at the division.' She names the problem and the help she needs. If Mr Lee is busy, she asks a classmate or waits and asks again.",
+        "rule": "Asking for help is a smart, strong choice, not a weakness. Different problems need different helpers: a teacher for schoolwork, a family member for home problems, a doctor or nurse for health, and a trusted adult straight away if anyone feels unsafe. A clear help request says who you are asking, what the problem is and what kind of help you need. If the first helper cannot help, ask another.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.",
+        "misconception": "Writing only a final label without a reason does not show PDHPE thinking.",
+        "model": "Example: Ana does not understand a maths question. Helper: her teacher. Request: 'Mr Lee, can you show me the first step of question 4? I get stuck at the division.' She names the problem and the help she needs. If Mr Lee is busy, she asks a classmate or waits and asks again. Look at each cue, rule or choice that carries the idea.",
+        "rule": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "He could ask the sport teacher or a trusted adult: 'My shoes are hurting my feet, can I sit out and rest?' Pain is a body signal that deserves attention. The request names who, the problem and the help.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.",
+        "misconception": "Changing the wording without changing the choice does not fix the error. Thinking that asking for help means you have failed or will bother people. Everyone needs help sometimes, and trusted adults want to know.",
+        "model": "Thinking that asking for help means you have failed or will bother people. Everyone needs help sometimes, and trusted adults want to know. Here is a more helpful example: Example: Ana does not understand a maths question. Helper: her teacher. Request: 'Mr Lee, can you show me the first step of question 4? I get stuck at the division.' She names the problem and the help she needs. If Mr Lee is busy, she asks a classmate or waits and asks again.",
+        "rule": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new situation.",
+        "model": "Asking for help is a smart, strong choice, not a weakness. Different problems need different helpers: a teacher for schoolwork, a family member for home problems, a doctor or nurse for health, and a trusted adult straight away if anyone feels unsafe. A clear help request says who you are asking, what the problem is and what kind of help you need. If the first helper cannot help, ask another. Now choose a different situation to show you can transfer the idea.",
+        "rule": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "A problem matched to a helper.",
+        "teaches": "Match problem to helper."
+      },
+      {
+        "alt": "Help requests and urgent help.",
+        "teaches": "Unsafe means tell now."
+      }
+    ]
+  }
+}

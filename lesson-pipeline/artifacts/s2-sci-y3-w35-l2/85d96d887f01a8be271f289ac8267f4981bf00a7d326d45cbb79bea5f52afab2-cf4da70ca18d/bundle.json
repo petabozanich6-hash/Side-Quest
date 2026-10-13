@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "ST2-SCI-01",
+      "lesson_evidence": "Food and agriculture review connects sources, Australian farms, germination tests, growth records, garden care, farm-to-table and waste reduction.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/science/science-and-technology-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Food and agriculture review connects sources, Australian farms, germination tests, growth records, garden care, farm-to-table and waste reduction.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same science idea to a new object or material, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nMini: plant source food; fair-test constant; one hygiene step; one waste-reduce action.\n\nFEEDBACK\ne.g. apple; same seed type; wash hands; pack leftovers.\n\nWATCH FOR\nReview without farm-to-table steps is incomplete.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nComplete a 12-item food unit review. Include one flowchart. List two next goals.\n\nWrite a short reflection naming one observation or step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Science and Technology",
+    "learning_intention": "Food and agriculture review connects sources, Australian farms, germination tests, growth records, garden care, farm-to-table and waste reduction.",
+    "lesson_number": 2,
+    "lesson_role": "Apply and make",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: safe everyday objects for observation"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "ST2-SCI-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 12-item food unit review. Include one flowchart. List two next goals. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about review linked to that evidence.\n\nParent: Written model 2: Sample misconception: Review without farm-to-table steps is incomplete.. Correction: e.g. apple; same seed type; wash hands; pack leftovers. with evidence.\n\nParent: Likely misconception: Review without farm-to-table steps is incomplete. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses review. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about review, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about review. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for review. Reject wording changes that leave the same error..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "This matches the taught method for review. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "e.g. apple; same seed type; wash hands; pack leftovers",
+          "Review without farm-to-table steps is incomplete",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
+        ],
+        "question": "Mini: plant source food; fair-test constant; one hygiene step; one waste-reduce action. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "This is the misconception to avoid for review; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Review without farm-to-table steps is incomplete",
+          "Food and agriculture review connects sources, Australian farms, germination tests, growth records, garden care",
+          "e.g. apple; same seed type; wash hands; pack leftovers",
+          "Careful use of food and explain why it matters with clear evidence"
+        ],
+        "question": "Which statement is a common mistake when working with review?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and a named food and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Review without farm-to-table steps is incomplete",
+          "Name food and explain why it matters only, without linking it to review",
+          "Apply review to new material and name the food and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
+        ],
+        "question": "Which response best applies review with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Review without farm-to-table steps is incomplete",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation"
+        ],
+        "question": "New examples: a charging phone, a nesting bird, a glass marble, a fallen dry leaf. Which claim about review is most trustworthy?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Review without farm-to-table steps is incomplete",
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation",
+          "A label copied from the title with no evidence"
+        ],
+        "question": "Which record best supports a science claim about review?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The strongest choice applies the taught idea about review with evidence. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore measurements and decide by which looks nicer",
+          "e.g. apple; same seed type; wash hands; pack leftovers",
+          "Review without farm-to-table steps is incomplete",
+          "Change several conditions at once so something happens faster"
+        ],
+        "question": "Using this science idea — Food and agriculture review connects sources, Australian farms, germination tests, growth records — which choice is strongest?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same"
+        ],
+        "question": "Which investigation design best tests an idea about review?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Review without farm-to-table steps is incomplete",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about review should change with it",
+          "Any exciting story about the object must be true"
+        ],
+        "question": "Which prediction about review can be checked with evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about review. Reject title-only labels with no observation.",
+        "question": "Investigate or describe a fresh example (not the worked objects) that uses review. Record evidence and explain how it supports your claim.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about review linked to that evidence.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for review. Reject wording changes that leave the same error.",
+        "question": "Name one science misconception about review, correct it with evidence, and say why the correction works.",
+        "sample_answer": "Sample misconception: Review without farm-to-table steps is incomplete.. Correction: e.g. apple; same seed type; wash hands; pack leftovers. with evidence.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-sci-y3-w35-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA Science and Technology alignment using catalogue outcome codes; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise review.",
+        "Read the mission before you start observing or testing.",
+        "Keep the property or variable you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the observation or step that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore observations or fair tests.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread labels, measurements and sequence of steps.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact observation or test step before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key observations.",
+        "Say what each observation shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or method, not only how neat the drawing looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh object or context that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new objects or data."
+      ]
+    },
+    "subject": "Agriculture and Food Technologies",
+    "success_criteria": [
+      "I can use review with a specific example from this lesson.",
+      "I can identify food and explain why it matters.",
+      "I can practise seed independently on a new prompt.",
+      "I can notice garden needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Food and agriculture review connects sources, Australian farms, germination tests, growth records, garden care, farm-to-table and waste reduction.",
+          "options": [
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Food and agriculture review connects sources, Australian farms, germination tests, growth records, garden care"
+          ],
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nReview path: source → farm region → fair seed test → growth measure → farm-to-table → less waste.\n\nTRY FIRST\nMini: plant source food; fair-test constant; one hygiene step; one waste-reduce action.\n\nFEEDBACK\ne.g. apple; same seed type; wash hands; pack leftovers.",
+        "explain": "Food and agriculture review connects sources, Australian farms, germination tests, growth records, garden care, farm-to-table and waste reduction.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Review without farm-to-table steps is incomplete. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Food unit review.",
+            "caption": "Include a flowchart.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Review path</text><text x=\"28\" y=\"78\">source → farm → seed test</text><text x=\"358\" y=\"42\">Then</text><text x=\"358\" y=\"78\">growth → plate → waste</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which observation matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the observations, properties or test steps that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Review path: source → farm region → fair seed test → growth measure → farm-to-table → less waste. Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which observation matters most.\nJuno: Name the observations, properties or test steps that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Review path: source → farm region → fair seed test → growth measure → farm-to-table → less waste. Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
+          "options": [
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nReview path: source → farm region → fair seed test → growth measure → farm-to-table → less waste. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show scientific thinking. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "Compact food review.",
+            "caption": "List next goals.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Mini</text><text x=\"28\" y=\"78\">plant food; same seeds</text><text x=\"358\" y=\"42\">Hygiene</text><text x=\"358\" y=\"78\">wash hands</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
+          "options": [
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
+          ],
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nReview without farm-to-table steps is incomplete. Here is a more productive model: Review path: source → farm region → fair seed test → growth measure → farm-to-table → less waste.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\ne.g. apple; same seed type; wash hands; pack leftovers.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. Review without farm-to-table steps is incomplete. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example.",
+          "options": [
+            "An answer copied without understanding",
+            "Use the same science idea on a new object, material or context, not a copy of the worked example",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
+          ],
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nFood and agriculture review connects sources, Australian farms, germination tests, growth records, garden care, farm-to-table and waste reduction. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",
+        "explain": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.\n\nHOW TO WORK\nRead the worked example and name the observations, properties or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim or method, not just the neatness of the diagram.",
+        "title": "Transfer to a new investigation"
+      }
+    ],
+    "title": "Year 3, Week 35, Lesson 2: Unit review and showcase",
+    "unit_number": 7,
+    "unit_title": "Food and agriculture",
+    "week": 35,
+    "week_in_unit": 5,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nReview path: source → farm region → fair seed test → growth measure → farm-to-table → less waste.\n\nWrite what makes this example accurate, naming the observations, properties or test steps used.",
+    "worked_visuals": [
+      {
+        "alt": "Food unit review.",
+        "caption": "Include a flowchart.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Review path</text><text x=\"28\" y=\"78\">source → farm → seed test</text><text x=\"358\" y=\"42\">Then</text><text x=\"358\" y=\"78\">growth → plate → waste</text></g></svg>"
+      },
+      {
+        "alt": "Compact food review.",
+        "caption": "List next goals.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Mini</text><text x=\"28\" y=\"78\">plant food; same seeds</text><text x=\"358\" y=\"42\">Hygiene</text><text x=\"358\" y=\"78\">wash hands</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Mini: plant source food; fair-test constant; one hygiene step; one waste-reduce action."
+      ],
+      "independent_inputs": [
+        "Complete a 12-item food unit review. Include one flowchart. List two next goals."
+      ],
+      "model_inputs": [
+        "Review path: source → farm region → fair seed test → growth measure → farm-to-table → less waste."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "e.g. apple; same seed type; wash hands; pack leftovers.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Mini: plant source food; fair-test constant; one hygiene step; one waste-reduce action.",
+        "misconception": "Review without farm-to-table steps is incomplete.",
+        "model": "Review path: source → farm region → fair seed test → growth measure → farm-to-table → less waste.",
+        "rule": "Food and agriculture review connects sources, Australian farms, germination tests, growth records, garden care, farm-to-table and waste reduction.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "List the key observations or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show scientific thinking.",
+        "model": "Review path: source → farm region → fair seed test → growth measure → farm-to-table → less waste. Look at each observation, variable or design choice that carries the idea.",
+        "rule": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "e.g. apple; same seed type; wash hands; pack leftovers.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. Review without farm-to-table steps is incomplete.",
+        "model": "Review without farm-to-table steps is incomplete. Here is a more productive model: Review path: source → farm region → fair seed test → growth measure → farm-to-table → less waste.",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      },
+      {
+        "feedback": "The new example should use the same science idea as the model, but contain different objects or data.",
+        "fix": "Correct the claim or method, not just the neatness of the diagram.",
+        "guided_attempt": "Investigate or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "Food and agriculture review connects sources, Australian farms, germination tests, growth records, garden care, farm-to-table and waste reduction. Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen or measured."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Food unit review.",
+        "teaches": "Include a flowchart."
+      },
+      {
+        "alt": "Compact food review.",
+        "teaches": "List next goals."
+      }
+    ]
+  }
+}

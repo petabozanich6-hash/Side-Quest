@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "MA4-ARI-C-01",
+      "lesson_evidence": "To order integers, compare positions on the number line: the integer further to the right is greater. Justify with a number-line argument or a same-sign/magnitude rule: among negatives, the one closer to zero is greater (−1 > −8).",
+      "scope_limit": "Proposed Stage 4 NESA Mathematics alignment using catalogue outcome codes (MA4-*-C-01); content-point mapping and independent NESA verification remain pending.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "To order integers, compare positions on the number line: the integer further to the right is greater. Justify with a number-line argument or a same-sign/magnitude rule: among negatives, the one closer to zero is greater (−1 > −8).",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same method to a larger number or a new context, then compare two solution paths for accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nOrder from least to greatest: −11, −3, 4, −15, 1. Justify one comparison of two negatives.\n\nFEEDBACK\nStrong answer: −15, −11, −3, 1, 4; e.g. −3 > −11 because −3 is closer to zero / further right.\n\nWATCH FOR\nBelieving a 'larger-looking' negative like −20 is greater than −2 because 20 > 2.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nOrder three mixed lists of eight integers each and write a two-sentence justification rule you used for negatives.\n\nWrite a short reflection naming one step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Mathematics",
+    "learning_intention": "To order integers, compare positions on the number line: the integer further to the right is greater. Justify with a number-line argument or a same-sign/magnitude rule: among negatives, the one closer to zero is greater (−1 > −8).",
+    "lesson_number": 2,
+    "lesson_role": "Strategies",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: place-value chart or number line"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "MA4-ARI-C-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Order three mixed lists of eight integers each and write a two-sentence justification rule you used for negatives. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for order; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2.. Correction uses Strong answer: −15, −11, −3, 1, 4; e.g.. Why: restores accurate order.\n\nParent: Likely misconception: Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses order with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with order, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for order, and names places/values. Reject copied model numbers. / Accept a named misconception about order, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 3,
+        "explanation": "This matches the taught method for order. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "−15, −11, −3, 1, 4; e.g"
+        ],
+        "question": "Order from least to greatest: −11, −3, 4, −15, 1. Justify one comparison of two negatives. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "This is the misconception to avoid for order; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Careful use of less than and explain why it matters with clear evidence",
+          "Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2",
+          "To order integers, compare positions on the number line: the integer further to the right is greater",
+          "−15, −11, −3, 1, 4; e.g"
+        ],
+        "question": "Which statement is a common mistake when working with order?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and a named less than and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2",
+          "Name less than and explain why it matters only, without linking it to order",
+          "Apply order to new material and name the less than and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
+        ],
+        "question": "Which response best applies order with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value"
+        ],
+        "question": "Which working best supports a correct answer for this lesson on order?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The correct statement applies the taught order method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "−15, −11, −3, 1, 4; e.g",
+          "Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2",
+          "Read 11, from left to right as ones only, ignoring place value",
+          "Ignore units and treat 11, and 3, as interchangeable"
+        ],
+        "question": "Using the method for order, which statement is true?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either"
+        ],
+        "question": "If two methods disagree on a order problem with numbers such as 11, and 3,, what should you check first?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Retype the worked model numbers 11, and 3, as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2",
+          "Use the same order method on new numbers and name the places or values that matter"
+        ],
+        "question": "Solve a multi-step order problem with different values from the model, justify each step, and check reasonableness.?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "To order integers, compare positions on the number line: the integer further to the right is greater",
+          "−15, −11, −3, 1, 4; e.g",
+          "Label units when comparing 11, with 3",
+          "Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2"
+        ],
+        "question": "Which error is the lesson warning against for order?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for order, and names places/values. Reject copied model numbers.",
+        "question": "Solve one fresh problem that uses order with different numbers from the worked model. Show working and name the places or values that matter.",
+        "sample_answer": "Sample: new numbers solved with visible working for order; key places/values named. Do not award marks for retyping the model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a named misconception about order, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
+        "question": "Describe one likely mistake with order, show corrected working, and say why the correction works.",
+        "sample_answer": "Sample misconception: Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2.. Correction uses Strong answer: −15, −11, −3, 1, 4; e.g.. Why: restores accurate order.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent working and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s4-mat-y7-w01-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA mathematics alignment using verified outcome code wording where recorded in lesson-pipeline/sources; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S4",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise order.",
+        "Read the mission before you start calculating.",
+        "Keep the place or unit you are working with in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your working with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the place or distance that carries the method.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore place value or working.",
+        "Prefer accurate method over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your working and reason are both present.",
+        "Proofread digits, places and operation signs.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact place, value or distance before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key numbers.",
+        "Say what each number represents in the method.",
+        "A final answer alone is weaker than labelled working."
+      ],
+      "teach2": [
+        "Compare a weak attempt with stronger working.",
+        "Change the value or method, not only how neat it looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose fresh numbers that still use the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original working and a short reason.",
+        "Save work that shows the skill on new numbers."
+      ]
+    },
+    "subject": "Number",
+    "success_criteria": [
+      "I can use order with a specific example from this lesson.",
+      "I can identify less than and explain why it matters.",
+      "I can practise greater than independently on a new prompt.",
+      "I can notice justify needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "To order integers, compare positions on the number line: the integer further to the right is greater.",
+          "options": [
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "To order integers, compare positions on the number line: the integer further to the right is greater"
+          ],
+          "question": "Which choice best applies this lesson idea about order with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nOrder −7, 3, −2, 0: on the line, −7, −2, 0, 3. Justification: −2 is right of −7 so −2 > −7; 3 is right of 0 so 3 > 0.\n\nTRY FIRST\nOrder from least to greatest: −11, −3, 4, −15, 1. Justify one comparison of two negatives.\n\nFEEDBACK\nStrong answer: −15, −11, −3, 1, 4; e.g. −3 > −11 because −3 is closer to zero / further right.",
+        "explain": "To order integers, compare positions on the number line: the integer further to the right is greater. Justify with a number-line argument or a same-sign/magnitude rule: among negatives, the one closer to zero is greater (−1 > −8).\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2. Correct the value or method, not just the appearance of the digits.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Ordering integers.",
+            "caption": "Justify with the line.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Rightmost</text><text x=\"28\" y=\"78\">greatest</text><text x=\"358\" y=\"42\">Negatives</text><text x=\"358\" y=\"78\">closer to 0 greater</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which number or place matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the places, values or distances that carry the method before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Order −7, 3, −2, 0: on the line, −7, −2, 0, 3. Justification: −2 is right of −7 so −2 > −7; 3 is right of 0 so 3 > 0. Then write your own working.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which number or place matters most.\nJuno: Name the places, values or distances that carry the method before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Order −7, 3, −2, 0: on the line, −7, −2, 0, 3. Justification: −2 is right of −7 so −2 > −7; 3 is right of 0 so 3 > 0. Then write your own working."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
+          ],
+          "question": "Which choice best applies this lesson idea about order with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nOrder −7, 3, −2, 0: on the line, −7, −2, 0, 3. Justification: −2 is right of −7 so −2 > −7; 3 is right of 0 so 3 > 0. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
+        "explain": "Make the method visible: name the values, places or steps you used and say why that step is valid.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only the final answer without working does not show the method. Correct the value or method, not just the appearance of the digits.",
+        "title": "Show the working",
+        "visual": [
+          {
+            "alt": "Magnitude trap.",
+            "caption": "Position beats digits.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Trap</text><text x=\"28\" y=\"78\">−20 &gt; −2?</text><text x=\"358\" y=\"42\">Truth</text><text x=\"358\" y=\"78\">−2 &gt; −20</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
+          "options": [
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
+          ],
+          "question": "Which choice best applies this lesson idea about order with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nBelieving a 'larger-looking' negative like −20 is greater than −2 because 20 > 2. Here is a more productive model: Order −7, 3, −2, 0: on the line, −7, −2, 0, 3. Justification: −2 is right of −7 so −2 > −7; 3 is right of 0 so 3 > 0.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nStrong answer: −15, −11, −3, 1, 4; e.g. −3 > −11 because −3 is closer to zero / further right.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the answer without repairing the method does not fix the error. Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2. Correct the value or method, not just the appearance of the digits.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
+          "options": [
+            "An answer copied without understanding",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
+          ],
+          "question": "Which choice best applies this lesson idea about order with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nTo order integers, compare positions on the number line: the integer further to the right is greater. Justify with a number-line argument or a same-sign/magnitude rule: among negatives, the one closer to zero is greater (−1 > −8). Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",
+        "explain": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new numbers. Correct the value or method, not just the appearance of the digits.",
+        "title": "Transfer to a new problem"
+      }
+    ],
+    "title": "Year 7: Order integers and justify comparisons",
+    "unit_number": 1,
+    "unit_title": "Integers and index laws",
+    "week": 1,
+    "week_in_unit": 1,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nOrder −7, 3, −2, 0: on the line, −7, −2, 0, 3. Justification: −2 is right of −7 so −2 > −7; 3 is right of 0 so 3 > 0.\n\nWrite what makes this example accurate, naming the places, values or distances used.",
+    "worked_visuals": [
+      {
+        "alt": "Ordering integers.",
+        "caption": "Justify with the line.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Rightmost</text><text x=\"28\" y=\"78\">greatest</text><text x=\"358\" y=\"42\">Negatives</text><text x=\"358\" y=\"78\">closer to 0 greater</text></g></svg>"
+      },
+      {
+        "alt": "Magnitude trap.",
+        "caption": "Position beats digits.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Trap</text><text x=\"28\" y=\"78\">−20 &gt; −2?</text><text x=\"358\" y=\"42\">Truth</text><text x=\"358\" y=\"78\">−2 &gt; −20</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 7"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Order from least to greatest: −11, −3, 4, −15, 1. Justify one comparison of two negatives."
+      ],
+      "independent_inputs": [
+        "Order three mixed lists of eight integers each and write a two-sentence justification rule you used for negatives."
+      ],
+      "model_inputs": [
+        "Order −7, 3, −2, 0: on the line, −7, −2, 0, 3. Justification: −2 is right of −7 so −2 > −7; 3 is right of 0 so 3 > 0."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Strong answer: −15, −11, −3, 1, 4; e.g. −3 > −11 because −3 is closer to zero / further right.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Order from least to greatest: −11, −3, 4, −15, 1. Justify one comparison of two negatives.",
+        "misconception": "Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2.",
+        "model": "Order −7, 3, −2, 0: on the line, −7, −2, 0, 3. Justification: −2 is right of −7 so −2 > −7; 3 is right of 0 so 3 > 0.",
+        "rule": "To order integers, compare positions on the number line: the integer further to the right is greater. Justify with a number-line argument or a same-sign/magnitude rule: among negatives, the one closer to zero is greater (−1 > −8).",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The most useful working names the quantities and the reason for each step, not only the final answer.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Write the key numbers from the model and say what each one represents in the method.",
+        "misconception": "Writing only the final answer without working does not show the method.",
+        "model": "Order −7, 3, −2, 0: on the line, −7, −2, 0, 3. Justification: −2 is right of −7 so −2 > −7; 3 is right of 0 so 3 > 0. Look at each number, place or distance that carries the method.",
+        "rule": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "Strong answer: −15, −11, −3, 1, 4; e.g. −3 > −11 because −3 is closer to zero / further right.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Describe why the warned-against approach gives the wrong value or meaning, then write corrected working.",
+        "misconception": "Changing the answer without repairing the method does not fix the error. Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2.",
+        "model": "Believing a 'larger-looking' negative like −20 is greater than −2 because 20 > 2. Here is a more productive model: Order −7, 3, −2, 0: on the line, −7, −2, 0, 3. Justification: −2 is right of −7 so −2 > −7; 3 is right of 0 so 3 > 0.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The new problem should use the same method as the model, but contain different numbers.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Solve one fresh problem that uses the same skill and write a short reason for your answer.",
+        "misconception": "Repeating the worked example cannot show transfer to new numbers.",
+        "model": "To order integers, compare positions on the number line: the integer further to the right is greater. Justify with a number-line argument or a same-sign/magnitude rule: among negatives, the one closer to zero is greater (−1 > −8). Now choose different numbers to show you can transfer the method.",
+        "rule": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Ordering integers.",
+        "teaches": "Justify with the line."
+      },
+      {
+        "alt": "Magnitude trap.",
+        "teaches": "Position beats digits."
+      }
+    ]
+  }
+}

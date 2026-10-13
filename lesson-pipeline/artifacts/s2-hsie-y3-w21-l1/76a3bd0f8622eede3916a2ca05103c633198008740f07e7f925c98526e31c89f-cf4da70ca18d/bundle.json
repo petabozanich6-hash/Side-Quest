@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "HS2-GEO-01",
+      "lesson_evidence": "Rules and laws help people live together safely and fairly. A rule is made by a group such as a family or school. A law is made by a government and applies to everyone in that place. Each rule or law has a purpose, and some protect other people as well as ourselves.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/hsie/hsie-k-6-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Rules and laws help people live together safely and fairly. A rule is made by a group such as a family or school. A law is made by a government and applies to everyone in that place. Each rule or law has a purpose, and some protect other people as well as ourselves.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same HSIE idea to a new place or source, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nMatch each rule to its purpose: wear a bike helmet; put your hand up in class; line up for the canteen.\n\nFEEDBACK\nHelmet: safety; hand up: everyone can be heard; line up: fairness for those who arrived first.\n\nWATCH FOR\nBelieving rules exist only to stop people having fun ignores their purposes of safety, fairness and order.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nList six rules from home, school and the community. For each write the purpose and who it protects. Choose one rule and describe what could happen if it did not exist.\n\nWrite a short reflection naming one source or idea you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "HSIE",
+    "learning_intention": "Rules and laws help people live together safely and fairly. A rule is made by a group such as a family or school. A law is made by a government and applies to everyone in that place. Each rule or law has a purpose, and some protect other people as well as ourselves.",
+    "lesson_number": 1,
+    "lesson_role": "Investigate",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: local map, photo or interview notes"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "HS2-GEO-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: List six rules from home, school and the community. For each write the purpose and who it protects. Choose one rule and describe what could happen if it did not exist. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using rule on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order.. Correction: Helmet: safety; hand up: everyone can be heard; line up: fairness for those who arrived first.. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating rule on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with rule, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about rule with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for rule. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "This matches the taught method for rule. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Helmet: safety; hand up: everyone can be heard; line up: fairness for those who arrived first",
+          "Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
+        ],
+        "question": "Match each rule to its purpose: wear a bike helmet; put your hand up in class; line up for the canteen. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "This is the misconception to avoid for rule; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order",
+          "Rules and laws help people live together safely and fairly",
+          "Helmet: safety; hand up: everyone can be heard; line up: fairness for those who arrived first",
+          "Careful use of law and explain why it matters with clear evidence"
+        ],
+        "question": "Which statement is a common mistake when working with rule?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and a named law and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Apply rule to new material and name the law and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order",
+          "Name law and explain why it matters only, without linking it to rule"
+        ],
+        "question": "Which response best applies rule with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on rule. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order",
+          "Helmet: safety; hand up: everyone can be heard; line up: fairness for those who arrived first"
+        ],
+        "question": "Which response best uses sources, places or historical/geographic evidence for rule?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Copy a classmate’s sentence with no local detail",
+          "Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order",
+          "Name a specific source or place detail and say what it shows about rule",
+          "Make a bigger claim without naming any source or place detail"
+        ],
+        "question": "Which evidence move best supports a claim about rule?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The stronger choice matches the taught idea (Rules and laws help people live together safely and fairly.) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Copy a classmate’s sentence with no local detail",
+          "Example: \"Stop at a red light\" is a law that keeps people safe",
+          "Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order",
+          "Make a bigger claim without naming any source or place detail"
+        ],
+        "question": "Which choice best applies this lesson idea about rule?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details",
+          "Invent missing details to make the answer sound complete"
+        ],
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for rule?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order",
+          "Name law and explain why it matters only, with no linked example",
+          "List six rules from home, school and the community",
+          "Retype the worked example with no new example"
+        ],
+        "question": "Which independent response best applies rule to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about rule with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating rule on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using rule on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for rule. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with rule, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order.. Correction: Helmet: safety; hand up: everyone can be heard; line up: fairness for those who arrived first.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-hsie-y3-w21-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA HSIE alignment using catalogue outcome codes (HS2-*); content-point mapping and local First Nations protocols remain pending human review.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise rule.",
+        "Read the mission before you start mapping or using sources.",
+        "Keep the place, people or source you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the source or place detail that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore sources or respectful practice.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread names, places, dates and sequence.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact source detail or place feature before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key evidence.",
+        "Say what each source or place detail shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or use of sources, not only how neat the poster looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, person or source that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new sources or places."
+      ]
+    },
+    "subject": "Civics and Citizenship",
+    "success_criteria": [
+      "I can use rule with a specific example from this lesson.",
+      "I can identify law and explain why it matters.",
+      "I can practise safe independently on a new prompt.",
+      "I can notice fair needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Rules and laws help people live together safely and fairly.",
+          "options": [
+            "Rules and laws help people live together safely and fairly",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
+          ],
+          "question": "Which choice best applies this lesson idea about rule with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: \"Stop at a red light\" is a law that keeps people safe. \"Walk on the verandahs\" is a school rule that prevents collisions. \"Take turns on the swing\" is a rule that is fair to everyone.\n\nTRY FIRST\nMatch each rule to its purpose: wear a bike helmet; put your hand up in class; line up for the canteen.\n\nFEEDBACK\nHelmet: safety; hand up: everyone can be heard; line up: fairness for those who arrived first.",
+        "explain": "Rules and laws help people live together safely and fairly. A rule is made by a group such as a family or school. A law is made by a government and applies to everyone in that place. Each rule or law has a purpose, and some protect other people as well as ourselves.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Rules and laws compared.",
+            "caption": "Both have a purpose.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Rule</text><text x=\"28\" y=\"78\">made by a group</text><text x=\"358\" y=\"42\">Law</text><text x=\"358\" y=\"78\">made by government</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which source or place detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the sources, map features or community examples that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Example: \"Stop at a red light\" is a law that keeps people safe. \"Walk on the verandahs\" is a school rule that prevents c Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which source or place detail matters most.\nJuno: Name the sources, map features or community examples that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Example: \"Stop at a red light\" is a law that keeps people safe. \"Walk on the verandahs\" is a school rule that prevents c Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
+          "options": [
+            "An answer copied without understanding",
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
+          ],
+          "question": "Which choice best applies this lesson idea about rule with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample: \"Stop at a red light\" is a law that keeps people safe. \"Walk on the verandahs\" is a school rule that prevents collisions. \"Take turns on the swing\" is a rule that is fair to everyone. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show HSIE thinking. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "Purposes of rules.",
+            "caption": "Who does it protect?",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Helmet</text><text x=\"28\" y=\"78\">safety</text><text x=\"358\" y=\"42\">Line up</text><text x=\"358\" y=\"78\">fairness</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
+          "options": [
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about rule with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nBelieving rules exist only to stop people having fun ignores their purposes of safety, fairness and order. Here is a more productive model: Example: \"Stop at a red light\" is a law that keeps people safe. \"Walk on the verandahs\" is a school rule that prevents collisions. \"Take turns on the swing\" is a rule that is fair to everyone.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nHelmet: safety; hand up: everyone can be heard; line up: fairness for those who arrived first.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
+          "options": [
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about rule with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nRules and laws help people live together safely and fairly. A rule is made by a group such as a family or school. A law is made by a government and applies to everyone in that place. Each rule or law has a purpose, and some protect other people as well as ourselves. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",
+        "explain": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.\n\nWHY IT MATTERS\nThis helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence.\n\nHOW TO WORK\nRead the worked example and name the sources, map features or community examples that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a detail is uncertain, identify what source you would need next. One deliberate, evidence-based revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim or use of sources, not just the neatness of the poster.",
+        "title": "Transfer to a new inquiry"
+      }
+    ],
+    "title": "Year 3, Week 21, Lesson 1: Why we have rules",
+    "unit_number": 5,
+    "unit_title": "Rules, laws and fairness",
+    "week": 21,
+    "week_in_unit": 1,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample: \"Stop at a red light\" is a law that keeps people safe. \"Walk on the verandahs\" is a school rule that prevents collisions. \"Take turns on the swing\" is a rule that is fair to everyone.\n\nWrite what makes this example accurate, naming the sources, places or community details used.",
+    "worked_visuals": [
+      {
+        "alt": "Rules and laws compared.",
+        "caption": "Both have a purpose.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Rule</text><text x=\"28\" y=\"78\">made by a group</text><text x=\"358\" y=\"42\">Law</text><text x=\"358\" y=\"78\">made by government</text></g></svg>"
+      },
+      {
+        "alt": "Purposes of rules.",
+        "caption": "Who does it protect?",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Helmet</text><text x=\"28\" y=\"78\">safety</text><text x=\"358\" y=\"42\">Line up</text><text x=\"358\" y=\"78\">fairness</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Match each rule to its purpose: wear a bike helmet; put your hand up in class; line up for the canteen."
+      ],
+      "independent_inputs": [
+        "List six rules from home, school and the community. For each write the purpose and who it protects. Choose one rule and describe what could happen if it did not exist."
+      ],
+      "model_inputs": [
+        "Example: \"Stop at a red light\" is a law that keeps people safe. \"Walk on the verandahs\" is a school rule that prevents collisions. \"Take turns on the swing\" is a rule that is fair to everyone."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Helmet: safety; hand up: everyone can be heard; line up: fairness for those who arrived first.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Match each rule to its purpose: wear a bike helmet; put your hand up in class; line up for the canteen.",
+        "misconception": "Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order.",
+        "model": "Example: \"Stop at a red light\" is a law that keeps people safe. \"Walk on the verandahs\" is a school rule that prevents collisions. \"Take turns on the swing\" is a rule that is fair to everyone.",
+        "rule": "Rules and laws help people live together safely and fairly. A rule is made by a group such as a family or school. A law is made by a government and applies to everyone in that place. Each rule or law has a purpose, and some protect other people as well as ourselves.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "List the key observations, sources or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show HSIE thinking.",
+        "model": "Example: \"Stop at a red light\" is a law that keeps people safe. \"Walk on the verandahs\" is a school rule that prevents collisions. \"Take turns on the swing\" is a rule that is fair to everyone. Look at each observation, source detail or example that carries the idea.",
+        "rule": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "Helmet: safety; hand up: everyone can be heard; line up: fairness for those who arrived first.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order.",
+        "model": "Believing rules exist only to stop people having fun ignores their purposes of safety, fairness and order. Here is a more productive model: Example: \"Stop at a red light\" is a law that keeps people safe. \"Walk on the verandahs\" is a school rule that prevents collisions. \"Take turns on the swing\" is a rule that is fair to everyone.",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      },
+      {
+        "feedback": "The new example should use the same HSIE idea as the model, but contain different evidence.",
+        "fix": "Correct the claim or use of sources, not just the neatness of the poster.",
+        "guided_attempt": "Inquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "Rules and laws help people live together safely and fairly. A rule is made by a group such as a family or school. A law is made by a government and applies to everyone in that place. Each rule or law has a purpose, and some protect other people as well as ourselves. Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
+        "why": "This helps the learner base claims on sources, places and respectful community knowledge, rather than guessing from a single picture. Keep every claim linked to evidence."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Rules and laws compared.",
+        "teaches": "Both have a purpose."
+      },
+      {
+        "alt": "Purposes of rules.",
+        "teaches": "Who does it protect?"
+      }
+    ]
+  }
+}

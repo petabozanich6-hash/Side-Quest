@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "MA2-GM-03",
+      "lesson_evidence": "Angles appear in the environment: book corners, window frames, clock hands, open doors. An angle hunt records and classifies them.",
+      "scope_limit": "Single lesson: partial evidence. Cross-check existing card mapping and NESA content point. Official wording for MA2-RN-01 is recorded in lesson-pipeline/sources/nesa-ma2-rn-01.json where applicable.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Angles appear in the environment: book corners, window frames, clock hands, open doors. An angle hunt records and classifies them.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same method to a larger number or a new context, then compare two solution paths for accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nFind and sketch three right angles and three non-right angles in the room. Label each.\n\nFEEDBACK\nLabels must match the tester, not just the sketch beauty.\n\nWATCH FOR\nPhotographing without classifying leaves the hunt incomplete.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nComplete an angle hunt of at least twelve finds. Tally right / smaller / larger. Write two sentences about where right angles were most common.\n\nWrite a short reflection naming one step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Mathematics",
+    "learning_intention": "Angles appear in the environment: book corners, window frames, clock hands, open doors. An angle hunt records and classifies them.",
+    "lesson_number": 3,
+    "lesson_role": "Problem solving",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: place-value chart or number line"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "MA2-GM-03"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete an angle hunt of at least twelve finds. Tally right / smaller / larger. Write two sentences about where right angles were most common. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for angle hunt; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Photographing without classifying leaves the hunt incomplete.. Correction uses Labels must match the tester, not just the sketch beauty.. Why: restores accurate angle hunt.\n\nParent: Likely misconception: Photographing without classifying leaves the hunt incomplete. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses angle hunt with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with angle hunt, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for angle hunt, and names places/values. Reject copied model numbers. / Accept a named misconception about angle hunt, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "This matches the taught method for angle hunt. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Labels must match the tester, not just the sketch beauty",
+          "Photographing without classifying leaves the hunt incomplete",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
+        ],
+        "question": "Find and sketch three right angles and three non-right angles in the room. Label each. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "This is the misconception to avoid for angle hunt; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Angles appear in the environment: book corners, window frames, clock hands, open doors",
+          "Labels must match the tester, not just the sketch beauty",
+          "Careful use of environment and explain why it matters with clear evidence",
+          "Photographing without classifying leaves the hunt incomplete"
+        ],
+        "question": "Which statement is a common mistake when working with angle hunt?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and a named environment and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Photographing without classifying leaves the hunt incomplete",
+          "Name environment and explain why it matters only, without linking it to angle hunt",
+          "Apply angle hunt to new material and name the environment and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
+        ],
+        "question": "Which response best applies angle hunt with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Change digits to look neater without checking place value",
+          "Photographing without classifying leaves the hunt incomplete",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working"
+        ],
+        "question": "Which working best supports a correct answer for this lesson on angle hunt?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The correct statement applies the taught angle hunt method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Labels must match the tester, not just the sketch beauty",
+          "Photographing without classifying leaves the hunt incomplete",
+          "Read 24 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 24 and 6 as interchangeable"
+        ],
+        "question": "Using the method for angle hunt, which statement is true?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically"
+        ],
+        "question": "If two methods disagree on a angle hunt problem with numbers such as 24 and 6, what should you check first?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Photographing without classifying leaves the hunt incomplete",
+          "Use the same angle hunt method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 24 and 6 as the answer",
+          "Change only handwriting and keep the same numbers"
+        ],
+        "question": "Solve a fresh angle hunt problem that uses different numbers from the worked model and explain one key step.?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Label units when comparing 24 with 6",
+          "Photographing without classifying leaves the hunt incomplete",
+          "Angles appear in the environment: book corners, window frames, clock hands, open doors",
+          "Labels must match the tester, not just the sketch beauty"
+        ],
+        "question": "Which error is the lesson warning against for angle hunt?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for angle hunt, and names places/values. Reject copied model numbers.",
+        "question": "Solve one fresh problem that uses angle hunt with different numbers from the worked model. Show working and name the places or values that matter.",
+        "sample_answer": "Sample: new numbers solved with visible working for angle hunt; key places/values named. Do not award marks for retyping the model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a named misconception about angle hunt, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
+        "question": "Describe one likely mistake with angle hunt, show corrected working, and say why the correction works.",
+        "sample_answer": "Sample misconception: Photographing without classifying leaves the hunt incomplete.. Correction uses Labels must match the tester, not just the sketch beauty.. Why: restores accurate angle hunt.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent working and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s2-mat-y3-w35-l3",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA mathematics alignment using verified outcome code wording where recorded in lesson-pipeline/sources; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S2",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise angle hunt.",
+        "Read the mission before you start calculating.",
+        "Keep the place or unit you are working with in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your working with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the place or distance that carries the method.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore place value or working.",
+        "Prefer accurate method over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your working and reason are both present.",
+        "Proofread digits, places and operation signs.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact place, value or distance before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key numbers.",
+        "Say what each number represents in the method.",
+        "A final answer alone is weaker than labelled working."
+      ],
+      "teach2": [
+        "Compare a weak attempt with stronger working.",
+        "Change the value or method, not only how neat it looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose fresh numbers that still use the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original working and a short reason.",
+        "Save work that shows the skill on new numbers."
+      ]
+    },
+    "subject": "Measurement and Space",
+    "success_criteria": [
+      "I can use angle hunt with a specific example from this lesson.",
+      "I can identify environment and explain why it matters.",
+      "I can practise right angle independently on a new prompt.",
+      "I can notice record needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Angles appear in the environment: book corners, window frames, clock hands, open doors.",
+          "options": [
+            "An answer copied without understanding",
+            "Angles appear in the environment: book corners, window frames, clock hands, open doors",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
+          ],
+          "question": "Which choice best applies this lesson idea about angle hunt with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample log: desk corner — right; open laptop — larger than right; pizza slice tip — smaller than right.\n\nTRY FIRST\nFind and sketch three right angles and three non-right angles in the room. Label each.\n\nFEEDBACK\nLabels must match the tester, not just the sketch beauty.",
+        "explain": "Angles appear in the environment: book corners, window frames, clock hands, open doors. An angle hunt records and classifies them.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Photographing without classifying leaves the hunt incomplete. Correct the value or method, not just the appearance of the digits.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Angle hunt recording.",
+            "caption": "Classify every find.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Hunt</text><text x=\"28\" y=\"78\">desk, door, clock</text><text x=\"358\" y=\"42\">Log</text><text x=\"358\" y=\"78\">sketch + label</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which number or place matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the places, values or distances that carry the method before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Example log: desk corner — right; open laptop — larger than right; pizza slice tip — smaller than right. Then write your own working.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which number or place matters most.\nJuno: Name the places, values or distances that carry the method before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Example log: desk corner — right; open laptop — larger than right; pizza slice tip — smaller than right. Then write your own working."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+          "options": [
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best applies this lesson idea about angle hunt with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample log: desk corner — right; open laptop — larger than right; pizza slice tip — smaller than right. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
+        "explain": "Make the method visible: name the values, places or steps you used and say why that step is valid.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only the final answer without working does not show the method. Correct the value or method, not just the appearance of the digits.",
+        "title": "Show the working",
+        "visual": [
+          {
+            "alt": "Summarising the hunt.",
+            "caption": "Twelve finds minimum.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Tally</text><text x=\"28\" y=\"78\">right / smaller / larger</text><text x=\"358\" y=\"42\">Finding</text><text x=\"358\" y=\"78\">where right angles cluster</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
+          "options": [
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
+          ],
+          "question": "Which choice best applies this lesson idea about angle hunt with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nPhotographing without classifying leaves the hunt incomplete. Here is a more productive model: Example log: desk corner — right; open laptop — larger than right; pizza slice tip — smaller than right.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nLabels must match the tester, not just the sketch beauty.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the answer without repairing the method does not fix the error. Photographing without classifying leaves the hunt incomplete. Correct the value or method, not just the appearance of the digits.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
+          "options": [
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Use the method on new numbers or a new context, not a copy of the worked example"
+          ],
+          "question": "Which choice best applies this lesson idea about angle hunt with clear evidence?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nAngles appear in the environment: book corners, window frames, clock hands, open doors. An angle hunt records and classifies them. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",
+        "explain": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new numbers. Correct the value or method, not just the appearance of the digits.",
+        "title": "Transfer to a new problem"
+      }
+    ],
+    "title": "Year 3, Week 35, Lesson 3: Angle hunt: angles around us",
+    "unit_number": 9,
+    "unit_title": "Shapes, objects, angles and position",
+    "week": 35,
+    "week_in_unit": 3,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample log: desk corner — right; open laptop — larger than right; pizza slice tip — smaller than right.\n\nWrite what makes this example accurate, naming the places, values or distances used.",
+    "worked_visuals": [
+      {
+        "alt": "Angle hunt recording.",
+        "caption": "Classify every find.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Hunt</text><text x=\"28\" y=\"78\">desk, door, clock</text><text x=\"358\" y=\"42\">Log</text><text x=\"358\" y=\"78\">sketch + label</text></g></svg>"
+      },
+      {
+        "alt": "Summarising the hunt.",
+        "caption": "Twelve finds minimum.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Tally</text><text x=\"28\" y=\"78\">right / smaller / larger</text><text x=\"358\" y=\"42\">Finding</text><text x=\"358\" y=\"78\">where right angles cluster</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 3"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Find and sketch three right angles and three non-right angles in the room. Label each."
+      ],
+      "independent_inputs": [
+        "Complete an angle hunt of at least twelve finds. Tally right / smaller / larger. Write two sentences about where right angles were most common."
+      ],
+      "model_inputs": [
+        "Example log: desk corner — right; open laptop — larger than right; pizza slice tip — smaller than right."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Labels must match the tester, not just the sketch beauty.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Find and sketch three right angles and three non-right angles in the room. Label each.",
+        "misconception": "Photographing without classifying leaves the hunt incomplete.",
+        "model": "Example log: desk corner — right; open laptop — larger than right; pizza slice tip — smaller than right.",
+        "rule": "Angles appear in the environment: book corners, window frames, clock hands, open doors. An angle hunt records and classifies them.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The most useful working names the quantities and the reason for each step, not only the final answer.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Write the key numbers from the model and say what each one represents in the method.",
+        "misconception": "Writing only the final answer without working does not show the method.",
+        "model": "Example log: desk corner — right; open laptop — larger than right; pizza slice tip — smaller than right. Look at each number, place or distance that carries the method.",
+        "rule": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "Labels must match the tester, not just the sketch beauty.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Describe why the warned-against approach gives the wrong value or meaning, then write corrected working.",
+        "misconception": "Changing the answer without repairing the method does not fix the error. Photographing without classifying leaves the hunt incomplete.",
+        "model": "Photographing without classifying leaves the hunt incomplete. Here is a more productive model: Example log: desk corner — right; open laptop — larger than right; pizza slice tip — smaller than right.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The new problem should use the same method as the model, but contain different numbers.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Solve one fresh problem that uses the same skill and write a short reason for your answer.",
+        "misconception": "Repeating the worked example cannot show transfer to new numbers.",
+        "model": "Angles appear in the environment: book corners, window frames, clock hands, open doors. An angle hunt records and classifies them. Now choose different numbers to show you can transfer the method.",
+        "rule": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Angle hunt recording.",
+        "teaches": "Classify every find."
+      },
+      {
+        "alt": "Summarising the hunt.",
+        "teaches": "Twelve finds minimum."
+      }
+    ]
+  }
+}
