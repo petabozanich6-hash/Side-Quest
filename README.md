@@ -9,6 +9,8 @@ A homeschool planning and learning platform (NSW curriculum aware).
 
 The frontend always talks to the API on the same origin (`/api`), so no API URL env var is needed.
 
+Project status, decisions and the next task: [`docs/SIDEQUEST-EXECUTION.md`](docs/SIDEQUEST-EXECUTION.md).
+
 ## Lesson content quality framework
 
 `lesson-excellence/` holds the content-only lesson schema, rubric, templates, validation/scoring scripts and the batch
