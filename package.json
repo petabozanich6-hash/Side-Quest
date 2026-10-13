@@ -14,7 +14,8 @@
     "lessons:validate": "node lesson-excellence/scripts/validate.mjs lesson-excellence/content",
     "lessons:score": "node lesson-excellence/scripts/score.mjs lesson-excellence/content",
     "lessons:pipeline": "node lesson-excellence/scripts/pipeline.mjs",
-    "lessons:test": "node --test lesson-excellence/test/*.test.mjs"
+    "lessons:test": "node --test lesson-excellence/test/*.test.mjs",
+    "test:worker": "node --no-warnings --import ./worker/test/register.mjs --test worker/test/builder.test.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"

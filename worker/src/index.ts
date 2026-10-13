@@ -4,6 +4,8 @@ import { sign, verify } from "hono/jwt";
 import type { MiddlewareHandler } from "hono";
 import { hashSecret, verifySecret } from "./auth";
 import { registerCore } from "./core";
+import { trialEndFrom } from "./entitlements";
+import { checkCanAddChild } from "./lessonBuilder";
 import { registerFamily, studentOut, studentExtraFromBody, STUDENT_SELECT } from "./family";
 import { registerLearning } from "./learning";
 import { registerPets } from "./pets";
@@ -84,8 +86,8 @@ app.post("/api/auth/register", async (c) => {
   const familyName = String(b.family_name || "").trim() || `${name}'s Family`;
   const ts = nowIso();
   await c.env.DB.batch([
-    c.env.DB.prepare("INSERT INTO families (id, name, owner_id, created_at) VALUES (?, ?, ?, ?)")
-      .bind(familyId, familyName, userId, ts),
+    c.env.DB.prepare("INSERT INTO families (id, name, owner_id, created_at, plan, trial_started_at, trial_ends_at) VALUES (?, ?, ?, ?, 'FREE_PREVIEW', ?, ?)")
+      .bind(familyId, familyName, userId, ts, ts, trialEndFrom(ts)),
     c.env.DB.prepare(
       "INSERT INTO users (id, family_id, email, password_hash, name, is_owner, created_at) VALUES (?, ?, ?, ?, ?, 1, ?)"
     ).bind(userId, familyId, email, await hashSecret(password), name, ts),
@@ -150,6 +152,8 @@ app.post("/api/students", requireAuth, requireParent, async (c) => {
   }
   const taken = await c.env.DB.prepare("SELECT id FROM students WHERE username = ?").bind(username).first();
   if (taken) return c.json({ detail: "Username already taken" }, 400);
+  const allowed = await checkCanAddChild(c.env.DB, c.get("user").family_id);
+  if (!allowed.ok) return c.json({ detail: allowed.detail, code: allowed.code }, allowed.status as any);
 
   const theme = b.theme || (stage === "ES1" ? "early" : ["S1", "S2", "S3"].includes(stage) ? "primary" : ["S4", "S5"].includes(stage) ? "secondary" : "senior");
   const id = newId();

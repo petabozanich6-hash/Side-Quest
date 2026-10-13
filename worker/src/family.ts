@@ -1,4 +1,5 @@
 import { sign, verify } from "hono/jwt";
+import { trialEndFrom } from "./entitlements";
 
 import { hashSecret } from "./auth";
 import {
@@ -217,8 +218,8 @@ async function upsertGoogleUser(env: Env, email: string, name: string, picture?:
   const userId = newId();
   const ts = nowIso();
   await env.DB.batch([
-    env.DB.prepare("INSERT INTO families (id, name, owner_id, created_at) VALUES (?, ?, ?, ?)")
-      .bind(familyId, `${name}'s Family`, userId, ts),
+    env.DB.prepare("INSERT INTO families (id, name, owner_id, created_at, plan, trial_started_at, trial_ends_at) VALUES (?, ?, ?, ?, 'FREE_PREVIEW', ?, ?)")
+      .bind(familyId, `${name}'s Family`, userId, ts, ts, trialEndFrom(ts)),
     env.DB.prepare(
       "INSERT INTO users (id, family_id, email, password_hash, name, picture, oauth_provider, is_owner, created_at) VALUES (?, ?, ?, NULL, ?, ?, 'google', 1, ?)"
     ).bind(userId, familyId, email, name, picture ?? null, ts),
