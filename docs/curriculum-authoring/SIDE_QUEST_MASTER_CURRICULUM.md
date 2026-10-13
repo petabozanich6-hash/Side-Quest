@@ -1839,3 +1839,768 @@ Now imagine a budget number line from **$2,000,000 to $2,800,000**, with the sam
 
 **Visual:** Accurate evenly scaled number lines showing 4,000,000–5,000,000 in four intervals and 6,000,000–6,500,000 with quarter points. Cursor: implement accessible number-line input or labelled selection, not arbitrary pixel-only dragging. No reflections.
 
+
+---
+
+<a id="lesson-16"></a>
+
+## Manuscript 16 — s3-mat-y5-w02-l4
+
+**Existing title:** Quick check: place value and rounding  
+**Source:** `docs/curriculum-authoring/lessons/s3-mat-y5-w02-l4.md`  
+**Authoring status:** prose_draft_for_review, owner review pending.
+
+# The number detective's second case
+
+**Year 5 · Mathematics · Week 2 Lesson 4 · Fluency and review · 60 minutes.** Keep existing outcome metadata. No reflections.
+
+## One number, many ways to understand it
+
+The imaginary National Discovery Archive records **6,485,270** specimens. That numeral is not merely a string of digits. It tells us how many millions, hundred-thousands, ten-thousands, thousands, hundreds, tens and ones there are. We can read it, expand it, compare it with another count and round it to communicate its approximate size.
+
+A fluent mathematician moves between these forms without losing the meaning of the number. Today you will solve a connected set of problems, using the methods taught earlier in the unit. When you make a mistake, use the explanation to find the precise step that went wrong.
+
+## Case 1: decode the archive number
+
+Read **6,485,270** aloud: **six million, four hundred and eighty-five thousand, two hundred and seventy**. The groups are 6 | 485 | 270. The middle group is not forty-eight thousand; it is four hundred and eighty-five thousand.
+
+Expand the number: **6,000,000 + 400,000 + 80,000 + 5,000 + 200 + 70**. The 8 is worth **80,000** because it is in the ten-thousands column. The 7 is worth **70**, not seven hundred.
+
+**Try:** Expand 4,070,609. **Answer:** 4,000,000 + 70,000 + 600 + 9. Rebuild 8,000,000 + 200,000 + 3,000 + 40 + 5. **Answer:** 8,203,045.
+
+## Case 2: which record is larger?
+
+A second archive records **6,458,720** specimens. Compare it with 6,485,270. Both have six million and four hundred thousand. At the ten-thousands place, the first has **8** and the second has **5**, so **6,485,270 > 6,458,720**. You do not need to compare the hundreds or tens once you find the first difference from the left.
+
+**Try:** Place these in ascending order: 3,405,080; 3,450,008; 3,405,800. **Answer:** 3,405,080; 3,405,800; 3,450,008.
+
+**Error detective:** A student says 7,090,010 is smaller than 7,009,100 because 100 is greater than 010. The comparison is wrong because it begins at the right-hand groups. The first differing place from the left is ten-thousands: 9 > 0, so **7,090,010 is larger**.
+
+## Case 3: communicate a useful estimate
+
+Round 6,485,270 to the nearest thousand. The hundreds digit is 2, so the answer is **6,485,000**. To the nearest hundred thousand, inspect the ten-thousands digit 8 and round up: **6,500,000**. To the nearest million, inspect the hundred-thousands digit 4 and round down: **6,000,000**.
+
+These three estimates serve different purposes. A scientific inventory might use the exact total. A short public summary might use approximately 6.5 million, but that is a decimal representation of the rounded hundred-thousand value, not a claim that the original count was exactly 6,500,000.
+
+**Try:** Round 8,749,500 to the nearest thousand: **8,750,000**. To the nearest hundred thousand: **8,700,000**, because the ten-thousands digit is 4. To the nearest million: **9,000,000**, because the hundred-thousands digit is 7.
+
+## Case 4: estimate and check
+
+A museum expects **4,902** visitors on Saturday and **5,087** on Sunday. Rounding to thousands gives 5,000 + 5,000 = **10,000**. The exact total is **9,989**, so the estimate is very close.
+
+If a student calculates 99,890, the estimate shows a place-value error. A result around one hundred thousand cannot be sensible when each daily count is only around five thousand.
+
+**Try:** Estimate 7,890 − 2,110 to the nearest thousand. **8,000 − 2,000 = 6,000**. The exact difference is **5,780**. The estimate is useful for checking scale.
+
+## Case 5: patterns and number lines
+
+An archive reports these yearly totals: **2,250,000; 2,500,000; 2,750,000; 3,000,000**. Each year increases by **250,000**. The next value would be **3,250,000** if the pattern continued.
+
+Now imagine a number line from 2,000,000 to 3,000,000 with four equal intervals. Each interval is **250,000**. The same numbers can label successive marks on that line, except the line begins at 2,000,000. Recognising the connection between sequences and evenly spaced number lines makes patterns easier to verify.
+
+**Try:** A line from 5,000,000 to 6,200,000 has three equal intervals. What is the step? **400,000**, because 1,200,000 ÷ 3 = 400,000.
+
+## Independent archive challenge
+
+Write answers before checking the key.
+
+**A.** What is the value of 9 in 3,092,040? **90,000.**  
+**B.** Expand 5,006,700. **5,000,000 + 6,000 + 700.**  
+**C.** Rebuild 7,000,000 + 400,000 + 20,000 + 8. **7,420,008.**  
+**D.** Compare 4,900,005 and 4,090,500. **4,900,005 > 4,090,500.**  
+**E.** Round 27,649 to the nearest hundred. **27,600.**  
+**F.** Round 27,650 to the nearest hundred. **27,700.**  
+**G.** Estimate 398 + 601. **400 + 600 = 1,000**; exact 999.  
+**H.** Continue 4,400,000; 4,650,000; 4,900,000. **5,150,000; 5,400,000.**  
+**I.** Find the midpoint of 8,000,000 and 9,000,000. **8,500,000.**  
+**J.** Explain why 99,600 rounds to 100,000 to the nearest thousand. **It is beyond the halfway point 99,500 between 99,000 and 100,000.**
+
+## A connected real-world decision
+
+A fictional conservation program counted **1,249,650** seedlings planted in Region A and **1,251,080** in Region B. A headline says “Both regions planted about 1.25 million seedlings.” That is reasonable as a broad description, but the two exact totals are different.
+
+Which region planted more? **Region B**, because both have one million and two hundred thousand, but Region B has five ten-thousands while Region A has four. What is the difference? Subtract 1,251,080 − 1,249,650 = **1,430 seedlings**.
+
+Round each count to the nearest thousand: Region A becomes **1,250,000** and Region B becomes **1,251,000**. These rounded values suggest a difference of 1,000, not the exact 1,430. This illustrates why rounded numbers are useful for communication but should not replace exact values when the difference itself matters.
+
+## Final assessment — 12 points
+
+**1 (2).** Expand 9,080,406. **9,000,000 + 80,000 + 400 + 6.**  
+**2 (2).** Rebuild 6,000,000 + 300,000 + 7,000 + 20. **6,307,020.**  
+**3 (2).** Order 5,050,500; 5,500,050; 5,005,500 ascending. **5,005,500; 5,050,500; 5,500,050.**  
+**4 (2).** Round 48,550 to the nearest hundred and thousand. **48,600; 49,000.**  
+**5 (2).** Estimate 3,980 + 6,110 to the nearest hundred. **4,000 + 6,100 = 10,100.**  
+**6 (2).** Continue 2,100,000; 2,350,000; 2,600,000. **2,850,000; 3,100,000.**
+
+**Diagnostic feedback:** Errors in 1–2 suggest reviewing place-value columns. Errors in 3 suggest comparing from the left. Errors in 4 suggest checking halfway boundaries. Errors in 5 suggest selecting a consistent rounding place. Errors in 6 suggest calculating the difference between neighbouring terms. A score of 10–12 indicates readiness; 7–9 calls for targeted retry; 0–6 calls for supported re-teaching of the relevant cases.
+
+**Visual:** Archive number 6,485,270 in a labelled place-value grid; a number line with 250,000 intervals. Cursor: keep all explanations, interactive tasks and diagnostic feedback; no reflections.
+
+
+---
+
+<a id="lesson-17"></a>
+
+## Manuscript 17 — s3-mat-y6-w01-l2
+
+**Existing title:** Place value and expanded form  
+**Source:** `docs/curriculum-authoring/lessons/s3-mat-y6-w01-l2.md`  
+**Authoring status:** prose_rewrite_for_review, owner review pending.
+
+# Place value and expanded form
+
+**Lesson ID:** s3-mat-y6-w01-l2 · **Year:** 6 · **Stage:** 3 · **Mathematics** · **Week 1, Lesson 2** · **Unit:** Large numbers and estimation · **Role:** Strategies · **Time:** approximately 60 minutes. Existing curriculum outcomes must be preserved exactly as stored in Side-Quest; do not add outcome codes. **No reflections.**
+
+## A museum with two very different treasures
+
+A fictional museum has two digital records. One records **4,306,052** ancient coins. The other records **4,360,052**. The numbers look almost identical: they contain the same digits, apart from the order of a zero and a six. Yet the difference between the records is **54,000 coins**.
+
+How can moving just two digits change the amount so much?
+
+Our number system gives every digit two pieces of information: *which digit it is* and *where it sits*. A six in the ones column means six objects. A six in the thousands column means six groups of a thousand. Moving a digit changes the amount it represents, even though its shape stays the same.
+
+The museum problem is not solved by counting how many digits are nonzero. Both records contain five nonzero digits. We need to understand the *value of each position*. That is what place value and expanded form make visible.
+
+## Why the columns matter
+
+A digit is one of the symbols 0–9. Our decimal, or **base-ten**, number system uses positions that increase by a factor of ten as we move left. Ten ones make one ten; ten tens make one hundred; ten hundreds make one thousand. This pattern continues through ten-thousands, hundred-thousands and millions.
+
+Study the number **4,306,052** in a place-value chart:
+
+| Millions | Hundred-thousands | Ten-thousands | Thousands | Hundreds | Tens | Ones |
+|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 3 | 0 | 6 | 0 | 5 | 2 |
+
+The 4 stands for **4,000,000**. The 3 stands for **300,000**. The 6 stands for **6,000**, while the 5 stands for **50** and the 2 stands for **2**. The two zeros have no positive value of their own in this sum, but they perform a crucial job in the numeral: they keep the other digits in the correct columns.
+
+To see this, compare **4,306,052** with **4,360,052**. Both start with four million and three hundred thousand. In the first number, the ten-thousands column contains zero and the thousands column contains six. In the second, the ten-thousands column contains six and the thousands column contains zero. Six ten-thousands are worth **60,000**, while six thousands are worth **6,000**. Replacing 6,000 with 60,000 increases the total by **54,000**. That explains the museum's discrepancy.
+
+A useful way to test your understanding is to ask what happens if the digit changes but the column stays fixed. In **4,306,052**, replacing the 6 in the thousands column with a 7 adds **1,000**, not 1 or 10. You are increasing the number of thousands by one.
+
+## What zero does—and what it does not do
+
+Consider **604,020** and **64,020**. The first is six hundred and four thousand and twenty. The second is sixty-four thousand and twenty. Removing the zero between the 6 and 4 does not simply make the number one digit shorter. It shifts the 6 from the hundred-thousands column to the ten-thousands column. Its value changes from 600,000 to 60,000.
+
+That is why we cannot simply ignore zeros when writing large numbers. The zero in the ten-thousands column of 4,306,052 means there are no additional groups of ten thousand *in that column*. It is still necessary to preserve the places of the 3 and the 6.
+
+There is an important distinction between **a zero term** and **a zero placeholder**. When we add place values together, adding zero does not change the total, so we usually omit zero terms. But when we write a numeral in standard form, we keep zeros wherever they are needed to preserve the positions of other digits.
+
+## Expanded form reveals the hidden addition
+
+The museum's first record, **4,306,052**, is written in **standard form**: the familiar numeral. We can write the same quantity as an addition of its nonzero place values:
+
+**4,306,052 = 4,000,000 + 300,000 + 6,000 + 50 + 2.**
+
+This is **expanded form**. Each term tells us exactly what one digit contributes to the total. If we add the terms, we recover the original number. That gives us a reliable way to check our work.
+
+Notice that we do not write 4 + 3 + 6 + 5 + 2. That would add the digits' face values and give only 20. Expanded form uses their *place values*: four million, three hundred thousand, six thousand, fifty and two.
+
+### Worked example 1: expand a number with several zeros
+
+Expand **7,040,608**.
+
+Begin by reading the groups: 7 | 040 | 608. This is seven million, forty thousand, six hundred and eight. The 4 is in the ten-thousands column, so its value is **40,000**. The 6 is in the hundreds column, so its value is **600**. The 8 is in the ones column.
+
+Therefore:
+
+**7,040,608 = 7,000,000 + 40,000 + 600 + 8.**
+
+To check, add the parts in stages. Seven million plus forty thousand is 7,040,000. Adding six hundred gives 7,040,600. Adding eight gives **7,040,608**. The zeros were not lost; they are already accounted for in the values of the terms.
+
+**A common wrong answer** is 7,000,000 + 4,000 + 600 + 8 = 7,004,608. The student has mistaken the ten-thousands digit for a thousands digit. The resulting total is 36,000 too small. To repair the error, locate the 4 in the chart before writing its value.
+
+### Worked example 2: rebuild a number from expanded form
+
+Suppose a catalogue gives this quantity:
+
+**5,000,000 + 80,000 + 3,000 + 400 + 9.**
+
+We need to write it as one numeral. It can help to fill the columns from left to right. The millions digit is 5. There are no hundred-thousands, so write 0 there. Eight ten-thousands give 8; three thousands give 3; four hundreds give 4. There are no tens, so write 0, and the ones digit is 9.
+
+The resulting numeral is **5,083,409**.
+
+Check it by expanding the numeral again: 5,000,000 + 80,000 + 3,000 + 400 + 9. Every term matches. If you had written 5,834,9 or 5,834,009, the digits would not occupy the intended places.
+
+### Worked example 3: the same value in a different grouping
+
+Not every correct representation has to list one term per column. Consider **6,300,000**. It is six million plus three hundred thousand. It is also **63 × 100,000**, because sixty-three groups of one hundred thousand make 6,300,000.
+
+Similarly, **4,520,000 = 452 × 10,000**. Multiplying 452 by 10,000 shifts the digits four places to the left, giving four million five hundred and twenty thousand. This is a form of regrouping, not the usual place-by-place expanded form. Both representations can be correct, but you must know which form a question requests.
+
+The crucial rule is that *equivalent representations have the same total value*. You can check equivalence by calculating the total or rebuilding the standard numeral.
+
+## Guided practice: complete the missing reasoning
+
+**Question 1.** In **8,205,014**, what is the value of the 2? First locate it: the 2 is in the ______ column. **Answer:** hundred-thousands. Its value is **200,000**. If you answered 20,000, you moved one place too far right.
+
+**Question 2.** Expand **3,090,070**. Begin with 3,000,000. The 9 is in the ______ column, so add ______. The 7 is in the ______ column, so add ______. **Answer:** ten-thousands; 90,000; tens; 70. Full expanded form: **3,000,000 + 90,000 + 70**.
+
+**Question 3.** Rebuild **9,000,000 + 600,000 + 5,000 + 30 + 1**. Fill all seven columns, including zeros. **Answer:** **9,605,031**. Check that the hundreds digit is zero and the tens digit is three.
+
+**Question 4.** Which is greater: **2,304,060** or **2,340,060**? The millions and hundred-thousands digits match. At the ten-thousands place, the first has 0 and the second has 4. Therefore **2,340,060** is greater. This comparison also confirms that place value, not the sum of the digits, determines the number's size.
+
+**Question 5.** A student writes **4,070,005 = 4,000,000 + 7,000 + 5**. Is the equation correct? **No.** The 7 is in the ten-thousands column. The correct expansion is **4,000,000 + 70,000 + 5**. Rebuilding the student's incorrect sum gives 4,007,005, exposing the mistake.
+
+## Independent practice: the catalogue challenge
+
+Write your answer before revealing the key. Show the value of the important digit or a place-value check where requested.
+
+**A.** Give the value of the 8 in **6,081,204**. **Answer:** 80,000. **Hint:** Read the middle group as 081 thousand.
+
+**B.** Give the value of the 5 in **5,009,700**. **Answer:** 5,000,000. **Hint:** The first digit is in the millions column.
+
+**C.** Expand **2,406,030**. **Answer:** 2,000,000 + 400,000 + 6,000 + 30.
+
+**D.** Expand **9,008,502**. **Answer:** 9,000,000 + 8,000 + 500 + 2.
+
+**E.** Rebuild **7,000,000 + 20,000 + 600 + 4**. **Answer:** 7,020,604.
+
+**F.** Rebuild **3,000,000 + 900,000 + 90 + 8**. **Answer:** 3,900,098.
+
+**G.** Find the missing value: **8,040,006 = 8,000,000 + ___ + 6**. **Answer:** 40,000.
+
+**H.** Is **4,500,000** equal to **45 × 100,000**? **Answer:** Yes; 45 hundred-thousands equal 4,500,000.
+
+**I.** A learner expands 6,700,204 as 6,000,000 + 70,000 + 200 + 4. Explain the mistake and correct it. **Answer:** The 7 is in the hundred-thousands place, so it contributes 700,000. Correct form: 6,000,000 + 700,000 + 200 + 4.
+
+**J.** Explain why **6,070,005** and **6,700,005** are different even though both use the same nonzero digits. **Answer:** The 7 is worth 70,000 in the first and 700,000 in the second. The second number is 630,000 greater.
+
+## Application: a space-probe data archive
+
+An imaginary space probe sends the number **8,504,070** as its count of recorded signals. An engineer wants to check whether a second system, which stores the count as **8,000,000 + 500,000 + 4,000 + 70**, agrees.
+
+Start by checking each column. The first representation has eight million, five hundred thousand, four thousand and seventy. The second lists exactly those contributions. They are **equivalent**.
+
+A third system displays **8,540,070**. It is not equivalent: it contains four ten-thousands rather than four thousands. The difference is **36,000**. This is why precise place value matters in records. A small-looking transcription change can alter the meaning of the data.
+
+**Application task:** A fourth system displays **8,000,000 + 50,000 + 4,000 + 70**. Write its standard form and explain whether it agrees with the first. **Answer:** **8,054,070**. It does not agree because it has 50,000 rather than 500,000; it is **450,000 less** than 8,504,070.
+
+## End-of-lesson assessment — 12 points
+
+**1 (2).** What is the value of the 6 in **4,060,215**? **60,000.** Award one point for identifying the ten-thousands column and one for its value.
+
+**2 (2).** Expand **7,305,008**. **7,000,000 + 300,000 + 5,000 + 8.** Award two for all correct values, one for a single place error.
+
+**3 (2).** Rebuild **2,000,000 + 80,000 + 700 + 9**. **2,080,709.** Award one for the correct digits and one for correct zero placeholders.
+
+**4 (2).** Correct the false equation **5,040,020 = 5,000,000 + 4,000 + 20**. **5,000,000 + 40,000 + 20.** Award one for identifying the error and one for correcting it.
+
+**5 (2).** Explain why **3,060,000** is not equal to **3,600,000**. **The 6 represents 60,000 in the first and 600,000 in the second.** Award points for identifying both place values.
+
+**6 (2).** Show whether **72 × 100,000** is equal to **7,200,000**. **Yes; 72 groups of 100,000 make 7,200,000.** Award points for a correct calculation and explanation.
+
+**Feedback routes:** If the student misses 1 or 5, revisit the column chart and physically locate the digit. If 2 or 4 is wrong, rebuild each expanded term into standard form to locate the missing place. If 3 is wrong, place a zero in every empty column before reading the numeral. If 6 is wrong, group the value into hundred-thousands and verify by multiplication. A score of 10–12 indicates strong readiness; 7–9 suggests targeted correction; below 7 calls for guided re-teaching of the worked examples.
+
+## Visual and implementation specification
+
+Provide an accessible seven-column place-value chart for 4,306,052, with text labels for every place and a second chart for 4,360,052. Highlight the 6 moving from thousands to ten-thousands; accompanying text must explicitly state the change from 6,000 to 60,000 and the 54,000 difference. Provide a worked expansion graphic showing 7,040,608 broken into four correctly aligned nonzero terms. Alt text must name the digits, their places and the corresponding values, not merely say “place-value chart”. Students may enter numbers using digits with or without grouping commas. Keep every teaching paragraph, worked solution and misconception explanation. Do not add reflection tasks or video.
+
+
+---
+
+<a id="lesson-18"></a>
+
+## Manuscript 18 — s3-pdh-y5-w01-l1
+
+**Existing title:** Identity and self-awareness (learn and discuss)  
+**Source:** `docs/curriculum-authoring/lessons/s3-pdh-y5-w01-l1.md`  
+**Authoring status:** prose_draft_for_review, owner review pending.
+
+# What makes a person who they are?
+
+**Year 5 · PDHPE · Week 1 Lesson 1 · Learn and discuss · Approximately 55 minutes.** Preserve existing outcome metadata. No reflections, personal disclosures or journals.
+
+## A team of people, not a team of labels
+
+Imagine a new student arrives at a school. Someone says, “She's a soccer player, so she probably won't like books.” Another person says, “He is quiet, so he must be unfriendly.” Both statements jump from one detail to an assumption about a whole person.
+
+People are more complicated than that. **Identity** describes the many characteristics, experiences, relationships, interests and values that contribute to who someone is. Some parts of identity may be visible, such as a hobby or a uniform. Others may be private, such as a person's beliefs, family experiences or hopes. We cannot reliably discover someone's entire identity just by looking at them.
+
+A person might enjoy drawing, speak more than one language, care for a pet, play a sport and value kindness. None of those details cancels the others. Identity can also change as people learn new skills, develop interests and take on new roles.
+
+## Strengths are not the same as interests
+
+An **interest** is something you enjoy or want to learn about. A **strength** is something you do well or a quality that helps you respond to situations. Someone may love playing chess but still be learning the rules. Chess is an interest; persistence in practising might be a strength. Someone who is excellent at running may not enjoy competitive sport. Running ability can be a strength without being a favourite activity.
+
+Strengths are not limited to school marks or athletic performance. Listening carefully, asking thoughtful questions, solving practical problems, showing patience and helping others are valuable strengths. A strength can be developed through practice; it does not have to be something a person is born doing perfectly.
+
+**Values** are ideas about what matters and how we want to act, such as fairness, honesty, respect or responsibility. A value is not proved simply by saying its name. We see values in decisions. If someone values fairness, they might make sure everyone has a turn in a game.
+
+## What is self-awareness?
+
+**Self-awareness** means noticing and understanding aspects of your own thoughts, feelings, strengths, needs and behaviour. It does not mean knowing everything about yourself or sharing private information with others. It can help you choose strategies when a task is difficult.
+
+Suppose a student becomes frustrated while building a model. One response is to shout, “I'm hopeless at this!” A more self-aware response is to notice, “I'm frustrated because the pieces keep falling. I need to slow down, check the instructions or ask for help.” The second response does not pretend the frustration has vanished. It recognises the feeling and identifies a constructive action.
+
+Feelings are not good or bad simply because they are pleasant or unpleasant. Anger, worry, excitement and disappointment can all provide information. What matters is how we respond to them. We can choose safer actions even when feelings are strong.
+
+## A story about assumptions
+
+Read this fictional situation:
+
+> Ari is new to a community art group. Ari speaks very little during the first meeting but spends a long time carefully helping another student repair a torn poster. Later, Ari volunteers to organise the group's materials. A classmate says, “Ari never talks, so Ari doesn't care about the group.”
+
+Is the classmate's conclusion supported? **No.** Ari's behaviour shows care through helping and organising, even without speaking much. Silence in one situation does not tell us a person's values or abilities.
+
+**Guided question:** What evidence suggests Ari is responsible? **Helping repair the poster and volunteering to organise materials.**
+
+**Guided question:** What would be a respectful way to learn more about Ari? **Speak with Ari without assumptions and allow Ari to choose what to share.**
+
+## Practise distinguishing ideas
+
+**1.** “Sam enjoys skateboarding.” Is that an interest, a strength or a value? **An interest.** We do not yet know Sam's skill level.
+
+**2.** “Lee keeps trying when a puzzle is difficult.” **A strength: persistence.** This describes a helpful approach to challenges.
+
+**3.** “Morgan believes everyone should have a fair chance to contribute.” **A value: fairness.** We can look for decisions that put that value into practice.
+
+**4.** “Taylor notices that noisy rooms make concentration difficult and chooses a quieter place to work.” **Self-awareness.** Taylor recognises a need and selects a strategy.
+
+**5.** “Jordan wears glasses, so Jordan must enjoy reading.” **An unsupported assumption.** Glasses do not establish someone's interests.
+
+## Independent scenario cards
+
+Read each situation and answer the question in a complete sentence. You do not need to write about yourself.
+
+**Card A:** Priya loves astronomy but finds memorising star names difficult. Does difficulty mean astronomy cannot be an interest? **No.** An interest is something someone enjoys; it does not require immediate expertise.
+
+**Card B:** Noah is excellent at maths but prefers music in free time. Can a person have a strength they do not choose as a hobby? **Yes.** Ability and preference are different.
+
+**Card C:** Mia says fairness matters but interrupts others during group decisions. How could Mia better put the value into action? **Invite each person to speak and listen without interrupting.**
+
+**Card D:** Kai notices feeling nervous before presenting and practises the opening lines with a friend. What skill is Kai using? **Self-awareness and a coping strategy.**
+
+**Card E:** A student says, “Everyone who likes the same music has the same personality.” Explain the problem. **Sharing one interest does not mean people share every characteristic, value or experience.**
+
+## Apply: create a respectful character profile
+
+Invent a fictional student named **River**. Choose two interests, two strengths, one value and one strategy River uses when something is difficult. Write a paragraph that shows how these details connect rather than simply listing labels.
+
+**Example:** “River enjoys sketching birds and building small models. River is patient and good at noticing details. Because fairness matters to River, they make sure other students get a turn using shared materials. When a project becomes frustrating, River checks one instruction at a time and asks for help if needed.”
+
+Now read this claim about River: “Because River likes drawing, River must dislike sport.” Explain why the claim is unsupported. **Answer:** Nothing in the profile tells us River's feelings about sport. One interest does not determine all others.
+
+## Final check
+
+**1 (2).** Explain the difference between an interest and a strength. **An interest is something enjoyed; a strength is an ability or quality that helps someone.**
+
+**2 (2).** Give an example of a value shown through action. **Fairness shown by sharing turns.**
+
+**3 (2).** Why is identity more than one label? **People have many changing characteristics, experiences and relationships.**
+
+**4 (2).** Describe a self-aware response to frustration in a fictional classroom task. **Notice the feeling, identify the problem and choose a helpful strategy.**
+
+**5 (2).** Explain why “quiet means unfriendly” is not a fair conclusion. **Quietness alone does not reveal someone's intentions or personality.**
+
+**Assessment guidance:** Award points for accurate explanations and evidence, not personal disclosure. At 9–10 points proceed; 7–8 clarify one distinction; below 7 revisit the fictional examples with support.
+
+**Visual:** A fictional character map with separate circles labelled interests, strengths, values, strategies and relationships. Alt text describes how the categories overlap without reducing identity to one label. Cursor: never request sensitive personal disclosures, do not add reflection prompts, keep scenarios fictional and allow private completion.
+
+
+---
+
+<a id="lesson-19"></a>
+
+## Manuscript 19 — s3-pdh-y5-w01-l2
+
+**Existing title:** Identity and self-awareness (practise and apply)  
+**Source:** `docs/curriculum-authoring/lessons/s3-pdh-y5-w01-l2.md`  
+**Authoring status:** prose_draft_for_review, owner review pending.
+
+# Choose your response: skills for tricky moments
+
+**Year 5 · PDHPE · Week 1 Lesson 2 · Practise and apply · Approximately 60 minutes.** Preserve existing outcome metadata. No reflections or personal disclosure tasks.
+
+## When a situation changes quickly
+
+Imagine a group of students building a cardboard bridge. One person wants to test it immediately. Another wants to strengthen the supports first. Someone says, “Your idea is silly,” and the conversation becomes tense.
+
+The group has a problem, but the problem is not simply that people disagree. Disagreement can help a team discover better ideas. The difficulty begins when people stop listening or use words that make others feel dismissed.
+
+This lesson teaches practical ways to notice what is happening, choose respectful words and make a decision. You will work with **fictional scenarios**, not disclose private experiences.
+
+## Recognise a feeling without letting it make the decision
+
+Feelings can be strong and fast. A person may feel annoyed when interrupted or worried when asked to speak in front of others. Feelings are real, but they do not force one particular action.
+
+A useful pause has three parts. First, **notice** the feeling: “I'm frustrated.” Second, **name the problem**: “I have not had a chance to explain.” Third, **choose a response** that could help: “Can I finish my idea, then hear yours?” This is more effective than pretending not to feel anything, and it avoids turning frustration into an insult.
+
+We can practise the language even when we are calm, so it is easier to use when a real situation becomes difficult.
+
+## What respectful disagreement sounds like
+
+Compare these responses to the bridge problem:
+
+> “Your plan is stupid.”
+
+> “I think we should test the bridge after adding another support. Can I explain why?”
+
+The second response identifies a concern and offers a reason without attacking the other person. It does not guarantee agreement, but it gives the group something useful to discuss.
+
+Another useful sentence is: **“I heard you say ____. Is that what you mean?”** Checking understanding prevents some arguments that begin because people are talking about different things.
+
+Respectful communication does not mean agreeing to everything. You can say no, state a boundary or seek help from a trusted adult when something is unsafe.
+
+## Practise with a model
+
+**Scenario:** Two students both want the same paintbrush.
+
+A rushed response might be grabbing it. A constructive response could be: “I need the brush for the next part. Can we take turns for five minutes each?” This response states a need and suggests a fair plan.
+
+What if the other student refuses and starts pushing? The situation has changed. The safest response is not to push back or keep arguing. Step away if possible and seek help from an adult. A strategy that works for a small disagreement is not always enough when safety is at risk.
+
+## Three ways to solve a shared problem
+
+**Taking turns** works when a resource can be shared over time. **Combining ideas** works when parts of two suggestions can fit together. **Seeking a neutral helper** can work when people cannot agree or when the situation feels unsafe. Choosing the right strategy depends on the problem.
+
+Consider the bridge group again. The students could combine ideas: add one support, then test the bridge. This uses the wish to test and the concern about strength. It is not a magical solution; the group still needs to check whether it works.
+
+## Guided decisions
+
+**1.** Alex says, “No one ever listens to me!” during a project. Suggest a more specific statement. **Model:** “I want to explain my idea before we choose.” This identifies the need without accusing everyone.
+
+**2.** Two friends disagree about which game to play. Both games take ten minutes. Suggest a fair option. **Model:** Play one game first and the other second, or agree on another fair selection method.
+
+**3.** A classmate mocks another student's accent. Is this just an ordinary difference of opinion? **No.** It is disrespectful behaviour. A helpful response may be to say it is not okay, support the targeted student and seek adult help.
+
+**4.** A student notices that a crowded room makes it hard to concentrate. Suggest a strategy. **Model:** Ask to move to a quieter working area or use an agreed classroom support.
+
+**5.** Someone is being threatened. Should they negotiate alone until the other person agrees? **No.** Prioritise safety and seek help from a trusted adult or appropriate authority.
+
+## Independent choice paths
+
+For each fictional situation, choose an action and explain **why** it fits.
+
+**A.** A teammate interrupts once because they are excited. **Model:** Calmly ask to finish speaking, then invite their idea. This is a manageable communication problem.
+
+**B.** A friend borrows a ruler and forgets to return it. **Model:** Ask for it back clearly and politely; offer a reminder. There is no need to assume deliberate harm.
+
+**C.** A group rejects a proposed design after testing shows it is unstable. **Model:** Use the evidence to revise the design rather than treating the rejection as a personal attack.
+
+**D.** Someone repeatedly insults a student after being asked to stop. **Model:** Support the student, avoid escalating and involve a trusted adult. Repeated harm requires more than a turn-taking plan.
+
+**E.** A learner feels overwhelmed by a large assignment. **Model:** Divide it into smaller tasks, begin with one step and ask for clarification if needed.
+
+**Feedback:** A response earns credit when it recognises the situation accurately, protects safety and explains why the action is suitable. There may be more than one reasonable answer. Do not reward a superficially polite response that ignores danger.
+
+## Apply: write a dialogue that works
+
+Use this fictional starting point:
+
+> Quinn: “We should paint the whole poster blue.”  
+> Harper: “No, we need different colours for each section.”  
+> Quinn: “You always ruin my ideas.”
+
+Write **six to eight lines of dialogue** in which the students repair the conversation and reach a workable next step. Include an acknowledgement of the problem, one respectful disagreement and one practical plan.
+
+**Worked example:**
+
+> Harper: “I don't want to ruin your idea. I think separate colours will help people read the sections.”  
+> Quinn: “I was hoping the poster would look like one design.”  
+> Harper: “Could we use blue as the main colour and different shades for headings?”  
+> Quinn: “That might work. Let's test a small section first.”  
+> Harper: “Good idea. We can check if the words are clear.”  
+> Quinn: “And change it if the colours are too similar.”
+
+The dialogue works because the students explain their reasons and test a compromise. Neither needs to pretend they never disagreed.
+
+## Final check
+
+**1 (2).** Describe the three-part pause. **Notice the feeling, name the problem, choose a response.**
+
+**2 (2).** Rewrite “Your idea is stupid” as a respectful disagreement. **Model:** “I have a concern about that idea because ____. Could we test another option?”
+
+**3 (2).** When is adult help more appropriate than negotiating alone? **When there is threat, repeated harassment or a safety concern.**
+
+**4 (2).** Give a suitable way to share a resource that both students need. **Take turns or agree on a fair schedule.**
+
+**5 (2).** Explain why disagreement is not always harmful. **Different ideas can improve a decision when people listen and use evidence.**
+
+**Scoring:** 9–10 strong application; 7–8 practise one missed situation; below 7 work through the model dialogue again.
+
+**Visual:** Three-step “Notice → Name → Choose” diagram, with fictional examples and accessible text. Cursor: preserve the distinction between everyday conflict and unsafe behaviour; use rubric-based assessment, no reflection.
+
+
+---
+
+<a id="lesson-20"></a>
+
+## Manuscript 20 — s3-sci-y5-w01-l1
+
+**Existing title:** Adaptations of plants and animals (investigate)  
+**Source:** `docs/curriculum-authoring/lessons/s3-sci-y5-w01-l1.md`  
+**Authoring status:** prose_draft_for_review, owner review pending.
+
+# Why do living things look and behave differently?
+
+**Year 5 · Science and Technology · Week 1 Lesson 1 · Investigate · Approximately 60 minutes.** Preserve existing outcome metadata. No reflections.
+
+## A mystery in two environments
+
+Imagine standing beside a pond on a hot afternoon. A water lily spreads broad leaves across the surface. Now imagine walking onto a dry, rocky slope, where a plant has thick stems and very small leaves. Both are plants, and both need water and sunlight. Why do they look so different?
+
+The answer begins with **adaptations**. An adaptation is an inherited feature or behaviour that helps an organism survive and reproduce in its environment. Some adaptations involve body structures, such as a bird's beak or a plant's leaf. Others involve behaviour, such as an animal being active at night. Adaptations do not mean an individual animal decides to change its body whenever conditions become difficult. Useful inherited variations can become more common across many generations when organisms with those variations survive and reproduce more successfully.
+
+To understand an adaptation, ask three questions: **What is the feature? What challenge exists in the habitat? How might the feature help?** These questions prevent us from making unsupported guesses.
+
+## Investigating a desert plant
+
+A cactus-like desert plant may have a thick, fleshy stem that stores water. In a dry habitat, rainfall can be scarce and unpredictable. Water storage allows the plant to use water between rainfall events. Some desert plants also have a waxy outer layer that slows water loss. Their spines may help protect against animals that would otherwise eat their water-rich tissues. These features are not universal to every desert plant, so we should describe the particular plant we are investigating rather than claiming that all desert plants are identical.
+
+Now compare a water lily. Its broad leaves float at the surface, where they can receive sunlight. Air spaces in tissues help support buoyancy. Its environment presents a different set of challenges from a dry hillside. A thick water-storage stem would not necessarily be the most useful feature in a pond.
+
+The important scientific idea is that a feature's usefulness depends on **where the organism lives**. A feature that helps in one environment may be less useful in another.
+
+## Investigating an animal
+
+Consider a bilby, an Australian marsupial adapted to life in dry environments. Its large ears can help release heat, and its strong forelimbs and claws help it dig burrows. Burrows provide shelter from daytime heat and predators. Bilbies are mainly nocturnal, meaning they are most active at night. Being active during cooler hours can reduce exposure to extreme daytime heat.
+
+Notice how the explanation links **feature → challenge → advantage**. Simply saying “bilbies have big ears because they live in the desert” is incomplete. A stronger explanation says that large ears provide surface area for heat exchange, which can assist temperature regulation.
+
+Not every feature has just one purpose. A burrow can help with temperature control and provide protection. Scientists look for evidence rather than assuming a single explanation.
+
+## Work like a scientist: observation versus inference
+
+Suppose a photograph shows a bird with a long, narrow beak probing a flower. You can **observe** the beak's shape. You might **infer** that it helps the bird reach nectar inside flowers. An observation describes what is visible; an inference proposes an explanation. An inference becomes stronger when supported by repeated observations or other evidence.
+
+Compare these statements:
+- “The bird has a long, narrow beak.” This is an **observation**.
+- “The beak helps it reach food inside flowers.” This is an **inference** that could be investigated.
+- “The bird wanted a longer beak, so it grew one.” This is **not** a sound explanation of inherited adaptation.
+
+## Guided investigation
+
+**Case A:** A fictional coastal bird has webbed feet and swims often. What is observable? **Its webbed feet and swimming behaviour.** What might the webbing help it do? **Push against water while swimming.** Why is that an inference? **The benefit is proposed from the feature and behaviour; testing or additional evidence would strengthen it.**
+
+**Case B:** A desert shrub has narrow leaves and a waxy coating. What challenge might these features address? **Water loss in dry conditions.** What would be a weak explanation? **“The plant chose to make its leaves smaller because it was thirsty.”** Why weak? **Individuals do not choose inherited structural adaptations in response to need.**
+
+**Case C:** A frog has colouring that closely resembles fallen leaves. Suggest one possible advantage. **It may be harder for predators to notice.** Can we prove this from colour alone? **No.** We would need evidence about its habitat, predators and survival.
+
+## Independent investigation: evidence cards
+
+For each organism, write (1) the feature, (2) the habitat challenge, (3) a possible benefit, and (4) one question you would investigate. These are fictional observation cards designed for reasoning, not proof of real species-specific adaptations.
+
+**Card 1 — Dune lizard:** Observed pale scales; lives on pale sand. **Possible explanation:** Colour may help camouflage it against the sand. **Investigable question:** Do predators detect pale lizards less often than darker ones on pale sand?
+
+**Card 2 — Marsh plant:** Observed hollow, air-filled stems; grows in wet soil. **Possible explanation:** Air spaces may help move gases through tissues in waterlogged conditions. **Question:** Do these stems contain larger air spaces than those of related plants from dry soil?
+
+**Card 3 — Mountain mammal:** Observed thick winter fur; experiences cold winters. **Possible explanation:** Fur helps reduce heat loss. **Question:** How does fur thickness vary across seasons?
+
+**Card 4 — Nocturnal insect:** Observed activity after sunset; daytime habitat is hot. **Possible explanation:** Night activity may reduce heat exposure. **Question:** Does activity decrease when daytime temperatures rise?
+
+**Model response for Card 1:** “The lizard has pale scales. The pale sand provides a light background. Pale colouring might make the lizard less visible to predators. I would investigate whether predators find pale and dark models at different rates.” A complete response connects the feature to a challenge and avoids claiming certainty without evidence.
+
+## Apply: a habitat change
+
+A fictional wetland dries over several years. A plant population includes individuals with different inherited tolerances for dry conditions. Would every plant immediately grow a new water-storage stem? **No.** Individuals cannot simply decide to develop a new inherited adaptation. Over many generations, if drier conditions favour plants with certain inherited features, those features may become more common among survivors and their offspring. Other outcomes are also possible, including population decline.
+
+**Question:** Explain why “adaptation” is not the same as an animal getting used to a new feeding time. **Answer:** Getting used to a routine can be an individual behavioural adjustment; inherited adaptations are features or behaviours shaped across generations. Some behaviours are learned, some have inherited components, and the distinction requires care.
+
+## Final understanding check
+
+**1 (2).** Define an adaptation and give an example. **Model:** An inherited feature or behaviour that helps survival and reproduction in an environment; a bilby's digging claws help it make burrows.
+
+**2 (2).** Explain how a thick water-storing stem may help a desert plant. **Model:** It stores water when available, allowing the plant to use it during dry periods.
+
+**3 (2).** Identify observation and inference: “The bird has webbed feet”; “webbing helps it swim”. **Observation; inference.**
+
+**4 (2).** Explain why a plant does not simply choose to develop spines because the weather changes. **Model:** Structural adaptations arise through inherited variation across generations, not conscious choice by an individual.
+
+**5 (2).** Write one testable question about the fictional dune lizard. **Model:** Are pale models detected less frequently than dark models on pale sand?
+
+**Marking:** 9–10 strong understanding; 7–8 revisit the missed concept; below 7 reread the two case investigations and complete a feature–challenge–benefit table with support.
+
+**Static illustrations:** Side-by-side water lily and dry-habitat succulent, accurately labelled as examples rather than all-species rules; bilby ear and burrow schematic. Alt text names visible structures and their proposed functions. Cursor: retain distinctions between observations and inferences, preserve full teaching text, no reflection.
+
+
+---
+
+<a id="lesson-21"></a>
+
+## Manuscript 21 — s3-sci-y5-w01-l2
+
+**Existing title:** Adaptations of plants and animals (apply and make)  
+**Source:** `docs/curriculum-authoring/lessons/s3-sci-y5-w01-l2.md`  
+**Authoring status:** prose_draft_for_review, owner review pending.
+
+# Design a survivor: build a scientifically believable organism
+
+**Year 5 · Science and Technology · Week 1 Lesson 2 · Apply and make · 60 minutes.** Preserve existing attached outcomes. No reflections.
+
+## A design challenge with scientific rules
+
+A wildlife researcher has discovered an imaginary island with two very different habitats. The **Saltwind Coast** has strong winds, salty spray, shallow sandy soil and few sheltered places. The **Mosswood Valley** has frequent rain, shaded forest floors, deep leaf litter and many small insects. Your task is to design a fictional organism suited to one habitat.
+
+You may invent the organism, but you may not invent the science. Every proposed feature needs a clear explanation linking it to an environmental challenge. A bright purple horn that “looks cool” is a creative detail, but it is not yet a scientific adaptation. If you claim the horn helps defend against predators, you must explain how it could do so and acknowledge that this is a proposed function, not an observed fact.
+
+## Begin with the habitat, not the creature
+
+It is tempting to draw a fantastic animal first and then add explanations afterwards. Scientists and engineers often begin differently: they examine the problem before designing a solution.
+
+Consider the Saltwind Coast. A small ground-dwelling animal there might struggle with exposure to wind, a shortage of fresh water and limited cover. These are **challenges**. A feature that helps with one challenge may create another. Large exposed ears might release heat in hot weather, for example, but they could also increase heat loss in cold wind. Good designs consider trade-offs rather than giving a creature every possible advantage.
+
+In Mosswood Valley, a small insect-eating animal might benefit from being able to move through leaf litter, detect prey in dim light and shelter during heavy rain. Strong digging claws, sensitive hearing or camouflage colouring are plausible starting points, but each must be tied to a specific challenge.
+
+## A complete worked design
+
+Let's invent the **Mosswood snuffle**, a fictional small mammal living in damp forest leaf litter. It has a narrow snout that can probe spaces between leaves. That feature could help it reach small invertebrates hiding there. It has strong forefeet for moving leaf litter, which may help it uncover prey. Its mottled brown coat resembles the forest floor and may make it less conspicuous to predators.
+
+Notice the language: *could*, *may*, *might*. These words are useful because we are proposing how a fictional organism functions, not reporting measured results.
+
+We also need to consider a weakness. The snuffle's small body could lose heat rapidly when wet. Its design might include a sheltered nest, but shelter-building is a **behaviour**, not the same kind of feature as fur colour. Both can affect survival. A design becomes more convincing when it includes limits rather than pretending every feature is perfect.
+
+### Structure and behaviour are different
+
+A **structural adaptation** is a physical feature, such as a beak shape or waxy leaf surface. A **behavioural adaptation** is a pattern of activity, such as sheltering during the hottest hours. If the snuffle has strong claws, those are structural. If it searches for food mainly at dusk, that is behavioural. You can include both in your design, but label them accurately.
+
+## Practise deciding whether a design explanation works
+
+**Example 1:** “My coastal bird has webbed feet because webbed feet are awesome.” This is not a scientific explanation. Better: “Its webbed feet could help it push against water when swimming in sheltered coastal pools.”
+
+**Example 2:** “My valley insect is green so predators can never see it.” This overstates the claim. Better: “Green colouring may help it blend with leaves in some conditions, reducing its visibility to certain predators.”
+
+**Example 3:** “My creature has thick fur and lives in a very hot habitat.” This is not automatically impossible, but it raises a question: might thick fur increase heat stress? Explain a benefit, such as protection from sun exposure, and a trade-off. Do not add features without considering their costs.
+
+## Your design brief
+
+Choose **Saltwind Coast** or **Mosswood Valley**. Create a named fictional plant or animal and produce a labelled drawing or digital diagram. Include **four** features or behaviours. At least **two** must be structural; at least **one** must be behavioural if you choose an animal. For a plant, explain four structural or physiological features rather than inventing human-like intentional behaviour.
+
+Beside each label, write **two or three sentences** explaining the habitat challenge and the possible benefit. Then write a short paragraph explaining **one trade-off or limitation** of your organism.
+
+A scientifically useful label is specific. Instead of “good feet”, write “broad feet may spread the animal's weight over soft sand, reducing sinking.” Instead of “special leaves”, write “a waxy leaf surface may reduce water loss in salty, windy conditions.”
+
+### Example design annotations
+
+For a Saltwind Coast animal:
+- **Broad, splayed toes:** May help it walk on loose sand by spreading its weight over a larger area.
+- **Low, streamlined body:** May reduce exposure to strong wind near the ground.
+- **Sheltering in rock crevices:** Behaviour that could protect it from wind and predators.
+- **Water-efficient kidneys:** A proposed physiological feature that could reduce water loss; this would require biological evidence if describing a real species.
+
+**Trade-off model:** “Its low body may help it avoid wind, but it might make it slower when moving over tall obstacles.”
+
+These are examples, not features you must copy. Your creature should fit the habitat you selected.
+
+## Test another designer's idea
+
+Read this fictional submission:
+
+> “The Stormhopper lives on Saltwind Coast. It has huge flat wings, a heavy shell and bright white fur. It never needs water and cannot be eaten by predators.”
+
+The design sounds dramatic, but it contains claims that need investigation. **“Never needs water”** is not biologically credible for an ordinary animal; all known animals require water for life processes. **“Cannot be eaten”** is an absolute claim with no evidence. Huge wings and a heavy shell may create competing demands for flight.
+
+**Task:** Rewrite two claims as plausible, qualified explanations.
+
+**Model:** “The Stormhopper may obtain some water from its food, reducing how often it needs to drink.” “Its shell could provide protection against some predators, though it would not make the animal invulnerable.”
+
+## Final design assessment
+
+Your completed submission should contain a habitat choice, a labelled drawing, four feature explanations and one trade-off. Use the rubric below to check the scientific content.
+
+| Criterion | Points | Evidence |
+|---|---:|---|
+| Habitat challenges identified accurately | 2 | Two specific environmental challenges |
+| Four plausible features/behaviours | 4 | One point each for scientifically credible feature–benefit links |
+| Correct structural/behavioural distinction | 2 | Accurate labels and at least one clear example of each for animals |
+| Trade-off or limitation | 2 | Specific, plausible consequence |
+| **Total** | **10** | |
+
+**Teacher exemplar (condensed):** “Mosswood snuffle: narrow snout to reach insects between leaves; strong claws to shift litter; mottled coat that may reduce detection; foraging at dusk when light is low. Trade-off: dusk activity may increase exposure to nocturnal predators.” The full student submission must add explanatory sentences and a labelled diagram.
+
+**Feedback:** If a feature lacks a challenge, ask “What problem does this solve in your chosen habitat?” If an explanation claims certainty, ask for evidence or a qualified statement. If every feature is beneficial with no cost, require a realistic trade-off.
+
+**Visual:** Two clear fictional habitat scenes, Saltwind Coast and Mosswood Valley, with labelled conditions. Do not present fictional organisms as real species. Alt text describes habitat conditions. Cursor: drawing upload or accessible text-diagram alternative; preserve full scientific explanations; no reflection.
+
+
+---
+
+<a id="lesson-22"></a>
+
+## Manuscript 22 — s3-sci-y5-w02-l1
+
+**Existing title:** Structural and behavioural adaptations  
+**Source:** `docs/curriculum-authoring/lessons/s3-sci-y5-w02-l1.md`  
+**Authoring status:** prose_draft_for_review, owner review pending.
+
+# A survival problem can have more than one solution
+
+**Year 5 · Science and Technology · Week 2 Lesson 1 · Investigate · Approximately 60 minutes.** Preserve existing outcomes and lesson identity. No reflections.
+
+## Two animals, one difficult afternoon
+
+Imagine a hot afternoon in a dry landscape. A small mammal rests inside a shaded burrow, while a bird stands in shallow water and adjusts its position in the sun. Both organisms are responding to environmental conditions, but they are doing so in different ways. Some survival advantages come from **structures**—features of the body. Others come from **behaviour**—patterns of activity.
+
+A **structural adaptation** is an inherited physical feature that can improve survival or reproduction in a particular environment. A **behavioural adaptation** is an inherited or characteristic pattern of behaviour that can have a similar benefit. Scientists must be careful here: not every action an animal performs is an evolved adaptation. Some behaviours are learned or are immediate responses to conditions. To claim a particular behaviour is an adaptation, we need evidence that it contributes to survival or reproduction and has an appropriate biological basis.
+
+## How structure can solve a problem
+
+Think of a duck swimming across a pond. Its webbed feet provide a broad surface for pushing against water. That is a structural feature. The duck still needs to move its legs: the physical structure and the swimming action work together. A structure does not act by itself.
+
+A desert plant may have a thick water-storing stem. This can help it survive between rainfall events. A waxy outer surface may slow water loss. These are structural or anatomical features, not deliberate choices made by the plant during a dry week.
+
+Consider a bird's beak. Different shapes can help birds handle different foods. A short, strong beak may be effective at cracking some seeds, while a long, narrow beak may help reach food in narrow spaces. We must avoid claiming that a particular beak guarantees success with every food source. Real organisms face trade-offs.
+
+## How behaviour can solve a problem
+
+Some animals are active mainly at night. In hot environments, nocturnal activity may reduce exposure to intense daytime heat. Other animals seek shade, shelter in burrows or move between feeding areas as conditions change.
+
+Consider a bilby. Its strong forelimbs and claws help it dig—those are structural features. Spending time in a burrow during the day is a behavioural pattern that can provide shelter from heat and predators. These explanations are connected but not interchangeable.
+
+A useful scientific description identifies the **feature or behaviour**, the **environmental challenge** and the **possible benefit**. Saying “the bilby is adapted to the desert” is too broad to explain anything. Saying “digging claws help it construct burrows that provide shelter in hot conditions” gives a mechanism.
+
+## What adaptation does not mean
+
+An individual animal does not decide to grow a different beak because it wants a new food source. Inherited variations occur within populations, and across generations some variations may become more common when they contribute to survival and reproduction. Nor is every helpful behaviour automatically inherited. A pet learning that a cupboard contains food is an example of learning, not necessarily an evolved behavioural adaptation.
+
+Adaptations also involve costs. Thick fur may reduce heat loss in cold conditions but create challenges in hot weather. Large ears may help heat exchange but may also affect heat loss in cold wind. Scientists consider context and evidence rather than calling any striking feature “perfect”.
+
+## Guided investigations
+
+**Case 1 — pond bird.** Observation: broad webbing between toes and frequent swimming. **Structure:** webbed feet. **Behaviour:** swimming. **Possible advantage:** pushing against water effectively. **What is still unknown?** How much the webbing improves swimming compared with another foot shape under controlled conditions.
+
+**Case 2 — dry-habitat plant.** Observation: thick stem and small leaves. **Structure:** water-storage tissues and reduced leaf area. **Possible advantage:** storing water and reducing water loss. **Caution:** Not every thick stem is necessarily a water-storage adaptation; species-specific evidence matters.
+
+**Case 3 — woodland mammal.** Observation: shelters in a hollow tree during hot afternoons. **Behaviour:** using shelter at certain times. **Possible advantage:** reduced exposure to heat and predators. **Question to investigate:** Does time spent in hollows increase on hotter days?
+
+**Case 4 — coastal bird.** Observation: long legs and feeding in shallow water. **Structure:** long legs. **Possible advantage:** wading while keeping much of the body above water. **Behaviour:** foraging in shallows. **Caution:** We need more evidence before assuming this is the only reason the legs are long.
+
+## Independent classification challenge
+
+For each fictional evidence card, name the structure or behaviour and explain a plausible advantage.
+
+**A.** A lizard has pale scales on pale sand. **Structural feature:** pale scales. **Possible advantage:** reduced visibility to some predators through camouflage.
+
+**B.** A small mammal feeds mostly after sunset in a hot region. **Behavioural pattern:** night feeding. **Possible advantage:** avoiding intense daytime heat.
+
+**C.** A wetland plant has large air spaces in its stems. **Structural feature:** air-filled tissue. **Possible advantage:** gas movement or buoyancy in wet conditions, depending on the species.
+
+**D.** A bird repeatedly uses the same sheltered nesting area. **Behaviour:** nest-site choice. **Possible advantage:** protection from weather or predators. Further evidence would be needed to establish the function.
+
+**E.** A child trains a dog to sit when given a hand signal. **Answer:** This is learned behaviour; do not automatically label it an evolved behavioural adaptation.
+
+## Plan a fair investigation
+
+A scientist wonders whether model insects coloured like tree bark are less visible to observers than brightly coloured models. To test this, the scientist places equal numbers of each model on similar bark backgrounds and records how many are found during equal observation periods.
+
+What is the **variable being changed**? **Model colour.** What is being **measured**? **Number detected.** Name two things to keep similar. **Model size and placement conditions**, or observation time and background type. Why repeat the test? **To reduce the influence of chance and unusual individual observations.**
+
+The test could support a claim about visibility in the chosen conditions, but it would not by itself prove how every real predator behaves in nature.
+
+## Application: when habitats change
+
+Imagine a wetland gradually becoming drier. A population of plants contains inherited variation in water tolerance. Some individuals may survive better under the new conditions, while others may struggle. Over many generations, if tolerant individuals reproduce more successfully, their traits may become more common. The population could also decline or move, depending on the species and the rate of change.
+
+**Question:** Why is it inaccurate to say “each plant grew a new inherited adaptation as soon as the wetland dried”? **Because individuals do not intentionally redesign inherited structures; population-level changes require variation and reproduction across generations.**
+
+## Final assessment — 10 points
+
+**1 (2).** Distinguish structural and behavioural adaptations. **Structures are physical features; behaviours are characteristic patterns of activity that may confer advantages.**  
+**2 (2).** Explain how webbed feet may help a swimming bird. **They provide surface area to push against water.**  
+**3 (2).** Explain how nocturnal activity may help an animal in a hot habitat. **It can reduce exposure to daytime heat.**  
+**4 (2).** Why is a trained trick not automatically an evolved adaptation? **It may be learned rather than an inherited behavioural trait.**  
+**5 (2).** Suggest one testable question about camouflage. **Are bark-coloured models detected less often than bright models under the same conditions?**
+
+**Targeted feedback:** If a student classifies “digging” as a body structure, contrast the claws (structure) with the action (behaviour). If a student says organisms “choose to evolve”, revisit inherited variation across generations. If a claim is absolute, ask what evidence would justify it.
+
+**Visual:** Paired panels showing bilby claws versus burrow use, duck webbed feet versus swimming, and a plant stem cross-section; label observed feature separately from proposed function. Cursor: preserve scientific qualifications and all prose; accessible classification interactions; no reflections.
+
