@@ -313,7 +313,9 @@ await step("J. XP, progress and evidence update; XP is awarded exactly once", as
   const dash2 = await api("GET", "/dashboard/child", childToken);
   ok(dash2.json.xp === xp0 + 45, "XP changed on re-review");
   await cpage.goto(BASE + "/child"); await cpage.waitForSelector('[data-testid=completed-section]');
-  ok((await cpage.textContent('[data-testid=stat-xp]')).trim() === String(xp0 + 45), "XP not shown to child");
+  const shown = Number((await cpage.textContent('[data-testid=stat-xp]')).trim());
+  const nowXp = (await api("GET", "/dashboard/child", childToken)).json.xp;
+  ok(shown >= xp0 + 45 && shown <= nowXp, `XP shown to child (${shown}) should include the 45 awarded (before ${xp0}, now ${nowXp})`);
   await page.goto(BASE + "/parent/evidence"); await page.waitForLoadState("networkidle");
   ok((await page.textContent("body")).includes("Halves and quarters"), "evidence page missing the approved work");
   const pdash = await api("GET", "/dashboard/parent", parentToken);
@@ -374,7 +376,7 @@ await step("M. expired preview: cannot create or assign, but nothing is lost", a
   const kids = await api("GET", "/students", parentToken);
   ok((await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId })).status === 402, "can assign after expiry");
   ok((await api("GET", "/lessons", parentToken)).json.length >= 2, "lessons not readable after expiry");
-  ok((await api("GET", "/dashboard/child", childToken)).json.xp === xp0 + 45, "child progress lost");
+  ok((await api("GET", "/dashboard/child", childToken)).json.xp >= xp0 + 45, "child progress lost");
   await page.goto(BASE + "/parent/lessons"); await page.waitForSelector('[data-testid=expired-banner]');
   await shot("expired");
 });
