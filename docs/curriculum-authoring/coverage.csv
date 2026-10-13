@@ -1,6 +1,15 @@
 lesson_id,title,manuscript_status,manuscript_path,review_status
 s3-mat-y5-w01-l1,Reading and writing numbers to the millions,prose_rewrite_for_review,docs/curriculum-authoring/lessons/s3-mat-y5-w01-l1.md,owner_review_pending
-s3-mat-y5-w01-l2,Place value charts and expanded form,rewrite_required,docs/curriculum-authoring/lessons/s3-mat-y5-w01-l2.md,owner_rejected_outline_style
+s3-mat-y5-w01-l2,Place value charts and expanded form,prose_draft_for_review,docs/curriculum-authoring/lessons/s3-mat-y5-w01-l2.md,owner_review_pending
 s3-mat-y6-w01-l2,Place value and expanded form,rewrite_required,docs/curriculum-authoring/lessons/s3-mat-y6-w01-l2.md,owner_rejected_outline_style
 s3-mat-y6-w01-l3,Comparing and ordering large numbers,rewrite_required,docs/curriculum-authoring/lessons/s3-mat-y6-w01-l3.md,owner_rejected_outline_style
 s3-mat-y6-w01-l4,Number sense warm-ups,rewrite_required,docs/curriculum-authoring/lessons/s3-mat-y6-w01-l4.md,owner_rejected_outline_style
+s3-mat-y5-w01-l3,Comparing and ordering large numbers,prose_draft_for_review,docs/curriculum-authoring/lessons/s3-mat-y5-w01-l3.md,owner_review_pending
+s3-mat-y5-w01-l4,Number sense warm-ups and fluency,prose_draft_for_review,docs/curriculum-authoring/lessons/s3-mat-y5-w01-l4.md,owner_review_pending
+s3-sci-y5-w01-l1,Adaptations of plants and animals (investigate),prose_draft_for_review,docs/curriculum-authoring/lessons/s3-sci-y5-w01-l1.md,owner_review_pending
+s3-sci-y5-w01-l2,Adaptations of plants and animals (apply and make),prose_draft_for_review,docs/curriculum-authoring/lessons/s3-sci-y5-w01-l2.md,owner_review_pending
+s3-hsie-y5-w01-l1,First Nations Peoples and Country (investigate),prose_draft_for_review,docs/curriculum-authoring/lessons/s3-hsie-y5-w01-l1.md,owner_review_pending
+s3-hsie-y5-w01-l2,First Nations Peoples and Country (apply and respond),prose_draft_for_review,docs/curriculum-authoring/lessons/s3-hsie-y5-w01-l2.md,owner_review_pending
+s3-pdh-y5-w01-l1,Identity and self-awareness (learn and discuss),prose_draft_for_review,docs/curriculum-authoring/lessons/s3-pdh-y5-w01-l1.md,owner_review_pending
+s3-pdh-y5-w01-l2,Identity and self-awareness (practise and apply),prose_draft_for_review,docs/curriculum-authoring/lessons/s3-pdh-y5-w01-l2.md,owner_review_pending
+s3-arts-y5-w01-l1,Drawing techniques (explore and learn),prose_draft_for_review,docs/curriculum-authoring/lessons/s3-arts-y5-w01-l1.md,owner_review_pending
