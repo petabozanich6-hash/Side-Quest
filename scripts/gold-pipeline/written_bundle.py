@@ -9,6 +9,7 @@ CURRICULUM_SOURCE = {
     'hsie': 'https://curriculum.nsw.edu.au/learning-areas/hsie/hsie-k-6-2024/outcomes',
     'pdhpe': 'https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes',
     'arts': 'https://curriculum.nsw.edu.au/learning-areas/creative-arts/creative-arts-k-6-2024/outcomes',
+    'technology': 'https://curriculum.nsw.edu.au/learning-areas/tas/technology-mandatory-7-8-2019/outcomes',
 }
 
 
@@ -97,9 +98,9 @@ def expand_stages(rule, model, prompt, answer, pitfall, subject='english'):
              'The new example should use the same arts idea as the model, but with different content or material.',
              'Repeating the worked example cannot show transfer to a new artwork or performance.'),
         ]
-    if subject in ('science', 'hsie'):
-        idea_word = 'science' if subject == 'science' else 'HSIE'
-        transfer_name = 'investigation' if subject == 'science' else 'inquiry'
+    if subject in ('science', 'hsie', 'technology'):
+        idea_word = 'science' if subject == 'science' else ('technology' if subject == 'technology' else 'HSIE')
+        transfer_name = 'investigation' if subject in ('science', 'technology') else 'inquiry'
         return [
             ('Understand and model', rule, model, prompt, answer, pitfall),
             ('Show the evidence',
@@ -177,6 +178,8 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
         vocab = spec.get('vocab') or ['movement', 'health', 'safety', 'respect']
     elif subject == 'arts':
         vocab = spec.get('vocab') or ['element', 'technique', 'effect', 'audience']
+    elif subject == 'technology':
+        vocab = spec.get('vocab') or ['design', 'criteria', 'safety', 'evaluate']
     else:
         vocab = spec.get('vocab') or ['this skill', 'evidence', 'transfer', 'revision']
     stages = expand_stages(rule, model, prompt, answer, pitfall, subject=subject)
@@ -204,6 +207,10 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
     elif subject == 'arts':
         materials = ['Paper or typed answer space', 'Pencil',
                      'Optional: scrap paper, crayons, safe classroom instruments or clear movement space with an adult nearby']
+    elif subject == 'technology':
+        materials = ['Paper or typed answer space', 'Pencil',
+                     'Optional: safe classroom tools/materials under teacher supervision',
+                     'Device only when the lesson requires digital work']
     else:
         materials = ['Paper or typed answer space', 'Pencil']
     if subject == 'mathematics':
@@ -223,6 +230,9 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
         source_note = ('Proposed Stage 2 NESA Creative Arts alignment using catalogue outcome codes (CA2-*); '
                        'content-point mapping remains pending. First Nations arts content requires local '
                        'Aboriginal educator or Custodian guidance before acceptance; do not invent sacred designs.')
+    elif subject == 'technology':
+        source_note = ('Proposed Stage 4 NESA Technology Mandatory alignment using catalogue outcome codes (TM4-*); '
+                       'content-point mapping remains pending. Practical work requires teacher safety supervision.')
     else:
         source_note = 'Proposed Stage 2 NESA alignment; verify content points before acceptance.'
     l.update(
@@ -253,21 +263,22 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
                 ('pip', 'I will try the prompt myself, then compare with the feedback.'),
                 ('juno', 'Pause here. Use this model: ' + model[:120] + ' Then write your own working.', True),
             ]
-        elif subject == 'science':
+        elif subject in ('science', 'technology'):
             why = ('This helps the learner base claims on observation, fair tests and design evidence, '
-                   'rather than guessing from a picture alone. Keep every claim linked to what was seen or measured.')
+                   'rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.')
             how = (
-                'Read the worked example and name the observations, properties or test steps that carry the idea. '
+                'Read the worked example and name the observations, properties, criteria or test steps that carry the idea. '
                 'Before looking at the correction, make your own attempt using the exact question provided. '
                 'Compare your record with the feedback: did you use the same skill and show your evidence? '
                 'If a result is uncertain, identify what would have to be observed or tested again. '
-                'One deliberate, evidence-based revision is more useful than writing a longer answer.')
-            wrong_opts = ['A claim unrelated to the observation or test.', 'An answer copied without understanding.',
+                'One deliberate, evidence-based revision is more useful than writing a longer answer. '
+                'For practical technology work, follow teacher safety rules for tools, food and devices.')
+            wrong_opts = ['A claim unrelated to the observation, test or criteria.', 'An answer copied without understanding.',
                           'A guess with no evidence.']
-            fix = 'Correct the claim or method, not just the neatness of the diagram.'
+            fix = 'Correct the claim, criteria use or method, not just the neatness of the diagram.'
             ep = [
-                ('pip', 'I can see the example, but I am not sure which observation matters most.'),
-                ('juno', 'Name the observations, properties or test steps that carry the idea before you decide.'),
+                ('pip', 'I can see the example, but I am not sure which observation or criterion matters most.'),
+                ('juno', 'Name the observations, criteria or test steps that carry the idea before you decide.'),
                 ('pip', 'I will try the prompt myself, then compare with the feedback.'),
                 ('juno', 'Pause here. Use this model: ' + model[:120] + ' Then write your own evidence.', True),
             ]
@@ -348,8 +359,8 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
         check_expl = idea + (
             ' Supported working follows the actual numbers and purpose of the task.'
             if subject == 'mathematics' else
-            ' Supported records follow the actual observations and purpose of the task.'
-            if subject == 'science' else
+            ' Supported records follow the actual observations, criteria and purpose of the task.'
+            if subject in ('science', 'technology') else
             ' Supported records follow the actual sources and purpose of the task.'
             if subject == 'hsie' else
             ' Supported choices follow the actual cues, rules and purpose of the task.'
@@ -421,29 +432,30 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
              'Make sure the final evidence matches the lesson purpose.'),
         ]
         extension = 'Apply the same method to a larger number or a new context, then compare two solution paths for accuracy.'
-    elif subject == 'science':
-        l['worked_example'] = 'WORK THROUGH THIS\n' + model + '\n\nWrite what makes this example accurate, naming the observations, properties or test steps used.'
+    elif subject in ('science', 'technology'):
+        domain = 'technology/design' if subject == 'technology' else 'science'
+        l['worked_example'] = 'WORK THROUGH THIS\n' + model + '\n\nWrite what makes this example accurate, naming the observations, criteria, properties or test steps used.'
         l['guided_practice'] = 'PRACTISE BEFORE READING THE FEEDBACK\n' + prompt + '\n\nFEEDBACK\n' + answer + '\n\nWATCH FOR\n' + pitfall
-        l['independent_task'] = 'INDEPENDENT EVIDENCE\n' + task + '\n\nWrite a short reflection naming one observation or step you corrected and why.'
+        l['independent_task'] = 'INDEPENDENT EVIDENCE\n' + task + '\n\nWrite a short reflection naming one observation, criterion or step you corrected and why.'
         l['response_prompt'] = 'Include your independent evidence and reflection, with reasons where requested.'
         distractors = [
-            'Ignore the observation and invent a more exciting result.',
+            'Ignore the observation or criteria and invent a more exciting result.',
             'Copy the model objects and call that independent work.',
-            'Treat a missing measurement as if it were recorded.',
-            'Skip the fair-test idea because the first guess looked neat.']
-        sa1_q = 'Investigate or describe a fresh example that uses the central skill. Show evidence and name the observations that matter.'
-        sa2_q = 'Name one likely science misconception for this topic, correct it and say why the correction works.'
-        sa1_guide = 'Require independently produced relevant evidence with accurate reasoning and named observations.'
+            'Treat a missing measurement or test as if it were recorded.',
+            'Skip the fair-test or criteria idea because the first guess looked neat.']
+        sa1_q = f'Investigate, design or describe a fresh example that uses the central {domain} skill. Show evidence and name the observations or criteria that matter.'
+        sa2_q = f'Name one likely {domain} misconception for this topic, correct it and say why the correction works.'
+        sa1_guide = 'Require independently produced relevant evidence with accurate reasoning and named observations or criteria.'
         sa2_guide = 'Require an actual misconception plus corrected claim and an evidence-linked reason.'
         hint_set = [
             ('Today you will practise ' + vocab[0] + '.',
-             'Read the mission before you start observing or testing.',
-             'Keep the property or variable you are studying in view.'),
+             'Read the mission before you start observing, designing or testing.',
+             'Keep the property, criterion or variable you are studying in view.'),
             ('Read the stage title and find the worked model.',
-             'Name one exact observation or test step before you decide.',
+             'Name one exact observation, criterion or test step before you decide.',
              'Try the small prompt before opening the comparison.'),
-            ('Return to the model and list the key observations.',
-             'Say what each observation shows about the idea.',
+            ('Return to the model and list the key observations or criteria.',
+             'Say what each observation or criterion shows about the idea.',
              'A final label alone is weaker than recorded evidence.'),
             ('Compare a weak claim with stronger evidence.',
              'Change the claim or method, not only how neat the drawing looks.',
@@ -452,7 +464,7 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
              'Write one reason in your own words.',
              'Do not retype the worked model as your answer.'),
             ('Study how the first demonstration is built.',
-             'Point to the observation or step that carries the idea.',
+             'Point to the observation, criterion or step that carries the idea.',
              'Then write the reason without copying every sentence.'),
             ('Attempt the guided prompt without looking ahead.',
              'Afterwards, compare your evidence with the feedback.',
@@ -461,13 +473,13 @@ def build_from_spec(base, spec, visuals=None, subject='english'):
              'Include original evidence and a short reason.',
              'Save work that shows the skill on new objects or data.'),
             ('Read every option before you choose.',
-             'Eliminate answers that ignore observations or fair tests.',
+             'Eliminate answers that ignore observations, criteria or fair tests.',
              'Prefer accurate evidence over a guess that merely looks neat.'),
             ('Confirm that your evidence and reason are both present.',
              'Proofread labels, measurements and sequence of steps.',
              'Make sure the final evidence matches the lesson purpose.'),
         ]
-        extension = 'Apply the same science idea to a new object or material, then compare two pieces of evidence for strength.'
+        extension = f'Apply the same {domain} idea to a new object or material, then compare two pieces of evidence for strength.'
     elif subject == 'hsie':
         l['worked_example'] = 'WORK THROUGH THIS\n' + model + '\n\nWrite what makes this example accurate, naming the sources, places or community details used.'
         l['guided_practice'] = 'PRACTISE BEFORE READING THE FEEDBACK\n' + prompt + '\n\nFEEDBACK\n' + answer + '\n\nWATCH FOR\n' + pitfall

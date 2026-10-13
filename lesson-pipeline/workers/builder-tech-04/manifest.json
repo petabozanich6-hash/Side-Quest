@@ -1,0 +1,85 @@
+{
+  "benchmarks": {
+    "d1-worker": {
+      "reference": "worker/migrations/0044_s2_y3_w01_l1_gold_expression.sql",
+      "renderer": "frontend/src/pages/child/ChildLesson.jsx",
+      "review": "docs/GOLD_Y3_ENGLISH_W01_L1_REVIEW.md",
+      "sha256": "d79e731a2c64e6a2790d775ca35c549722c322e0060e16ca81e28f7a90520598"
+    },
+    "markdown-bank": {
+      "source": "lesson-bank/tools/build_bank.py",
+      "status": "no_approved_gold_v2_adapter"
+    },
+    "python-library": {
+      "policy": "docs/LESSON_BUILD_HANDOFF.md",
+      "reference": "backend/lesson_library_s2_english_w09_l1.py",
+      "status": "unavailable_in_checkout"
+    }
+  },
+  "count": 19202,
+  "inventory_sha256": "1b5ed5d7609f27a7ab66857f25fbdb0538ec0650539538d7931d6e6d83dc561b",
+  "migrations": {
+    "worker/migrations/0001_init.sql": "8a3a63f5b1b951985e79a45e47fae5ef3704ea59a5f15a27f71b2197096233c9",
+    "worker/migrations/0002_core.sql": "e9dea2b2034f12451839136c3751f22dbca018652750b9c43d1e5322d52a8fb2",
+    "worker/migrations/0003_seed_lessons.sql": "5f776919b0fc2f59abbac5efabf3d8432ef26ca925f6f0d22c5b62b66ac59da6",
+    "worker/migrations/0004_family.sql": "0b5a3cf1bd0caad55368184ac1f305b12389ca95c19ec666df896f2ab86dbbbf",
+    "worker/migrations/0005_learning.sql": "89309a755816ded4aa91ba8a92054db30c6f4e7e007919038a65bee186c0ae1f",
+    "worker/migrations/0006_pets.sql": "1f81a96c1a8aa3ebff0d7fd98692f3c7ba59a70ab39716033111a1b923965504",
+    "worker/migrations/0007_words.sql": "1b926a434b65462c37368dd79c3c73589a9fb39a3c7145f3a683cd2970a263e2",
+    "worker/migrations/0008_auto_reply.sql": "6dfafe165ee6ed53ba60782fe5279e9aa70db4788d707a081c30a52fe3a869ef",
+    "worker/migrations/0009_password_resets.sql": "0aeccd5d257cd834a6e0c6cf14a69d575f7a0720ab3198dc541533a315d5c743",
+    "worker/migrations/0010_student_pin_enc.sql": "3140aa9a92b8b5cb1792108784c8d4398d4236ffc2ed0e696070c8be2f5952a4",
+    "worker/migrations/0011_help_requests.sql": "6448efaae2348b9a29a782b33e8db4cb4f1139ec8cf2a8f027579c66fe0a6439",
+    "worker/migrations/0012_s2_english_program.sql": "3f7c3acd52e924ec29bc6e197050468c47be679c2796375601406edd05308eca",
+    "worker/migrations/0013_s2_y3_w01_l1_reading_expression.sql": "985c7db20b34036a397fbb6041af38e31d7abee53e3a25d076af6a4d4d6ed0ad",
+    "worker/migrations/0013_s3_maths_program.sql": "19d8bdad443960263254c737e6a3da3665893e926b53bc95cbe75e0430e5217a",
+    "worker/migrations/0014_s2_maths_program.sql": "e8e58eb17ef8eb849a6727d7d1a84f11cfac19f89362f53bf4d98437ebfe102c",
+    "worker/migrations/0015_s2_science_tech_program.sql": "a2586d2b2c1b167608e32e35c555a7d749168a567853cbb237565d7bd086bd96",
+    "worker/migrations/0016_s2_hsie_program.sql": "a2507d47da891ae4e86a1b4d27156cfe1d4fc224798a662b8d8a996ae50ed239",
+    "worker/migrations/0017_s2_pdhpe_program.sql": "c7a9a59b04532279974be43a09d9bf719e8828385bcc2ec0f3b170c39968a85d",
+    "worker/migrations/0018_s2_creative_arts_program.sql": "72ea5e4ffb15bc4ec45e53a2baa6ceadd63699475e4ae96477bf0e55f9d6ff24",
+    "worker/migrations/0019_s4_english_program.sql": "59fae7a77d54b534eb6c11d8d8165fc4b8c0a4459b475068b83ff7019ad8ea06",
+    "worker/migrations/0020_s4_mathematics_program.sql": "93803cbf3e4f86f80f4e97c0a79e30a0386c208af7c209e30203260feafc9dd4",
+    "worker/migrations/0021_s4_science_program.sql": "bb408d08629f55b07d518491783708e63f4aa9991b395e207511626054ad9c53",
+    "worker/migrations/0022_s4_hsie_program.sql": "61433cd25f308bf88a861826eb0cd5d0d91d37545bf684bf9148d5da09cccabb",
+    "worker/migrations/0023_s4_pdhpe_program.sql": "8766b0ce48b699ac72dc7c54bb60ac35472d540420a9ae0bd1ee925b0c88c139",
+    "worker/migrations/0024_s4_creative_arts_program.sql": "9fb9d78c75a76bc784bbe987209fcd78e6c8d53f75b712266c2a2738734e1e7a",
+    "worker/migrations/0025_s4_technology_program.sql": "cb6af49715b9d19e582933f744bee179c607c21f5b31497accf2bbdc1bcb3854",
+    "worker/migrations/0026_s5_electives_program.sql": "50624ee6b735b6345f227e7cbdf8742843f2ae7513bd23c44a749e9d78de42b7",
+    "worker/migrations/0027_electives_to_stage4.sql": "b391b31c44a4bbe319619954304891446f9f9485ae63b9de4788d24b9d32d946",
+    "worker/migrations/0028_s4_nesa_hours.sql": "823c2d7bea31e1d5033836bb73eeabb013e42a8f1f81b968a673ba07ac219771",
+    "worker/migrations/0029_es1_english_program.sql": "e976d22d197adf946495fce80ee43b38448ab04a015469034ea8fe672c6210d3",
+    "worker/migrations/0030_es1_mathematics_program.sql": "c66ee1d61163460246e626df0aad067535a5f36ee204b243a624488e1d23c14c",
+    "worker/migrations/0031_es1_science_tech_program.sql": "42b1c1346f8e8538f1ba49024ff7c04898157f91d98afab8c4b5b99ae199950d",
+    "worker/migrations/0032_es1_hsie_program.sql": "93388fc2faa3258a6bdcc13258abae045d210ceb1c84d0fa362cad5351a52ffe",
+    "worker/migrations/0033_es1_pdhpe_program.sql": "a96717b96acde71c4f81a7ae3aee45e43e4d213b2b56188609963f229a33e140",
+    "worker/migrations/0034_es1_creative_arts_program.sql": "c8e04a253bf4b27c322055e7e3ce3b4a9b86eb1d51b795438bb618b91011e0a3",
+    "worker/migrations/0035_es1_stage_label.sql": "05711f1860e2620281a21acb8d005edb6367263c5a4a2521e8229b835eff5c36",
+    "worker/migrations/0036_s1_program.sql": "1637414721df4032ebdb47df730720d3c12d272b7d7f012e784e0f55e4181f71",
+    "worker/migrations/0037_s3_program.sql": "7aaad173e5306967116a710b3dfcecae230e0ba96ae86a76029fb2d36c8ef058",
+    "worker/migrations/0038_s5_program.sql": "819bb8d9015fed3c250e369c746044e9653fe4e3222125ee5c0c977cf703a182",
+    "worker/migrations/0039_s5_electives_copy.sql": "66cd5365025c58a752d4881304401cd2da3a0a887fcf3722c7e7cbf2fcf7585e",
+    "worker/migrations/0040_s6_program.sql": "08287c72dcb6f5ee4266e19533a0509f007503e4bb0aaba08d3526a9136ecc65",
+    "worker/migrations/0041_s6_remaining_courses.sql": "3adcebbe21f8a4d57df7155e6675549a3df03fbe697f23afce2bf2da552577a6",
+    "worker/migrations/0042_s2_y3_w01_l2_writing_clear_sentence.sql": "8a056a21dbdf6b2a2436c80f9de078e010e309c95d847fb5a0699155a2e204e5",
+    "worker/migrations/0044_s2_y3_w01_l1_gold_expression.sql": "d79e731a2c64e6a2790d775ca35c549722c322e0060e16ca81e28f7a90520598",
+    "worker/migrations/0045_s3_y5_english_w01_complete.sql": "f5017982f5b686e8c33088e5aae2d545a462ec35aa83e5c5e3340a9d4b9449f5",
+    "worker/migrations/0046_s2_y3_english_w01_remaining.sql": "9ce941f0dab5e44eaee870c25a798c114bb211a9bdcb4ab0f48dc7052a4f93ab",
+    "worker/migrations/0047_s4_y7_english_w01_complete.sql": "c67570d1403a6bf6db588d23a68b70689603219cb55f27ee55d2eb38e388acf1",
+    "worker/migrations/0048_s2_y4_english_w01_complete.sql": "af136ca3af5432f9f6e88826b6cbf442b75a13658098094f46347400f7ce1aaf",
+    "worker/migrations/0049_priority_english_and_maths_batch.sql": "ed8f17e2446b7b7f68f1dab63d98bfba3a48feb8b8ae136e77dc583b401ed33f"
+  },
+  "protected": [
+    "s2-eng-y3-w01-l1"
+  ],
+  "schema": 1,
+  "stage_counts": {
+    "ES1": 640,
+    "S1": 1280,
+    "S2": 1282,
+    "S3": 1280,
+    "S4": 3620,
+    "S5": 3420,
+    "S6": 7680
+  }
+}

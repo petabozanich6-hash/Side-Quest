@@ -1,9 +1,14 @@
 {
+  "blockers": [
+    "Y4 complete 640/640 — repairs only"
+  ],
+  "branch": "feature/gold-v2-builder-y4",
   "created_at": "2026-10-13T00:03:51.919544+00:00",
   "id": "builder-y4",
-  "label": "S2 Y4 repairs",
+  "label": "S2 Y4 idle/repair",
   "seed_patterns": [
     "s2-*-y4-*"
   ],
-  "state": "workers/builder-y4"
+  "state": "workers/builder-y4",
+  "worktree": ".worktrees/builder-y4"
 }

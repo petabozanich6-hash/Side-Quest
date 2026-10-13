@@ -1,0 +1,333 @@
+{
+  "child_mission": "Investigate use scientific notation accurately. Use a representation, show each decision and check the result.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep the use scientific notation accurately task working, explanation, checking record, reflection and quiz result.",
+  "extension": "Choose one new example of the lesson’s number idea. Give an exact representation or verified bound, and explain what a common incorrect interpretation would miss.",
+  "guided_practice": "WE DO:\n1. Convert 4,200 by choosing a standard coefficient. Check: 4.2 × 10³.\n2. Multiply back by one thousand to verify the original value.\n3. Convert 0.0035. Check: 3.5 × 10⁻³, then divide by one thousand.\n4. Compare 2.4 × 10³ with 3.1 × 10³. The common exponent lets you compare coefficients.\n5. Convert 2.4 × 10³ m back while keeping the unit. Check: 2,400 m.\n6. Explain one exponent choice and why notation conversion does not change the measurement unit.",
+  "independent_task": "YOU DO: Use scientific notation accurately record (about 25–30 minutes).\n1. Convert 45,000; 72,000; 0.0064; 0.0008 to standard scientific notation. Convert 3.6 × 10² and 3.6 × 10⁻² back. Compare 4.2 × 10³ with 7.1 × 10², and retain metres when a quantity is given in metres.\n2. Show the relevant exact fraction, square relationship, bounds or power-of-ten check for each result.\n3. Explain two decisions with the definitions taught in the lesson.\n4. Identify and repair a possible error in notation or reasoning. If your work is already correct, explain the check that confirmed it.\n5. Write a short reflection about the representation that was most useful.\nUse paper or the big box. Type a working summary for paper work; no upload is required.\nSuccess checklist: complete requested results; correct exact/approximate labels; notation conventions respected; workings and units where needed; two explanations; independent check.",
+  "learning_area": "Mathematics",
+  "learning_intention": "We are learning to explain and apply use scientific notation accurately.",
+  "lesson_number": 3,
+  "lesson_role": "Problem solving",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Copy the included examples and task prompts onto paper. Use the diagrams and models to complete the use scientific notation accurately working without a service, then type an evidence summary later.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches use scientific notation accurately from definitions to explanation and application. Original content follows the repository’s topic sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of complete syllabus coverage.\n\nParent: Look for explicit working and a check of signs, scale, notation or units as appropriate. A correct guess without a method is weaker evidence than an explained calculation. The lesson itself supplies the teaching and feedback. Your role is access support and reviewing the evidence.\n\nParent: Model task answers: 45,000 = 4.5 × 10⁴; 72,000 = 7.2 × 10⁴; 0.0064 = 6.4 × 10⁻³; 0.0008 = 8 × 10⁻⁴. Back conversions: 360 and 0.036. 4,200 > 710. Metres stay metres.\n\nParent: Ten scored choices use the unchanged 90% threshold, requiring 9/10. The independent task and reflection supply written reasoning for manual review.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 3,
+      "explanation": "The value is 4,200 and the coefficient 4.2 lies in the required interval from one inclusive to ten exclusive.",
+      "options": [
+        "42 × 10²",
+        "0.42 × 10⁴",
+        "4,200 × 10⁰",
+        "4.2 × 10³"
+      ],
+      "question": "Which is standard scientific notation for 4,200?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Multiplying 7.2 by ten thousand gives 72,000 and its coefficient is standard.",
+      "options": [
+        "7.2 × 10³",
+        "7.2 × 10⁴",
+        "72 × 10³",
+        "0.72 × 10⁵"
+      ],
+      "question": "Which represents 72,000 in standard scientific notation?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Eight multiplied by one ten-thousandth is 0.0008, and eight is a standard coefficient.",
+      "options": [
+        "8 × 10⁴",
+        "−8 × 10⁴",
+        "8 × 10⁻⁴",
+        "0.8 × 10⁻³"
+      ],
+      "question": "Which is standard scientific notation for the positive number 0.0008?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "The power scales 3.6 by one hundred, giving 360; the supplied unit remains metres.",
+      "options": [
+        "360 metres",
+        "0.036 metres",
+        "360 kilometres",
+        "36 metres"
+      ],
+      "question": "What is 3.6 × 10² metres in ordinary notation?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The coefficient multiplied by ten thousand gives forty-five thousand.",
+      "options": [
+        "4.5 × 10³",
+        "4.5 × 10⁴",
+        "45 × 10²",
+        "0.45 × 10³"
+      ],
+      "question": "Which represents 45,000?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Six point four divided by one thousand gives the small positive value and its coefficient is standard.",
+      "options": [
+        "6.4 × 10³",
+        "0.64 × 10⁻²",
+        "6.4 × 10⁻³",
+        "64 × 10⁻⁴"
+      ],
+      "question": "Which is standard for 0.0064?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Ten to a negative integer power is the reciprocal of its positive power.",
+      "options": [
+        "A reciprocal scale, not a negative coefficient",
+        "A negative temperature automatically",
+        "An instruction to reverse every digit",
+        "A zero result"
+      ],
+      "question": "What does a negative exponent on ten indicate here?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The coefficient must be at least one and less than ten.",
+      "options": [
+        "0.45",
+        "45",
+        "10",
+        "4.5"
+      ],
+      "question": "Which coefficient is in the required positive interval?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The values are 710 and 4,200 respectively.",
+      "options": [
+        "7.1 × 10²",
+        "4.2 × 10³",
+        "They are equal",
+        "The smaller exponent always wins"
+      ],
+      "question": "Which is greater?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Dividing 3.6 by one hundred gives 0.036.",
+      "options": [
+        "360",
+        "36",
+        "0.036",
+        "−360"
+      ],
+      "question": "What is 3.6 × 10⁻²?",
+      "type": "multiple_choice"
+    }
+  ],
+  "response_prompt": "Which representation or check changed your understanding of use scientific notation accurately, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s4-mat-y8-w01-l3",
+  "stage": "S4",
+  "stage_hints": {
+    "accept": [
+      "Read the mission about use scientific notation accurately.",
+      "You will practise use scientific notation accurately through models before making your own response.",
+      "Begin with the first explanation of use scientific notation accurately; the examples remain available while you work."
+    ],
+    "guided": [
+      "Begin the first supported example with a standard coefficient with a power-of-ten scale.",
+      "Write a short label for the exponent sign and the unchanged measurement unit before calculating.",
+      "Check the coefficient interval, then multiply or divide back to recover the original quantity. Compare with the feedback only after your attempt."
+    ],
+    "learn": [
+      "Look at how the complete model uses a standard coefficient with a power-of-ten scale.",
+      "Track the exponent sign and the unchanged measurement unit rather than treating every number question alike.",
+      "Check the coefficient interval, then multiply or divide back to recover the original quantity."
+    ],
+    "quiz": [
+      "Return to the step about a standard coefficient with a power-of-ten scale.",
+      "Check the exponent sign and the unchanged measurement unit before considering the options.",
+      "Check the coefficient interval, then multiply or divide back to recover the original quantity."
+    ],
+    "submit": [
+      "Check that your use scientific notation accurately task and working are present.",
+      "Include the use scientific notation accurately reflection and any written reasoning you produced.",
+      "Send your use scientific notation accurately evidence for review; type a clear record if you used paper."
+    ],
+    "teach0": [
+      "Check the coefficient’s interval before judging the whole form.",
+      "Evaluate the power of ten to check the represented value.",
+      "Require both correct value and a standard coefficient; do not choose by appearance alone."
+    ],
+    "teach1": [
+      "Find a coefficient with one non-zero digit before the decimal.",
+      "Count the scale needed to rebuild the original large number.",
+      "Multiply the coefficient by that power of ten and compare the exact result."
+    ],
+    "teach2": [
+      "Label the original decimal as a small positive value.",
+      "Use the reciprocal meaning of a negative power of ten.",
+      "Divide the chosen standard coefficient by the corresponding positive power and compare."
+    ],
+    "teach3": [
+      "Read the exponent sign and retain the stated unit.",
+      "Convert one value back before making the contextual claim.",
+      "Compare standard exponents first, then coefficients when exponents match; verify by ordinary values if needed."
+    ],
+    "write": [
+      "Copy the first use scientific notation accurately task and label its quantities.",
+      "Begin “The given information is ____. I will use ____ because ____.”",
+      "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
+    ]
+  },
+  "subject": "Number",
+  "success_criteria": [
+    "I can explain the key number idea with an example.",
+    "I can use the taught representation or calculation method.",
+    "I can show a reason for my result.",
+    "I can check a result and interpret it accurately."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "The value is 4,200 and the coefficient 4.2 lies in the required interval from one inclusive to ten exclusive.",
+        "options": [
+          "42 × 10²",
+          "0.42 × 10⁴",
+          "4,200 × 10⁰",
+          "4.2 × 10³"
+        ],
+        "question": "Which is standard scientific notation for 4,200?"
+      },
+      "example": "I DO:\n4.2 × 10³ = 4.2 × 1,000 = 4,200.\n42 × 10² also equals 4,200, but 42 is not a standard coefficient.\n\nYOU TRY:\nIs 3.5 × 10² in standard form? State the coefficient check.\n\nCHECK:\nYes. The coefficient 3.5 is at least one and less than ten, and the exponent is an integer.",
+      "explain": "**Scientific notation is a × 10ⁿ.**\nFor a positive value, the coefficient a must be at least one and less than ten, and n is an integer exponent. The power of ten supplies the scale; the coefficient carries the significant digits.\n\n**An exponent records repeated factors or their reciprocal.**\nTen cubed is 10 × 10 × 10 = 1,000. Ten to the zero power is one. Ten to the negative three power is 1/1,000. A negative exponent here does not make the represented positive number negative.\n\n**Check both parts of the form.**\n4.2 × 10³ is standard scientific notation. 42 × 10² has the same value but its coefficient is outside the required interval. Equivalent value and standard form are separate questions.\n\nFor this lesson we represent positive values. Zero and signed coefficients require additional conventions; do not silently extend the coefficient rule to them.",
+      "icon": "🔎",
+      "notice": "Value equality does not guarantee standard scientific-notation form.",
+      "title": "Define scientific notation through place value",
+      "visual": [
+        {
+          "alt": "Positive and negative powers of ten scale standard coefficients to large and small positive values.",
+          "caption": "The exponent controls scale; retain the unit.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">4.5 × 10⁴ = 45,000</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">6.4 × 10⁻³ = 0.0064</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Check: multiply or divide back</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "Multiplying 7.2 by ten thousand gives 72,000 and its coefficient is standard.",
+        "options": [
+          "7.2 × 10³",
+          "7.2 × 10⁴",
+          "72 × 10³",
+          "0.72 × 10⁵"
+        ],
+        "question": "Which represents 72,000 in standard scientific notation?"
+      },
+      "example": "I DO:\n45,000 = 4.5 × 10⁴.\nCheck: 4.5 × 10,000 = 45,000.\n\nYOU TRY:\nConvert 72,000 and multiply back.\n\nCHECK:\n72,000 = 7.2 × 10⁴ because 7.2 × 10,000 returns the original value.",
+      "explain": "**Choose the coefficient first.**\nFor forty-five thousand, place the decimal after the first non-zero digit to get 4.5. Count how much scale is needed to recover the original value, rather than treating decimal movement as an unexplained trick.\n\n**Restore the value with a positive power.**\n4.5 × 10⁴ means 4.5 multiplied by ten thousand, giving forty-five thousand. The positive exponent expands a coefficient between one and ten into a value at least ten when the exponent is positive.\n\n**Count place changes accurately.**\nFrom 45,000 to 4.5 is four decimal-place changes. An exponent of three would give 4,500 instead. Multiply back to check the scale, not only the coefficient.\n\nPreserve all required digits from the supplied exact number. This lesson is converting notation, not deciding measurement precision or rounding away meaningful digits.",
+      "icon": "🔎",
+      "notice": "An off-by-one exponent changes the value by a factor of ten. Multiply back.",
+      "title": "Convert a large value and verify it"
+    },
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "Eight multiplied by one ten-thousandth is 0.0008, and eight is a standard coefficient.",
+        "options": [
+          "8 × 10⁴",
+          "−8 × 10⁴",
+          "8 × 10⁻⁴",
+          "0.8 × 10⁻³"
+        ],
+        "question": "Which is standard scientific notation for the positive number 0.0008?"
+      },
+      "example": "I DO:\n0.0064 = 6.4 × 10⁻³ = 6.4/1,000.\nCheck by division, not by interpreting the exponent as a negative coefficient.\n\nYOU TRY:\nWrite 0.0008 in standard scientific notation.\n\nCHECK:\n8 × 10⁻⁴, because 8 divided by ten thousand is 0.0008.",
+      "explain": "**A negative exponent scales down.**\nTen to the negative three is one thousandth. Multiplying a positive coefficient by it divides the coefficient by one thousand. The result remains positive.\n\n**Choose a standard coefficient for the small value.**\n0.0064 becomes 6.4 × 10⁻³ because 6.4 divided by one thousand is 0.0064. The leading zeroes position the value; they do not become extra significant non-zero digits.\n\n**Keep exponent sign and number sign distinct.**\n6.4 × 10⁻³ is a small positive number. The negative exponent describes the scale. It is not the same as −6.4 × 10³, which is a large negative value.\n\nVerify through the fraction or division meaning of the power. If the answer exceeds one when the original was a small positive decimal below one, revisit the exponent direction.",
+      "icon": "🔎",
+      "notice": "The exponent sign controls scale. It does not supply the sign of the coefficient.",
+      "title": "Represent a small positive value",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "I am working on use scientific notation accurately. I need to know what the notation asks.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "Scientific notation is a × 10ⁿ.\nFor a positive value, the coefficient a must be at least one and less than ten, and n is an integer exponent. The power of ten supplies the scale; the coefficient carries the significant digits.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "4.2 × 10³ = 4.2 × 1,000 = 4,200.\n42 × 10² also equals 4,200, but 42 is not a standard coefficient.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try a fresh example with this method. Check it against the representation before continuing.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Check the method for use scientific notation accurately",
+            "transcript": "Pip: I am working on use scientific notation accurately. I need to know what the notation asks.\nJuno: Scientific notation is a × 10ⁿ.\nFor a positive value, the coefficient a must be at least one and less than ten, and n is an integer exponent. The power of ten supplies the scale; the coefficient carries the significant digits.\nPip: 4.2 × 10³ = 4.2 × 1,000 = 4,200.\n42 × 10² also equals 4,200, but 42 is not a standard coefficient.\nJuno: Pause and try a fresh example with this method. Check it against the representation before continuing."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 0,
+        "explanation": "The power scales 3.6 by one hundred, giving 360; the supplied unit remains metres.",
+        "options": [
+          "360 metres",
+          "0.036 metres",
+          "360 kilometres",
+          "36 metres"
+        ],
+        "question": "What is 3.6 × 10² metres in ordinary notation?"
+      },
+      "example": "I DO:\n3.6 × 10² m = 360 m.\n3.6 × 10⁻² m = 0.036 m.\nFor 4.2 × 10³ and 7.1 × 10², the first is greater; conversion confirms 4,200 > 710.\n\nYOU TRY:\nCompare 2.4 × 10³ with 3.1 × 10³.\n\nCHECK:\nThe exponents match, so compare 2.4 and 3.1. The second value is greater.",
+      "explain": "**Convert back before interpreting a scale.**\n3.6 × 10² is 360; 3.6 × 10⁻² is 0.036. Check the exponent sign and multiplication or division before attaching a contextual conclusion.\n\n**Compare standard positive forms carefully.**\nIf two standard coefficients are positive, the greater exponent gives the greater value. When the exponents match, compare the coefficients. This relies on the coefficients both satisfying the standard interval.\n\n**Keep measurement units unchanged.**\nWriting 4.5 × 10⁴ m means forty-five thousand metres. Scientific notation changes the numerical representation, not metres into kilometres. A unit conversion is a separate operation.\n\nShow an exact value check and a unit label. If a measurement is approximate, keep that qualification; changing notation does not remove measurement uncertainty.",
+      "icon": "🔎",
+      "notice": "Notation conversion and unit conversion are different tasks.",
+      "title": "Read back, compare and retain units"
+    }
+  ],
+  "title": "Year 8: Use scientific notation accurately",
+  "unit_number": 1,
+  "unit_title": "Real numbers, indices and scientific notation",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Complete a use scientific notation accurately response.\n45,000 = 4.5 × 10⁴; 72,000 = 7.2 × 10⁴; 0.0064 = 6.4 × 10⁻³; 0.0008 = 8 × 10⁻⁴. Back conversions: 360 and 0.036. 4,200 > 710. Metres stay metres.\n\nEXPLAIN THE DECISIONS\nUse the definitions and checks taught above. A scientific-notation form needs both a correct value and a coefficient within its stated interval.\n\nCOMMON MISTAKE AND FIX\nChoosing the exponent one place too small changes the value by a factor of ten. I multiply or divide back to recover the original.\n\nCHECK\nKeep exact and approximate labels, notation conventions and units attached. Use the taught check appropriate to the question rather than a rule from an unrelated number operation.",
+  "worked_visuals": [
+    {
+      "alt": "Positive and negative powers of ten scale standard coefficients to large and small positive values.",
+      "caption": "The exponent controls scale; retain the unit.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">4.5 × 10⁴ = 45,000</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">6.4 × 10⁻³ = 0.0064</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Check: multiply or divide back</text></svg>"
+    }
+  ],
+  "year_level": "Year 8"
+}

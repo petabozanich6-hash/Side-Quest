@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "MA4-ARI-C-01",
+      "lesson_evidence": "Stage 4 Mathematics develops fluent reasoning for algebraic fractions introduction. Students choose a valid method, show working, and check reasonableness. Catalogue alignment uses MA4-ARI-C-01. Prefer exact reasoning over guessing.",
+      "scope_limit": "Proposed Stage 4 NESA Mathematics alignment using catalogue MA4-* codes; content-point mapping remains pending.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Stage 4 Mathematics develops fluent reasoning for algebraic fractions introduction. Students choose a valid method, show working, and check reasonableness. Catalogue alignment uses MA4-ARI-C-01. Prefer exact reasoning over guessing.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same method to a larger number or a new context, then compare two solution paths for accuracy.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nFor algebraic fractions introduction, solve a guided problem with visible working and a one-sentence reason for the method.\n\nFEEDBACK\nStrong answer: method named, working complete, result checked for reasonableness.\n\nWATCH FOR\nSkipping working for algebraic fractions introduction, or mixing units/places without checking.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nIndependently complete a substantial task on algebraic fractions introduction: solve several new items with working, include one deliberate error-analysis, and write a short reflection on a method choice.\n\nWrite a short reflection naming one step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Mathematics",
+    "learning_intention": "Stage 4 Mathematics develops fluent reasoning for algebraic fractions introduction. Students choose a valid method, show working, and check reasonableness. Catalogue alignment uses MA4-ARI-C-01. Prefer exact reasoning over guessing.",
+    "lesson_number": 1,
+    "lesson_role": "Concept",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: place-value chart or number line"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "MA4-ARI-C-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Independently complete a substantial task on algebraic fractions introduction: solve several new items with working, include one deliberate error-analysis, and write a short reflection on a method choice. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for algebraic; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Skipping working for algebraic fractions introduction, or mixing units/places without checking.. Correction uses Strong answer: method named, working complete, result checked for reasonableness.. Why: restores accurate algebraic.\n\nParent: Likely misconception: Skipping working for algebraic fractions introduction, or mixing units/places without checking. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses algebraic with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with algebraic, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for algebraic, and names places/values. Reject copied model numbers. / Accept a named misconception about algebraic, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 2,
+        "explanation": "This matches the taught method for algebraic. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore place value and read digits from left to right as ones only.",
+          "Treat a missing zero as if it does not change the value.",
+          "method named, working complete, result checked for reasonableness.",
+          "Skipping working for algebraic fractions introduction, or mixing units/places without checking."
+        ],
+        "question": "For algebraic fractions introduction, solve a guided problem with visible working and a one-sentence reason for the method. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "This is the misconception to avoid for algebraic; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Careful use of fractions with clear evidence.",
+          "Skipping working for algebraic fractions introduction, or mixing units/places without checking.",
+          "Stage 4 Mathematics develops fluent reasoning for algebraic fractions introduction.",
+          "method named, working complete, result checked for reasonableness."
+        ],
+        "question": "Which statement is a common mistake when working with algebraic?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and a named fractions, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Repeat the worked example wording with no new evidence.",
+          "Skipping working for algebraic fractions introduction, or mixing units/places without checking.",
+          "Name fractions only, without linking it to algebraic.",
+          "Apply algebraic to new material and name the fractions used."
+        ],
+        "question": "Which response best applies algebraic with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Show each place, value or step and say why that step is valid.",
+          "Write only a final number with no working.",
+          "Change digits to look neater without checking place value.",
+          "Skipping working for algebraic fractions introduction, or mixing units/places without checking."
+        ],
+        "question": "Which working best supports a correct answer for this lesson on algebraic?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The correct statement applies the taught algebraic method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Skipping working for algebraic fractions introduction, or mixing units/places without checking.",
+          "Read 24 from left to right as ones only, ignoring place value.",
+          "Ignore units and treat 24 and 6 as interchangeable.",
+          "method named, working complete, result checked for reasonableness."
+        ],
+        "question": "Using the method for algebraic, which statement is true?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Recheck places, operations and whether the question asked for the quantity you computed.",
+          "Pick the longer-looking working automatically.",
+          "Delete units so the answers appear to match.",
+          "Average the two answers without checking either."
+        ],
+        "question": "If two methods disagree on a algebraic problem with numbers such as 24 and 6, what should you check first?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Skipping working for algebraic fractions introduction, or mixing units/places without checking.",
+          "Use the same algebraic method on new numbers and name the places or values that matter.",
+          "Retype the worked model numbers 24 and 6 as the answer.",
+          "Change only handwriting and keep the same numbers."
+        ],
+        "question": "Solve a multi-step algebraic problem with different values from the model, justify each step, and check reasonableness.?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Stage 4 Mathematics develops fluent reasoning for algebraic fractions introduction.",
+          "method named, working complete, result checked for reasonableness.",
+          "Label units when comparing 24 with 6.",
+          "Skipping working for algebraic fractions introduction, or mixing units/places without checking."
+        ],
+        "question": "Which error is the lesson warning against for algebraic?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for algebraic, and names places/values. Reject copied model numbers.",
+        "question": "Solve one fresh problem that uses algebraic with different numbers from the worked model. Show working and name the places or values that matter.",
+        "sample_answer": "Sample: new numbers solved with visible working for algebraic; key places/values named. Do not award marks for retyping the model.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a named misconception about algebraic, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
+        "question": "Describe one likely mistake with algebraic, show corrected working, and say why the correction works.",
+        "sample_answer": "Sample misconception: Skipping working for algebraic fractions introduction, or mixing units/places without checking.. Correction uses Strong answer: method named, working complete, result checked for reasonableness.. Why: restores accurate algebraic.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent working and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s4-mat-y8-w14-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA mathematics alignment using verified outcome code wording where recorded in lesson-pipeline/sources; content-point mapping remains pending.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S4",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise algebraic.",
+        "Read the mission before you start calculating.",
+        "Keep the place or unit you are working with in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your working with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the place or distance that carries the method.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore place value or working.",
+        "Prefer accurate method over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your working and reason are both present.",
+        "Proofread digits, places and operation signs.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact place, value or distance before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key numbers.",
+        "Say what each number represents in the method.",
+        "A final answer alone is weaker than labelled working."
+      ],
+      "teach2": [
+        "Compare a weak attempt with stronger working.",
+        "Change the value or method, not only how neat it looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose fresh numbers that still use the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original working and a short reason.",
+        "Save work that shows the skill on new numbers."
+      ]
+    },
+    "subject": "Algebra",
+    "success_criteria": [
+      "I can use algebraic with a specific example from this lesson.",
+      "I can identify fractions and explain why it matters.",
+      "I can practise introduction independently on a new prompt.",
+      "I can notice accuracy needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Stage 4 Mathematics develops fluent reasoning for algebraic fractions introduction.",
+          "options": [
+            "Stage 4 Mathematics develops fluent reasoning for algebraic fractions introduction.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding.",
+            "A guess with no working."
+          ],
+          "question": "Which choice best shows accurate use of this idea about algebraic?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample for Algebraic fractions introduction: state the values, show the method step by step, and check the result. Weak: an answer with no working.\n\nTRY FIRST\nFor algebraic fractions introduction, solve a guided problem with visible working and a one-sentence reason for the method.\n\nFEEDBACK\nStrong answer: method named, working complete, result checked for reasonableness.",
+        "explain": "Stage 4 Mathematics develops fluent reasoning for algebraic fractions introduction. Students choose a valid method, show working, and check reasonableness. Catalogue alignment uses MA4-ARI-C-01. Prefer exact reasoning over guessing.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Skipping working for algebraic fractions introduction, or mixing units/places without checking. Correct the value or method, not just the appearance of the digits.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Algebraic fractions introduction.",
+            "caption": "Check reasonableness.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Values</text><text x=\"28\" y=\"78\">Algebraic fractions introduction</text><text x=\"358\" y=\"42\">Method</text><text x=\"358\" y=\"78\">shown working</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which number or place matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the places, values or distances that carry the method before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Example for Algebraic fractions introduction: state the values, show the method step by step, and check the result. Weak Then write your own working.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which number or place matters most.\nJuno: Name the places, values or distances that carry the method before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Example for Algebraic fractions introduction: state the values, show the method step by step, and check the result. Weak Then write your own working."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding.",
+            "A guess with no working."
+          ],
+          "question": "Which choice best shows accurate use of this idea about algebraic?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample for Algebraic fractions introduction: state the values, show the method step by step, and check the result. Weak: an answer with no working. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
+        "explain": "Make the method visible: name the values, places or steps you used and say why that step is valid.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only the final answer without working does not show the method. Correct the value or method, not just the appearance of the digits.",
+        "title": "Show the working",
+        "visual": [
+          {
+            "alt": "Accurate method.",
+            "caption": "Name the skill.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Weak</text><text x=\"28\" y=\"78\">no working</text><text x=\"358\" y=\"42\">Strong</text><text x=\"358\" y=\"78\">steps + check</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A calculation unrelated to the numbers given.",
+            "An answer copied without understanding.",
+            "A guess with no working.",
+            "Use an intentionally incorrect attempt as a comparison."
+          ],
+          "question": "Which choice best shows accurate use of this idea about algebraic?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSkipping working for algebraic fractions introduction, or mixing units/places without checking. Here is a more productive model: Example for Algebraic fractions introduction: state the values, show the method step by step, and check the result. Weak: an answer with no working.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nStrong answer: method named, working complete, result checked for reasonableness.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the answer without repairing the method does not fix the error. Skipping working for algebraic fractions introduction, or mixing units/places without checking. Correct the value or method, not just the appearance of the digits.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no working.",
+            "Use the method on new numbers or a new context, not a copy of the worked example.",
+            "A calculation unrelated to the numbers given."
+          ],
+          "question": "Which choice best shows accurate use of this idea about algebraic?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nStage 4 Mathematics develops fluent reasoning for algebraic fractions introduction. Students choose a valid method, show working, and check reasonableness. Catalogue alignment uses MA4-ARI-C-01. Prefer exact reasoning over guessing. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",
+        "explain": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.\n\nWHY IT MATTERS\nThis helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified.\n\nHOW TO WORK\nRead the worked example and name the places, values or distances that carry the method. Before looking at the correction, make your own attempt using the exact question provided. Compare your working with the feedback: did you use the same skill and show your reasoning? If a digit or place is uncertain, identify what would have to be regrouped or counted again. One deliberate, justified revision is more useful than writing a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new numbers. Correct the value or method, not just the appearance of the digits.",
+        "title": "Transfer to a new problem"
+      }
+    ],
+    "title": "Year 8, Week 14, Lesson 1: Algebraic fractions introduction",
+    "unit_number": 4,
+    "unit_title": "Algebraic techniques and factorising",
+    "week": 14,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample for Algebraic fractions introduction: state the values, show the method step by step, and check the result. Weak: an answer with no working.\n\nWrite what makes this example accurate, naming the places, values or distances used.",
+    "worked_visuals": [
+      {
+        "alt": "Algebraic fractions introduction.",
+        "caption": "Check reasonableness.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Values</text><text x=\"28\" y=\"78\">Algebraic fractions introduction</text><text x=\"358\" y=\"42\">Method</text><text x=\"358\" y=\"78\">shown working</text></g></svg>"
+      },
+      {
+        "alt": "Accurate method.",
+        "caption": "Name the skill.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Weak</text><text x=\"28\" y=\"78\">no working</text><text x=\"358\" y=\"42\">Strong</text><text x=\"358\" y=\"78\">steps + check</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 8"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "For algebraic fractions introduction, solve a guided problem with visible working and a one-sentence reason for the method."
+      ],
+      "independent_inputs": [
+        "Independently complete a substantial task on algebraic fractions introduction: solve several new items with working, include one deliberate error-analysis, and write a short reflection on a method choice."
+      ],
+      "model_inputs": [
+        "Example for Algebraic fractions introduction: state the values, show the method step by step, and check the result. Weak: an answer with no working."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Strong answer: method named, working complete, result checked for reasonableness.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "For algebraic fractions introduction, solve a guided problem with visible working and a one-sentence reason for the method.",
+        "misconception": "Skipping working for algebraic fractions introduction, or mixing units/places without checking.",
+        "model": "Example for Algebraic fractions introduction: state the values, show the method step by step, and check the result. Weak: an answer with no working.",
+        "rule": "Stage 4 Mathematics develops fluent reasoning for algebraic fractions introduction. Students choose a valid method, show working, and check reasonableness. Catalogue alignment uses MA4-ARI-C-01. Prefer exact reasoning over guessing.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The most useful working names the quantities and the reason for each step, not only the final answer.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Write the key numbers from the model and say what each one represents in the method.",
+        "misconception": "Writing only the final answer without working does not show the method.",
+        "model": "Example for Algebraic fractions introduction: state the values, show the method step by step, and check the result. Weak: an answer with no working. Look at each number, place or distance that carries the method.",
+        "rule": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "Strong answer: method named, working complete, result checked for reasonableness.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Describe why the warned-against approach gives the wrong value or meaning, then write corrected working.",
+        "misconception": "Changing the answer without repairing the method does not fix the error. Skipping working for algebraic fractions introduction, or mixing units/places without checking.",
+        "model": "Skipping working for algebraic fractions introduction, or mixing units/places without checking. Here is a more productive model: Example for Algebraic fractions introduction: state the values, show the method step by step, and check the result. Weak: an answer with no working.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      },
+      {
+        "feedback": "The new problem should use the same method as the model, but contain different numbers.",
+        "fix": "Correct the value or method, not just the appearance of the digits.",
+        "guided_attempt": "Solve one fresh problem that uses the same skill and write a short reason for your answer.",
+        "misconception": "Repeating the worked example cannot show transfer to new numbers.",
+        "model": "Stage 4 Mathematics develops fluent reasoning for algebraic fractions introduction. Students choose a valid method, show working, and check reasonableness. Catalogue alignment uses MA4-ARI-C-01. Prefer exact reasoning over guessing. Now choose different numbers to show you can transfer the method.",
+        "rule": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
+        "why": "This helps the learner choose methods based on place value, quantity and accurate working, rather than guessing digits by shape alone. Keep every step justified."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Algebraic fractions introduction.",
+        "teaches": "Check reasonableness."
+      },
+      {
+        "alt": "Accurate method.",
+        "teaches": "Name the skill."
+      }
+    ]
+  }
+}

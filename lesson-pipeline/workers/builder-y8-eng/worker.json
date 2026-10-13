@@ -1,9 +1,17 @@
 {
+  "blockers": [
+    "Partition complete — idle; Tech shards own remaining Y8 Tech"
+  ],
+  "branch": "feature/gold-v2-builder-y8",
   "created_at": "2026-10-13T00:03:51.770687+00:00",
   "id": "builder-y8-eng",
-  "label": "S4 Y8 English",
+  "label": "S4 Y8 Eng/Sci/HSIE/PDHPE complete — idle",
   "seed_patterns": [
-    "s4-eng-y8-*"
+    "s4-eng-y8-*",
+    "s4-sci-y8-*",
+    "s4-hsie-y8-*",
+    "s4-pdhpe-y8-*"
   ],
-  "state": "workers/builder-y8-eng"
+  "state": "workers/builder-y8-eng",
+  "worktree": ".worktrees/builder-y8"
 }

@@ -489,8 +489,8 @@ def build_skill_quiz(seed_key: str, subject: str, rule: str, model: str, prompt:
         items.extend(_maths_items(seed_key, v0, rule, model, answer, pitfall, prompt, task, band))
     elif subject == 'science':
         items.extend(_science_items(seed_key, v0, rule, answer, pitfall, band))
-    elif subject in ('hsie', 'pdhpe', 'arts'):
-        # Inline humanities items with stems that avoid banned study-meta phrasing.
+    elif subject in ('hsie', 'pdhpe', 'arts', 'technology'):
+        # Inline humanities/tech items with stems that avoid banned study-meta phrasing.
         if subject == 'hsie':
             focus = 'sources, places or historical/geographic evidence'
             correct_habit = f'Name a specific source or place detail and say what it shows about {v0}.'
@@ -509,6 +509,15 @@ def build_skill_quiz(seed_key: str, subject: str, rule: str, model: str, prompt:
                 pitfall_s,
             ]
             respect = 'Check safety and fairness, include others, and explain the healthier choice.'
+        elif subject == 'technology':
+            focus = 'design criteria, safe making steps or test evidence'
+            correct_habit = f'Name a criterion, safety step or test result and say how it improves {v0}.'
+            wrongs = [
+                'Start making with no criteria or safety check.',
+                'Call the first attempt finished without testing.',
+                pitfall_s,
+            ]
+            respect = 'Check criteria and safety, record a test result, and note one honest improvement.'
         else:
             focus = 'elements, techniques and audience effect'
             correct_habit = f'Name a specific element or technique and say what effect it creates for {v0}.'

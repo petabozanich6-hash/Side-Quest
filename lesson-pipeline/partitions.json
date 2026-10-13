@@ -1,20 +1,142 @@
 {
   "last_reconcile": {
-    "merged_count": 1,
-    "skipped_count": 43,
+    "merged_count": 21,
+    "skipped_count": 24,
     "workers": [
-      "builder-y7-hsie"
+      "builder-tech-05",
+      "builder-tech-06",
+      "builder-tech-07",
+      "builder-tech-08"
     ]
   },
-  "last_reconcile_at": "2026-10-13T00:09:45.737241+00:00",
+  "last_reconcile_at": "2026-10-13T00:23:21.043185+00:00",
   "schema": 1,
-  "updated_at": "2026-10-13T01:00:00+00:00",
+  "updated_at": "2026-10-13T00:22:23.172592+00:00",
   "workers": {
+    "builder-tech-01": {
+      "branch": "feature/gold-v2-builder-tech-01",
+      "created_at": "2026-10-13T00:22:05.254076+00:00",
+      "id": "builder-tech-01",
+      "label": "S4 Y8 Tech w05–w09",
+      "seed_patterns": [
+        "s4-tech-y8-w05-*",
+        "s4-tech-y8-w06-*",
+        "s4-tech-y8-w07-*",
+        "s4-tech-y8-w08-*",
+        "s4-tech-y8-w09-*"
+      ],
+      "state": "workers/builder-tech-01",
+      "worktree": ".worktrees/builder-tech-01"
+    },
+    "builder-tech-02": {
+      "branch": "feature/gold-v2-builder-tech-02",
+      "created_at": "2026-10-13T00:22:07.560178+00:00",
+      "id": "builder-tech-02",
+      "label": "S4 Y8 Tech w10–w14",
+      "seed_patterns": [
+        "s4-tech-y8-w10-*",
+        "s4-tech-y8-w11-*",
+        "s4-tech-y8-w12-*",
+        "s4-tech-y8-w13-*",
+        "s4-tech-y8-w14-*"
+      ],
+      "state": "workers/builder-tech-02",
+      "worktree": ".worktrees/builder-tech-02"
+    },
+    "builder-tech-03": {
+      "branch": "feature/gold-v2-builder-tech-03",
+      "created_at": "2026-10-13T00:22:09.966992+00:00",
+      "id": "builder-tech-03",
+      "label": "S4 Y8 Tech w15–w18",
+      "seed_patterns": [
+        "s4-tech-y8-w15-*",
+        "s4-tech-y8-w16-*",
+        "s4-tech-y8-w17-*",
+        "s4-tech-y8-w18-*"
+      ],
+      "state": "workers/builder-tech-03",
+      "worktree": ".worktrees/builder-tech-03"
+    },
+    "builder-tech-04": {
+      "branch": "feature/gold-v2-builder-tech-04",
+      "created_at": "2026-10-13T00:22:12.156562+00:00",
+      "id": "builder-tech-04",
+      "label": "S4 Y8 Tech w19–w22",
+      "seed_patterns": [
+        "s4-tech-y8-w19-*",
+        "s4-tech-y8-w20-*",
+        "s4-tech-y8-w21-*",
+        "s4-tech-y8-w22-*"
+      ],
+      "state": "workers/builder-tech-04",
+      "worktree": ".worktrees/builder-tech-04"
+    },
+    "builder-tech-05": {
+      "branch": "feature/gold-v2-builder-tech-05",
+      "created_at": "2026-10-13T00:22:14.315747+00:00",
+      "id": "builder-tech-05",
+      "label": "S4 Y8 Tech w23–w26",
+      "seed_patterns": [
+        "s4-tech-y8-w23-*",
+        "s4-tech-y8-w24-*",
+        "s4-tech-y8-w25-*",
+        "s4-tech-y8-w26-*"
+      ],
+      "state": "workers/builder-tech-05",
+      "worktree": ".worktrees/builder-tech-05"
+    },
+    "builder-tech-06": {
+      "branch": "feature/gold-v2-builder-tech-06",
+      "created_at": "2026-10-13T00:22:16.523462+00:00",
+      "id": "builder-tech-06",
+      "label": "S4 Y8 Tech w27–w30",
+      "seed_patterns": [
+        "s4-tech-y8-w27-*",
+        "s4-tech-y8-w28-*",
+        "s4-tech-y8-w29-*",
+        "s4-tech-y8-w30-*"
+      ],
+      "state": "workers/builder-tech-06",
+      "worktree": ".worktrees/builder-tech-06"
+    },
+    "builder-tech-07": {
+      "branch": "feature/gold-v2-builder-tech-07",
+      "created_at": "2026-10-13T00:22:18.663182+00:00",
+      "id": "builder-tech-07",
+      "label": "S4 Y8 Tech w31–w35",
+      "seed_patterns": [
+        "s4-tech-y8-w31-*",
+        "s4-tech-y8-w32-*",
+        "s4-tech-y8-w33-*",
+        "s4-tech-y8-w34-*",
+        "s4-tech-y8-w35-*"
+      ],
+      "state": "workers/builder-tech-07",
+      "worktree": ".worktrees/builder-tech-07"
+    },
+    "builder-tech-08": {
+      "branch": "feature/gold-v2-builder-tech-08",
+      "created_at": "2026-10-13T00:22:20.803956+00:00",
+      "id": "builder-tech-08",
+      "label": "S4 Y8 Tech w36–w40",
+      "seed_patterns": [
+        "s4-tech-y8-w36-*",
+        "s4-tech-y8-w37-*",
+        "s4-tech-y8-w38-*",
+        "s4-tech-y8-w39-*",
+        "s4-tech-y8-w40-*"
+      ],
+      "state": "workers/builder-tech-08",
+      "worktree": ".worktrees/builder-tech-08"
+    },
     "builder-y3": {
+      "blockers": [
+        "Y3 Written Core complete except protected s2-eng-y3-w01-l1 — idle/repair only"
+      ],
       "branch": "feature/gold-v2-builder-y3",
       "created_at": "2026-10-13T00:03:51.836004+00:00",
       "id": "builder-y3",
-      "label": "S2 Y3",
+      "label": "S2 Y3 idle/repair",
       "seed_patterns": [
         "s2-*-y3-*"
       ],
@@ -28,7 +150,7 @@
       "branch": "feature/gold-v2-builder-y4",
       "created_at": "2026-10-13T00:03:51.919544+00:00",
       "id": "builder-y4",
-      "label": "S2 Y4 repairs",
+      "label": "S2 Y4 idle/repair",
       "seed_patterns": [
         "s2-*-y4-*"
       ],
@@ -36,25 +158,35 @@
       "worktree": ".worktrees/builder-y4"
     },
     "builder-y7-hsie": {
+      "blockers": [
+        "Partition complete — idle until new Stage 4 inventory"
+      ],
       "branch": "feature/gold-v2-builder-y7",
       "created_at": "2026-10-13T00:03:51.704927+00:00",
       "id": "builder-y7-hsie",
-      "label": "S4 Y7 (HSIE→PDHPE→Tech)",
+      "label": "S4 Y7 + Y8 Maths complete — idle",
       "seed_patterns": [
         "s4-hsie-y7-*",
         "s4-pdhpe-y7-*",
-        "s4-tech-y7-*"
+        "s4-tech-y7-*",
+        "s4-mat-y8-*"
       ],
       "state": "workers/builder-y7-hsie",
       "worktree": ".worktrees/builder-y7"
     },
     "builder-y8-eng": {
+      "blockers": [
+        "Partition complete — idle; Tech shards own remaining Y8 Tech"
+      ],
       "branch": "feature/gold-v2-builder-y8",
       "created_at": "2026-10-13T00:03:51.770687+00:00",
       "id": "builder-y8-eng",
-      "label": "S4 Y8 English",
+      "label": "S4 Y8 Eng/Sci/HSIE/PDHPE complete — idle",
       "seed_patterns": [
-        "s4-eng-y8-*"
+        "s4-eng-y8-*",
+        "s4-sci-y8-*",
+        "s4-hsie-y8-*",
+        "s4-pdhpe-y8-*"
       ],
       "state": "workers/builder-y8-eng",
       "worktree": ".worktrees/builder-y8"

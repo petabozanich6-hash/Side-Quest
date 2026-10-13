@@ -1,9 +1,14 @@
 {
+  "blockers": [
+    "Y3 Written Core complete except protected s2-eng-y3-w01-l1 — idle/repair only"
+  ],
+  "branch": "feature/gold-v2-builder-y3",
   "created_at": "2026-10-13T00:03:51.836004+00:00",
   "id": "builder-y3",
-  "label": "S2 Y3",
+  "label": "S2 Y3 idle/repair",
   "seed_patterns": [
     "s2-*-y3-*"
   ],
-  "state": "workers/builder-y3"
+  "state": "workers/builder-y3",
+  "worktree": ".worktrees/builder-y3"
 }

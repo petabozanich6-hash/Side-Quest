@@ -1,7 +1,7 @@
 {
   "phase": "PHASE_1_WRITTEN_CORE",
   "hub": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline",
-  "hub_auto_validated": 1809,
+  "hub_auto_validated": 2599,
   "hub_human_gates": {
     "educationally_reviewed": 0,
     "nesa_verified": 0,
@@ -11,8 +11,212 @@
   "quality_hardening_adopted": true,
   "builders": [
     {
+      "worker": "builder-tech-01",
+      "label": "S4 Y8 Tech w05\u2013w09",
+      "seed_patterns": [
+        "s4-tech-y8-w05-*",
+        "s4-tech-y8-w06-*",
+        "s4-tech-y8-w07-*",
+        "s4-tech-y8-w08-*",
+        "s4-tech-y8-w09-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-tech-01",
+      "worktree_hint": ".worktrees/builder-tech-01",
+      "state": "lesson-pipeline/workers/builder-tech-01",
+      "owned": 13,
+      "authored": 11,
+      "auto_validated_worker_or_hub": 13,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": "s4-tech-y8-w09-l3",
+      "phases": {
+        "awaiting_review": 11
+      },
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    },
+    {
+      "worker": "builder-tech-02",
+      "label": "S4 Y8 Tech w10\u2013w14",
+      "seed_patterns": [
+        "s4-tech-y8-w10-*",
+        "s4-tech-y8-w11-*",
+        "s4-tech-y8-w12-*",
+        "s4-tech-y8-w13-*",
+        "s4-tech-y8-w14-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-tech-02",
+      "worktree_hint": ".worktrees/builder-tech-02",
+      "state": "lesson-pipeline/workers/builder-tech-02",
+      "owned": 12,
+      "authored": 12,
+      "auto_validated_worker_or_hub": 12,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": "s4-tech-y8-w14-l2",
+      "phases": {
+        "awaiting_review": 12
+      },
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    },
+    {
+      "worker": "builder-tech-03",
+      "label": "S4 Y8 Tech w15\u2013w18",
+      "seed_patterns": [
+        "s4-tech-y8-w15-*",
+        "s4-tech-y8-w16-*",
+        "s4-tech-y8-w17-*",
+        "s4-tech-y8-w18-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-tech-03",
+      "worktree_hint": ".worktrees/builder-tech-03",
+      "state": "lesson-pipeline/workers/builder-tech-03",
+      "owned": 10,
+      "authored": 10,
+      "auto_validated_worker_or_hub": 10,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": "s4-tech-y8-w18-l2",
+      "phases": {
+        "awaiting_review": 10
+      },
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    },
+    {
+      "worker": "builder-tech-04",
+      "label": "S4 Y8 Tech w19\u2013w22",
+      "seed_patterns": [
+        "s4-tech-y8-w19-*",
+        "s4-tech-y8-w20-*",
+        "s4-tech-y8-w21-*",
+        "s4-tech-y8-w22-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-tech-04",
+      "worktree_hint": ".worktrees/builder-tech-04",
+      "state": "lesson-pipeline/workers/builder-tech-04",
+      "owned": 10,
+      "authored": 10,
+      "auto_validated_worker_or_hub": 10,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": "s4-tech-y8-w22-l2",
+      "phases": {
+        "awaiting_review": 10
+      },
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    },
+    {
+      "worker": "builder-tech-05",
+      "label": "S4 Y8 Tech w23\u2013w26",
+      "seed_patterns": [
+        "s4-tech-y8-w23-*",
+        "s4-tech-y8-w24-*",
+        "s4-tech-y8-w25-*",
+        "s4-tech-y8-w26-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-tech-05",
+      "worktree_hint": ".worktrees/builder-tech-05",
+      "state": "lesson-pipeline/workers/builder-tech-05",
+      "owned": 10,
+      "authored": 10,
+      "auto_validated_worker_or_hub": 10,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": "s4-tech-y8-w26-l2",
+      "phases": {
+        "awaiting_review": 10
+      },
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    },
+    {
+      "worker": "builder-tech-06",
+      "label": "S4 Y8 Tech w27\u2013w30",
+      "seed_patterns": [
+        "s4-tech-y8-w27-*",
+        "s4-tech-y8-w28-*",
+        "s4-tech-y8-w29-*",
+        "s4-tech-y8-w30-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-tech-06",
+      "worktree_hint": ".worktrees/builder-tech-06",
+      "state": "lesson-pipeline/workers/builder-tech-06",
+      "owned": 10,
+      "authored": 10,
+      "auto_validated_worker_or_hub": 10,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": "s4-tech-y8-w30-l2",
+      "phases": {
+        "awaiting_review": 10
+      },
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    },
+    {
+      "worker": "builder-tech-07",
+      "label": "S4 Y8 Tech w31\u2013w35",
+      "seed_patterns": [
+        "s4-tech-y8-w31-*",
+        "s4-tech-y8-w32-*",
+        "s4-tech-y8-w33-*",
+        "s4-tech-y8-w34-*",
+        "s4-tech-y8-w35-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-tech-07",
+      "worktree_hint": ".worktrees/builder-tech-07",
+      "state": "lesson-pipeline/workers/builder-tech-07",
+      "owned": 13,
+      "authored": 13,
+      "auto_validated_worker_or_hub": 13,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": "s4-tech-y8-w35-l3",
+      "phases": {
+        "awaiting_review": 13
+      },
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    },
+    {
+      "worker": "builder-tech-08",
+      "label": "S4 Y8 Tech w36\u2013w40",
+      "seed_patterns": [
+        "s4-tech-y8-w36-*",
+        "s4-tech-y8-w37-*",
+        "s4-tech-y8-w38-*",
+        "s4-tech-y8-w39-*",
+        "s4-tech-y8-w40-*"
+      ],
+      "branch_hint": "feature/gold-v2-builder-tech-08",
+      "worktree_hint": ".worktrees/builder-tech-08",
+      "state": "lesson-pipeline/workers/builder-tech-08",
+      "owned": 12,
+      "authored": 12,
+      "auto_validated_worker_or_hub": 12,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": "s4-tech-y8-w40-l2",
+      "phases": {
+        "awaiting_review": 12
+      },
+      "blockers": [
+        "Human educational/NESA/browser/release gates remain at 0"
+      ]
+    },
+    {
       "worker": "builder-y3",
-      "label": "S2 Y3",
+      "label": "S2 Y3 idle/repair",
       "seed_patterns": [
         "s2-*-y3-*"
       ],
@@ -27,12 +231,12 @@
       "current_lesson": null,
       "phases": {},
       "blockers": [
-        "Human educational/NESA/browser/release gates remain at 0"
+        "Y3 Written Core complete except protected s2-eng-y3-w01-l1 \u2014 idle/repair only"
       ]
     },
     {
       "worker": "builder-y4",
-      "label": "S2 Y4 repairs",
+      "label": "S2 Y4 idle/repair",
       "seed_patterns": [
         "s2-*-y4-*"
       ],
@@ -52,58 +256,130 @@
     },
     {
       "worker": "builder-y7-hsie",
-      "label": "S4 Y7 (HSIE\u2192PDHPE\u2192Tech)",
+      "label": "S4 Y7 + Y8 Maths complete \u2014 idle",
       "seed_patterns": [
         "s4-hsie-y7-*",
         "s4-pdhpe-y7-*",
-        "s4-tech-y7-*"
+        "s4-tech-y7-*",
+        "s4-mat-y8-*"
       ],
       "branch_hint": "feature/gold-v2-builder-y7",
       "worktree_hint": ".worktrees/builder-y7",
       "state": "lesson-pipeline/workers/builder-y7-hsie",
-      "owned": 260,
-      "authored": 44,
-      "auto_validated_worker_or_hub": 92,
-      "remaining": 168,
-      "next_seed": "s4-pdhpe-y7-w07-l1",
-      "current_lesson": "s4-hsie-y7-w39-l1",
+      "owned": 420,
+      "authored": 372,
+      "auto_validated_worker_or_hub": 420,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": "s4-mat-y8-w40-l4",
       "phases": {
-        "awaiting_review": 44
+        "awaiting_review": 372
       },
       "blockers": [
-        "Human educational/NESA/browser/release gates remain at 0"
+        "Partition complete \u2014 idle until new Stage 4 inventory"
       ]
     },
     {
       "worker": "builder-y8-eng",
-      "label": "S4 Y8 English",
+      "label": "S4 Y8 Eng/Sci/HSIE/PDHPE complete \u2014 idle",
       "seed_patterns": [
-        "s4-eng-y8-*"
+        "s4-eng-y8-*",
+        "s4-sci-y8-*",
+        "s4-hsie-y8-*",
+        "s4-pdhpe-y8-*"
       ],
       "branch_hint": "feature/gold-v2-builder-y8",
       "worktree_hint": ".worktrees/builder-y8",
       "state": "lesson-pipeline/workers/builder-y8-eng",
-      "owned": 160,
-      "authored": 38,
-      "auto_validated_worker_or_hub": 38,
-      "remaining": 122,
-      "next_seed": "s4-eng-y8-w10-l3",
-      "current_lesson": "s4-eng-y8-w10-l2",
+      "owned": 400,
+      "authored": 400,
+      "auto_validated_worker_or_hub": 400,
+      "remaining": 0,
+      "next_seed": null,
+      "current_lesson": "s4-tech-y8-w05-l2",
       "phases": {
-        "awaiting_review": 38
+        "awaiting_review": 412
       },
       "blockers": [
-        "Human educational/NESA/browser/release gates remain at 0"
+        "Partition complete \u2014 idle; Tech shards own remaining Y8 Tech"
       ]
     }
   ],
-  "partitions_updated_at": "2026-10-13T01:00:00+00:00",
+  "partitions_updated_at": "2026-10-13T00:22:23.172592+00:00",
   "last_reconcile": {
-    "merged_count": 1,
-    "skipped_count": 43,
+    "merged_count": 21,
+    "skipped_count": 24,
     "workers": [
-      "builder-y7-hsie"
+      "builder-tech-05",
+      "builder-tech-06",
+      "builder-tech-07",
+      "builder-tech-08"
     ]
   },
-  "note": "Human gates are never advanced by reconcile; auto-validated \u2260 release approved."
+  "note": "Human gates are never advanced by reconcile; auto-validated \u2260 release approved.",
+  "concurrency": {
+    "chosen_stable": 8,
+    "max_tested": 8,
+    "backoff": false,
+    "ramp_metrics": [
+      {
+        "concurrency": 2,
+        "elapsed_sec": 7.705,
+        "gained": 12,
+        "lessons_per_min": 93.44,
+        "active": 2,
+        "error": false,
+        "remain_after": 76
+      },
+      {
+        "concurrency": 4,
+        "elapsed_sec": 10.972,
+        "gained": 23,
+        "lessons_per_min": 125.78,
+        "active": 4,
+        "error": false,
+        "remain_after": 53
+      },
+      {
+        "concurrency": 6,
+        "elapsed_sec": 16.012,
+        "gained": 32,
+        "lessons_per_min": 119.91,
+        "active": 6,
+        "error": false,
+        "remain_after": 21
+      },
+      {
+        "concurrency": 8,
+        "elapsed_sec": 12.078,
+        "gained": 21,
+        "lessons_per_min": 104.32,
+        "active": 4,
+        "error": false,
+        "remain_after": 0
+      }
+    ],
+    "peak_lessons_per_min": 125.78
+  },
+  "s2_s4_remainders": [
+    {
+      "partition": "s2/y3/eng",
+      "done": 159,
+      "total": 160,
+      "remain": 1
+    }
+  ],
+  "inventory_note": "Suggested Eng/Mat/Sci/HSIE Y7\u2013Y8 slots are complete. Reassigned 8 builders to exclusive Y8 Tech week shards; Tech Y8 now 100/100. No Y9 catalogue rows exist yet. Stage 3+ not started (owner: finish S2/S4 first).",
+  "next_resumes": {
+    "s2_s4_written_core": "COMPLETE for existing catalogue (except protected s2-eng-y3-w01-l1)",
+    "active_builders": "builder-tech-01..08 idle (shards drained)",
+    "idle_repair": [
+      "builder-y3",
+      "builder-y4"
+    ],
+    "blocked_without_new_inventory": [
+      "s4-*-y9-* (0 rows)",
+      "Stage 3+ (deferred by owner directive)"
+    ]
+  }
 }

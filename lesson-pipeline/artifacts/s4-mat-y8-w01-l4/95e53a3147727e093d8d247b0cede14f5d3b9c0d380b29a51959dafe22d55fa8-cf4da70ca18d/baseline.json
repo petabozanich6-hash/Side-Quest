@@ -1,0 +1,356 @@
+{
+  "child_mission": "Investigate real-number fluency with checks. Use a representation, show each decision and check the result.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep the real-number fluency with checks task working, explanation, checking record, reflection and quiz result.",
+  "extension": "Choose one new example of the lesson’s number idea. Give an exact representation or verified bound, and explain what a common incorrect interpretation would miss.",
+  "guided_practice": "WE DO:\n1. Classify −2 as rational using −2/1.\n2. Separate exact √2 from a finite displayed approximation and explain the categories.\n3. Find √9 using its square relationship. Check: three squared gives nine.\n4. Bound √10 using nine and sixteen as anchors.\n5. Compare 4.2 × 10³ with 42 × 10² by multiplying back. Both equal 4,200; only the first coefficient is standard.\n6. Explain which check belongs to classification, a root or scientific form rather than mixing the methods.",
+  "independent_task": "YOU DO: Real-number fluency with checks record (about 25–30 minutes).\n1. Classify 0.125, √9 and √2 with reasons. Find √16 and bound √20. State whether 4.2 × 10³ and 42 × 10² have the same value and whether each is standard scientific notation. Explain why an approximate display is not an exact irrational value.\n2. Show the relevant exact fraction, square relationship, bounds or power-of-ten check for each result.\n3. Explain two decisions with the definitions taught in the lesson.\n4. Identify and repair a possible error in notation or reasoning. If your work is already correct, explain the check that confirmed it.\n5. Write a short reflection about the representation that was most useful.\nUse paper or the big box. Type a working summary for paper work; no upload is required.\nSuccess checklist: complete requested results; correct exact/approximate labels; notation conventions respected; workings and units where needed; two explanations; independent check.",
+  "learning_area": "Mathematics",
+  "learning_intention": "We are learning to explain and apply real-number fluency with checks.",
+  "lesson_number": 4,
+  "lesson_role": "Fluency and review",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Copy the included examples and task prompts onto paper. Use the diagrams and models to complete the real-number fluency with checks working without a service, then type an evidence summary later.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches real-number fluency with checks from definitions to explanation and application. Original content follows the repository’s topic sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of complete syllabus coverage.\n\nParent: Look for explicit working and a check of signs, scale, notation or units as appropriate. A correct guess without a method is weaker evidence than an explained calculation. The lesson itself supplies the teaching and feedback. Your role is access support and reviewing the evidence.\n\nParent: Model task answers: 0.125 = 1/8 and √9 = 3 are rational; √2 is irrational. √16 = 4; 4 < √20 < 5. Both displayed power forms equal 4,200, but only the coefficient 4.2 is standard. A finite decimal display is a rational approximation, not exact √2.\n\nParent: Ten scored choices use the unchanged 90% threshold, requiring 9/10. The independent task and reflection supply written reasoning for manual review.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 2,
+      "explanation": "The exact ratio of integers with a non-zero denominator meets the definition.",
+      "options": [
+        "It has three characters",
+        "It is positive",
+        "It can be written exactly as 3/4",
+        "It is less than ten"
+      ],
+      "question": "Which statement establishes that 0.75 is rational?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The exact root is irrational, while the displayed finite decimal is an exact rational value used as an approximation.",
+      "options": [
+        "Both are exactly the same rational value",
+        "√2 is irrational; 1.414 is a rational approximation",
+        "A finite decimal can never be rational",
+        "The digits prove √2 terminates"
+      ],
+      "question": "Which statement correctly distinguishes √2 and 1.414?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The principal root is non-negative and four squared equals sixteen.",
+      "options": [
+        "8",
+        "4",
+        "-4",
+        "32"
+      ],
+      "question": "What is √16?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Twenty lies between sixteen and twenty-five, whose principal roots are four and five.",
+      "options": [
+        "Between 2 and 3",
+        "Between 3 and 4",
+        "Between 4 and 5",
+        "Between 5 and 6"
+      ],
+      "question": "Which interval contains √20?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The value is 4,200 and the coefficient 4.2 lies in the required interval from one inclusive to ten exclusive.",
+      "options": [
+        "42 × 10²",
+        "0.42 × 10⁴",
+        "4,200 × 10⁰",
+        "4.2 × 10³"
+      ],
+      "question": "Which is standard scientific notation for 4,200?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The finite decimal is exactly an integer ratio.",
+      "options": [
+        "√2",
+        "0.125 = 1/8",
+        "Pi",
+        "A specified infinite non-recurring decimal"
+      ],
+      "question": "Which is rational?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "Four is non-negative and squares to sixteen.",
+      "options": [
+        "−4",
+        "8",
+        "4",
+        "32"
+      ],
+      "question": "Which is the principal √16?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "Sixteen and twenty-five enclose twenty, so their roots bound it.",
+      "options": [
+        "4 and 5",
+        "2 and 3",
+        "5 and 6",
+        "0 and 1"
+      ],
+      "question": "Which bounds enclose √20?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "The finite decimal is a rounded approximation.",
+      "options": [
+        "Exact equality",
+        "Both must be integers",
+        "The first is smaller than zero",
+        "Approximate equality"
+      ],
+      "question": "Which relation is appropriate for √2 and 1.414?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The coefficient forty-two exceeds the standard upper bound, although the value is correct.",
+      "options": [
+        "Its value is 42",
+        "It equals 4,200 but is not standard scientific notation",
+        "It is negative",
+        "Its coefficient is within the standard interval"
+      ],
+      "question": "Which statement about 42 × 10² is correct?",
+      "type": "multiple_choice"
+    }
+  ],
+  "response_prompt": "Which representation or check changed your understanding of real-number fluency with checks, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s4-mat-y8-w01-l4",
+  "stage": "S4",
+  "stage_hints": {
+    "accept": [
+      "Read the mission about real-number fluency with checks.",
+      "You will practise real-number fluency with checks through models before making your own response.",
+      "Begin with the first explanation of real-number fluency with checks; the examples remain available while you work."
+    ],
+    "guided": [
+      "Begin the first supported example with classification, root and scientific-form checks separately.",
+      "Write a short label for the exact-value label and the convention the notation uses before calculating.",
+      "Choose a fraction, square relationship or scale check that matches the specific number question. Compare with the feedback only after your attempt."
+    ],
+    "learn": [
+      "Look at how the complete model uses classification, root and scientific-form checks separately.",
+      "Track the exact-value label and the convention the notation uses rather than treating every number question alike.",
+      "Choose a fraction, square relationship or scale check that matches the specific number question."
+    ],
+    "quiz": [
+      "Return to the step about classification, root and scientific-form checks separately.",
+      "Check the exact-value label and the convention the notation uses before considering the options.",
+      "Choose a fraction, square relationship or scale check that matches the specific number question."
+    ],
+    "submit": [
+      "Check that your real-number fluency with checks task and working are present.",
+      "Include the real-number fluency with checks reflection and any written reasoning you produced.",
+      "Send your real-number fluency with checks evidence for review; type a clear record if you used paper."
+    ],
+    "teach0": [
+      "Reread the integer-ratio definition.",
+      "Ask whether the displayed value has an exact fraction representation.",
+      "Show an integer numerator and a non-zero integer denominator as evidence."
+    ],
+    "teach1": [
+      "Find whether the question names the exact value or a display.",
+      "Label the approximation separately before classifying it.",
+      "Use equality only for exact agreement; a rounded representation needs the approximate relation."
+    ],
+    "teach2": [
+      "Look at the equal sides of the square model.",
+      "Ask which non-negative factor multiplied by itself makes the area value.",
+      "Square your candidate and compare with the given radicand."
+    ],
+    "teach3": [
+      "Look for the perfect squares on either side of the radicand.",
+      "Take their non-negative integer roots as bounds.",
+      "Square the bounds to verify that they enclose the original value."
+    ],
+    "teach4": [
+      "Check the coefficient’s interval before judging the whole form.",
+      "Evaluate the power of ten to check the represented value.",
+      "Require both correct value and a standard coefficient; do not choose by appearance alone."
+    ],
+    "write": [
+      "Copy the first real-number fluency with checks task and label its quantities.",
+      "Begin “The given information is ____. I will use ____ because ____.”",
+      "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
+    ]
+  },
+  "subject": "Number",
+  "success_criteria": [
+    "I can explain the key number idea with an example.",
+    "I can use the taught representation or calculation method.",
+    "I can show a reason for my result.",
+    "I can check a result and interpret it accurately."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "The exact ratio of integers with a non-zero denominator meets the definition.",
+        "options": [
+          "It has three characters",
+          "It is positive",
+          "It can be written exactly as 3/4",
+          "It is less than ten"
+        ],
+        "question": "Which statement establishes that 0.75 is rational?"
+      },
+      "example": "I DO:\n0.75 = 75/100 = 3/4, so it is rational.\n−3 = −3/1, so negative integers are rational too.\n\nYOU TRY:\nGive a fraction for 0.2 and classify it.\n\nCHECK:\n0.2 = 2/10 = 1/5. Its exact integer-ratio representation makes it rational.",
+      "explain": "**A rational number can be written as a ratio of integers.**\nThe form is a/b, where a and b are integers and b is not zero. The fraction describes an exact value. One half, negative three quarters and five all qualify: five can be written as five over one.\n\n**A denominator cannot be zero.**\nDivision by zero does not give an ordinary number in this definition. A fraction with zero on top and a non-zero denominator is different: zero over five equals zero and is rational.\n\n**Different forms can name the same value.**\nOne half and two quarters are equal. A decimal such as 0.5 equals one half. Classify the value rather than treating each notation as a separate kind of number.\n\nState an exact fraction as evidence when you can. A numeral’s visual length is not a classification rule.",
+      "icon": "🔎",
+      "notice": "An integer is also rational. Categories can nest rather than exclude each other.",
+      "title": "Define rational numbers with an exact fraction",
+      "visual": [
+        {
+          "alt": "A decision diagram distinguishes exact values from rounded displays and prompts the matching ratio, square or scale check.",
+          "caption": "Choose the method for the question.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Exact value ≠ rounded display</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Ratio? Square check? Scale?</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Choose the matching method</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "The exact root is irrational, while the displayed finite decimal is an exact rational value used as an approximation.",
+        "options": [
+          "Both are exactly the same rational value",
+          "√2 is irrational; 1.414 is a rational approximation",
+          "A finite decimal can never be rational",
+          "The digits prove √2 terminates"
+        ],
+        "question": "Which statement correctly distinguishes √2 and 1.414?"
+      },
+      "example": "I DO:\nExact value: √2, irrational.\nApproximation: 1.414, rational as a finite decimal.\nRecord: √2 ≈ 1.414, not √2 = 1.414.\n\nYOU TRY:\nExplain why the displayed approximation 3.14 does not make the exact value pi rational.\n\nCHECK:\n3.14 is a finite rational decimal; pi is a different exact value with a non-terminating, non-recurring decimal representation.",
+      "explain": "**An irrational number is not an exact ratio of integers.**\nIts decimal representation does not terminate or repeat a fixed block forever. The square root of two and pi are examples. This lesson uses those established examples; it does not prove their irrationality.\n\n**An approximation is a different value.**\nThe square root of two is about 1.414, but not exactly 1.414. The finite decimal 1.414 is rational because it equals 1414/1000. Approximating an irrational value does not make the exact value rational.\n\n**Use the approximate sign carefully.**\nThe symbol ≈ means approximately equal. Use it for a rounded decimal, while = claims exact equality. Write √2 ≈ 1.414 when using that three-decimal approximation.\n\nAvoid classifying an exact value from a few displayed digits. Identify what the symbol or problem actually specifies.",
+      "icon": "🔎",
+      "notice": "Exact and approximate are different labels. Keep them attached to the intended value.",
+      "title": "Recognise irrational values and their approximations"
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "The principal root is non-negative and four squared equals sixteen.",
+        "options": [
+          "8",
+          "4",
+          "-4",
+          "32"
+        ],
+        "question": "What is √16?"
+      },
+      "example": "I DO:\n3² = 9, so √9 = 3.\nFor a square of area 9 m², side length is 3 m.\n\nYOU TRY:\nWhat is √16? Check by squaring your proposed answer.\n\nCHECK:\n√16 = 4 because 4 × 4 = 16. The radical denotes the non-negative root.",
+      "explain": "**Squaring multiplies a value by itself.**\nThe notation 3² means 3 × 3 = 9, not 3 × 2. A square grid models the two equal side lengths and the resulting number of unit squares.\n\n**The square root reverses this question.**\nThe notation √9 asks for the non-negative value whose square is nine. It is three. The radical symbol √ denotes the principal, non-negative square root in this lesson.\n\n**Area and side have different units.**\nIf the square’s area is nine square metres, its side is three metres. The root changes a squared quantity to a length; do not label the side in square metres.\n\nSay what is known and what is asked before calculating. This avoids confusing a side length with an area or an exponent with a multiplier.",
+      "icon": "🔎",
+      "notice": "An exponent is not a multiplier. Square by using the value as both factors.",
+      "title": "Connect square roots with squaring",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "I am working on real-number fluency with checks. I need to know what the notation asks.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "A rational number can be written as a ratio of integers.\nThe form is a/b, where a and b are integers and b is not zero. The fraction describes an exact value. One half, negative three quarters and five all qualify: five can be written as five over one.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "0.75 = 75/100 = 3/4, so it is rational.\n−3 = −3/1, so negative integers are rational too.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try a fresh example with this method. Check it against the representation before continuing.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Check the method for real-number fluency with checks",
+            "transcript": "Pip: I am working on real-number fluency with checks. I need to know what the notation asks.\nJuno: A rational number can be written as a ratio of integers.\nThe form is a/b, where a and b are integers and b is not zero. The fraction describes an exact value. One half, negative three quarters and five all qualify: five can be written as five over one.\nPip: 0.75 = 75/100 = 3/4, so it is rational.\n−3 = −3/1, so negative integers are rational too.\nJuno: Pause and try a fresh example with this method. Check it against the representation before continuing."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "Twenty lies between sixteen and twenty-five, whose principal roots are four and five.",
+        "options": [
+          "Between 2 and 3",
+          "Between 3 and 4",
+          "Between 4 and 5",
+          "Between 5 and 6"
+        ],
+        "question": "Which interval contains √20?"
+      },
+      "example": "I DO:\n9 < 10 < 16, so 3 < √10 < 4.\nFor √20, use 16 < 20 < 25, so 4 < √20 < 5.\n\nYOU TRY:\nLocate √30 between consecutive integer roots.\n\nCHECK:\n25 < 30 < 36, so 5 < √30 < 6.",
+      "explain": "**Not every positive integer is a perfect square.**\nTen lies between nine and sixteen. Because three squared is nine and four squared is sixteen, √10 lies between three and four. This gives a useful interval without guessing an exact decimal.\n\n**Preserve the direction of the bounds.**\nFor non-negative values, larger squares come from larger roots. Choose the nearest square below and above the radicand, then transfer their non-negative roots to the bounds.\n\n**An interval is not an exact answer.**\nSaying three < √10 < four locates the value. It does not say the root equals three or four. A decimal estimate can refine the interval but remains approximate unless exact equality is justified.\n\nCheck the endpoints by squaring. That confirms that the original radicand sits between them and keeps the estimate anchored in the number relationship.",
+      "icon": "🔎",
+      "notice": "A between statement locates an exact value; it does not replace it with an endpoint.",
+      "title": "Locate non-perfect roots between anchors"
+    },
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "The value is 4,200 and the coefficient 4.2 lies in the required interval from one inclusive to ten exclusive.",
+        "options": [
+          "42 × 10²",
+          "0.42 × 10⁴",
+          "4,200 × 10⁰",
+          "4.2 × 10³"
+        ],
+        "question": "Which is standard scientific notation for 4,200?"
+      },
+      "example": "I DO:\n4.2 × 10³ = 4.2 × 1,000 = 4,200.\n42 × 10² also equals 4,200, but 42 is not a standard coefficient.\n\nYOU TRY:\nIs 3.5 × 10² in standard form? State the coefficient check.\n\nCHECK:\nYes. The coefficient 3.5 is at least one and less than ten, and the exponent is an integer.",
+      "explain": "**Scientific notation is a × 10ⁿ.**\nFor a positive value, the coefficient a must be at least one and less than ten, and n is an integer exponent. The power of ten supplies the scale; the coefficient carries the significant digits.\n\n**An exponent records repeated factors or their reciprocal.**\nTen cubed is 10 × 10 × 10 = 1,000. Ten to the zero power is one. Ten to the negative three power is 1/1,000. A negative exponent here does not make the represented positive number negative.\n\n**Check both parts of the form.**\n4.2 × 10³ is standard scientific notation. 42 × 10² has the same value but its coefficient is outside the required interval. Equivalent value and standard form are separate questions.\n\nFor this lesson we represent positive values. Zero and signed coefficients require additional conventions; do not silently extend the coefficient rule to them.",
+      "icon": "🔎",
+      "notice": "Value equality does not guarantee standard scientific-notation form.",
+      "title": "Define scientific notation through place value"
+    }
+  ],
+  "title": "Year 8: Real-number fluency with checks",
+  "unit_number": 1,
+  "unit_title": "Real numbers, indices and scientific notation",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Complete a real-number fluency with checks response.\n0.125 = 1/8 and √9 = 3 are rational; √2 is irrational. √16 = 4; 4 < √20 < 5. Both displayed power forms equal 4,200, but only the coefficient 4.2 is standard. A finite decimal display is a rational approximation, not exact √2.\n\nEXPLAIN THE DECISIONS\nUse the definitions and checks taught above. A classification needs an exact-value reason. A root result must return the radicand when squared. A scientific-notation form needs both a correct value and a coefficient within its stated interval.\n\nCOMMON MISTAKE AND FIX\nTreating the finite display 1.414 as exactly √2 confuses value and approximation. I use ≈ and classify the display separately.\n\nCHECK\nKeep exact and approximate labels, notation conventions and units attached. Use the taught check appropriate to the question rather than a rule from an unrelated number operation.",
+  "worked_visuals": [
+    {
+      "alt": "A decision diagram distinguishes exact values from rounded displays and prompts the matching ratio, square or scale check.",
+      "caption": "Choose the method for the question.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Exact value ≠ rounded display</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Ratio? Square check? Scale?</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Choose the matching method</text></svg>"
+    }
+  ],
+  "year_level": "Year 8"
+}

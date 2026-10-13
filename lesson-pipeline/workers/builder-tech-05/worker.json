@@ -1,0 +1,14 @@
+{
+  "branch": "feature/gold-v2-builder-tech-05",
+  "created_at": "2026-10-13T00:22:14.315747+00:00",
+  "id": "builder-tech-05",
+  "label": "S4 Y8 Tech w23–w26",
+  "seed_patterns": [
+    "s4-tech-y8-w23-*",
+    "s4-tech-y8-w24-*",
+    "s4-tech-y8-w25-*",
+    "s4-tech-y8-w26-*"
+  ],
+  "state": "workers/builder-tech-05",
+  "worktree": ".worktrees/builder-tech-05"
+}

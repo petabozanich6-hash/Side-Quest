@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "PD4-1",
+      "lesson_evidence": "Stage 4 PDHPE develops skill and judgement for digital relationships and image sharing. Students name cues, safety rules or strategies, practise them in realistic scenarios, and explain why the healthier or fairer choice works. Catalogue alignment uses PD4-1. Keep content school-appropriate and inclusive.",
+      "scope_limit": "Proposed Stage 4 NESA PDHPE alignment using catalogue outcome codes (PD4-*); content-point mapping and independent NESA verification remain pending.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-7-10-2018/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Stage 4 PDHPE develops skill and judgement for digital relationships and image sharing. Students name cues, safety rules or strategies, practise them in realistic scenarios, and explain why the healthier or fairer choice works. Catalogue alignment uses PD4-1. Keep content school-appropriate and inclusive.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same idea to a new game or situation, then compare two choices for safety and inclusion.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nFor digital relationships and image sharing, write: situation → cue/rule → chosen action → reason it is safer, healthier or fairer.\n\nFEEDBACK\nStrong answer: cue or rule is specific; action is realistic; reason links to health, safety or respect.\n\nWATCH FOR\nTreating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nIndependently complete a substantial task on digital relationships and image sharing: practise or plan the skill, record evidence (notes/photo of setup/reflection), include one safety or inclusion check, and write a five-sentence reflection with one next goal.\n\nWrite a short reflection naming one choice you changed and why. Any movement is optional, adult-supervised and can be done in a gentler way or described instead.",
+    "interactive_activities": null,
+    "learning_area": "PDHPE",
+    "learning_intention": "Stage 4 PDHPE develops skill and judgement for digital relationships and image sharing. Students name cues, safety rules or strategies, practise them in realistic scenarios, and explain why the healthier or fairer choice works. Catalogue alignment uses PD4-1. Keep content school-appropriate and inclusive.",
+    "lesson_number": 1,
+    "lesson_role": "Learn and discuss",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Clear, safe movement space with an adult nearby for any physical activity",
+      "Optional: soft ball, cushion or water bottle"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "PD4-1"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Independently complete a substantial task on digital relationships and image sharing: practise or plan the skill, record evidence (notes/photo of setup/reflection), include one safety or inclusion check, and write a five Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using digital on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.. Correction: Strong answer: cue or rule is specific;. Why it helps the audience is stated.\n\nParent: Likely misconception: Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating digital on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with digital, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about digital with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for digital. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 1,
+        "explanation": "This matches the taught method for digital. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Copy the example and call that independent work.",
+          "cue or rule is specific;",
+          "Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.",
+          "Ignore the safety rule because the first idea looked exciting."
+        ],
+        "question": "For digital relationships and image sharing, write: situation → cue/rule → chosen action → reason it is safer, healthier or fairer. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "This is the misconception to avoid for digital; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.",
+          "Stage 4 PDHPE develops skill and judgement for digital relationships and image sharing.",
+          "cue or rule is specific;",
+          "Careful use of relationships with clear evidence."
+        ],
+        "question": "Which statement is a common mistake when working with digital?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Understanding is shown by new evidence and a named relationships, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.",
+          "Name relationships only, without linking it to digital.",
+          "Apply digital to new material and name the relationships used.",
+          "Repeat the worked example wording with no new evidence."
+        ],
+        "question": "Which response best applies digital with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on digital. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Use a put-down and call it honesty.",
+          "Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.",
+          "cue or rule is specific;",
+          "Choose the fastest option even when it ignores safety."
+        ],
+        "question": "Which response best evaluates safe, healthy or respectful choices when analysing digital?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Use a put-down and call it honesty.",
+          "Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with digital.",
+          "Choose the fastest option even when it ignores safety."
+        ],
+        "question": "Which evidence move best supports a claim about digital?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Example for Digital relationships and image sharing: name the situation, identify one body cue or safety rule, choose a",
+          "Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.",
+          "Choose the fastest option even when it ignores safety.",
+          "Use a put-down and call it honesty."
+        ],
+        "question": "Using this lesson idea — Stage 4 PDHPE develops skill and judgement for digital relationships and image sharing. — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Check safety and fairness, include others, and explain the healthier choice.",
+          "Invent missing details to make the answer sound complete.",
+          "Ignore safety or cultural protocols to finish faster.",
+          "Treat every claim as equally reliable without checking a source or cue."
+        ],
+        "question": "Which action keeps safe, healthy or respectful choices accurate for digital?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Retype the worked example with no new example.",
+          "Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.",
+          "Name relationships only, with no linked example.",
+          "Independently complete a substantial task on digital relationships and image sharing: practise or plan the skill"
+        ],
+        "question": "Which independent response best applies digital to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about digital with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating digital on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using digital on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for digital. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with digital, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.. Correction: Strong answer: cue or rule is specific;. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested. Share only what you feel comfortable sharing.",
+    "review_status": "unreviewed",
+    "seed_key": "s4-pdhpe-y8-w19-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA PDHPE alignment using catalogue outcome codes (PH2-*); content-point mapping remains pending human review. Physical activities are optional, adult-supervised and adaptable; no child is required to share personal details.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S4",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise digital.",
+        "Read the mission before you start moving or deciding.",
+        "Keep your own safety and everyone's inclusion in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not keep everyone safe and included."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the cue or rule that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore safety, consent or inclusion.",
+        "Prefer a reasoned, respectful choice over one that merely looks fun."
+      ],
+      "submit": [
+        "Confirm that your reasons and reflection are both present.",
+        "Proofread names, steps and safety words.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact cue, rule or choice before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key cues.",
+        "Say what each cue does for safety, health or friendship.",
+        "A final label alone is weaker than a stated reason."
+      ],
+      "teach2": [
+        "Compare an unsafe or unkind choice with a better one.",
+        "Change the choice or strategy, not only the words.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh place, game or situation that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original reasons and a short reflection.",
+        "Save work that shows the skill in a new situation."
+      ]
+    },
+    "subject": "Health Wellbeing and Relationships",
+    "success_criteria": [
+      "I can use digital with a specific example from this lesson.",
+      "I can identify relationships and explain why it matters.",
+      "I can practise image independently on a new prompt.",
+      "I can notice respect needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Stage 4 PDHPE develops skill and judgement for digital relationships and image sharing.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "Stage 4 PDHPE develops skill and judgement for digital relationships and image sharing.",
+            "A choice unrelated to safety, health or respect."
+          ],
+          "question": "Which choice best shows accurate use of this idea about digital?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample for Digital relationships and image sharing: name the situation, identify one body cue or safety rule, choose a safe/respectful action, and say how it helps self or others. Weak: “just try harder” with no cue.\n\nTRY FIRST\nFor digital relationships and image sharing, write: situation → cue/rule → chosen action → reason it is safer, healthier or fairer.\n\nFEEDBACK\nStrong answer: cue or rule is specific; action is realistic; reason links to health, safety or respect.",
+        "explain": "Stage 4 PDHPE develops skill and judgement for digital relationships and image sharing. Students name cues, safety rules or strategies, practise them in realistic scenarios, and explain why the healthier or fairer choice works. Catalogue alignment uses PD4-1. Keep content school-appropriate and inclusive.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion. Change the choice or strategy, not just the wording.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "Digital relationships and image sharing.",
+            "caption": "Name why it helps.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Cue/rule</text><text x=\"28\" y=\"78\">Digital relationships and image sh</text><text x=\"358\" y=\"42\">Action</text><text x=\"358\" y=\"78\">safer choice</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which cue or rule matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the cues, rules or choices that keep everyone safe and included before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Example for Digital relationships and image sharing: name the situation, identify one body cue or safety rule, choose a  Then write your own reasons.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which cue or rule matters most.\nJuno: Name the cues, rules or choices that keep everyone safe and included before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Example for Digital relationships and image sharing: name the situation, identify one body cue or safety rule, choose a  Then write your own reasons."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason."
+          ],
+          "question": "Which choice best shows accurate use of this idea about digital?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample for Digital relationships and image sharing: name the situation, identify one body cue or safety rule, choose a safe/respectful action, and say how it helps self or others. Weak: “just try harder” with no cue. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "explain": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Writing only a final label without a reason does not show PDHPE thinking. Change the choice or strategy, not just the wording.",
+        "title": "Show the reasoning",
+        "visual": [
+          {
+            "alt": "Choice contrast.",
+            "caption": "Stay inclusive.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Unsafe</text><text x=\"28\" y=\"78\">ignore rule</text><text x=\"358\" y=\"42\">Better</text><text x=\"358\" y=\"78\">include + check</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A choice unrelated to safety, health or respect.",
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "Use an intentionally unsafe or unhelpful choice as a comparison."
+          ],
+          "question": "Which choice best shows accurate use of this idea about digital?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nTreating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion. Here is a more helpful example: Example for Digital relationships and image sharing: name the situation, identify one body cue or safety rule, choose a safe/respectful action, and say how it helps self or others. Weak: “just try harder” with no cue.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nStrong answer: cue or rule is specific; action is realistic; reason links to health, safety or respect.",
+        "explain": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Changing the wording without changing the choice does not fix the error. Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion. Change the choice or strategy, not just the wording.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no reason.",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
+            "A choice unrelated to safety, health or respect."
+          ],
+          "question": "Which choice best shows accurate use of this idea about digital?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nStage 4 PDHPE develops skill and judgement for digital relationships and image sharing. Students name cues, safety rules or strategies, practise them in realistic scenarios, and explain why the healthier or fairer choice works. Catalogue alignment uses PD4-1. Keep content school-appropriate and inclusive. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "explain": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.\n\nWHY IT MATTERS\nThis helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone.\n\nHOW TO WORK\nRead the worked example and name the cues, rules or choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For any movement, use a clear space, ask an adult to be nearby, move at your own comfortable level and stop if anything hurts or feels unsafe. You may always choose a gentler version or only describe the movement. One deliberate, reasoned change is more useful than a longer answer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new situation. Change the choice or strategy, not just the wording.",
+        "title": "Transfer to a new situation"
+      }
+    ],
+    "title": "Year 8, Week 19, Lesson 1: Digital relationships and image sharing",
+    "unit_number": 4,
+    "unit_title": "Respectful relationships and decision making",
+    "week": 19,
+    "week_in_unit": 4,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample for Digital relationships and image sharing: name the situation, identify one body cue or safety rule, choose a safe/respectful action, and say how it helps self or others. Weak: “just try harder” with no cue.\n\nWrite what makes this example safe, healthy or respectful, naming the cues, rules or choices used.",
+    "worked_visuals": [
+      {
+        "alt": "Digital relationships and image sharing.",
+        "caption": "Name why it helps.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Cue/rule</text><text x=\"28\" y=\"78\">Digital relationships and image sh</text><text x=\"358\" y=\"42\">Action</text><text x=\"358\" y=\"78\">safer choice</text></g></svg>"
+      },
+      {
+        "alt": "Choice contrast.",
+        "caption": "Stay inclusive.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Unsafe</text><text x=\"28\" y=\"78\">ignore rule</text><text x=\"358\" y=\"42\">Better</text><text x=\"358\" y=\"78\">include + check</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 8"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "For digital relationships and image sharing, write: situation → cue/rule → chosen action → reason it is safer, healthier or fairer."
+      ],
+      "independent_inputs": [
+        "Independently complete a substantial task on digital relationships and image sharing: practise or plan the skill, record evidence (notes/photo of setup/reflection), include one safety or inclusion check, and write a five-sentence reflection with one next goal."
+      ],
+      "model_inputs": [
+        "Example for Digital relationships and image sharing: name the situation, identify one body cue or safety rule, choose a safe/respectful action, and say how it helps self or others. Weak: “just try harder” with no cue."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Strong answer: cue or rule is specific; action is realistic; reason links to health, safety or respect.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "For digital relationships and image sharing, write: situation → cue/rule → chosen action → reason it is safer, healthier or fairer.",
+        "misconception": "Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.",
+        "model": "Example for Digital relationships and image sharing: name the situation, identify one body cue or safety rule, choose a safe/respectful action, and say how it helps self or others. Weak: “just try harder” with no cue.",
+        "rule": "Stage 4 PDHPE develops skill and judgement for digital relationships and image sharing. Students name cues, safety rules or strategies, practise them in realistic scenarios, and explain why the healthier or fairer choice works. Catalogue alignment uses PD4-1. Keep content school-appropriate and inclusive.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "List the key cues, rules or choices from the example and say what each one does for safety, health or relationships.",
+        "misconception": "Writing only a final label without a reason does not show PDHPE thinking.",
+        "model": "Example for Digital relationships and image sharing: name the situation, identify one body cue or safety rule, choose a safe/respectful action, and say how it helps self or others. Weak: “just try harder” with no cue. Look at each cue, rule or choice that carries the idea.",
+        "rule": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "Strong answer: cue or rule is specific; action is realistic; reason links to health, safety or respect.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.",
+        "misconception": "Changing the wording without changing the choice does not fix the error. Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion.",
+        "model": "Treating digital relationships and image sharing as only winning/looking cool, or ignoring safety and inclusion. Here is a more helpful example: Example for Digital relationships and image sharing: name the situation, identify one body cue or safety rule, choose a safe/respectful action, and say how it helps self or others. Weak: “just try harder” with no cue.",
+        "rule": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      },
+      {
+        "feedback": "The new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
+        "fix": "Change the choice or strategy, not just the wording.",
+        "guided_attempt": "Describe or practise one fresh situation that uses the same skill and write a short reason for your choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new situation.",
+        "model": "Stage 4 PDHPE develops skill and judgement for digital relationships and image sharing. Students name cues, safety rules or strategies, practise them in realistic scenarios, and explain why the healthier or fairer choice works. Catalogue alignment uses PD4-1. Keep content school-appropriate and inclusive. Now choose a different situation to show you can transfer the idea.",
+        "rule": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
+        "why": "This helps the learner make safe, healthy and respectful choices using clear cues and reasons, rather than guessing or copying others. Every choice keeps bodies safe and includes everyone."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Digital relationships and image sharing.",
+        "teaches": "Name why it helps."
+      },
+      {
+        "alt": "Choice contrast.",
+        "teaches": "Stay inclusive."
+      }
+    ]
+  }
+}

@@ -1,0 +1,333 @@
+{
+  "child_mission": "Investigate classify rational and irrational numbers. Use a representation, show each decision and check the result.",
+  "duration_minutes": 60,
+  "evidence_instructions": "Keep the classify rational and irrational numbers task working, explanation, checking record, reflection and quiz result.",
+  "extension": "Choose one new example of the lesson’s number idea. Give an exact representation or verified bound, and explain what a common incorrect interpretation would miss.",
+  "guided_practice": "WE DO:\n1. Rewrite 0.5 as a fraction before comparing: 1/2, so rational.\n2. Rewrite −2 as an integer ratio: −2/1, so rational.\n3. Classify 0.666… when sixes repeat forever. Compare: 2/3, so rational despite not terminating.\n4. Separate exact √2 from 1.414. Use an approximate relation and give each value its own category.\n5. Explain why √9 is not irrational just because it has a radical symbol. Feedback: it equals three exactly.\n6. Check each reason against a definition, not the visual length of the notation.",
+  "independent_task": "YOU DO: Classify rational and irrational numbers record (about 25–30 minutes).\n1. Classify −4, 0.125, 0.333… with threes recurring forever, √9, √2 and 1.414. Give an exact fraction or established exact-value reason. Explain the difference between √2 and its finite approximation.\n2. Show the relevant exact fraction, square relationship, bounds or power-of-ten check for each result.\n3. Explain two decisions with the definitions taught in the lesson.\n4. Identify and repair a possible error in notation or reasoning. If your work is already correct, explain the check that confirmed it.\n5. Write a short reflection about the representation that was most useful.\nUse paper or the big box. Type a working summary for paper work; no upload is required.\nSuccess checklist: complete requested results; correct exact/approximate labels; notation conventions respected; workings and units where needed; two explanations; independent check.",
+  "learning_area": "Mathematics",
+  "learning_intention": "We are learning to explain and apply classify rational and irrational numbers.",
+  "lesson_number": 1,
+  "lesson_role": "Concept",
+  "materials": [
+    "Everything you need to read is included in this lesson",
+    "Optional: paper and a pencil"
+  ],
+  "offline_alternative": "Copy the included examples and task prompts onto paper. Use the diagrams and models to complete the classify rational and irrational numbers working without a service, then type an evidence summary later.",
+  "outcome_codes": [],
+  "parent_notes": "Parent: Teaches classify rational and irrational numbers from definitions to explanation and application. Original content follows the repository’s topic sequence. Exact outcome codes are empty pending verified mapping; this is not a claim of complete syllabus coverage.\n\nParent: Look for explicit working and a check of signs, scale, notation or units as appropriate. A correct guess without a method is weaker evidence than an explained calculation. The lesson itself supplies the teaching and feedback. Your role is access support and reviewing the evidence.\n\nParent: Model task answers: −4 = −4/1; 0.125 = 1/8; recurring thirds = 1/3; √9 = 3: all rational. √2 is irrational. 1.414 = 707/500 is rational and only approximates √2.\n\nParent: Ten scored choices use the unchanged 90% threshold, requiring 9/10. The independent task and reflection supply written reasoning for manual review.",
+  "pass": 1,
+  "pass_mark": 0.9,
+  "quiz": [
+    {
+      "correct_index": 2,
+      "explanation": "The exact ratio of integers with a non-zero denominator meets the definition.",
+      "options": [
+        "It has three characters",
+        "It is positive",
+        "It can be written exactly as 3/4",
+        "It is less than ten"
+      ],
+      "question": "Which statement establishes that 0.75 is rational?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "This exact recurring decimal equals 1/3, a ratio of integers.",
+      "options": [
+        "A decimal stated to be non-recurring forever",
+        "An unspecified incomplete display",
+        "A number with no stated value",
+        "0.333… with threes recurring forever"
+      ],
+      "question": "Which decimal is rational despite not terminating?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The exact root is irrational, while the displayed finite decimal is an exact rational value used as an approximation.",
+      "options": [
+        "Both are exactly the same rational value",
+        "√2 is irrational; 1.414 is a rational approximation",
+        "A finite decimal can never be rational",
+        "The digits prove √2 terminates"
+      ],
+      "question": "Which statement correctly distinguishes √2 and 1.414?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "The principal root of nine is exactly three, an integer ratio with non-zero denominator.",
+      "options": [
+        "Every root is irrational",
+        "It equals exactly 3, which can be written as 3/1",
+        "It has only one printed digit",
+        "It is a positive symbol"
+      ],
+      "question": "Why is √9 rational?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "Seven is an exact ratio of integers.",
+      "options": [
+        "√2 as an exact value",
+        "7 = 7/1",
+        "Pi as an exact value",
+        "A specified non-recurring infinite decimal"
+      ],
+      "question": "Which value is rational?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "The exact square root of two is irrational; the other values have exact integer-ratio forms.",
+      "options": [
+        "0.25",
+        "−3",
+        "√2 as an exact value",
+        "1/2"
+      ],
+      "question": "Which value is irrational?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 0,
+      "explanation": "One eighth equals 0.125 exactly.",
+      "options": [
+        "1/8",
+        "1/3",
+        "1/2",
+        "1/5"
+      ],
+      "question": "What is 0.125 as a fraction?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 3,
+      "explanation": "A rounded decimal approximates the exact irrational root.",
+      "options": [
+        "A claim that it terminates",
+        "An equality to every display",
+        "A negative sign",
+        "Approximately equal"
+      ],
+      "question": "Which symbol suits a rounded decimal for √2?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 1,
+      "explanation": "A recurring decimal repeats a stated digit pattern without ending.",
+      "options": [
+        "Any displayed decimal with a final digit",
+        "A pattern repeats indefinitely",
+        "Every decimal is an integer",
+        "The pattern stops after one block"
+      ],
+      "question": "What does recurring mean?",
+      "type": "multiple_choice"
+    },
+    {
+      "correct_index": 2,
+      "explanation": "It equals 1414/1000 exactly, even though it may be used to approximate an irrational value.",
+      "options": [
+        "It has an irrational-looking shape",
+        "It equals exact √2",
+        "It is a finite decimal expressible as an integer ratio",
+        "It is longer than one digit"
+      ],
+      "question": "Why is 1.414 rational?",
+      "type": "multiple_choice"
+    }
+  ],
+  "response_prompt": "Which representation or check changed your understanding of classify rational and irrational numbers, and why?",
+  "review_status": "unreviewed",
+  "seed_key": "s4-mat-y8-w01-l1",
+  "stage": "S4",
+  "stage_hints": {
+    "accept": [
+      "Read the mission about classify rational and irrational numbers.",
+      "You will practise classify rational and irrational numbers through models before making your own response.",
+      "Begin with the first explanation of classify rational and irrational numbers; the examples remain available while you work."
+    ],
+    "guided": [
+      "Begin the first supported example with an exact ratio or an established exact irrational identity.",
+      "Write a short label for a finite display separately from the exact value before calculating.",
+      "State which value is being classified, then use its exact fraction or identity as evidence. Compare with the feedback only after your attempt."
+    ],
+    "learn": [
+      "Look at how the complete model uses an exact ratio or an established exact irrational identity.",
+      "Track a finite display separately from the exact value rather than treating every number question alike.",
+      "State which value is being classified, then use its exact fraction or identity as evidence."
+    ],
+    "quiz": [
+      "Return to the step about an exact ratio or an established exact irrational identity.",
+      "Check a finite display separately from the exact value before considering the options.",
+      "State which value is being classified, then use its exact fraction or identity as evidence."
+    ],
+    "submit": [
+      "Check that your classify rational and irrational numbers task and working are present.",
+      "Include the classify rational and irrational numbers reflection and any written reasoning you produced.",
+      "Send your classify rational and irrational numbers evidence for review; type a clear record if you used paper."
+    ],
+    "teach0": [
+      "Reread the integer-ratio definition.",
+      "Ask whether the displayed value has an exact fraction representation.",
+      "Show an integer numerator and a non-zero integer denominator as evidence."
+    ],
+    "teach1": [
+      "Look for a stated stopping point or recurring pattern.",
+      "Separate an exact decimal definition from a rounded display.",
+      "Use the supplied exact fraction or repeating pattern to justify classification."
+    ],
+    "teach2": [
+      "Find whether the question names the exact value or a display.",
+      "Label the approximation separately before classifying it.",
+      "Use equality only for exact agreement; a rounded representation needs the approximate relation."
+    ],
+    "teach3": [
+      "Look for an exact equivalent before assigning a category.",
+      "Check whether a root gives an integer or an established irrational value.",
+      "State a fraction or exact-value reason; avoid judging the shape of the notation."
+    ],
+    "write": [
+      "Copy the first classify rational and irrational numbers task and label its quantities.",
+      "Begin “The given information is ____. I will use ____ because ____.”",
+      "A partial opening is “My first step is to represent ____. This shows ____.” Continue with your own working and result."
+    ]
+  },
+  "subject": "Number",
+  "success_criteria": [
+    "I can explain the key number idea with an example.",
+    "I can use the taught representation or calculation method.",
+    "I can show a reason for my result.",
+    "I can check a result and interpret it accurately."
+  ],
+  "teach_steps": [
+    {
+      "check": {
+        "correct_index": 2,
+        "explanation": "The exact ratio of integers with a non-zero denominator meets the definition.",
+        "options": [
+          "It has three characters",
+          "It is positive",
+          "It can be written exactly as 3/4",
+          "It is less than ten"
+        ],
+        "question": "Which statement establishes that 0.75 is rational?"
+      },
+      "example": "I DO:\n0.75 = 75/100 = 3/4, so it is rational.\n−3 = −3/1, so negative integers are rational too.\n\nYOU TRY:\nGive a fraction for 0.2 and classify it.\n\nCHECK:\n0.2 = 2/10 = 1/5. Its exact integer-ratio representation makes it rational.",
+      "explain": "**A rational number can be written as a ratio of integers.**\nThe form is a/b, where a and b are integers and b is not zero. The fraction describes an exact value. One half, negative three quarters and five all qualify: five can be written as five over one.\n\n**A denominator cannot be zero.**\nDivision by zero does not give an ordinary number in this definition. A fraction with zero on top and a non-zero denominator is different: zero over five equals zero and is rational.\n\n**Different forms can name the same value.**\nOne half and two quarters are equal. A decimal such as 0.5 equals one half. Classify the value rather than treating each notation as a separate kind of number.\n\nState an exact fraction as evidence when you can. A numeral’s visual length is not a classification rule.",
+      "icon": "🔎",
+      "notice": "An integer is also rational. Categories can nest rather than exclude each other.",
+      "title": "Define rational numbers with an exact fraction",
+      "visual": [
+        {
+          "alt": "A decision diagram distinguishes exact values from rounded displays and prompts the matching ratio, square or scale check.",
+          "caption": "Choose the method for the question.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Exact value ≠ rounded display</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Ratio? Square check? Scale?</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Choose the matching method</text></svg>"
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 3,
+        "explanation": "This exact recurring decimal equals 1/3, a ratio of integers.",
+        "options": [
+          "A decimal stated to be non-recurring forever",
+          "An unspecified incomplete display",
+          "A number with no stated value",
+          "0.333… with threes recurring forever"
+        ],
+        "question": "Which decimal is rational despite not terminating?"
+      },
+      "example": "I DO:\n0.125 terminates and equals 1/8.\n0.333… with threes repeating forever equals 1/3, so it is rational too.\n\nYOU TRY:\nClassify 0.6 and 0.666… with sixes recurring forever.\n\nCHECK:\nBoth are rational. The first equals 3/5; the second equals 2/3. Their different decimal forms do not exclude either from the integer-ratio definition.",
+      "explain": "**A terminating decimal stops.**\nFor example, 0.125 has a final displayed digit and equals 125/1000. Every finite decimal can be written with a power-of-ten denominator, so it is rational.\n\n**A recurring decimal repeats a pattern forever.**\nOne third is 0.333… where the threes continue indefinitely. It does not terminate, but it is rational because the exact value is one third. A repeating block may contain several digits.\n\n**Dots need a stated meaning.**\nAn ellipsis alone does not tell you whether every later digit repeats. Here we explicitly state when a decimal is recurring. A short calculator display may be only a rounded approximation to a longer decimal.\n\nDo not classify every non-terminating decimal as irrational. The recurring pattern is the important distinction in this explanation.",
+      "icon": "🔎",
+      "notice": "A recurring decimal is non-terminating but rational. A rounded display is not the full exact value.",
+      "title": "Distinguish terminating and recurring decimals"
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "The exact root is irrational, while the displayed finite decimal is an exact rational value used as an approximation.",
+        "options": [
+          "Both are exactly the same rational value",
+          "√2 is irrational; 1.414 is a rational approximation",
+          "A finite decimal can never be rational",
+          "The digits prove √2 terminates"
+        ],
+        "question": "Which statement correctly distinguishes √2 and 1.414?"
+      },
+      "example": "I DO:\nExact value: √2, irrational.\nApproximation: 1.414, rational as a finite decimal.\nRecord: √2 ≈ 1.414, not √2 = 1.414.\n\nYOU TRY:\nExplain why the displayed approximation 3.14 does not make the exact value pi rational.\n\nCHECK:\n3.14 is a finite rational decimal; pi is a different exact value with a non-terminating, non-recurring decimal representation.",
+      "explain": "**An irrational number is not an exact ratio of integers.**\nIts decimal representation does not terminate or repeat a fixed block forever. The square root of two and pi are examples. This lesson uses those established examples; it does not prove their irrationality.\n\n**An approximation is a different value.**\nThe square root of two is about 1.414, but not exactly 1.414. The finite decimal 1.414 is rational because it equals 1414/1000. Approximating an irrational value does not make the exact value rational.\n\n**Use the approximate sign carefully.**\nThe symbol ≈ means approximately equal. Use it for a rounded decimal, while = claims exact equality. Write √2 ≈ 1.414 when using that three-decimal approximation.\n\nAvoid classifying an exact value from a few displayed digits. Identify what the symbol or problem actually specifies.",
+      "icon": "🔎",
+      "notice": "Exact and approximate are different labels. Keep them attached to the intended value.",
+      "title": "Recognise irrational values and their approximations",
+      "visual_before": [
+        {
+          "episode": {
+            "scenes": [
+              {
+                "bg": "room",
+                "lines": [
+                  {
+                    "text": "I am working on classify rational and irrational numbers. I need to know what the notation asks.",
+                    "who": "pip"
+                  },
+                  {
+                    "text": "A rational number can be written as a ratio of integers.\nThe form is a/b, where a and b are integers and b is not zero. The fraction describes an exact value. One half, negative three quarters and five all qualify: five can be written as five over one.",
+                    "who": "juno"
+                  },
+                  {
+                    "text": "0.75 = 75/100 = 3/4, so it is rational.\n−3 = −3/1, so negative integers are rational too.",
+                    "who": "pip"
+                  },
+                  {
+                    "pause_after": true,
+                    "text": "Pause and try a fresh example with this method. Check it against the representation before continuing.",
+                    "who": "juno"
+                  }
+                ]
+              }
+            ],
+            "title": "Check the method for classify rational and irrational numbers",
+            "transcript": "Pip: I am working on classify rational and irrational numbers. I need to know what the notation asks.\nJuno: A rational number can be written as a ratio of integers.\nThe form is a/b, where a and b are integers and b is not zero. The fraction describes an exact value. One half, negative three quarters and five all qualify: five can be written as five over one.\nPip: 0.75 = 75/100 = 3/4, so it is rational.\n−3 = −3/1, so negative integers are rational too.\nJuno: Pause and try a fresh example with this method. Check it against the representation before continuing."
+          }
+        }
+      ]
+    },
+    {
+      "check": {
+        "correct_index": 1,
+        "explanation": "The principal root of nine is exactly three, an integer ratio with non-zero denominator.",
+        "options": [
+          "Every root is irrational",
+          "It equals exactly 3, which can be written as 3/1",
+          "It has only one printed digit",
+          "It is a positive symbol"
+        ],
+        "question": "Why is √9 rational?"
+      },
+      "example": "I DO:\n√9 = 3 = 3/1, so it is rational.\n√2 is irrational as an exact value.\n−0.5 = −1/2, so it is rational.\n\nYOU TRY:\nClassify 7 and give an integer-ratio reason.\n\nCHECK:\n7 is rational because 7 = 7/1. Being an integer also places it within the rational numbers.",
+      "explain": "**Real numbers include rational and irrational values.**\nThey can be represented as positions on a number line. Integers sit inside the rational group, and rational and irrational together make the real-number group studied here.\n\n**Ask for evidence, not appearance.**\nAn exact fraction, integer or terminating/recurring decimal supports rational classification. An established irrational value such as √2 needs its exact identity preserved. A square-root symbol alone does not imply irrationality: √9 is exactly three.\n\n**State the category and why.**\nUse “This value is rational because ____” or “The exact value is irrational; its displayed decimal is only an approximation.” Do not use positivity, number of digits or neatness as a reason.\n\nIf an unfamiliar decimal is only partly shown and no pattern is specified, the display may not supply enough information. Say what evidence is missing instead of guessing the exact value.",
+      "icon": "🔎",
+      "notice": "A radical sign is notation, not a guarantee of irrationality.",
+      "title": "Classify real numbers with a reason"
+    }
+  ],
+  "title": "Year 8: Classify rational and irrational numbers",
+  "unit_number": 1,
+  "unit_title": "Real numbers, indices and scientific notation",
+  "week": 1,
+  "week_in_unit": 1,
+  "worked_example": "I DO: Complete a classify rational and irrational numbers response.\n−4 = −4/1; 0.125 = 1/8; recurring thirds = 1/3; √9 = 3: all rational. √2 is irrational. 1.414 = 707/500 is rational and only approximates √2.\n\nEXPLAIN THE DECISIONS\nUse the definitions and checks taught above. A classification needs an exact-value reason. The exact irrational value and its finite rational approximation require separate labels.\n\nCOMMON MISTAKE AND FIX\nTreating the finite display 1.414 as exactly √2 confuses value and approximation. I use ≈ and classify the display separately.\n\nCHECK\nKeep exact and approximate labels, notation conventions and units attached. Use the taught check appropriate to the question rather than a rule from an unrelated number operation.",
+  "worked_visuals": [
+    {
+      "alt": "A decision diagram distinguishes exact values from rounded displays and prompts the matching ratio, square or scale check.",
+      "caption": "Choose the method for the question.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 420 178\"><rect width=\"420\" height=\"178\" rx=\"12\" fill=\"#f3f7f4\"/><text x=\"16\" y=\"34\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Exact value ≠ rounded display</text><text x=\"16\" y=\"80\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Ratio? Square check? Scale?</text><text x=\"16\" y=\"126\" font-family=\"Arial,sans-serif\" font-size=\"22\" fill=\"#18382b\">Choose the matching method</text></svg>"
+    }
+  ],
+  "year_level": "Year 8"
+}

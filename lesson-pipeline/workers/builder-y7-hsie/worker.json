@@ -1,11 +1,17 @@
 {
+  "blockers": [
+    "Partition complete — idle until new Stage 4 inventory"
+  ],
+  "branch": "feature/gold-v2-builder-y7",
   "created_at": "2026-10-13T00:03:51.704927+00:00",
   "id": "builder-y7-hsie",
-  "label": "S4 Y7 (HSIE\u2192PDHPE\u2192Tech)",
+  "label": "S4 Y7 + Y8 Maths complete — idle",
   "seed_patterns": [
     "s4-hsie-y7-*",
     "s4-pdhpe-y7-*",
-    "s4-tech-y7-*"
+    "s4-tech-y7-*",
+    "s4-mat-y8-*"
   ],
-  "state": "workers/builder-y7-hsie"
+  "state": "workers/builder-y7-hsie",
+  "worktree": ".worktrees/builder-y7"
 }

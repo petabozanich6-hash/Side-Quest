@@ -1,0 +1,437 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "EN4-URA-01",
+      "lesson_evidence": "Year 8 English develops reading and writing craft for hot seat. Students make text-bound claims, use precise evidence, and explain effects on an audience. Catalogue alignment uses EN4-URA-01. Keep interpretations cautious and school-appropriate.",
+      "scope_limit": "Proposed Stage 4 NESA English alignment using catalogue outcome codes (EN4-*); content-point mapping and independent NESA verification remain pending.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Year 8 English develops reading and writing craft for hot seat. Students make text-bound claims, use precise evidence, and explain effects on an audience. Catalogue alignment uses EN4-URA-01. Keep interpretations cautious and school-appropriate.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same strategy to an unfamiliar topic or audience, then compare the effect of two different choices.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nFor hot seat, write claim–evidence–explanation in 4–6 sentences, or produce the required craft piece with one annotated technique.\n\nFEEDBACK\nStrong answer: claim is arguable, evidence is precise, explanation links technique to effect.\n\nCHECK\nTreating hot seat as personal taste only, or inventing details not in the text.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nIndependently complete a substantial task on hot seat: produce an extended response or crafted piece (150–400 words as appropriate), embed evidence where relevant, and add a short craft reflection.\n\nWrite a short reflection describing one specific revision you made and why.",
+    "interactive_activities": null,
+    "learning_area": "English",
+    "learning_intention": "Year 8 English develops reading and writing craft for hot seat. Students make text-bound claims, use precise evidence, and explain effects on an audience. Catalogue alignment uses EN4-URA-01. Keep interpretations cautious and school-appropriate.",
+    "lesson_number": 4,
+    "lesson_role": "Speaking and listening",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "EN4-URA-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Independently complete a substantial task on hot seat: produce an extended response or crafted piece (150–400 words as appropriate), embed evidence where relevant, and add a short craft reflection. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using seat on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Treating hot seat as personal taste only, or inventing details not in the text.. Correction: Strong answer: claim is arguable, evidence is precise, explanation links technique to effect.. Why it helps the audience is stated.\n\nParent: Likely misconception: Treating hot seat as personal taste only, or inventing details not in the text. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating seat on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with seat, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about seat with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for seat. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 1,
+        "explanation": "This matches the taught method for seat. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Skip the prompt because the first idea sounded good.",
+          "claim is arguable, evidence is precise, explanation links technique to effect.",
+          "Treating hot seat as personal taste only, or inventing details not in the text.",
+          "Ignore the words and invent a more exciting event."
+        ],
+        "question": "For hot seat, write claim–evidence–explanation in 4–6 sentences, or produce the required craft piece with one annotated technique. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "This is the misconception to avoid for seat; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "claim is arguable, evidence is precise, explanation links technique to effect.",
+          "Careful use of evidence with clear evidence.",
+          "Treating hot seat as personal taste only, or inventing details not in the text.",
+          "Year 8 English develops reading and writing craft for hot seat."
+        ],
+        "question": "Which statement is a common mistake when working with seat?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and a named evidence, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Repeat the worked example wording with no new evidence.",
+          "Treating hot seat as personal taste only, or inventing details not in the text.",
+          "Name evidence only, without linking it to seat.",
+          "Apply seat to new material and name the evidence used."
+        ],
+        "question": "Which response best applies seat with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The skill is shown by quoting or pointing to wording that carries seat. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Point to exact words in the sentence that show seat and say what they do.",
+          "Ignore the sentence and invent a more exciting event.",
+          "Say the writing is good without naming any words.",
+          "Treating hot seat as personal taste only, or inventing details not in the text."
+        ],
+        "question": "Read: \"When the ferry horn blasted, Omar gripped the railing and laughed.\" Which choice best uses seat from this lesson?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Treating hot seat as personal taste only, or inventing details not in the text.",
+          "Copy a model sentence from another story unchanged.",
+          "Name evidence without linking it to any words in the text.",
+          "claim is arguable, evidence is precise, explanation links technique to effect."
+        ],
+        "question": "Which statement correctly applies the lesson idea about seat?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Locate precise textual evidence, then explain how language choices shape meaning or effect.",
+          "Guess from the title alone with no textual clue.",
+          "Copy a model sentence from another story unchanged.",
+          "Lengthen the answer with adjectives while keeping the same idea."
+        ],
+        "question": "In a new text, what should you do first to analyse evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Make the answer longer while keeping the same mistake.",
+          "Delete the evidence that disagreed with your first guess.",
+          "Change the inaccurate idea or missing evidence, not only the length.",
+          "Add adjectives without fixing the wrong idea."
+        ],
+        "question": "Which revision actually improves meaning for seat?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Retype the worked model as the final answer.",
+          "Change fonts and claim the work is new.",
+          "Treating hot seat as personal taste only, or inventing details not in the text.",
+          "Use a fresh sentence or text and explain one precise choice about seat."
+        ],
+        "question": "Which response shows accurate use of seat on fresh material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about seat with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating seat on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using seat on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for seat. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with seat, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Treating hot seat as personal taste only, or inventing details not in the text.. Correction: Strong answer: claim is arguable, evidence is precise, explanation links technique to effect.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent task and reflection, with explanations where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s4-eng-y8-w10-l4",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 2 NESA alignment; verify content points before acceptance.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S4",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise seat.",
+        "Read the mission before you start writing or speaking.",
+        "Keep the audience and purpose in mind as you work."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reason with the feedback.",
+        "Adjust anything that does not match the evidence."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the wording that carries the meaning.",
+        "Then explain the choice without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore the example.",
+        "Prefer evidence over wording that merely sounds clever."
+      ],
+      "submit": [
+        "Check that your response and reason are both present.",
+        "Proofread names, sequence and punctuation.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact word or action before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and underline one useful detail.",
+        "Say what that detail helps a reader understand.",
+        "A vague compliment is weaker than quoted evidence."
+      ],
+      "teach2": [
+        "Compare a weak attempt with a stronger revision.",
+        "Change meaning or accuracy, not only length.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh topic that still uses the same skill.",
+        "Explain one decision in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include an original response and a short reason.",
+        "Save work that shows the skill on new content."
+      ]
+    },
+    "subject": "English",
+    "success_criteria": [
+      "I can use seat with a specific example from this lesson.",
+      "I can identify evidence and explain why it matters.",
+      "I can practise evidence independently on a new prompt.",
+      "I can notice audience needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Year 8 English develops reading and writing craft for hot seat.",
+          "options": [
+            "An answer copied without understanding.",
+            "A guess with no explanation.",
+            "Year 8 English develops reading and writing craft for hot seat.",
+            "A claim unrelated to the text."
+          ],
+          "question": "Which choice best shows accurate use of this idea about seat?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample for Hot seat: claim about meaning or craft, short evidence (quote/paraphrase), explanation of effect. Weak: plot summary with no analysis.\n\nTRY FIRST\nFor hot seat, write claim–evidence–explanation in 4–6 sentences, or produce the required craft piece with one annotated technique.\n\nFEEDBACK\nStrong answer: claim is arguable, evidence is precise, explanation links technique to effect.",
+        "explain": "Year 8 English develops reading and writing craft for hot seat. Students make text-bound claims, use precise evidence, and explain effects on an audience. Catalogue alignment uses EN4-URA-01. Keep interpretations cautious and school-appropriate.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Treating hot seat as personal taste only, or inventing details not in the text. Correct the meaning, not just the appearance.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Hot seat.",
+            "caption": "Explain effect.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Claim</text><text x=\"28\" y=\"78\">Hot seat</text><text x=\"358\" y=\"42\">Evidence</text><text x=\"358\" y=\"78\">quote/detail</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which detail matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the exact words or actions that carry the meaning before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Example for Hot seat: claim about meaning or craft, short evidence (quote/paraphrase), explanation of effect. Weak: plot Then write your own attempt.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which detail matters most.\nJuno: Name the exact words or actions that carry the meaning before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Example for Hot seat: claim about meaning or craft, short evidence (quote/paraphrase), explanation of effect. Weak: plot Then write your own attempt."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A claim unrelated to the text.",
+            "An answer copied without understanding.",
+            "A guess with no explanation.",
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does"
+          ],
+          "question": "Which choice best shows accurate use of this idea about seat?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nExample for Hot seat: claim about meaning or craft, short evidence (quote/paraphrase), explanation of effect. Weak: plot summary with no analysis. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
+        "explain": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Saying a choice is good without naming the actual detail does not show understanding. Correct the meaning, not just the appearance.",
+        "title": "Explain the evidence",
+        "visual": [
+          {
+            "alt": "Analysis craft.",
+            "caption": "Stay text-bound.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Weak</text><text x=\"28\" y=\"78\">summary only</text><text x=\"358\" y=\"42\">Strong</text><text x=\"358\" y=\"78\">CEE paragraph</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A claim unrelated to the text.",
+            "An answer copied without understanding.",
+            "A guess with no explanation.",
+            "Use an intentionally incorrect attempt as a comparison."
+          ],
+          "question": "Which choice best shows accurate use of this idea about seat?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nTreating hot seat as personal taste only, or inventing details not in the text. Here is a more productive model: Example for Hot seat: claim about meaning or craft, short evidence (quote/paraphrase), explanation of effect. Weak: plot summary with no analysis.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nStrong answer: claim is arguable, evidence is precise, explanation links technique to effect.",
+        "explain": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "A superficial change in length or appearance does not repair meaning. Treating hot seat as personal taste only, or inventing details not in the text. Correct the meaning, not just the appearance.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 0,
+          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "Use the method on a new topic, not a reworded copy of the example.",
+            "A claim unrelated to the text.",
+            "An answer copied without understanding.",
+            "A guess with no explanation."
+          ],
+          "question": "Which choice best shows accurate use of this idea about seat?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nYear 8 English develops reading and writing craft for hot seat. Students make text-bound claims, use precise evidence, and explain effects on an audience. Catalogue alignment uses EN4-URA-01. Keep interpretations cautious and school-appropriate. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",
+        "explain": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.\n\nWHY IT MATTERS\nThis helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice.\n\nHOW TO WORK\nRead the original example and locate the words or actions that support the idea. Before looking at the correction, make your own attempt using the exact question provided. Check your response against the feedback: did you address the same skill and show your reasoning? If a detail is uncertain, identify what would have to be checked. One deliberate, justified revision is more useful than making the answer longer.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new content. Correct the meaning, not just the appearance.",
+        "title": "Transfer to an independent example"
+      }
+    ],
+    "title": "Year 8, Week 10, Lesson 4: Hot seat",
+    "unit_number": 3,
+    "unit_title": "Novel study 2",
+    "week": 10,
+    "week_in_unit": 2,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nExample for Hot seat: claim about meaning or craft, short evidence (quote/paraphrase), explanation of effect. Weak: plot summary with no analysis.\n\nExplain what makes this example accurate and effective, identifying its specific wording.",
+    "worked_visuals": [
+      {
+        "alt": "Hot seat.",
+        "caption": "Explain effect.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Claim</text><text x=\"28\" y=\"78\">Hot seat</text><text x=\"358\" y=\"42\">Evidence</text><text x=\"358\" y=\"78\">quote/detail</text></g></svg>"
+      },
+      {
+        "alt": "Analysis craft.",
+        "caption": "Stay text-bound.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Weak</text><text x=\"28\" y=\"78\">summary only</text><text x=\"358\" y=\"42\">Strong</text><text x=\"358\" y=\"78\">CEE paragraph</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 8"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "For hot seat, write claim–evidence–explanation in 4–6 sentences, or produce the required craft piece with one annotated technique."
+      ],
+      "independent_inputs": [
+        "Independently complete a substantial task on hot seat: produce an extended response or crafted piece (150–400 words as appropriate), embed evidence where relevant, and add a short craft reflection."
+      ],
+      "model_inputs": [
+        "Example for Hot seat: claim about meaning or craft, short evidence (quote/paraphrase), explanation of effect. Weak: plot summary with no analysis."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Strong answer: claim is arguable, evidence is precise, explanation links technique to effect.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "For hot seat, write claim–evidence–explanation in 4–6 sentences, or produce the required craft piece with one annotated technique.",
+        "misconception": "Treating hot seat as personal taste only, or inventing details not in the text.",
+        "model": "Example for Hot seat: claim about meaning or craft, short evidence (quote/paraphrase), explanation of effect. Weak: plot summary with no analysis.",
+        "rule": "Year 8 English develops reading and writing craft for hot seat. Students make text-bound claims, use precise evidence, and explain effects on an audience. Catalogue alignment uses EN4-URA-01. Keep interpretations cautious and school-appropriate.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "The most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Underline or quote one precise detail in the model and explain its effect.",
+        "misconception": "Saying a choice is good without naming the actual detail does not show understanding.",
+        "model": "Example for Hot seat: claim about meaning or craft, short evidence (quote/paraphrase), explanation of effect. Weak: plot summary with no analysis. Think about how this word or relationship creates meaning.",
+        "rule": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "Strong answer: claim is arguable, evidence is precise, explanation links technique to effect.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Describe why the warned-against approach would weaken your work, then write a corrected version.",
+        "misconception": "A superficial change in length or appearance does not repair meaning. Treating hot seat as personal taste only, or inventing details not in the text.",
+        "model": "Treating hot seat as personal taste only, or inventing details not in the text. Here is a more productive model: Example for Hot seat: claim about meaning or craft, short evidence (quote/paraphrase), explanation of effect. Weak: plot summary with no analysis.",
+        "rule": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      },
+      {
+        "feedback": "The new example should meet the same purpose as the model, but contain original material.",
+        "fix": "Correct the meaning, not just the appearance.",
+        "guided_attempt": "Make one fresh example demonstrating the skill and explain your main choice.",
+        "misconception": "Repeating the worked example cannot show transfer to new content.",
+        "model": "Year 8 English develops reading and writing craft for hot seat. Students make text-bound claims, use precise evidence, and explain effects on an audience. Catalogue alignment uses EN4-URA-01. Keep interpretations cautious and school-appropriate. Now choose different people, facts or text to show you can transfer the idea.",
+        "rule": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
+        "why": "This helps the learner make decisions based on specific language evidence, rather than guess or copy someone else. Keep the meaning accurate and explain the choice."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Hot seat.",
+        "teaches": "Explain effect."
+      },
+      {
+        "alt": "Analysis craft.",
+        "teaches": "Stay text-bound."
+      }
+    ]
+  }
+}
