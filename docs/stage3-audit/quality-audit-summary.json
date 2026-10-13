@@ -1,0 +1,246 @@
+{
+  "generated_at": "2026-10-13T04:25:47.097268+00:00",
+  "hub": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline",
+  "authored_count": 538,
+  "checkpoint_aligned": true,
+  "review_status_all_unreviewed": true,
+  "interactive_none": 538,
+  "lessons_all_outcomes_in_repo_map": 165,
+  "lessons_with_codes_missing_from_repo_map": 373,
+  "missing_by_subject": {
+    "arts": 80,
+    "eng": 43,
+    "hsie": 80,
+    "mat": 90,
+    "sci": 80
+  },
+  "missing_codes": [
+    [
+      "ST3-SCI-01",
+      61
+    ],
+    [
+      "HS3-HIS-01",
+      46
+    ],
+    [
+      "HS3-CWT-01",
+      43
+    ],
+    [
+      "HS3-ACH-01",
+      41
+    ],
+    [
+      "HS3-GEO-01",
+      41
+    ],
+    [
+      "EN3-SPELL-01",
+      40
+    ],
+    [
+      "CA3-CWT-01",
+      38
+    ],
+    [
+      "CA3-VIS-01",
+      23
+    ],
+    [
+      "MA3-RN-01",
+      21
+    ],
+    [
+      "CA3-MUS-01",
+      19
+    ],
+    [
+      "HS3-DEM-01",
+      16
+    ],
+    [
+      "MA3-RQF-01",
+      13
+    ],
+    [
+      "ST3-DAT-01",
+      11
+    ],
+    [
+      "MA3-MR-02",
+      10
+    ],
+    [
+      "MA3-GM-02",
+      9
+    ],
+    [
+      "MA3-NSM-02",
+      8
+    ],
+    [
+      "ST3-PQU-01",
+      8
+    ],
+    [
+      "MA3-2DS-02",
+      7
+    ],
+    [
+      "MA3-RN-03",
+      4
+    ],
+    [
+      "MA3-3DS-02",
+      4
+    ],
+    [
+      "MA3-NSM-01",
+      4
+    ],
+    [
+      "MA3-GM-03",
+      4
+    ],
+    [
+      "EN3-UARL-02",
+      3
+    ],
+    [
+      "MA3-RQF-02",
+      3
+    ],
+    [
+      "MA3-3DS-01",
+      2
+    ],
+    [
+      "MA3-RN-02",
+      1
+    ]
+  ],
+  "present_codes": [
+    [
+      "EN3-CWT-01",
+      40
+    ],
+    [
+      "EN3-OLC-01",
+      40
+    ],
+    [
+      "EN3-RECOM-01",
+      29
+    ],
+    [
+      "MA3-MR-01",
+      23
+    ],
+    [
+      "MA3-AR-01",
+      21
+    ],
+    [
+      "EN3-UARL-01",
+      8
+    ],
+    [
+      "MA3-2DS-01",
+      4
+    ]
+  ],
+  "first_nations_lessons": 100,
+  "first_nations_flagged": 80,
+  "first_nations_unflagged": 20,
+  "first_nations_unflagged_seeds": [
+    "s3-sci-y5-w31-l1",
+    "s3-sci-y5-w31-l2",
+    "s3-sci-y5-w32-l1",
+    "s3-sci-y5-w32-l2",
+    "s3-sci-y5-w33-l1",
+    "s3-sci-y5-w33-l2",
+    "s3-sci-y5-w34-l1",
+    "s3-sci-y5-w34-l2",
+    "s3-sci-y5-w35-l1",
+    "s3-sci-y5-w35-l2",
+    "s3-sci-y5-w36-l1",
+    "s3-sci-y5-w36-l2",
+    "s3-sci-y5-w37-l1",
+    "s3-sci-y5-w37-l2",
+    "s3-sci-y5-w38-l1",
+    "s3-sci-y5-w38-l2",
+    "s3-sci-y5-w39-l1",
+    "s3-sci-y5-w39-l2",
+    "s3-sci-y5-w40-l1",
+    "s3-sci-y5-w40-l2"
+  ],
+  "first_nations_flagged_seeds_sample": [
+    "s3-hsie-y5-w01-l1",
+    "s3-hsie-y5-w01-l2",
+    "s3-hsie-y5-w02-l1",
+    "s3-hsie-y5-w02-l2",
+    "s3-hsie-y5-w03-l1",
+    "s3-hsie-y5-w03-l2",
+    "s3-hsie-y5-w04-l1",
+    "s3-hsie-y5-w04-l2",
+    "s3-hsie-y5-w05-l1",
+    "s3-hsie-y5-w05-l2",
+    "s3-hsie-y5-w06-l1",
+    "s3-hsie-y5-w06-l2",
+    "s3-hsie-y5-w07-l1",
+    "s3-hsie-y5-w07-l2",
+    "s3-hsie-y5-w08-l1",
+    "s3-hsie-y5-w08-l2",
+    "s3-hsie-y5-w09-l1",
+    "s3-hsie-y5-w09-l2",
+    "s3-hsie-y5-w10-l1",
+    "s3-hsie-y5-w10-l2",
+    "s3-hsie-y5-w11-l1",
+    "s3-hsie-y5-w11-l2",
+    "s3-hsie-y5-w12-l1",
+    "s3-hsie-y5-w12-l2",
+    "s3-hsie-y5-w13-l1",
+    "s3-hsie-y5-w13-l2",
+    "s3-hsie-y5-w14-l1",
+    "s3-hsie-y5-w14-l2",
+    "s3-hsie-y5-w15-l1",
+    "s3-hsie-y5-w15-l2",
+    "s3-hsie-y5-w16-l1",
+    "s3-hsie-y5-w16-l2",
+    "s3-hsie-y5-w17-l1",
+    "s3-hsie-y5-w17-l2",
+    "s3-hsie-y5-w18-l1",
+    "s3-hsie-y5-w18-l2",
+    "s3-hsie-y5-w19-l1",
+    "s3-hsie-y5-w19-l2",
+    "s3-hsie-y5-w20-l1",
+    "s3-hsie-y5-w20-l2"
+  ],
+  "proposed_review_masters": {
+    "y5_english_plot": "s3-eng-y5-w01-l1",
+    "y5_maths_place_value": "s3-mat-y5-w01-l1",
+    "y5_maths_fractions": "s3-mat-y5-w17-l1",
+    "y5_science_adaptations": "s3-sci-y5-w01-l1",
+    "y5_hsie_first_nations": "s3-hsie-y5-w01-l1",
+    "y5_arts_drawing": "s3-arts-y5-w01-l1"
+  },
+  "ownership": {
+    "active_patterns": {
+      "builder-s4-music": "s3-eng-y5-*",
+      "builder-s4-food": "s3-mat-y5-*",
+      "builder-s4-design": "s3-sci-y5-*",
+      "builder-s4-ist": "s3-hsie-y5-*",
+      "builder-s4-visual": "s3-arts-y5-*"
+    },
+    "safe_to_author": false,
+    "note": "Read-only audit only. No partition, checkpoint, or coordinator changes."
+  },
+  "subject_counts": {
+    "arts": 80,
+    "eng": 160,
+    "hsie": 80,
+    "mat": 138,
+    "sci": 80
+  }
+}
