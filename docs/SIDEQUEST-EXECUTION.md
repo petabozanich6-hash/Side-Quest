@@ -2,8 +2,29 @@
 
 This is the single project memory. Read it first each session. If it disagrees with the code, the code wins; fix this file.
 
-Last updated: 13 October 2026. Branch: `dev/sidequest-execution` (from `main` at 92a2b4e).
+Last updated: 14 October 2026. Branch: `dev/sidequest-execution` (from `main` at 92a2b4e).
 Recovery checkpoint (pre-cleanup main): branch `checkpoint/pre-cleanup-2026-10-13`. Never delete it.
+
+## 0. Current priority (14 Oct 2026, supersedes the lesson-authoring plan in section 4)
+
+Early-access, Australia-wide homeschool platform. Pre-made lessons are out of scope: the 19,202 seeded rows stay in the database (nothing deleted) but are hidden from every family library and cannot be assigned; the UI says "Ready-made Side-Quest lessons: upgrade coming later". The product is the parent Lesson Builder -> family library -> assign -> child completes -> parent reviews -> progress, evidence and XP.
+
+Built and tested this session (11 tests, `npm run test:worker`, real migrations 0001-0050 on an in-memory SQLite):
+- Migration 0050: lesson versions/archive, assignment snapshots (`lesson_snapshot`, `lesson_version`), idempotent XP (`xp_awarded`), family plan columns. Existing families become `INTERNAL` (unrestricted) so nobody is locked out; new sign-ups start `FREE_PREVIEW` for 7 days.
+- `worker/src/entitlements.ts`: plan states, limits, expiry. Preview = 1 child, 2 parent lessons, 2 active assignments, no AI, no full exports. Paid/INTERNAL/PAST_DUE (grace) = fair-use caps 20 children / 5000 lessons / 5000 active assignments. PREVIEW_EXPIRED/CANCELLED(after period end) = cannot create or assign; data is kept. Unknown plan fails closed. Plan is never changed by any API route. Billing is NOT LIVE.
+- `worker/src/lessonBuilder.ts`: validation (https/http links only, server-computed YouTube/Vimeo embeds, size caps), create/update/duplicate/archive/delete (delete archives if ever assigned), assign (ownership checks, drafts and archived blocked, duplicate-active blocked, snapshot stored), submit (once), review (XP once: 20 accepted, 45 demonstrated; evidence row), child-safe lesson view (no answer keys or parent notes).
+- Routes in `core.ts`: `GET /api/account/plan`, `PUT /api/lessons/:id`, `POST /api/lessons/:id/{duplicate,archive,restore}`; library queries are family-only; child endpoints return the child-safe snapshot. `POST /api/students` enforces the child limit.
+- Frontend (written, syntax-checked with bun, NOT run in a browser): `LessonBuilder.jsx` (guided form, preview, save draft / save to library / save and assign), rewritten `Lessons.jsx` (search, edit, duplicate, archive/restore, assign, preview-limit banners), routes in `App.js`, national wording on Landing, Register and Curriculum.
+
+Not done / known gaps:
+- App never built or run (npm blocked). Owner must run `npm install`, build, and click through the workflow.
+- Migration 0050 not applied to the live database. Back up first (section 8).
+- Quiz `correct_index` is still sent to the child (existing client-side quiz scoring).
+- File/image upload needs R2 enabled (upload returns 501); builder supports links and videos only.
+- Remaining NSW/NESA wording: LearningPlans, Audit, LifeLearning, ReadingLog, LessonDetail and `legalContent.js`. Legal copy needs owner review. No compliance claims should be made.
+- Parent-facing progress pages, portfolio export limits for preview, and mobile layout were not reviewed in a browser.
+- No AI generation (no credentials, no spend approved). No billing.
+- Domain sidequestlearning.app is behind Cloudflare and restricted to the owner's IP. Not touched. For invited beta families, consider Cloudflare Access with an email allow-list (owner action).
 
 ## 1. Confirmed architecture
 
@@ -97,8 +118,11 @@ Parent can register, add children, assign modules; child completes a real module
 
 ## 10. Work underway
 
-Exemplar module authoring (no npm needed).
+Builder-first workflow is implemented and tested at the API level. Next is verification in a real build.
 
 ## 11. Exact next task
 
-Agree the 150-lesson blueprint for Year 7 and Year 3 (subject split and sequence, owner to confirm), then author the Year 7 Mathematics "Integers" lessons in the lesson-excellence schema; validate with `npm run lessons:validate` and `npm run lessons:score`; then wire it into the app once npm access is available.
+1. Owner: `npm install`, `npm run test:worker`, `npm run lessons:test`, build the frontend, run locally (`wrangler dev`), and walk through: register -> add child -> create lesson -> save to library -> assign -> child login -> complete -> parent review -> XP and evidence. Check it on a phone.
+2. Back up D1 (`npx wrangler d1 export sidequest-db1 --remote --output backup.sql`), note a Time Travel bookmark, then apply migration 0050 to a staging copy first.
+3. Fix whatever the click-through finds. Then the remaining NSW wording and legal copy review.
+4. Only after that: private beta for invited families. Do not charge until billing is built, tested and approved.

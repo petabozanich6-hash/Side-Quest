@@ -20,7 +20,7 @@ export default function Curriculum() {
       <header>
         <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Curriculum</h1>
         <p className="text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed">
-          Syllabus outcomes and requirements are set by NESA and can change. Use the official sites below as your source, and check them before planning each term.
+          The links below are for New South Wales. Every state and territory has its own curriculum and home education requirements, so check yours with your local education authority. Side-Quest does not provide legal or compliance advice. Syllabus outcomes and requirements can change. Use the official sites below as your source, and check them before planning each term.
         </p>
       </header>
 

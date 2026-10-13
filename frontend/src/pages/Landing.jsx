@@ -42,7 +42,7 @@ export default function Landing() {
       <section className="relative z-10 mx-auto max-w-7xl px-6 pt-10 pb-16 grid lg:grid-cols-5 gap-10 items-center">
         <div className="lg:col-span-3">
           <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest" style={{backgroundColor:"#E8E2D1", color:"#4A5D3A"}}>
-            <Sparkles size={13}/> NSW K · Years 1-12 · Homeschool
+            <Sparkles size={13}/> Australia-wide · Homeschool
           </span>
           <h1 className="mt-6 font-display font-bold tracking-tight leading-[1.02]" style={{color:"#1F3B2D"}}>
             <span className="block text-5xl md:text-6xl lg:text-7xl">Grow curious minds.</span>
@@ -74,10 +74,10 @@ export default function Landing() {
             </div>
           </div>
 
-          <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Free for homeschool families · Optional paid resources can be added later if parents want them.</p>
+          <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Try it free for 7 days. Early access: invited families only.</p>
           <p className="mt-7 text-xs leading-relaxed max-w-xl" style={{color:"#7A6E5D"}}>
             A planning, teaching and record-keeping tool. Parents remain responsible for selecting an appropriate
-            program and confirming alignment with current NESA requirements.
+            program and for meeting the home education requirements of your own state or territory. Side Quest does not provide legal or compliance advice.
           </p>
         </div>
         <div className="lg:col-span-2 relative">
@@ -116,8 +116,8 @@ export default function Landing() {
           <h2 className="font-display text-3xl md:text-4xl font-bold" style={{color:"#1F3B2D"}}>Plan. Teach. <span className="hand-underline">Record.</span></h2>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-          <Feature icon={Users} title="One family, every stage" desc="Add children from Kindergarten to Year 12. Different subject levels per child. Private by family." tint="#4A5D3A"/>
-          <Feature icon={Sparkles} title="Ready-made lessons" desc="Stage-appropriate lessons with explicit teaching, success criteria, NESA outcome tags, and offline alternatives." tint="#C77B5B"/>
+          <Feature icon={Users} title="One family, every stage" desc="Add your children at any stage. Different subject levels per child. Private by family." tint="#4A5D3A"/>
+          <Feature icon={Sparkles} title="Build your own lessons" desc="Write lessons in plain words with teaching, activities, questions and quizzes. Save them to your family library and assign them to any child." tint="#C77B5B"/>
           <Feature icon={Camera} title="Evidence portfolio" desc="Typed answers, photos of paper work, scans, audio, video — stored privately for parent review." tint="#6B8A5B"/>
           <Feature icon={CalendarDays} title="Family calendar" desc="Month, week and day planning. Catch-up days, excursions, and co-ops." tint="#C8893B"/>
           <Feature icon={BookOpen} title="Curriculum audit" desc="Spot lessons without outcomes, missing evidence, unapproved resources and coverage gaps." tint="#4A5D3A"/>
@@ -149,7 +149,7 @@ export default function Landing() {
       </section>
 
       <footer className="relative z-10 border-t py-10 text-center text-xs" style={{color:"#7A6E5D", borderColor:"#D4C8A8"}}>
-        <p>Side Quest Learning · Supports NSW initial curriculum · Architecture ready for other jurisdictions.</p>
+        <p>Side Quest Learning · Built for homeschool families across Australia.</p>
         <p className="mt-1 font-script text-base" style={{color:"#C77B5B"}}>Made with care for homeschool families.</p>
       </footer>
     </div>

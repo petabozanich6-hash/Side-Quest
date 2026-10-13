@@ -323,8 +323,8 @@ export default function ChildLesson() {
       }
 
       setSubmitted(true);
-    } catch {
-      toast.error("Submit failed");
+    } catch (err) {
+      toast.error(err?.response?.data?.detail || "Submit failed");
     } finally {
       setSubmitting(false);
     }
