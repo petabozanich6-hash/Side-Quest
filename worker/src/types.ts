@@ -27,6 +27,8 @@ export type Env = {
   GOOGLE_OAUTH_CLIENT_ID?: string;
   GOOGLE_OAUTH_CLIENT_SECRET?: string;
   OWNER_PASSWORD?: string;
+  /** Private staging only: when set, every /api call needs the access cookie granted by /api/staging-access?key=... */
+  STAGING_KEY?: string;
 };
 export type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
 export type Vars = { user: AuthUser };

@@ -4,6 +4,8 @@ import { sign, verify } from "hono/jwt";
 import type { MiddlewareHandler } from "hono";
 import { hashSecret, verifySecret } from "./auth";
 import { registerCore } from "./core";
+import { trialEndFrom } from "./entitlements";
+import { checkCanAddChild } from "./lessonBuilder";
 import { registerFamily, studentOut, studentExtraFromBody, STUDENT_SELECT } from "./family";
 import { registerLearning } from "./learning";
 import { registerPets } from "./pets";
@@ -22,6 +24,31 @@ const app: App = new Hono<{ Bindings: Env; Variables: Vars }>();
 const TOKEN_DAYS = 30;
 
 app.use("/api/*", cors());
+
+// Private staging gate. Off unless STAGING_KEY is set (it is never set in production).
+// Visit /api/staging-access?key=<STAGING_KEY> once in a browser to receive the access cookie.
+const sameText = (a: string, b: string) => {
+  if (a.length !== b.length) return false;
+  let d = 0;
+  for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return d === 0;
+};
+app.use("/api/*", async (c, next) => {
+  const key = c.env.STAGING_KEY;
+  if (!key) return next();
+  if (c.req.path === "/api/staging-access") {
+    if (sameText(c.req.query("key") || "", key)) {
+      return new Response(null, {
+        status: 302,
+        headers: { location: "/", "set-cookie": `sq_staging=${encodeURIComponent(key)}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=2592000` },
+      });
+    }
+    return c.json({ detail: "Not found" }, 404);
+  }
+  const cookie = (c.req.header("cookie") || "").split(";").map((x) => x.trim()).find((x) => x.startsWith("sq_staging="));
+  if (!cookie || !sameText(decodeURIComponent(cookie.slice(11)), key)) return c.json({ detail: "Private staging site" }, 403);
+  return next();
+});
 
 const nowIso = () => new Date().toISOString();
 const newId = () => crypto.randomUUID();
@@ -84,8 +111,8 @@ app.post("/api/auth/register", async (c) => {
   const familyName = String(b.family_name || "").trim() || `${name}'s Family`;
   const ts = nowIso();
   await c.env.DB.batch([
-    c.env.DB.prepare("INSERT INTO families (id, name, owner_id, created_at) VALUES (?, ?, ?, ?)")
-      .bind(familyId, familyName, userId, ts),
+    c.env.DB.prepare("INSERT INTO families (id, name, owner_id, created_at, plan, trial_started_at, trial_ends_at) VALUES (?, ?, ?, ?, 'FREE_PREVIEW', ?, ?)")
+      .bind(familyId, familyName, userId, ts, ts, trialEndFrom(ts)),
     c.env.DB.prepare(
       "INSERT INTO users (id, family_id, email, password_hash, name, is_owner, created_at) VALUES (?, ?, ?, ?, ?, 1, ?)"
     ).bind(userId, familyId, email, await hashSecret(password), name, ts),
@@ -150,6 +177,8 @@ app.post("/api/students", requireAuth, requireParent, async (c) => {
   }
   const taken = await c.env.DB.prepare("SELECT id FROM students WHERE username = ?").bind(username).first();
   if (taken) return c.json({ detail: "Username already taken" }, 400);
+  const allowed = await checkCanAddChild(c.env.DB, c.get("user").family_id);
+  if (!allowed.ok) return c.json({ detail: allowed.detail, code: allowed.code }, allowed.status as any);
 
   const theme = b.theme || (stage === "ES1" ? "early" : ["S1", "S2", "S3"].includes(stage) ? "primary" : ["S4", "S5"].includes(stage) ? "secondary" : "senior");
   const id = newId();

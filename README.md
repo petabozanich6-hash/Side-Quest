@@ -4,7 +4,7 @@ Side-Quest is becoming an **Australia-wide homeschooling management and parent-t
 
 Families will build or bring their own lessons, assign activities to children, review work, and manage planning, resources, learning evidence and progress. The product no longer depends on building thousands of proprietary curriculum lessons. Do not present this app as a complete K–10 curriculum or as automatically compliant with each state's registration requirements.
 
-**Development status:** The new family Lesson Builder and child workflow are being implemented and tested on [`dev/sidequest-execution`](https://github.com/petabozanich6-hash/Side-Quest/tree/dev/sidequest-execution). The `main` branch retains the older runtime until the new workflow has passed integration and release testing. Do not confuse documentation cleanup with deployment of new features.
+**Development status:** The family Lesson Builder, child lesson player, assignments, review, XP and plan limits are built and pass CI (build, TypeScript, worker tests and a browser end-to-end run). **Before this code is deployed, back up the live database and apply migration `0050` (`npm run db:migrate`), otherwise registration and lessons will error.** Billing and AI are not live. See `docs/SIDEQUEST-EXECUTION.md`.
 
 ## Repository structure
 
@@ -36,6 +36,7 @@ Useful verification:
 
 ```bash
 npm run typecheck
+npm run test:worker
 CI=false npm --prefix frontend run build
 npx wrangler deploy --dry-run
 BASE_URL=http://localhost:8787 npm run smoke

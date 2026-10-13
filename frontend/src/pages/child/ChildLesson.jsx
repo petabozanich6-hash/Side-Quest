@@ -323,8 +323,8 @@ export default function ChildLesson() {
       }
 
       setSubmitted(true);
-    } catch {
-      toast.error("Submit failed");
+    } catch (err) {
+      toast.error(err?.response?.data?.detail || "Submit failed");
     } finally {
       setSubmitting(false);
     }
@@ -896,6 +896,7 @@ export default function ChildLesson() {
           <QuestQuiz
             quiz={l.quiz}
             passMark={l.pass_mark || 0.9}
+            assignmentId={aid}
             onResult={setQuizResult}
             shortAnswers={quizShortAnswers}
             onShortAnswers={setQuizShortAnswers}

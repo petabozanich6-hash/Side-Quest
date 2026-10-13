@@ -1,8 +1,9 @@
 import type { Hono, MiddlewareHandler } from "hono";
 import { applySpelling } from "./data/spelling";
+import * as lb from "./lessonBuilder";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
-type Env = { DB: D1Database; JWT_SECRET: string };
+type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket };
 type App = Hono<{ Bindings: Env; Variables: { user: AuthUser } }>;
 
 const nowIso = () => new Date().toISOString();
@@ -57,11 +58,6 @@ const resOut = (r: any) => ({ ...r, approved: !!r.approved, shared: !!r.shared }
 const cheerOut = (r: any) => ({ ...r, seen: !!r.seen });
 
 export function registerCore(app: App, auth: MiddlewareHandler, parent: MiddlewareHandler) {
-  const getLesson = (c: any, id: string) =>
-    c.env.DB.prepare(
-      "SELECT * FROM lessons WHERE id = ? AND (family_id = ? OR family_id IS NULL)"
-    ).bind(id, c.get("user").family_id).first();
-
   // ---------- Dashboards ----------
   app.get("/api/dashboard/parent", auth, parent, async (c) => {
     const fid = c.get("user").family_id;
@@ -97,7 +93,9 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       "SELECT * FROM assignments WHERE student_id = ? AND status IN ('not_started','opened','in_progress','awaiting_help','needs_revision') ORDER BY created_at DESC LIMIT 50"
     ).bind(u.id).all<any>();
     for (const a of pending) {
-      a.lesson = lessonSummary(await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first());
+      const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      a.lesson = lb.childSafeLesson(lb.assignmentLesson(a, live));
+      delete a.lesson_snapshot;
     }
     const { results: fb } = await db.prepare(
       "SELECT * FROM submissions WHERE student_id = ? AND parent_feedback IS NOT NULL ORDER BY reviewed_at DESC LIMIT 5"
@@ -105,7 +103,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const feedback = [];
     for (const f of fb) {
       const o: any = subOut(f);
-      o.lesson = lessonSummary(await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(f.lesson_id).first());
+      o.lesson = lb.childSafeLesson(lessonSummary(await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(f.lesson_id).first()));
       feedback.push(o);
     }
     const { results: ch } = await db.prepare(
@@ -114,8 +112,31 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const student = await db.prepare(
       "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, extra FROM students WHERE id = ?"
     ).bind(u.id).first<any>();
+    const { results: doneRows } = await db.prepare(
+      "SELECT * FROM assignments WHERE student_id = ? AND status IN ('accepted','demonstrated','completed') ORDER BY updated_at DESC LIMIT 20"
+    ).bind(u.id).all<any>();
+    const completed = [];
+    for (const a of doneRows) {
+      const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      const l: any = lb.childSafeLesson(lb.assignmentLesson(a, live)) || {};
+      completed.push({ id: a.id, status: a.status, updated_at: a.updated_at, lesson: { title: l.title, learning_area: l.learning_area } });
+    }
+    const { results: waitRows } = await db.prepare(
+      "SELECT * FROM assignments WHERE student_id = ? AND status = 'submitted' ORDER BY updated_at DESC LIMIT 20"
+    ).bind(u.id).all<any>();
+    const waiting = [];
+    for (const a of waitRows) {
+      const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      const l: any = lb.assignmentLesson(a, live) || {};
+      waiting.push({ id: a.id, lesson: { title: l.title, learning_area: l.learning_area } });
+    }
+    const pet = await db.prepare("SELECT xp FROM pets WHERE student_id = ?").bind(u.id).first<{ xp: number }>().catch(() => null);
+    for (const a of pending) delete a.draft;
     return c.json({
       student: { ...studentOut(student), role: "child" },
+      completed,
+      waiting,
+      xp: pet?.xp ?? 0,
       today: pending.slice(0, 5),
       all_pending: pending,
       feedback,
@@ -123,55 +144,93 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     });
   });
 
-  // ---------- Lessons ----------
+  app.get("/api/features", auth, (c) => c.json({ uploads: !!c.env.BUCKET }));
+
+  // ---------- Portfolio export (parent only) ----------
+  app.get("/api/portfolio", auth, parent, async (c) => {
+    const u = c.get("user");
+    const sid = c.req.query("student_id") || "";
+    const student = await c.env.DB.prepare("SELECT id, name, stage, year_level FROM students WHERE id = ? AND family_id = ?").bind(sid, u.family_id).first<any>();
+    if (!student) return c.json({ detail: "Student not found" }, 404);
+    const { limits } = await lb.getEntitlement(c.env.DB, u.family_id);
+    const { results } = await c.env.DB.prepare(
+      "SELECT s.*, a.lesson_snapshot FROM submissions s JOIN assignments a ON a.id = s.assignment_id WHERE s.family_id = ? AND s.student_id = ? AND s.status IN ('accepted','demonstrated') ORDER BY s.reviewed_at DESC LIMIT 500"
+    ).bind(u.family_id, sid).all<any>();
+    const total = results.length;
+    const rows = limits.fullExports ? results : results.slice(0, 1);
+    const items = [];
+    for (const r of rows) {
+      const live = r.lesson_snapshot ? null : await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first();
+      const l: any = lb.assignmentLesson({ lesson_snapshot: r.lesson_snapshot }, live) || {};
+      const fileIds: string[] = parseJson(r.file_ids, []);
+      const files = [];
+      for (const fid of fileIds.slice(0, 20)) {
+        const f = await c.env.DB.prepare("SELECT id, original_filename FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fid, u.family_id).first<any>();
+        if (f) files.push({ id: f.id, name: f.original_filename });
+      }
+      items.push({
+        id: r.id, title: l.title || "Lesson", learning_area: l.learning_area || "", year_level: l.year_level || "",
+        submitted_at: r.submitted_at, reviewed_at: r.reviewed_at, status: r.status,
+        response_text: r.response_text, reflection: r.reflection, parent_feedback: r.parent_feedback, next_step: r.next_step, files,
+      });
+    }
+    return c.json({ student, items, total, limited: !limits.fullExports && total > items.length, generated_at: nowIso() });
+  });
+
+  // ---------- Account plan ----------
+  app.get("/api/account/plan", auth, async (c) => {
+    return c.json(await lb.planSummary(c.env.DB, c.get("user").family_id));
+  });
+
+  // ---------- Lessons (family library; pre-made lessons are hidden: "Side-Quest upgrade coming later") ----------
+  const send = (c: any, r: lb.Fail) => c.json({ detail: r.detail, code: r.code }, r.status);
+
   app.get("/api/lessons", auth, parent, async (c) => {
-    const stage = c.req.query("stage");
-    const unit = c.req.query("unit_id");
-    let sql = "SELECT * FROM lessons WHERE (family_id = ? OR family_id IS NULL)";
-    const b: any[] = [c.get("user").family_id];
-    if (stage) { sql += " AND stage = ?"; b.push(stage); }
-    if (unit) { sql += " AND unit_id = ?"; b.push(unit); }
-    sql += " ORDER BY created_at DESC";
-    const { results } = await c.env.DB.prepare(sql).bind(...b).all<any>();
-    return c.json(results.map(lessonOut));
+    const archived = c.req.query("archived") === "1";
+    return c.json(await lb.listLessons(c.env.DB, c.get("user").family_id, { archived, q: c.req.query("q") || undefined }));
   });
 
   app.get("/api/lesson-index", auth, parent, async (c) => {
-    const stage = c.req.query("stage");
-    const unit = c.req.query("unit_id");
-    let sql = "SELECT * FROM lessons WHERE (family_id = ? OR family_id IS NULL)";
-    const b: any[] = [c.get("user").family_id];
-    if (stage) { sql += " AND stage = ?"; b.push(stage); }
-    if (unit) { sql += " AND unit_id = ?"; b.push(unit); }
-    sql += " ORDER BY created_at DESC";
-    const { results } = await c.env.DB.prepare(sql).bind(...b).all<any>();
-    return c.json(results.map(lessonSummary));
+    const archived = c.req.query("archived") === "1";
+    return c.json(await lb.listLessons(c.env.DB, c.get("user").family_id, { archived, q: c.req.query("q") || undefined }));
   });
 
   app.post("/api/lessons", auth, parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
-    const title = String(b.title || "").trim();
-    if (!title) return c.json({ detail: "Title is required" }, 400);
-    const { title: _t, stage, learning_area, unit_id, status, id: _i, family_id: _f, ...rest } = b;
-    const id = newId();
-    const ts = nowIso();
-    await c.env.DB.prepare(
-      "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    ).bind(id, c.get("user").family_id, title, stage ?? null, learning_area ?? null, unit_id ?? null, status || "draft", JSON.stringify(rest), ts, ts).run();
-    return c.json(lessonOut(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(id).first()));
+    const r = await lb.createLesson(c.env.DB, c.get("user").family_id, b);
+    return r.ok ? c.json(r.lesson) : send(c, r);
   });
 
-  app.get("/api/lessons/:id", auth, async (c) => {
-    const l = await getLesson(c, c.req.param("id"));
+  app.put("/api/lessons/:id", auth, parent, async (c) => {
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await lb.updateLesson(c.env.DB, c.get("user").family_id, c.req.param("id"), b);
+    return r.ok ? c.json({ ...r.lesson, assigned_copies_unchanged: r.assigned_copies_unchanged }) : send(c, r);
+  });
+
+  app.post("/api/lessons/:id/duplicate", auth, parent, async (c) => {
+    const r = await lb.duplicateLesson(c.env.DB, c.get("user").family_id, c.req.param("id"));
+    return r.ok ? c.json(r.lesson) : send(c, r);
+  });
+
+  app.post("/api/lessons/:id/archive", auth, parent, async (c) => {
+    const r = await lb.setArchived(c.env.DB, c.get("user").family_id, c.req.param("id"), true);
+    return r.ok ? c.json({ ok: true }) : send(c, r);
+  });
+
+  app.post("/api/lessons/:id/restore", auth, parent, async (c) => {
+    const r = await lb.setArchived(c.env.DB, c.get("user").family_id, c.req.param("id"), false);
+    return r.ok ? c.json({ ok: true }) : send(c, r);
+  });
+
+  app.get("/api/lessons/:id", auth, parent, async (c) => {
+    const l = await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ? AND family_id = ?").bind(c.req.param("id"), c.get("user").family_id).first();
     if (!l) return c.json({ detail: "Lesson not found" }, 404);
-    return c.json(lessonOut(l));
+    return c.json(lb.lessonOut(l));
   });
 
   app.delete("/api/lessons/:id", auth, parent, async (c) => {
-    const r = await c.env.DB.prepare("DELETE FROM lessons WHERE id = ? AND family_id = ?")
-      .bind(c.req.param("id"), c.get("user").family_id).run();
-    if (!r.meta.changes) return c.json({ detail: "Lesson not found or cannot be deleted" }, 404);
-    return c.json({ ok: true });
+    const r = await lb.deleteLesson(c.env.DB, c.get("user").family_id, c.req.param("id"));
+    return r.ok ? c.json({ ok: true, archived: r.archived }) : send(c, r);
   });
 
   // ---------- Assignments ----------
@@ -185,22 +244,19 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     sql += " ORDER BY created_at DESC LIMIT 500";
     const { results } = await c.env.DB.prepare(sql).bind(...b).all<any>();
     for (const a of results) {
-      a.lesson = lessonOut(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first());
+      const live = a.lesson_snapshot ? null : await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      const l = lb.assignmentLesson(a, live);
+      a.lesson = u.role === "child" ? lb.childSafeLesson(l) : l;
+      delete a.lesson_snapshot;
+      delete a.draft;
     }
     return c.json(results);
   });
 
   app.post("/api/assignments", auth, parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
-    if (!b.student_id || !b.lesson_id) return c.json({ detail: "student_id and lesson_id are required" }, 400);
-    const fid = c.get("user").family_id;
-    const st = await c.env.DB.prepare("SELECT id FROM students WHERE id = ? AND family_id = ?").bind(b.student_id, fid).first();
-    if (!st) return c.json({ detail: "Student not found" }, 404);
-    const id = newId();
-    await c.env.DB.prepare(
-      "INSERT INTO assignments (id, family_id, student_id, lesson_id, due_date, scheduled_date, support_level, parent_notes, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'not_started', ?)"
-    ).bind(id, fid, b.student_id, b.lesson_id, b.due_date ?? null, b.scheduled_date ?? null, b.support_level || "green", b.parent_notes ?? null, nowIso()).run();
-    return c.json(await c.env.DB.prepare("SELECT * FROM assignments WHERE id = ?").bind(id).first());
+    const r = await lb.assignLesson(c.env.DB, c.get("user").family_id, b);
+    return r.ok ? c.json(r.assignment) : send(c, r);
   });
 
   app.get("/api/assignments/:id", auth, async (c) => {
@@ -210,7 +266,16 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     if (u.role === "child") { sql += " AND student_id = ?"; b.push(u.id); }
     const a: any = await c.env.DB.prepare(sql).bind(...b).first();
     if (!a) return c.json({ detail: "Not found" }, 404);
-    a.lesson = lessonOut(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first());
+    const live = a.lesson_snapshot ? null : await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+    const l = lb.assignmentLesson(a, live);
+    a.lesson = u.role === "child" ? lb.childSafeLesson(l) : l;
+    delete a.lesson_snapshot;
+    if (u.role === "child") {
+      a.draft = parseJson(a.draft, null);
+      a.quiz_passed = await lb.quizPassed(c.env.DB, u, a, l);
+    } else {
+      delete a.draft;
+    }
     const { results } = await c.env.DB.prepare("SELECT * FROM submissions WHERE assignment_id = ? ORDER BY submitted_at DESC LIMIT 50").bind(a.id).all<any>();
     a.submissions = results.map(subOut);
     return c.json(a);
@@ -237,19 +302,28 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const u = c.get("user");
     if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
     const b: any = await c.req.json().catch(() => ({}));
-    const a: any = await c.env.DB.prepare("SELECT * FROM assignments WHERE id = ? AND student_id = ?").bind(b.assignment_id, u.id).first();
-    if (!a) return c.json({ detail: "Assignment not found" }, 404);
-    const needsHelp = !!b.needs_help;
-    const status = needsHelp ? "awaiting_help" : "submitted";
-    const id = newId();
-    const ts = nowIso();
-    await c.env.DB.batch([
-      c.env.DB.prepare(
-        "INSERT INTO submissions (id, family_id, assignment_id, student_id, lesson_id, response_text, reflection, file_ids, needs_help, status, submitted_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-      ).bind(id, u.family_id, a.id, u.id, a.lesson_id, b.response_text ?? null, b.reflection ?? null, JSON.stringify(b.file_ids || []), needsHelp ? 1 : 0, status, ts),
-      c.env.DB.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ?").bind(status, ts, a.id),
-    ]);
-    return c.json({ id, status, assignment_id: a.id, submitted_at: ts, xp_gained: 0 });
+    const r = await lb.submitWork(c.env.DB, u, b);
+    if (!r.ok) return send(c, r);
+    const { ok: _ok, ...out } = r;
+    return c.json(out);
+  });
+
+  app.put("/api/assignments/:id/draft", auth, async (c) => {
+    const u = c.get("user");
+    if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await lb.saveDraft(c.env.DB, u, c.req.param("id"), b);
+    return r.ok ? c.json({ ok: true, saved_at: r.saved_at }) : send(c, r);
+  });
+
+  app.post("/api/assignments/:id/quiz-check", auth, async (c) => {
+    const u = c.get("user");
+    if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await lb.checkQuiz(c.env.DB, u, c.req.param("id"), b.answers);
+    if (!r.ok) return send(c, r);
+    const { ok: _ok, ...out } = r;
+    return c.json(out);
   });
 
   app.get("/api/submissions", auth, async (c) => {
@@ -280,27 +354,23 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const r: any = await c.env.DB.prepare(sql).bind(...b).first();
     if (!r) return c.json({ detail: "Not found" }, 404);
     const s: any = subOut(r);
-    s.lesson = lessonOut(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first());
+    const sl = lessonOut(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first());
+    s.lesson = u.role === "child" ? lb.childSafeLesson(sl) : sl;
     s.student = await c.env.DB.prepare("SELECT id, name, username, stage, year_level, theme FROM students WHERE id = ?").bind(r.student_id).first();
+    const ids: string[] = Array.isArray(s.file_ids) ? s.file_ids.slice(0, 20) : [];
     s.files = [];
+    for (const fid of ids) {
+      const f = await c.env.DB.prepare("SELECT id, original_filename, content_type, size FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fid, u.family_id).first();
+      if (f) s.files.push(f);
+    }
     return c.json(s);
   });
 
   app.post("/api/submissions/:id/feedback", auth, parent, async (c) => {
     const u = c.get("user");
     const b: any = await c.req.json().catch(() => ({}));
-    const allowed = ["accepted", "needs_revision", "demonstrated", "needs_more_practice"];
-    if (!allowed.includes(b.status)) return c.json({ detail: "Invalid status" }, 400);
-    const sub: any = await c.env.DB.prepare("SELECT * FROM submissions WHERE id = ? AND family_id = ?").bind(c.req.param("id"), u.family_id).first();
-    if (!sub) return c.json({ detail: "Not found" }, 404);
-    const ts = nowIso();
-    await c.env.DB.batch([
-      c.env.DB.prepare(
-        "UPDATE submissions SET parent_feedback = ?, status = ?, next_step = ?, outcome_mappings = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ?"
-      ).bind(b.feedback_text ?? "", b.status, b.next_step ?? null, JSON.stringify(b.outcome_mappings || []), ts, u.id, sub.id),
-      c.env.DB.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ?").bind(b.status, ts, sub.assignment_id),
-    ]);
-    return c.json({ ok: true });
+    const r = await lb.reviewSubmission(c.env.DB, u.family_id, u.id, c.req.param("id"), b);
+    return r.ok ? c.json({ ok: true, xp_awarded: r.xp_awarded }) : send(c, r);
   });
 
   // ---------- Resources ----------

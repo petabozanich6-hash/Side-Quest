@@ -96,6 +96,14 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
           <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Student response</div>
           <div className="rounded-lg bg-slate-50 border border-slate-200 p-3 text-sm whitespace-pre-wrap">{sub.response_text || "—"}</div>
         </section>
+        {(sub.lesson?.answer_key || (sub.lesson?.questions || []).some(q => q.answer_key)) && (
+          <section className="mb-5" data-testid="answer-key">
+            <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Your answer key</div>
+            <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm whitespace-pre-wrap">
+              {(sub.lesson.questions || []).map((q, i) => q.answer_key ? `${i + 1}. ${q.answer_key}\n` : "").join("")}{sub.lesson.answer_key || ""}
+            </div>
+          </section>
+        )}
         {sub.reflection && <section className="mb-5"><div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Reflection</div><div className="rounded-lg bg-slate-50 border border-slate-200 p-3 text-sm whitespace-pre-wrap">{sub.reflection}</div></section>}
 
         {sub.files?.length > 0 && (

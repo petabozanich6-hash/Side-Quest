@@ -48,10 +48,10 @@ export default function Register() {
           <div className="font-script text-3xl mb-2" style={{color:"#D4A574"}}>Welcome, kindred spirit.</div>
           <h2 className="font-display text-4xl font-bold leading-tight">Begin your family's learning journey.</h2>
           <ul className="mt-6 space-y-2.5 text-sm" style={{color:"#E8E2D1"}}>
-            <li className="flex gap-2"><span>·</span>Multiple children, Kindergarten through Year 12</li>
-            <li className="flex gap-2"><span>·</span>Lessons aligned to NSW stages and NESA outcomes</li>
+            <li className="flex gap-2"><span>·</span>Build lessons yourself and assign them to each child</li>
+            <li className="flex gap-2"><span>·</span>Australia-wide: use whichever curriculum your family follows</li>
             <li className="flex gap-2"><span>·</span>Evidence portfolio with photo, audio, video, PDF</li>
-            <li className="flex gap-2"><span>·</span>Printable + offline alternatives for every lesson</li>
+            <li className="flex gap-2"><span>·</span>Offline activities and answer keys, just for you</li>
             <li className="flex gap-2"><span>·</span>Each child gets a pocket pet that grows with them</li>
           </ul>
           <div className="mt-6 flex gap-3">

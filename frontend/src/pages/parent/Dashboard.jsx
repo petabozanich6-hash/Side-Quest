@@ -34,13 +34,14 @@ export default function ParentDashboard() {
   const [waiting, setWaiting] = useState([]);
   const [readingPending, setReadingPending] = useState([]);
   const [openId, setOpenId] = useState(null);
+  const [plan, setPlan] = useState(null);
 
   const load = () => {
     api.get("/dashboard/parent").then(r => setData(r.data));
     api.get("/submissions").then(r => setWaiting((r.data || []).filter(s => ["submitted", "awaiting_help"].includes(s.status))));
     api.get("/reading-submissions/pending").then(r => setReadingPending(r.data || [])).catch(() => setReadingPending([]));
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {}); }, []);
   if (!data) return <div className="p-10 text-stone-500">Loading dashboard…</div>;
 
   const pendingTotal = waiting.length + readingPending.length;
@@ -59,6 +60,31 @@ export default function ParentDashboard() {
           </p>
         </div>
       </header>
+
+      {(() => {
+        const kids = data.students.length;
+        const lessons = plan?.usage?.lessons ?? 0;
+        const assigned = data.students.reduce((n, s) => n + (s.total_assignments || 0), 0);
+        const steps = [
+          { done: kids > 0, label: "Add your child", to: "/parent/children", cta: "Add a child" },
+          { done: lessons > 0, label: "Create a lesson", to: "/parent/lessons/new", cta: "Create a lesson" },
+          { done: assigned > 0, label: "Assign it to your child", to: "/parent/lessons", cta: "Choose a lesson" },
+          { done: data.students.some(s => s.completed > 0), label: "Review their work", to: "#waiting", cta: "See what is waiting" },
+        ];
+        if (steps.every(x => x.done)) return null;
+        const next = steps.find(x => !x.done);
+        return (
+          <section className="paper-card p-6 relative z-10" data-testid="get-started">
+            <h2 className="font-display text-xl font-bold" style={{color:"#1F3B2D"}}>Get started in four steps</h2>
+            <ol className="mt-3 space-y-1.5 text-sm">
+              {steps.map((x, i) => <li key={i} className={x.done ? "text-emerald-800" : "text-stone-700"}>{x.done ? "✓" : `${i + 1}.`} {x.label}</li>)}
+            </ol>
+            {next.to.startsWith("#") ? <a href={next.to} className="mt-4 inline-block rounded-full px-5 py-2.5 text-sm font-bold" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}}>{next.cta}</a>
+              : <Link to={next.to} className="mt-4 inline-block rounded-full px-5 py-2.5 text-sm font-bold" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="get-started-next">{next.cta}</Link>}
+            {kids > 0 && lessons === 0 && <Link to="/parent/lessons/new?example=1" className="mt-4 ml-3 inline-block text-sm font-bold underline" style={{color:"#4A5D3A"}} data-testid="try-example">Or start from an example lesson</Link>}
+          </section>
+        );
+      })()}
 
       <section className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <Stat icon={Users} label="Students" value={data.students.length} testid="stat-students" to="/parent/children"/>
@@ -97,6 +123,7 @@ export default function ParentDashboard() {
       <section>
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Jump in</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Quick to="/parent/lessons/new" icon={BookOpen} label="Create a lesson" desc="Build a lesson in your own words, then assign it" tint="#C77B5B" testid="quick-create-lesson"/>
           <Quick to="/parent/children" icon={Plus} label="Add a student" desc="Set up a child with username and PIN" tint="#4A5D3A" testid="quick-add-student"/>
           <Quick to="/parent/side-quest" icon={Wand2} label="Create a Side Quest" desc="Seasonal or interest-themed lessons mapped to outcomes" tint="#D4A574" testid="quick-sidequest"/>
           <Quick to="/parent/life-learning" icon={Trees} label="Log life learning" desc="Baking, bushwalks, projects — map them to outcomes" tint="#6B8A5B" testid="quick-life"/>

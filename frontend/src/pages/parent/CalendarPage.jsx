@@ -34,7 +34,7 @@ export default function CalendarPage() {
   const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "lesson", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
 
   const load = () => api.get("/calendar").then(r => setEvents(r.data));
-  useEffect(() => { load(); api.get("/students").then(r=>setStudents(r.data)); api.get("/lessons").then(r=>setLessons(r.data)); }, []);
+  useEffect(() => { load(); api.get("/students").then(r=>setStudents(r.data)); api.get("/lessons").then(r=>setLessons((r.data || []).filter(l => l.status === "ready"))); }, []);
 
   const colourOf = (sid) => {
     const i = students.findIndex(s => s.id === sid);
@@ -58,8 +58,12 @@ export default function CalendarPage() {
       for (const sid of targets) {
         let assignmentId = null;
         if (sid && form.linked_lesson_id) {
-          const a = await api.post("/assignments", { student_id: sid, lesson_id: form.linked_lesson_id, support_level: "green" });
-          assignmentId = a.data?.id || null;
+          try {
+            const a = await api.post("/assignments", { student_id: sid, lesson_id: form.linked_lesson_id, support_level: "green" });
+            assignmentId = a.data?.id || null;
+          } catch (e) {
+            if (e.response?.data?.code !== "ALREADY_ASSIGNED") throw e;
+          }
         }
         await api.post("/calendar", {
           ...form,
@@ -71,7 +75,7 @@ export default function CalendarPage() {
       }
       toast.success(targets.length > 1 ? `Scheduled for ${targets.length} children` : "Scheduled");
       setOpen(false); load();
-    } catch { toast.error("Failed. Some entries may already have been added."); load(); }
+    } catch (err) { toast.error(err.response?.data?.detail || "Failed. Some entries may already have been added."); load(); }
     finally { setSaving(false); }
   };
 

@@ -16,6 +16,8 @@ import ParentDashboard from "./pages/parent/Dashboard";
 import ChildrenPage from "./pages/parent/Children";
 import CurriculumPage from "./pages/parent/Curriculum";
 import LessonsPage from "./pages/parent/Lessons";
+import LessonBuilder from "./pages/parent/LessonBuilder";
+import UpgradePage from "./pages/parent/Upgrade";
 import ResourcesPage from "./pages/parent/Resources";
 import EvidencePage from "./pages/parent/Evidence";
 import CalendarPage from "./pages/parent/CalendarPage";
@@ -30,7 +32,7 @@ import TrustSupport from "./pages/parent/TrustSupport";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
-import ChildLesson from "./pages/child/ChildLesson";
+import ChildLessonRouter from "./pages/child/ChildLessonRouter";
 import ChildPortfolio from "./pages/child/ChildPortfolio";
 import ChildCalendar from "./pages/child/ChildCalendar";
 import ChildAchievements from "./pages/child/ChildAchievements";
@@ -65,6 +67,9 @@ function Router() {
         <Route path="children/:sid" element={<ChildOverviewPage />} />
         <Route path="curriculum" element={<CurriculumPage />} />
         <Route path="lessons" element={<LessonsPage />} />
+        <Route path="plan" element={<UpgradePage />} />
+        <Route path="lessons/new" element={<LessonBuilder />} />
+        <Route path="lessons/:id/edit" element={<LessonBuilder />} />
         <Route path="lessons/:id" element={<LessonDetail />} />
         <Route path="resources" element={<ResourcesPage />} />
         <Route path="evidence" element={<EvidencePage />} />
@@ -80,7 +85,7 @@ function Router() {
       </Route>
       <Route path="/child" element={<Guard role="child"><ChildLayout /></Guard>}>
         <Route index element={<ChildHome />} />
-        <Route path="lesson/:aid" element={<ChildLesson />} />
+        <Route path="lesson/:aid" element={<ChildLessonRouter />} />
         <Route path="portfolio" element={<ChildPortfolio />} />
         <Route path="calendar" element={<ChildCalendar />} />
         <Route path="achievements" element={<ChildAchievements />} />
