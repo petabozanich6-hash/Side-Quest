@@ -31,7 +31,7 @@ import TrustSupport from "./pages/parent/TrustSupport";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
-import ChildLessonRouter from "./pages/child/ChildLessonRouterRouter";
+import ChildLessonRouter from "./pages/child/ChildLessonRouter";
 import ChildPortfolio from "./pages/child/ChildPortfolio";
 import ChildCalendar from "./pages/child/ChildCalendar";
 import ChildAchievements from "./pages/child/ChildAchievements";
