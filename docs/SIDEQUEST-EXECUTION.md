@@ -40,6 +40,8 @@ Known curriculum risk: placeholder rows mix older 2012 outcome codes with new 20
 
 ## 4. Approved product direction
 
+**Content scope (changed 13 Oct 2026, latest instruction, wins over anything below):** 200 carefully curated lessons per education year, to the Lesson Standard v2 already in the repo. K-10 is 2,200 lessons (11 years); adding Years 11-12 would make 2,600. Years to cover and the split across subjects are still to be confirmed by the owner. The other 17,000+ queued placeholder rows are not to be authored; they are not deleted.
+
 Supersedes the all-lessons plan (19,202 / 4,902 individually authored lessons is cancelled; reuse existing work, delete none).
 
 - A. Verified core teaching modules (reusable, with worked examples, practice, feedback, misconceptions, assessment, mapping).
@@ -99,4 +101,4 @@ Exemplar module authoring (no npm needed).
 
 ## 11. Exact next task
 
-Author the Year 7 Mathematics "Integers" module in the lesson-excellence schema; validate with `npm run lessons:validate` and `npm run lessons:score`; then wire it into the app once npm access is available.
+Agree the 200-lesson blueprint for Year 7 and Year 3 (subject split and sequence, owner to confirm), then author the Year 7 Mathematics "Integers" lessons in the lesson-excellence schema; validate with `npm run lessons:validate` and `npm run lessons:score`; then wire it into the app once npm access is available.
