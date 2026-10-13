@@ -19,13 +19,30 @@
 - `worker/migrations/`: **historical immutable D1 migration chain**. Preserve all applied migration files and the schema, including `0050_lesson_builder_entitlements.sql`. The legacy curriculum seeds within older migrations remain for database reproducibility. Current family lesson APIs hide the 19,202 legacy records; their runtime database removal, if ever desired, requires separate backup, staging verification and explicit approval.
 - `wrangler.jsonc`: deployment config; do not modify production services as part of source cleanup.
 
-## Implemented on development branch — verification status
+## Operating mode (14 Oct 2026)
 
-- Claude's 14 October report: 11 automated worker workflow tests passed against a test database after migrations 0001–0050. They covered lesson creation, assignment, child submission, parent review, idempotent XP, family isolation, preview limits and assignment snapshots.
-- Subsequent commit `ffede6e`: server-side quiz marking and removal of correct answers from child-facing lesson views (requires continued CI/end-to-end verification).
-- React Builder and Library screens exist. A real production build and browser/mobile walkthrough have **not been confirmed** here.
-- Migration 0050 has **not** been approved/applied to production. File uploads require R2 (currently not live). AI and billing are not live.
-- Remaining NSW-only wording and legal copy require review; parents' data privacy and security must be verified before public release.
+Claude builds and integrates; the owner tests by hand on a private staging site; ChatGPT may prepare small PRs (wording, docs, small UI) on separate branches; GitHub Actions verifies. Build order: (1) lesson builder and library, (2) assign and schedule, (3) child dashboard and lessons, (4) submissions, review, progress, evidence, XP, (5) uploads, (6) weekly planner, (7) portfolio and exports, (8) national onboarding, (9) preview entitlements and upgrade screens, (10) billing prep (owner approval needed). No AI generation until the core works and API costs are approved.
+
+## Implemented on the development branch (verified by CI unless noted)
+
+- GitHub Actions (`.github/workflows/ci.yml`): npm install, worker tests (11), worker TypeScript check, real frontend production build, and a browser end-to-end run against a local Worker and local D1. Logs and screenshots are pushed to the `ci-results` branch. Latest confirmed: install, tests, typecheck and build pass; end-to-end 23 of 24 steps passed, the one failure was a test-script bug that is now fixed (re-run pending).
+- End-to-end covers: register a new free-preview family, add a child, build/preview/save/duplicate a lesson, library, assign, child signs in on a phone-size screen and picks a pet, sees real lesson content, answers saved across refresh, server-marked quiz, server refuses hand-in before quiz is passed, hand in, parent reviews with answer key, XP awarded once, evidence page, snapshot unchanged after library edit, another family cannot read or change anything, legacy 19,202 lessons hidden and not assignable, plan cannot be self-upgraded, expired preview blocks create/assign but keeps data, phone layouts.
+- Quiz answers are marked on the server; child lesson responses carry no answer keys or parent notes. Children's work in progress is saved on the server.
+- Migration 0050 applies cleanly in CI to a fresh local database. It has **not** been approved or applied to production.
+- Responsive parent layout (menu drawer on phones), usable child header on phones, parent "get started" checklist and an example lesson, child dashboard shows XP, completed and waiting quests.
+
+## Private staging
+
+`wrangler.staging.jsonc` and `.github/workflows/deploy-staging.yml` (manual). Separate Worker `side-quest-staging` and separate D1 `sidequest-staging`; never production. The staging API is gated by a cookie obtained from `/api/staging-access?key=<STAGING_KEY>`.
+
+Owner steps: (1) Cloudflare dashboard > My Profile > API Tokens > Create Token from the "Edit Cloudflare Workers" template, add Account > D1 > Edit. (2) Copy the Account ID (Workers & Pages overview). (3) GitHub repo > Settings > Environments > New environment `staging` > secrets CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, STAGING_JWT_SECRET (long random text), STAGING_KEY (long random text). (4) Actions > "Deploy staging (private)" > Run workflow on `dev/sidequest-execution`. (5) Open `https://side-quest-staging.<your-workers-subdomain>.workers.dev/api/staging-access?key=<STAGING_KEY>` once, then use the site.
+
+## Known limitations and blockers
+
+- No Cloudflare credentials in the build environment: staging deploy needs the owner's secrets (above).
+- Uploads: the R2 code in `worker/src/family.ts` (family-scoped, type allow-list, 50 MB cap, nosniff, sandbox CSP) is sound, but no bucket is bound. Not enabled; the app says photo upload is unavailable. Enabling needs `wrangler r2 bucket create` and a binding (owner approval).
+- Billing and AI are not live. Remaining NSW-specific tools (curriculum links, learning plans, legal copy) are truthful about being NSW-based but need owner/legal review.
+- Pet-care XP and lesson XP share one counter; first-time children must choose a pet before anything else.
 
 ## Targeted legacy lesson source cleanup
 
