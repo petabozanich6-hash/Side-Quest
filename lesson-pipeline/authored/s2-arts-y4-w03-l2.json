@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Draw four thumbnails for one subject. Mark thirds lightly, circle your focal point on the best one and write two reasons you chose it. Then begin a larger draft from that plan. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Centred tree feels static. Tree on left third with house on right third and a path between feels balanced and leads the eye.' Planning explains the choice. Reasoning: I used thumbnail by attending to rule of thirds rather than copying the worked model.\n\nParent: Written model 2: Common error: Skipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions. Correction: Strong answer: 'Centred tree feels static. Tree on left third with house on right third and a path between feels balanced and leads the eye.' Planning… Why: the correction restores accurate use of thumbnail.\n\nParent: Likely misconception: Skipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating thumbnail on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with thumbnail, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Draw four thumbnails for one subject. Mark thirds lightly, circle your focal point on the best one and write two reasons you chose it. Then begin a larger draft from that plan. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using thumbnail on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Skipping thumbnails and starting large immediately.. Correction: Strong answer: 'Centred tree feels static.. Why it helps the audience is stated.\n\nParent: Likely misconception: Skipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating thumbnail on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with thumbnail, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about thumbnail with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for thumbnail. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Centred tree feels static. Tree on left third with house on right third and a path between feels balanced and leads the eye.' Planning… This matches the lesson skill for thumbnail.",
+        "explanation": "This matches the taught method for thumbnail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Skipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Centred tree feels static. Tree on left third with house on right third and a path between feels balanced and leads the eye.' Planning…"
+          "Skipping thumbnails and starting large immediately.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'Centred tree feels static."
         ],
         "question": "You want to paint a tree and a house. Sketch two thumbnail ideas in words: one with the tree centred, one using thirds. Say which you would choose and why. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Skipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for thumbnail; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Before a final artwork, artists plan with thumbnails: small quick sketches that test composition. Mentally divide the page into thirds both ways; placing a…",
-          "Strong answer: 'Centred tree feels static. Tree on left third with house on right third and a path between feels balanced and leads the eye.' Planning…",
-          "Careful use of rule of thirds with clear evidence.",
-          "Skipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions."
+          "Before a final artwork, artists plan with thumbnails: small quick sketches that test composition.",
+          "'Centred tree feels static.",
+          "Careful use of rule of thirds and explain why it matter with clear evidence.",
+          "Skipping thumbnails and starting large immediately."
         ],
-        "question": "Which statement is a common mistake when practising thumbnail?",
+        "question": "Which statement is a common mistake when working with thumbnail?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named rule of thirds, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named rule of thirds and explain why it matter, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the rule of thirds used.",
+          "Apply thumbnail to new material and name the rule of thirds and explain why it matter used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Skipping thumbnails and starting large immediately.",
+          "Name rule of thirds and explain why it matter only, without linking it to thumbnail."
         ],
-        "question": "A learner is practising thumbnail. Which approach best shows understanding?",
+        "question": "Which response best applies thumbnail with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Centred tree feels static. Tree on left third with house on right third and a path between feels balanced and leads the eye.' Planning… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on thumbnail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Centred tree feels static. Tree on left third with house on right third and a path between feels balanced and leads the eye.' Planning…",
-          "Skipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions.",
+          "'Centred tree feels static.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Skipping thumbnails and starting large immediately."
         ],
-        "question": "Which response best shows careful thinking about thumbnail?",
+        "question": "Which response best uses elements, techniques and audience effect for thumbnail?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Skipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions.",
-          "Name a specific source, cue or example and say what it shows about thumbnail.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
+          "Skipping thumbnails and starting large immediately.",
+          "Name a specific element or technique and say what effect it creates for thumbnail.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which habit strengthens evidence about rule of thirds?",
+        "question": "Which evidence move best supports a claim about thumbnail?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Example: Mia draws three thumbnails of a market stall. Thumbnail 2 places the fruit stall on a left third-line with a path leading in from…",
-          "Skipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Mia draws three thumbnails of a market stall.",
+          "Skipping thumbnails and starting large immediately.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — Before a final artwork, artists plan with thumbnails: small quick sketches that test composition. Mentally… — which choice is best?",
+        "question": "Using this lesson idea — Before a final artwork, artists plan with thumbnails: small quick sketches that test composition. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for thumbnail?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Skipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions.",
-          "Draw four thumbnails for one subject. Mark thirds lightly, circle your focal point on the best one and write two reasons you chose it. Then begin a…",
+          "Name rule of thirds and explain why it matter only, with no linked example.",
+          "Draw four thumbnails for one subject.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Skipping thumbnails and starting large immediately."
         ],
-        "question": "Which task best shows independent use of thumbnail?",
+        "question": "Which independent response best applies thumbnail to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about thumbnail with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating thumbnail on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Centred tree feels static. Tree on left third with house on right third and a path between feels balanced and leads the eye.' Planning explains the choice. Reasoning: I used thumbnail by attending to rule of thirds rather than copying the worked model.",
+        "sample_answer": "Sample: original example using thumbnail on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for thumbnail. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with thumbnail, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Skipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions. Correction: Strong answer: 'Centred tree feels static. Tree on left third with house on right third and a path between feels balanced and leads the eye.' Planning… Why: the correction restores accurate use of thumbnail.",
+        "sample_answer": "Sample error: Skipping thumbnails and starting large immediately.. Correction: Strong answer: 'Centred tree feels static.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Before a final artwork, artists plan with thumbnails: small quick sketches that test composition. Mentally divide the page into thirds both ways; placing a focal point near an intersection often feels balanced. Check that large shapes balance smaller ones and that the eye has a…",
+          "explanation": "Before a final artwork, artists plan with thumbnails: small quick sketches that test composition.",
           "options": [
-            "Before a final artwork, artists plan with thumbnails: small quick sketches that test composition. Mentally divide the page into thirds both ways; placing a focal point near an intersection often feels balanced. Check that large shapes balance smaller ones and that the eye has a path through the picture. Choose the best thumbnail before you start the final piece.",
+            "Before a final artwork, artists plan with thumbnails: small quick sketches that test composition.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about thumbnail?",
+          "question": "Which choice best applies this lesson idea about thumbnail with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Mia draws three thumbnails of a market stall. Thumbnail 2 places the fruit stall on a left third-line with a path leading in from the right. She enlarges that plan for her final painting.\n\nTRY FIRST\nYou want to paint a tree and a house. Sketch two thumbnail ideas in words: one with the tree centred, one using thirds. Say which you would choose and why.\n\nFEEDBACK\nStrong answer: 'Centred tree feels static. Tree on left third with house on right third and a path between feels balanced and leads the eye.' Planning explains the choice.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
+            "An answer copied without understanding.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about thumbnail?",
+          "question": "Which choice best applies this lesson idea about thumbnail with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Mia draws three thumbnails of a market stall. Thumbnail 2 places the fruit stall on a left third-line with a path leading in from the right. She enlarges that plan for her final painting. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about thumbnail?",
+          "question": "Which choice best applies this lesson idea about thumbnail with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSkipping thumbnails and starting large immediately. Planning saves time and prevents crowded or empty compositions. Here is a more helpful example: Example: Mia draws three thumbnails of a market stall. Thumbnail 2 places the fruit stall on a left third-line with a path leading in from the right. She enlarges that plan for her final painting.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Centred tree feels static. Tree on left third with house on right third and a path between feels balanced and leads the eye.' Planning explains the choice.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about thumbnail?",
+          "question": "Which choice best applies this lesson idea about thumbnail with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBefore a final artwork, artists plan with thumbnails: small quick sketches that test composition. Mentally divide the page into thirds both ways; placing a focal point near an intersection often feels balanced. Check that large shapes balance smaller ones and that the eye has a path through the picture. Choose the best thumbnail before you start the final piece. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

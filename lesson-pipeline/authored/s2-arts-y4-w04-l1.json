@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose a published artwork (book or approved gallery image). Write four sentences: subject, viewpoint, possible meaning and two evidence details. Stay polite about other opinions. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel overwhelming.' Meaning is linked to scale and colour. Reasoning: I used viewpoint by attending to meaning rather than copying the worked model.\n\nParent: Written model 2: Common error: Stating a meaning with no link to what is actually in the picture. Opinions need visual evidence. Correction: Strong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel overwhelming.' Meaning is… Why: the correction restores accurate use of viewpoint.\n\nParent: Likely misconception: Stating a meaning with no link to what is actually in the picture. Opinions need visual evidence. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating viewpoint on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with viewpoint, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose a published artwork (book or approved gallery image). Write four sentences: subject, viewpoint, possible meaning and two evidence details. Stay polite about other opinions. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using viewpoint on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Stating a meaning with no link to what is actually in the picture.. Correction: Strong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark. Why it helps the audience is stated.\n\nParent: Likely misconception: Stating a meaning with no link to what is actually in the picture. Opinions need visual evidence. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating viewpoint on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with viewpoint, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about viewpoint with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for viewpoint. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel overwhelming.' Meaning is… This matches the lesson skill for viewpoint.",
+        "explanation": "This matches the taught method for viewpoint. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel overwhelming.' Meaning is…",
-          "Stating a meaning with no link to what is actually in the picture. Opinions need visual evidence.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel",
+          "Stating a meaning with no link to what is actually in the picture.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "A painting shows a tiny figure under a huge stormy sky. Suggest one meaning and give two pieces of evidence from the artwork. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Stating a meaning with no link to what is actually in the picture. Opinions need visual evidence. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for viewpoint; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Looking carefully at an artwork means describing what you see, then interpreting possible meaning with evidence from the work. Viewpoint can mean where the…",
-          "Strong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel overwhelming.' Meaning is…",
-          "Careful use of meaning with clear evidence.",
-          "Stating a meaning with no link to what is actually in the picture. Opinions need visual evidence."
+          "Looking carefully at an artwork means describing what you see, then interpreting possible meaning with evidence from",
+          "'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel",
+          "Careful use of meaning and explain why it matters with clear evidence.",
+          "Stating a meaning with no link to what is actually in the picture."
         ],
-        "question": "Which statement is a common mistake when practising viewpoint?",
+        "question": "Which statement is a common mistake when working with viewpoint?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named meaning, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named meaning and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the meaning used.",
+          "Stating a meaning with no link to what is actually in the picture.",
+          "Name meaning and explain why it matters only, without linking it to viewpoint.",
+          "Apply viewpoint to new material and name the meaning and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising viewpoint. Which approach best shows understanding?",
+        "question": "Which response best applies viewpoint with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel overwhelming.' Meaning is… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on viewpoint. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel overwhelming.' Meaning is…",
-          "Stating a meaning with no link to what is actually in the picture. Opinions need visual evidence.",
-          "Say it looks nice with no element or technique named."
-        ],
-        "question": "Which response best shows careful thinking about viewpoint?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
-        "options": [
-          "Stating a meaning with no link to what is actually in the picture. Opinions need visual evidence.",
-          "Name a specific source, cue or example and say what it shows about viewpoint.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
-        ],
-        "question": "Which habit strengthens evidence about meaning?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Stating a meaning with no link to what is actually in the picture.",
+          "'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel",
           "Say it looks nice with no element or technique named.",
-          "Example: In a close-up of worn boots on a doorstep, Sam says, 'I think the painting is about hard work because the boots are large in the…",
-          "Stating a meaning with no link to what is actually in the picture. Opinions need visual evidence."
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Looking carefully at an artwork means describing what you see, then interpreting possible meaning with… — which choice is best?",
+        "question": "Which response best uses elements, techniques and audience effect for viewpoint?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Stating a meaning with no link to what is actually in the picture.",
+          "Name a specific element or technique and say what effect it creates for viewpoint.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
+        ],
+        "question": "Which evidence move best supports a claim about viewpoint?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: In a close-up of worn boots on a doorstep, Sam says, 'I think the painting is about hard work because the",
+          "Stating a meaning with no link to what is actually in the picture."
+        ],
+        "question": "Using this lesson idea — Looking carefully at an artwork means describing what you see, then interpreting possible meaning — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for viewpoint?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Stating a meaning with no link to what is actually in the picture. Opinions need visual evidence.",
-          "Choose a published artwork (book or approved gallery image). Write four sentences: subject, viewpoint, possible meaning and two evidence details.…",
+          "Name meaning and explain why it matters only, with no linked example.",
+          "Choose a published artwork (book or approved gallery image).",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Stating a meaning with no link to what is actually in the picture."
         ],
-        "question": "Which task best shows independent use of viewpoint?",
+        "question": "Which independent response best applies viewpoint to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about viewpoint with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating viewpoint on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel overwhelming.' Meaning is linked to scale and colour. Reasoning: I used viewpoint by attending to meaning rather than copying the worked model.",
+        "sample_answer": "Sample: original example using viewpoint on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for viewpoint. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with viewpoint, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Stating a meaning with no link to what is actually in the picture. Opinions need visual evidence. Correction: Strong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel overwhelming.' Meaning is… Why: the correction restores accurate use of viewpoint.",
+        "sample_answer": "Sample error: Stating a meaning with no link to what is actually in the picture.. Correction: Strong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Looking carefully at an artwork means describing what you see, then interpreting possible meaning with evidence from the work. Viewpoint can mean where the artist placed the viewer (looking up, looking down, close-up) and also your own opinion. You can say what you think the…",
+          "explanation": "Looking carefully at an artwork means describing what you see, then interpreting possible meaning with evidence from the work.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Looking carefully at an artwork means describing what you see, then interpreting possible meaning with evidence from the work. Viewpoint can mean where the artist placed the viewer (looking up, looking down, close-up) and also your own opinion. You can say what you think the work is about if you point to colours, composition, subject and mood. Different viewers may disagree politely when they use evidence."
+            "Looking carefully at an artwork means describing what you see, then interpreting possible meaning with evidence from"
           ],
-          "question": "Which choice best shows accurate use of this idea about viewpoint?",
+          "question": "Which choice best applies this lesson idea about viewpoint with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: In a close-up of worn boots on a doorstep, Sam says, 'I think the painting is about hard work because the boots are large in the foreground, dusty brown and placed at the entrance like someone has just come home.' He used size, colour and placement as evidence.\n\nTRY FIRST\nA painting shows a tiny figure under a huge stormy sky. Suggest one meaning and give two pieces of evidence from the artwork.\n\nFEEDBACK\nStrong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel overwhelming.' Meaning is linked to scale and colour.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about viewpoint?",
+          "question": "Which choice best applies this lesson idea about viewpoint with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: In a close-up of worn boots on a doorstep, Sam says, 'I think the painting is about hard work because the boots are large in the foreground, dusty brown and placed at the entrance like someone has just come home.' He used size, colour and placement as evidence. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice."
+            "Use an intentionally weak or disrespectful arts choice as a comparison."
           ],
-          "question": "Which choice best shows accurate use of this idea about viewpoint?",
+          "question": "Which choice best applies this lesson idea about viewpoint with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nStating a meaning with no link to what is actually in the picture. Opinions need visual evidence. Here is a more helpful example: Example: In a close-up of worn boots on a doorstep, Sam says, 'I think the painting is about hard work because the boots are large in the foreground, dusty brown and placed at the entrance like someone has just come home.' He used size, colour and placement as evidence.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'It may show feeling small in nature because the figure is tiny compared with the sky, and the cool dark colours feel overwhelming.' Meaning is linked to scale and colour.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about viewpoint?",
+          "question": "Which choice best applies this lesson idea about viewpoint with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLooking carefully at an artwork means describing what you see, then interpreting possible meaning with evidence from the work. Viewpoint can mean where the artist placed the viewer (looking up, looking down, close-up) and also your own opinion. You can say what you think the work is about if you point to colours, composition, subject and mood. Different viewers may disagree politely when they use evidence. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

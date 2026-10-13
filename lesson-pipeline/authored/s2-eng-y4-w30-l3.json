@@ -41,7 +41,7 @@
       "EN2-VOCAB-01",
       "EN2-SPELL-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Run a twelve-item unit review and apply six fixes to your published discussion. List recurring errors. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: They’re going to…; soften forever/will; check there/their/they’re. Reasoning: I used review by attending to spelling rather than copying the worked model.\n\nParent: Written model 2: Common error: Review on your own draft catches patterns you miss in lists. Correction: They’re going to…; soften forever/will; check there/their/they’re. Why: the correction restores accurate use of review.\n\nParent: Likely misconception: Review on your own draft catches patterns you miss in lists. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating review on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with review, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Run a twelve-item unit review and apply six fixes to your published discussion. List recurring errors. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using review on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Review on your own draft catches patterns you miss in lists.. Correction: They’re going to…; soften forever/will; check there/their/they’re.. Why it helps the audience is stated.\n\nParent: Likely misconception: Review on your own draft catches patterns you miss in lists. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating review on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with review, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about review with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for review. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -51,112 +51,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "They’re going to…; soften forever/will; check there/their/they’re. This matches the lesson skill for review.",
+        "explanation": "This matches the taught method for review. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model word-for-word and call that independent work.",
-          "They’re going to…; soften forever/will; check there/their/they’re.",
-          "Review on your own draft catches patterns you miss in lists.",
-          "Ignore the words and invent a more exciting event."
+          "A method that skips the key step taught in this lesson",
+          "They’re going to; soften forever/will; check there/their/they’re",
+          "Review on your own draft catches patterns you miss in lists",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Fix: \"there going to proof everyone will agree forever\" Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Review on your own draft catches patterns you miss in lists. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for review; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of spelling with clear evidence.",
-          "Review on your own draft catches patterns you miss in lists.",
-          "Language and spelling review consolidates contrast connectives, modality, formal register and high-frequency spelling from the discussion unit.",
-          "They’re going to…; soften forever/will; check there/their/they’re."
+          "Careful use of spelling and explain why it matters with clear evidence",
+          "Review on your own draft catches patterns you miss in lists",
+          "Language and spelling review consolidates contrast connectives, modality, formal register and high-frequency spelling",
+          "They’re going to; soften forever/will; check there/their/they’re"
         ],
-        "question": "Which statement is a common mistake when practising review?",
+        "question": "Which statement is a common mistake when working with review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named spelling, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named spelling and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the spelling used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a stated fact."
+          "Apply review to new material and name the spelling and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Review on your own draft catches patterns you miss in lists",
+          "Name spelling and explain why it matters only, without linking it to review"
         ],
-        "question": "A learner is practising review. Which approach best shows understanding?",
+        "question": "Which response best applies review with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The skill is shown by quoting or pointing to wording that carries review.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries review. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Review on your own draft catches patterns you miss in lists.",
-          "Point to exact words in the sentence that show review and say what they do.",
-          "Ignore the sentence and invent a more exciting event.",
-          "Say the writing is good without naming any words."
+          "Review on your own draft catches patterns you miss in lists",
+          "Point to exact words in the sentence that show review and say what they do",
+          "Ignore the sentence and invent a more exciting event",
+          "Say the writing is good without naming any words"
         ],
         "question": "Read: \"Under the pier, Sam found a locked tin and a dripping map.\" Which choice best uses review from this lesson?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "They’re going to…; soften forever/will; check there/their/they’re.",
-          "Review on your own draft catches patterns you miss in lists.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
+          "They’re going to; soften forever/will; check there/their/they’re",
+          "Review on your own draft catches patterns you miss in lists",
+          "Copy a model sentence from another story unchanged",
+          "Name spelling and explain why it matters without linking it to any words in the text"
         ],
         "question": "Which statement correctly applies the lesson idea about review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a model sentence from another story unchanged.",
-          "Treat a missing detail as a stated fact.",
-          "Locate a specific word, phrase or structural clue before deciding.",
-          "Guess from the title alone with no textual clue."
+          "Copy a model sentence from another story unchanged",
+          "Lengthen the answer with adjectives while keeping the same idea",
+          "Locate a specific word, phrase or structural clue before deciding",
+          "Guess from the title alone with no textual clue"
         ],
-        "question": "In a new text, what should you do first to practise spelling?",
+        "question": "In a new text, what should you do first to analyse spelling and explain why it matters?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Add adjectives without fixing the wrong idea.",
-          "Make the answer longer while keeping the same mistake.",
-          "Delete the evidence that disagreed with your first guess.",
-          "Change the inaccurate idea or missing evidence, not only the length."
+          "Add adjectives without fixing the wrong idea",
+          "Make the answer longer while keeping the same mistake",
+          "Delete the evidence that disagreed with your first guess",
+          "Change the inaccurate idea or missing evidence, not only the length"
         ],
-        "question": "Which revision actually repairs meaning?",
+        "question": "Which revision actually improves meaning for review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Use a fresh sentence or text and explain one precise choice about review.",
-          "Retype the worked model as the final answer.",
-          "Change fonts and claim the work is new.",
-          "Review on your own draft catches patterns you miss in lists."
+          "Use a fresh sentence or text and explain one precise choice about review",
+          "Retype the worked model as the final answer",
+          "Change fonts and claim the work is new",
+          "Review on your own draft catches patterns you miss in lists"
         ],
-        "question": "Which response shows transfer of review to new material?",
+        "question": "Which response shows accurate use of review on fresh material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about review with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating review on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: They’re going to…; soften forever/will; check there/their/they’re. Reasoning: I used review by attending to spelling rather than copying the worked model.",
+        "sample_answer": "Sample: original example using review on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for review. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with review, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Review on your own draft catches patterns you miss in lists. Correction: They’re going to…; soften forever/will; check there/their/they’re. Why: the correction restores accurate use of review.",
+        "sample_answer": "Sample error: Review on your own draft catches patterns you miss in lists.. Correction: They’re going to…; soften forever/will; check there/their/they’re.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -233,14 +233,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Language and spelling review consolidates contrast connectives, modality, formal register and high-frequency spelling from the discussion unit. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Language and spelling review consolidates contrast connectives, modality, formal register and high-frequency spelling from the discussion unit.",
           "options": [
-            "A guess with no explanation.",
-            "Language and spelling review consolidates contrast connectives, modality, formal register and high-frequency spelling from the discussion unit.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Language and spelling review consolidates contrast connectives, modality, formal register and high-frequency spelling",
+            "A guess with no explanation",
+            "A claim unrelated to the text"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nChecklist: however/although used; might not will without proof; formal letter words; because/their/there checks.\n\nTRY FIRST\nFix: \"there going to proof everyone will agree forever\"\n\nFEEDBACK\nThey’re going to…; soften forever/will; check there/their/they’re.",
@@ -291,14 +291,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
           "options": [
-            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation."
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does",
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nChecklist: however/although used; might not will without proof; formal letter words; because/their/there checks. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
@@ -317,14 +317,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation."
+            "Use an intentionally incorrect attempt as a comparison",
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview on your own draft catches patterns you miss in lists. Here is a more productive model: Checklist: however/although used; might not will without proof; formal letter words; because/their/there checks.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nThey’re going to…; soften forever/will; check there/their/they’re.",
@@ -336,14 +336,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
           "options": [
-            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation."
+            "Use the method on a new topic, not a reworded copy of the example",
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLanguage and spelling review consolidates contrast connectives, modality, formal register and high-frequency spelling from the discussion unit. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",

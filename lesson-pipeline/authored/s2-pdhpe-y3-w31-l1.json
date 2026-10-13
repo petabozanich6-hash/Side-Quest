@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-MSP-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: On a mat or soft grass, practise four balances: two feet, one foot, a three-point balance (two feet and one hand) and a stork stand. Hold each for 5 seconds, record how long you held each and choose one cue to improve. G Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Cues: 'eyes on a still spot' and 'tight tummy, arms out'. A still point helps the brain steady the body, and tight muscles and wide arms stop the body swaying. Reasoning: I used balance by attending to base of support rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support. Correction: Cues: 'eyes on a still spot' and 'tight tummy, arms out'. A still point helps the brain steady the body, and tight muscles and wide arms stop the body swaying. Why: the correction restores accurate use of balance.\n\nParent: Likely misconception: Thinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating balance on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with balance, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: On a mat or soft grass, practise four balances: two feet, one foot, a three-point balance (two feet and one hand) and a stork stand. Hold each for 5 seconds, record how long you held each and choose one cue to improve. G Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using balance on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking balance is only about strong legs.. Correction: Cues: 'eyes on a still spot' and 'tight tummy, arms out'.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating balance on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with balance, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about balance with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for balance. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Cues: 'eyes on a still spot' and 'tight tummy, arms out'. A still point helps the brain steady the body, and tight muscles and wide arms stop the body swaying. This matches the lesson skill for balance.",
+        "explanation": "This matches the taught method for balance. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Cues: 'eyes on a still spot' and 'tight tummy, arms out'. A still point helps the brain steady the body, and tight muscles and wide arms stop the body swaying.",
-          "Thinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Cues: 'eyes on a still spot' and 'tight tummy, arms out'",
+          "Thinking balance is only about strong legs"
         ],
         "question": "Tariq wobbles when he lifts one foot and looks at his feet. Write two cues to help him balance and say why they work. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Thinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for balance; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Balance is controlling the body's position over its base of support. A wide base (feet apart, more body parts touching the floor), a low centre of mass, tight…",
-          "Cues: 'eyes on a still spot' and 'tight tummy, arms out'. A still point helps the brain steady the body, and tight muscles and wide arms stop the body swaying.",
-          "Careful use of base of support with clear evidence.",
-          "Thinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support."
+          "Balance is controlling the body's position over its base of support",
+          "Cues: 'eyes on a still spot' and 'tight tummy, arms out'",
+          "Careful use of base of support and explain why it matte with clear evidence",
+          "Thinking balance is only about strong legs"
         ],
-        "question": "Which statement is a common mistake when practising balance?",
+        "question": "Which statement is a common mistake when working with balance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named base of support, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named base of support and explain why it matte, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the base of support used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name base of support and explain why it matte only, without linking it to balance",
+          "Apply balance to new material and name the base of support and explain why it matte used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking balance is only about strong legs"
         ],
-        "question": "A learner is practising balance. Which approach best shows understanding?",
+        "question": "Which response best applies balance with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Cues: 'eyes on a still spot' and 'tight tummy, arms out'. A still point helps the brain steady the body, and tight muscles and wide arms stop the body swaying. uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on balance. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Cues: 'eyes on a still spot' and 'tight tummy, arms out'. A still point helps the brain steady the body, and tight muscles and wide arms stop the body swaying.",
-          "Thinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work."
+          "Cues: 'eyes on a still spot' and 'tight tummy, arms out'",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking balance is only about strong legs"
         ],
-        "question": "Which response best shows careful thinking about balance?",
+        "question": "Which response best uses safe, healthy or respectful choices for balance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support.",
-          "Name a specific source, cue or example and say what it shows about balance."
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking balance is only about strong legs",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with balance"
         ],
-        "question": "Which habit strengthens evidence about base of support?",
+        "question": "Which evidence move best supports a claim about balance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Balance is controlling the body's position over its base of support.) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example: Rosa holds a one-foot balance for 5 seconds. Cues: wide base first (feet apart), eyes on a spot on the wall, tight tummy, arms…",
-          "Thinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support."
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example: Rosa holds a one-foot balance for 5 seconds",
+          "Thinking balance is only about strong legs"
         ],
-        "question": "Using this lesson idea — Balance is controlling the body's position over its base of support. A wide base (feet apart, more body… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about balance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for balance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "On a mat or soft grass, practise four balances: two feet, one foot, a three-point balance (two feet and one hand) and a stork stand. Hold each for 5…",
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Thinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support."
+          "On a mat or soft grass, practise four balances: two feet, one foot, a three-point balance (two feet and one hand) and a",
+          "Retype the worked example with no new example",
+          "Thinking balance is only about strong legs",
+          "Name base of support and explain why it matte only, with no linked example"
         ],
-        "question": "Which task best shows independent use of balance?",
+        "question": "Which independent response best applies balance to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about balance with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating balance on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Cues: 'eyes on a still spot' and 'tight tummy, arms out'. A still point helps the brain steady the body, and tight muscles and wide arms stop the body swaying. Reasoning: I used balance by attending to base of support rather than copying the worked model.",
+        "sample_answer": "Sample: original example using balance on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for balance. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with balance, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support. Correction: Cues: 'eyes on a still spot' and 'tight tummy, arms out'. A still point helps the brain steady the body, and tight muscles and wide arms stop the body swaying. Why: the correction restores accurate use of balance.",
+        "sample_answer": "Sample error: Thinking balance is only about strong legs.. Correction: Cues: 'eyes on a still spot' and 'tight tummy, arms out'.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Balance is controlling the body's position over its base of support. A wide base (feet apart, more body parts touching the floor), a low centre of mass, tight tummy muscles and eyes fixed on a still spot all help balance. Weight transfer is moving body weight from one body part…",
+          "explanation": "Balance is controlling the body's position over its base of support.",
           "options": [
-            "A guess with no reason.",
-            "Balance is controlling the body's position over its base of support. A wide base (feet apart, more body parts touching the floor), a low centre of mass, tight tummy muscles and eyes fixed on a still spot all help balance. Weight transfer is moving body weight from one body part to another, such as from both feet to one foot. Use a mat or soft grass in a clear space, hold balances only as long as feels comfortable and stop if anything hurts.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Balance is controlling the body's position over its base of support",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about balance?",
+          "question": "Which choice best applies this lesson idea about balance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Rosa holds a one-foot balance for 5 seconds. Cues: wide base first (feet apart), eyes on a spot on the wall, tight tummy, arms out. To make it harder she lifts one foot and keeps her arms wide. Weight transfer: rock from both feet to the right foot, hold, then back, slowly.\n\nTRY FIRST\nTariq wobbles when he lifts one foot and looks at his feet. Write two cues to help him balance and say why they work.\n\nFEEDBACK\nCues: 'eyes on a still spot' and 'tight tummy, arms out'. A still point helps the brain steady the body, and tight muscles and wide arms stop the body swaying.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about balance?",
+          "question": "Which choice best applies this lesson idea about balance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Rosa holds a one-foot balance for 5 seconds. Cues: wide base first (feet apart), eyes on a spot on the wall, tight tummy, arms out. To make it harder she lifts one foot and keeps her arms wide. Weight transfer: rock from both feet to the right foot, hold, then back, slowly. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about balance?",
+          "question": "Which choice best applies this lesson idea about balance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking balance is only about strong legs. Balance uses the eyes, the tummy muscles and a good base of support. Here is a more helpful example: Example: Rosa holds a one-foot balance for 5 seconds. Cues: wide base first (feet apart), eyes on a spot on the wall, tight tummy, arms out. To make it harder she lifts one foot and keeps her arms wide. Weight transfer: rock from both feet to the right foot, hold, then back, slowly.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nCues: 'eyes on a still spot' and 'tight tummy, arms out'. A still point helps the brain steady the body, and tight muscles and wide arms stop the body swaying.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about balance?",
+          "question": "Which choice best applies this lesson idea about balance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBalance is controlling the body's position over its base of support. A wide base (feet apart, more body parts touching the floor), a low centre of mass, tight tummy muscles and eyes fixed on a still spot all help balance. Weight transfer is moving body weight from one body part to another, such as from both feet to one foot. Use a mat or soft grass in a clear space, hold balances only as long as feels comfortable and stop if anything hurts. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

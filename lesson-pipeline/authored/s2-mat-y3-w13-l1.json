@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-PF-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Draw three same-sized wholes. Partition into halves, quarters and eighths. Shade and label 1/2, 3/4 and 5/8. Write two equivalence sentences using the same whole. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: 1/8 < 1/4 < 1/2 when wholes are the same size. Reasoning: I used half by attending to quarter and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces. Correction: 1/8 < 1/4 < 1/2 when wholes are the same size. Why: the correction restores accurate use of half.\n\nParent: Likely misconception: Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses half with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with half, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Draw three same-sized wholes. Partition into halves, quarters and eighths. Shade and label 1/2, 3/4 and 5/8. Write two equivalence sentences using the same whole. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for half; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces.. Correction uses 1/8 < 1/4 < 1/2 when wholes are the same size.. Why: restores accurate half.\n\nParent: Likely misconception: Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses half with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with half, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for half, and names places/values. Reject copied model numbers. / Accept a named misconception about half, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "1/8 < 1/4 < 1/2 when wholes are the same size. This matches the lesson skill for half.",
+        "explanation": "This matches the taught method for half. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "1/8 < 1/4 < 1/2 when wholes are the same size."
+          "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "1/8 < 1/4 < 1/2 when wholes are the same size"
         ],
         "question": "Shade 1/2, 1/4 and 1/8 of identical rectangles and order the shaded amounts from least to greatest. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for half; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "1/8 < 1/4 < 1/2 when wholes are the same size.",
-          "Careful use of quarter and explain why it matters with clear evidence.",
-          "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces.",
-          "Halves, quarters and eighths are equal parts of a whole. More equal parts make each part smaller."
+          "1/8 < 1/4 < 1/2 when wholes are the same size",
+          "Careful use of quarter and explain why it matters with clear evidence",
+          "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces",
+          "Halves, quarters and eighths are equal parts of a whole"
         ],
-        "question": "Which statement is a common mistake when practising half?",
+        "question": "Which statement is a common mistake when working with half?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named quarter and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named quarter and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the quarter and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact."
+          "Apply half to new material and name the quarter and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces",
+          "Name quarter and explain why it matters only, without linking it to half"
         ],
-        "question": "A learner is practising half. Which approach best shows understanding?",
+        "question": "Which response best applies half with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces.",
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value."
+          "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value"
         ],
-        "question": "Which working note best supports a mathematics answer about half?",
+        "question": "Which working best supports a correct answer for this lesson on half?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught half method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "1/8 < 1/4 < 1/2 when wholes are the same size.",
-          "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "1/8 < 1/4 < 1/2 when wholes are the same size",
+          "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces",
+          "Read 1 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 1 and 2, as interchangeable"
         ],
-        "question": "Using this lesson idea — Halves, quarters and eighths are equal parts of a whole. More equal parts make each part smaller. — which statement is true?",
+        "question": "Using the method for half, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed."
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a half problem with numbers such as 1 and 2,, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers."
+          "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces",
+          "Use the same half method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 1 and 2, as the answer",
+          "Change only handwriting and keep the same numbers"
         ],
-        "question": "Which practice choice shows transfer of half?",
+        "question": "Solve a fresh half problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Just add more digits until it looks longer.",
-          "Name the exact place or step that failed, then show corrected working for half.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits."
+          "Label units when comparing 1 with 2",
+          "Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces",
+          "Halves, quarters and eighths are equal parts of a whole",
+          "1/8 < 1/4 < 1/2 when wholes are the same size"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for half?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for half, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses half with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: 1/8 < 1/4 < 1/2 when wholes are the same size. Reasoning: I used half by attending to quarter and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for half; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about half, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with half, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces. Correction: 1/8 < 1/4 < 1/2 when wholes are the same size. Why: the correction restores accurate use of half.",
+        "sample_answer": "Sample misconception: Unequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces.. Correction uses 1/8 < 1/4 < 1/2 when wholes are the same size.. Why: restores accurate half.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Halves, quarters and eighths are equal parts of a whole. More equal parts make each part smaller. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Halves, quarters and eighths are equal parts of a whole.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Halves, quarters and eighths are equal parts of a whole. More equal parts make each part smaller."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Halves, quarters and eighths are equal parts of a whole"
           ],
-          "question": "Which choice best shows accurate use of this idea about half?",
+          "question": "Which choice best applies this lesson idea about half with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA sandwich cut into 2 equal parts → halves. Into 4 equal parts → quarters. Into 8 equal parts → eighths. One half equals two quarters equals four eighths of the same whole.\n\nTRY FIRST\nShade 1/2, 1/4 and 1/8 of identical rectangles and order the shaded amounts from least to greatest.\n\nFEEDBACK\n1/8 < 1/4 < 1/2 when wholes are the same size.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about half?",
+          "question": "Which choice best applies this lesson idea about half with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA sandwich cut into 2 equal parts → halves. Into 4 equal parts → quarters. Into 8 equal parts → eighths. One half equals two quarters equals four eighths of the same whole. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Use an intentionally incorrect attempt as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about half?",
+          "question": "Which choice best applies this lesson idea about half with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nUnequal cuts are not halves/quarters/eighths even if there are 2, 4 or 8 pieces. Here is a more productive model: A sandwich cut into 2 equal parts → halves. Into 4 equal parts → quarters. Into 8 equal parts → eighths. One half equals two quarters equals four eighths of the same whole.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\n1/8 < 1/4 < 1/2 when wholes are the same size.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about half?",
+          "question": "Which choice best applies this lesson idea about half with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nHalves, quarters and eighths are equal parts of a whole. More equal parts make each part smaller. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

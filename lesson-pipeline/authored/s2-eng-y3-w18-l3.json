@@ -41,7 +41,7 @@
       "EN2-VOCAB-01",
       "EN2-SPELL-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Create a two-column list of eight pairs (emotive vs neutral). Write two short persuasive sentences using emotive language and two calmer versions; explain the tone change. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Neutral option: \"The early timetable makes mornings difficult for some students.\" Reasoning: I used emotive by attending to neutral and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Emotive words are not always wrong; readers still need to notice their effect. Correction: Neutral option: \"The early timetable makes mornings difficult for some students.\" Why: the correction restores accurate use of emotive.\n\nParent: Likely misconception: Emotive words are not always wrong; readers still need to notice their effect. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating emotive on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with emotive, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create a two-column list of eight pairs (emotive vs neutral). Write two short persuasive sentences using emotive language and two calmer versions; explain the tone change. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using emotive on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Emotive words are not always wrong;. Correction: Neutral option: \"The early timetable makes mornings difficult for some students.\". Why it helps the audience is stated.\n\nParent: Likely misconception: Emotive words are not always wrong; readers still need to notice their effect. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating emotive on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with emotive, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about emotive with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for emotive. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -51,11 +51,11 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Neutral option: \"The early timetable makes mornings difficult for some students.\" This matches the lesson skill for emotive.",
+        "explanation": "This matches the taught method for emotive. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Emotive words are not always wrong; readers still need to notice their effect.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
+          "Emotive words are not always wrong;",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
           "Neutral option: \"The early timetable makes mornings difficult for some students.\""
         ],
         "question": "Rewrite \"The cruel timetable ruins mornings\" as a more neutral sentence with the same basic idea. Which response is most accurate?",
@@ -63,33 +63,33 @@
       },
       {
         "correct_index": 0,
-        "explanation": "Emotive words are not always wrong; readers still need to notice their effect. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for emotive; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Emotive words are not always wrong; readers still need to notice their effect.",
-          "Emotive language stirs feelings; writers choose it for effect, and readers should notice when tone is pushing them.",
+          "Emotive words are not always wrong;",
+          "Emotive language stirs feelings;",
           "Neutral option: \"The early timetable makes mornings difficult for some students.\"",
           "Careful use of neutral and explain why it matters with clear evidence."
         ],
-        "question": "Which statement is a common mistake when practising emotive?",
+        "question": "Which statement is a common mistake when working with emotive?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named neutral and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named neutral and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the neutral and explain why it matters used.",
+          "Name neutral and explain why it matters only, without linking it to emotive.",
+          "Apply emotive to new material and name the neutral and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Emotive words are not always wrong;"
         ],
-        "question": "A learner is practising emotive. Which approach best shows understanding?",
+        "question": "Which response best applies emotive with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The skill is shown by quoting or pointing to wording that carries emotive.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries emotive. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Emotive words are not always wrong; readers still need to notice their effect.",
+          "Emotive words are not always wrong;",
           "Point to exact words in the sentence that show emotive and say what they do.",
           "Ignore the sentence and invent a more exciting event.",
           "Say the writing is good without naming any words."
@@ -99,64 +99,64 @@
       },
       {
         "correct_index": 2,
-        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
+          "Copy a model sentence from another story unchanged.",
+          "Name neutral and explain why it matters without linking it to any words in the text.",
           "Neutral option: \"The early timetable makes mornings difficult for some students.\"",
-          "Emotive words are not always wrong; readers still need to notice their effect."
+          "Emotive words are not always wrong;"
         ],
         "question": "Which statement correctly applies the lesson idea about emotive?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
         "options": [
           "Locate a specific word, phrase or structural clue before deciding.",
           "Guess from the title alone with no textual clue.",
           "Copy a model sentence from another story unchanged.",
-          "Treat a missing detail as a proven fact."
+          "Lengthen the answer with adjectives while keeping the same idea."
         ],
-        "question": "In a new text, what should you do first to practise neutral and explain why it matters?",
+        "question": "In a new text, what should you do first to analyse neutral and explain why it matters?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
         "options": [
           "Make the answer longer while keeping the same mistake.",
           "Delete the evidence that disagreed with your first guess.",
           "Change the inaccurate idea or missing evidence, not only the length.",
           "Add adjectives without fixing the wrong idea."
         ],
-        "question": "Which revision actually repairs meaning?",
+        "question": "Which revision actually improves meaning for emotive?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Emotive words are not always wrong; readers still need to notice their effect.",
+          "Emotive words are not always wrong;",
           "Use a fresh sentence or text and explain one precise choice about emotive.",
           "Retype the worked model as the final answer.",
           "Change fonts and claim the work is new."
         ],
-        "question": "Which response shows transfer of emotive to new material?",
+        "question": "Which response shows accurate use of emotive on fresh material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about emotive with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating emotive on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Neutral option: \"The early timetable makes mornings difficult for some students.\" Reasoning: I used emotive by attending to neutral and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: original example using emotive on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for emotive. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with emotive, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Emotive words are not always wrong; readers still need to notice their effect. Correction: Neutral option: \"The early timetable makes mornings difficult for some students.\" Why: the correction restores accurate use of emotive.",
+        "sample_answer": "Sample error: Emotive words are not always wrong;. Correction: Neutral option: \"The early timetable makes mornings difficult for some students.\". Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -233,14 +233,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Emotive language stirs feelings; writers choose it for effect, and readers should notice when tone is pushing them. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Emotive language stirs feelings; writers choose it for effect, and readers should notice when tone is pushing them.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no explanation.",
-            "Emotive language stirs feelings; writers choose it for effect, and readers should notice when tone is pushing them.",
-            "A claim unrelated to the text."
+            "A claim unrelated to the text.",
+            "Emotive language stirs feelings;",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about emotive?",
+          "question": "Which choice best applies this lesson idea about emotive with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n\"Starving children\" is more emotive than \"hungry children\". Both can describe need; the first presses urgency and pity more strongly.\n\nTRY FIRST\nRewrite \"The cruel timetable ruins mornings\" as a more neutral sentence with the same basic idea.\n\nFEEDBACK\nNeutral option: \"The early timetable makes mornings difficult for some students.\"",
@@ -291,14 +291,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
           "options": [
+            "An answer copied without understanding.",
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does",
             "A guess with no explanation.",
-            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "A claim unrelated to the text."
           ],
-          "question": "Which choice best shows accurate use of this idea about emotive?",
+          "question": "Which choice best applies this lesson idea about emotive with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n\"Starving children\" is more emotive than \"hungry children\". Both can describe need; the first presses urgency and pity more strongly. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
@@ -317,14 +317,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
+            "Use an intentionally incorrect attempt as a comparison.",
             "A claim unrelated to the text.",
             "An answer copied without understanding.",
             "A guess with no explanation."
           ],
-          "question": "Which choice best shows accurate use of this idea about emotive?",
+          "question": "Which choice best applies this lesson idea about emotive with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nEmotive words are not always wrong; readers still need to notice their effect. Here is a more productive model: \"Starving children\" is more emotive than \"hungry children\". Both can describe need; the first presses urgency and pity more strongly.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nNeutral option: \"The early timetable makes mornings difficult for some students.\"",
@@ -336,14 +336,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the method on a new topic, not a reworded copy of the example.",
             "A guess with no explanation.",
-            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "A claim unrelated to the text."
           ],
-          "question": "Which choice best shows accurate use of this idea about emotive?",
+          "question": "Which choice best applies this lesson idea about emotive with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nEmotive language stirs feelings; writers choose it for effect, and readers should notice when tone is pushing them. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",

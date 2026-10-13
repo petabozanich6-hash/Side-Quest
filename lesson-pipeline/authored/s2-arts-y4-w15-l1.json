@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Perform your play or scene for family. Complete a reflection: clearest objective, strongest tension moment, one etiquette win, one fix. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Face audience diagonals, listen actively, no chatting offstage. If a line is lost, paraphrase the objective until a partner’s cue returns.' Reasoning: I used performance etiquette by attending to projection rather than copying the worked model.\n\nParent: Written model 2: Common error: Laughing at mistakes onstage. Support the story first; laugh later offstage if appropriate. Correction: Strong answer: 'Face audience diagonals, listen actively, no chatting offstage. If a line is lost, paraphrase the objective until a partner’s cue returns.' Why: the correction restores accurate use of performance etiquette.\n\nParent: Likely misconception: Laughing at mistakes onstage. Support the story first; laugh later offstage if appropriate. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating performance etiquette on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with performance etiquette, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Perform your play or scene for family. Complete a reflection: clearest objective, strongest tension moment, one etiquette win, one fix. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using performance etiquette on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Laughing at mistakes onstage.. Correction: Strong answer: 'Face audience diagonals, listen actively, no chatting offstage.. Why it helps the audience is stated.\n\nParent: Likely misconception: Laughing at mistakes onstage. Support the story first; laugh later offstage if appropriate. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating performance etiquette on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with performance etiquette, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about performance etiquette with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for performance etiquette. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Face audience diagonals, listen actively, no chatting offstage. If a line is lost, paraphrase the objective until a partner’s cue returns.' This matches the lesson skill for performance etiquette.",
+        "explanation": "This matches the taught method for performance etiquette. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Face audience diagonals, listen actively, no chatting offstage. If a line is lost, paraphrase the objective until a partner’s cue returns.'",
-          "Laughing at mistakes onstage. Support the story first; laugh later offstage if appropriate.",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "Face audience diagonals, listen actively, no chatting offstage.",
+          "Laughing at mistakes onstage.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "List three onstage etiquette rules and one recovery idea for a forgotten line. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Laughing at mistakes onstage. Support the story first; laugh later offstage if appropriate. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for performance etiquette; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Performing drama for an audience means projecting voice to the back without shouting, holding stillness when listening and not blocking sightlines. If…",
-          "Strong answer: 'Face audience diagonals, listen actively, no chatting offstage. If a line is lost, paraphrase the objective until a partner’s cue returns.'",
-          "Careful use of projection with clear evidence.",
-          "Laughing at mistakes onstage. Support the story first; laugh later offstage if appropriate."
+          "Performing drama for an audience means projecting voice to the back without shouting, holding stillness when listening",
+          "Face audience diagonals, listen actively, no chatting offstage.",
+          "Careful use of projection and explain why it matters with clear evidence.",
+          "Laughing at mistakes onstage."
         ],
-        "question": "Which statement is a common mistake when practising performance etiquette?",
+        "question": "Which statement is a common mistake when working with performance etiquette?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named projection, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named projection and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the projection used.",
+          "Apply performance etiquette to new material and name the projection and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Laughing at mistakes onstage.",
+          "Name projection and explain why it matters only, without linking it to performance etiquette."
         ],
-        "question": "A learner is practising performance etiquette. Which approach best shows understanding?",
+        "question": "Which response best applies performance etiquette with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Face audience diagonals, listen actively, no chatting offstage. If a line is lost, paraphrase the objective until a partner’s cue returns.' uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on performance etiquette. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Face audience diagonals, listen actively, no chatting offstage. If a line is lost, paraphrase the objective until a partner’s cue returns.'",
-          "Laughing at mistakes onstage. Support the story first; laugh later offstage if appropriate.",
+          "Face audience diagonals, listen actively, no chatting offstage.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Laughing at mistakes onstage."
         ],
-        "question": "Which response best shows careful thinking about performance etiquette?",
+        "question": "Which response best uses elements, techniques and audience effect for performance etiquette?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Laughing at mistakes onstage. Support the story first; laugh later offstage if appropriate.",
-          "Name a specific source, cue or example and say what it shows about performance etiquette.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Laughing at mistakes onstage.",
+          "Name a specific element or technique and say what effect it creates for performance etiquette.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which habit strengthens evidence about projection?",
+        "question": "Which evidence move best supports a claim about performance etiquette?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
           "Say it looks nice with no element or technique named.",
-          "Example: During a dropped prop, the actor picks it up in character as if it belonged in the moment, then continues. Reflection: 'Objective…",
-          "Laughing at mistakes onstage. Support the story first; laugh later offstage if appropriate."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: During a dropped prop, the actor picks it up in character as if it belonged in the moment, then continues.",
+          "Laughing at mistakes onstage."
         ],
-        "question": "Using this lesson idea — Performing drama for an audience means projecting voice to the back without shouting, holding stillness when… — which choice is best?",
+        "question": "Using this lesson idea — Performing drama for an audience means projecting voice to the back without shouting, holding — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for performance etiquette?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Laughing at mistakes onstage. Support the story first; laugh later offstage if appropriate.",
-          "Perform your play or scene for family. Complete a reflection: clearest objective, strongest tension moment, one etiquette win, one fix.",
+          "Laughing at mistakes onstage.",
+          "Name projection and explain why it matters only, with no linked example.",
+          "Perform your play or scene for family.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of performance etiquette?",
+        "question": "Which independent response best applies performance etiquette to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about performance etiquette with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating performance etiquette on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Face audience diagonals, listen actively, no chatting offstage. If a line is lost, paraphrase the objective until a partner’s cue returns.' Reasoning: I used performance etiquette by attending to projection rather than copying the worked model.",
+        "sample_answer": "Sample: original example using performance etiquette on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for performance etiquette. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with performance etiquette, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Laughing at mistakes onstage. Support the story first; laugh later offstage if appropriate. Correction: Strong answer: 'Face audience diagonals, listen actively, no chatting offstage. If a line is lost, paraphrase the objective until a partner’s cue returns.' Why: the correction restores accurate use of performance etiquette.",
+        "sample_answer": "Sample error: Laughing at mistakes onstage.. Correction: Strong answer: 'Face audience diagonals, listen actively, no chatting offstage.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Performing drama for an audience means projecting voice to the back without shouting, holding stillness when listening and not blocking sightlines. If something goes wrong, stay in character and improvise back to the story. Afterwards reflect with evidence: what objective was…",
+          "explanation": "Performing drama for an audience means projecting voice to the back without shouting, holding stillness when listening and not blocking sightlines.",
           "options": [
-            "Performing drama for an audience means projecting voice to the back without shouting, holding stillness when listening and not blocking sightlines. If something goes wrong, stay in character and improvise back to the story. Afterwards reflect with evidence: what objective was clear, where tension peaked.",
+            "Performing drama for an audience means projecting voice to the back without shouting, holding stillness when listening",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about performance etiquette?",
+          "question": "Which choice best applies this lesson idea about performance etiquette with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: During a dropped prop, the actor picks it up in character as if it belonged in the moment, then continues. Reflection: 'Objective clear in scene 2; climax rushed—need a pause.'\n\nTRY FIRST\nList three onstage etiquette rules and one recovery idea for a forgotten line.\n\nFEEDBACK\nStrong answer: 'Face audience diagonals, listen actively, no chatting offstage. If a line is lost, paraphrase the objective until a partner’s cue returns.'",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
+            "An answer copied without understanding.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about performance etiquette?",
+          "question": "Which choice best applies this lesson idea about performance etiquette with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: During a dropped prop, the actor picks it up in character as if it belonged in the moment, then continues. Reflection: 'Objective clear in scene 2; climax rushed—need a pause.' Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about performance etiquette?",
+          "question": "Which choice best applies this lesson idea about performance etiquette with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLaughing at mistakes onstage. Support the story first; laugh later offstage if appropriate. Here is a more helpful example: Example: During a dropped prop, the actor picks it up in character as if it belonged in the moment, then continues. Reflection: 'Objective clear in scene 2; climax rushed—need a pause.'\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Face audience diagonals, listen actively, no chatting offstage. If a line is lost, paraphrase the objective until a partner’s cue returns.'",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about performance etiquette?",
+          "question": "Which choice best applies this lesson idea about performance etiquette with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPerforming drama for an audience means projecting voice to the back without shouting, holding stillness when listening and not blocking sightlines. If something goes wrong, stay in character and improvise back to the story. Afterwards reflect with evidence: what objective was clear, where tension peaked. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

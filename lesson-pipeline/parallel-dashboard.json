@@ -22,7 +22,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-tech-01",
       "worktree_hint": ".worktrees/builder-tech-01",
-      "state": "lesson-pipeline/workers/builder-tech-01",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-tech-01",
       "owned": 13,
       "authored": 11,
       "auto_validated_worker_or_hub": 13,
@@ -48,7 +48,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-tech-02",
       "worktree_hint": ".worktrees/builder-tech-02",
-      "state": "lesson-pipeline/workers/builder-tech-02",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-tech-02",
       "owned": 12,
       "authored": 12,
       "auto_validated_worker_or_hub": 12,
@@ -73,7 +73,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-tech-03",
       "worktree_hint": ".worktrees/builder-tech-03",
-      "state": "lesson-pipeline/workers/builder-tech-03",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-tech-03",
       "owned": 10,
       "authored": 10,
       "auto_validated_worker_or_hub": 10,
@@ -98,7 +98,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-tech-04",
       "worktree_hint": ".worktrees/builder-tech-04",
-      "state": "lesson-pipeline/workers/builder-tech-04",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-tech-04",
       "owned": 10,
       "authored": 10,
       "auto_validated_worker_or_hub": 10,
@@ -123,7 +123,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-tech-05",
       "worktree_hint": ".worktrees/builder-tech-05",
-      "state": "lesson-pipeline/workers/builder-tech-05",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-tech-05",
       "owned": 10,
       "authored": 10,
       "auto_validated_worker_or_hub": 10,
@@ -148,7 +148,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-tech-06",
       "worktree_hint": ".worktrees/builder-tech-06",
-      "state": "lesson-pipeline/workers/builder-tech-06",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-tech-06",
       "owned": 10,
       "authored": 10,
       "auto_validated_worker_or_hub": 10,
@@ -174,7 +174,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-tech-07",
       "worktree_hint": ".worktrees/builder-tech-07",
-      "state": "lesson-pipeline/workers/builder-tech-07",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-tech-07",
       "owned": 13,
       "authored": 13,
       "auto_validated_worker_or_hub": 13,
@@ -200,7 +200,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-tech-08",
       "worktree_hint": ".worktrees/builder-tech-08",
-      "state": "lesson-pipeline/workers/builder-tech-08",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-tech-08",
       "owned": 12,
       "authored": 12,
       "auto_validated_worker_or_hub": 12,
@@ -222,7 +222,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-y3",
       "worktree_hint": ".worktrees/builder-y3",
-      "state": "lesson-pipeline/workers/builder-y3",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-y3",
       "owned": 639,
       "authored": 0,
       "auto_validated_worker_or_hub": 639,
@@ -242,7 +242,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-y4",
       "worktree_hint": ".worktrees/builder-y4",
-      "state": "lesson-pipeline/workers/builder-y4",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-y4",
       "owned": 640,
       "authored": 0,
       "auto_validated_worker_or_hub": 640,
@@ -265,7 +265,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-y7",
       "worktree_hint": ".worktrees/builder-y7",
-      "state": "lesson-pipeline/workers/builder-y7-hsie",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-y7-hsie",
       "owned": 420,
       "authored": 372,
       "auto_validated_worker_or_hub": 420,
@@ -290,7 +290,7 @@
       ],
       "branch_hint": "feature/gold-v2-builder-y8",
       "worktree_hint": ".worktrees/builder-y8",
-      "state": "lesson-pipeline/workers/builder-y8-eng",
+      "state": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline/workers/builder-y8-eng",
       "owned": 400,
       "authored": 400,
       "auto_validated_worker_or_hub": 400,
@@ -298,7 +298,7 @@
       "next_seed": null,
       "current_lesson": "s4-tech-y8-w05-l2",
       "phases": {
-        "awaiting_review": 412
+        "awaiting_review": 400
       },
       "blockers": [
         "Partition complete \u2014 idle; Tech shards own remaining Y8 Tech"
@@ -316,70 +316,5 @@
       "builder-tech-08"
     ]
   },
-  "note": "Human gates are never advanced by reconcile; auto-validated \u2260 release approved.",
-  "concurrency": {
-    "chosen_stable": 8,
-    "max_tested": 8,
-    "backoff": false,
-    "ramp_metrics": [
-      {
-        "concurrency": 2,
-        "elapsed_sec": 7.705,
-        "gained": 12,
-        "lessons_per_min": 93.44,
-        "active": 2,
-        "error": false,
-        "remain_after": 76
-      },
-      {
-        "concurrency": 4,
-        "elapsed_sec": 10.972,
-        "gained": 23,
-        "lessons_per_min": 125.78,
-        "active": 4,
-        "error": false,
-        "remain_after": 53
-      },
-      {
-        "concurrency": 6,
-        "elapsed_sec": 16.012,
-        "gained": 32,
-        "lessons_per_min": 119.91,
-        "active": 6,
-        "error": false,
-        "remain_after": 21
-      },
-      {
-        "concurrency": 8,
-        "elapsed_sec": 12.078,
-        "gained": 21,
-        "lessons_per_min": 104.32,
-        "active": 4,
-        "error": false,
-        "remain_after": 0
-      }
-    ],
-    "peak_lessons_per_min": 125.78
-  },
-  "s2_s4_remainders": [
-    {
-      "partition": "s2/y3/eng",
-      "done": 159,
-      "total": 160,
-      "remain": 1
-    }
-  ],
-  "inventory_note": "Suggested Eng/Mat/Sci/HSIE Y7\u2013Y8 slots are complete. Reassigned 8 builders to exclusive Y8 Tech week shards; Tech Y8 now 100/100. No Y9 catalogue rows exist yet. Stage 3+ not started (owner: finish S2/S4 first).",
-  "next_resumes": {
-    "s2_s4_written_core": "COMPLETE for existing catalogue (except protected s2-eng-y3-w01-l1)",
-    "active_builders": "builder-tech-01..08 idle (shards drained)",
-    "idle_repair": [
-      "builder-y3",
-      "builder-y4"
-    ],
-    "blocked_without_new_inventory": [
-      "s4-*-y9-* (0 rows)",
-      "Stage 3+ (deferred by owner directive)"
-    ]
-  }
+  "note": "Human gates are never advanced by reconcile; auto-validated \u2260 release approved."
 }

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Create two different four-beat ostinatos and write them down. Perform each one four times to a steady beat, then layer them with a partner (or record the first and play along with it). Describe how the two layers sound t Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and repeats exactly the same each time so others can fit with it. Reasoning: I used body percussion by attending to a clap rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands. Correction: Strong answer: 'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and repeats exactly the same… Why: the correction restores accurate use of body percussion.\n\nParent: Likely misconception: Thinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating body percussion on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with body percussion, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create two different four-beat ostinatos and write them down. Perform each one four times to a steady beat, then layer them with a partner (or record the first and play along with it). Describe how the two layers sound t Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using body percussion on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that body percussion must be loud and fast to sound good.. Correction: Strong answer: 'Clap, clap, pat, pat.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating body percussion on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with body percussion, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about body percussion with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for body percussion. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and repeats exactly the same… This matches the lesson skill for body percussion.",
+        "explanation": "This matches the taught method for body percussion. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and repeats exactly the same…"
+          "Thinking that body percussion must be loud and fast to sound good.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and"
         ],
         "question": "Make a four-beat body percussion ostinato using two different sounds. Write it as four words and say how many times you would repeat it. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Thinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for body percussion; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of a clap with clear evidence.",
-          "Thinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands.",
-          "Body percussion makes rhythm using your body as an instrument: clap with your hands, pat your thighs, click your fingers or stamp your feet gently. An…",
-          "Strong answer: 'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and repeats exactly the same…"
+          "Careful use of a clap and explain why it matters with clear evidence.",
+          "Thinking that body percussion must be loud and fast to sound good.",
+          "Body percussion makes rhythm using your body as an instrument: clap with your hands, pat your thighs, click your",
+          "'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and"
         ],
-        "question": "Which statement is a common mistake when practising body percussion?",
+        "question": "Which statement is a common mistake when working with body percussion?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named a clap, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a clap and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a clap used.",
+          "Thinking that body percussion must be loud and fast to sound good.",
+          "Name a clap and explain why it matters only, without linking it to body percussion.",
+          "Apply body percussion to new material and name the a clap and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising body percussion. Which approach best shows understanding?",
+        "question": "Which response best applies body percussion with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and repeats exactly the same… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on body percussion. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and repeats exactly the same…",
-          "Thinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that body percussion must be loud and fast to sound good.",
+          "'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about body percussion?",
+        "question": "Which response best uses elements, techniques and audience effect for body percussion?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands.",
-          "Name a specific source, cue or example and say what it shows about body percussion.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
-        ],
-        "question": "Which habit strengthens evidence about a clap?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 3,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Thinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands.",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Thinking that body percussion must be loud and fast to sound good.",
+          "Name a specific element or technique and say what effect it creates for body percussion.",
           "Say it looks nice with no element or technique named.",
-          "Example: Priya makes a four-beat ostinato: clap, pat, pat, click. She repeats it four times. Her partner adds a second layer: stamp on…"
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Body percussion makes rhythm using your body as an instrument: clap with your hands, pat your thighs, click… — which choice is best?",
+        "question": "Which evidence move best supports a claim about body percussion?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Thinking that body percussion must be loud and fast to sound good.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Priya makes a four-beat ostinato: clap, pat, pat, click."
+        ],
+        "question": "Using this lesson idea — Body percussion makes rhythm using your body as an instrument: clap with your hands, pat your — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for body percussion?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands.",
-          "Create two different four-beat ostinatos and write them down. Perform each one four times to a steady beat, then layer them with a partner (or…",
+          "Thinking that body percussion must be loud and fast to sound good.",
+          "Name a clap and explain why it matters only, with no linked example.",
+          "Create two different four-beat ostinatos and write them down.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of body percussion?",
+        "question": "Which independent response best applies body percussion to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about body percussion with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating body percussion on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and repeats exactly the same each time so others can fit with it. Reasoning: I used body percussion by attending to a clap rather than copying the worked model.",
+        "sample_answer": "Sample: original example using body percussion on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for body percussion. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with body percussion, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands. Correction: Strong answer: 'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and repeats exactly the same… Why: the correction restores accurate use of body percussion.",
+        "sample_answer": "Sample error: Thinking that body percussion must be loud and fast to sound good.. Correction: Strong answer: 'Clap, clap, pat, pat.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Body percussion makes rhythm using your body as an instrument: clap with your hands, pat your thighs, click your fingers or stamp your feet gently. An ostinato is a short rhythm pattern that repeats over and over, such as clap, pat, pat, clap. You can play one ostinato while a…",
+          "explanation": "Body percussion makes rhythm using your body as an instrument: clap with your hands, pat your thighs, click your fingers or stamp your feet gently.",
           "options": [
-            "Body percussion makes rhythm using your body as an instrument: clap with your hands, pat your thighs, click your fingers or stamp your feet gently. An ostinato is a short rhythm pattern that repeats over and over, such as clap, pat, pat, clap. You can play one ostinato while a friend plays a different one, which is called layering. Keep your body safe by using soft taps, no hard slaps, and stop if it hurts. You can always tap quietly or just think the pattern.",
+            "Body percussion makes rhythm using your body as an instrument: clap with your hands, pat your thighs, click your",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about body percussion?",
+          "question": "Which choice best applies this lesson idea about body percussion with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Priya makes a four-beat ostinato: clap, pat, pat, click. She repeats it four times. Her partner adds a second layer: stamp on beat 1 only. Together, the clap-pat-pat-click layer and the stamp layer make an interesting sound that fits the same steady beat of 60 taps a minute.\n\nTRY FIRST\nMake a four-beat body percussion ostinato using two different sounds. Write it as four words and say how many times you would repeat it.\n\nFEEDBACK\nStrong answer: 'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and repeats exactly the same each time so others can fit with it.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about body percussion?",
+          "question": "Which choice best applies this lesson idea about body percussion with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Priya makes a four-beat ostinato: clap, pat, pat, click. She repeats it four times. Her partner adds a second layer: stamp on beat 1 only. Together, the clap-pat-pat-click layer and the stamp layer make an interesting sound that fits the same steady beat of 60 taps a minute. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about body percussion?",
+          "question": "Which choice best applies this lesson idea about body percussion with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that body percussion must be loud and fast to sound good. Soft, steady and accurate patterns sound clearer, and hitting hard can hurt your hands. Here is a more helpful example: Example: Priya makes a four-beat ostinato: clap, pat, pat, click. She repeats it four times. Her partner adds a second layer: stamp on beat 1 only. Together, the clap-pat-pat-click layer and the stamp layer make an interesting sound that fits the same steady beat of 60 taps a minute.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Clap, clap, pat, pat. Repeat four times.' A good ostinato has a clear pattern, uses different sounds on the beat and repeats exactly the same each time so others can fit with it.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice."
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example."
           ],
-          "question": "Which choice best shows accurate use of this idea about body percussion?",
+          "question": "Which choice best applies this lesson idea about body percussion with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBody percussion makes rhythm using your body as an instrument: clap with your hands, pat your thighs, click your fingers or stamp your feet gently. An ostinato is a short rhythm pattern that repeats over and over, such as clap, pat, pat, clap. You can play one ostinato while a friend plays a different one, which is called layering. Keep your body safe by using soft taps, no hard slaps, and stop if it hurts. You can always tap quietly or just think the pattern. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-IHW-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Create a food safety poster for your kitchen with five rules, the hand washing steps and one use-by reminder. Time a 20-second hand wash (sing a song) and record how long it took. Use the poster with an adult at home. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Raw chicken can carry germs that spread to the tomatoes, which are eaten raw. She should use a separate knife and board, or wash them in hot soapy water between jobs, and wash her hands. Reasoning: I used food safety by attending to hand washing rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates. Correction: Raw chicken can carry germs that spread to the tomatoes, which are eaten raw. She should use a separate knife and board, or wash them in hot soapy water… Why: the correction restores accurate use of food safety.\n\nParent: Likely misconception: Thinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating food safety on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with food safety, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create a food safety poster for your kitchen with five rules, the hand washing steps and one use-by reminder. Time a 20-second hand wash (sing a song) and record how long it took. Use the poster with an adult at home. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using food safety on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking food is safe if it smells fine.. Correction: Raw chicken can carry germs that spread to the tomatoes, which are eaten raw.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating food safety on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with food safety, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about food safety with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for food safety. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Raw chicken can carry germs that spread to the tomatoes, which are eaten raw. She should use a separate knife and board, or wash them in hot soapy water… This matches the lesson skill for food safety.",
+        "explanation": "This matches the taught method for food safety. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Raw chicken can carry germs that spread to the tomatoes, which are eaten raw. She should use a separate knife and board, or wash them in hot soapy water…"
+          "Thinking food is safe if it smells fine",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Raw chicken can carry germs that spread to the tomatoes, which are eaten raw"
         ],
         "question": "Rina uses the same knife to cut raw chicken and then tomatoes. What is the problem and what should she do instead?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Thinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for food safety; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates.",
-          "Food safety stops germs from making people sick. Wash hands with soap and running water for at least 20 seconds before touching food, after using the toilet…",
-          "Raw chicken can carry germs that spread to the tomatoes, which are eaten raw. She should use a separate knife and board, or wash them in hot soapy water…",
-          "Careful use of hand washing with clear evidence."
+          "Thinking food is safe if it smells fine",
+          "Food safety stops germs from making people sick",
+          "Raw chicken can carry germs that spread to the tomatoes, which are eaten raw",
+          "Careful use of hand washing and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising food safety?",
+        "question": "Which statement is a common mistake when working with food safety?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named hand washing, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named hand washing and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the hand washing used.",
-          "Repeat the worked example wording with no new evidence."
+          "Thinking food is safe if it smells fine",
+          "Name hand washing and explain why it matters only, without linking it to food safety",
+          "Apply food safety to new material and name the hand washing and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising food safety. Which approach best shows understanding?",
+        "question": "Which response best applies food safety with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Raw chicken can carry germs that spread to the tomatoes, which are eaten raw. She should use a separate knife and board, or wash them in hot soapy water… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on food safety. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Raw chicken can carry germs that spread to the tomatoes, which are eaten raw. She should use a separate knife and board, or wash them in hot soapy water…"
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking food is safe if it smells fine",
+          "Raw chicken can carry germs that spread to the tomatoes, which are eaten raw"
         ],
-        "question": "Which response best shows careful thinking about food safety?",
+        "question": "Which response best uses safe, healthy or respectful choices for food safety?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates.",
-          "Name a specific source, cue or example and say what it shows about food safety."
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking food is safe if it smells fine",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with food safety"
         ],
-        "question": "Which habit strengthens evidence about hand washing?",
+        "question": "Which evidence move best supports a claim about food safety?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Food safety stops germs from making people sick.) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example: Sam makes a chicken salad sandwich with an adult. Steps: wash hands for 20 seconds; use one board for raw chicken and a different…",
-          "Thinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates."
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example: Sam makes a chicken salad sandwich with an adult",
+          "Thinking food is safe if it smells fine"
         ],
-        "question": "Using this lesson idea — Food safety stops germs from making people sick. Wash hands with soap and running water for at least 20… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about food safety?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster."
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for food safety?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example and call that independent work.",
-          "Thinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates.",
-          "Create a food safety poster for your kitchen with five rules, the hand washing steps and one use-by reminder. Time a 20-second hand wash (sing a…",
-          "Retype the worked example with no new example."
+          "Thinking food is safe if it smells fine",
+          "Name hand washing and explain why it matters only, with no linked example",
+          "Create a food safety poster for your kitchen with five rules, the hand washing steps and one use-by reminder",
+          "Retype the worked example with no new example"
         ],
-        "question": "Which task best shows independent use of food safety?",
+        "question": "Which independent response best applies food safety to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about food safety with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating food safety on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Raw chicken can carry germs that spread to the tomatoes, which are eaten raw. She should use a separate knife and board, or wash them in hot soapy water between jobs, and wash her hands. Reasoning: I used food safety by attending to hand washing rather than copying the worked model.",
+        "sample_answer": "Sample: original example using food safety on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for food safety. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with food safety, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates. Correction: Raw chicken can carry germs that spread to the tomatoes, which are eaten raw. She should use a separate knife and board, or wash them in hot soapy water… Why: the correction restores accurate use of food safety.",
+        "sample_answer": "Sample error: Thinking food is safe if it smells fine.. Correction: Raw chicken can carry germs that spread to the tomatoes, which are eaten raw.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Food safety stops germs from making people sick. Wash hands with soap and running water for at least 20 seconds before touching food, after using the toilet and after touching raw meat. Keep raw meat away from ready-to-eat food, keep cold food cold, cook food until it is hot…",
+          "explanation": "Food safety stops germs from making people sick.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Food safety stops germs from making people sick. Wash hands with soap and running water for at least 20 seconds before touching food, after using the toilet and after touching raw meat. Keep raw meat away from ready-to-eat food, keep cold food cold, cook food until it is hot all the way through and read use-by dates. Wash fruit and vegetables and use clean boards and utensils. Never share food with someone who has an allergy."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Food safety stops germs from making people sick"
           ],
-          "question": "Which choice best shows accurate use of this idea about food safety?",
+          "question": "Which choice best applies this lesson idea about food safety with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Sam makes a chicken salad sandwich with an adult. Steps: wash hands for 20 seconds; use one board for raw chicken and a different board for vegetables; cook the chicken until it is hot all the way through; wash the board and knife in hot soapy water; put leftovers in the fridge within two hours.\n\nTRY FIRST\nRina uses the same knife to cut raw chicken and then tomatoes. What is the problem and what should she do instead?\n\nFEEDBACK\nRaw chicken can carry germs that spread to the tomatoes, which are eaten raw. She should use a separate knife and board, or wash them in hot soapy water between jobs, and wash her hands.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about food safety?",
+          "question": "Which choice best applies this lesson idea about food safety with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Sam makes a chicken salad sandwich with an adult. Steps: wash hands for 20 seconds; use one board for raw chicken and a different board for vegetables; cook the chicken until it is hot all the way through; wash the board and knife in hot soapy water; put leftovers in the fridge within two hours. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about food safety?",
+          "question": "Which choice best applies this lesson idea about food safety with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking food is safe if it smells fine. Germs that cause illness often cannot be smelled or seen, so use safe steps and read dates. Here is a more helpful example: Example: Sam makes a chicken salad sandwich with an adult. Steps: wash hands for 20 seconds; use one board for raw chicken and a different board for vegetables; cook the chicken until it is hot all the way through; wash the board and knife in hot soapy water; put leftovers in the fridge within two hours.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nRaw chicken can carry germs that spread to the tomatoes, which are eaten raw. She should use a separate knife and board, or wash them in hot soapy water between jobs, and wash her hands.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example"
           ],
-          "question": "Which choice best shows accurate use of this idea about food safety?",
+          "question": "Which choice best applies this lesson idea about food safety with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nFood safety stops germs from making people sick. Wash hands with soap and running water for at least 20 seconds before touching food, after using the toilet and after touching raw meat. Keep raw meat away from ready-to-eat food, keep cold food cold, cook food until it is hot all the way through and read use-by dates. Wash fruit and vegetables and use clean boards and utensils. Never share food with someone who has an allergy. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

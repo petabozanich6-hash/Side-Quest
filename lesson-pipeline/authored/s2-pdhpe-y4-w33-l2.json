@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-MSP-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Create a 5-element sequence on mats. Peer checklist for control. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Shows control and performance clarity. Reasoning: I used sequence by attending to link rather than copying the worked model.\n\nParent: Written model 2: Common error: Rushing with no pauses looks uncontrolled and can be unsafe. Correction: Shows control and performance clarity. Why: the correction restores accurate use of sequence.\n\nParent: Likely misconception: Rushing with no pauses looks uncontrolled and can be unsafe. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating sequence on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with sequence, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create a 5-element sequence on mats. Peer checklist for control. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using sequence on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Rushing with no pauses looks uncontrolled and can be unsafe.. Correction: Shows control and performance clarity.. Why it helps the audience is stated.\n\nParent: Likely misconception: Rushing with no pauses looks uncontrolled and can be unsafe. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating sequence on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with sequence, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about sequence with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for sequence. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Shows control and performance clarity. This matches the lesson skill for sequence.",
+        "explanation": "This matches the taught method for sequence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example and call that independent work.",
-          "Shows control and performance clarity.",
-          "Rushing with no pauses looks uncontrolled and can be unsafe.",
-          "Ignore the safety rule because the first idea looked exciting."
+          "A method that skips the key step taught in this lesson",
+          "Shows control and performance clarity",
+          "Rushing with no pauses looks uncontrolled and can be unsafe",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Why include start and end freezes in a sequence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Rushing with no pauses looks uncontrolled and can be unsafe. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for sequence; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Rushing with no pauses looks uncontrolled and can be unsafe.",
-          "Gymnastic sequences link shapes, rolls (as taught), balances and landings with a clear start and end still position.",
-          "Shows control and performance clarity.",
-          "Careful use of link with clear evidence."
+          "Rushing with no pauses looks uncontrolled and can be unsafe",
+          "Gymnastic sequences link shapes, rolls (as taught), balances and landings with a clear start and end still position",
+          "Shows control and performance clarity",
+          "Careful use of link and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising sequence?",
+        "question": "Which statement is a common mistake when working with sequence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named link, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named link and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the link used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name link and explain why it matters only, without linking it to sequence",
+          "Apply sequence to new material and name the link and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Rushing with no pauses looks uncontrolled and can be unsafe"
         ],
-        "question": "A learner is practising sequence. Which approach best shows understanding?",
+        "question": "Which response best applies sequence with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Shows control and performance clarity. uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on sequence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Shows control and performance clarity.",
-          "Rushing with no pauses looks uncontrolled and can be unsafe."
+          "Use a put-down and call it honesty",
+          "Rushing with no pauses looks uncontrolled and can be unsafe",
+          "Shows control and performance clarity",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which response best shows careful thinking about sequence?",
+        "question": "Which response best uses safe, healthy or respectful choices for sequence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Rushing with no pauses looks uncontrolled and can be unsafe.",
-          "Name a specific source, cue or example and say what it shows about sequence.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
+          "Rushing with no pauses looks uncontrolled and can be unsafe",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with sequence",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty"
         ],
-        "question": "Which habit strengthens evidence about link?",
+        "question": "Which evidence move best supports a claim about sequence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Gymnastic sequences link shapes, rolls (as taught), balances and) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Rushing with no pauses looks uncontrolled and can be unsafe.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example: start freeze → roll → balance → jump land → end freeze."
+          "Rushing with no pauses looks uncontrolled and can be unsafe",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example: start freeze → roll → balance → jump land → end freeze"
         ],
-        "question": "Using this lesson idea — Gymnastic sequences link shapes, rolls (as taught), balances and landings with a clear start and end still… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about sequence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for sequence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Create a 5-element sequence on mats. Peer checklist for control.",
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Rushing with no pauses looks uncontrolled and can be unsafe."
+          "Create a 5-element sequence on mats",
+          "Retype the worked example with no new example",
+          "Rushing with no pauses looks uncontrolled and can be unsafe",
+          "Name link and explain why it matters only, with no linked example"
         ],
-        "question": "Which task best shows independent use of sequence?",
+        "question": "Which independent response best applies sequence to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about sequence with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating sequence on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Shows control and performance clarity. Reasoning: I used sequence by attending to link rather than copying the worked model.",
+        "sample_answer": "Sample: original example using sequence on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for sequence. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with sequence, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Rushing with no pauses looks uncontrolled and can be unsafe. Correction: Shows control and performance clarity. Why: the correction restores accurate use of sequence.",
+        "sample_answer": "Sample error: Rushing with no pauses looks uncontrolled and can be unsafe.. Correction: Shows control and performance clarity.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Gymnastic sequences link shapes, rolls (as taught), balances and landings with a clear start and end still position. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Gymnastic sequences link shapes, rolls (as taught), balances and landings with a clear start and end still position.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Gymnastic sequences link shapes, rolls (as taught), balances and landings with a clear start and end still position."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Gymnastic sequences link shapes, rolls (as taught), balances and landings with a clear start and end still position"
           ],
-          "question": "Which choice best shows accurate use of this idea about sequence?",
+          "question": "Which choice best applies this lesson idea about sequence with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: start freeze → roll → balance → jump land → end freeze.\n\nTRY FIRST\nWhy include start and end freezes in a sequence?\n\nFEEDBACK\nShows control and performance clarity.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about sequence?",
+          "question": "Which choice best applies this lesson idea about sequence with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: start freeze → roll → balance → jump land → end freeze. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Use an intentionally unsafe or unhelpful choice as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about sequence?",
+          "question": "Which choice best applies this lesson idea about sequence with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRushing with no pauses looks uncontrolled and can be unsafe. Here is a more helpful example: Example: start freeze → roll → balance → jump land → end freeze.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nShows control and performance clarity.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example"
           ],
-          "question": "Which choice best shows accurate use of this idea about sequence?",
+          "question": "Which choice best applies this lesson idea about sequence with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nGymnastic sequences link shapes, rolls (as taught), balances and landings with a clear start and end still position. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Rehearse your best dance from this unit and perform it for family. Introduce it with the title and two elements. Ask for two stars and a wish, and write a reflection with one thing to keep and one thing to practise next. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'My dance is called Waves. It uses slow, curved movements at a low level and quick, high jumps for the big wave.' The introduction names the title and two elements, which helps the… Reasoning: I used a dance showcase by attending to a rehearsal plan rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence. Correction: Strong answer: 'My dance is called Waves. It uses slow, curved movements at a low level and quick, high jumps for the big wave.' The introduction names the… Why: the correction restores accurate use of a dance showcase.\n\nParent: Likely misconception: Believing that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a dance showcase on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a dance showcase, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Rehearse your best dance from this unit and perform it for family. Introduce it with the title and two elements. Ask for two stars and a wish, and write a reflection with one thing to keep and one thing to practise next. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a dance showcase on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing that a showcase means including every movement you know.. Correction: Strong answer: 'My dance is called Waves.. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a dance showcase on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a dance showcase, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a dance showcase with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a dance showcase. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'My dance is called Waves. It uses slow, curved movements at a low level and quick, high jumps for the big wave.' The introduction names the… This matches the lesson skill for a dance showcase.",
+        "explanation": "This matches the taught method for a dance showcase. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'My dance is called Waves. It uses slow, curved movements at a low level and quick, high jumps for the big wave.' The introduction names the…",
-          "Believing that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence."
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'My dance is called Waves.",
+          "Believing that a showcase means including every movement you know."
         ],
         "question": "Write a two-sentence introduction for a dance you could perform, naming the title and two elements. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Believing that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a dance showcase; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Believing that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence.",
-          "A dance showcase is a performance of your best work at the end of a unit. Prepare by choosing a piece, rehearsing it several times and planning the start and…",
-          "Strong answer: 'My dance is called Waves. It uses slow, curved movements at a low level and quick, high jumps for the big wave.' The introduction names the…",
-          "Careful use of a rehearsal plan with clear evidence."
+          "Believing that a showcase means including every movement you know.",
+          "A dance showcase is a performance of your best work at the end of a unit.",
+          "'My dance is called Waves.",
+          "Careful use of a rehearsal plan and explain why it matt with clear evidence."
         ],
-        "question": "Which statement is a common mistake when practising a dance showcase?",
+        "question": "Which statement is a common mistake when working with a dance showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named a rehearsal plan, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a rehearsal plan and explain why it matt, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a rehearsal plan used.",
+          "Name a rehearsal plan and explain why it matt only, without linking it to a dance showcase.",
+          "Apply a dance showcase to new material and name the a rehearsal plan and explain why it matt used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Believing that a showcase means including every movement you know."
         ],
-        "question": "A learner is practising a dance showcase. Which approach best shows understanding?",
+        "question": "Which response best applies a dance showcase with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'My dance is called Waves. It uses slow, curved movements at a low level and quick, high jumps for the big wave.' The introduction names the… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a dance showcase. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Believing that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'My dance is called Waves. It uses slow, curved movements at a low level and quick, high jumps for the big wave.' The introduction names the…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Believing that a showcase means including every movement you know.",
+          "'My dance is called Waves."
         ],
-        "question": "Which response best shows careful thinking about a dance showcase?",
+        "question": "Which response best uses elements, techniques and audience effect for a dance showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about a dance showcase.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Believing that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence."
+          "Name a specific element or technique and say what effect it creates for a dance showcase.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Believing that a showcase means including every movement you know."
         ],
-        "question": "Which habit strengthens evidence about a rehearsal plan?",
+        "question": "Which evidence move best supports a claim about a dance showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Example: Ravi's showcase has a short introduction: 'My dance is called Wind. I use quick, high movements and slow, low ones.' He performs,…",
-          "Believing that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Ravi's showcase has a short introduction: 'My dance is called Wind.",
+          "Believing that a showcase means including every movement you know.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — A dance showcase is a performance of your best work at the end of a unit. Prepare by choosing a piece,… — which choice is best?",
+        "question": "Using this lesson idea — A dance showcase is a performance of your best work at the end of a unit. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a dance showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Believing that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence.",
-          "Rehearse your best dance from this unit and perform it for family. Introduce it with the title and two elements. Ask for two stars and a wish, and…",
+          "Believing that a showcase means including every movement you know.",
+          "Name a rehearsal plan and explain why it matt only, with no linked example.",
+          "Rehearse your best dance from this unit and perform it for family.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of a dance showcase?",
+        "question": "Which independent response best applies a dance showcase to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a dance showcase with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a dance showcase on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'My dance is called Waves. It uses slow, curved movements at a low level and quick, high jumps for the big wave.' The introduction names the title and two elements, which helps the… Reasoning: I used a dance showcase by attending to a rehearsal plan rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a dance showcase on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a dance showcase. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a dance showcase, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Believing that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence. Correction: Strong answer: 'My dance is called Waves. It uses slow, curved movements at a low level and quick, high jumps for the big wave.' The introduction names the… Why: the correction restores accurate use of a dance showcase.",
+        "sample_answer": "Sample error: Believing that a showcase means including every movement you know.. Correction: Strong answer: 'My dance is called Waves.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "A dance showcase is a performance of your best work at the end of a unit. Prepare by choosing a piece, rehearsing it several times and planning the start and the end shapes. Name the dance elements you used so the audience knows what to watch for. After the showcase, reflect on…",
+          "explanation": "A dance showcase is a performance of your best work at the end of a unit.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "A dance showcase is a performance of your best work at the end of a unit. Prepare by choosing a piece, rehearsing it several times and planning the start and the end shapes. Name the dance elements you used so the audience knows what to watch for. After the showcase, reflect on what went well, which elements were most effective and what you will do next time. Keep your feedback specific and kind. If a performance is not possible, you may describe or draw the dance and give a talk.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "A dance showcase is a performance of your best work at the end of a unit.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a dance showcase?",
+          "question": "Which choice best applies this lesson idea about a dance showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Ravi's showcase has a short introduction: 'My dance is called Wind. I use quick, high movements and slow, low ones.' He performs, holds his final shape and bows. His reflection reads: 'Star: I stayed in time with the music. Star: my changes of level were clear. Wish: next time I will stretch my arms more.'\n\nTRY FIRST\nWrite a two-sentence introduction for a dance you could perform, naming the title and two elements.\n\nFEEDBACK\nStrong answer: 'My dance is called Waves. It uses slow, curved movements at a low level and quick, high jumps for the big wave.' The introduction names the title and two elements, which helps the audience watch closely.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a dance showcase?",
+          "question": "Which choice best applies this lesson idea about a dance showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Ravi's showcase has a short introduction: 'My dance is called Wind. I use quick, high movements and slow, low ones.' He performs, holds his final shape and bows. His reflection reads: 'Star: I stayed in time with the music. Star: my changes of level were clear. Wish: next time I will stretch my arms more.' Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a dance showcase?",
+          "question": "Which choice best applies this lesson idea about a dance showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBelieving that a showcase means including every movement you know. It is better to show a clear, well-rehearsed piece that uses a few elements with confidence. Here is a more helpful example: Example: Ravi's showcase has a short introduction: 'My dance is called Wind. I use quick, high movements and slow, low ones.' He performs, holds his final shape and bows. His reflection reads: 'Star: I stayed in time with the music. Star: my changes of level were clear. Wish: next time I will stretch my arms more.'\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'My dance is called Waves. It uses slow, curved movements at a low level and quick, high jumps for the big wave.' The introduction names the title and two elements, which helps the audience watch closely.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a dance showcase?",
+          "question": "Which choice best applies this lesson idea about a dance showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA dance showcase is a performance of your best work at the end of a unit. Prepare by choosing a piece, rehearsing it several times and planning the start and the end shapes. Name the dance elements you used so the audience knows what to watch for. After the showcase, reflect on what went well, which elements were most effective and what you will do next time. Keep your feedback specific and kind. If a performance is not possible, you may describe or draw the dance and give a talk. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

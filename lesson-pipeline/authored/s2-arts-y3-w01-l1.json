@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose a picture book illustration or an artwork at home. Write three sentences naming one line, one shape and one colour in it, and what each element does for the mood. Then draw a small picture of a quiet forest using  Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'The wide curved lines look smooth and relaxed. The big orange circle is warm and bright, so it feels hot and sunny. The small blue triangles look like sails on the cool water.' Each… Reasoning: I used a line by attending to a shape rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold… Correction: Strong answer: 'The wide curved lines look smooth and relaxed. The big orange circle is warm and bright, so it feels hot and sunny. The small blue triangles… Why: the correction restores accurate use of a line.\n\nParent: Likely misconception: Thinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold picture can be just as skilful as a realistic one. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a line on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a line, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose a picture book illustration or an artwork at home. Write three sentences naming one line, one shape and one colour in it, and what each element does for the mood. Then draw a small picture of a quiet forest using  Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a line on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that an artwork is only good if it looks real.. Correction: Strong answer: 'The wide curved lines look smooth and relaxed.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold picture can be just as skilful as a realistic one. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a line on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a line, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a line with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a line. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'The wide curved lines look smooth and relaxed. The big orange circle is warm and bright, so it feels hot and sunny. The small blue triangles… This matches the lesson skill for a line.",
+        "explanation": "This matches the taught method for a line. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'The wide curved lines look smooth and relaxed. The big orange circle is warm and bright, so it feels hot and sunny. The small blue triangles…",
-          "Thinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold…",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "'The wide curved lines look smooth and relaxed.",
+          "Thinking that an artwork is only good if it looks real.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "A drawing of a sunny beach has wide curved lines for the sand, a big orange circle for the sun and small blue triangles for sails. Name one line, one shape and one colour, and say what each makes you feel. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Thinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a line; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Artists build pictures from three basic elements. Lines can be straight, curved, zigzag, thick or thin. Shapes are closed outlines such as circles, squares…",
-          "Strong answer: 'The wide curved lines look smooth and relaxed. The big orange circle is warm and bright, so it feels hot and sunny. The small blue triangles…",
-          "Careful use of a shape with clear evidence.",
-          "Thinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold…"
+          "Artists build pictures from three basic elements.",
+          "'The wide curved lines look smooth and relaxed.",
+          "Careful use of a shape and explain why it matters with clear evidence.",
+          "Thinking that an artwork is only good if it looks real."
         ],
-        "question": "Which statement is a common mistake when practising a line?",
+        "question": "Which statement is a common mistake when working with a line?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named a shape, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a shape and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a shape used.",
+          "Thinking that an artwork is only good if it looks real.",
+          "Name a shape and explain why it matters only, without linking it to a line.",
+          "Apply a line to new material and name the a shape and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising a line. Which approach best shows understanding?",
+        "question": "Which response best applies a line with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'The wide curved lines look smooth and relaxed. The big orange circle is warm and bright, so it feels hot and sunny. The small blue triangles… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a line. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'The wide curved lines look smooth and relaxed. The big orange circle is warm and bright, so it feels hot and sunny. The small blue triangles…",
-          "Thinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold…",
-          "Say it looks nice with no element or technique named."
+          "Thinking that an artwork is only good if it looks real.",
+          "'The wide curved lines look smooth and relaxed.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which response best shows careful thinking about a line?",
+        "question": "Which response best uses elements, techniques and audience effect for a line?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
-        "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold…",
-          "Name a specific source, cue or example and say what it shows about a line."
-        ],
-        "question": "Which habit strengthens evidence about a shape?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
           "Say it looks nice with no element or technique named.",
-          "Example: a painting of a stormy sea uses thick zigzag lines for waves, large dark blue triangles for the water and a thin pale yellow…",
-          "Thinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold…",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that an artwork is only good if it looks real.",
+          "Name a specific element or technique and say what effect it creates for a line."
         ],
-        "question": "Using this lesson idea — Artists build pictures from three basic elements. Lines can be straight, curved, zigzag, thick or thin.… — which choice is best?",
+        "question": "Which evidence move best supports a claim about a line?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: a painting of a stormy sea uses thick zigzag lines for waves, large dark blue triangles for the water and a",
+          "Thinking that an artwork is only good if it looks real.",
+          "Say it looks nice with no element or technique named."
+        ],
+        "question": "Using this lesson idea — Artists build pictures from three basic elements. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a line?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold…",
-          "Choose a picture book illustration or an artwork at home. Write three sentences naming one line, one shape and one colour in it, and what each…",
+          "Name a shape and explain why it matters only, with no linked example.",
+          "Choose a picture book illustration or an artwork at home.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Thinking that an artwork is only good if it looks real."
         ],
-        "question": "Which task best shows independent use of a line?",
+        "question": "Which independent response best applies a line to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a line with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a line on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'The wide curved lines look smooth and relaxed. The big orange circle is warm and bright, so it feels hot and sunny. The small blue triangles look like sails on the cool water.' Each… Reasoning: I used a line by attending to a shape rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a line on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a line. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a line, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold… Correction: Strong answer: 'The wide curved lines look smooth and relaxed. The big orange circle is warm and bright, so it feels hot and sunny. The small blue triangles… Why: the correction restores accurate use of a line.",
+        "sample_answer": "Sample error: Thinking that an artwork is only good if it looks real.. Correction: Strong answer: 'The wide curved lines look smooth and relaxed.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Artists build pictures from three basic elements. Lines can be straight, curved, zigzag, thick or thin. Shapes are closed outlines such as circles, squares and triangles, and organic shapes with wobbly edges like leaves. Colour sets the mood: warm colours such as red and orange…",
+          "explanation": "Artists build pictures from three basic elements.",
           "options": [
-            "Artists build pictures from three basic elements. Lines can be straight, curved, zigzag, thick or thin. Shapes are closed outlines such as circles, squares and triangles, and organic shapes with wobbly edges like leaves. Colour sets the mood: warm colours such as red and orange feel lively, cool colours such as blue and green feel calm. When you look at an artwork, name the line, shape and colour you see, then say what each one does for the picture.",
+            "Artists build pictures from three basic elements.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a line?",
+          "question": "Which choice best applies this lesson idea about a line with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a painting of a stormy sea uses thick zigzag lines for waves, large dark blue triangles for the water and a thin pale yellow curve for the moon. The zigzag lines make the sea feel rough, the dark cool colours add a gloomy mood and the small pale moon looks far away because it is thin and light.\n\nTRY FIRST\nA drawing of a sunny beach has wide curved lines for the sand, a big orange circle for the sun and small blue triangles for sails. Name one line, one shape and one colour, and say what each makes you feel.\n\nFEEDBACK\nStrong answer: 'The wide curved lines look smooth and relaxed. The big orange circle is warm and bright, so it feels hot and sunny. The small blue triangles look like sails on the cool water.' Each answer names the element and its effect.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a line?",
+          "question": "Which choice best applies this lesson idea about a line with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a painting of a stormy sea uses thick zigzag lines for waves, large dark blue triangles for the water and a thin pale yellow curve for the moon. The zigzag lines make the sea feel rough, the dark cool colours add a gloomy mood and the small pale moon looks far away because it is thin and light. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a line?",
+          "question": "Which choice best applies this lesson idea about a line with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that an artwork is only good if it looks real. Artists choose lines, shapes and colours on purpose to create a mood or idea, so a simple, bold picture can be just as skilful as a realistic one. Here is a more helpful example: Example: a painting of a stormy sea uses thick zigzag lines for waves, large dark blue triangles for the water and a thin pale yellow curve for the moon. The zigzag lines make the sea feel rough, the dark cool colours add a gloomy mood and the small pale moon looks far away because it is thin and light.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'The wide curved lines look smooth and relaxed. The big orange circle is warm and bright, so it feels hot and sunny. The small blue triangles look like sails on the cool water.' Each answer names the element and its effect.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a line?",
+          "question": "Which choice best applies this lesson idea about a line with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nArtists build pictures from three basic elements. Lines can be straight, curved, zigzag, thick or thin. Shapes are closed outlines such as circles, squares and triangles, and organic shapes with wobbly edges like leaves. Colour sets the mood: warm colours such as red and orange feel lively, cool colours such as blue and green feel calm. When you look at an artwork, name the line, shape and colour you see, then say what each one does for the picture. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

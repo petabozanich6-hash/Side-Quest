@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-DDT-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Make an online-safety charter with eight rules. Role-play two scenarios (what to do). Sign with a parent/teacher that you discussed them. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Safe; unsafe; safe. Reasoning: I used online safety by attending to personal and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking “everyone online is a friend” is unsafe. Correction: Safe; unsafe; safe. Why: the correction restores accurate use of online safety.\n\nParent: Likely misconception: Thinking “everyone online is a friend” is unsafe. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses online safety. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about online safety, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Make an online-safety charter with eight rules. Role-play two scenarios (what to do). Sign with a parent/teacher that you discussed them. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about online safety linked to that evidence.\n\nParent: Written model 2: Sample misconception: Thinking “everyone online is a friend” is unsafe.. Correction: Safe; unsafe; safe. with evidence.\n\nParent: Likely misconception: Thinking “everyone online is a friend” is unsafe. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses online safety. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about online safety, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about online safety. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for online safety. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Safe; unsafe; safe. This matches the lesson skill for online safety.",
+        "explanation": "This matches the taught method for online safety. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Safe; unsafe; safe.",
-          "Thinking “everyone online is a friend” is unsafe.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Safe; unsafe; safe",
+          "Thinking “everyone online is a friend” is unsafe",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Sort safe/unsafe: using a class code; telling a stranger your address in chat; asking a parent before a new app. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Thinking “everyone online is a friend” is unsafe. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for online safety; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking “everyone online is a friend” is unsafe.",
-          "Staying safe online means protecting personal information, asking trusted adults before sharing and being kind in digital spaces.",
-          "Safe; unsafe; safe.",
-          "Careful use of personal and explain why it matters with clear evidence."
+          "Thinking “everyone online is a friend” is unsafe",
+          "Staying safe online means protecting personal information, asking trusted adults before sharing and being kind in",
+          "Safe; unsafe; safe",
+          "Careful use of personal and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising online safety?",
+        "question": "Which statement is a common mistake when working with online safety?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named personal and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named personal and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the personal and explain why it matters used."
+          "Repeat the worked example wording with no new evidence",
+          "Thinking “everyone online is a friend” is unsafe",
+          "Name personal and explain why it matters only, without linking it to online safety",
+          "Apply online safety to new material and name the personal and explain why it matters used"
         ],
-        "question": "A learner is practising online safety. Which approach best shows understanding?",
+        "question": "Which response best applies online safety with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a label from the lesson title with no observation.",
-          "Thinking “everyone online is a friend” is unsafe.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting."
+          "Copy a label from the lesson title with no observation",
+          "Thinking “everyone online is a friend” is unsafe",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting"
         ],
-        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which claim about online safety is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A label copied from the title with no evidence.",
-          "Thinking “everyone online is a friend” is unsafe.",
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation."
+          "A label copied from the title with no evidence",
+          "Thinking “everyone online is a friend” is unsafe",
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation"
         ],
         "question": "Which record best supports a science claim about online safety?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Safe; unsafe; safe. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about online safety with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Safe; unsafe; safe.",
-          "Thinking “everyone online is a friend” is unsafe.",
-          "Ignore the task and invent an unrelated answer."
+          "Ignore measurements and decide by which looks nicer",
+          "Safe; unsafe; safe",
+          "Thinking “everyone online is a friend” is unsafe",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Using this idea — Staying safe online means protecting personal information, asking trusted adults before sharing… — which choice is strongest?",
+        "question": "Using this science idea — Staying safe online means protecting personal information, asking trusted adults before sharing and — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result."
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about online safety?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation."
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about online safety should change with it",
+          "Any exciting story about the object must be true",
+          "Thinking “everyone online is a friend” is unsafe"
         ],
-        "question": "Which next step best shows transfer of online safety?",
+        "question": "Which prediction about online safety can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about online safety. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses online safety. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Safe; unsafe; safe. Reasoning: I used online safety by attending to personal and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about online safety linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for online safety. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about online safety, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Thinking “everyone online is a friend” is unsafe. Correction: Safe; unsafe; safe. Why: the correction restores accurate use of online safety.",
+        "sample_answer": "Sample misconception: Thinking “everyone online is a friend” is unsafe.. Correction: Safe; unsafe; safe. with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Staying safe online means protecting personal information, asking trusted adults before sharing and being kind in digital spaces. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Staying safe online means protecting personal information, asking trusted adults before sharing and being kind in digital spaces.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Staying safe online means protecting personal information, asking trusted adults before sharing and being kind in digital spaces."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Staying safe online means protecting personal information, asking trusted adults before sharing and being kind in"
           ],
-          "question": "Which choice best shows accurate use of this idea about online safety?",
+          "question": "Which choice best applies this lesson idea about online safety with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDo not share full name, address, school or passwords publicly. Ask before posting photos of others. Stop and tell an adult if something feels wrong.\n\nTRY FIRST\nSort safe/unsafe: using a class code; telling a stranger your address in chat; asking a parent before a new app.\n\nFEEDBACK\nSafe; unsafe; safe.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
           "options": [
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about online safety?",
+          "question": "Which choice best applies this lesson idea about online safety with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDo not share full name, address, school or passwords publicly. Ask before posting photos of others. Stop and tell an adult if something feels wrong. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect claim as a comparison",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about online safety?",
+          "question": "Which choice best applies this lesson idea about online safety with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking “everyone online is a friend” is unsafe. Here is a more productive model: Do not share full name, address, school or passwords publicly. Ask before posting photos of others. Stop and tell an adult if something feels wrong.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nSafe; unsafe; safe.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use the same science idea on a new object, material or context, not a copy of the worked example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about online safety?",
+          "question": "Which choice best applies this lesson idea about online safety with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nStaying safe online means protecting personal information, asking trusted adults before sharing and being kind in digital spaces. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",

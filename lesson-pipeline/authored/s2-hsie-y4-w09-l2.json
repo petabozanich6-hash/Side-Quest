@@ -34,7 +34,7 @@
     "outcome_codes": [
       "HS2-GEO-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Annotate a colonial settlement outline map with three towns and a respectful missing-layer note. List one published First Nations map source to consult next. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: First Nations Countries and names; use published Indigenous maps and ask local educators — do not guess. Reasoning: I used map by attending to settlement rather than copying the worked model.\n\nParent: Written model 2: Common error: Treating a colonial map as the full story of place ignores deeper history. Correction: First Nations Countries and names; use published Indigenous maps and ask local educators — do not guess. Why: the correction restores accurate use of map.\n\nParent: Likely misconception: Treating a colonial map as the full story of place ignores deeper history. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating map on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with map, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Annotate a colonial settlement outline map with three towns and a respectful missing-layer note. List one published First Nations map source to consult next. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using map on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Treating a colonial map as the full story of place ignores deeper history.. Correction: First Nations Countries and names;. Why it helps the audience is stated.\n\nParent: Likely misconception: Treating a colonial map as the full story of place ignores deeper history. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating map on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with map, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about map with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for map. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "First Nations Countries and names; use published Indigenous maps and ask local educators — do not guess. This matches the lesson skill for map.",
+        "explanation": "First Nations Countries and names is correct because This matches the taught method for map. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model places and call that independent work.",
-          "First Nations Countries and names; use published Indigenous maps and ask local educators — do not guess.",
-          "Treating a colonial map as the full story of place ignores deeper history.",
-          "Ignore the source and invent a more exciting story."
+          "A method that skips the key step taught in this lesson",
+          "First Nations Countries and names",
+          "Treating a colonial map as the full story of place ignores deeper history",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "A settlement map shows only British town names. What is missing, and how can you begin to address it respectfully?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Treating a colonial map as the full story of place ignores deeper history. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for map; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "First Nations Countries and names; use published Indigenous maps and ask local educators — do not guess.",
-          "Careful use of settlement with clear evidence.",
-          "Treating a colonial map as the full story of place ignores deeper history.",
-          "Colonial settlement maps often show coastal towns first, then inland expansion along rivers and routes. Maps are tools, but they can hide First Nations…"
+          "First Nations Countries and names",
+          "Careful use of settlement and explain why it matters with clear evidence",
+          "Treating a colonial map as the full story of place ignores deeper history",
+          "Colonial settlement maps often show coastal towns first, then inland expansion along rivers and routes"
         ],
-        "question": "Which statement is a common mistake when practising map?",
+        "question": "Which statement is a common mistake when working with map?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named settlement, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named settlement and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing fact as if it were recorded in a source.",
-          "Apply the idea with new evidence and name the settlement used."
+          "Repeat the worked example wording with no new evidence",
+          "Treating a colonial map as the full story of place ignores deeper history",
+          "Name settlement and explain why it matters only, without linking it to map",
+          "Apply map to new material and name the settlement and explain why it matters used"
         ],
-        "question": "A learner is practising map. Which approach best shows understanding?",
+        "question": "Which response best applies map with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "First Nations Countries and names; use published Indigenous maps and ask local educators — do not guess. uses sources and places appropriately for this lesson.",
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on map. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model places and call that independent work.",
-          "First Nations Countries and names; use published Indigenous maps and ask local educators — do not guess.",
-          "Treating a colonial map as the full story of place ignores deeper history.",
-          "Ignore the source and invent a more exciting story."
+          "Treating a colonial map as the full story of place ignores deeper history",
+          "First Nations Countries and names",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail"
         ],
-        "question": "Which response best shows careful thinking about map?",
+        "question": "Which response best uses sources, places or historical/geographic evidence for map?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about map.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Treating a colonial map as the full story of place ignores deeper history."
+          "Name a specific source or place detail and say what it shows about map",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Treating a colonial map as the full story of place ignores deeper history"
         ],
-        "question": "Which habit strengthens evidence about settlement?",
+        "question": "Which evidence move best supports a claim about map?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Colonial settlement maps often show coastal towns first, then inland) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: students plot early towns from a published atlas, then add a layer note: “First Nations Countries not shown — seek AIATSIS/local…",
-          "Treating a colonial map as the full story of place ignores deeper history.",
-          "Treat a missing fact as if it were recorded in a source.",
-          "Ignore the source and invent a more exciting story."
+          "Example: students plot early towns from a published atlas, then add a layer note: “First Nations Countries not shown —",
+          "Treating a colonial map as the full story of place ignores deeper history",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail"
         ],
-        "question": "Using this lesson idea — Colonial settlement maps often show coastal towns first, then inland expansion along rivers and routes. Maps… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about map?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for map?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked example with no new example.",
-          "Copy the model places and call that independent work.",
-          "Treating a colonial map as the full story of place ignores deeper history.",
-          "Annotate a colonial settlement outline map with three towns and a respectful missing-layer note. List one published First Nations map source to…"
+          "Retype the worked example with no new example",
+          "Treating a colonial map as the full story of place ignores deeper history",
+          "Name settlement and explain why it matters only, with no linked example",
+          "Annotate a colonial settlement outline map with three towns and a respectful missing-layer note"
         ],
-        "question": "Which task best shows independent use of map?",
+        "question": "Which independent response best applies map to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about map with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating map on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: First Nations Countries and names; use published Indigenous maps and ask local educators — do not guess. Reasoning: I used map by attending to settlement rather than copying the worked model.",
+        "sample_answer": "Sample: original example using map on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for map. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with map, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Treating a colonial map as the full story of place ignores deeper history. Correction: First Nations Countries and names; use published Indigenous maps and ask local educators — do not guess. Why: the correction restores accurate use of map.",
+        "sample_answer": "Sample error: Treating a colonial map as the full story of place ignores deeper history.. Correction: First Nations Countries and names;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Colonial settlement maps often show coastal towns first, then inland expansion along rivers and routes. Maps are tools, but they can hide First Nations presence if only colonial names appear. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Colonial settlement maps often show coastal towns first, then inland expansion along rivers and routes.",
           "options": [
-            "A guess with no evidence.",
-            "Colonial settlement maps often show coastal towns first, then inland expansion along rivers and routes. Maps are tools, but they can hide First Nations presence if only colonial names appear.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Colonial settlement maps often show coastal towns first, then inland expansion along rivers and routes",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
           ],
-          "question": "Which choice best shows accurate use of this idea about map?",
+          "question": "Which choice best applies this lesson idea about map with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: students plot early towns from a published atlas, then add a layer note: “First Nations Countries not shown — seek AIATSIS/local sources.”\n\nTRY FIRST\nA settlement map shows only British town names. What is missing, and how can you begin to address it respectfully?\n\nFEEDBACK\nFirst Nations Countries and names; use published Indigenous maps and ask local educators — do not guess.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no evidence.",
-            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
           ],
-          "question": "Which choice best shows accurate use of this idea about map?",
+          "question": "Which choice best applies this lesson idea about map with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: students plot early towns from a published atlas, then add a layer note: “First Nations Countries not shown — seek AIATSIS/local sources.” Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about map?",
+          "question": "Which choice best applies this lesson idea about map with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTreating a colonial map as the full story of place ignores deeper history. Here is a more productive model: Example: students plot early towns from a published atlas, then add a layer note: “First Nations Countries not shown — seek AIATSIS/local sources.”\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nFirst Nations Countries and names; use published Indigenous maps and ask local educators — do not guess.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence."
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example"
           ],
-          "question": "Which choice best shows accurate use of this idea about map?",
+          "question": "Which choice best applies this lesson idea about map with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nColonial settlement maps often show coastal towns first, then inland expansion along rivers and routes. Maps are tools, but they can hide First Nations presence if only colonial names appear. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",

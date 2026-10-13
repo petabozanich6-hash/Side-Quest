@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-SCI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Build a ball-and-torch day/night model. Draw day and night on a circle diagram. Write two sentences using spin/rotate language. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Night (approximately opposite). Reasoning: I used day by attending to night and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking the Sun moves around Earth each day is a common alternative idea; the Year 3 model uses Earth’s spin. Correction: Night (approximately opposite). Why: the correction restores accurate use of day.\n\nParent: Likely misconception: Thinking the Sun moves around Earth each day is a common alternative idea; the Year 3 model uses Earth’s spin. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses day. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about day, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Build a ball-and-torch day/night model. Draw day and night on a circle diagram. Write two sentences using spin/rotate language. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about day linked to that evidence.\n\nParent: Written model 2: Sample misconception: Thinking the Sun moves around Earth each day is a common alternative idea;. Correction: Night (approximately opposite). with evidence.\n\nParent: Likely misconception: Thinking the Sun moves around Earth each day is a common alternative idea; the Year 3 model uses Earth’s spin. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses day. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about day, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about day. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for day. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Night (approximately opposite). This matches the lesson skill for day.",
+        "explanation": "Night (approximately opposite) is correct because This matches the taught method for day. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Night (approximately opposite).",
-          "Thinking the Sun moves around Earth each day is a common alternative idea; the Year 3 model uses Earth’s spin."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Night (approximately opposite)",
+          "Thinking the Sun moves around Earth each day is a common alternative idea"
         ],
         "question": "If it is day where you are, what is likely on the opposite side of Earth?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Thinking the Sun moves around Earth each day is a common alternative idea; the Year 3 model uses Earth’s spin. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for day; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Day and night happen because Earth spins (rotates). The side facing the Sun has day; the side facing away has night.",
-          "Night (approximately opposite).",
-          "Careful use of night and explain why it matters with clear evidence.",
-          "Thinking the Sun moves around Earth each day is a common alternative idea; the Year 3 model uses Earth’s spin."
+          "Day and night happen because Earth spins (rotates)",
+          "Night (approximately opposite)",
+          "Careful use of night and explain why it matters with clear evidence",
+          "Thinking the Sun moves around Earth each day is a common alternative idea"
         ],
-        "question": "Which statement is a common mistake when practising day?",
+        "question": "Which statement is a common mistake when working with day?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named night and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named night and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the night and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact."
+          "Apply day to new material and name the night and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking the Sun moves around Earth each day is a common alternative idea",
+          "Name night and explain why it matters only, without linking it to day"
         ],
-        "question": "A learner is practising day. Which approach best shows understanding?",
+        "question": "Which response best applies day with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking the Sun moves around Earth each day is a common alternative idea; the Year 3 model uses Earth’s spin.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation."
+          "Thinking the Sun moves around Earth each day is a common alternative idea",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation"
         ],
-        "question": "New examples: a charging phone, a nesting bird, glass marble, fallen dry leaf. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: a charging phone, a nesting bird, a glass marble, a fallen dry leaf. Which claim about day is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence.",
-          "Thinking the Sun moves around Earth each day is a common alternative idea; the Year 3 model uses Earth’s spin.",
-          "Named observation plus how it supports the claim."
+          "A longer story with no observation",
+          "A label copied from the title with no evidence",
+          "Thinking the Sun moves around Earth each day is a common alternative idea",
+          "A named observation plus how it supports the claim"
         ],
         "question": "Which record best supports a science claim about day?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Night (approximately opposite). applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about day with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Night (approximately opposite).",
-          "Thinking the Sun moves around Earth each day is a common alternative idea; the Year 3 model uses Earth’s spin."
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "Night (approximately opposite)",
+          "Thinking the Sun moves around Earth each day is a common alternative idea"
         ],
-        "question": "Using this idea — Day and night happen because Earth spins (rotates). The side facing the Sun has day; the side… — which choice is strongest?",
+        "question": "Using this science idea — Day and night happen because Earth spins (rotates). — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result."
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about day?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation."
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about day should change with it",
+          "Any exciting story about the object must be true",
+          "Thinking the Sun moves around Earth each day is a common alternative idea"
         ],
-        "question": "Which next step best shows transfer of day?",
+        "question": "Which prediction about day can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about day. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses day. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Night (approximately opposite). Reasoning: I used day by attending to night and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about day linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for day. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about day, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Thinking the Sun moves around Earth each day is a common alternative idea; the Year 3 model uses Earth’s spin. Correction: Night (approximately opposite). Why: the correction restores accurate use of day.",
+        "sample_answer": "Sample misconception: Thinking the Sun moves around Earth each day is a common alternative idea;. Correction: Night (approximately opposite). with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Day and night happen because Earth spins (rotates). The side facing the Sun has day; the side facing away has night. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Day and night happen because Earth spins (rotates).",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Day and night happen because Earth spins (rotates). The side facing the Sun has day; the side facing away has night."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Day and night happen because Earth spins (rotates)"
           ],
-          "question": "Which choice best shows accurate use of this idea about day?",
+          "question": "Which choice best applies this lesson idea about day with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTorch as Sun, ball as Earth: spin the ball — half lit, half dark. People on the lit side see day; on the dark side see night.\n\nTRY FIRST\nIf it is day where you are, what is likely on the opposite side of Earth?\n\nFEEDBACK\nNight (approximately opposite).",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim"
           ],
-          "question": "Which choice best shows accurate use of this idea about day?",
+          "question": "Which choice best applies this lesson idea about day with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTorch as Sun, ball as Earth: spin the ball — half lit, half dark. People on the lit side see day; on the dark side see night. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect claim as a comparison",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about day?",
+          "question": "Which choice best applies this lesson idea about day with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking the Sun moves around Earth each day is a common alternative idea; the Year 3 model uses Earth’s spin. Here is a more productive model: Torch as Sun, ball as Earth: spin the ball — half lit, half dark. People on the lit side see day; on the dark side see night.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nNight (approximately opposite).",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use the same science idea on a new object, material or context, not a copy of the worked example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about day?",
+          "question": "Which choice best applies this lesson idea about day with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDay and night happen because Earth spins (rotates). The side facing the Sun has day; the side facing away has night. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",

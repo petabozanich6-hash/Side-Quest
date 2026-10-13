@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-DDT-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Build a looped pattern (square, hexagon idea, or dance repeat). Show the loop block and say how many repeats. Change the count and record the new result. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Loop — shorter, easier to change the count in one place. Reasoning: I used loop by attending to repeat and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Infinite loops that never stop can freeze a simple project — use a count when learning. Correction: Loop — shorter, easier to change the count in one place. Why: the correction restores accurate use of loop.\n\nParent: Likely misconception: Infinite loops that never stop can freeze a simple project — use a count when learning. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses loop. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about loop, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Build a looped pattern (square, hexagon idea, or dance repeat). Show the loop block and say how many repeats. Change the count and record the new result. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about loop linked to that evidence.\n\nParent: Written model 2: Sample misconception: Infinite loops that never stop can freeze a simple project — use a count when learning.. Correction: Loop — shorter, easier to change the count in one place. with evidence.\n\nParent: Likely misconception: Infinite loops that never stop can freeze a simple project — use a count when learning. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses loop. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about loop, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about loop. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for loop. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Loop — shorter, easier to change the count in one place. This matches the lesson skill for loop.",
+        "explanation": "This matches the taught method for loop. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Loop — shorter, easier to change the count in one place.",
-          "Infinite loops that never stop can freeze a simple project — use a count when learning.",
-          "Ignore the task and invent an unrelated answer."
+          "A method that skips the key step taught in this lesson",
+          "Loop — shorter, easier to change the count in one place",
+          "Infinite loops that never stop can freeze a simple project — use a count when learning",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Which is better for 20 identical steps — copy-paste 20 times or a repeat-20 loop? Why?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Infinite loops that never stop can freeze a simple project — use a count when learning. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for loop; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of repeat and explain why it matters with clear evidence.",
-          "Infinite loops that never stop can freeze a simple project — use a count when learning.",
-          "Loops repeat a set of blocks without rewriting them. A repeat-4 around “move + turn 90°” draws a square efficiently.",
-          "Loop — shorter, easier to change the count in one place."
+          "Careful use of repeat and explain why it matters with clear evidence",
+          "Infinite loops that never stop can freeze a simple project — use a count when learning",
+          "Loops repeat a set of blocks without rewriting them",
+          "Loop — shorter, easier to change the count in one place"
         ],
-        "question": "Which statement is a common mistake when practising loop?",
+        "question": "Which statement is a common mistake when working with loop?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named repeat and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named repeat and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the repeat and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact."
+          "Apply loop to new material and name the repeat and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Infinite loops that never stop can freeze a simple project — use a count when learning",
+          "Name repeat and explain why it matters only, without linking it to loop"
         ],
-        "question": "A learner is practising loop. Which approach best shows understanding?",
+        "question": "Which response best applies loop with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation.",
-          "Infinite loops that never stop can freeze a simple project — use a count when learning.",
-          "Use observable features or measurements as evidence, not appearance alone."
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation",
+          "Infinite loops that never stop can freeze a simple project — use a count when learning",
+          "Use observable features or measurements as evidence, not appearance alone"
         ],
-        "question": "New examples: steam from a kettle, a germinating bean, a plastic dinosaur, a granite pebble. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: steam from a kettle, a germinating bean, a plastic dinosaur, a granite pebble. Which claim about loop is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence.",
-          "Infinite loops that never stop can freeze a simple project — use a count when learning."
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation",
+          "A label copied from the title with no evidence",
+          "Infinite loops that never stop can freeze a simple project — use a count when learning"
         ],
         "question": "Which record best supports a science claim about loop?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Loop — shorter, easier to change the count in one place. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about loop with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Loop — shorter, easier to change the count in one place.",
-          "Infinite loops that never stop can freeze a simple project — use a count when learning."
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "Loop — shorter, easier to change the count in one place",
+          "Infinite loops that never stop can freeze a simple project — use a count when learning"
         ],
-        "question": "Using this idea — Loops repeat a set of blocks without rewriting them. A repeat-4 around “move + turn 90°” draws a… — which choice is strongest?",
+        "question": "Using this science idea — Loops repeat a set of blocks without rewriting them. — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Stop early when you like the first result.",
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster."
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about loop?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a dramatic result with no observation.",
-          "Copy the worked example and call it independent work.",
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged."
+          "Infinite loops that never stop can freeze a simple project — use a count when learning",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about loop should change with it",
+          "Any exciting story about the object must be true"
         ],
-        "question": "Which next step best shows transfer of loop?",
+        "question": "Which prediction about loop can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about loop. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses loop. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Loop — shorter, easier to change the count in one place. Reasoning: I used loop by attending to repeat and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about loop linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for loop. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about loop, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Infinite loops that never stop can freeze a simple project — use a count when learning. Correction: Loop — shorter, easier to change the count in one place. Why: the correction restores accurate use of loop.",
+        "sample_answer": "Sample misconception: Infinite loops that never stop can freeze a simple project — use a count when learning.. Correction: Loop — shorter, easier to change the count in one place. with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Loops repeat a set of blocks without rewriting them. A repeat-4 around “move + turn 90°” draws a square efficiently. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Loops repeat a set of blocks without rewriting them.",
           "options": [
-            "A guess with no evidence.",
-            "Loops repeat a set of blocks without rewriting them. A repeat-4 around “move + turn 90°” draws a square efficiently.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Loops repeat a set of blocks without rewriting them",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about loop?",
+          "question": "Which choice best applies this lesson idea about loop with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nWithout loop: move turn move turn move turn move turn. With loop: repeat 4 times (move turn). Same result, shorter program.\n\nTRY FIRST\nWhich is better for 20 identical steps — copy-paste 20 times or a repeat-20 loop? Why?\n\nFEEDBACK\nLoop — shorter, easier to change the count in one place.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
           "options": [
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about loop?",
+          "question": "Which choice best applies this lesson idea about loop with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nWithout loop: move turn move turn move turn move turn. With loop: repeat 4 times (move turn). Same result, shorter program. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect claim as a comparison",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about loop?",
+          "question": "Which choice best applies this lesson idea about loop with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nInfinite loops that never stop can freeze a simple project — use a count when learning. Here is a more productive model: Without loop: move turn move turn move turn move turn. With loop: repeat 4 times (move turn). Same result, shorter program.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nLoop — shorter, easier to change the count in one place.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use the same science idea on a new object, material or context, not a copy of the worked example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about loop?",
+          "question": "Which choice best applies this lesson idea about loop with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLoops repeat a set of blocks without rewriting them. A repeat-4 around “move + turn 90°” draws a square efficiently. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",

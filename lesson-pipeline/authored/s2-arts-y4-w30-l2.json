@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Present showcase item, gather feedback and write a full music unit reflection covering compose, tech and respectful listening. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning. Reasoning: I used music unit showcase by attending to listening focus rather than copying the worked model.\n\nParent: Written model 2: Common error: Ignoring protocol learning in the review. Respect is part of the unit. Correction: Strong answer: Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning. Why: the correction restores accurate use of music unit showcase.\n\nParent: Likely misconception: Ignoring protocol learning in the review. Respect is part of the unit. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating music unit showcase on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with music unit showcase, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Present showcase item, gather feedback and write a full music unit reflection covering compose, tech and respectful listening. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using music unit showcase on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Ignoring protocol learning in the review.. Correction: Strong answer: Note guides ears;. Why it helps the audience is stated.\n\nParent: Likely misconception: Ignoring protocol learning in the review. Respect is part of the unit. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating music unit showcase on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with music unit showcase, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about music unit showcase with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for music unit showcase. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning. This matches the lesson skill for music unit showcase.",
+        "explanation": "This matches the taught method for music unit showcase. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning.",
-          "Ignoring protocol learning in the review. Respect is part of the unit.",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning.",
+          "Ignoring protocol learning in the review.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "Write a programme note with listening focus and one protocol-aware reflection sentence. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Ignoring protocol learning in the review. Respect is part of the unit. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for music unit showcase; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Showcase compositions with programme notes and a listening focus (hook, loop layers, respectful Australian listening learning). Reflect on composing,…",
-          "Strong answer: Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning.",
-          "Careful use of listening focus with clear evidence.",
-          "Ignoring protocol learning in the review. Respect is part of the unit."
+          "Showcase compositions with programme notes and a listening focus (hook, loop layers, respectful Australian listening",
+          "Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning.",
+          "Careful use of listening focus and explain why it matte with clear evidence.",
+          "Ignoring protocol learning in the review."
         ],
-        "question": "Which statement is a common mistake when practising music unit showcase?",
+        "question": "Which statement is a common mistake when working with music unit showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named listening focus, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named listening focus and explain why it matte, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the listening focus used.",
+          "Ignoring protocol learning in the review.",
+          "Name listening focus and explain why it matte only, without linking it to music unit showcase.",
+          "Apply music unit showcase to new material and name the listening focus and explain why it matte used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising music unit showcase. Which approach best shows understanding?",
+        "question": "Which response best applies music unit showcase with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning. uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on music unit showcase. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning.",
-          "Ignoring protocol learning in the review. Respect is part of the unit."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Ignoring protocol learning in the review.",
+          "Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about music unit showcase?",
+        "question": "Which response best uses elements, techniques and audience effect for music unit showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignoring protocol learning in the review. Respect is part of the unit.",
-          "Name a specific source, cue or example and say what it shows about music unit showcase.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
+          "Ignoring protocol learning in the review.",
+          "Name a specific element or technique and say what effect it creates for music unit showcase.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which habit strengthens evidence about listening focus?",
+        "question": "Which evidence move best supports a claim about music unit showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
           "Example: Focus: 'Listen for the bass loop under the chorus hook.' Goal: cleaner lyric fit on ti-ti.",
-          "Ignoring protocol learning in the review. Respect is part of the unit.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Ignoring protocol learning in the review.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Showcase compositions with programme notes and a listening focus (hook, loop layers, respectful Australian… — which choice is best?",
+        "question": "Using this lesson idea — Showcase compositions with programme notes and a listening focus (hook, loop layers, respectful — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for music unit showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Present showcase item, gather feedback and write a full music unit reflection covering compose, tech and respectful listening.",
+          "Present showcase item, gather feedback and write a full music unit reflection covering compose, tech and respectful",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Ignoring protocol learning in the review. Respect is part of the unit."
+          "Ignoring protocol learning in the review.",
+          "Name listening focus and explain why it matte only, with no linked example."
         ],
-        "question": "Which task best shows independent use of music unit showcase?",
+        "question": "Which independent response best applies music unit showcase to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about music unit showcase with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating music unit showcase on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning. Reasoning: I used music unit showcase by attending to listening focus rather than copying the worked model.",
+        "sample_answer": "Sample: original example using music unit showcase on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for music unit showcase. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with music unit showcase, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Ignoring protocol learning in the review. Respect is part of the unit. Correction: Strong answer: Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning. Why: the correction restores accurate use of music unit showcase.",
+        "sample_answer": "Sample error: Ignoring protocol learning in the review.. Correction: Strong answer: Note guides ears;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Showcase compositions with programme notes and a listening focus (hook, loop layers, respectful Australian listening learning). Reflect on composing, technology and protocol awareness. Set a next goal. Supported responses name the element or technique and its effect.",
+          "explanation": "Showcase compositions with programme notes and a listening focus (hook, loop layers, respectful Australian listening learning).",
           "options": [
+            "An answer copied without understanding.",
+            "Showcase compositions with programme notes and a listening focus (hook, loop layers, respectful Australian listening",
             "A guess with no artistic reason.",
-            "Showcase compositions with programme notes and a listening focus (hook, loop layers, respectful Australian listening learning). Reflect on composing, technology and protocol awareness. Set a next goal.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about music unit showcase?",
+          "question": "Which choice best applies this lesson idea about music unit showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Focus: 'Listen for the bass loop under the chorus hook.' Goal: cleaner lyric fit on ti-ti.\n\nTRY FIRST\nWrite a programme note with listening focus and one protocol-aware reflection sentence.\n\nFEEDBACK\nStrong answer: Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about music unit showcase?",
+          "question": "Which choice best applies this lesson idea about music unit showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Focus: 'Listen for the bass loop under the chorus hook.' Goal: cleaner lyric fit on ti-ti. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about music unit showcase?",
+          "question": "Which choice best applies this lesson idea about music unit showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nIgnoring protocol learning in the review. Respect is part of the unit. Here is a more helpful example: Example: Focus: 'Listen for the bass loop under the chorus hook.' Goal: cleaner lyric fit on ti-ti.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: Note guides ears; reflection mentions crediting sources / not inventing restricted content if relevant to learning.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about music unit showcase?",
+          "question": "Which choice best applies this lesson idea about music unit showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nShowcase compositions with programme notes and a listening focus (hook, loop layers, respectful Australian listening learning). Reflect on composing, technology and protocol awareness. Set a next goal. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

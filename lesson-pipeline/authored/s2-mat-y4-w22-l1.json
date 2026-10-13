@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-GM-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Calculate perimeters for fourteen polygons (labelled sides). Write the unit every time and use 2×(l+w) for six rectangles. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: 32 m. Reasoning: I used perimeter by attending to side rather than copying the worked model.\n\nParent: Written model 2: Common error: Adding only length and width once undercounts the full boundary. Correction: 32 m. Why: the correction restores accurate use of perimeter.\n\nParent: Likely misconception: Adding only length and width once undercounts the full boundary. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses perimeter with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with perimeter, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Calculate perimeters for fourteen polygons (labelled sides). Write the unit every time and use 2×(l+w) for six rectangles. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for perimeter; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Adding only length and width once undercounts the full boundary.. Correction uses 32 m.. Why: restores accurate perimeter.\n\nParent: Likely misconception: Adding only length and width once undercounts the full boundary. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses perimeter with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with perimeter, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for perimeter, and names places/values. Reject copied model numbers. / Accept a named misconception about perimeter, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "32 m. This matches the lesson skill for perimeter.",
+        "explanation": "This matches the taught method for perimeter. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Adding only length and width once undercounts the full boundary.",
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work.",
-          "32 m."
+          "Adding only length and width once undercounts the full boundary",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "32 m"
         ],
         "question": "Find the perimeter of a rectangle 12 m by 4 m. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Adding only length and width once undercounts the full boundary. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for perimeter; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "32 m.",
-          "Careful use of side with clear evidence.",
-          "Adding only length and width once undercounts the full boundary.",
-          "Perimeter is the distance around a shape; add all outer side lengths using the same unit."
+          "32 m",
+          "Careful use of side and explain why it matters with clear evidence",
+          "Adding only length and width once undercounts the full boundary",
+          "Perimeter is the distance around a shape"
         ],
-        "question": "Which statement is a common mistake when practising perimeter?",
+        "question": "Which statement is a common mistake when working with perimeter?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named side, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named side and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing zero as if it does not change the value.",
-          "Apply the idea with new evidence and name the side used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name side and explain why it matters only, without linking it to perimeter",
+          "Apply perimeter to new material and name the side and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Adding only length and width once undercounts the full boundary"
         ],
-        "question": "A learner is practising perimeter. Which approach best shows understanding?",
+        "question": "Which response best applies perimeter with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change digits to look neater without checking place value.",
-          "Adding only length and width once undercounts the full boundary.",
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working."
+          "Change digits to look neater without checking place value",
+          "Adding only length and width once undercounts the full boundary",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working"
         ],
-        "question": "Which working note best supports a mathematics answer about perimeter?",
+        "question": "Which working best supports a correct answer for this lesson on perimeter?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught perimeter method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Rectangle 8 cm by 5 cm: P = 8+5+8+5 = 26 cm (or 2×(8+5)). A triangle with sides 6, 7, 9 → P = 22.",
-          "Adding only length and width once undercounts the full boundary.",
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work."
+          "32 m",
+          "Adding only length and width once undercounts the full boundary",
+          "Read 12 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 12 and 4 as interchangeable"
         ],
-        "question": "Using this lesson idea — Perimeter is the distance around a shape; add all outer side lengths using the same unit. — which statement is true?",
+        "question": "Using the method for perimeter, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either."
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a perimeter problem with numbers such as 12 and 4, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers.",
-          "Copy the model numbers and call that independent work."
+          "Use the same perimeter method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 12 and 4 as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Adding only length and width once undercounts the full boundary"
         ],
-        "question": "Which practice choice shows transfer of perimeter?",
+        "question": "Solve a fresh perimeter problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Just add more digits until it looks longer.",
-          "Name the exact place or step that failed, then show corrected working for perimeter.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits."
+          "Label units when comparing 12 with 4",
+          "Adding only length and width once undercounts the full boundary",
+          "Perimeter is the distance around a shape",
+          "32 m"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for perimeter?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for perimeter, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses perimeter with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: 32 m. Reasoning: I used perimeter by attending to side rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for perimeter; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about perimeter, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with perimeter, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Adding only length and width once undercounts the full boundary. Correction: 32 m. Why: the correction restores accurate use of perimeter.",
+        "sample_answer": "Sample misconception: Adding only length and width once undercounts the full boundary.. Correction uses 32 m.. Why: restores accurate perimeter.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Perimeter is the distance around a shape; add all outer side lengths using the same unit. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Perimeter is the distance around a shape; add all outer side lengths using the same unit. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Perimeter is the distance around a shape; add all outer side lengths using the same unit."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Perimeter is the distance around a shape"
           ],
-          "question": "Which choice best shows accurate use of this idea about perimeter?",
+          "question": "Which choice best applies this lesson idea about perimeter with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRectangle 8 cm by 5 cm: P = 8+5+8+5 = 26 cm (or 2×(8+5)). A triangle with sides 6, 7, 9 → P = 22.\n\nTRY FIRST\nFind the perimeter of a rectangle 12 m by 4 m.\n\nFEEDBACK\n32 m.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about perimeter?",
+          "question": "Which choice best applies this lesson idea about perimeter with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRectangle 8 cm by 5 cm: P = 8+5+8+5 = 26 cm (or 2×(8+5)). A triangle with sides 6, 7, 9 → P = 22. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Use an intentionally incorrect attempt as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about perimeter?",
+          "question": "Which choice best applies this lesson idea about perimeter with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAdding only length and width once undercounts the full boundary. Here is a more productive model: Rectangle 8 cm by 5 cm: P = 8+5+8+5 = 26 cm (or 2×(8+5)). A triangle with sides 6, 7, 9 → P = 22.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\n32 m.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about perimeter?",
+          "question": "Which choice best applies this lesson idea about perimeter with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPerimeter is the distance around a shape; add all outer side lengths using the same unit. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

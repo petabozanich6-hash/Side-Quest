@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose or invent a short melody. Mark phrase breaths, practise slowly, then perform for someone and note one improvement. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Slow the tempo and clap the rhythm first; practise only the leap five times, then join phrases.' Isolation plus slow practice works. Reasoning: I used phrase by attending to breath mark rather than copying the worked model.\n\nParent: Written model 2: Common error: Repeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect. Correction: Strong answer: 'Slow the tempo and clap the rhythm first; practise only the leap five times, then join phrases.' Isolation plus slow practice works. Why: the correction restores accurate use of phrase.\n\nParent: Likely misconception: Repeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating phrase on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with phrase, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose or invent a short melody. Mark phrase breaths, practise slowly, then perform for someone and note one improvement. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using phrase on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Repeating the whole melody fast when one bar is wrong.. Correction: Strong answer: 'Slow the tempo and clap the rhythm first;. Why it helps the audience is stated.\n\nParent: Likely misconception: Repeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating phrase on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with phrase, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about phrase with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for phrase. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Slow the tempo and clap the rhythm first; practise only the leap five times, then join phrases.' Isolation plus slow practice works. This matches the lesson skill for phrase.",
+        "explanation": "This matches the taught method for phrase. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Slow the tempo and clap the rhythm first; practise only the leap five times, then join phrases.' Isolation plus slow practice works.",
-          "Repeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect."
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'Slow the tempo and clap the rhythm first;",
+          "Repeating the whole melody fast when one bar is wrong."
         ],
         "question": "A student rushes the second phrase and misses a leap. Write two practice fixes. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Repeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for phrase; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect.",
-          "Playing or singing a simple melody well means dividing it into phrases (musical sentences), breathing or resetting at phrase ends and practising slowly before…",
-          "Strong answer: 'Slow the tempo and clap the rhythm first; practise only the leap five times, then join phrases.' Isolation plus slow practice works.",
-          "Careful use of breath mark with clear evidence."
+          "Repeating the whole melody fast when one bar is wrong.",
+          "Playing or singing a simple melody well means dividing it into phrases (musical sentences), breathing or resetting at",
+          "'Slow the tempo and clap the rhythm first;",
+          "Careful use of breath mark and explain why it matters with clear evidence."
         ],
-        "question": "Which statement is a common mistake when practising phrase?",
+        "question": "Which statement is a common mistake when working with phrase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named breath mark, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named breath mark and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the breath mark used.",
+          "Repeating the whole melody fast when one bar is wrong.",
+          "Name breath mark and explain why it matters only, without linking it to phrase.",
+          "Apply phrase to new material and name the breath mark and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising phrase. Which approach best shows understanding?",
+        "question": "Which response best applies phrase with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Slow the tempo and clap the rhythm first; practise only the leap five times, then join phrases.' Isolation plus slow practice works. uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on phrase. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Slow the tempo and clap the rhythm first; practise only the leap five times, then join phrases.' Isolation plus slow practice works.",
-          "Repeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect.",
-          "Say it looks nice with no element or technique named."
+          "Repeating the whole melody fast when one bar is wrong.",
+          "'Slow the tempo and clap the rhythm first;",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which response best shows careful thinking about phrase?",
+        "question": "Which response best uses elements, techniques and audience effect for phrase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Repeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect.",
-          "Name a specific source, cue or example and say what it shows about phrase."
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Repeating the whole melody fast when one bar is wrong.",
+          "Name a specific element or technique and say what effect it creates for phrase."
         ],
-        "question": "Which habit strengthens evidence about breath mark?",
+        "question": "Which evidence move best supports a claim about phrase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: Kai practises a recorder melody at a slow tempo, breathes every four beats and repeats the leap from G to C until it is clean,…",
-          "Repeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Example: Kai practises a recorder melody at a slow tempo, breathes every four beats and repeats the leap from G to C",
+          "Repeating the whole melody fast when one bar is wrong.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Playing or singing a simple melody well means dividing it into phrases (musical sentences), breathing or… — which choice is best?",
+        "question": "Using this lesson idea — Playing or singing a simple melody well means dividing it into phrases (musical sentences) — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for phrase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect.",
-          "Choose or invent a short melody. Mark phrase breaths, practise slowly, then perform for someone and note one improvement.",
+          "Name breath mark and explain why it matters only, with no linked example.",
+          "Choose or invent a short melody.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Repeating the whole melody fast when one bar is wrong."
         ],
-        "question": "Which task best shows independent use of phrase?",
+        "question": "Which independent response best applies phrase to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about phrase with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating phrase on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Slow the tempo and clap the rhythm first; practise only the leap five times, then join phrases.' Isolation plus slow practice works. Reasoning: I used phrase by attending to breath mark rather than copying the worked model.",
+        "sample_answer": "Sample: original example using phrase on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for phrase. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with phrase, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Repeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect. Correction: Strong answer: 'Slow the tempo and clap the rhythm first; practise only the leap five times, then join phrases.' Isolation plus slow practice works. Why: the correction restores accurate use of phrase.",
+        "sample_answer": "Sample error: Repeating the whole melody fast when one bar is wrong.. Correction: Strong answer: 'Slow the tempo and clap the rhythm first;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Playing or singing a simple melody well means dividing it into phrases (musical sentences), breathing or resetting at phrase ends and practising slowly before performance tempo. Watch posture, listen for accurate pitch and keep a steady beat. Mark tricky leaps and isolate them.…",
+          "explanation": "Playing or singing a simple melody well means dividing it into phrases (musical sentences), breathing or resetting at phrase ends and practising slowly before performance tempo.",
           "options": [
+            "An answer copied without understanding.",
+            "Playing or singing a simple melody well means dividing it into phrases (musical sentences), breathing or resetting at",
             "A guess with no artistic reason.",
-            "Playing or singing a simple melody well means dividing it into phrases (musical sentences), breathing or resetting at phrase ends and practising slowly before performance tempo. Watch posture, listen for accurate pitch and keep a steady beat. Mark tricky leaps and isolate them.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about phrase?",
+          "question": "Which choice best applies this lesson idea about phrase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Kai practises a recorder melody at a slow tempo, breathes every four beats and repeats the leap from G to C until it is clean, then speeds up gradually.\n\nTRY FIRST\nA student rushes the second phrase and misses a leap. Write two practice fixes.\n\nFEEDBACK\nStrong answer: 'Slow the tempo and clap the rhythm first; practise only the leap five times, then join phrases.' Isolation plus slow practice works.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
+            "An answer copied without understanding.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about phrase?",
+          "question": "Which choice best applies this lesson idea about phrase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Kai practises a recorder melody at a slow tempo, breathes every four beats and repeats the leap from G to C until it is clean, then speeds up gradually. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about phrase?",
+          "question": "Which choice best applies this lesson idea about phrase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRepeating the whole melody fast when one bar is wrong. Fix the bar, then reconnect. Here is a more helpful example: Example: Kai practises a recorder melody at a slow tempo, breathes every four beats and repeats the leap from G to C until it is clean, then speeds up gradually.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Slow the tempo and clap the rhythm first; practise only the leap five times, then join phrases.' Isolation plus slow practice works.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about phrase?",
+          "question": "Which choice best applies this lesson idea about phrase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPlaying or singing a simple melody well means dividing it into phrases (musical sentences), breathing or resetting at phrase ends and practising slowly before performance tempo. Watch posture, listen for accurate pitch and keep a steady beat. Mark tricky leaps and isolate them. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

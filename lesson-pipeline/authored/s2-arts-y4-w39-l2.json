@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Present your showcase (or a scaled home version). Complete a gratitude list and one recovery note. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: Welcome names theme and thanks; recovery is calm such as 'We’ll continue with our unplugged version.' Reasoning: I used present by attending to audience care rather than copying the worked model.\n\nParent: Written model 2: Common error: Apologising repeatedly onstage. Recover, then reflect privately later. Correction: Strong answer: Welcome names theme and thanks; recovery is calm such as 'We’ll continue with our unplugged version.' Why: the correction restores accurate use of present.\n\nParent: Likely misconception: Apologising repeatedly onstage. Recover, then reflect privately later. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating present on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with present, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Present your showcase (or a scaled home version). Complete a gratitude list and one recovery note. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using present on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Apologising repeatedly onstage.. Correction: Strong answer: Welcome names theme and thanks;. Why it helps the audience is stated.\n\nParent: Likely misconception: Apologising repeatedly onstage. Recover, then reflect privately later. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating present on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with present, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about present with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for present. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: Welcome names theme and thanks; recovery is calm such as 'We’ll continue with our unplugged version.' This matches the lesson skill for present.",
+        "explanation": "This matches the taught method for present. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: Welcome names theme and thanks; recovery is calm such as 'We’ll continue with our unplugged version.'",
-          "Apologising repeatedly onstage. Recover, then reflect privately later.",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson",
+          "Welcome names theme and thanks",
+          "Apologising repeatedly onstage",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Write a 20-second welcome script and one public recovery sentence if tech fails. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Apologising repeatedly onstage. Recover, then reflect privately later. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for present; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of audience care with clear evidence.",
-          "Apologising repeatedly onstage. Recover, then reflect privately later.",
-          "Presenting the creative showcase means welcoming guests, managing time, performing with professional calm and thanking helpers. If something fails, use backup…",
-          "Strong answer: Welcome names theme and thanks; recovery is calm such as 'We’ll continue with our unplugged version.'"
+          "Careful use of audience care and explain why it matters with clear evidence",
+          "Apologising repeatedly onstage",
+          "Presenting the creative showcase means welcoming guests, managing time, performing with professional calm and thanking",
+          "Welcome names theme and thanks"
         ],
-        "question": "Which statement is a common mistake when practising present?",
+        "question": "Which statement is a common mistake when working with present?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named audience care, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named audience care and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the audience care used."
+          "Repeat the worked example wording with no new evidence",
+          "Apologising repeatedly onstage",
+          "Name audience care and explain why it matters only, without linking it to present",
+          "Apply present to new material and name the audience care and explain why it matters used"
         ],
-        "question": "A learner is practising present. Which approach best shows understanding?",
+        "question": "Which response best applies present with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: Welcome names theme and thanks; recovery is calm such as 'We’ll continue with our unplugged version.' uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on present. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: Welcome names theme and thanks; recovery is calm such as 'We’ll continue with our unplugged version.'",
-          "Apologising repeatedly onstage. Recover, then reflect privately later.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Welcome names theme and thanks",
+          "Say it looks nice with no element or technique named",
+          "Copy another artwork’s sacred design without permission or guidance",
+          "Apologising repeatedly onstage"
         ],
-        "question": "Which response best shows careful thinking about present?",
+        "question": "Which response best uses elements, techniques and audience effect for present?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about present.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Apologising repeatedly onstage. Recover, then reflect privately later."
+          "Name a specific element or technique and say what effect it creates for present",
+          "Say it looks nice with no element or technique named",
+          "Copy another artwork’s sacred design without permission or guidance",
+          "Apologising repeatedly onstage"
         ],
-        "question": "Which habit strengthens evidence about audience care?",
+        "question": "Which evidence move best supports a claim about present?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Presenting the creative showcase means welcoming guests, managing time) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named.",
-          "Example: Host welcomes, states theme, reminds about exits/phones if needed. After a missed cue, cast continues; thanks include display…",
-          "Apologising repeatedly onstage. Recover, then reflect privately later."
+          "Say it looks nice with no element or technique named",
+          "Copy another artwork’s sacred design without permission or guidance",
+          "Example: Host welcomes, states theme, reminds about exits/phones if needed",
+          "Apologising repeatedly onstage"
         ],
-        "question": "Using this lesson idea — Presenting the creative showcase means welcoming guests, managing time, performing with professional calm… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about present?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Name the artistic choice, its effect, and keep cultural protocols respectful",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for present?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Apologising repeatedly onstage. Recover, then reflect privately later.",
-          "Present your showcase (or a scaled home version). Complete a gratitude list and one recovery note."
+          "Retype the worked example with no new example",
+          "Apologising repeatedly onstage",
+          "Name audience care and explain why it matters only, with no linked example",
+          "Present your showcase (or a scaled home version)"
         ],
-        "question": "Which task best shows independent use of present?",
+        "question": "Which independent response best applies present to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about present with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating present on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: Welcome names theme and thanks; recovery is calm such as 'We’ll continue with our unplugged version.' Reasoning: I used present by attending to audience care rather than copying the worked model.",
+        "sample_answer": "Sample: original example using present on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for present. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with present, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Apologising repeatedly onstage. Recover, then reflect privately later. Correction: Strong answer: Welcome names theme and thanks; recovery is calm such as 'We’ll continue with our unplugged version.' Why: the correction restores accurate use of present.",
+        "sample_answer": "Sample error: Apologising repeatedly onstage.. Correction: Strong answer: Welcome names theme and thanks;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Presenting the creative showcase means welcoming guests, managing time, performing with professional calm and thanking helpers. If something fails, use backup plans without blaming anyone publicly. Celebrate ensemble effort. Supported responses name the element or technique and…",
+          "explanation": "Presenting the creative showcase means welcoming guests, managing time, performing with professional calm and thanking helpers.",
           "options": [
-            "Presenting the creative showcase means welcoming guests, managing time, performing with professional calm and thanking helpers. If something fails, use backup plans without blaming anyone publicly. Celebrate ensemble effort.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding.",
-            "A guess with no artistic reason."
+            "Presenting the creative showcase means welcoming guests, managing time, performing with professional calm and thanking",
+            "A comment that only says it looks nice with no element named",
+            "An answer copied without understanding",
+            "A guess with no artistic reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about present?",
+          "question": "Which choice best applies this lesson idea about present with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Host welcomes, states theme, reminds about exits/phones if needed. After a missed cue, cast continues; thanks include display team and families.\n\nTRY FIRST\nWrite a 20-second welcome script and one public recovery sentence if tech fails.\n\nFEEDBACK\nStrong answer: Welcome names theme and thanks; recovery is calm such as 'We’ll continue with our unplugged version.'",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no artistic reason.",
-            "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "A guess with no artistic reason",
+            "A comment that only says it looks nice with no element named",
+            "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about present?",
+          "question": "Which choice best applies this lesson idea about present with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Host welcomes, states theme, reminds about exits/phones if needed. After a missed cue, cast continues; thanks include display team and families. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding.",
-            "A guess with no artistic reason."
+            "Use an intentionally weak or disrespectful arts choice as a comparison",
+            "A comment that only says it looks nice with no element named",
+            "An answer copied without understanding",
+            "A guess with no artistic reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about present?",
+          "question": "Which choice best applies this lesson idea about present with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nApologising repeatedly onstage. Recover, then reflect privately later. Here is a more helpful example: Example: Host welcomes, states theme, reminds about exits/phones if needed. After a missed cue, cast continues; thanks include display team and families.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: Welcome names theme and thanks; recovery is calm such as 'We’ll continue with our unplugged version.'",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding.",
-            "A guess with no artistic reason."
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example",
+            "A comment that only says it looks nice with no element named",
+            "An answer copied without understanding",
+            "A guess with no artistic reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about present?",
+          "question": "Which choice best applies this lesson idea about present with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPresenting the creative showcase means welcoming guests, managing time, performing with professional calm and thanking helpers. If something fails, use backup plans without blaming anyone publicly. Celebrate ensemble effort. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

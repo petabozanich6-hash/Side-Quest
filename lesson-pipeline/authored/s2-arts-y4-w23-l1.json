@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Collect six clean found objects with an adult. Sort by shape/texture and write a sculpture concept that reuses at least four. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.' Reasoning: I used found object by attending to upcycled art rather than copying the worked model.\n\nParent: Written model 2: Common error: Grabbing dirty or sharp trash without cleaning. Safety and hygiene come first. Correction: Strong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.' Why: the correction restores accurate use of found object.\n\nParent: Likely misconception: Grabbing dirty or sharp trash without cleaning. Safety and hygiene come first. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating found object on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with found object, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Collect six clean found objects with an adult. Sort by shape/texture and write a sculpture concept that reuses at least four. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using found object on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Grabbing dirty or sharp trash without cleaning.. Correction: Strong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.'. Why it helps the audience is stated.\n\nParent: Likely misconception: Grabbing dirty or sharp trash without cleaning. Safety and hygiene come first. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating found object on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with found object, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about found object with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for found object. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.' This matches the lesson skill for found object.",
+        "explanation": "This matches the taught method for found object. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.'",
-          "Grabbing dirty or sharp trash without cleaning. Safety and hygiene come first.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.",
+          "Grabbing dirty or sharp trash without cleaning.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "Choose three safe found objects for a bird sculpture and say what each contributes. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Grabbing dirty or sharp trash without cleaning. Safety and hygiene come first. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for found object; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Grabbing dirty or sharp trash without cleaning. Safety and hygiene come first.",
-          "Found-object art uses cleaned, safe discarded items in new ways. Select objects for shape, texture and meaning, not only novelty. Wash plastics, avoid broken…",
-          "Strong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.'",
-          "Careful use of upcycled art with clear evidence."
+          "Grabbing dirty or sharp trash without cleaning.",
+          "Found-object art uses cleaned, safe discarded items in new ways.",
+          "Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.",
+          "Careful use of upcycled art and explain why it matters with clear evidence."
         ],
-        "question": "Which statement is a common mistake when practising found object?",
+        "question": "Which statement is a common mistake when working with found object?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named upcycled art, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named upcycled art and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the upcycled art used."
+          "Grabbing dirty or sharp trash without cleaning.",
+          "Name upcycled art and explain why it matters only, without linking it to found object.",
+          "Apply found object to new material and name the upcycled art and explain why it matters used."
         ],
-        "question": "A learner is practising found object. Which approach best shows understanding?",
+        "question": "Which response best applies found object with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.' uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on found object. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Grabbing dirty or sharp trash without cleaning. Safety and hygiene come first.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.'"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Grabbing dirty or sharp trash without cleaning.",
+          "Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged."
         ],
-        "question": "Which response best shows careful thinking about found object?",
+        "question": "Which response best uses elements, techniques and audience effect for found object?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about found object.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Grabbing dirty or sharp trash without cleaning. Safety and hygiene come first."
+          "Name a specific element or technique and say what effect it creates for found object.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Grabbing dirty or sharp trash without cleaning."
         ],
-        "question": "Which habit strengthens evidence about upcycled art?",
+        "question": "Which evidence move best supports a claim about found object?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
           "Say it looks nice with no element or technique named.",
-          "Example: Clean bottle lids become fish scales on a board; corrugated card becomes waves. Meaning: caring for waterways by reusing plastics.",
-          "Grabbing dirty or sharp trash without cleaning. Safety and hygiene come first."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Clean bottle lids become fish scales on a board;",
+          "Grabbing dirty or sharp trash without cleaning."
         ],
-        "question": "Using this lesson idea — Found-object art uses cleaned, safe discarded items in new ways. Select objects for shape, texture and… — which choice is best?",
+        "question": "Using this lesson idea — Found-object art uses cleaned, safe discarded items in new ways. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for found object?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Grabbing dirty or sharp trash without cleaning. Safety and hygiene come first.",
-          "Collect six clean found objects with an adult. Sort by shape/texture and write a sculpture concept that reuses at least four.",
+          "Grabbing dirty or sharp trash without cleaning.",
+          "Name upcycled art and explain why it matters only, with no linked example.",
+          "Collect six clean found objects with an adult.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of found object?",
+        "question": "Which independent response best applies found object to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about found object with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating found object on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.' Reasoning: I used found object by attending to upcycled art rather than copying the worked model.",
+        "sample_answer": "Sample: original example using found object on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for found object. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with found object, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Grabbing dirty or sharp trash without cleaning. Safety and hygiene come first. Correction: Strong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.' Why: the correction restores accurate use of found object.",
+        "sample_answer": "Sample error: Grabbing dirty or sharp trash without cleaning.. Correction: Strong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.'. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Found-object art uses cleaned, safe discarded items in new ways. Select objects for shape, texture and meaning, not only novelty. Wash plastics, avoid broken glass and rusty sharp metal unless an adult prepares them, and never use items that held chemicals. Supported responses…",
+          "explanation": "Found-object art uses cleaned, safe discarded items in new ways.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Found-object art uses cleaned, safe discarded items in new ways. Select objects for shape, texture and meaning, not only novelty. Wash plastics, avoid broken glass and rusty sharp metal unless an adult prepares them, and never use items that held chemicals.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Found-object art uses cleaned, safe discarded items in new ways.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about found object?",
+          "question": "Which choice best applies this lesson idea about found object with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Clean bottle lids become fish scales on a board; corrugated card becomes waves. Meaning: caring for waterways by reusing plastics.\n\nTRY FIRST\nChoose three safe found objects for a bird sculpture and say what each contributes.\n\nFEEDBACK\nStrong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.'",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about found object?",
+          "question": "Which choice best applies this lesson idea about found object with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Clean bottle lids become fish scales on a board; corrugated card becomes waves. Meaning: caring for waterways by reusing plastics. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
+            "An answer copied without understanding.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about found object?",
+          "question": "Which choice best applies this lesson idea about found object with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nGrabbing dirty or sharp trash without cleaning. Safety and hygiene come first. Here is a more helpful example: Example: Clean bottle lids become fish scales on a board; corrugated card becomes waves. Meaning: caring for waterways by reusing plastics.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Egg carton body (mass), stick legs (line), bottle-cap eyes (focal circles)—all clean and dull-edged.'",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice."
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example."
           ],
-          "question": "Which choice best shows accurate use of this idea about found object?",
+          "question": "Which choice best applies this lesson idea about found object with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nFound-object art uses cleaned, safe discarded items in new ways. Select objects for shape, texture and meaning, not only novelty. Wash plastics, avoid broken glass and rusty sharp metal unless an adult prepares them, and never use items that held chemicals. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

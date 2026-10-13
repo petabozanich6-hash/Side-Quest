@@ -41,7 +41,7 @@
       "EN2-RECOM-01",
       "EN2-UARL-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Read a published children's legend. Map place, threat, deed and memory/name link. Quote one sentence that ties the deed to the place. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Place → threat → deed → remembered name (typical teaching order). Reasoning: I used legend by attending to heroic deed and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Not every exciting story is a legend; look for the place/memory link in the version you read. Correction: Place → threat → deed → remembered name (typical teaching order). Why: the correction restores accurate use of legend.\n\nParent: Likely misconception: Not every exciting story is a legend; look for the place/memory link in the version you read. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating legend on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with legend, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Read a published children's legend. Map place, threat, deed and memory/name link. Quote one sentence that ties the deed to the place. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using legend on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Not every exciting story is a legend;. Correction: Place → threat → deed → remembered name (typical teaching order).. Why it helps the audience is stated.\n\nParent: Likely misconception: Not every exciting story is a legend; look for the place/memory link in the version you read. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating legend on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with legend, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about legend with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for legend. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -51,112 +51,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Place → threat → deed → remembered name (typical teaching order). This matches the lesson skill for legend.",
+        "explanation": "This matches the taught method for legend. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Place → threat → deed → remembered name (typical teaching order).",
-          "Not every exciting story is a legend; look for the place/memory link in the version you read.",
-          "Ignore the task and invent an unrelated answer."
+          "A method that skips the key step taught in this lesson",
+          "Place → threat → deed → remembered name (typical teaching order)",
+          "Not every exciting story is a legend",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Order these legend parts: remembered name; threat; place introduced; heroic deed. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Not every exciting story is a legend; look for the place/memory link in the version you read. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for legend; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Legends often link a remarkable deed to a place or community memory; readers track setting, deed, challenge and how the story explains a name or landmark in…",
-          "Place → threat → deed → remembered name (typical teaching order).",
-          "Careful use of heroic deed and explain why it matters with clear evidence.",
-          "Not every exciting story is a legend; look for the place/memory link in the version you read."
+          "Legends often link a remarkable deed to a place or community memory",
+          "Place → threat → deed → remembered name (typical teaching order)",
+          "Careful use of heroic deed and explain why it matters with clear evidence",
+          "Not every exciting story is a legend"
         ],
-        "question": "Which statement is a common mistake when practising legend?",
+        "question": "Which statement is a common mistake when working with legend?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named heroic deed and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named heroic deed and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the heroic deed and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence."
+          "Not every exciting story is a legend",
+          "Name heroic deed and explain why it matters only, without linking it to legend",
+          "Apply legend to new material and name the heroic deed and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising legend. Which approach best shows understanding?",
+        "question": "Which response best applies legend with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The skill is shown by quoting or pointing to wording that carries legend.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries legend. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Not every exciting story is a legend; look for the place/memory link in the version you read.",
-          "Point to exact words in the sentence that show legend and say what they do.",
-          "Ignore the sentence and invent a more exciting event.",
-          "Say the writing is good without naming any words."
+          "Not every exciting story is a legend",
+          "Point to exact words in the sentence that show legend and say what they do",
+          "Ignore the sentence and invent a more exciting event",
+          "Say the writing is good without naming any words"
         ],
         "question": "Read: \"When the ferry horn blasted, Omar gripped the railing and laughed.\" Which choice best uses legend from this lesson?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Place → threat → deed → remembered name (typical teaching order).",
-          "Not every exciting story is a legend; look for the place/memory link in the version you read.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Place → threat → deed → remembered name (typical teaching order)",
+          "Not every exciting story is a legend",
+          "Copy a model sentence from another story unchanged",
+          "Name heroic deed and explain why it matters without linking it to any words in the text"
         ],
         "question": "Which statement correctly applies the lesson idea about legend?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Locate a specific word, phrase or structural clue before deciding.",
-          "Guess from the title alone with no textual clue.",
-          "Copy a model sentence from another story unchanged.",
-          "Treat a missing detail as a proven fact."
+          "Locate a specific word, phrase or structural clue before deciding",
+          "Guess from the title alone with no textual clue",
+          "Copy a model sentence from another story unchanged",
+          "Lengthen the answer with adjectives while keeping the same idea"
         ],
-        "question": "In a new text, what should you do first to practise heroic deed and explain why it matters?",
+        "question": "In a new text, what should you do first to analyse heroic deed and explain why it matters?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Add adjectives without fixing the wrong idea.",
-          "Make the answer longer while keeping the same mistake.",
-          "Delete the evidence that disagreed with your first guess.",
-          "Change the inaccurate idea or missing evidence, not only the length."
+          "Add adjectives without fixing the wrong idea",
+          "Make the answer longer while keeping the same mistake",
+          "Delete the evidence that disagreed with your first guess",
+          "Change the inaccurate idea or missing evidence, not only the length"
         ],
-        "question": "Which revision actually repairs meaning?",
+        "question": "Which revision actually improves meaning for legend?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Use a fresh sentence or text and explain one precise choice about legend.",
-          "Retype the worked model as the final answer.",
-          "Change fonts and claim the work is new.",
-          "Not every exciting story is a legend; look for the place/memory link in the version you read."
+          "Use a fresh sentence or text and explain one precise choice about legend",
+          "Retype the worked model as the final answer",
+          "Change fonts and claim the work is new",
+          "Not every exciting story is a legend"
         ],
-        "question": "Which response shows transfer of legend to new material?",
+        "question": "Which response shows accurate use of legend on fresh material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about legend with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating legend on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Place → threat → deed → remembered name (typical teaching order). Reasoning: I used legend by attending to heroic deed and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: original example using legend on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for legend. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with legend, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Not every exciting story is a legend; look for the place/memory link in the version you read. Correction: Place → threat → deed → remembered name (typical teaching order). Why: the correction restores accurate use of legend.",
+        "sample_answer": "Sample error: Not every exciting story is a legend;. Correction: Place → threat → deed → remembered name (typical teaching order).. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -233,14 +233,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Legends often link a remarkable deed to a place or community memory; readers track setting, deed, challenge and how the story explains a name or landmark in published versions. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with…",
+          "explanation": "Legends often link a remarkable deed to a place or community memory; readers track setting, deed, challenge and how the story explains a name or landmark in published versions.",
           "options": [
-            "Legends often link a remarkable deed to a place or community memory; readers track setting, deed, challenge and how the story explains a name or landmark in published versions.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation."
+            "Legends often link a remarkable deed to a place or community memory",
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation"
           ],
-          "question": "Which choice best shows accurate use of this idea about legend?",
+          "question": "Which choice best applies this lesson idea about legend with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA published legend might tell how a lookout rock got its name after a watcher warned the town. Structure: place, threat, deed, remembered name.\n\nTRY FIRST\nOrder these legend parts: remembered name; threat; place introduced; heroic deed.\n\nFEEDBACK\nPlace → threat → deed → remembered name (typical teaching order).",
@@ -291,14 +291,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
-            "A claim unrelated to the text."
+            "A guess with no explanation",
+            "A claim unrelated to the text",
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about legend?",
+          "question": "Which choice best applies this lesson idea about legend with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA published legend might tell how a lookout rock got its name after a watcher warned the town. Structure: place, threat, deed, remembered name. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
@@ -317,14 +317,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error."
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation",
+            "Use an intentionally incorrect attempt as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about legend?",
+          "question": "Which choice best applies this lesson idea about legend with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nNot every exciting story is a legend; look for the place/memory link in the version you read. Here is a more productive model: A published legend might tell how a lookout rock got its name after a watcher warned the town. Structure: place, threat, deed, remembered name.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nPlace → threat → deed → remembered name (typical teaching order).",
@@ -336,14 +336,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
           "options": [
-            "A guess with no explanation.",
-            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the method on a new topic, not a reworded copy of the example",
+            "A guess with no explanation",
+            "A claim unrelated to the text"
           ],
-          "question": "Which choice best shows accurate use of this idea about legend?",
+          "question": "Which choice best applies this lesson idea about legend with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLegends often link a remarkable deed to a place or community memory; readers track setting, deed, challenge and how the story explains a name or landmark in published versions. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",

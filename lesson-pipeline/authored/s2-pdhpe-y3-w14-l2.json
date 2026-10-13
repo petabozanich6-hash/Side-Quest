@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-IHW-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Plan and do a safe 15-minute active challenge for yourself or your family with at least three water breaks. Record thirst ratings from 1 to 5 before and after each round and write two conclusions. Adjust the activity for Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect the body, and the choice to stop keeps the challenge safe and inclusive. Reasoning: I used an active challenge by attending to a water break rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance. Correction: Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect the body, and the choice to stop keeps… Why: the correction restores accurate use of an active challenge.\n\nParent: Likely misconception: Believing the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating an active challenge on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with an active challenge, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Plan and do a safe 15-minute active challenge for yourself or your family with at least three water breaks. Record thirst ratings from 1 to 5 before and after each round and write two conclusions. Adjust the activity for Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using an active challenge on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing the best athletes ignore thirst.. Correction: Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating an active challenge on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with an active challenge, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about an active challenge with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for an active challenge. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect the body, and the choice to stop keeps… This matches the lesson skill for an active challenge.",
+        "explanation": "This matches the taught method for an active challenge. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Believing the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect the body, and the choice to stop keeps…"
+          "Believing the best athletes ignore thirst",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect"
         ],
         "question": "A challenge has the rule 'no water breaks until you have finished'. Rewrite the rule to make it safe and say why. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Believing the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for an active challenge; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of a water break with clear evidence.",
-          "Believing the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance.",
-          "An active water challenge links movement with hydration: do short bursts of activity, take water breaks and see how the body changes. Plan breaks before you…",
-          "Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect the body, and the choice to stop keeps…"
+          "Careful use of a water break and explain why it matters with clear evidence",
+          "Believing the best athletes ignore thirst",
+          "An active water challenge links movement with hydration: do short bursts of activity, take water breaks and see how the",
+          "Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect"
         ],
-        "question": "Which statement is a common mistake when practising an active challenge?",
+        "question": "Which statement is a common mistake when working with an active challenge?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named a water break, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a water break and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the a water break used.",
-          "Repeat the worked example wording with no new evidence."
+          "Believing the best athletes ignore thirst",
+          "Name a water break and explain why it matters only, without linking it to an active challenge",
+          "Apply an active challenge to new material and name the a water break and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising an active challenge. Which approach best shows understanding?",
+        "question": "Which response best applies an active challenge with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect the body, and the choice to stop keeps… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on an active challenge. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect the body, and the choice to stop keeps…",
-          "Believing the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance."
+          "Use a put-down and call it honesty",
+          "Believing the best athletes ignore thirst",
+          "Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which response best shows careful thinking about an active challenge?",
+        "question": "Which response best uses safe, healthy or respectful choices for an active challenge?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about an active challenge.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Believing the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance."
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with an active challenge",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Believing the best athletes ignore thirst"
         ],
-        "question": "Which habit strengthens evidence about a water break?",
+        "question": "Which evidence move best supports a claim about an active challenge?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (An active water challenge links movement with hydration: do short) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example challenge: four rounds of 2 minutes of activity (star jumps, jogging on the spot, hopping, marching), each followed by a 1 minute…",
-          "Believing the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting."
+          "Example challenge: four rounds of 2 minutes of activity (star jumps, jogging on the spot, hopping, marching), each",
+          "Believing the best athletes ignore thirst",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty"
         ],
-        "question": "Using this lesson idea — An active water challenge links movement with hydration: do short bursts of activity, take water breaks and… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about an active challenge?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete."
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for an active challenge?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Plan and do a safe 15-minute active challenge for yourself or your family with at least three water breaks. Record thirst ratings from 1 to 5 before…",
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Believing the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance."
+          "Plan and do a safe 15-minute active challenge for yourself or your family with at least three water breaks",
+          "Retype the worked example with no new example",
+          "Believing the best athletes ignore thirst",
+          "Name a water break and explain why it matters only, with no linked example"
         ],
-        "question": "Which task best shows independent use of an active challenge?",
+        "question": "Which independent response best applies an active challenge to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about an active challenge with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating an active challenge on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect the body, and the choice to stop keeps the challenge safe and inclusive. Reasoning: I used an active challenge by attending to a water break rather than copying the worked model.",
+        "sample_answer": "Sample: original example using an active challenge on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for an active challenge. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with an active challenge, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Believing the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance. Correction: Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect the body, and the choice to stop keeps… Why: the correction restores accurate use of an active challenge.",
+        "sample_answer": "Sample error: Believing the best athletes ignore thirst.. Correction: Rewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "An active water challenge links movement with hydration: do short bursts of activity, take water breaks and see how the body changes. Plan breaks before you feel very thirsty, drink slowly, stop if you feel dizzy or unwell and rest in the shade on hot days. A challenge can be…",
+          "explanation": "An active water challenge links movement with hydration: do short bursts of activity, take water breaks and see how the body changes.",
           "options": [
-            "An active water challenge links movement with hydration: do short bursts of activity, take water breaks and see how the body changes. Plan breaks before you feel very thirsty, drink slowly, stop if you feel dizzy or unwell and rest in the shade on hot days. A challenge can be against yourself, such as keeping your own drink diary for a week, rather than against other people.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "An active water challenge links movement with hydration: do short bursts of activity, take water breaks and see how the",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about an active challenge?",
+          "question": "Which choice best applies this lesson idea about an active challenge with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample challenge: four rounds of 2 minutes of activity (star jumps, jogging on the spot, hopping, marching), each followed by a 1 minute water break. Zoe rates her thirst from 1 to 5: 2 before, 4 after round 3, then 1 after drinking. She learns to drink before her thirst reaches a 4.\n\nTRY FIRST\nA challenge has the rule 'no water breaks until you have finished'. Rewrite the rule to make it safe and say why.\n\nFEEDBACK\nRewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect the body, and the choice to stop keeps the challenge safe and inclusive.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about an active challenge?",
+          "question": "Which choice best applies this lesson idea about an active challenge with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample challenge: four rounds of 2 minutes of activity (star jumps, jogging on the spot, hopping, marching), each followed by a 1 minute water break. Zoe rates her thirst from 1 to 5: 2 before, 4 after round 3, then 1 after drinking. She learns to drink before her thirst reaches a 4. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about an active challenge?",
+          "question": "Which choice best applies this lesson idea about an active challenge with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBelieving the best athletes ignore thirst. Drinking regularly and resting are part of safe, healthy performance. Here is a more helpful example: Example challenge: four rounds of 2 minutes of activity (star jumps, jogging on the spot, hopping, marching), each followed by a 1 minute water break. Zoe rates her thirst from 1 to 5: 2 before, 4 after round 3, then 1 after drinking. She learns to drink before her thirst reaches a 4.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nRewrite: 'Take a water break after every round, and anyone can stop to rest or drink at any time.' Water breaks protect the body, and the choice to stop keeps the challenge safe and inclusive.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about an active challenge?",
+          "question": "Which choice best applies this lesson idea about an active challenge with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAn active water challenge links movement with hydration: do short bursts of activity, take water breaks and see how the body changes. Plan breaks before you feel very thirsty, drink slowly, stop if you feel dizzy or unwell and rest in the shade on hot days. A challenge can be against yourself, such as keeping your own drink diary for a week, rather than against other people. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Ask a family member or community member for a simple dance they know and are happy to teach, or follow a teacher-approved video. Learn four steps in order and write the origin, who taught you and a thank-you sentence. Do Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'We should learn it from someone who can teach it properly and keep the steps the same. We should say where it is from and not make jokes.' Learning from a guide and keeping the dance… Reasoning: I used permission by attending to learning from a guide rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it… Correction: Strong answer: 'We should learn it from someone who can teach it properly and keep the steps the same. We should say where it is from and not make jokes.'… Why: the correction restores accurate use of permission.\n\nParent: Likely misconception: Believing that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it respectful and credit those who taught you. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating permission on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with permission, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Ask a family member or community member for a simple dance they know and are happy to teach, or follow a teacher-approved video. Learn four steps in order and write the origin, who taught you and a thank-you sentence. Do Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using permission on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing that if you can copy the steps, you can change them however you like.. Correction: Strong answer: 'We should learn it from someone who can teach it properly and keep the steps the same.. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it respectful and credit those who taught you. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating permission on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with permission, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about permission with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for permission. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'We should learn it from someone who can teach it properly and keep the steps the same. We should say where it is from and not make jokes.'… This matches the lesson skill for permission.",
+        "explanation": "This matches the taught method for permission. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'We should learn it from someone who can teach it properly and keep the steps the same. We should say where it is from and not make jokes.'…",
-          "Believing that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it…",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "'We should learn it from someone who can teach it properly and keep the steps the same.",
+          "Believing that if you can copy the steps, you can change them however you like.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "A friend wants to do a dance they saw online and add funny moves. Write two things you would say to help them be respectful. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Believing that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for permission; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of learning from a guide with clear evidence.",
-          "Believing that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it…",
-          "To learn a cultural dance respectfully, first ask permission and find a trusted guide, such as a teacher, family member or community member who knows the…",
-          "Strong answer: 'We should learn it from someone who can teach it properly and keep the steps the same. We should say where it is from and not make jokes.'…"
+          "Careful use of learning from a guide and explain why it with clear evidence.",
+          "Believing that if you can copy the steps, you can change them however you like.",
+          "To learn a cultural dance respectfully, first ask permission and find a trusted guide, such as a teacher, family member",
+          "'We should learn it from someone who can teach it properly and keep the steps the same."
         ],
-        "question": "Which statement is a common mistake when practising permission?",
+        "question": "Which statement is a common mistake when working with permission?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named learning from a guide, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named learning from a guide and explain why it, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the learning from a guide used.",
+          "Name learning from a guide and explain why it only, without linking it to permission.",
+          "Apply permission to new material and name the learning from a guide and explain why it used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Believing that if you can copy the steps, you can change them however you like."
         ],
-        "question": "A learner is practising permission. Which approach best shows understanding?",
+        "question": "Which response best applies permission with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'We should learn it from someone who can teach it properly and keep the steps the same. We should say where it is from and not make jokes.'… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on permission. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Believing that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it…",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'We should learn it from someone who can teach it properly and keep the steps the same. We should say where it is from and not make jokes.'…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Believing that if you can copy the steps, you can change them however you like.",
+          "'We should learn it from someone who can teach it properly and keep the steps the same."
         ],
-        "question": "Which response best shows careful thinking about permission?",
+        "question": "Which response best uses elements, techniques and audience effect for permission?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Believing that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it…",
-          "Name a specific source, cue or example and say what it shows about permission.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Believing that if you can copy the steps, you can change them however you like.",
+          "Name a specific element or technique and say what effect it creates for permission.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which habit strengthens evidence about learning from a guide?",
+        "question": "Which evidence move best supports a claim about permission?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
           "Say it looks nice with no element or technique named.",
-          "Example: Mia's school invites a parent to teach a simple folk dance from their home country. Mia listens to the story, watches slowly and…",
-          "Believing that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Mia's school invites a parent to teach a simple folk dance from their home country.",
+          "Believing that if you can copy the steps, you can change them however you like."
         ],
-        "question": "Using this lesson idea — To learn a cultural dance respectfully, first ask permission and find a trusted guide, such as a teacher,… — which choice is best?",
+        "question": "Using this lesson idea — To learn a cultural dance respectfully, first ask permission and find a trusted guide, such as a — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for permission?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Believing that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it…",
-          "Ask a family member or community member for a simple dance they know and are happy to teach, or follow a teacher-approved video. Learn four steps in…",
+          "Believing that if you can copy the steps, you can change them however you like.",
+          "Name learning from a guide and explain why it only, with no linked example.",
+          "Ask a family member or community member for a simple dance they know and are happy to teach, or follow a",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of permission?",
+        "question": "Which independent response best applies permission to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about permission with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating permission on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'We should learn it from someone who can teach it properly and keep the steps the same. We should say where it is from and not make jokes.' Learning from a guide and keeping the dance… Reasoning: I used permission by attending to learning from a guide rather than copying the worked model.",
+        "sample_answer": "Sample: original example using permission on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for permission. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with permission, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Believing that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it… Correction: Strong answer: 'We should learn it from someone who can teach it properly and keep the steps the same. We should say where it is from and not make jokes.'… Why: the correction restores accurate use of permission.",
+        "sample_answer": "Sample error: Believing that if you can copy the steps, you can change them however you like.. Correction: Strong answer: 'We should learn it from someone who can teach it properly and keep the steps the same.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "To learn a cultural dance respectfully, first ask permission and find a trusted guide, such as a teacher, family member or community member who knows the dance and agrees to share it. Learn the steps as they are taught, in the right order, along with the story or purpose. Do…",
+          "explanation": "To learn a cultural dance respectfully, first ask permission and find a trusted guide, such as a teacher, family member or community member who knows the dance and agrees to share it.",
           "options": [
+            "An answer copied without understanding.",
+            "To learn a cultural dance respectfully, first ask permission and find a trusted guide, such as a teacher, family member",
             "A guess with no artistic reason.",
-            "To learn a cultural dance respectfully, first ask permission and find a trusted guide, such as a teacher, family member or community member who knows the dance and agrees to share it. Learn the steps as they are taught, in the right order, along with the story or purpose. Do not change the steps or make a joke of them, and do not wear a costume that copies a cultural outfit unless a guide says it is appropriate. When you perform, say where the dance comes from and credit the teacher. If a dance is sacred or restricted, do not perform it.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about permission?",
+          "question": "Which choice best applies this lesson idea about permission with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Mia's school invites a parent to teach a simple folk dance from their home country. Mia listens to the story, watches slowly and practises the four steps in the same order. She does not add her own moves. Before the performance, the class says, 'This dance is from the parent's home culture, and we thank them for teaching us.' She also asks if there is anything they should not do.\n\nTRY FIRST\nA friend wants to do a dance they saw online and add funny moves. Write two things you would say to help them be respectful.\n\nFEEDBACK\nStrong answer: 'We should learn it from someone who can teach it properly and keep the steps the same. We should say where it is from and not make jokes.' Learning from a guide and keeping the dance as it is shows respect.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
+            "An answer copied without understanding.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about permission?",
+          "question": "Which choice best applies this lesson idea about permission with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Mia's school invites a parent to teach a simple folk dance from their home country. Mia listens to the story, watches slowly and practises the four steps in the same order. She does not add her own moves. Before the performance, the class says, 'This dance is from the parent's home culture, and we thank them for teaching us.' She also asks if there is anything they should not do. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about permission?",
+          "question": "Which choice best applies this lesson idea about permission with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBelieving that if you can copy the steps, you can change them however you like. A cultural dance belongs to its community, so ask permission, keep it respectful and credit those who taught you. Here is a more helpful example: Example: Mia's school invites a parent to teach a simple folk dance from their home country. Mia listens to the story, watches slowly and practises the four steps in the same order. She does not add her own moves. Before the performance, the class says, 'This dance is from the parent's home culture, and we thank them for teaching us.' She also asks if there is anything they should not do.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'We should learn it from someone who can teach it properly and keep the steps the same. We should say where it is from and not make jokes.' Learning from a guide and keeping the dance as it is shows respect.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about permission?",
+          "question": "Which choice best applies this lesson idea about permission with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTo learn a cultural dance respectfully, first ask permission and find a trusted guide, such as a teacher, family member or community member who knows the dance and agrees to share it. Learn the steps as they are taught, in the right order, along with the story or purpose. Do not change the steps or make a joke of them, and do not wear a costume that copies a cultural outfit unless a guide says it is appropriate. When you perform, say where the dance comes from and credit the teacher. If a dance is sacred or restricted, do not perform it. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

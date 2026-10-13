@@ -34,7 +34,7 @@
     "outcome_codes": [
       "HS2-HIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write three upstander scripts (words + adult help option). Role-play two. Reflect on a time you could use one. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Some situations are unsafe for children to handle alone. Reasoning: I used upstand by attending to exclude rather than copying the worked model.\n\nParent: Written model 2: Common error: Filming someone’s humiliation makes you part of the harm. Correction: Some situations are unsafe for children to handle alone. Why: the correction restores accurate use of upstand.\n\nParent: Likely misconception: Filming someone’s humiliation makes you part of the harm. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating upstand on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with upstand, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write three upstander scripts (words + adult help option). Role-play two. Reflect on a time you could use one. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using upstand on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Filming someone’s humiliation makes you part of the harm.. Correction: Some situations are unsafe for children to handle alone.. Why it helps the audience is stated.\n\nParent: Likely misconception: Filming someone’s humiliation makes you part of the harm. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating upstand on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with upstand, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about upstand with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for upstand. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Some situations are unsafe for children to handle alone. This matches the lesson skill for upstand.",
+        "explanation": "This matches the taught method for upstand. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model places and call that independent work.",
-          "Some situations are unsafe for children to handle alone.",
-          "Filming someone’s humiliation makes you part of the harm.",
-          "Ignore the source and invent a more exciting story."
+          "A method that skips the key step taught in this lesson",
+          "Some situations are unsafe for children to handle alone",
+          "Filming someone’s humiliation makes you part of the harm",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Why is getting an adult sometimes the bravest upstander act?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Filming someone’s humiliation makes you part of the harm. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for upstand; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Filming someone’s humiliation makes you part of the harm.",
-          "Standing up against exclusion means being an upstander: support the person harmed, seek adult help when needed and refuse to join unkind behaviour — safely.",
-          "Some situations are unsafe for children to handle alone.",
-          "Careful use of exclude with clear evidence."
+          "Filming someone’s humiliation makes you part of the harm",
+          "Standing up against exclusion means being an upstander: support the person harmed, seek adult help when needed and",
+          "Some situations are unsafe for children to handle alone",
+          "Careful use of exclude and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising upstand?",
+        "question": "Which statement is a common mistake when working with upstand?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named exclude, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named exclude and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing fact as if it were recorded in a source.",
-          "Apply the idea with new evidence and name the exclude used."
+          "Repeat the worked example wording with no new evidence",
+          "Filming someone’s humiliation makes you part of the harm",
+          "Name exclude and explain why it matters only, without linking it to upstand",
+          "Apply upstand to new material and name the exclude and explain why it matters used"
         ],
-        "question": "A learner is practising upstand. Which approach best shows understanding?",
+        "question": "Which response best applies upstand with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Some situations are unsafe for children to handle alone. uses sources and places appropriately for this lesson.",
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on upstand. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Some situations are unsafe for children to handle alone.",
-          "Filming someone’s humiliation makes you part of the harm.",
-          "Ignore the source and invent a more exciting story.",
-          "Copy the model places and call that independent work."
+          "Some situations are unsafe for children to handle alone",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Filming someone’s humiliation makes you part of the harm"
         ],
-        "question": "Which response best shows careful thinking about upstand?",
+        "question": "Which response best uses sources, places or historical/geographic evidence for upstand?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Filming someone’s humiliation makes you part of the harm.",
-          "Name a specific source, cue or example and say what it shows about upstand.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy a classmate’s sentence with no local detail",
+          "Filming someone’s humiliation makes you part of the harm",
+          "Name a specific source or place detail and say what it shows about upstand",
+          "Make a bigger claim without naming any source or place detail"
         ],
-        "question": "Which habit strengthens evidence about exclude?",
+        "question": "Which evidence move best supports a claim about upstand?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Standing up against exclusion means being an upstander: support the) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing fact as if it were recorded in a source.",
-          "Ignore the source and invent a more exciting story.",
-          "Example steps: notice → support target → get help if unsafe → do not share humiliating content. Students practise scripts.",
-          "Filming someone’s humiliation makes you part of the harm."
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Example steps: notice → support target → get help if unsafe → do not share humiliating content",
+          "Filming someone’s humiliation makes you part of the harm"
         ],
-        "question": "Using this lesson idea — Standing up against exclusion means being an upstander: support the person harmed, seek adult help when… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about upstand?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster."
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for upstand?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Write three upstander scripts (words + adult help option). Role-play two. Reflect on a time you could use one.",
-          "Retype the worked example with no new example.",
-          "Copy the model places and call that independent work.",
-          "Filming someone’s humiliation makes you part of the harm."
+          "Write three upstander scripts (words + adult help option)",
+          "Retype the worked example with no new example",
+          "Filming someone’s humiliation makes you part of the harm",
+          "Name exclude and explain why it matters only, with no linked example"
         ],
-        "question": "Which task best shows independent use of upstand?",
+        "question": "Which independent response best applies upstand to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about upstand with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating upstand on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Some situations are unsafe for children to handle alone. Reasoning: I used upstand by attending to exclude rather than copying the worked model.",
+        "sample_answer": "Sample: original example using upstand on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for upstand. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with upstand, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Filming someone’s humiliation makes you part of the harm. Correction: Some situations are unsafe for children to handle alone. Why: the correction restores accurate use of upstand.",
+        "sample_answer": "Sample error: Filming someone’s humiliation makes you part of the harm.. Correction: Some situations are unsafe for children to handle alone.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Standing up against exclusion means being an upstander: support the person harmed, seek adult help when needed and refuse to join unkind behaviour — safely. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Standing up against exclusion means being an upstander: support the person harmed, seek adult help when needed and refuse to join unkind behaviour — safely.",
           "options": [
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Standing up against exclusion means being an upstander: support the person harmed, seek adult help when needed and refuse to join unkind behaviour — safely."
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Standing up against exclusion means being an upstander: support the person harmed, seek adult help when needed and"
           ],
-          "question": "Which choice best shows accurate use of this idea about upstand?",
+          "question": "Which choice best applies this lesson idea about upstand with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample steps: notice → support target → get help if unsafe → do not share humiliating content. Students practise scripts.\n\nTRY FIRST\nWhy is getting an adult sometimes the bravest upstander act?\n\nFEEDBACK\nSome situations are unsafe for children to handle alone.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no evidence.",
-            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
           ],
-          "question": "Which choice best shows accurate use of this idea about upstand?",
+          "question": "Which choice best applies this lesson idea about upstand with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample steps: notice → support target → get help if unsafe → do not share humiliating content. Students practise scripts. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect claim as a comparison",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
           ],
-          "question": "Which choice best shows accurate use of this idea about upstand?",
+          "question": "Which choice best applies this lesson idea about upstand with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nFilming someone’s humiliation makes you part of the harm. Here is a more productive model: Example steps: notice → support target → get help if unsafe → do not share humiliating content. Students practise scripts.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nSome situations are unsafe for children to handle alone.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence."
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example"
           ],
-          "question": "Which choice best shows accurate use of this idea about upstand?",
+          "question": "Which choice best applies this lesson idea about upstand with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nStanding up against exclusion means being an upstander: support the person harmed, seek adult help when needed and refuse to join unkind behaviour — safely. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",

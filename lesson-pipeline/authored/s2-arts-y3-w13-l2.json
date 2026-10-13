@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write a one-page script of three scenes for your story from last lesson, with a narrator and two characters. Mark each cue. Rehearse it three times with a family member and write one thing that improved each time. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Agree that their cue is the last word of my line, and say it slowly. If they forget their line, they can say it in their own words and keep the story going.' A clear cue plus a… Reasoning: I used dialogue by attending to narrator rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping… Correction: Strong answer: 'Agree that their cue is the last word of my line, and say it slowly. If they forget their line, they can say it in their own words and keep… Why: the correction restores accurate use of dialogue.\n\nParent: Likely misconception: Believing that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping the meaning. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating dialogue on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with dialogue, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write a one-page script of three scenes for your story from last lesson, with a narrator and two characters. Mark each cue. Rehearse it three times with a family member and write one thing that improved each time. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using dialogue on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing that actors must remember every word exactly.. Correction: Strong answer: 'Agree that their cue is the last word of my line, and say it slowly.. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping the meaning. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating dialogue on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with dialogue, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about dialogue with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for dialogue. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Agree that their cue is the last word of my line, and say it slowly. If they forget their line, they can say it in their own words and keep… This matches the lesson skill for dialogue.",
+        "explanation": "This matches the taught method for dialogue. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Agree that their cue is the last word of my line, and say it slowly. If they forget their line, they can say it in their own words and keep…",
-          "Believing that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping…",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "'Agree that their cue is the last word of my line, and say it slowly.",
+          "Believing that actors must remember every word exactly.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "Your friend always comes in too early on stage. Write one way to help them find the cue and one way to recover if they forget a line. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Believing that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for dialogue; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of narrator with clear evidence.",
-          "Believing that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping…",
-          "To act out a story, divide the parts: narrator, characters and a person to give cues. Dialogue is spoken by characters, and the narrator links the scenes. A…",
-          "Strong answer: 'Agree that their cue is the last word of my line, and say it slowly. If they forget their line, they can say it in their own words and keep…"
+          "Careful use of narrator and explain why it matters with clear evidence.",
+          "Believing that actors must remember every word exactly.",
+          "To act out a story, divide the parts: narrator, characters and a person to give cues.",
+          "'Agree that their cue is the last word of my line, and say it slowly."
         ],
-        "question": "Which statement is a common mistake when practising dialogue?",
+        "question": "Which statement is a common mistake when working with dialogue?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named narrator, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named narrator and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the narrator used.",
+          "Believing that actors must remember every word exactly.",
+          "Name narrator and explain why it matters only, without linking it to dialogue.",
+          "Apply dialogue to new material and name the narrator and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising dialogue. Which approach best shows understanding?",
+        "question": "Which response best applies dialogue with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Agree that their cue is the last word of my line, and say it slowly. If they forget their line, they can say it in their own words and keep… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on dialogue. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Agree that their cue is the last word of my line, and say it slowly. If they forget their line, they can say it in their own words and keep…",
-          "Believing that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping…",
-          "Say it looks nice with no element or technique named."
+          "Believing that actors must remember every word exactly.",
+          "'Agree that their cue is the last word of my line, and say it slowly.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which response best shows careful thinking about dialogue?",
+        "question": "Which response best uses elements, techniques and audience effect for dialogue?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Believing that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping…",
-          "Name a specific source, cue or example and say what it shows about dialogue.",
-          "Make a bigger claim without naming any source or cue."
-        ],
-        "question": "Which habit strengthens evidence about narrator?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Example: Mia is the narrator: 'The two children searched under every log.' Ben, as a child, says, 'It must be near the stream!' His cue is…",
-          "Believing that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping…",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Believing that actors must remember every word exactly.",
+          "Name a specific element or technique and say what effect it creates for dialogue.",
           "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — To act out a story, divide the parts: narrator, characters and a person to give cues. Dialogue is spoken by… — which choice is best?",
+        "question": "Which evidence move best supports a claim about dialogue?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Example: Mia is the narrator: 'The two children searched under every log.' Ben, as a child, says, 'It must be near the",
+          "Believing that actors must remember every word exactly.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
+        ],
+        "question": "Using this lesson idea — To act out a story, divide the parts: narrator, characters and a person to give cues. — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for dialogue?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Believing that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping…",
-          "Write a one-page script of three scenes for your story from last lesson, with a narrator and two characters. Mark each cue. Rehearse it three times…",
+          "Name narrator and explain why it matters only, with no linked example.",
+          "Write a one-page script of three scenes for your story from last lesson, with a narrator and two characters.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Believing that actors must remember every word exactly."
         ],
-        "question": "Which task best shows independent use of dialogue?",
+        "question": "Which independent response best applies dialogue to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about dialogue with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating dialogue on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Agree that their cue is the last word of my line, and say it slowly. If they forget their line, they can say it in their own words and keep the story going.' A clear cue plus a… Reasoning: I used dialogue by attending to narrator rather than copying the worked model.",
+        "sample_answer": "Sample: original example using dialogue on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for dialogue. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with dialogue, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Believing that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping… Correction: Strong answer: 'Agree that their cue is the last word of my line, and say it slowly. If they forget their line, they can say it in their own words and keep… Why: the correction restores accurate use of dialogue.",
+        "sample_answer": "Sample error: Believing that actors must remember every word exactly.. Correction: Strong answer: 'Agree that their cue is the last word of my line, and say it slowly.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "To act out a story, divide the parts: narrator, characters and a person to give cues. Dialogue is spoken by characters, and the narrator links the scenes. A cue is a signal for the next person to start, such as the last words of the line before. Rehearsing means repeating the…",
+          "explanation": "To act out a story, divide the parts: narrator, characters and a person to give cues.",
           "options": [
-            "To act out a story, divide the parts: narrator, characters and a person to give cues. Dialogue is spoken by characters, and the narrator links the scenes. A cue is a signal for the next person to start, such as the last words of the line before. Rehearsing means repeating the scenes to remember the order, improve the voices and fix mistakes. Speak clearly and face the audience, and keep your body safe by agreeing on any action before you act. If you forget the line, say it in your own words and keep going.",
+            "To act out a story, divide the parts: narrator, characters and a person to give cues.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about dialogue?",
+          "question": "Which choice best applies this lesson idea about dialogue with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Mia is the narrator: 'The two children searched under every log.' Ben, as a child, says, 'It must be near the stream!' His cue is Mia's last word, 'log'. They rehearse three times, checking that Ben starts on the cue and speaks clearly at the audience. In the second rehearsal Ben forgets and says, 'We should look by the water', which works.\n\nTRY FIRST\nYour friend always comes in too early on stage. Write one way to help them find the cue and one way to recover if they forget a line.\n\nFEEDBACK\nStrong answer: 'Agree that their cue is the last word of my line, and say it slowly. If they forget their line, they can say it in their own words and keep the story going.' A clear cue plus a recovery plan helps a team perform confidently.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about dialogue?",
+          "question": "Which choice best applies this lesson idea about dialogue with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Mia is the narrator: 'The two children searched under every log.' Ben, as a child, says, 'It must be near the stream!' His cue is Mia's last word, 'log'. They rehearse three times, checking that Ben starts on the cue and speaks clearly at the audience. In the second rehearsal Ben forgets and says, 'We should look by the water', which works. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
+            "An answer copied without understanding.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about dialogue?",
+          "question": "Which choice best applies this lesson idea about dialogue with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBelieving that actors must remember every word exactly. Knowing the story and staying in character matters more, and you can recover from mistakes by keeping the meaning. Here is a more helpful example: Example: Mia is the narrator: 'The two children searched under every log.' Ben, as a child, says, 'It must be near the stream!' His cue is Mia's last word, 'log'. They rehearse three times, checking that Ben starts on the cue and speaks clearly at the audience. In the second rehearsal Ben forgets and says, 'We should look by the water', which works.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Agree that their cue is the last word of my line, and say it slowly. If they forget their line, they can say it in their own words and keep the story going.' A clear cue plus a recovery plan helps a team perform confidently.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about dialogue?",
+          "question": "Which choice best applies this lesson idea about dialogue with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTo act out a story, divide the parts: narrator, characters and a person to give cues. Dialogue is spoken by characters, and the narrator links the scenes. A cue is a signal for the next person to start, such as the last words of the line before. Rehearsing means repeating the scenes to remember the order, improve the voices and fix mistakes. Speak clearly and face the audience, and keep your body safe by agreeing on any action before you act. If you forget the line, say it in your own words and keep going. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

@@ -69,8 +69,11 @@ def quiz_is_weak(lesson: dict) -> bool:
         return True
     if any(re.match(r'^Require (new|a real|independently)\b', q.get('marking_guide') or '') for q in sa):
         return True
+    # Match study-behaviour templates only — not legitimate topic phrases like
+    # "practising the presentation" extracted from success criteria.
     study = re.compile(
-        r'practising |shows understanding|shows transfer|independent use of|feedback comment',
+        r'A learner is practising|shows understanding|shows transfer|'
+        r'independent use of|feedback comment|Which habit best|Which transfer move',
         re.I,
     )
     if sum(1 for q in mc if study.search(q.get('question') or '')) > 1:
@@ -92,8 +95,13 @@ def extract_fields(bundle: dict) -> dict:
     criteria = lesson.get('success_criteria') or []
     vocab = []
     for line in criteria[:4]:
-        m = re.search(r'I can (?:use|identify|practise|notice|round|solve|describe) ([^.]+)', line or '', re.I)
-        vocab.append((m.group(1).split(' with')[0].strip() if m else 'this skill')[:40])
+        m = re.search(
+            r'I can (?:use|identify|practise|practice|notice|round|solve|describe|explain|create|compare) (.+)',
+            line or '', re.I)
+        token = (m.group(1).split(' with')[0].strip() if m else 'this skill')
+        token = re.sub(r'^(practising|practicing|using|doing)\s+', '', token, flags=re.I)
+        token = token.strip(' .')[:40] or 'this skill'
+        vocab.append(token)
     while len(vocab) < 4:
         vocab.append('this skill')
     if not model and lesson.get('worked_example'):
@@ -213,11 +221,15 @@ def main():
             if args.limit and len(would) >= args.limit:
                 break
             continue
-        if repair_bundle(bundle):
-            atomic_json(path, bundle)
-            repaired.append(path.stem)
-        else:
-            skipped.append(path.stem)
+        try:
+            if repair_bundle(bundle):
+                atomic_json(path, bundle)
+                repaired.append(path.stem)
+            else:
+                skipped.append(path.stem)
+        except Exception as exc:  # noqa: BLE001 — keep batch resumable
+            missing.append(f'{path.stem}: {exc}')
+            continue
         if args.limit and len(repaired) >= args.limit:
             break
     print(json.dumps({
@@ -226,7 +238,8 @@ def main():
         'repaired': len(repaired),
         'would_repair': len(would),
         'skipped': len(skipped),
-        'missing': missing,
+        'errors': [m for m in missing if ': ' in m],
+        'missing': [m for m in missing if ': ' not in m],
         'sample_repaired': (would or repaired)[:12],
     }, indent=2))
 

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-NSM-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Compare fourteen duration pairs. Convert to minutes for each and order four sets of three. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: 75 min > 70 min so 1 h 15 min is longer. Reasoning: I used duration by attending to compare rather than copying the worked model.\n\nParent: Written model 2: Common error: Comparing hour digits only ignores minutes and can reverse the order. Correction: 75 min > 70 min so 1 h 15 min is longer. Why: the correction restores accurate use of duration.\n\nParent: Likely misconception: Comparing hour digits only ignores minutes and can reverse the order. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses duration with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with duration, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Compare fourteen duration pairs. Convert to minutes for each and order four sets of three. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for duration; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Comparing hour digits only ignores minutes and can reverse the order.. Correction uses 75 min > 70 min so 1 h 15 min is longer.. Why: restores accurate duration.\n\nParent: Likely misconception: Comparing hour digits only ignores minutes and can reverse the order. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses duration with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with duration, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for duration, and names places/values. Reject copied model numbers. / Accept a named misconception about duration, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "75 min > 70 min so 1 h 15 min is longer. This matches the lesson skill for duration.",
+        "explanation": "This matches the taught method for duration. The other choices miss a key step or use a common mistake.",
         "options": [
-          "75 min > 70 min so 1 h 15 min is longer.",
-          "Comparing hour digits only ignores minutes and can reverse the order.",
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work."
+          "75 min > 70 min so 1 h 15 min is longer",
+          "Comparing hour digits only ignores minutes and can reverse the order",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Which is longer: 1 h 15 min or 70 min? Show both in minutes. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Comparing hour digits only ignores minutes and can reverse the order. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for duration; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of compare with clear evidence.",
-          "Comparing hour digits only ignores minutes and can reverse the order.",
-          "Comparing durations converts times to the same unit (usually minutes) before deciding which is longer.",
-          "75 min > 70 min so 1 h 15 min is longer."
+          "Careful use of compare and explain why it matters with clear evidence",
+          "Comparing hour digits only ignores minutes and can reverse the order",
+          "Comparing durations converts times to the same unit (usually minutes) before deciding which is longer",
+          "75 min > 70 min so 1 h 15 min is longer"
         ],
-        "question": "Which statement is a common mistake when practising duration?",
+        "question": "Which statement is a common mistake when working with duration?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named compare, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named compare and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing zero as if it does not change the value.",
-          "Apply the idea with new evidence and name the compare used.",
-          "Repeat the worked example wording with no new evidence."
+          "Comparing hour digits only ignores minutes and can reverse the order",
+          "Name compare and explain why it matters only, without linking it to duration",
+          "Apply duration to new material and name the compare and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising duration. Which approach best shows understanding?",
+        "question": "Which response best applies duration with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value.",
-          "Comparing hour digits only ignores minutes and can reverse the order.",
-          "Show the places, values or steps and say why each step is valid."
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value",
+          "Comparing hour digits only ignores minutes and can reverse the order",
+          "Show each place, value or step and say why that step is valid"
         ],
-        "question": "Which working note best supports a mathematics answer about duration?",
+        "question": "Which working best supports a correct answer for this lesson on duration?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught duration method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "75 min > 70 min so 1 h 15 min is longer.",
-          "Comparing hour digits only ignores minutes and can reverse the order.",
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work."
+          "75 min > 70 min so 1 h 15 min is longer",
+          "Comparing hour digits only ignores minutes and can reverse the order",
+          "Read 1 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 1 and 15 as interchangeable"
         ],
-        "question": "Using this lesson idea — Comparing durations converts times to the same unit (usually minutes) before deciding which is longer. — which statement is true?",
+        "question": "Using the method for duration, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed."
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a duration problem with numbers such as 1 and 15, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change only handwriting and keep the same numbers.",
-          "Copy the model numbers and call that independent work.",
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer."
+          "Change only handwriting and keep the same numbers",
+          "Comparing hour digits only ignores minutes and can reverse the order",
+          "Use the same duration method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 1 and 15 as the answer"
         ],
-        "question": "Which practice choice shows transfer of duration?",
+        "question": "Solve a fresh duration problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name the exact place or step that failed, then show corrected working for duration.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer."
+          "Comparing hour digits only ignores minutes and can reverse the order",
+          "Comparing durations converts times to the same unit (usually minutes) before deciding which is longer",
+          "75 min > 70 min so 1 h 15 min is longer",
+          "Label units when comparing 1 with 15"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for duration?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for duration, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses duration with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: 75 min > 70 min so 1 h 15 min is longer. Reasoning: I used duration by attending to compare rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for duration; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about duration, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with duration, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Comparing hour digits only ignores minutes and can reverse the order. Correction: 75 min > 70 min so 1 h 15 min is longer. Why: the correction restores accurate use of duration.",
+        "sample_answer": "Sample misconception: Comparing hour digits only ignores minutes and can reverse the order.. Correction uses 75 min > 70 min so 1 h 15 min is longer.. Why: restores accurate duration.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Comparing durations converts times to the same unit (usually minutes) before deciding which is longer. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Comparing durations converts times to the same unit (usually minutes) before deciding which is longer. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Comparing durations converts times to the same unit (usually minutes) before deciding which is longer."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Comparing durations converts times to the same unit (usually minutes) before deciding which is longer"
           ],
-          "question": "Which choice best shows accurate use of this idea about duration?",
+          "question": "Which choice best applies this lesson idea about duration with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n1 h 20 min = 80 min; 90 min is longer. 2 h vs 100 min → 120 min > 100 min.\n\nTRY FIRST\nWhich is longer: 1 h 15 min or 70 min? Show both in minutes.\n\nFEEDBACK\n75 min > 70 min so 1 h 15 min is longer.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about duration?",
+          "question": "Which choice best applies this lesson idea about duration with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n1 h 20 min = 80 min; 90 min is longer. 2 h vs 100 min → 120 min > 100 min. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use an intentionally incorrect attempt as a comparison",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about duration?",
+          "question": "Which choice best applies this lesson idea about duration with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nComparing hour digits only ignores minutes and can reverse the order. Here is a more productive model: 1 h 20 min = 80 min; 90 min is longer. 2 h vs 100 min → 120 min > 100 min.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\n75 min > 70 min so 1 h 15 min is longer.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about duration?",
+          "question": "Which choice best applies this lesson idea about duration with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nComparing durations converts times to the same unit (usually minutes) before deciding which is longer. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

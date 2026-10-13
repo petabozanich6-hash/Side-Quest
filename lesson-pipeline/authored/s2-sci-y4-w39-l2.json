@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-DDT-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Deliver the presentation. Collect two audience questions and write evidence-based answers afterward. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Name a specific next iteration tied to a measured weakness. Reasoning: I used present by attending to audience rather than copying the worked model.\n\nParent: Written model 2: Common error: Guessing answers not in your data weakens trust. Correction: Name a specific next iteration tied to a measured weakness. Why: the correction restores accurate use of present.\n\nParent: Likely misconception: Guessing answers not in your data weakens trust. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses present. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about present, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Deliver the presentation. Collect two audience questions and write evidence-based answers afterward. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about present linked to that evidence.\n\nParent: Written model 2: Sample misconception: Guessing answers not in your data weakens trust.. Correction: Name a specific next iteration tied to a measured weakness. with evidence.\n\nParent: Likely misconception: Guessing answers not in your data weakens trust. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses present. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about present, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about present. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for present. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Name a specific next iteration tied to a measured weakness. This matches the lesson skill for present.",
+        "explanation": "This matches the taught method for present. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Guessing answers not in your data weakens trust.",
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work.",
-          "Name a specific next iteration tied to a measured weakness."
+          "Guessing answers not in your data weakens trust",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Name a specific next iteration tied to a measured weakness"
         ],
         "question": "Practice answering: “What would you change with more time?” using your version log. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Guessing answers not in your data weakens trust. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for present; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Guessing answers not in your data weakens trust.",
-          "Presenting the STEM project means speaking clearly to the audience, demoing safely and answering questions with evidence.",
-          "Name a specific next iteration tied to a measured weakness.",
-          "Careful use of audience with clear evidence."
+          "Guessing answers not in your data weakens trust",
+          "Presenting the STEM project means speaking clearly to the audience, demoing safely and answering questions with",
+          "Name a specific next iteration tied to a measured weakness",
+          "Careful use of audience and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising present?",
+        "question": "Which statement is a common mistake when working with present?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named audience, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named audience and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing measurement as if it were recorded.",
-          "Apply the idea with new evidence and name the audience used.",
-          "Repeat the worked example wording with no new evidence."
+          "Guessing answers not in your data weakens trust",
+          "Name audience and explain why it matters only, without linking it to present",
+          "Apply present to new material and name the audience and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising present. Which approach best shows understanding?",
+        "question": "Which response best applies present with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation.",
-          "Guessing answers not in your data weakens trust."
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation",
+          "Guessing answers not in your data weakens trust"
         ],
-        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which claim about present is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Guessing answers not in your data weakens trust.",
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence."
+          "Guessing answers not in your data weakens trust",
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation",
+          "A label copied from the title with no evidence"
         ],
         "question": "Which record best supports a science claim about present?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Name a specific next iteration tied to a measured weakness. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about present with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model objects and call that independent work.",
-          "Name a specific next iteration tied to a measured weakness.",
-          "Guessing answers not in your data weakens trust.",
-          "Ignore the observation and invent a more exciting result."
+          "Ignore measurements and decide by which looks nicer",
+          "Name a specific next iteration tied to a measured weakness",
+          "Guessing answers not in your data weakens trust",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Using this idea — Presenting the STEM project means speaking clearly to the audience, demoing safely and answering… — which choice is strongest?",
+        "question": "Using this science idea — Presenting the STEM project means speaking clearly to the audience, demoing safely and answering — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result."
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about present?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a dramatic result with no observation.",
-          "Copy the model objects and call that independent work.",
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged."
+          "Guessing answers not in your data weakens trust",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about present should change with it",
+          "Any exciting story about the object must be true"
         ],
-        "question": "Which next step best shows transfer of present?",
+        "question": "Which prediction about present can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about present. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses present. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Name a specific next iteration tied to a measured weakness. Reasoning: I used present by attending to audience rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about present linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for present. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about present, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Guessing answers not in your data weakens trust. Correction: Name a specific next iteration tied to a measured weakness. Why: the correction restores accurate use of present.",
+        "sample_answer": "Sample misconception: Guessing answers not in your data weakens trust.. Correction: Name a specific next iteration tied to a measured weakness. with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Presenting the STEM project means speaking clearly to the audience, demoing safely and answering questions with evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Presenting the STEM project means speaking clearly to the audience, demoing safely and answering questions with evidence.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Presenting the STEM project means speaking clearly to the audience, demoing safely and answering questions with evidence.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Presenting the STEM project means speaking clearly to the audience, demoing safely and answering questions with",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about present?",
+          "question": "Which choice best applies this lesson idea about present with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nFace listeners; demo behind a safety line; answer “How do you know?” with trial data. Thank the audience.\n\nTRY FIRST\nPractice answering: “What would you change with more time?” using your version log.\n\nFEEDBACK\nName a specific next iteration tied to a measured weakness.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about present?",
+          "question": "Which choice best applies this lesson idea about present with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nFace listeners; demo behind a safety line; answer “How do you know?” with trial data. Thank the audience. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about present?",
+          "question": "Which choice best applies this lesson idea about present with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nGuessing answers not in your data weakens trust. Here is a more productive model: Face listeners; demo behind a safety line; answer “How do you know?” with trial data. Thank the audience.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nName a specific next iteration tied to a measured weakness.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about present?",
+          "question": "Which choice best applies this lesson idea about present with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPresenting the STEM project means speaking clearly to the audience, demoing safely and answering questions with evidence. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",

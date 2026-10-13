@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Make three characters: a king, a robot and a shy mouse. For each write two traits, a way of standing and moving, a face and a voice. Perform one for a family member who guesses the traits. You may describe instead of per Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Traits: shy and worried. Body: hunched shoulders, looking at the floor. Face: eyes wide, small smile. Voice: quiet and a little shaky.' It links each trait to a physical choice,… Reasoning: I used a role by attending to a character rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can… Correction: Strong answer: 'Traits: shy and worried. Body: hunched shoulders, looking at the floor. Face: eyes wide, small smile. Voice: quiet and a little shaky.' It… Why: the correction restores accurate use of a role.\n\nParent: Likely misconception: Thinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can believe in them. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a role on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a role, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Make three characters: a king, a robot and a shy mouse. For each write two traits, a way of standing and moving, a face and a voice. Perform one for a family member who guesses the traits. You may describe instead of per Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a role on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that drama means just acting silly or copying someone from TV.. Correction: Strong answer: 'Traits: shy and worried.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can believe in them. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a role on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a role, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a role with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a role. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Traits: shy and worried. Body: hunched shoulders, looking at the floor. Face: eyes wide, small smile. Voice: quiet and a little shaky.' It… This matches the lesson skill for a role.",
+        "explanation": "This matches the taught method for a role. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Traits: shy and worried. Body: hunched shoulders, looking at the floor. Face: eyes wide, small smile. Voice: quiet and a little shaky.' It…",
-          "Thinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can…",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "'Traits: shy and worried.",
+          "Thinking that drama means just acting silly or copying someone from TV.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "Create a character who is a nervous new student. Choose two traits and say how you would show them with your body, face and voice. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Thinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a role; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of a character with clear evidence.",
-          "Thinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can…",
-          "In drama, a role is a person or creature you pretend to be. A character is built from traits, such as brave, shy or grumpy, and from what the character wants.…",
-          "Strong answer: 'Traits: shy and worried. Body: hunched shoulders, looking at the floor. Face: eyes wide, small smile. Voice: quiet and a little shaky.' It…"
+          "Careful use of a character and explain why it matters with clear evidence.",
+          "Thinking that drama means just acting silly or copying someone from TV.",
+          "In drama, a role is a person or creature you pretend to be.",
+          "'Traits: shy and worried."
         ],
-        "question": "Which statement is a common mistake when practising a role?",
+        "question": "Which statement is a common mistake when working with a role?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named a character, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a character and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a character used.",
+          "Thinking that drama means just acting silly or copying someone from TV.",
+          "Name a character and explain why it matters only, without linking it to a role.",
+          "Apply a role to new material and name the a character and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising a role. Which approach best shows understanding?",
+        "question": "Which response best applies a role with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Traits: shy and worried. Body: hunched shoulders, looking at the floor. Face: eyes wide, small smile. Voice: quiet and a little shaky.' It… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a role. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Traits: shy and worried. Body: hunched shoulders, looking at the floor. Face: eyes wide, small smile. Voice: quiet and a little shaky.' It…",
-          "Thinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that drama means just acting silly or copying someone from TV.",
+          "'Traits: shy and worried.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about a role?",
+        "question": "Which response best uses elements, techniques and audience effect for a role?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can…",
-          "Name a specific source, cue or example and say what it shows about a role."
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that drama means just acting silly or copying someone from TV.",
+          "Name a specific element or technique and say what effect it creates for a role."
         ],
-        "question": "Which habit strengthens evidence about a character?",
+        "question": "Which evidence move best supports a claim about a role?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: Zoe plays an old fisherman. She decides his traits are patient and tired. She walks slowly with a bent back, speaks in a low,…",
-          "Thinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can…",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Example: Zoe plays an old fisherman.",
+          "Thinking that drama means just acting silly or copying someone from TV.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — In drama, a role is a person or creature you pretend to be. A character is built from traits, such as brave,… — which choice is best?",
+        "question": "Using this lesson idea — In drama, a role is a person or creature you pretend to be. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a role?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can…",
-          "Make three characters: a king, a robot and a shy mouse. For each write two traits, a way of standing and moving, a face and a voice. Perform one for…",
+          "Thinking that drama means just acting silly or copying someone from TV.",
+          "Name a character and explain why it matters only, with no linked example.",
+          "Make three characters: a king, a robot and a shy mouse.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of a role?",
+        "question": "Which independent response best applies a role to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a role with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a role on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Traits: shy and worried. Body: hunched shoulders, looking at the floor. Face: eyes wide, small smile. Voice: quiet and a little shaky.' It links each trait to a physical choice,… Reasoning: I used a role by attending to a character rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a role on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a role. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a role, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can… Correction: Strong answer: 'Traits: shy and worried. Body: hunched shoulders, looking at the floor. Face: eyes wide, small smile. Voice: quiet and a little shaky.' It… Why: the correction restores accurate use of a role.",
+        "sample_answer": "Sample error: Thinking that drama means just acting silly or copying someone from TV.. Correction: Strong answer: 'Traits: shy and worried.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "In drama, a role is a person or creature you pretend to be. A character is built from traits, such as brave, shy or grumpy, and from what the character wants. You show a character through your body (how you stand and move), your face and your voice. Staying in role means you…",
+          "explanation": "In drama, a role is a person or creature you pretend to be.",
           "options": [
+            "An answer copied without understanding.",
+            "In drama, a role is a person or creature you pretend to be.",
             "A guess with no artistic reason.",
-            "In drama, a role is a person or creature you pretend to be. A character is built from traits, such as brave, shy or grumpy, and from what the character wants. You show a character through your body (how you stand and move), your face and your voice. Staying in role means you keep acting as the character until the teacher or leader says to stop. Drama is pretend and safe, with no hitting or real touching. You can always step out of a role or describe it if you do not want to act.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a role?",
+          "question": "Which choice best applies this lesson idea about a role with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Zoe plays an old fisherman. She decides his traits are patient and tired. She walks slowly with a bent back, speaks in a low, slow voice and sighs. Her character wants to catch one last fish. Everyone can tell the character's traits from her body and voice, and she keeps in role until the teacher says 'freeze and thank you'.\n\nTRY FIRST\nCreate a character who is a nervous new student. Choose two traits and say how you would show them with your body, face and voice.\n\nFEEDBACK\nStrong answer: 'Traits: shy and worried. Body: hunched shoulders, looking at the floor. Face: eyes wide, small smile. Voice: quiet and a little shaky.' It links each trait to a physical choice, which makes a character believable.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a role?",
+          "question": "Which choice best applies this lesson idea about a role with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Zoe plays an old fisherman. She decides his traits are patient and tired. She walks slowly with a bent back, speaks in a low, slow voice and sighs. Her character wants to catch one last fish. Everyone can tell the character's traits from her body and voice, and she keeps in role until the teacher says 'freeze and thank you'. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a role?",
+          "question": "Which choice best applies this lesson idea about a role with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that drama means just acting silly or copying someone from TV. Acting means making deliberate choices about a character's traits so the audience can believe in them. Here is a more helpful example: Example: Zoe plays an old fisherman. She decides his traits are patient and tired. She walks slowly with a bent back, speaks in a low, slow voice and sighs. Her character wants to catch one last fish. Everyone can tell the character's traits from her body and voice, and she keeps in role until the teacher says 'freeze and thank you'.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Traits: shy and worried. Body: hunched shoulders, looking at the floor. Face: eyes wide, small smile. Voice: quiet and a little shaky.' It links each trait to a physical choice, which makes a character believable.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a role?",
+          "question": "Which choice best applies this lesson idea about a role with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nIn drama, a role is a person or creature you pretend to be. A character is built from traits, such as brave, shy or grumpy, and from what the character wants. You show a character through your body (how you stand and move), your face and your voice. Staying in role means you keep acting as the character until the teacher or leader says to stop. Drama is pretend and safe, with no hitting or real touching. You can always step out of a role or describe it if you do not want to act. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

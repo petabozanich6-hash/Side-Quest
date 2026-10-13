@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose two artists from a library book or a gallery website with an adult. For each, write the name, an artwork title, one technique and one element. Compare them in three sentences and give a reason for your favourite.  Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm. The cut-out uses curvy cut shapes and bright colours, so it feels playful.' Each answer names the… Reasoning: I used an artist by attending to an artwork rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their… Correction: Strong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm. The cut-out uses curvy cut shapes and bright colours, so it… Why: the correction restores accurate use of an artist.\n\nParent: Likely misconception: Thinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their work and why it looks that way. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating an artist on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with an artist, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose two artists from a library book or a gallery website with an adult. For each, write the name, an artwork title, one technique and one element. Compare them in three sentences and give a reason for your favourite.  Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using an artist on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that artists all make art the same way.. Correction: Strong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their work and why it looks that way. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating an artist on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with an artist, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about an artist with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for an artist. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm. The cut-out uses curvy cut shapes and bright colours, so it… This matches the lesson skill for an artist.",
+        "explanation": "This matches the taught method for an artist. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm. The cut-out uses curvy cut shapes and bright colours, so it…",
-          "Thinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their…"
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'The grid uses straight lines and primary colours, so it feels ordered and calm.",
+          "Thinking that artists all make art the same way."
         ],
         "question": "Compare a grid painting made of straight black lines with a paper cut-out of curvy shapes. Name one technique each and its effect. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Thinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for an artist; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their…",
-          "Artists make choices about subject, colour, line and materials, and these choices create a style. Piet Mondrian, a Dutch painter, made paintings using…",
-          "Strong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm. The cut-out uses curvy cut shapes and bright colours, so it…",
-          "Careful use of an artwork with clear evidence."
+          "Thinking that artists all make art the same way.",
+          "Artists make choices about subject, colour, line and materials, and these choices create a style.",
+          "'The grid uses straight lines and primary colours, so it feels ordered and calm.",
+          "Careful use of an artwork and explain why it matters with clear evidence."
         ],
-        "question": "Which statement is a common mistake when practising an artist?",
+        "question": "Which statement is a common mistake when working with an artist?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named an artwork, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named an artwork and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the an artwork used.",
+          "Thinking that artists all make art the same way.",
+          "Name an artwork and explain why it matters only, without linking it to an artist.",
+          "Apply an artist to new material and name the an artwork and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising an artist. Which approach best shows understanding?",
+        "question": "Which response best applies an artist with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm. The cut-out uses curvy cut shapes and bright colours, so it… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on an artist. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm. The cut-out uses curvy cut shapes and bright colours, so it…",
-          "Thinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their…",
-          "Say it looks nice with no element or technique named."
+          "Thinking that artists all make art the same way.",
+          "'The grid uses straight lines and primary colours, so it feels ordered and calm.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which response best shows careful thinking about an artist?",
+        "question": "Which response best uses elements, techniques and audience effect for an artist?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their…",
-          "Name a specific source, cue or example and say what it shows about an artist."
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that artists all make art the same way.",
+          "Name a specific element or technique and say what effect it creates for an artist."
         ],
-        "question": "Which habit strengthens evidence about an artwork?",
+        "question": "Which evidence move best supports a claim about an artist?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: Looking at a Mondrian-style grid, Pia says: 'The artist used thick black lines and large blocks of red, blue and yellow. The…",
-          "Thinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their…",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Example: Looking at a Mondrian-style grid, Pia says: 'The artist used thick black lines and large blocks of red, blue",
+          "Thinking that artists all make art the same way.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Artists make choices about subject, colour, line and materials, and these choices create a style. Piet… — which choice is best?",
+        "question": "Using this lesson idea — Artists make choices about subject, colour, line and materials, and these choices create a style. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for an artist?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their…",
-          "Choose two artists from a library book or a gallery website with an adult. For each, write the name, an artwork title, one technique and one…",
+          "Name an artwork and explain why it matters only, with no linked example.",
+          "Choose two artists from a library book or a gallery website with an adult.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Thinking that artists all make art the same way."
         ],
-        "question": "Which task best shows independent use of an artist?",
+        "question": "Which independent response best applies an artist to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about an artist with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating an artist on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm. The cut-out uses curvy cut shapes and bright colours, so it feels playful.' Each answer names the… Reasoning: I used an artist by attending to an artwork rather than copying the worked model.",
+        "sample_answer": "Sample: original example using an artist on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for an artist. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with an artist, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their… Correction: Strong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm. The cut-out uses curvy cut shapes and bright colours, so it… Why: the correction restores accurate use of an artist.",
+        "sample_answer": "Sample error: Thinking that artists all make art the same way.. Correction: Strong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Artists make choices about subject, colour, line and materials, and these choices create a style. Piet Mondrian, a Dutch painter, made paintings using straight black lines in a grid with blocks of red, yellow, blue and white. Henri Matisse, a French artist, made bold paper…",
+          "explanation": "Artists make choices about subject, colour, line and materials, and these choices create a style.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Artists make choices about subject, colour, line and materials, and these choices create a style. Piet Mondrian, a Dutch painter, made paintings using straight black lines in a grid with blocks of red, yellow, blue and white. Henri Matisse, a French artist, made bold paper cut-outs late in his life by cutting painted paper into shapes. When you study an artist, look for their technique, which is how they made the work, and the effect it has. Name the artist, title, materials and an element they used, and give your own response with a reason.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Artists make choices about subject, colour, line and materials, and these choices create a style.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about an artist?",
+          "question": "Which choice best applies this lesson idea about an artist with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Looking at a Mondrian-style grid, Pia says: 'The artist used thick black lines and large blocks of red, blue and yellow. The straight lines make it feel neat and balanced, and the red block draws my eye first.' She names the technique and the effect. For Matisse she says: 'The cut-out shapes are curvy and bold and feel playful.'\n\nTRY FIRST\nCompare a grid painting made of straight black lines with a paper cut-out of curvy shapes. Name one technique each and its effect.\n\nFEEDBACK\nStrong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm. The cut-out uses curvy cut shapes and bright colours, so it feels playful.' Each answer names the technique and the effect.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about an artist?",
+          "question": "Which choice best applies this lesson idea about an artist with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Looking at a Mondrian-style grid, Pia says: 'The artist used thick black lines and large blocks of red, blue and yellow. The straight lines make it feel neat and balanced, and the red block draws my eye first.' She names the technique and the effect. For Matisse she says: 'The cut-out shapes are curvy and bold and feel playful.' Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice."
+            "Use an intentionally weak or disrespectful arts choice as a comparison."
           ],
-          "question": "Which choice best shows accurate use of this idea about an artist?",
+          "question": "Which choice best applies this lesson idea about an artist with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that artists all make art the same way. Every artist makes different choices, and looking closely at their technique helps us see how they made their work and why it looks that way. Here is a more helpful example: Example: Looking at a Mondrian-style grid, Pia says: 'The artist used thick black lines and large blocks of red, blue and yellow. The straight lines make it feel neat and balanced, and the red block draws my eye first.' She names the technique and the effect. For Matisse she says: 'The cut-out shapes are curvy and bold and feel playful.'\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'The grid uses straight lines and primary colours, so it feels ordered and calm. The cut-out uses curvy cut shapes and bright colours, so it feels playful.' Each answer names the technique and the effect.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice."
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example."
           ],
-          "question": "Which choice best shows accurate use of this idea about an artist?",
+          "question": "Which choice best applies this lesson idea about an artist with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nArtists make choices about subject, colour, line and materials, and these choices create a style. Piet Mondrian, a Dutch painter, made paintings using straight black lines in a grid with blocks of red, yellow, blue and white. Henri Matisse, a French artist, made bold paper cut-outs late in his life by cutting painted paper into shapes. When you study an artist, look for their technique, which is how they made the work, and the effect it has. Name the artist, title, materials and an element they used, and give your own response with a reason. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

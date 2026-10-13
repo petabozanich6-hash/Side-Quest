@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-MSP-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Practise drills and a paced run. Record cues that helped and one improvement. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues. Reasoning: I used run by attending to pace rather than copying the worked model.\n\nParent: Written model 2: Common error: All-out sprinting every distance causes early fatigue. Correction: Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues. Why: the correction restores accurate use of run.\n\nParent: Likely misconception: All-out sprinting every distance causes early fatigue. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating run on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with run, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Practise drills and a paced run. Record cues that helped and one improvement. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using run on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: All-out sprinting every distance causes early fatigue.. Correction: Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues.. Why it helps the audience is stated.\n\nParent: Likely misconception: All-out sprinting every distance causes early fatigue. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating run on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with run, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about run with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for run. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues. This matches the lesson skill for run.",
+        "explanation": "Sprint: quick cadence; longer: controlled pace then finish — accept is correct because This matches the taught method for run. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues.",
-          "All-out sprinting every distance causes early fatigue.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work."
+          "Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues",
+          "All-out sprinting every distance causes early fatigue",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Give two technique cues and one pacing idea for a short sprint versus a longer run. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "All-out sprinting every distance causes early fatigue. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for run; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues.",
-          "Careful use of pace with clear evidence.",
-          "All-out sprinting every distance causes early fatigue.",
-          "Running technique and pacing use upright posture, relaxed arm swing and breathing matched to effort; sprint pace differs from longer pace."
+          "Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues",
+          "Careful use of pace and explain why it matters with clear evidence",
+          "All-out sprinting every distance causes early fatigue",
+          "Running technique and pacing use upright posture, relaxed arm swing and breathing matched to effort"
         ],
-        "question": "Which statement is a common mistake when practising run?",
+        "question": "Which statement is a common mistake when working with run?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named pace, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named pace and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the pace used."
+          "Repeat the worked example wording with no new evidence",
+          "All-out sprinting every distance causes early fatigue",
+          "Name pace and explain why it matters only, without linking it to run",
+          "Apply run to new material and name the pace and explain why it matters used"
         ],
-        "question": "A learner is practising run. Which approach best shows understanding?",
+        "question": "Which response best applies run with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues. uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on run. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example and call that independent work.",
-          "Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues.",
-          "All-out sprinting every distance causes early fatigue.",
-          "Ignore the safety rule because the first idea looked exciting."
+          "All-out sprinting every distance causes early fatigue",
+          "Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty"
         ],
-        "question": "Which response best shows careful thinking about run?",
+        "question": "Which response best uses safe, healthy or respectful choices for run?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "All-out sprinting every distance causes early fatigue.",
-          "Name a specific source, cue or example and say what it shows about run.",
-          "Make a bigger claim without naming any source or cue."
+          "Use a put-down and call it honesty",
+          "All-out sprinting every distance causes early fatigue",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with run",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which habit strengthens evidence about pace?",
+        "question": "Which evidence move best supports a claim about run?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Running technique and pacing use upright posture, relaxed arm swing and) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example cues: eyes forward, elbows swing; jog talk-test for easy pace.",
-          "All-out sprinting every distance causes early fatigue.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting."
+          "Example cues: eyes forward, elbows swing",
+          "All-out sprinting every distance causes early fatigue",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty"
         ],
-        "question": "Using this lesson idea — Running technique and pacing use upright posture, relaxed arm swing and breathing matched to effort; sprint… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about run?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster."
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for run?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "All-out sprinting every distance causes early fatigue.",
-          "Practise drills and a paced run. Record cues that helped and one improvement.",
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work."
+          "Name pace and explain why it matters only, with no linked example",
+          "Practise drills and a paced run",
+          "Retype the worked example with no new example",
+          "All-out sprinting every distance causes early fatigue"
         ],
-        "question": "Which task best shows independent use of run?",
+        "question": "Which independent response best applies run to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about run with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating run on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues. Reasoning: I used run by attending to pace rather than copying the worked model.",
+        "sample_answer": "Sample: original example using run on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for run. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with run, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: All-out sprinting every distance causes early fatigue. Correction: Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues. Why: the correction restores accurate use of run.",
+        "sample_answer": "Sample error: All-out sprinting every distance causes early fatigue.. Correction: Sprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Running technique and pacing use upright posture, relaxed arm swing and breathing matched to effort; sprint pace differs from longer pace. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Running technique and pacing use upright posture, relaxed arm swing and breathing matched to effort; sprint pace differs from longer pace.",
           "options": [
-            "Running technique and pacing use upright posture, relaxed arm swing and breathing matched to effort; sprint pace differs from longer pace.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Running technique and pacing use upright posture, relaxed arm swing and breathing matched to effort",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about run?",
+          "question": "Which choice best applies this lesson idea about run with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample cues: eyes forward, elbows swing; jog talk-test for easy pace.\n\nTRY FIRST\nGive two technique cues and one pacing idea for a short sprint versus a longer run.\n\nFEEDBACK\nSprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about run?",
+          "question": "Which choice best applies this lesson idea about run with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample cues: eyes forward, elbows swing; jog talk-test for easy pace. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about run?",
+          "question": "Which choice best applies this lesson idea about run with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAll-out sprinting every distance causes early fatigue. Here is a more helpful example: Example cues: eyes forward, elbows swing; jog talk-test for easy pace.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nSprint: quick cadence; longer: controlled pace then finish — accept coach-aligned cues.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about run?",
+          "question": "Which choice best applies this lesson idea about run with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRunning technique and pacing use upright posture, relaxed arm swing and breathing matched to effort; sprint pace differs from longer pace. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

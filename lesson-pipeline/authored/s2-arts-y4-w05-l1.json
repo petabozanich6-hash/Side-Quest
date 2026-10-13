@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete a painting project from brief to finished piece. Keep a three-entry process diary and a final reflection against your criteria. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Subject: my street at night. Mood: quiet. Palette: cool blues/violets with warm window yellows. Criteria: clear focal light and layered depth.' Brief guides the work. Reasoning: I used painting project by attending to design brief rather than copying the worked model.\n\nParent: Written model 2: Common error: Judging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value). Correction: Strong answer: 'Subject: my street at night. Mood: quiet. Palette: cool blues/violets with warm window yellows. Criteria: clear focal light and layered… Why: the correction restores accurate use of painting project.\n\nParent: Likely misconception: Judging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value). Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating painting project on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with painting project, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a painting project from brief to finished piece. Keep a three-entry process diary and a final reflection against your criteria. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using painting project on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Judging the project only by whether it looks photographic.. Correction: Strong answer: 'Subject: my street at night.. Why it helps the audience is stated.\n\nParent: Likely misconception: Judging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value). Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating painting project on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with painting project, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about painting project with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for painting project. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Subject: my street at night. Mood: quiet. Palette: cool blues/violets with warm window yellows. Criteria: clear focal light and layered… This matches the lesson skill for painting project.",
+        "explanation": "This matches the taught method for painting project. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Subject: my street at night. Mood: quiet. Palette: cool blues/violets with warm window yellows. Criteria: clear focal light and layered…",
-          "Judging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value).",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "'Subject: my street at night.",
+          "Judging the project only by whether it looks photographic.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "Write a design brief for a painting of your street at night, including mood, palette and two success criteria. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Judging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value). That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for painting project; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Judging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value).",
-          "A painting project needs a design brief: subject, mood, colour plan, size and success criteria. Work in stages—thumbnail, underpainting or light sketch, main…",
-          "Strong answer: 'Subject: my street at night. Mood: quiet. Palette: cool blues/violets with warm window yellows. Criteria: clear focal light and layered…",
-          "Careful use of design brief with clear evidence."
+          "Judging the project only by whether it looks photographic.",
+          "A painting project needs a design brief: subject, mood, colour plan, size and success criteria.",
+          "'Subject: my street at night.",
+          "Careful use of design brief and explain why it matters with clear evidence."
         ],
-        "question": "Which statement is a common mistake when practising painting project?",
+        "question": "Which statement is a common mistake when working with painting project?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named design brief, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named design brief and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the design brief used.",
+          "Apply painting project to new material and name the design brief and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Judging the project only by whether it looks photographic.",
+          "Name design brief and explain why it matters only, without linking it to painting project."
         ],
-        "question": "A learner is practising painting project. Which approach best shows understanding?",
+        "question": "Which response best applies painting project with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Subject: my street at night. Mood: quiet. Palette: cool blues/violets with warm window yellows. Criteria: clear focal light and layered… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on painting project. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Subject: my street at night. Mood: quiet. Palette: cool blues/violets with warm window yellows. Criteria: clear focal light and layered…",
-          "Judging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value)."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Judging the project only by whether it looks photographic.",
+          "'Subject: my street at night.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about painting project?",
+        "question": "Which response best uses elements, techniques and audience effect for painting project?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Judging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value).",
-          "Name a specific source, cue or example and say what it shows about painting project."
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Judging the project only by whether it looks photographic.",
+          "Name a specific element or technique and say what effect it creates for painting project."
         ],
-        "question": "Which habit strengthens evidence about design brief?",
+        "question": "Which evidence move best supports a claim about painting project?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
           "Say it looks nice with no element or technique named.",
-          "Example: Dev’s brief: 'Harbour at dusk, calm mood, cool blues with one warm light, A3 paper.' Criteria: clear foreground boat, aerial…",
-          "Judging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value)."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Dev’s brief: 'Harbour at dusk, calm mood, cool blues with one warm light, A3 paper.' Criteria: clear",
+          "Judging the project only by whether it looks photographic."
         ],
-        "question": "Using this lesson idea — A painting project needs a design brief: subject, mood, colour plan, size and success criteria. Work in… — which choice is best?",
+        "question": "Using this lesson idea — A painting project needs a design brief: subject, mood, colour plan, size and success criteria. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for painting project?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Complete a painting project from brief to finished piece. Keep a three-entry process diary and a final reflection against your criteria.",
+          "Complete a painting project from brief to finished piece.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Judging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value)."
+          "Judging the project only by whether it looks photographic.",
+          "Name design brief and explain why it matters only, with no linked example."
         ],
-        "question": "Which task best shows independent use of painting project?",
+        "question": "Which independent response best applies painting project to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about painting project with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating painting project on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Subject: my street at night. Mood: quiet. Palette: cool blues/violets with warm window yellows. Criteria: clear focal light and layered depth.' Brief guides the work. Reasoning: I used painting project by attending to design brief rather than copying the worked model.",
+        "sample_answer": "Sample: original example using painting project on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for painting project. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with painting project, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Judging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value). Correction: Strong answer: 'Subject: my street at night. Mood: quiet. Palette: cool blues/violets with warm window yellows. Criteria: clear focal light and layered… Why: the correction restores accurate use of painting project.",
+        "sample_answer": "Sample error: Judging the project only by whether it looks photographic.. Correction: Strong answer: 'Subject: my street at night.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "A painting project needs a design brief: subject, mood, colour plan, size and success criteria. Work in stages—thumbnail, underpainting or light sketch, main colour areas, then details and reflection. Keep a short process diary of decisions and changes. Protect surfaces and dry…",
+          "explanation": "A painting project needs a design brief: subject, mood, colour plan, size and success criteria.",
           "options": [
+            "An answer copied without understanding.",
+            "A painting project needs a design brief: subject, mood, colour plan, size and success criteria.",
             "A guess with no artistic reason.",
-            "A painting project needs a design brief: subject, mood, colour plan, size and success criteria. Work in stages—thumbnail, underpainting or light sketch, main colour areas, then details and reflection. Keep a short process diary of decisions and changes. Protect surfaces and dry layers before adding sharp edges.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about painting project?",
+          "question": "Which choice best applies this lesson idea about painting project with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Dev’s brief: 'Harbour at dusk, calm mood, cool blues with one warm light, A3 paper.' Criteria: clear foreground boat, aerial perspective in hills, tidy edges. His diary notes: 'Moved boat left for better balance.'\n\nTRY FIRST\nWrite a design brief for a painting of your street at night, including mood, palette and two success criteria.\n\nFEEDBACK\nStrong answer: 'Subject: my street at night. Mood: quiet. Palette: cool blues/violets with warm window yellows. Criteria: clear focal light and layered depth.' Brief guides the work.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
+            "An answer copied without understanding.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about painting project?",
+          "question": "Which choice best applies this lesson idea about painting project with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Dev’s brief: 'Harbour at dusk, calm mood, cool blues with one warm light, A3 paper.' Criteria: clear foreground boat, aerial perspective in hills, tidy edges. His diary notes: 'Moved boat left for better balance.' Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about painting project?",
+          "question": "Which choice best applies this lesson idea about painting project with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nJudging the project only by whether it looks photographic. Criteria should match the skills taught (mood, composition, value). Here is a more helpful example: Example: Dev’s brief: 'Harbour at dusk, calm mood, cool blues with one warm light, A3 paper.' Criteria: clear foreground boat, aerial perspective in hills, tidy edges. His diary notes: 'Moved boat left for better balance.'\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Subject: my street at night. Mood: quiet. Palette: cool blues/violets with warm window yellows. Criteria: clear focal light and layered depth.' Brief guides the work.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about painting project?",
+          "question": "Which choice best applies this lesson idea about painting project with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA painting project needs a design brief: subject, mood, colour plan, size and success criteria. Work in stages—thumbnail, underpainting or light sketch, main colour areas, then details and reflection. Keep a short process diary of decisions and changes. Protect surfaces and dry layers before adding sharp edges. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

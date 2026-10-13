@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-AR-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Solve sixteen mental additions using at least three named strategies. Show a reason for eight answers. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86. Reasoning: I used mental addition by attending to partition rather than copying the worked model.\n\nParent: Written model 2: Common error: Counting on by ones for two-digit addends is inefficient and error-prone. Correction: Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86. Why: the correction restores accurate use of mental addition.\n\nParent: Likely misconception: Counting on by ones for two-digit addends is inefficient and error-prone. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses mental addition with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with mental addition, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Solve sixteen mental additions using at least three named strategies. Show a reason for eight answers. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for mental addition; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Counting on by ones for two-digit addends is inefficient and error-prone.. Correction uses Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86.. Why: restores accurate mental addition.\n\nParent: Likely misconception: Counting on by ones for two-digit addends is inefficient and error-prone. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses mental addition with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with mental addition, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for mental addition, and names places/values. Reject copied model numbers. / Accept a named misconception about mental addition, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86. This matches the lesson skill for mental addition.",
+        "explanation": "This matches the taught method for mental addition. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model numbers and call that independent work.",
-          "Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86.",
-          "Counting on by ones for two-digit addends is inefficient and error-prone.",
-          "Ignore place value and read digits from left to right as ones only."
+          "A method that skips the key step taught in this lesson",
+          "Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86",
+          "Counting on by ones for two-digit addends is inefficient and error-prone",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Add 57 + 29 mentally two ways and name each strategy. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Counting on by ones for two-digit addends is inefficient and error-prone. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for mental addition; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Counting on by ones for two-digit addends is inefficient and error-prone.",
-          "Mental addition strategies (partition, compensation, friendly numbers) keep place value visible so you can add without always using a written algorithm.",
-          "Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86.",
-          "Careful use of partition with clear evidence."
+          "Counting on by ones for two-digit addends is inefficient and error-prone",
+          "Mental addition strategies (partition, compensation, friendly numbers) keep place value visible so you can add without",
+          "Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86",
+          "Careful use of partition and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising mental addition?",
+        "question": "Which statement is a common mistake when working with mental addition?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named partition, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named partition and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the partition used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing zero as if it does not change the value."
+          "Apply mental addition to new material and name the partition and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Counting on by ones for two-digit addends is inefficient and error-prone",
+          "Name partition and explain why it matters only, without linking it to mental addition"
         ],
-        "question": "A learner is practising mental addition. Which approach best shows understanding?",
+        "question": "Which response best applies mental addition with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value.",
-          "Counting on by ones for two-digit addends is inefficient and error-prone.",
-          "Show the places, values or steps and say why each step is valid."
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value",
+          "Counting on by ones for two-digit addends is inefficient and error-prone",
+          "Show each place, value or step and say why that step is valid"
         ],
-        "question": "Which working note best supports a mathematics answer about mental addition?",
+        "question": "Which working best supports a correct answer for this lesson on mental addition?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught mental addition method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work.",
-          "Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86.",
-          "Counting on by ones for two-digit addends is inefficient and error-prone."
+          "Read 57 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 57 and 29 as interchangeable",
+          "Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86",
+          "Counting on by ones for two-digit addends is inefficient and error-prone"
         ],
-        "question": "Using this lesson idea — Mental addition strategies (partition, compensation, friendly numbers) keep place value visible so you can… — which statement is true?",
+        "question": "Using the method for mental addition, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed."
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a mental addition problem with numbers such as 57 and 29, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change only handwriting and keep the same numbers.",
-          "Copy the model numbers and call that independent work.",
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer."
+          "Change only handwriting and keep the same numbers",
+          "Counting on by ones for two-digit addends is inefficient and error-prone",
+          "Use the same mental addition method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 57 and 29 as the answer"
         ],
-        "question": "Which practice choice shows transfer of mental addition?",
+        "question": "Solve a fresh mental addition problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer.",
-          "Name the exact place or step that failed, then show corrected working for mental addition."
+          "Mental addition strategies (partition, compensation, friendly numbers) keep place value visible so you can add without",
+          "Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86",
+          "Label units when comparing 57 with 29",
+          "Counting on by ones for two-digit addends is inefficient and error-prone"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for mental addition?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for mental addition, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses mental addition with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86. Reasoning: I used mental addition by attending to partition rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for mental addition; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about mental addition, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with mental addition, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Counting on by ones for two-digit addends is inefficient and error-prone. Correction: Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86. Why: the correction restores accurate use of mental addition.",
+        "sample_answer": "Sample misconception: Counting on by ones for two-digit addends is inefficient and error-prone.. Correction uses Examples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86.. Why: restores accurate mental addition.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Mental addition strategies (partition, compensation, friendly numbers) keep place value visible so you can add without always using a written algorithm. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Mental addition strategies (partition, compensation, friendly numbers) keep place value visible so you can add without always using a written algorithm.",
           "options": [
-            "Mental addition strategies (partition, compensation, friendly numbers) keep place value visible so you can add without always using a written algorithm.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Mental addition strategies (partition, compensation, friendly numbers) keep place value visible so you can add without",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about mental addition?",
+          "question": "Which choice best applies this lesson idea about mental addition with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n46 + 38: 46 + 40 − 2 = 84 (compensation) or 40 + 30 + 6 + 8 = 84 (partition). Both use place value.\n\nTRY FIRST\nAdd 57 + 29 mentally two ways and name each strategy.\n\nFEEDBACK\nExamples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid"
           ],
-          "question": "Which choice best shows accurate use of this idea about mental addition?",
+          "question": "Which choice best applies this lesson idea about mental addition with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n46 + 38: 46 + 40 − 2 = 84 (compensation) or 40 + 30 + 6 + 8 = 84 (partition). Both use place value. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Use an intentionally incorrect attempt as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about mental addition?",
+          "question": "Which choice best applies this lesson idea about mental addition with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCounting on by ones for two-digit addends is inefficient and error-prone. Here is a more productive model: 46 + 38: 46 + 40 − 2 = 84 (compensation) or 40 + 30 + 6 + 8 = 84 (partition). Both use place value.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nExamples: 57 + 30 − 1; 50 + 20 + 7 + 9 — answers 86.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about mental addition?",
+          "question": "Which choice best applies this lesson idea about mental addition with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nMental addition strategies (partition, compensation, friendly numbers) keep place value visible so you can add without always using a written algorithm. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-NSM-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Sort twenty objects into g/kg/t and write five conversion facts (g↔kg, kg↔t). Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: g; kg; t (or kg for a light truck — tonnes for heavy vehicles). Reasoning: I used mass by attending to gram rather than copying the worked model.\n\nParent: Written model 2: Common error: Saying a school bag is “about 30 g” underestimates by a factor of a thousand. Correction: g; kg; t (or kg for a light truck — tonnes for heavy vehicles). Why: the correction restores accurate use of mass.\n\nParent: Likely misconception: Saying a school bag is “about 30 g” underestimates by a factor of a thousand. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses mass with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with mass, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Sort twenty objects into g/kg/t and write five conversion facts (g↔kg, kg↔t). Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for mass; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Saying a school bag is “about 30 g” underestimates by a factor of a thousand.. Correction uses g; kg; t (or kg for a light truck — tonnes for heavy vehicles).. Why: restores accurate mass.\n\nParent: Likely misconception: Saying a school bag is “about 30 g” underestimates by a factor of a thousand. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses mass with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with mass, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for mass, and names places/values. Reject copied model numbers. / Accept a named misconception about mass, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "g; kg; t (or kg for a light truck — tonnes for heavy vehicles). This matches the lesson skill for mass.",
+        "explanation": "This matches the taught method for mass. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model numbers and call that independent work.",
-          "g; kg; t (or kg for a light truck — tonnes for heavy vehicles).",
-          "Saying a school bag is “about 30 g” underestimates by a factor of a thousand.",
-          "Ignore place value and read digits from left to right as ones only."
+          "A method that skips the key step taught in this lesson",
+          "g; kg; t (or kg for a light truck — tonnes for heavy vehicles)",
+          "Saying a school bag is “about 30 g” underestimates by a factor of a thousand",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Which unit: a grape; a school bag; a delivery truck?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Saying a school bag is “about 30 g” underestimates by a factor of a thousand. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for mass; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Mass units relate by thousands: 1000 g = 1 kg; 1000 kg = 1 t. Choose the unit that fits the object.",
-          "g; kg; t (or kg for a light truck — tonnes for heavy vehicles).",
-          "Careful use of gram with clear evidence.",
-          "Saying a school bag is “about 30 g” underestimates by a factor of a thousand."
+          "Mass units relate by thousands: 1000 g = 1 kg",
+          "g; kg; t (or kg for a light truck — tonnes for heavy vehicles)",
+          "Careful use of gram and explain why it matters with clear evidence",
+          "Saying a school bag is “about 30 g” underestimates by a factor of a thousand"
         ],
-        "question": "Which statement is a common mistake when practising mass?",
+        "question": "Which statement is a common mistake when working with mass?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named gram, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named gram and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing zero as if it does not change the value.",
-          "Apply the idea with new evidence and name the gram used.",
-          "Repeat the worked example wording with no new evidence."
+          "Saying a school bag is “about 30 g” underestimates by a factor of a thousand",
+          "Name gram and explain why it matters only, without linking it to mass",
+          "Apply mass to new material and name the gram and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising mass. Which approach best shows understanding?",
+        "question": "Which response best applies mass with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change digits to look neater without checking place value.",
-          "Saying a school bag is “about 30 g” underestimates by a factor of a thousand.",
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working."
+          "Change digits to look neater without checking place value",
+          "Saying a school bag is “about 30 g” underestimates by a factor of a thousand",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working"
         ],
-        "question": "Which working note best supports a mathematics answer about mass?",
+        "question": "Which working best supports a correct answer for this lesson on mass?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught mass method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "g; kg; t (or kg for a light truck — tonnes for heavy vehicles).",
-          "Saying a school bag is “about 30 g” underestimates by a factor of a thousand.",
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work."
+          "g; kg; t (or kg for a light truck — tonnes for heavy vehicles)",
+          "Saying a school bag is “about 30 g” underestimates by a factor of a thousand",
+          "Read 100 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 100 and 30 as interchangeable"
         ],
-        "question": "Using this lesson idea — Mass units relate by thousands: 1000 g = 1 kg; 1000 kg = 1 t. Choose the unit that fits the object. — which statement is true?",
+        "question": "Using the method for mass, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match."
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a mass problem with numbers such as 100 and 30, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers.",
-          "Copy the model numbers and call that independent work."
+          "Use the same mass method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 100 and 30 as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Saying a school bag is “about 30 g” underestimates by a factor of a thousand"
         ],
-        "question": "Which practice choice shows transfer of mass?",
+        "question": "Solve a fresh mass problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name the exact place or step that failed, then show corrected working for mass.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer."
+          "Saying a school bag is “about 30 g” underestimates by a factor of a thousand",
+          "Mass units relate by thousands: 1000 g = 1 kg",
+          "g; kg; t (or kg for a light truck — tonnes for heavy vehicles)",
+          "Label units when comparing 100 with 30"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for mass?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for mass, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses mass with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: g; kg; t (or kg for a light truck — tonnes for heavy vehicles). Reasoning: I used mass by attending to gram rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for mass; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about mass, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with mass, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Saying a school bag is “about 30 g” underestimates by a factor of a thousand. Correction: g; kg; t (or kg for a light truck — tonnes for heavy vehicles). Why: the correction restores accurate use of mass.",
+        "sample_answer": "Sample misconception: Saying a school bag is “about 30 g” underestimates by a factor of a thousand.. Correction uses g; kg; t (or kg for a light truck — tonnes for heavy vehicles).. Why: restores accurate mass.",
         "type": "short_answer"
       }
     ],
@@ -225,15 +225,15 @@
     "teach_steps": [
       {
         "check": {
-          "correct_index": 0,
-          "explanation": "Mass units relate by thousands: 1000 g = 1 kg; 1000 kg = 1 t. Choose the unit that fits the object. Supported working follows the actual numbers and purpose of the task.",
+          "correct_index": 1,
+          "explanation": "Mass units relate by thousands: 1000 g = 1 kg; 1000 kg = 1 t. Choose the unit that fits the object. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "Mass units relate by thousands: 1000 g = 1 kg; 1000 kg = 1 t. Choose the unit that fits the object.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "A guess with no working",
+            "Mass units relate by thousands: 1000 g = 1 kg; 1000 kg = 1 t",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about mass?",
+          "question": "Which choice best applies this lesson idea about mass with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAn apple ~100 g; a child ~30 kg; a small truck might be weighed in tonnes. Benchmarks support estimates.\n\nTRY FIRST\nWhich unit: a grape; a school bag; a delivery truck?\n\nFEEDBACK\ng; kg; t (or kg for a light truck — tonnes for heavy vehicles).",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about mass?",
+          "question": "Which choice best applies this lesson idea about mass with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAn apple ~100 g; a child ~30 kg; a small truck might be weighed in tonnes. Benchmarks support estimates. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use an intentionally incorrect attempt as a comparison",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about mass?",
+          "question": "Which choice best applies this lesson idea about mass with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSaying a school bag is “about 30 g” underestimates by a factor of a thousand. Here is a more productive model: An apple ~100 g; a child ~30 kg; a small truck might be weighed in tonnes. Benchmarks support estimates.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\ng; kg; t (or kg for a light truck — tonnes for heavy vehicles).",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Use the method on new numbers or a new context, not a copy of the worked example"
           ],
-          "question": "Which choice best shows accurate use of this idea about mass?",
+          "question": "Which choice best applies this lesson idea about mass with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nMass units relate by thousands: 1000 g = 1 kg; 1000 kg = 1 t. Choose the unit that fits the object. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

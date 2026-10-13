@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Research two Australian dance examples from teacher-approved sources. Write context, purpose and one respectful question you would ask an expert educator. Do not practise restricted dances. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Bush dance for community socialising; stage contemporary for an audience. Rule: only use approved sources and do not invent sacred meanings.' Reasoning: I used Australian dance by attending to social dance rather than copying the worked model.\n\nParent: Written model 2: Common error: Treating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter. Correction: Strong answer: 'Bush dance for community socialising; stage contemporary for an audience. Rule: only use approved sources and do not invent sacred meanings.' Why: the correction restores accurate use of Australian dance.\n\nParent: Likely misconception: Treating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating Australian dance on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with Australian dance, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Research two Australian dance examples from teacher-approved sources. Write context, purpose and one respectful question you would ask an expert educator. Do not practise restricted dances. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using Australian dance on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Treating all Australian dance as the same or copying First Nations movement from random internet videos.. Correction: Strong answer: 'Bush dance for community socialising; stage contemporary for an audience.. Why it helps the audience is stated.\n\nParent: Likely misconception: Treating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating Australian dance on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with Australian dance, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about Australian dance with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for Australian dance. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Bush dance for community socialising; stage contemporary for an audience. Rule: only use approved sources and do not invent sacred meanings.' This matches the lesson skill for Australian dance.",
+        "explanation": "This matches the taught method for Australian dance. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Bush dance for community socialising; stage contemporary for an audience. Rule: only use approved sources and do not invent sacred meanings.'",
-          "Treating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Bush dance for community socialising;",
+          "Treating all Australian dance as the same or copying First Nations movement from random internet videos.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "Name two different dance contexts in Australia and one respectful rule when learning about First Nations dance. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Treating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for Australian dance; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of social dance with clear evidence.",
-          "Treating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter.",
-          "Dance in Australia includes many styles: social dances shared in communities, theatrical dance on stages, contemporary school choreography and First Nations…",
-          "Strong answer: 'Bush dance for community socialising; stage contemporary for an audience. Rule: only use approved sources and do not invent sacred meanings.'"
+          "Careful use of social dance and explain why it matters with clear evidence.",
+          "Treating all Australian dance as the same or copying First Nations movement from random internet videos.",
+          "Dance in Australia includes many styles: social dances shared in communities, theatrical dance on stages, contemporary",
+          "Bush dance for community socialising;"
         ],
-        "question": "Which statement is a common mistake when practising Australian dance?",
+        "question": "Which statement is a common mistake when working with Australian dance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named social dance, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named social dance and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the social dance used.",
+          "Name social dance and explain why it matters only, without linking it to Australian dance.",
+          "Apply Australian dance to new material and name the social dance and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Treating all Australian dance as the same or copying First Nations movement from random internet videos."
         ],
-        "question": "A learner is practising Australian dance. Which approach best shows understanding?",
+        "question": "Which response best applies Australian dance with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Bush dance for community socialising; stage contemporary for an audience. Rule: only use approved sources and do not invent sacred meanings.' uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on Australian dance. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Bush dance for community socialising; stage contemporary for an audience. Rule: only use approved sources and do not invent sacred meanings.'",
-          "Treating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Treating all Australian dance as the same or copying First Nations movement from random internet videos.",
+          "Bush dance for community socialising;",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about Australian dance?",
+        "question": "Which response best uses elements, techniques and audience effect for Australian dance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Treating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter.",
-          "Name a specific source, cue or example and say what it shows about Australian dance."
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Treating all Australian dance as the same or copying First Nations movement from random internet videos.",
+          "Name a specific element or technique and say what effect it creates for Australian dance."
         ],
-        "question": "Which habit strengthens evidence about social dance?",
+        "question": "Which evidence move best supports a claim about Australian dance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
           "Say it looks nice with no element or technique named.",
-          "Example: A class watches an approved clip of a community bush dance and a contemporary school piece. They compare purpose: social fun and…",
-          "Treating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: A class watches an approved clip of a community bush dance and a contemporary school piece.",
+          "Treating all Australian dance as the same or copying First Nations movement from random internet videos."
         ],
-        "question": "Using this lesson idea — Dance in Australia includes many styles: social dances shared in communities, theatrical dance on stages,… — which choice is best?",
+        "question": "Using this lesson idea — Dance in Australia includes many styles: social dances shared in communities, theatrical dance on — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for Australian dance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter.",
-          "Research two Australian dance examples from teacher-approved sources. Write context, purpose and one respectful question you would ask an expert…",
+          "Name social dance and explain why it matters only, with no linked example.",
+          "Research two Australian dance examples from teacher-approved sources.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Treating all Australian dance as the same or copying First Nations movement from random internet videos."
         ],
-        "question": "Which task best shows independent use of Australian dance?",
+        "question": "Which independent response best applies Australian dance to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about Australian dance with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating Australian dance on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Bush dance for community socialising; stage contemporary for an audience. Rule: only use approved sources and do not invent sacred meanings.' Reasoning: I used Australian dance by attending to social dance rather than copying the worked model.",
+        "sample_answer": "Sample: original example using Australian dance on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for Australian dance. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with Australian dance, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Treating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter. Correction: Strong answer: 'Bush dance for community socialising; stage contemporary for an audience. Rule: only use approved sources and do not invent sacred meanings.' Why: the correction restores accurate use of Australian dance.",
+        "sample_answer": "Sample error: Treating all Australian dance as the same or copying First Nations movement from random internet videos.. Correction: Strong answer: 'Bush dance for community socialising; stage contemporary for an audience.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Dance in Australia includes many styles: social dances shared in communities, theatrical dance on stages, contemporary school choreography and First Nations dance cultures that belong to Aboriginal and Torres Strait Islander peoples. When you learn about dance, name the context…",
+          "explanation": "Dance in Australia includes many styles: social dances shared in communities, theatrical dance on stages, contemporary school choreography and First Nations dance cultures that belong to Aboriginal and Torres Strait Islander peoples.",
           "options": [
+            "An answer copied without understanding.",
+            "Dance in Australia includes many styles: social dances shared in communities, theatrical dance on stages, contemporary",
             "A guess with no artistic reason.",
-            "Dance in Australia includes many styles: social dances shared in communities, theatrical dance on stages, contemporary school choreography and First Nations dance cultures that belong to Aboriginal and Torres Strait Islander peoples. When you learn about dance, name the context (where and why it is danced) and use published, classroom-approved sources. Some First Nations dances and knowledge are sacred or restricted; do not invent meanings, copy secret designs or perform ceremonies. Ask teachers to use materials guided by local Aboriginal educators when First Nations dance is studied.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about Australian dance?",
+          "question": "Which choice best applies this lesson idea about Australian dance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: A class watches an approved clip of a community bush dance and a contemporary school piece. They compare purpose: social fun and gathering versus staged storytelling. They do not attempt to recreate ceremonial First Nations dance from guesswork.\n\nTRY FIRST\nName two different dance contexts in Australia and one respectful rule when learning about First Nations dance.\n\nFEEDBACK\nStrong answer: 'Bush dance for community socialising; stage contemporary for an audience. Rule: only use approved sources and do not invent sacred meanings.'",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about Australian dance?",
+          "question": "Which choice best applies this lesson idea about Australian dance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: A class watches an approved clip of a community bush dance and a contemporary school piece. They compare purpose: social fun and gathering versus staged storytelling. They do not attempt to recreate ceremonial First Nations dance from guesswork. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice."
+            "Use an intentionally weak or disrespectful arts choice as a comparison."
           ],
-          "question": "Which choice best shows accurate use of this idea about Australian dance?",
+          "question": "Which choice best applies this lesson idea about Australian dance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTreating all Australian dance as the same or copying First Nations movement from random internet videos. Context and protocols matter. Here is a more helpful example: Example: A class watches an approved clip of a community bush dance and a contemporary school piece. They compare purpose: social fun and gathering versus staged storytelling. They do not attempt to recreate ceremonial First Nations dance from guesswork.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Bush dance for community socialising; stage contemporary for an audience. Rule: only use approved sources and do not invent sacred meanings.'",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about Australian dance?",
+          "question": "Which choice best applies this lesson idea about Australian dance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDance in Australia includes many styles: social dances shared in communities, theatrical dance on stages, contemporary school choreography and First Nations dance cultures that belong to Aboriginal and Torres Strait Islander peoples. When you learn about dance, name the context (where and why it is danced) and use published, classroom-approved sources. Some First Nations dances and knowledge are sacred or restricted; do not invent meanings, copy secret designs or perform ceremonies. Ask teachers to use materials guided by local Aboriginal educators when First Nations dance is studied. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

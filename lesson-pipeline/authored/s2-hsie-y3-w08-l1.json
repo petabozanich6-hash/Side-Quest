@@ -34,7 +34,7 @@
     "outcome_codes": [
       "HS2-ACH-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Read or listen to one published story by a First Nations storyteller. Complete a source card with title, storyteller, Nation, publisher and one thing the story teaches the reader about responsibility. Do not retell the s Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: The book credited to Custodians, because it shows who holds the story and that they chose to share it. The unnamed website cannot show permission or accuracy. Reasoning: I used story by attending to Custodians and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians. Correction: The book credited to Custodians, because it shows who holds the story and that they chose to share it. The unnamed website cannot show permission or accuracy. Why: the correction restores accurate use of story.\n\nParent: Likely misconception: Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating story on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with story, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Read or listen to one published story by a First Nations storyteller. Complete a source card with title, storyteller, Nation, publisher and one thing the story teaches the reader about responsibility. Do not retell the s Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using story on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry. Correction: The book credited to Custodians, because it shows who holds the story and that they chose to share it.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating story on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with story, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about story with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for story. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "The book credited to Custodians, because it shows who holds the story and that they chose to share it. The unnamed website cannot show permission or accuracy. This matches the lesson skill for story.",
+        "explanation": "This matches the taught method for story. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "The book credited to Custodians, because it shows who holds the story and that they chose to share it. The unnamed website cannot show permission or accuracy."
+          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "The book credited to Custodians, because it shows who holds the story and that they chose to share it"
         ],
         "question": "Which is the better source: a website with no author, or a book credited to named Custodians of a Nation? Give a reason. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for story; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Dreaming stories belong to particular Nations and families. They carry law, history, science, geography and responsibilities and are not just fairytales. Some…",
-          "The book credited to Custodians, because it shows who holds the story and that they chose to share it. The unnamed website cannot show permission or accuracy.",
-          "Careful use of Custodians and explain why it matters with clear evidence.",
-          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians."
+          "Dreaming stories belong to particular Nations and families",
+          "The book credited to Custodians, because it shows who holds the story and that they chose to share it",
+          "Careful use of Custodians and explain why it matters with clear evidence",
+          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry"
         ],
-        "question": "Which statement is a common mistake when practising story?",
+        "question": "Which statement is a common mistake when working with story?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named Custodians and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named Custodians and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the Custodians and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence."
+          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry",
+          "Name Custodians and explain why it matters only, without linking it to story",
+          "Apply story to new material and name the Custodians and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising story. Which approach best shows understanding?",
+        "question": "Which response best applies story with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The book credited to Custodians, because it shows who holds the story and that they chose to share it. The unnamed website cannot show permission or accuracy. uses sources and places appropriately for this lesson.",
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on story. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "The book credited to Custodians, because it shows who holds the story and that they chose to share it. The unnamed website cannot show permission or accuracy."
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry",
+          "The book credited to Custodians, because it shows who holds the story and that they chose to share it"
         ],
-        "question": "Which response best shows careful thinking about story?",
+        "question": "Which response best uses sources, places or historical/geographic evidence for story?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about story.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians."
+          "Name a specific source or place detail and say what it shows about story",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry"
         ],
-        "question": "Which habit strengthens evidence about Custodians and explain why it matters?",
+        "question": "Which evidence move best supports a claim about story?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Dreaming stories belong to particular Nations and families.) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: a class library book is credited to a named First Nations storyteller, names the Nation and credits the artist. The teacher reads…",
-          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians.",
-          "Treat a missing detail as a proven fact.",
-          "Ignore the task and invent an unrelated answer."
+          "Example: a class library book is credited to a named First Nations storyteller, names the Nation and credits the artist",
+          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail"
         ],
-        "question": "Using this lesson idea — Dreaming stories belong to particular Nations and families. They carry law, history, science, geography and… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about story?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster."
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for story?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians.",
-          "Read or listen to one published story by a First Nations storyteller. Complete a source card with title, storyteller, Nation, publisher and one…",
-          "Retype the worked example with no new example."
+          "Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry",
+          "Name Custodians and explain why it matters only, with no linked example",
+          "Read or listen to one published story by a First Nations storyteller",
+          "Retype the worked example with no new example"
         ],
-        "question": "Which task best shows independent use of story?",
+        "question": "Which independent response best applies story to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about story with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating story on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: The book credited to Custodians, because it shows who holds the story and that they chose to share it. The unnamed website cannot show permission or accuracy. Reasoning: I used story by attending to Custodians and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: original example using story on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for story. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with story, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians. Correction: The book credited to Custodians, because it shows who holds the story and that they chose to share it. The unnamed website cannot show permission or accuracy. Why: the correction restores accurate use of story.",
+        "sample_answer": "Sample error: Thinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry. Correction: The book credited to Custodians, because it shows who holds the story and that they chose to share it.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Dreaming stories belong to particular Nations and families. They carry law, history, science, geography and responsibilities and are not just fairytales. Some are shared publicly by Custodians for education and others are not for sharing, so students use only stories that…",
+          "explanation": "Dreaming stories belong to particular Nations and families.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Dreaming stories belong to particular Nations and families. They carry law, history, science, geography and responsibilities and are not just fairytales. Some are shared publicly by Custodians for education and others are not for sharing, so students use only stories that Custodians or First Nations authors have published, and they do not invent or guess.",
-            "A claim unrelated to the source or place."
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Dreaming stories belong to particular Nations and families",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about story?",
+          "question": "Which choice best applies this lesson idea about story with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a class library book is credited to a named First Nations storyteller, names the Nation and credits the artist. The teacher reads the book as it is written instead of retelling it from memory. The class records the title, storyteller, Nation and publisher on a source card.\n\nTRY FIRST\nWhich is the better source: a website with no author, or a book credited to named Custodians of a Nation? Give a reason.\n\nFEEDBACK\nThe book credited to Custodians, because it shows who holds the story and that they chose to share it. The unnamed website cannot show permission or accuracy.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about story?",
+          "question": "Which choice best applies this lesson idea about story with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a class library book is credited to a named First Nations storyteller, names the Nation and credits the artist. The teacher reads the book as it is written instead of retelling it from memory. The class records the title, storyteller, Nation and publisher on a source card. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the source or place."
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about story?",
+          "question": "Which choice best applies this lesson idea about story with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking Dreaming stories are made-up fairytales, or that any version is as good as another, ignores that they carry law and knowledge held by Custodians. Here is a more productive model: Example: a class library book is credited to a named First Nations storyteller, names the Nation and credits the artist. The teacher reads the book as it is written instead of retelling it from memory. The class records the title, storyteller, Nation and publisher on a source card.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nThe book credited to Custodians, because it shows who holds the story and that they chose to share it. The unnamed website cannot show permission or accuracy.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about story?",
+          "question": "Which choice best applies this lesson idea about story with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDreaming stories belong to particular Nations and families. They carry law, history, science, geography and responsibilities and are not just fairytales. Some are shared publicly by Custodians for education and others are not for sharing, so students use only stories that Custodians or First Nations authors have published, and they do not invent or guess. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",

@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-SMI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Plan a small, inclusive year-end celebration with one cooperative game, healthy snacks and water, two thank-you notes and a goal for next year. Write how you will include everyone and share it with family. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Sample: 'Thank you, Mr Lee, for showing me how to land softly. It helped me jump safely.' It names the person, the action and the effect. Reasoning: I used celebration by attending to thanking others rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill. Correction: Sample: 'Thank you, Mr Lee, for showing me how to land softly. It helped me jump safely.' It names the person, the action and the effect. Why: the correction restores accurate use of celebration.\n\nParent: Likely misconception: Thinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating celebration on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with celebration, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Plan a small, inclusive year-end celebration with one cooperative game, healthy snacks and water, two thank-you notes and a goal for next year. Write how you will include everyone and share it with family. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using celebration on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking celebration is only for winners.. Correction: Sample: 'Thank you, Mr Lee, for showing me how to land softly.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating celebration on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with celebration, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about celebration with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for celebration. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Sample: 'Thank you, Mr Lee, for showing me how to land softly. It helped me jump safely.' It names the person, the action and the effect. This matches the lesson skill for celebration.",
+        "explanation": "This matches the taught method for celebration. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Sample: 'Thank you, Mr Lee, for showing me how to land softly. It helped me jump safely.' It names the person, the action and the effect."
+          "Thinking celebration is only for winners",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Sample: 'Thank you, Mr Lee, for showing me how to land softly"
         ],
         "question": "Write a thank-you sentence to one person who helped you in PDHPE this year and name what they did. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for celebration; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Sample: 'Thank you, Mr Lee, for showing me how to land softly. It helped me jump safely.' It names the person, the action and the effect.",
-          "Careful use of thanking others with clear evidence.",
-          "Thinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill.",
-          "A good end to the year celebrates what you have achieved in a respectful and inclusive way, thanks the people who helped and sets goals for next year.…"
+          "Sample: 'Thank you, Mr Lee, for showing me how to land softly",
+          "Careful use of thanking others and explain why it matte with clear evidence",
+          "Thinking celebration is only for winners",
+          "A good end to the year celebrates what you have achieved in a respectful and inclusive way, thanks the people who"
         ],
-        "question": "Which statement is a common mistake when practising celebration?",
+        "question": "Which statement is a common mistake when working with celebration?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named thanking others, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named thanking others and explain why it matte, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the thanking others used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a skipped permission or safety step as if it did not matter."
+          "Apply celebration to new material and name the thanking others and explain why it matte used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking celebration is only for winners",
+          "Name thanking others and explain why it matte only, without linking it to celebration"
         ],
-        "question": "A learner is practising celebration. Which approach best shows understanding?",
+        "question": "Which response best applies celebration with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Sample: 'Thank you, Mr Lee, for showing me how to land softly. It helped me jump safely.' It names the person, the action and the effect. uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on celebration. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Sample: 'Thank you, Mr Lee, for showing me how to land softly. It helped me jump safely.' It names the person, the action and the effect."
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking celebration is only for winners",
+          "Sample: 'Thank you, Mr Lee, for showing me how to land softly"
         ],
-        "question": "Which response best shows careful thinking about celebration?",
+        "question": "Which response best uses safe, healthy or respectful choices for celebration?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill.",
-          "Name a specific source, cue or example and say what it shows about celebration."
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking celebration is only for winners",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with celebration"
         ],
-        "question": "Which habit strengthens evidence about thanking others?",
+        "question": "Which evidence move best supports a claim about celebration?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (A good end to the year celebrates what you have achieved in a) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example celebration plan: a PDHPE party with a cooperative game, healthy snacks (fruit and wholegrain crackers) and water, and thank-you…",
-          "Thinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill.",
-          "Treat a skipped permission or safety step as if it did not matter."
+          "Use a put-down and call it honesty",
+          "Example celebration plan: a PDHPE party with a cooperative game, healthy snacks (fruit and wholegrain crackers) and",
+          "Thinking celebration is only for winners",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Using this lesson idea — A good end to the year celebrates what you have achieved in a respectful and inclusive way, thanks the… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about celebration?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete."
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for celebration?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Plan a small, inclusive year-end celebration with one cooperative game, healthy snacks and water, two thank-you notes and a goal for next year.…",
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Thinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill."
+          "Plan a small, inclusive year-end celebration with one cooperative game, healthy snacks and water, two thank-you notes",
+          "Retype the worked example with no new example",
+          "Thinking celebration is only for winners",
+          "Name thanking others and explain why it matte only, with no linked example"
         ],
-        "question": "Which task best shows independent use of celebration?",
+        "question": "Which independent response best applies celebration to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about celebration with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating celebration on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Sample: 'Thank you, Mr Lee, for showing me how to land softly. It helped me jump safely.' It names the person, the action and the effect. Reasoning: I used celebration by attending to thanking others rather than copying the worked model.",
+        "sample_answer": "Sample: original example using celebration on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for celebration. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with celebration, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill. Correction: Sample: 'Thank you, Mr Lee, for showing me how to land softly. It helped me jump safely.' It names the person, the action and the effect. Why: the correction restores accurate use of celebration.",
+        "sample_answer": "Sample error: Thinking celebration is only for winners.. Correction: Sample: 'Thank you, Mr Lee, for showing me how to land softly.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "A good end to the year celebrates what you have achieved in a respectful and inclusive way, thanks the people who helped and sets goals for next year. Celebrations can be small, such as a card or a game. Everyone's effort counts, and a celebration should never leave someone out…",
+          "explanation": "A good end to the year celebrates what you have achieved in a respectful and inclusive way, thanks the people who helped and sets goals for next year.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "A good end to the year celebrates what you have achieved in a respectful and inclusive way, thanks the people who helped and sets goals for next year. Celebrations can be small, such as a card or a game. Everyone's effort counts, and a celebration should never leave someone out or compare people's bodies or abilities."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "A good end to the year celebrates what you have achieved in a respectful and inclusive way, thanks the people who"
           ],
-          "question": "Which choice best shows accurate use of this idea about celebration?",
+          "question": "Which choice best applies this lesson idea about celebration with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample celebration plan: a PDHPE party with a cooperative game, healthy snacks (fruit and wholegrain crackers) and water, and thank-you cards for the people who helped (teacher, family, coach). Goal for next year: try a new sport. Everyone gets a certificate for a personal strength, such as 'kind communicator' or 'steady balancer'.\n\nTRY FIRST\nWrite a thank-you sentence to one person who helped you in PDHPE this year and name what they did.\n\nFEEDBACK\nSample: 'Thank you, Mr Lee, for showing me how to land softly. It helped me jump safely.' It names the person, the action and the effect.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about celebration?",
+          "question": "Which choice best applies this lesson idea about celebration with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample celebration plan: a PDHPE party with a cooperative game, healthy snacks (fruit and wholegrain crackers) and water, and thank-you cards for the people who helped (teacher, family, coach). Goal for next year: try a new sport. Everyone gets a certificate for a personal strength, such as 'kind communicator' or 'steady balancer'. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about celebration?",
+          "question": "Which choice best applies this lesson idea about celebration with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking celebration is only for winners. Celebrations honour effort, progress, kindness and teamwork as well as skill. Here is a more helpful example: Example celebration plan: a PDHPE party with a cooperative game, healthy snacks (fruit and wholegrain crackers) and water, and thank-you cards for the people who helped (teacher, family, coach). Goal for next year: try a new sport. Everyone gets a certificate for a personal strength, such as 'kind communicator' or 'steady balancer'.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nSample: 'Thank you, Mr Lee, for showing me how to land softly. It helped me jump safely.' It names the person, the action and the effect.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about celebration?",
+          "question": "Which choice best applies this lesson idea about celebration with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA good end to the year celebrates what you have achieved in a respectful and inclusive way, thanks the people who helped and sets goals for next year. Celebrations can be small, such as a card or a game. Everyone's effort counts, and a celebration should never leave someone out or compare people's bodies or abilities. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-RRS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Invent a cooperative game for three or more players with a shared goal, rules, two safety rules, three roles and a plan for including someone who prefers not to touch others. Play it and record the team result and one ch Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal. Cooperative games succeed when the team solves problems together without blame. Reasoning: I used a cooperative game by attending to a shared goal rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together. Correction: Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal. Cooperative games succeed when the… Why: the correction restores accurate use of a cooperative game.\n\nParent: Likely misconception: Thinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a cooperative game on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a cooperative game, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Invent a cooperative game for three or more players with a shared goal, rules, two safety rules, three roles and a plan for including someone who prefers not to touch others. Play it and record the team result and one ch Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a cooperative game on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking cooperative games are not real games because nobody wins.. Correction: Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a cooperative game on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a cooperative game, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a cooperative game with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a cooperative game. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal. Cooperative games succeed when the… This matches the lesson skill for a cooperative game.",
+        "explanation": "This matches the taught method for a cooperative game. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal. Cooperative games succeed when the…",
-          "Thinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal",
+          "Thinking cooperative games are not real games because nobody wins"
         ],
         "question": "A cooperative game ends in tears because one player kept making the team lose. Write a kind way for the team to respond and one change to the plan. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Thinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a cooperative game; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Cooperative games have a shared goal that needs everyone's help, such as passing a hoop around a circle without letting go or keeping a balloon in the air…",
-          "Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal. Cooperative games succeed when the…",
-          "Careful use of a shared goal with clear evidence.",
-          "Thinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together."
+          "Cooperative games have a shared goal that needs everyone's help, such as passing a hoop around a circle without letting",
+          "Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal",
+          "Careful use of a shared goal and explain why it matters with clear evidence",
+          "Thinking cooperative games are not real games because nobody wins"
         ],
-        "question": "Which statement is a common mistake when practising a cooperative game?",
+        "question": "Which statement is a common mistake when working with a cooperative game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named a shared goal, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a shared goal and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the a shared goal used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name a shared goal and explain why it matters only, without linking it to a cooperative game",
+          "Apply a cooperative game to new material and name the a shared goal and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking cooperative games are not real games because nobody wins"
         ],
-        "question": "A learner is practising a cooperative game. Which approach best shows understanding?",
+        "question": "Which response best applies a cooperative game with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal. Cooperative games succeed when the… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on a cooperative game. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal. Cooperative games succeed when the…"
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking cooperative games are not real games because nobody wins",
+          "Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal"
         ],
-        "question": "Which response best shows careful thinking about a cooperative game?",
+        "question": "Which response best uses safe, healthy or respectful choices for a cooperative game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together.",
-          "Name a specific source, cue or example and say what it shows about a cooperative game.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
+          "Thinking cooperative games are not real games because nobody wins",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with a cooperative game",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty"
         ],
-        "question": "Which habit strengthens evidence about a shared goal?",
+        "question": "Which evidence move best supports a claim about a cooperative game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Cooperative games have a shared goal that needs everyone's help, such) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example game 'Hoop pass': a circle of six passes a hoop around by stepping through it while holding hands. Goal: finish in under one…"
+          "Thinking cooperative games are not real games because nobody wins",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example game 'Hoop pass': a circle of six passes a hoop around by stepping through it while holding hands"
         ],
-        "question": "Using this lesson idea — Cooperative games have a shared goal that needs everyone's help, such as passing a hoop around a circle… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about a cooperative game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for a cooperative game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together.",
-          "Invent a cooperative game for three or more players with a shared goal, rules, two safety rules, three roles and a plan for including someone who…",
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work."
+          "Name a shared goal and explain why it matters only, with no linked example",
+          "Invent a cooperative game for three or more players with a shared goal, rules, two safety rules, three roles and a plan",
+          "Retype the worked example with no new example",
+          "Thinking cooperative games are not real games because nobody wins"
         ],
-        "question": "Which task best shows independent use of a cooperative game?",
+        "question": "Which independent response best applies a cooperative game to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a cooperative game with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a cooperative game on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal. Cooperative games succeed when the team solves problems together without blame. Reasoning: I used a cooperative game by attending to a shared goal rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a cooperative game on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a cooperative game. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a cooperative game, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together. Correction: Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal. Cooperative games succeed when the… Why: the correction restores accurate use of a cooperative game.",
+        "sample_answer": "Sample error: Thinking cooperative games are not real games because nobody wins.. Correction: Response: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Cooperative games have a shared goal that needs everyone's help, such as passing a hoop around a circle without letting go or keeping a balloon in the air together. They build teamwork, communication and respect. Safe cooperative play includes agreeing on rules, using soft…",
+          "explanation": "Cooperative games have a shared goal that needs everyone's help, such as passing a hoop around a circle without letting go or keeping a balloon in the air together.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Cooperative games have a shared goal that needs everyone's help, such as passing a hoop around a circle without letting go or keeping a balloon in the air together. They build teamwork, communication and respect. Safe cooperative play includes agreeing on rules, using soft equipment and stopping if someone is uncomfortable. Success is measured as a team, not against each other.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Cooperative games have a shared goal that needs everyone's help, such as passing a hoop around a circle without letting",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about a cooperative game?",
+          "question": "Which choice best applies this lesson idea about a cooperative game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample game 'Hoop pass': a circle of six passes a hoop around by stepping through it while holding hands. Goal: finish in under one minute. Roles: encourager, timekeeper and safety watcher. Players who prefer not to hold hands hold a scarf between them.\n\nTRY FIRST\nA cooperative game ends in tears because one player kept making the team lose. Write a kind way for the team to respond and one change to the plan.\n\nFEEDBACK\nResponse: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal. Cooperative games succeed when the team solves problems together without blame.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about a cooperative game?",
+          "question": "Which choice best applies this lesson idea about a cooperative game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample game 'Hoop pass': a circle of six passes a hoop around by stepping through it while holding hands. Goal: finish in under one minute. Roles: encourager, timekeeper and safety watcher. Players who prefer not to hold hands hold a scarf between them. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about a cooperative game?",
+          "question": "Which choice best applies this lesson idea about a cooperative game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking cooperative games are not real games because nobody wins. A shared goal can be just as exciting and teaches skills for working together. Here is a more helpful example: Example game 'Hoop pass': a circle of six passes a hoop around by stepping through it while holding hands. Goal: finish in under one minute. Roles: encourager, timekeeper and safety watcher. Players who prefer not to hold hands hold a scarf between them.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nResponse: 'Everyone has trouble sometimes, let's try again more slowly.' Change: add a practice round or lower the goal. Cooperative games succeed when the team solves problems together without blame.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about a cooperative game?",
+          "question": "Which choice best applies this lesson idea about a cooperative game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCooperative games have a shared goal that needs everyone's help, such as passing a hoop around a circle without letting go or keeping a balloon in the air together. They build teamwork, communication and respect. Safe cooperative play includes agreeing on rules, using soft equipment and stopping if someone is uncomfortable. Success is measured as a team, not against each other. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

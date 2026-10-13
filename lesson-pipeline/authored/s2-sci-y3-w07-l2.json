@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-SCI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Create three different property sorts for the same twelve materials. Write the rule above each sort. Photograph or sketch one finished sort. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Foil and glove flexible; mug rigid; tissue flexible (tears) — accept reasoned placements. Reasoning: I used sort by attending to property and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Sorting by colour when the question asks for strength mixes property types. Correction: Foil and glove flexible; mug rigid; tissue flexible (tears) — accept reasoned placements. Why: the correction restores accurate use of sort.\n\nParent: Likely misconception: Sorting by colour when the question asks for strength mixes property types. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses sort. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about sort, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create three different property sorts for the same twelve materials. Write the rule above each sort. Photograph or sketch one finished sort. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about sort linked to that evidence.\n\nParent: Written model 2: Sample misconception: Sorting by colour when the question asks for strength mixes property types.. Correction: Foil and glove flexible; with evidence.\n\nParent: Likely misconception: Sorting by colour when the question asks for strength mixes property types. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses sort. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about sort, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about sort. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for sort. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Foil and glove flexible; mug rigid; tissue flexible (tears) — accept reasoned placements. This matches the lesson skill for sort.",
+        "explanation": "This matches the taught method for sort. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Foil and glove flexible; mug rigid; tissue flexible (tears) — accept reasoned placements.",
-          "Sorting by colour when the question asks for strength mixes property types.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Foil and glove flexible",
+          "Sorting by colour when the question asks for strength mixes property types",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Make two groups for: foil, tissue, rubber glove, ceramic mug using “flexible vs rigid”. Where does each go?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Sorting by colour when the question asks for strength mixes property types. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for sort; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Sorting materials by properties uses a clear rule (for example waterproof vs absorbent) so every item has a place.",
-          "Foil and glove flexible; mug rigid; tissue flexible (tears) — accept reasoned placements.",
-          "Careful use of property and explain why it matters with clear evidence.",
-          "Sorting by colour when the question asks for strength mixes property types."
+          "Sorting materials by properties uses a clear rule (for example waterproof vs absorbent) so every item has a place",
+          "Foil and glove flexible",
+          "Careful use of property and explain why it matters with clear evidence",
+          "Sorting by colour when the question asks for strength mixes property types"
         ],
-        "question": "Which statement is a common mistake when practising sort?",
+        "question": "Which statement is a common mistake when working with sort?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named property and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named property and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the property and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence."
+          "Sorting by colour when the question asks for strength mixes property types",
+          "Name property and explain why it matters only, without linking it to sort",
+          "Apply sort to new material and name the property and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising sort. Which approach best shows understanding?",
+        "question": "Which response best applies sort with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a label from the lesson title with no observation.",
-          "Sorting by colour when the question asks for strength mixes property types.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting."
+          "Copy a label from the lesson title with no observation",
+          "Sorting by colour when the question asks for strength mixes property types",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting"
         ],
-        "question": "New examples: steam from a kettle, a germinating bean, a plastic dinosaur, a granite pebble. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: steam from a kettle, a germinating bean, a plastic dinosaur, a granite pebble. Which claim about sort is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence.",
-          "Sorting by colour when the question asks for strength mixes property types.",
-          "Named observation plus how it supports the claim."
+          "A longer story with no observation",
+          "A label copied from the title with no evidence",
+          "Sorting by colour when the question asks for strength mixes property types",
+          "A named observation plus how it supports the claim"
         ],
         "question": "Which record best supports a science claim about sort?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Foil and glove flexible; mug rigid; tissue flexible (tears) — accept reasoned placements. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about sort with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Sorting by colour when the question asks for strength mixes property types.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Foil and glove flexible; mug rigid; tissue flexible (tears) — accept reasoned placements."
+          "Sorting by colour when the question asks for strength mixes property types",
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "Foil and glove flexible"
         ],
-        "question": "Using this idea — Sorting materials by properties uses a clear rule (for example waterproof vs absorbent) so every… — which choice is strongest?",
+        "question": "Using this science idea — Sorting materials by properties uses a clear rule (for example waterproof vs absorbent) so every — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result."
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about sort?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation.",
-          "Copy the worked example and call it independent work."
+          "If the observed feature changes, the claim about sort should change with it",
+          "Any exciting story about the object must be true",
+          "Sorting by colour when the question asks for strength mixes property types",
+          "Results that disagree with the first guess should be discarded"
         ],
-        "question": "Which next step best shows transfer of sort?",
+        "question": "Which prediction about sort can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about sort. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses sort. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Foil and glove flexible; mug rigid; tissue flexible (tears) — accept reasoned placements. Reasoning: I used sort by attending to property and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about sort linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for sort. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about sort, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Sorting by colour when the question asks for strength mixes property types. Correction: Foil and glove flexible; mug rigid; tissue flexible (tears) — accept reasoned placements. Why: the correction restores accurate use of sort.",
+        "sample_answer": "Sample misconception: Sorting by colour when the question asks for strength mixes property types.. Correction: Foil and glove flexible; with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Sorting materials by properties uses a clear rule (for example waterproof vs absorbent) so every item has a place. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Sorting materials by properties uses a clear rule (for example waterproof vs absorbent) so every item has a place.",
           "options": [
-            "A guess with no evidence.",
-            "Sorting materials by properties uses a clear rule (for example waterproof vs absorbent) so every item has a place.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Sorting materials by properties uses a clear rule (for example waterproof vs absorbent) so every item has a place",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about sort?",
+          "question": "Which choice best applies this lesson idea about sort with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRule: floats or sinks in water. Cork floats; coin sinks. Another rule: transparent / opaque. Clear cup vs wooden block.\n\nTRY FIRST\nMake two groups for: foil, tissue, rubber glove, ceramic mug using “flexible vs rigid”. Where does each go?\n\nFEEDBACK\nFoil and glove flexible; mug rigid; tissue flexible (tears) — accept reasoned placements.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
           "options": [
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about sort?",
+          "question": "Which choice best applies this lesson idea about sort with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRule: floats or sinks in water. Cork floats; coin sinks. Another rule: transparent / opaque. Clear cup vs wooden block. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about sort?",
+          "question": "Which choice best applies this lesson idea about sort with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSorting by colour when the question asks for strength mixes property types. Here is a more productive model: Rule: floats or sinks in water. Cork floats; coin sinks. Another rule: transparent / opaque. Clear cup vs wooden block.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nFoil and glove flexible; mug rigid; tissue flexible (tears) — accept reasoned placements.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example.",
           "options": [
-            "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use the same science idea on a new object, material or context, not a copy of the worked example",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about sort?",
+          "question": "Which choice best applies this lesson idea about sort with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSorting materials by properties uses a clear rule (for example waterproof vs absorbent) so every item has a place. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",

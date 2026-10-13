@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Lead two constrained improv games at home. Note which constraint helped focus and how you used the safe stop or pause. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Constraint: scenes must stay in a library whisper. Safety: anyone can say pause and step out.' Clear limits keep play kind. Reasoning: I used improv game by attending to constraint rather than copying the worked model.\n\nParent: Written model 2: Common error: Making constraints embarrassing or personal. Topics stay school-safe and optional. Correction: Strong answer: 'Constraint: scenes must stay in a library whisper. Safety: anyone can say pause and step out.' Clear limits keep play kind. Why: the correction restores accurate use of improv game.\n\nParent: Likely misconception: Making constraints embarrassing or personal. Topics stay school-safe and optional. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating improv game on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with improv game, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Lead two constrained improv games at home. Note which constraint helped focus and how you used the safe stop or pause. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using improv game on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Making constraints embarrassing or personal.. Correction: Strong answer: 'Constraint: scenes must stay in a library whisper.. Why it helps the audience is stated.\n\nParent: Likely misconception: Making constraints embarrassing or personal. Topics stay school-safe and optional. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating improv game on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with improv game, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about improv game with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for improv game. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Constraint: scenes must stay in a library whisper. Safety: anyone can say pause and step out.' Clear limits keep play kind. This matches the lesson skill for improv game.",
+        "explanation": "This matches the taught method for improv game. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Constraint: scenes must stay in a library whisper. Safety: anyone can say pause and step out.' Clear limits keep play kind.",
-          "Making constraints embarrassing or personal. Topics stay school-safe and optional."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "'Constraint: scenes must stay in a library whisper",
+          "Making constraints embarrassing or personal"
         ],
         "question": "Design an improv game with one constraint and one safety rule for a group of four. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Making constraints embarrassing or personal. Topics stay school-safe and optional. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for improv game; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of constraint with clear evidence.",
-          "Making constraints embarrassing or personal. Topics stay school-safe and optional.",
-          "Improvisation games use constraints such as only questions, one-word each or a shared location. Constraints spark creativity and stop chaos. Agree a safe stop…",
-          "Strong answer: 'Constraint: scenes must stay in a library whisper. Safety: anyone can say pause and step out.' Clear limits keep play kind."
+          "Careful use of constraint and explain why it matters with clear evidence",
+          "Making constraints embarrassing or personal",
+          "Improvisation games use constraints such as only questions, one-word each or a shared location",
+          "'Constraint: scenes must stay in a library whisper"
         ],
-        "question": "Which statement is a common mistake when practising improv game?",
+        "question": "Which statement is a common mistake when working with improv game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named constraint, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named constraint and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the constraint used."
+          "Repeat the worked example wording with no new evidence",
+          "Making constraints embarrassing or personal",
+          "Name constraint and explain why it matters only, without linking it to improv game",
+          "Apply improv game to new material and name the constraint and explain why it matters used"
         ],
-        "question": "A learner is practising improv game. Which approach best shows understanding?",
+        "question": "Which response best applies improv game with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Constraint: scenes must stay in a library whisper. Safety: anyone can say pause and step out.' Clear limits keep play kind. uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on improv game. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Constraint: scenes must stay in a library whisper. Safety: anyone can say pause and step out.' Clear limits keep play kind.",
-          "Making constraints embarrassing or personal. Topics stay school-safe and optional.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "'Constraint: scenes must stay in a library whisper",
+          "Say it looks nice with no element or technique named",
+          "Copy another artwork’s sacred design without permission or guidance",
+          "Making constraints embarrassing or personal"
         ],
-        "question": "Which response best shows careful thinking about improv game?",
+        "question": "Which response best uses elements, techniques and audience effect for improv game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about improv game.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Making constraints embarrassing or personal. Topics stay school-safe and optional."
+          "Name a specific element or technique and say what effect it creates for improv game",
+          "Say it looks nice with no element or technique named",
+          "Copy another artwork’s sacred design without permission or guidance",
+          "Making constraints embarrassing or personal"
         ],
-        "question": "Which habit strengthens evidence about constraint?",
+        "question": "Which evidence move best supports a claim about improv game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Improvisation games use constraints such as only questions, one-word) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named.",
-          "Example: In 'one-word story', each person adds one word to build 'We… opened… the… creaky… door…' When someone freezes, the group waits…",
-          "Making constraints embarrassing or personal. Topics stay school-safe and optional."
+          "Say it looks nice with no element or technique named",
+          "Copy another artwork’s sacred design without permission or guidance",
+          "Example: In 'one-word story', each person adds one word to build 'We opened the creaky door' When someone freezes",
+          "Making constraints embarrassing or personal"
         ],
-        "question": "Using this lesson idea — Improvisation games use constraints such as only questions, one-word each or a shared location. Constraints… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about improv game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster."
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for improv game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Lead two constrained improv games at home. Note which constraint helped focus and how you used the safe stop or pause.",
-          "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Making constraints embarrassing or personal. Topics stay school-safe and optional."
+          "Lead two constrained improv games at home",
+          "Retype the worked example with no new example",
+          "Making constraints embarrassing or personal",
+          "Name constraint and explain why it matters only, with no linked example"
         ],
-        "question": "Which task best shows independent use of improv game?",
+        "question": "Which independent response best applies improv game to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about improv game with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating improv game on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Constraint: scenes must stay in a library whisper. Safety: anyone can say pause and step out.' Clear limits keep play kind. Reasoning: I used improv game by attending to constraint rather than copying the worked model.",
+        "sample_answer": "Sample: original example using improv game on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for improv game. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with improv game, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Making constraints embarrassing or personal. Topics stay school-safe and optional. Correction: Strong answer: 'Constraint: scenes must stay in a library whisper. Safety: anyone can say pause and step out.' Clear limits keep play kind. Why: the correction restores accurate use of improv game.",
+        "sample_answer": "Sample error: Making constraints embarrassing or personal.. Correction: Strong answer: 'Constraint: scenes must stay in a library whisper.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Improvisation games use constraints such as only questions, one-word each or a shared location. Constraints spark creativity and stop chaos. Agree a safe stop word. Reflect afterwards on listening and teamwork, not on who was funniest. Supported responses name the element or…",
+          "explanation": "Improvisation games use constraints such as only questions, one-word each or a shared location.",
           "options": [
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding.",
-            "A guess with no artistic reason.",
-            "Improvisation games use constraints such as only questions, one-word each or a shared location. Constraints spark creativity and stop chaos. Agree a safe stop word. Reflect afterwards on listening and teamwork, not on who was funniest."
+            "A comment that only says it looks nice with no element named",
+            "An answer copied without understanding",
+            "A guess with no artistic reason",
+            "Improvisation games use constraints such as only questions, one-word each or a shared location"
           ],
-          "question": "Which choice best shows accurate use of this idea about improv game?",
+          "question": "Which choice best applies this lesson idea about improv game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: In 'one-word story', each person adds one word to build 'We… opened… the… creaky… door…' When someone freezes, the group waits kindly instead of rushing them.\n\nTRY FIRST\nDesign an improv game with one constraint and one safety rule for a group of four.\n\nFEEDBACK\nStrong answer: 'Constraint: scenes must stay in a library whisper. Safety: anyone can say pause and step out.' Clear limits keep play kind.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
-            "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates",
+            "A guess with no artistic reason",
+            "A comment that only says it looks nice with no element named"
           ],
-          "question": "Which choice best shows accurate use of this idea about improv game?",
+          "question": "Which choice best applies this lesson idea about improv game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: In 'one-word story', each person adds one word to build 'We… opened… the… creaky… door…' When someone freezes, the group waits kindly instead of rushing them. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding.",
-            "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice."
+            "A comment that only says it looks nice with no element named",
+            "An answer copied without understanding",
+            "A guess with no artistic reason",
+            "Use an intentionally weak or disrespectful arts choice as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about improv game?",
+          "question": "Which choice best applies this lesson idea about improv game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nMaking constraints embarrassing or personal. Topics stay school-safe and optional. Here is a more helpful example: Example: In 'one-word story', each person adds one word to build 'We… opened… the… creaky… door…' When someone freezes, the group waits kindly instead of rushing them.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Constraint: scenes must stay in a library whisper. Safety: anyone can say pause and step out.' Clear limits keep play kind.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding.",
-            "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice."
+            "A comment that only says it looks nice with no element named",
+            "An answer copied without understanding",
+            "A guess with no artistic reason",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example"
           ],
-          "question": "Which choice best shows accurate use of this idea about improv game?",
+          "question": "Which choice best applies this lesson idea about improv game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nImprovisation games use constraints such as only questions, one-word each or a shared location. Constraints spark creativity and stop chaos. Agree a safe stop word. Reflect afterwards on listening and teamwork, not on who was funniest. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

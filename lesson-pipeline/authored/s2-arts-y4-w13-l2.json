@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Create and perform a one-minute conflict scene with labelled build, climax and resolution. Reflect on whether both objectives were clear. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Build: both list skills. Climax: deadline reminder. Resolution: co-lead with split jobs.' Clear structure. Reasoning: I used conflict scene by attending to build rather than copying the worked model.\n\nParent: Written model 2: Common error: Ending instantly with magic luck and no choice. Resolutions should grow from character decisions. Correction: Strong answer: 'Build: both list skills. Climax: deadline reminder. Resolution: co-lead with split jobs.' Clear structure. Why: the correction restores accurate use of conflict scene.\n\nParent: Likely misconception: Ending instantly with magic luck and no choice. Resolutions should grow from character decisions. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating conflict scene on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with conflict scene, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create and perform a one-minute conflict scene with labelled build, climax and resolution. Reflect on whether both objectives were clear. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using conflict scene on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Ending instantly with magic luck and no choice.. Correction: Strong answer: 'Build: both list skills.. Why it helps the audience is stated.\n\nParent: Likely misconception: Ending instantly with magic luck and no choice. Resolutions should grow from character decisions. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating conflict scene on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with conflict scene, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about conflict scene with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for conflict scene. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Build: both list skills. Climax: deadline reminder. Resolution: co-lead with split jobs.' Clear structure. This matches the lesson skill for conflict scene.",
+        "explanation": "This matches the taught method for conflict scene. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Build: both list skills. Climax: deadline reminder. Resolution: co-lead with split jobs.' Clear structure.",
-          "Ending instantly with magic luck and no choice. Resolutions should grow from character decisions.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "'Build: both list skills.",
+          "Ending instantly with magic luck and no choice.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "Plan build, climax and resolution for a conflict about who leads a group project. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Ending instantly with magic luck and no choice. Resolutions should grow from character decisions. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for conflict scene; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A conflict scene needs build, climax and a resolution choice (solve, compromise or leave unresolved on purpose). Keep language respectful. Show both sides’…",
-          "Strong answer: 'Build: both list skills. Climax: deadline reminder. Resolution: co-lead with split jobs.' Clear structure.",
-          "Careful use of build with clear evidence.",
-          "Ending instantly with magic luck and no choice. Resolutions should grow from character decisions."
+          "A conflict scene needs build, climax and a resolution choice (solve, compromise or leave unresolved on purpose).",
+          "'Build: both list skills.",
+          "Careful use of build and explain why it matters with clear evidence.",
+          "Ending instantly with magic luck and no choice."
         ],
-        "question": "Which statement is a common mistake when practising conflict scene?",
+        "question": "Which statement is a common mistake when working with conflict scene?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named build, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named build and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the build used.",
+          "Ending instantly with magic luck and no choice.",
+          "Name build and explain why it matters only, without linking it to conflict scene.",
+          "Apply conflict scene to new material and name the build and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising conflict scene. Which approach best shows understanding?",
+        "question": "Which response best applies conflict scene with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Build: both list skills. Climax: deadline reminder. Resolution: co-lead with split jobs.' Clear structure. uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on conflict scene. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Build: both list skills. Climax: deadline reminder. Resolution: co-lead with split jobs.' Clear structure.",
-          "Ending instantly with magic luck and no choice. Resolutions should grow from character decisions.",
+          "'Build: both list skills.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Ending instantly with magic luck and no choice."
         ],
-        "question": "Which response best shows careful thinking about conflict scene?",
+        "question": "Which response best uses elements, techniques and audience effect for conflict scene?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
-        "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Ending instantly with magic luck and no choice. Resolutions should grow from character decisions.",
-          "Name a specific source, cue or example and say what it shows about conflict scene."
-        ],
-        "question": "Which habit strengthens evidence about build?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
           "Say it looks nice with no element or technique named.",
-          "Example: Two students both planned to use the only quiet room. Build: polite claims. Climax: bell about to ring. Resolution: they split…",
-          "Ending instantly with magic luck and no choice. Resolutions should grow from character decisions.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Ending instantly with magic luck and no choice.",
+          "Name a specific element or technique and say what effect it creates for conflict scene."
         ],
-        "question": "Using this lesson idea — A conflict scene needs build, climax and a resolution choice (solve, compromise or leave unresolved on… — which choice is best?",
+        "question": "Which evidence move best supports a claim about conflict scene?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Two students both planned to use the only quiet room.",
+          "Ending instantly with magic luck and no choice.",
+          "Say it looks nice with no element or technique named."
+        ],
+        "question": "Using this lesson idea — A conflict scene needs build, climax and a resolution choice (solve, compromise or leave unresolved — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for conflict scene?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ending instantly with magic luck and no choice. Resolutions should grow from character decisions.",
-          "Create and perform a one-minute conflict scene with labelled build, climax and resolution. Reflect on whether both objectives were clear.",
+          "Name build and explain why it matters only, with no linked example.",
+          "Create and perform a one-minute conflict scene with labelled build, climax and resolution.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Ending instantly with magic luck and no choice."
         ],
-        "question": "Which task best shows independent use of conflict scene?",
+        "question": "Which independent response best applies conflict scene to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about conflict scene with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating conflict scene on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Build: both list skills. Climax: deadline reminder. Resolution: co-lead with split jobs.' Clear structure. Reasoning: I used conflict scene by attending to build rather than copying the worked model.",
+        "sample_answer": "Sample: original example using conflict scene on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for conflict scene. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with conflict scene, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Ending instantly with magic luck and no choice. Resolutions should grow from character decisions. Correction: Strong answer: 'Build: both list skills. Climax: deadline reminder. Resolution: co-lead with split jobs.' Clear structure. Why: the correction restores accurate use of conflict scene.",
+        "sample_answer": "Sample error: Ending instantly with magic luck and no choice.. Correction: Strong answer: 'Build: both list skills.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "A conflict scene needs build, climax and a resolution choice (solve, compromise or leave unresolved on purpose). Keep language respectful. Show both sides’ objectives so the audience understands why they clash. Freeze at climax to check staging before resolving. Supported…",
+          "explanation": "A conflict scene needs build, climax and a resolution choice (solve, compromise or leave unresolved on purpose).",
           "options": [
+            "An answer copied without understanding.",
+            "A conflict scene needs build, climax and a resolution choice (solve, compromise or leave unresolved on purpose).",
             "A guess with no artistic reason.",
-            "A conflict scene needs build, climax and a resolution choice (solve, compromise or leave unresolved on purpose). Keep language respectful. Show both sides’ objectives so the audience understands why they clash. Freeze at climax to check staging before resolving.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about conflict scene?",
+          "question": "Which choice best applies this lesson idea about conflict scene with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Two students both planned to use the only quiet room. Build: polite claims. Climax: bell about to ring. Resolution: they split the time. Audience sees fairness win.\n\nTRY FIRST\nPlan build, climax and resolution for a conflict about who leads a group project.\n\nFEEDBACK\nStrong answer: 'Build: both list skills. Climax: deadline reminder. Resolution: co-lead with split jobs.' Clear structure.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
+            "An answer copied without understanding.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about conflict scene?",
+          "question": "Which choice best applies this lesson idea about conflict scene with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Two students both planned to use the only quiet room. Build: polite claims. Climax: bell about to ring. Resolution: they split the time. Audience sees fairness win. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice."
+            "Use an intentionally weak or disrespectful arts choice as a comparison."
           ],
-          "question": "Which choice best shows accurate use of this idea about conflict scene?",
+          "question": "Which choice best applies this lesson idea about conflict scene with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nEnding instantly with magic luck and no choice. Resolutions should grow from character decisions. Here is a more helpful example: Example: Two students both planned to use the only quiet room. Build: polite claims. Climax: bell about to ring. Resolution: they split the time. Audience sees fairness win.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Build: both list skills. Climax: deadline reminder. Resolution: co-lead with split jobs.' Clear structure.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about conflict scene?",
+          "question": "Which choice best applies this lesson idea about conflict scene with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA conflict scene needs build, climax and a resolution choice (solve, compromise or leave unresolved on purpose). Keep language respectful. Show both sides’ objectives so the audience understands why they clash. Freeze at climax to check staging before resolving. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

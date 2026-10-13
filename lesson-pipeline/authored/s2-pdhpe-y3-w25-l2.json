@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-MSP-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Make a games and sports showcase with five parts: a fair play rule, a team role plan, a space strategy, a game evaluation and your own game design. Present it to family and collect two stars and a wish. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns. It also helps the team practise passing.' It links rule, fair play and a reason. Reasoning: I used a showcase by attending to fair play rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement. Correction: Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns. It also helps the team practise… Why: the correction restores accurate use of a showcase.\n\nParent: Likely misconception: Thinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a showcase on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a showcase, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Make a games and sports showcase with five parts: a fair play rule, a team role plan, a space strategy, a game evaluation and your own game design. Present it to family and collect two stars and a wish. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a showcase on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking a showcase has to show your best skill.. Correction: Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a showcase on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a showcase, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a showcase with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a showcase. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns. It also helps the team practise… This matches the lesson skill for a showcase.",
+        "explanation": "This matches the taught method for a showcase. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns. It also helps the team practise…",
-          "Thinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns",
+          "Thinking a showcase has to show your best skill"
         ],
         "question": "Write two sentences linking a game rule to fair play, with a reason. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a showcase; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns. It also helps the team practise…",
-          "Careful use of fair play with clear evidence.",
-          "Thinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement.",
-          "A games and sports showcase shows learning about rules and fair play, teamwork and roles, using space and strategy, and evaluating and designing games.…"
+          "Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns",
+          "Careful use of fair play and explain why it matters with clear evidence",
+          "Thinking a showcase has to show your best skill",
+          "A games and sports showcase shows learning about rules and fair play, teamwork and roles, using space and strategy, and"
         ],
-        "question": "Which statement is a common mistake when practising a showcase?",
+        "question": "Which statement is a common mistake when working with a showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named fair play, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named fair play and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the fair play used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name fair play and explain why it matters only, without linking it to a showcase",
+          "Apply a showcase to new material and name the fair play and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking a showcase has to show your best skill"
         ],
-        "question": "A learner is practising a showcase. Which approach best shows understanding?",
+        "question": "Which response best applies a showcase with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns. It also helps the team practise… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on a showcase. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example and call that independent work.",
-          "Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns. It also helps the team practise…",
-          "Thinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement.",
-          "Ignore the safety rule because the first idea looked exciting."
+          "Thinking a showcase has to show your best skill",
+          "Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty"
         ],
-        "question": "Which response best shows careful thinking about a showcase?",
+        "question": "Which response best uses safe, healthy or respectful choices for a showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement.",
-          "Name a specific source, cue or example and say what it shows about a showcase.",
-          "Make a bigger claim without naming any source or cue."
+          "Use a put-down and call it honesty",
+          "Thinking a showcase has to show your best skill",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with a showcase",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which habit strengthens evidence about fair play?",
+        "question": "Which evidence move best supports a claim about a showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (A games and sports showcase shows learning about rules and fair play) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example: Jin presents a game plan poster for 'Space Raiders' with the rules, roles (captain, defender), a strategy (spread out, pass and…"
+          "Thinking a showcase has to show your best skill",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example: Jin presents a game plan poster for 'Space Raiders' with the rules, roles (captain, defender), a strategy"
         ],
-        "question": "Using this lesson idea — A games and sports showcase shows learning about rules and fair play, teamwork and roles, using space and… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about a showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for a showcase?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement.",
-          "Make a games and sports showcase with five parts: a fair play rule, a team role plan, a space strategy, a game evaluation and your own game design.…",
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work."
+          "Name fair play and explain why it matters only, with no linked example",
+          "Make a games and sports showcase with five parts: a fair play rule, a team role plan, a space strategy, a game",
+          "Retype the worked example with no new example",
+          "Thinking a showcase has to show your best skill"
         ],
-        "question": "Which task best shows independent use of a showcase?",
+        "question": "Which independent response best applies a showcase to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a showcase with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a showcase on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns. It also helps the team practise passing.' It links rule, fair play and a reason. Reasoning: I used a showcase by attending to fair play rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a showcase on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a showcase. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a showcase, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement. Correction: Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns. It also helps the team practise… Why: the correction restores accurate use of a showcase.",
+        "sample_answer": "Sample error: Thinking a showcase has to show your best skill.. Correction: Sample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "A games and sports showcase shows learning about rules and fair play, teamwork and roles, using space and strategy, and evaluating and designing games. Present a clear example such as a game plan, a demonstration or a poster. Use cue words and reasons, and show safe and…",
+          "explanation": "A games and sports showcase shows learning about rules and fair play, teamwork and roles, using space and strategy, and evaluating and designing games.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "A games and sports showcase shows learning about rules and fair play, teamwork and roles, using space and strategy, and evaluating and designing games. Present a clear example such as a game plan, a demonstration or a poster. Use cue words and reasons, and show safe and inclusive practice."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "A games and sports showcase shows learning about rules and fair play, teamwork and roles, using space and strategy, and"
           ],
-          "question": "Which choice best shows accurate use of this idea about a showcase?",
+          "question": "Which choice best applies this lesson idea about a showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Jin presents a game plan poster for 'Space Raiders' with the rules, roles (captain, defender), a strategy (spread out, pass and move) and an evaluation (fairness 3 out of 5, then 4 after a rule change). He demonstrates pass and move and says why it works.\n\nTRY FIRST\nWrite two sentences linking a game rule to fair play, with a reason.\n\nFEEDBACK\nSample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns. It also helps the team practise passing.' It links rule, fair play and a reason.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about a showcase?",
+          "question": "Which choice best applies this lesson idea about a showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Jin presents a game plan poster for 'Space Raiders' with the rules, roles (captain, defender), a strategy (spread out, pass and move) and an evaluation (fairness 3 out of 5, then 4 after a rule change). He demonstrates pass and move and says why it works. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about a showcase?",
+          "question": "Which choice best applies this lesson idea about a showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking a showcase has to show your best skill. It shows what you understand, including your reasons and improvement. Here is a more helpful example: Example: Jin presents a game plan poster for 'Space Raiders' with the rules, roles (captain, defender), a strategy (spread out, pass and move) and an evaluation (fairness 3 out of 5, then 4 after a rule change). He demonstrates pass and move and says why it works.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nSample: 'The rule that everyone must touch the ball before a shot keeps the game fair because every player gets turns. It also helps the team practise passing.' It links rule, fair play and a reason.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about a showcase?",
+          "question": "Which choice best applies this lesson idea about a showcase with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA games and sports showcase shows learning about rules and fair play, teamwork and roles, using space and strategy, and evaluating and designing games. Present a clear example such as a game plan, a demonstration or a poster. Use cue words and reasons, and show safe and inclusive practice. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

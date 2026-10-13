@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-RN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Plan a class shop: choose a budget, list six priced items, make three different purchase combinations under budget and one that goes over. Show totals and leftover. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left. Reasoning: I used budget by attending to price and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Adding prices without converting cents can mis-total the cart. Correction: Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left. Why: the correction restores accurate use of budget.\n\nParent: Likely misconception: Adding prices without converting cents can mis-total the cart. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses budget with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with budget, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Plan a class shop: choose a budget, list six priced items, make three different purchase combinations under budget and one that goes over. Show totals and leftover. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for budget; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Adding prices without converting cents can mis-total the cart.. Correction uses Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left.. Why: restores accurate budget.\n\nParent: Likely misconception: Adding prices without converting cents can mis-total the cart. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses budget with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with budget, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for budget, and names places/values. Reject copied model numbers. / Accept a named misconception about budget, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left. This matches the lesson skill for budget.",
+        "explanation": "This matches the taught method for budget. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left.",
-          "Adding prices without converting cents can mis-total the cart.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left",
+          "Adding prices without converting cents can mis-total the cart",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "With $15, can you buy two $4 items and one $6.50 item? Show working. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Adding prices without converting cents can mis-total the cart. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for budget; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Adding prices without converting cents can mis-total the cart.",
-          "Planning a class shop means listing items, prices, a budget and deciding what can be bought without going over the total.",
-          "Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left.",
-          "Careful use of price and explain why it matters with clear evidence."
+          "Adding prices without converting cents can mis-total the cart",
+          "Planning a class shop means listing items, prices, a budget and deciding what can be bought without going over the",
+          "Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left",
+          "Careful use of price and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising budget?",
+        "question": "Which statement is a common mistake when working with budget?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named price and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named price and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the price and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name price and explain why it matters only, without linking it to budget",
+          "Apply budget to new material and name the price and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Adding prices without converting cents can mis-total the cart"
         ],
-        "question": "A learner is practising budget. Which approach best shows understanding?",
+        "question": "Which response best applies budget with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value.",
-          "Adding prices without converting cents can mis-total the cart.",
-          "Show the places, values or steps and say why each step is valid."
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value",
+          "Adding prices without converting cents can mis-total the cart",
+          "Show each place, value or step and say why that step is valid"
         ],
-        "question": "Which working note best supports a mathematics answer about budget?",
+        "question": "Which working best supports a correct answer for this lesson on budget?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught budget method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left.",
-          "Adding prices without converting cents can mis-total the cart.",
-          "Ignore the task and invent an unrelated answer."
+          "Ignore units and treat 15, and 4 as interchangeable",
+          "Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left",
+          "Adding prices without converting cents can mis-total the cart",
+          "Read 15, from left to right as ones only, ignoring place value"
         ],
-        "question": "Using this lesson idea — Planning a class shop means listing items, prices, a budget and deciding what can be bought without going… — which statement is true?",
+        "question": "Using the method for budget, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically."
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a budget problem with numbers such as 15, and 4, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers.",
-          "Copy the worked example and call it independent work.",
-          "Solve a fresh problem with different numbers and explain the method."
+          "Retype the worked model numbers 15, and 4 as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Adding prices without converting cents can mis-total the cart",
+          "Use the same budget method on new numbers and name the places or values that matter"
         ],
-        "question": "Which practice choice shows transfer of budget?",
+        "question": "Solve a fresh budget problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer.",
-          "Name the exact place or step that failed, then show corrected working for budget."
+          "Planning a class shop means listing items, prices, a budget and deciding what can be bought without going over the",
+          "Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left",
+          "Label units when comparing 15, with 4",
+          "Adding prices without converting cents can mis-total the cart"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for budget?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for budget, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses budget with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left. Reasoning: I used budget by attending to price and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for budget; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about budget, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with budget, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Adding prices without converting cents can mis-total the cart. Correction: Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left. Why: the correction restores accurate use of budget.",
+        "sample_answer": "Sample misconception: Adding prices without converting cents can mis-total the cart.. Correction uses Two×$4=$8; +$6.50=$14.50 — yes, $0.50 left.. Why: restores accurate budget.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Planning a class shop means listing items, prices, a budget and deciding what can be bought without going over the total. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Planning a class shop means listing items, prices, a budget and deciding what can be bought without going over the total.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Planning a class shop means listing items, prices, a budget and deciding what can be bought without going over the total."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Planning a class shop means listing items, prices, a budget and deciding what can be bought without going over the"
           ],
-          "question": "Which choice best shows accurate use of this idea about budget?",
+          "question": "Which choice best applies this lesson idea about budget with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBudget $20. Items: pencils $3, stickers $4.50, erasers $2. Choosing pencils+stickers+erasers = $9.50 — within budget with $10.50 left.\n\nTRY FIRST\nWith $15, can you buy two $4 items and one $6.50 item? Show working.\n\nFEEDBACK\nTwo×$4=$8; +$6.50=$14.50 — yes, $0.50 left.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid"
           ],
-          "question": "Which choice best shows accurate use of this idea about budget?",
+          "question": "Which choice best applies this lesson idea about budget with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBudget $20. Items: pencils $3, stickers $4.50, erasers $2. Choosing pencils+stickers+erasers = $9.50 — within budget with $10.50 left. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use an intentionally incorrect attempt as a comparison",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about budget?",
+          "question": "Which choice best applies this lesson idea about budget with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAdding prices without converting cents can mis-total the cart. Here is a more productive model: Budget $20. Items: pencils $3, stickers $4.50, erasers $2. Choosing pencils+stickers+erasers = $9.50 — within budget with $10.50 left.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nTwo×$4=$8; +$6.50=$14.50 — yes, $0.50 left.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about budget?",
+          "question": "Which choice best applies this lesson idea about budget with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPlanning a class shop means listing items, prices, a budget and deciding what can be bought without going over the total. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

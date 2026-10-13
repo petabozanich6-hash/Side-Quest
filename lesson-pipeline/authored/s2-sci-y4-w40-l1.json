@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-PQU-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete a reflection matrix across six topic areas with a strength and a next step for each. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Any two honest evidenced statements. Reasoning: I used reflect by attending to skill rather than copying the worked model.\n\nParent: Written model 2: Common error: Vague “I got better at science” without examples is weak reflection. Correction: Any two honest evidenced statements. Why: the correction restores accurate use of reflect.\n\nParent: Likely misconception: Vague “I got better at science” without examples is weak reflection. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses reflect. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about reflect, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a reflection matrix across six topic areas with a strength and a next step for each. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about reflect linked to that evidence.\n\nParent: Written model 2: Sample misconception: Vague “I got better at science” without examples is weak reflection.. Correction: Any two honest evidenced statements. with evidence.\n\nParent: Likely misconception: Vague “I got better at science” without examples is weak reflection. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses reflect. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about reflect, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about reflect. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for reflect. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Any two honest evidenced statements. This matches the lesson skill for reflect.",
+        "explanation": "This matches the taught method for reflect. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model objects and call that independent work.",
-          "Any two honest evidenced statements.",
-          "Vague “I got better at science” without examples is weak reflection.",
-          "Ignore the observation and invent a more exciting result."
+          "A method that skips the key step taught in this lesson",
+          "Any two honest evidenced statements",
+          "Vague “I got better at science” without examples is weak reflection",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Write one growth statement for science inquiry and one for design/digital, each with evidence. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Vague “I got better at science” without examples is weak reflection. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for reflect; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of skill with clear evidence.",
-          "Vague “I got better at science” without examples is weak reflection.",
-          "Stage 2 science and technology reflection names skills grown across living systems, Earth, physical sciences, materials, design and digital work.",
-          "Any two honest evidenced statements."
+          "Careful use of skill and explain why it matters with clear evidence",
+          "Vague “I got better at science” without examples is weak reflection",
+          "Stage 2 science and technology reflection names skills grown across living systems, Earth, physical sciences",
+          "Any two honest evidenced statements"
         ],
-        "question": "Which statement is a common mistake when practising reflect?",
+        "question": "Which statement is a common mistake when working with reflect?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named skill, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named skill and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing measurement as if it were recorded.",
-          "Apply the idea with new evidence and name the skill used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name skill and explain why it matters only, without linking it to reflect",
+          "Apply reflect to new material and name the skill and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Vague “I got better at science” without examples is weak reflection"
         ],
-        "question": "A learner is practising reflect. Which approach best shows understanding?",
+        "question": "Which response best applies reflect with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation.",
-          "Vague “I got better at science” without examples is weak reflection.",
-          "Use observable features or measurements as evidence, not appearance alone."
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation",
+          "Vague “I got better at science” without examples is weak reflection",
+          "Use observable features or measurements as evidence, not appearance alone"
         ],
-        "question": "New examples: a charging phone, a nesting bird, glass marble, fallen dry leaf. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: a charging phone, a nesting bird, a glass marble, a fallen dry leaf. Which claim about reflect is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence.",
-          "Vague “I got better at science” without examples is weak reflection."
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation",
+          "A label copied from the title with no evidence",
+          "Vague “I got better at science” without examples is weak reflection"
         ],
         "question": "Which record best supports a science claim about reflect?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Any two honest evidenced statements. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about reflect with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Vague “I got better at science” without examples is weak reflection.",
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work.",
-          "Any two honest evidenced statements."
+          "Vague “I got better at science” without examples is weak reflection",
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "Any two honest evidenced statements"
         ],
-        "question": "Using this idea — Stage 2 science and technology reflection names skills grown across living systems, Earth,… — which choice is strongest?",
+        "question": "Using this science idea — Stage 2 science and technology reflection names skills grown across living systems, Earth, physical — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result.",
-          "Ignore measurements and decide by which looks nicer."
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about reflect?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a dramatic result with no observation.",
-          "Copy the model objects and call that independent work.",
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged."
+          "Vague “I got better at science” without examples is weak reflection",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about reflect should change with it",
+          "Any exciting story about the object must be true"
         ],
-        "question": "Which next step best shows transfer of reflect?",
+        "question": "Which prediction about reflect can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about reflect. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses reflect. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Any two honest evidenced statements. Reasoning: I used reflect by attending to skill rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about reflect linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for reflect. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about reflect, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Vague “I got better at science” without examples is weak reflection. Correction: Any two honest evidenced statements. Why: the correction restores accurate use of reflect.",
+        "sample_answer": "Sample misconception: Vague “I got better at science” without examples is weak reflection.. Correction: Any two honest evidenced statements. with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Stage 2 science and technology reflection names skills grown across living systems, Earth, physical sciences, materials, design and digital work. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Stage 2 science and technology reflection names skills grown across living systems, Earth, physical sciences, materials, design and digital work.",
           "options": [
-            "Stage 2 science and technology reflection names skills grown across living systems, Earth, physical sciences, materials, design and digital work.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Stage 2 science and technology reflection names skills grown across living systems, Earth, physical sciences",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about reflect?",
+          "question": "Which choice best applies this lesson idea about reflect with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSentence frames: I can now…; I used to think… now I know…; Evidence from… Keep claims tied to real tasks this year.\n\nTRY FIRST\nWrite one growth statement for science inquiry and one for design/digital, each with evidence.\n\nFEEDBACK\nAny two honest evidenced statements.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim"
           ],
-          "question": "Which choice best shows accurate use of this idea about reflect?",
+          "question": "Which choice best applies this lesson idea about reflect with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSentence frames: I can now…; I used to think… now I know…; Evidence from… Keep claims tied to real tasks this year. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use an intentionally incorrect claim as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about reflect?",
+          "question": "Which choice best applies this lesson idea about reflect with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nVague “I got better at science” without examples is weak reflection. Here is a more productive model: Sentence frames: I can now…; I used to think… now I know…; Evidence from… Keep claims tied to real tasks this year.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nAny two honest evidenced statements.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example"
           ],
-          "question": "Which choice best shows accurate use of this idea about reflect?",
+          "question": "Which choice best applies this lesson idea about reflect with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nStage 2 science and technology reflection names skills grown across living systems, Earth, physical sciences, materials, design and digital work. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "HS2-GEO-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Record the weather at the same time each day for seven days, including temperature, rainfall, wind and cloud. Draw a line graph of temperatures and write one pattern you found. Do not look at the sun. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: The first is an opinion and not a measurement. The second measures at different times, so the days cannot be compared fairly. Reasoning: I used record by attending to temperature and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Recording at different times or using opinions such as \"nice\" makes it impossible to compare days. Correction: The first is an opinion and not a measurement. The second measures at different times, so the days cannot be compared fairly. Why: the correction restores accurate use of record.\n\nParent: Likely misconception: Recording at different times or using opinions such as \"nice\" makes it impossible to compare days. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating record on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with record, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Record the weather at the same time each day for seven days, including temperature, rainfall, wind and cloud. Draw a line graph of temperatures and write one pattern you found. Do not look at the sun. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using record on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Recording at different times or using opinions such as \"nice\" makes it impossible to compare days.. Correction: The first is an opinion and not a measurement.. Why it helps the audience is stated.\n\nParent: Likely misconception: Recording at different times or using opinions such as \"nice\" makes it impossible to compare days. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating record on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with record, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about record with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for record. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "The first is an opinion and not a measurement. The second measures at different times, so the days cannot be compared fairly. This matches the lesson skill for record.",
+        "explanation": "This matches the taught method for record. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "The first is an opinion and not a measurement. The second measures at different times, so the days cannot be compared fairly.",
-          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days.",
-          "Ignore the task and invent an unrelated answer."
+          "A method that skips the key step taught in this lesson",
+          "The first is an opinion and not a measurement",
+          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "What is wrong with \"Monday: nice weather\" and \"Tuesday 18 degrees at 9 am, Wednesday 24 degrees at 3 pm\" as a record?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for record; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Recording local weather uses measurements taken at the same time each day: temperature in degrees Celsius from a thermometer in the shade, rainfall in…",
-          "The first is an opinion and not a measurement. The second measures at different times, so the days cannot be compared fairly.",
-          "Careful use of temperature and explain why it matters with clear evidence.",
-          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days."
+          "Recording local weather uses measurements taken at the same time each day: temperature in degrees Celsius from a",
+          "The first is an opinion and not a measurement",
+          "Careful use of temperature and explain why it matters with clear evidence",
+          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days"
         ],
-        "question": "Which statement is a common mistake when practising record?",
+        "question": "Which statement is a common mistake when working with record?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named temperature and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named temperature and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the temperature and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact."
+          "Apply record to new material and name the temperature and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days",
+          "Name temperature and explain why it matters only, without linking it to record"
         ],
-        "question": "A learner is practising record. Which approach best shows understanding?",
+        "question": "Which response best applies record with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The first is an opinion and not a measurement. The second measures at different times, so the days cannot be compared fairly. uses sources and places appropriately for this lesson.",
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on record. The other choices miss a key step or use a common mistake.",
         "options": [
-          "The first is an opinion and not a measurement. The second measures at different times, so the days cannot be compared fairly.",
-          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "The first is an opinion and not a measurement",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days"
         ],
-        "question": "Which response best shows careful thinking about record?",
+        "question": "Which response best uses sources, places or historical/geographic evidence for record?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days.",
-          "Name a specific source, cue or example and say what it shows about record.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy a classmate’s sentence with no local detail",
+          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days",
+          "Name a specific source or place detail and say what it shows about record",
+          "Make a bigger claim without naming any source or place detail"
         ],
-        "question": "Which habit strengthens evidence about temperature and explain why it matters?",
+        "question": "Which evidence move best supports a claim about record?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Recording local weather uses measurements taken at the same time each) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Ignore the task and invent an unrelated answer.",
-          "Example record, Monday 9 am: 21 degrees, 0 mm rain, light breeze from the south-east, partly cloudy. Tuesday 9 am: 19 degrees, 4 mm rain,…",
-          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days."
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Example record, Monday 9 am: 21 degrees, 0 mm rain, light breeze from the south-east, partly cloudy",
+          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days"
         ],
-        "question": "Using this lesson idea — Recording local weather uses measurements taken at the same time each day: temperature in degrees Celsius… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about record?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for record?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days.",
-          "Record the weather at the same time each day for seven days, including temperature, rainfall, wind and cloud. Draw a line graph of temperatures and…",
-          "Retype the worked example with no new example."
+          "Recording at different times or using opinions such as \"nice\" makes it impossible to compare days",
+          "Name temperature and explain why it matters only, with no linked example",
+          "Record the weather at the same time each day for seven days, including temperature, rainfall, wind and cloud",
+          "Retype the worked example with no new example"
         ],
-        "question": "Which task best shows independent use of record?",
+        "question": "Which independent response best applies record to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about record with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating record on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: The first is an opinion and not a measurement. The second measures at different times, so the days cannot be compared fairly. Reasoning: I used record by attending to temperature and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: original example using record on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for record. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with record, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Recording at different times or using opinions such as \"nice\" makes it impossible to compare days. Correction: The first is an opinion and not a measurement. The second measures at different times, so the days cannot be compared fairly. Why: the correction restores accurate use of record.",
+        "sample_answer": "Sample error: Recording at different times or using opinions such as \"nice\" makes it impossible to compare days.. Correction: The first is an opinion and not a measurement.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Recording local weather uses measurements taken at the same time each day: temperature in degrees Celsius from a thermometer in the shade, rainfall in millimetres from a rain gauge, wind as calm, breeze or strong and the direction it comes from, and cloud as clear, partly…",
+          "explanation": "Recording local weather uses measurements taken at the same time each day: temperature in degrees Celsius from a thermometer in the shade, rainfall in millimetres from a rain gauge, wind as calm, breeze or strong and the direction it comes from, and cloud as clear, partly… Apply",
           "options": [
-            "A guess with no evidence.",
-            "Recording local weather uses measurements taken at the same time each day: temperature in degrees Celsius from a thermometer in the shade, rainfall in millimetres from a rain gauge, wind as calm, breeze or strong and the direction it comes from, and cloud as clear, partly cloudy or overcast. Never look at the sun.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Recording local weather uses measurements taken at the same time each day: temperature in degrees Celsius from a",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
           ],
-          "question": "Which choice best shows accurate use of this idea about record?",
+          "question": "Which choice best applies this lesson idea about record with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample record, Monday 9 am: 21 degrees, 0 mm rain, light breeze from the south-east, partly cloudy. Tuesday 9 am: 19 degrees, 4 mm rain, calm, overcast. The table has columns for date, time, temperature, rain, wind and cloud.\n\nTRY FIRST\nWhat is wrong with \"Monday: nice weather\" and \"Tuesday 18 degrees at 9 am, Wednesday 24 degrees at 3 pm\" as a record?\n\nFEEDBACK\nThe first is an opinion and not a measurement. The second measures at different times, so the days cannot be compared fairly.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about record?",
+          "question": "Which choice best applies this lesson idea about record with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample record, Monday 9 am: 21 degrees, 0 mm rain, light breeze from the south-east, partly cloudy. Tuesday 9 am: 19 degrees, 4 mm rain, calm, overcast. The table has columns for date, time, temperature, rain, wind and cloud. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about record?",
+          "question": "Which choice best applies this lesson idea about record with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRecording at different times or using opinions such as \"nice\" makes it impossible to compare days. Here is a more productive model: Example record, Monday 9 am: 21 degrees, 0 mm rain, light breeze from the south-east, partly cloudy. Tuesday 9 am: 19 degrees, 4 mm rain, calm, overcast. The table has columns for date, time, temperature, rain, wind and cloud.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nThe first is an opinion and not a measurement. The second measures at different times, so the days cannot be compared fairly.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the source or place."
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about record?",
+          "question": "Which choice best applies this lesson idea about record with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRecording local weather uses measurements taken at the same time each day: temperature in degrees Celsius from a thermometer in the shade, rainfall in millimetres from a rain gauge, wind as calm, breeze or strong and the direction it comes from, and cloud as clear, partly cloudy or overcast. Never look at the sun. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",

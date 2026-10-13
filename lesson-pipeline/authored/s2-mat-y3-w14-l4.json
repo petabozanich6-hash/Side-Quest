@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-PF-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 15-item compare/equivalent fluency set. Require a reason or tiny sketch for every answer. Re-work misses. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Equal; less; greater — with brief reasons. Reasoning: I used compare by attending to equivalent and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Comparing across different-sized wholes without adjusting invalidates the comparison. Correction: Equal; less; greater — with brief reasons. Why: the correction restores accurate use of compare.\n\nParent: Likely misconception: Comparing across different-sized wholes without adjusting invalidates the comparison. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses compare with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with compare, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 15-item compare/equivalent fluency set. Require a reason or tiny sketch for every answer. Re-work misses. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for compare; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Comparing across different-sized wholes without adjusting invalidates the comparison.. Correction uses Equal; less; greater — with brief reasons.. Why: restores accurate compare.\n\nParent: Likely misconception: Comparing across different-sized wholes without adjusting invalidates the comparison. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses compare with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with compare, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for compare, and names places/values. Reject copied model numbers. / Accept a named misconception about compare, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Equal; less; greater — with brief reasons. This matches the lesson skill for compare.",
+        "explanation": "This matches the taught method for compare. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Equal; less; greater — with brief reasons.",
-          "Comparing across different-sized wholes without adjusting invalidates the comparison."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Equal; less; greater — with brief reasons",
+          "Comparing across different-sized wholes without adjusting invalidates the comparison"
         ],
         "question": "Compare: 3/6 vs 1/2; 2/5 vs 1/2; 3/4 vs 5/8. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Comparing across different-sized wholes without adjusting invalidates the comparison. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for compare; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Fraction comparison fluency uses same-whole diagrams, number lines and equivalence to decide order accurately.",
-          "Equal; less; greater — with brief reasons.",
-          "Careful use of equivalent and explain why it matters with clear evidence.",
-          "Comparing across different-sized wholes without adjusting invalidates the comparison."
+          "Fraction comparison fluency uses same-whole diagrams, number lines and equivalence to decide order accurately",
+          "Equal; less; greater — with brief reasons",
+          "Careful use of equivalent and explain why it matters with clear evidence",
+          "Comparing across different-sized wholes without adjusting invalidates the comparison"
         ],
-        "question": "Which statement is a common mistake when practising compare?",
+        "question": "Which statement is a common mistake when working with compare?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named equivalent and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named equivalent and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the equivalent and explain why it matters used."
+          "Repeat the worked example wording with no new evidence",
+          "Comparing across different-sized wholes without adjusting invalidates the comparison",
+          "Name equivalent and explain why it matters only, without linking it to compare",
+          "Apply compare to new material and name the equivalent and explain why it matters used"
         ],
-        "question": "A learner is practising compare. Which approach best shows understanding?",
+        "question": "Which response best applies compare with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value.",
-          "Comparing across different-sized wholes without adjusting invalidates the comparison."
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value",
+          "Comparing across different-sized wholes without adjusting invalidates the comparison"
         ],
-        "question": "Which working note best supports a mathematics answer about compare?",
+        "question": "Which working best supports a correct answer for this lesson on compare?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught compare method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Equal; less; greater — with brief reasons.",
-          "Comparing across different-sized wholes without adjusting invalidates the comparison.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Equal; less; greater — with brief reasons",
+          "Comparing across different-sized wholes without adjusting invalidates the comparison",
+          "Read 3 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 3 and 6 as interchangeable"
         ],
-        "question": "Using this lesson idea — Fraction comparison fluency uses same-whole diagrams, number lines and equivalence to decide order accurately. — which statement is true?",
+        "question": "Using the method for compare, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match."
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a compare problem with numbers such as 3 and 6, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers."
+          "Comparing across different-sized wholes without adjusting invalidates the comparison",
+          "Use the same compare method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 3 and 6 as the answer",
+          "Change only handwriting and keep the same numbers"
         ],
-        "question": "Which practice choice shows transfer of compare?",
+        "question": "Solve a fresh compare problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Just add more digits until it looks longer.",
-          "Name the exact place or step that failed, then show corrected working for compare.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits."
+          "Label units when comparing 3 with 6",
+          "Comparing across different-sized wholes without adjusting invalidates the comparison",
+          "Fraction comparison fluency uses same-whole diagrams, number lines and equivalence to decide order accurately",
+          "Equal; less; greater — with brief reasons"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for compare?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for compare, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses compare with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Equal; less; greater — with brief reasons. Reasoning: I used compare by attending to equivalent and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for compare; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about compare, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with compare, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Comparing across different-sized wholes without adjusting invalidates the comparison. Correction: Equal; less; greater — with brief reasons. Why: the correction restores accurate use of compare.",
+        "sample_answer": "Sample misconception: Comparing across different-sized wholes without adjusting invalidates the comparison.. Correction uses Equal; less; greater — with brief reasons.. Why: restores accurate compare.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Fraction comparison fluency uses same-whole diagrams, number lines and equivalence to decide order accurately. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Fraction comparison fluency uses same-whole diagrams, number lines and equivalence to decide order accurately.",
           "options": [
-            "Fraction comparison fluency uses same-whole diagrams, number lines and equivalence to decide order accurately.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Fraction comparison fluency uses same-whole diagrams, number lines and equivalence to decide order accurately",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about compare?",
+          "question": "Which choice best applies this lesson idea about compare with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCompare 2/4 and 1/2 (equivalent), then 3/8 and 1/2 (3/8 < 1/2). Reasons name models or benchmarks.\n\nTRY FIRST\nCompare: 3/6 vs 1/2; 2/5 vs 1/2; 3/4 vs 5/8.\n\nFEEDBACK\nEqual; less; greater — with brief reasons.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
           "options": [
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about compare?",
+          "question": "Which choice best applies this lesson idea about compare with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCompare 2/4 and 1/2 (equivalent), then 3/8 and 1/2 (3/8 < 1/2). Reasons name models or benchmarks. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about compare?",
+          "question": "Which choice best applies this lesson idea about compare with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nComparing across different-sized wholes without adjusting invalidates the comparison. Here is a more productive model: Compare 2/4 and 1/2 (equivalent), then 3/8 and 1/2 (3/8 < 1/2). Reasons name models or benchmarks.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nEqual; less; greater — with brief reasons.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about compare?",
+          "question": "Which choice best applies this lesson idea about compare with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nFraction comparison fluency uses same-whole diagrams, number lines and equivalence to decide order accurately. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

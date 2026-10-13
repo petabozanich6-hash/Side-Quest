@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-DATA-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: For three data sets, choose picture or column and justify in one sentence each. Build the better graph for one set and list one weakness of the other choice. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Column; picture (typical choices) — justify with purpose. Reasoning: I used choose by attending to picture and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Choosing a graph that hides the scale makes comparisons unfair. Correction: Column; picture (typical choices) — justify with purpose. Why: the correction restores accurate use of choose.\n\nParent: Likely misconception: Choosing a graph that hides the scale makes comparisons unfair. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses choose with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with choose, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: For three data sets, choose picture or column and justify in one sentence each. Build the better graph for one set and list one weakness of the other choice. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for choose; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Choosing a graph that hides the scale makes comparisons unfair.. Correction uses Column; picture (typical choices) — justify with purpose.. Why: restores accurate choose.\n\nParent: Likely misconception: Choosing a graph that hides the scale makes comparisons unfair. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses choose with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with choose, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for choose, and names places/values. Reject copied model numbers. / Accept a named misconception about choose, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Column; picture (typical choices) — justify with purpose. This matches the lesson skill for choose.",
+        "explanation": "This matches the taught method for choose. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Column; picture (typical choices) — justify with purpose.",
-          "Choosing a graph that hides the scale makes comparisons unfair.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Column; picture (typical choices) — justify with purpose",
+          "Choosing a graph that hides the scale makes comparisons unfair",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Which graph for: many categories with larger numbers; tiny data set for a poster aimed at young readers?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Choosing a graph that hides the scale makes comparisons unfair. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for choose; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose a graph type to match the purpose: picture graphs suit small counts with a friendly key; column graphs suit comparing category heights clearly.",
-          "Column; picture (typical choices) — justify with purpose.",
-          "Careful use of picture and explain why it matters with clear evidence.",
-          "Choosing a graph that hides the scale makes comparisons unfair."
+          "Choose a graph type to match the purpose: picture graphs suit small counts with a friendly key",
+          "Column; picture (typical choices) — justify with purpose",
+          "Careful use of picture and explain why it matters with clear evidence",
+          "Choosing a graph that hides the scale makes comparisons unfair"
         ],
-        "question": "Which statement is a common mistake when practising choose?",
+        "question": "Which statement is a common mistake when working with choose?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named picture and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named picture and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the picture and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name picture and explain why it matters only, without linking it to choose",
+          "Apply choose to new material and name the picture and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Choosing a graph that hides the scale makes comparisons unfair"
         ],
-        "question": "A learner is practising choose. Which approach best shows understanding?",
+        "question": "Which response best applies choose with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choosing a graph that hides the scale makes comparisons unfair.",
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value."
+          "Choosing a graph that hides the scale makes comparisons unfair",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value"
         ],
-        "question": "Which working note best supports a mathematics answer about choose?",
+        "question": "Which working best supports a correct answer for this lesson on choose?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught choose method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choosing a graph that hides the scale makes comparisons unfair.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Column; picture (typical choices) — justify with purpose."
+          "Choosing a graph that hides the scale makes comparisons unfair",
+          "Read 28 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 28 and 1 as interchangeable",
+          "Column; picture (typical choices) — justify with purpose"
         ],
-        "question": "Using this lesson idea — Choose a graph type to match the purpose: picture graphs suit small counts with a friendly key; column… — which statement is true?",
+        "question": "Using the method for choose, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed."
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a choose problem with numbers such as 28 and 1, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers.",
-          "Copy the worked example and call it independent work."
+          "Use the same choose method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 28 and 1 as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Choosing a graph that hides the scale makes comparisons unfair"
         ],
-        "question": "Which practice choice shows transfer of choose?",
+        "question": "Solve a fresh choose problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer.",
-          "Name the exact place or step that failed, then show corrected working for choose.",
-          "Praise neat handwriting even when the places are wrong."
+          "Column; picture (typical choices) — justify with purpose",
+          "Label units when comparing 28 with 1",
+          "Choosing a graph that hides the scale makes comparisons unfair",
+          "Choose a graph type to match the purpose: picture graphs suit small counts with a friendly key"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for choose?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for choose, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses choose with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Column; picture (typical choices) — justify with purpose. Reasoning: I used choose by attending to picture and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for choose; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about choose, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with choose, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Choosing a graph that hides the scale makes comparisons unfair. Correction: Column; picture (typical choices) — justify with purpose. Why: the correction restores accurate use of choose.",
+        "sample_answer": "Sample misconception: Choosing a graph that hides the scale makes comparisons unfair.. Correction uses Column; picture (typical choices) — justify with purpose.. Why: restores accurate choose.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Choose a graph type to match the purpose: picture graphs suit small counts with a friendly key; column graphs suit comparing category heights clearly. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Choose a graph type to match the purpose: picture graphs suit small counts with a friendly key; column graphs suit comparing category heights clearly.",
           "options": [
-            "A guess with no working.",
-            "Choose a graph type to match the purpose: picture graphs suit small counts with a friendly key; column graphs suit comparing category heights clearly.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Choose a graph type to match the purpose: picture graphs suit small counts with a friendly key",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about choose?",
+          "question": "Which choice best applies this lesson idea about choose with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nComparing favourite sports for a class of 28 → column graph is clear. Showing lunch choices with ♥=1 for a group of 10 → picture graph works well.\n\nTRY FIRST\nWhich graph for: many categories with larger numbers; tiny data set for a poster aimed at young readers?\n\nFEEDBACK\nColumn; picture (typical choices) — justify with purpose.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
           "options": [
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about choose?",
+          "question": "Which choice best applies this lesson idea about choose with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nComparing favourite sports for a class of 28 → column graph is clear. Showing lunch choices with ♥=1 for a group of 10 → picture graph works well. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about choose?",
+          "question": "Which choice best applies this lesson idea about choose with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nChoosing a graph that hides the scale makes comparisons unfair. Here is a more productive model: Comparing favourite sports for a class of 28 → column graph is clear. Showing lunch choices with ♥=1 for a group of 10 → picture graph works well.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nColumn; picture (typical choices) — justify with purpose.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about choose?",
+          "question": "Which choice best applies this lesson idea about choose with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nChoose a graph type to match the purpose: picture graphs suit small counts with a friendly key; column graphs suit comparing category heights clearly. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

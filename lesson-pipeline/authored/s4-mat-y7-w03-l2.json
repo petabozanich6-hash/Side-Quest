@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA4-ARI-C-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Simplify twelve expressions with index laws; expand three to prove the law used. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 4^5=1024; 2^6=64; laws named. Reasoning: I used product rule by attending to quotient rule rather than copying the worked model.\n\nParent: Written model 2: Common error: Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4). Laws need the same base for product/quotient forms taught here. Correction: Strong answer: 4^5=1024; 2^6=64; laws named. Why: the correction restores accurate use of product rule.\n\nParent: Likely misconception: Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4). Laws need the same base for product/quotient forms taught here. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses product rule with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with product rule, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Simplify twelve expressions with index laws; expand three to prove the law used. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for product rule; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4).. Correction uses Strong answer: 4^5=1024;. Why: restores accurate product rule.\n\nParent: Likely misconception: Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4). Laws need the same base for product/quotient forms taught here. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses product rule with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with product rule, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for product rule, and names places/values. Reject copied model numbers. / Accept a named misconception about product rule, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 4^5=1024; 2^6=64; laws named. This matches the lesson skill for product rule.",
+        "explanation": "This matches the taught method for product rule. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work.",
-          "Strong answer: 4^5=1024; 2^6=64; laws named.",
-          "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4). Laws need the same base for product/quotient forms taught here."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "4^5=1024; 2^6=64; laws named",
+          "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4)"
         ],
         "question": "Simplify and evaluate: 4^2 × 4^3 and (2^3)^2. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4). Laws need the same base for product/quotient forms taught here. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for product rule; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of quotient rule with clear evidence.",
-          "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4). Laws need the same base for product/quotient forms taught here.",
-          "Index laws for the same base (positive integer exponents appropriate to Year 7): a^m × a^n = a^(m+n); a^m ÷ a^n = a^(m−n) when a≠0 and m≥n for whole-number…",
-          "Strong answer: 4^5=1024; 2^6=64; laws named."
+          "Careful use of quotient rule and explain why it matters with clear evidence",
+          "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4)",
+          "Index laws for the same base (positive integer exponents appropriate to Year 7): a^m × a^n = a^(m+n)",
+          "4^5=1024; 2^6=64; laws named"
         ],
-        "question": "Which statement is a common mistake when practising product rule?",
+        "question": "Which statement is a common mistake when working with product rule?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named quotient rule, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named quotient rule and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing zero as if it does not change the value.",
-          "Apply the idea with new evidence and name the quotient rule used.",
-          "Repeat the worked example wording with no new evidence."
+          "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4)",
+          "Name quotient rule and explain why it matters only, without linking it to product rule",
+          "Apply product rule to new material and name the quotient rule and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising product rule. Which approach best shows understanding?",
+        "question": "Which response best applies product rule with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value.",
-          "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4). Laws need the same base for product/quotient forms taught here.",
-          "Show the places, values or steps and say why each step is valid."
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value",
+          "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4)",
+          "Show each place, value or step and say why that step is valid"
         ],
-        "question": "Which working note best supports a mathematics answer about product rule?",
+        "question": "Which working best supports a correct answer for this lesson on product rule?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught product rule method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model numbers and call that independent work.",
-          "Strong answer: 4^5=1024; 2^6=64; laws named.",
-          "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4). Laws need the same base for product/quotient forms taught here.",
-          "Ignore place value and read digits from left to right as ones only."
+          "Ignore units and treat 4 and 2 as interchangeable",
+          "4^5=1024; 2^6=64; laws named",
+          "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4)",
+          "Read 4 from left to right as ones only, ignoring place value"
         ],
-        "question": "Using this lesson idea — Index laws for the same base (positive integer exponents appropriate to Year 7): a^m × a^n = a^(m+n); a^m ÷… — which statement is true?",
+        "question": "Using the method for product rule, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either."
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a product rule problem with numbers such as 4 and 2, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model numbers and call that independent work.",
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers."
+          "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4)",
+          "Use the same product rule method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 4 and 2 as the answer",
+          "Change only handwriting and keep the same numbers"
         ],
-        "question": "Which practice choice shows transfer of product rule?",
+        "question": "Solve a multi-step product rule problem with different values from the model, justify each step, and check reasonableness.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name the exact place or step that failed, then show corrected working for product rule.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer."
+          "Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4)",
+          "Index laws for the same base (positive integer exponents appropriate to Year 7): a^m × a^n = a^(m+n)",
+          "4^5=1024; 2^6=64; laws named",
+          "Label units when comparing 4 with 2"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for product rule?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for product rule, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses product rule with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Strong answer: 4^5=1024; 2^6=64; laws named. Reasoning: I used product rule by attending to quotient rule rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for product rule; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about product rule, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with product rule, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4). Laws need the same base for product/quotient forms taught here. Correction: Strong answer: 4^5=1024; 2^6=64; laws named. Why: the correction restores accurate use of product rule.",
+        "sample_answer": "Sample misconception: Adding exponents when bases differ (3^2 × 5^2 ≠ 15^4).. Correction uses Strong answer: 4^5=1024;. Why: restores accurate product rule.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Index laws for the same base (positive integer exponents appropriate to Year 7): a^m × a^n = a^(m+n); a^m ÷ a^n = a^(m−n) when a≠0 and m≥n for whole-number results here; (a^m)^n = a^(mn). Expand once to justify. Supported working follows the actual numbers and purpose of the…",
+          "explanation": "Index laws for the same base (positive integer exponents appropriate to Year 7): a^m × a^n = a^(m+n); a^m ÷ a^n = a^(m−n) when a≠0 and m≥n for whole-number results here; (a^m)^n = a^(mn).",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Index laws for the same base (positive integer exponents appropriate to Year 7): a^m × a^n = a^(m+n); a^m ÷ a^n = a^(m−n) when a≠0 and m≥n for whole-number results here; (a^m)^n = a^(mn). Expand once to justify."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Index laws for the same base (positive integer exponents appropriate to Year 7): a^m × a^n = a^(m+n)"
           ],
-          "question": "Which choice best shows accurate use of this idea about product rule?",
+          "question": "Which choice best applies this lesson idea about product rule with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n2^3 × 2^4 = 2^7 = 128. (3^2)^3 = 3^6. 5^5 ÷ 5^2 = 5^3 = 125.\n\nTRY FIRST\nSimplify and evaluate: 4^2 × 4^3 and (2^3)^2.\n\nFEEDBACK\nStrong answer: 4^5=1024; 2^6=64; laws named.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about product rule?",
+          "question": "Which choice best applies this lesson idea about product rule with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n2^3 × 2^4 = 2^7 = 128. (3^2)^3 = 3^6. 5^5 ÷ 5^2 = 5^3 = 125. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use an intentionally incorrect attempt as a comparison",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about product rule?",
+          "question": "Which choice best applies this lesson idea about product rule with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAdding exponents when bases differ (3^2 × 5^2 ≠ 15^4). Laws need the same base for product/quotient forms taught here. Here is a more productive model: 2^3 × 2^4 = 2^7 = 128. (3^2)^3 = 3^6. 5^5 ÷ 5^2 = 5^3 = 125.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nStrong answer: 4^5=1024; 2^6=64; laws named.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about product rule?",
+          "question": "Which choice best applies this lesson idea about product rule with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nIndex laws for the same base (positive integer exponents appropriate to Year 7): a^m × a^n = a^(m+n); a^m ÷ a^n = a^(m−n) when a≠0 and m≥n for whole-number results here; (a^m)^n = a^(mn). Expand once to justify. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

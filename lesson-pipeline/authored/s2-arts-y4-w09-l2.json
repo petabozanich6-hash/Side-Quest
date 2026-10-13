@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Perform a round or partner song with a family member. Mark entry points, practise once soft and once at performance volume and write what helped you stay independent. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Watch my group leader and keep my volume moderate; follow my lyric entry mark.' Independence needs focus, not volume wars. Reasoning: I used round by attending to partner song rather than copying the worked model.\n\nParent: Written model 2: Common error: Singing louder to drown the other part. That destroys the layered effect. Correction: Strong answer: 'Watch my group leader and keep my volume moderate; follow my lyric entry mark.' Independence needs focus, not volume wars. Why: the correction restores accurate use of round.\n\nParent: Likely misconception: Singing louder to drown the other part. That destroys the layered effect. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating round on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with round, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Perform a round or partner song with a family member. Mark entry points, practise once soft and once at performance volume and write what helped you stay independent. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using round on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Singing louder to drown the other part.. Correction: Strong answer: 'Watch my group leader and keep my volume moderate;. Why it helps the audience is stated.\n\nParent: Likely misconception: Singing louder to drown the other part. That destroys the layered effect. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating round on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with round, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about round with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for round. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Watch my group leader and keep my volume moderate; follow my lyric entry mark.' Independence needs focus, not volume wars. This matches the lesson skill for round.",
+        "explanation": "This matches the taught method for round. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Watch my group leader and keep my volume moderate; follow my lyric entry mark.' Independence needs focus, not volume wars.",
-          "Singing louder to drown the other part. That destroys the layered effect.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "'Watch my group leader and keep my volume moderate;",
+          "Singing louder to drown the other part.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "A singer loses the round when the other group enters. Give two strategies to stay on their part. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Singing louder to drown the other part. That destroys the layered effect. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for round; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of partner song with clear evidence.",
-          "Singing louder to drown the other part. That destroys the layered effect.",
-          "Rounds and layered songs train independent parts. In a round, groups sing the same melody starting at different times. Partner songs are different melodies…",
-          "Strong answer: 'Watch my group leader and keep my volume moderate; follow my lyric entry mark.' Independence needs focus, not volume wars."
+          "Careful use of partner song and explain why it matters with clear evidence.",
+          "Singing louder to drown the other part.",
+          "Rounds and layered songs train independent parts.",
+          "'Watch my group leader and keep my volume moderate;"
         ],
-        "question": "Which statement is a common mistake when practising round?",
+        "question": "Which statement is a common mistake when working with round?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named partner song, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named partner song and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the partner song used."
+          "Singing louder to drown the other part.",
+          "Name partner song and explain why it matters only, without linking it to round.",
+          "Apply round to new material and name the partner song and explain why it matters used."
         ],
-        "question": "A learner is practising round. Which approach best shows understanding?",
+        "question": "Which response best applies round with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Watch my group leader and keep my volume moderate; follow my lyric entry mark.' Independence needs focus, not volume wars. uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on round. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Watch my group leader and keep my volume moderate; follow my lyric entry mark.' Independence needs focus, not volume wars.",
-          "Singing louder to drown the other part. That destroys the layered effect."
-        ],
-        "question": "Which response best shows careful thinking about round?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
-        "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Singing louder to drown the other part. That destroys the layered effect.",
-          "Name a specific source, cue or example and say what it shows about round."
-        ],
-        "question": "Which habit strengthens evidence about partner song?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Example: two groups sing a known round. Group 2 enters at the agreed word. When someone drifts, they glance at their lyric card and soften…",
-          "Singing louder to drown the other part. That destroys the layered effect.",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Singing louder to drown the other part.",
+          "'Watch my group leader and keep my volume moderate;",
           "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — Rounds and layered songs train independent parts. In a round, groups sing the same melody starting at… — which choice is best?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
-        "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
-        ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which response best uses elements, techniques and audience effect for round?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Singing louder to drown the other part.",
+          "Name a specific element or technique and say what effect it creates for round."
+        ],
+        "question": "Which evidence move best supports a claim about round?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Example: two groups sing a known round.",
+          "Singing louder to drown the other part.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
+        ],
+        "question": "Using this lesson idea — Rounds and layered songs train independent parts. — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
+          "Invent missing details to make the answer sound complete.",
+          "Ignore safety or cultural protocols to finish faster.",
+          "Treat every claim as equally reliable without checking a source or cue."
+        ],
+        "question": "Which action keeps elements, techniques and audience effect accurate for round?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Singing louder to drown the other part. That destroys the layered effect.",
-          "Perform a round or partner song with a family member. Mark entry points, practise once soft and once at performance volume and write what helped you…"
+          "Singing louder to drown the other part.",
+          "Name partner song and explain why it matters only, with no linked example.",
+          "Perform a round or partner song with a family member."
         ],
-        "question": "Which task best shows independent use of round?",
+        "question": "Which independent response best applies round to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about round with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating round on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Watch my group leader and keep my volume moderate; follow my lyric entry mark.' Independence needs focus, not volume wars. Reasoning: I used round by attending to partner song rather than copying the worked model.",
+        "sample_answer": "Sample: original example using round on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for round. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with round, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Singing louder to drown the other part. That destroys the layered effect. Correction: Strong answer: 'Watch my group leader and keep my volume moderate; follow my lyric entry mark.' Independence needs focus, not volume wars. Why: the correction restores accurate use of round.",
+        "sample_answer": "Sample error: Singing louder to drown the other part.. Correction: Strong answer: 'Watch my group leader and keep my volume moderate;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Rounds and layered songs train independent parts. In a round, groups sing the same melody starting at different times. Partner songs are different melodies designed to fit. Hold your own part by watching the leader, singing slightly under the louder group and knowing your entry…",
+          "explanation": "Rounds and layered songs train independent parts.",
           "options": [
+            "An answer copied without understanding.",
+            "Rounds and layered songs train independent parts.",
             "A guess with no artistic reason.",
-            "Rounds and layered songs train independent parts. In a round, groups sing the same melody starting at different times. Partner songs are different melodies designed to fit. Hold your own part by watching the leader, singing slightly under the louder group and knowing your entry word or beat.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about round?",
+          "question": "Which choice best applies this lesson idea about round with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: two groups sing a known round. Group 2 enters at the agreed word. When someone drifts, they glance at their lyric card and soften to hear their group.\n\nTRY FIRST\nA singer loses the round when the other group enters. Give two strategies to stay on their part.\n\nFEEDBACK\nStrong answer: 'Watch my group leader and keep my volume moderate; follow my lyric entry mark.' Independence needs focus, not volume wars.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about round?",
+          "question": "Which choice best applies this lesson idea about round with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: two groups sing a known round. Group 2 enters at the agreed word. When someone drifts, they glance at their lyric card and soften to hear their group. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
+            "An answer copied without understanding.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about round?",
+          "question": "Which choice best applies this lesson idea about round with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSinging louder to drown the other part. That destroys the layered effect. Here is a more helpful example: Example: two groups sing a known round. Group 2 enters at the agreed word. When someone drifts, they glance at their lyric card and soften to hear their group.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Watch my group leader and keep my volume moderate; follow my lyric entry mark.' Independence needs focus, not volume wars.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about round?",
+          "question": "Which choice best applies this lesson idea about round with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRounds and layered songs train independent parts. In a round, groups sing the same melody starting at different times. Partner songs are different melodies designed to fit. Hold your own part by watching the leader, singing slightly under the louder group and knowing your entry word or beat. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

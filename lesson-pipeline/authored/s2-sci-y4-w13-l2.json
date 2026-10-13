@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-SCI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Classify eight instruments by what vibrates. Build one simple instrument from scrap and label the vibrating part. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: String; skin; solid bar (accept air for wind if named wind instrument instead). Reasoning: I used instrument by attending to vibrate rather than copying the worked model.\n\nParent: Written model 2: Common error: Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string. Correction: String; skin; solid bar (accept air for wind if named wind instrument instead). Why: the correction restores accurate use of instrument.\n\nParent: Likely misconception: Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses instrument. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about instrument, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Classify eight instruments by what vibrates. Build one simple instrument from scrap and label the vibrating part. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about instrument linked to that evidence.\n\nParent: Written model 2: Sample misconception: Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string.. Correction: String; skin; solid bar (accept air for wind if named wind instrument instead). with evidence.\n\nParent: Likely misconception: Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses instrument. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about instrument, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about instrument. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for instrument. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "String; skin; solid bar (accept air for wind if named wind instrument instead). This matches the lesson skill for instrument.",
+        "explanation": "This matches the taught method for instrument. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work.",
-          "String; skin; solid bar (accept air for wind if named wind instrument instead).",
-          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "String; skin; solid bar (accept air for wind if named wind instrument instead)",
+          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string"
         ],
         "question": "Match instrument→vibrating part: violin; bongo; xylophone bar. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for instrument; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string.",
-          "Musical instruments make sound when a part vibrates: strings, skins, air columns or solid bars.",
-          "String; skin; solid bar (accept air for wind if named wind instrument instead).",
-          "Careful use of vibrate with clear evidence."
+          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string",
+          "Musical instruments make sound when a part vibrates: strings, skins, air columns or solid bars",
+          "String; skin; solid bar (accept air for wind if named wind instrument instead)",
+          "Careful use of vibrate and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising instrument?",
+        "question": "Which statement is a common mistake when working with instrument?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named vibrate, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named vibrate and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing measurement as if it were recorded.",
-          "Apply the idea with new evidence and name the vibrate used."
+          "Repeat the worked example wording with no new evidence",
+          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string",
+          "Name vibrate and explain why it matters only, without linking it to instrument",
+          "Apply instrument to new material and name the vibrate and explain why it matters used"
         ],
-        "question": "A learner is practising instrument. Which approach best shows understanding?",
+        "question": "Which response best applies instrument with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation.",
-          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string."
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation",
+          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string"
         ],
-        "question": "New examples: steam from a kettle, a germinating bean, a plastic dinosaur, a granite pebble. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: steam from a kettle, a germinating bean, a plastic dinosaur, a granite pebble. Which claim about instrument is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence.",
-          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string.",
-          "Named observation plus how it supports the claim."
+          "A longer story with no observation",
+          "A label copied from the title with no evidence",
+          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string",
+          "A named observation plus how it supports the claim"
         ],
         "question": "Which record best supports a science claim about instrument?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "String; skin; solid bar (accept air for wind if named wind instrument instead). applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about instrument with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model objects and call that independent work.",
-          "String; skin; solid bar (accept air for wind if named wind instrument instead).",
-          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string.",
-          "Ignore the observation and invent a more exciting result."
+          "Ignore measurements and decide by which looks nicer",
+          "String; skin; solid bar (accept air for wind if named wind instrument instead)",
+          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Using this idea — Musical instruments make sound when a part vibrates: strings, skins, air columns or solid bars. — which choice is strongest?",
+        "question": "Using this science idea — Musical instruments make sound when a part vibrates: strings, skins, air columns or solid bars. — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Stop early when you like the first result.",
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster."
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about instrument?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation.",
-          "Copy the model objects and call that independent work.",
-          "Test or describe a new object or context and cite fresh evidence."
+          "Any exciting story about the object must be true",
+          "Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about instrument should change with it"
         ],
-        "question": "Which next step best shows transfer of instrument?",
+        "question": "Which prediction about instrument can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about instrument. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses instrument. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: String; skin; solid bar (accept air for wind if named wind instrument instead). Reasoning: I used instrument by attending to vibrate rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about instrument linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for instrument. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about instrument, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string. Correction: String; skin; solid bar (accept air for wind if named wind instrument instead). Why: the correction restores accurate use of instrument.",
+        "sample_answer": "Sample misconception: Saying “the music comes from electricity” for an acoustic guitar ignores the vibrating string.. Correction: String; skin; solid bar (accept air for wind if named wind instrument instead). with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Musical instruments make sound when a part vibrates: strings, skins, air columns or solid bars. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Musical instruments make sound when a part vibrates: strings, skins, air columns or solid bars. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "Musical instruments make sound when a part vibrates: strings, skins, air columns or solid bars.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Musical instruments make sound when a part vibrates: strings, skins, air columns or solid bars",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about instrument?",
+          "question": "Which choice best applies this lesson idea about instrument with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nGuitar: string vibrates. Drum: skin vibrates. Recorder: air column vibrates. Changing length/tension changes the sound.\n\nTRY FIRST\nMatch instrument→vibrating part: violin; bongo; xylophone bar.\n\nFEEDBACK\nString; skin; solid bar (accept air for wind if named wind instrument instead).",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim"
           ],
-          "question": "Which choice best shows accurate use of this idea about instrument?",
+          "question": "Which choice best applies this lesson idea about instrument with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nGuitar: string vibrates. Drum: skin vibrates. Recorder: air column vibrates. Changing length/tension changes the sound. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about instrument?",
+          "question": "Which choice best applies this lesson idea about instrument with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSaying “the music comes from electricity” for an acoustic guitar ignores the vibrating string. Here is a more productive model: Guitar: string vibrates. Drum: skin vibrates. Recorder: air column vibrates. Changing length/tension changes the sound.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nString; skin; solid bar (accept air for wind if named wind instrument instead).",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "A guess with no evidence.",
-            "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about instrument?",
+          "question": "Which choice best applies this lesson idea about instrument with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nMusical instruments make sound when a part vibrates: strings, skins, air columns or solid bars. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",

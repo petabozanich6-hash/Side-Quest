@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-MSP-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: On a mat or soft grass with an adult nearby, practise a log roll, an egg roll and five low jumps with soft landings. Record a technique score from 1 to 3 for each (shape, control, landing). Use cue words and stop if anyt Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Straight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the feet with arms forward. Reasoning: I used log roll by attending to egg roll rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk. Correction: Straight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the… Why: the correction restores accurate use of log roll.\n\nParent: Likely misconception: Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating log roll on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with log roll, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: On a mat or soft grass with an adult nearby, practise a log roll, an egg roll and five low jumps with soft landings. Record a technique score from 1 to 3 for each (shape, control, landing). Use cue words and stop if anyt Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using log roll on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking a big jump from a high place is better.. Correction: Straight legs and a high drop send a lot of force into the joints.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating log roll on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with log roll, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about log roll with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for log roll. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Straight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the… This matches the lesson skill for log roll.",
+        "explanation": "This matches the taught method for log roll. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Straight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the…",
-          "Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Straight legs and a high drop send a lot of force into the joints",
+          "Thinking a big jump from a high place is better"
         ],
         "question": "A child jumps off a high step and lands with straight legs. Write what the problem is and a safer way. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for log roll; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of egg roll with clear evidence.",
-          "Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk.",
-          "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking). Tuck…",
-          "Straight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the…"
+          "Careful use of egg roll and explain why it matters with clear evidence",
+          "Thinking a big jump from a high place is better",
+          "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an",
+          "Straight legs and a high drop send a lot of force into the joints"
         ],
-        "question": "Which statement is a common mistake when practising log roll?",
+        "question": "Which statement is a common mistake when working with log roll?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named egg roll, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named egg roll and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the egg roll used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a skipped permission or safety step as if it did not matter."
+          "Apply log roll to new material and name the egg roll and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking a big jump from a high place is better",
+          "Name egg roll and explain why it matters only, without linking it to log roll"
         ],
-        "question": "A learner is practising log roll. Which approach best shows understanding?",
+        "question": "Which response best applies log roll with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Straight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on log roll. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Straight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the…",
-          "Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work."
+          "Straight legs and a high drop send a lot of force into the joints",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking a big jump from a high place is better"
         ],
-        "question": "Which response best shows careful thinking about log roll?",
+        "question": "Which response best uses safe, healthy or respectful choices for log roll?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk.",
-          "Name a specific source, cue or example and say what it shows about log roll.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
+          "Thinking a big jump from a high place is better",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with log roll",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty"
         ],
-        "question": "Which habit strengthens evidence about egg roll?",
+        "question": "Which evidence move best supports a claim about log roll?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Safe rolling starts with simple, low-risk rolls on a mat, such as a log) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and…"
+          "Thinking a big jump from a high place is better",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll"
         ],
-        "question": "Using this lesson idea — Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about log roll?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster."
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for log roll?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "On a mat or soft grass with an adult nearby, practise a log roll, an egg roll and five low jumps with soft landings. Record a technique score from 1…",
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk."
+          "On a mat or soft grass with an adult nearby, practise a log roll, an egg roll and five low jumps with soft landings",
+          "Retype the worked example with no new example",
+          "Thinking a big jump from a high place is better",
+          "Name egg roll and explain why it matters only, with no linked example"
         ],
-        "question": "Which task best shows independent use of log roll?",
+        "question": "Which independent response best applies log roll to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about log roll with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating log roll on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Straight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the feet with arms forward. Reasoning: I used log roll by attending to egg roll rather than copying the worked model.",
+        "sample_answer": "Sample: original example using log roll on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for log roll. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with log roll, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk. Correction: Straight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the… Why: the correction restores accurate use of log roll.",
+        "sample_answer": "Sample error: Thinking a big jump from a high place is better.. Correction: Straight legs and a high drop send a lot of force into the joints.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking). Tuck rolls and forward rolls are taught by a teacher or coach with mats and supervision. For safe jumping and landing, bend…",
+          "explanation": "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking).",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking). Tuck rolls and forward rolls are taught by a teacher or coach with mats and supervision. For safe jumping and landing, bend the knees, land on the balls of the feet, keep feet about shoulder-width apart, arms forward and chest up. Never jump from high places. Stop if you feel pain or dizziness or someone is in the way.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Safe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about log roll?",
+          "question": "Which choice best applies this lesson idea about log roll with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and rock gently from side to side. Jump and land: bend the knees, jump up, land on the balls of the feet with knees bent and arms forward, then hold for 2 seconds. Safety: a clear space, a mat and an adult nearby.\n\nTRY FIRST\nA child jumps off a high step and lands with straight legs. Write what the problem is and a safer way.\n\nFEEDBACK\nStraight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the feet with arms forward.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about log roll?",
+          "question": "Which choice best applies this lesson idea about log roll with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and rock gently from side to side. Jump and land: bend the knees, jump up, land on the balls of the feet with knees bent and arms forward, then hold for 2 seconds. Safety: a clear space, a mat and an adult nearby. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about log roll?",
+          "question": "Which choice best applies this lesson idea about log roll with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking a big jump from a high place is better. A good landing is soft and controlled, and height increases risk. Here is a more helpful example: Example on a mat. Log roll: lie straight with arms overhead and roll sideways, keeping the body in a line. Egg roll: curl into a ball and rock gently from side to side. Jump and land: bend the knees, jump up, land on the balls of the feet with knees bent and arms forward, then hold for 2 seconds. Safety: a clear space, a mat and an adult nearby.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nStraight legs and a high drop send a lot of force into the joints. Jump only from a low, flat place, bend the knees on landing and land on the balls of the feet with arms forward.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about log roll?",
+          "question": "Which choice best applies this lesson idea about log roll with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSafe rolling starts with simple, low-risk rolls on a mat, such as a log roll (body straight, rolling sideways) and an egg roll (curled up and rocking). Tuck rolls and forward rolls are taught by a teacher or coach with mats and supervision. For safe jumping and landing, bend the knees, land on the balls of the feet, keep feet about shoulder-width apart, arms forward and chest up. Never jump from high places. Stop if you feel pain or dizziness or someone is in the way. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

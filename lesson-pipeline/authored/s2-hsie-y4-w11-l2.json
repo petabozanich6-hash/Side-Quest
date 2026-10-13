@@ -34,7 +34,7 @@
     "outcome_codes": [
       "HS2-GEO-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete a continents-and-oceans map quiz (label all). Write a paragraph locating Australia relative to Asia and the Pacific. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Pacific Ocean; Asia. Reasoning: I used continent by attending to ocean rather than copying the worked model.\n\nParent: Written model 2: Common error: Mixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions. Correction: Pacific Ocean; Asia. Why: the correction restores accurate use of continent.\n\nParent: Likely misconception: Mixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating continent on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with continent, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a continents-and-oceans map quiz (label all). Write a paragraph locating Australia relative to Asia and the Pacific. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using continent on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Mixing up ocean names (e.g.. Correction: Pacific Ocean; Asia.. Why it helps the audience is stated.\n\nParent: Likely misconception: Mixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating continent on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with continent, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about continent with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for continent. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Pacific Ocean; Asia. This matches the lesson skill for continent.",
+        "explanation": "This matches the taught method for continent. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model places and call that independent work.",
-          "Pacific Ocean; Asia.",
-          "Mixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions.",
-          "Ignore the source and invent a more exciting story."
+          "A method that skips the key step taught in this lesson",
+          "Pacific Ocean; Asia",
+          "Mixing up ocean names (e.g",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Which ocean lies east of Australia’s east coast in most school maps? Which continent is Australia’s large northern neighbour region?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Mixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for continent; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Pacific Ocean; Asia.",
-          "Careful use of ocean with clear evidence.",
-          "Mixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions.",
-          "Continents and oceans are large Earth features. Knowing their names and relative positions helps describe Australia’s place in the Asia–Pacific region."
+          "Pacific Ocean; Asia",
+          "Careful use of ocean and explain why it matters with clear evidence",
+          "Mixing up ocean names (e.g",
+          "Continents and oceans are large Earth features"
         ],
-        "question": "Which statement is a common mistake when practising continent?",
+        "question": "Which statement is a common mistake when working with continent?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named ocean, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named ocean and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing fact as if it were recorded in a source.",
-          "Apply the idea with new evidence and name the ocean used.",
-          "Repeat the worked example wording with no new evidence."
+          "Mixing up ocean names (e.g",
+          "Name ocean and explain why it matters only, without linking it to continent",
+          "Apply continent to new material and name the ocean and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising continent. Which approach best shows understanding?",
+        "question": "Which response best applies continent with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Pacific Ocean; Asia. uses sources and places appropriately for this lesson.",
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on continent. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Mixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions.",
-          "Ignore the source and invent a more exciting story.",
-          "Copy the model places and call that independent work.",
-          "Pacific Ocean; Asia."
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Mixing up ocean names (e.g",
+          "Pacific Ocean; Asia"
         ],
-        "question": "Which response best shows careful thinking about continent?",
+        "question": "Which response best uses sources, places or historical/geographic evidence for continent?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about continent.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Mixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions."
+          "Name a specific source or place detail and say what it shows about continent",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Mixing up ocean names (e.g"
         ],
-        "question": "Which habit strengthens evidence about ocean?",
+        "question": "Which evidence move best supports a claim about continent?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Continents and oceans are large Earth features.) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing fact as if it were recorded in a source.",
-          "Ignore the source and invent a more exciting story.",
-          "Example quiz map: students label Asia, Africa, Europe, North America, South America, Antarctica, Australia/Oceania as taught, plus…",
-          "Mixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions."
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Example quiz map: students label Asia, Africa, Europe, North America, South America, Antarctica, Australia/Oceania as",
+          "Mixing up ocean names (e.g"
         ],
-        "question": "Using this lesson idea — Continents and oceans are large Earth features. Knowing their names and relative positions helps describe… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about continent?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for continent?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Mixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions.",
-          "Complete a continents-and-oceans map quiz (label all). Write a paragraph locating Australia relative to Asia and the Pacific.",
-          "Retype the worked example with no new example.",
-          "Copy the model places and call that independent work."
+          "Name ocean and explain why it matters only, with no linked example",
+          "Complete a continents-and-oceans map quiz (label all)",
+          "Retype the worked example with no new example",
+          "Mixing up ocean names (e.g"
         ],
-        "question": "Which task best shows independent use of continent?",
+        "question": "Which independent response best applies continent to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about continent with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating continent on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Pacific Ocean; Asia. Reasoning: I used continent by attending to ocean rather than copying the worked model.",
+        "sample_answer": "Sample: original example using continent on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for continent. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with continent, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Mixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions. Correction: Pacific Ocean; Asia. Why: the correction restores accurate use of continent.",
+        "sample_answer": "Sample error: Mixing up ocean names (e.g.. Correction: Pacific Ocean; Asia.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Continents and oceans are large Earth features. Knowing their names and relative positions helps describe Australia’s place in the Asia–Pacific region. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Continents and oceans are large Earth features.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Continents and oceans are large Earth features. Knowing their names and relative positions helps describe Australia’s place in the Asia–Pacific region.",
-            "A claim unrelated to the source or place."
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Continents and oceans are large Earth features",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about continent?",
+          "question": "Which choice best applies this lesson idea about continent with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample quiz map: students label Asia, Africa, Europe, North America, South America, Antarctica, Australia/Oceania as taught, plus Pacific, Indian, Atlantic, Southern, Arctic oceans.\n\nTRY FIRST\nWhich ocean lies east of Australia’s east coast in most school maps? Which continent is Australia’s large northern neighbour region?\n\nFEEDBACK\nPacific Ocean; Asia.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about continent?",
+          "question": "Which choice best applies this lesson idea about continent with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample quiz map: students label Asia, Africa, Europe, North America, South America, Antarctica, Australia/Oceania as taught, plus Pacific, Indian, Atlantic, Southern, Arctic oceans. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the source or place."
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about continent?",
+          "question": "Which choice best applies this lesson idea about continent with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nMixing up ocean names (e.g. calling the Pacific the Atlantic) breaks location descriptions. Here is a more productive model: Example quiz map: students label Asia, Africa, Europe, North America, South America, Antarctica, Australia/Oceania as taught, plus Pacific, Indian, Atlantic, Southern, Arctic oceans.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nPacific Ocean; Asia.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about continent?",
+          "question": "Which choice best applies this lesson idea about continent with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nContinents and oceans are large Earth features. Knowing their names and relative positions helps describe Australia’s place in the Asia–Pacific region. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",

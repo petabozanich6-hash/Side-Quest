@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-DATA-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 16-item Year 3 skills check across number, measurement, shape/position and data/chance. Show working. Star two items to revise next. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: 56; 15 square units; PM. Reasoning: I used skills check by attending to mixed and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Skipping working on multi-step items loses marks even when the final guess is lucky. Correction: 56; 15 square units; PM. Why: the correction restores accurate use of skills check.\n\nParent: Likely misconception: Skipping working on multi-step items loses marks even when the final guess is lucky. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses skills check with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with skills check, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 16-item Year 3 skills check across number, measurement, shape/position and data/chance. Show working. Star two items to revise next. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for skills check; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Skipping working on multi-step items loses marks even when the final guess is lucky.. Correction uses 56; 15 square units; PM.. Why: restores accurate skills check.\n\nParent: Likely misconception: Skipping working on multi-step items loses marks even when the final guess is lucky. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses skills check with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with skills check, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for skills check, and names places/values. Reject copied model numbers. / Accept a named misconception about skills check, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "56; 15 square units; PM. This matches the lesson skill for skills check.",
+        "explanation": "This matches the taught method for skills check. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Skipping working on multi-step items loses marks even when the final guess is lucky.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "56; 15 square units; PM."
+          "Skipping working on multi-step items loses marks even when the final guess is lucky",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "56; 15 square units; PM"
         ],
         "question": "Warm-up trio: 7×8; area of 3×5 rectangle; label AM/PM for 7:00 dinner. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Skipping working on multi-step items loses marks even when the final guess is lucky. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for skills check; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Skipping working on multi-step items loses marks even when the final guess is lucky.",
-          "A Year 3 skills check samples number, measurement, space and data/chance ideas from the year — show working and units, not only final answers.",
-          "56; 15 square units; PM.",
-          "Careful use of mixed and explain why it matters with clear evidence."
+          "Skipping working on multi-step items loses marks even when the final guess is lucky",
+          "A Year 3 skills check samples number, measurement, space and data/chance ideas from the year — show working and units",
+          "56; 15 square units; PM",
+          "Careful use of mixed and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising skills check?",
+        "question": "Which statement is a common mistake when working with skills check?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named mixed and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named mixed and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the mixed and explain why it matters used."
+          "Repeat the worked example wording with no new evidence",
+          "Skipping working on multi-step items loses marks even when the final guess is lucky",
+          "Name mixed and explain why it matters only, without linking it to skills check",
+          "Apply skills check to new material and name the mixed and explain why it matters used"
         ],
-        "question": "A learner is practising skills check. Which approach best shows understanding?",
+        "question": "Which response best applies skills check with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Skipping working on multi-step items loses marks even when the final guess is lucky.",
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value."
+          "Skipping working on multi-step items loses marks even when the final guess is lucky",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value"
         ],
-        "question": "Which working note best supports a mathematics answer about skills check?",
+        "question": "Which working best supports a correct answer for this lesson on skills check?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught skills check method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "56; 15 square units; PM.",
-          "Skipping working on multi-step items loses marks even when the final guess is lucky."
+          "Read 7 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 7 and 8 as interchangeable",
+          "56; 15 square units; PM",
+          "Skipping working on multi-step items loses marks even when the final guess is lucky"
         ],
-        "question": "Using this lesson idea — A Year 3 skills check samples number, measurement, space and data/chance ideas from the year — show working… — which statement is true?",
+        "question": "Using the method for skills check, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either."
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a skills check problem with numbers such as 7 and 8, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers."
+          "Skipping working on multi-step items loses marks even when the final guess is lucky",
+          "Use the same skills check method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 7 and 8 as the answer",
+          "Change only handwriting and keep the same numbers"
         ],
-        "question": "Which practice choice shows transfer of skills check?",
+        "question": "Solve a fresh skills check problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Just add more digits until it looks longer.",
-          "Name the exact place or step that failed, then show corrected working for skills check.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits."
+          "Label units when comparing 7 with 8",
+          "Skipping working on multi-step items loses marks even when the final guess is lucky",
+          "A Year 3 skills check samples number, measurement, space and data/chance ideas from the year — show working and units",
+          "56; 15 square units; PM"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for skills check?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for skills check, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses skills check with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: 56; 15 square units; PM. Reasoning: I used skills check by attending to mixed and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for skills check; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about skills check, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with skills check, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Skipping working on multi-step items loses marks even when the final guess is lucky. Correction: 56; 15 square units; PM. Why: the correction restores accurate use of skills check.",
+        "sample_answer": "Sample misconception: Skipping working on multi-step items loses marks even when the final guess is lucky.. Correction uses 56; 15 square units; PM.. Why: restores accurate skills check.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "A Year 3 skills check samples number, measurement, space and data/chance ideas from the year — show working and units, not only final answers. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "A Year 3 skills check samples number, measurement, space and data/chance ideas from the year — show working and units, not only final answers.",
           "options": [
-            "A guess with no working.",
-            "A Year 3 skills check samples number, measurement, space and data/chance ideas from the year — show working and units, not only final answers.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "A Year 3 skills check samples number, measurement, space and data/chance ideas from the year — show working and units",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about skills check?",
+          "question": "Which choice best applies this lesson idea about skills check with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample mix: 406−189 with regrouping; perimeter of 6×4; read 3:25; locate C2; chance word for rolling a 7 on a die (impossible); frequency from a tally.\n\nTRY FIRST\nWarm-up trio: 7×8; area of 3×5 rectangle; label AM/PM for 7:00 dinner.\n\nFEEDBACK\n56; 15 square units; PM.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about skills check?",
+          "question": "Which choice best applies this lesson idea about skills check with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample mix: 406−189 with regrouping; perimeter of 6×4; read 3:25; locate C2; chance word for rolling a 7 on a die (impossible); frequency from a tally. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use an intentionally incorrect attempt as a comparison",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about skills check?",
+          "question": "Which choice best applies this lesson idea about skills check with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSkipping working on multi-step items loses marks even when the final guess is lucky. Here is a more productive model: Example mix: 406−189 with regrouping; perimeter of 6×4; read 3:25; locate C2; chance word for rolling a 7 on a die (impossible); frequency from a tally.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\n56; 15 square units; PM.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about skills check?",
+          "question": "Which choice best applies this lesson idea about skills check with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA Year 3 skills check samples number, measurement, space and data/chance ideas from the year — show working and units, not only final answers. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

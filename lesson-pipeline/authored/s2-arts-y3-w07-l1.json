@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Make a sound map: draw six animals or objects and write high, medium or low under each. Then hum a rising melody and a falling melody and draw each as a line going up or down. Teach someone at home the difference between Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: highest is the bird, then the mouse, then the cow is lowest. Going from the cow (low) to the bird (high) is a rising melody. Pitch means high or low, so a loud sound can still be low… Reasoning: I used pitch by attending to high and low rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still… Correction: Strong answer: highest is the bird, then the mouse, then the cow is lowest. Going from the cow (low) to the bird (high) is a rising melody. Pitch means high… Why: the correction restores accurate use of pitch.\n\nParent: Likely misconception: Thinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still low. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating pitch on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with pitch, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Make a sound map: draw six animals or objects and write high, medium or low under each. Then hum a rising melody and a falling melody and draw each as a line going up or down. Teach someone at home the difference between Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using pitch on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that high pitch means loud and low pitch means quiet.. Correction: Strong answer: highest is the bird, then the mouse, then the cow is lowest.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still low. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating pitch on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with pitch, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about pitch with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for pitch. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: highest is the bird, then the mouse, then the cow is lowest. Going from the cow (low) to the bird (high) is a rising melody. Pitch means high… This matches the lesson skill for pitch.",
+        "explanation": "This matches the taught method for pitch. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: highest is the bird, then the mouse, then the cow is lowest. Going from the cow (low) to the bird (high) is a rising melody. Pitch means high…",
-          "Thinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still…",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "highest is the bird, then the mouse, then the cow is lowest.",
+          "Thinking that high pitch means loud and low pitch means quiet.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "A mouse squeaks, a cow moos and a bird tweets. Order them from highest to lowest pitch, and say whether a melody that goes from the cow to the bird is rising or falling. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Thinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for pitch; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of high and low with clear evidence.",
-          "Thinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still…",
-          "Pitch is how high or low a sound is. A small bird chirp is high pitched and a big drum or a tuba is low pitched. A melody is a tune made by changing pitch.…",
-          "Strong answer: highest is the bird, then the mouse, then the cow is lowest. Going from the cow (low) to the bird (high) is a rising melody. Pitch means high…"
+          "Careful use of high and low and explain why it matters with clear evidence.",
+          "Thinking that high pitch means loud and low pitch means quiet.",
+          "Pitch is how high or low a sound is.",
+          "highest is the bird, then the mouse, then the cow is lowest."
         ],
-        "question": "Which statement is a common mistake when practising pitch?",
+        "question": "Which statement is a common mistake when working with pitch?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named high and low, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named high and low and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the high and low used.",
+          "Name high and low and explain why it matters only, without linking it to pitch.",
+          "Apply pitch to new material and name the high and low and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Thinking that high pitch means loud and low pitch means quiet."
         ],
-        "question": "A learner is practising pitch. Which approach best shows understanding?",
+        "question": "Which response best applies pitch with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: highest is the bird, then the mouse, then the cow is lowest. Going from the cow (low) to the bird (high) is a rising melody. Pitch means high… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on pitch. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: highest is the bird, then the mouse, then the cow is lowest. Going from the cow (low) to the bird (high) is a rising melody. Pitch means high…",
-          "Thinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that high pitch means loud and low pitch means quiet.",
+          "highest is the bird, then the mouse, then the cow is lowest.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about pitch?",
+        "question": "Which response best uses elements, techniques and audience effect for pitch?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still…",
-          "Name a specific source, cue or example and say what it shows about pitch."
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that high pitch means loud and low pitch means quiet.",
+          "Name a specific element or technique and say what effect it creates for pitch."
         ],
-        "question": "Which habit strengthens evidence about high and low?",
+        "question": "Which evidence move best supports a claim about pitch?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still…",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Thinking that high pitch means loud and low pitch means quiet.",
           "Say it looks nice with no element or technique named.",
-          "Example: In the song 'Hot Cross Buns' the first three notes fall: 'Hot cross buns', so the melody falls and the word 'buns' is the lowest…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: In the song 'Hot Cross Buns' the first three notes fall: 'Hot cross buns', so the melody falls and the word"
         ],
-        "question": "Using this lesson idea — Pitch is how high or low a sound is. A small bird chirp is high pitched and a big drum or a tuba is low… — which choice is best?",
+        "question": "Using this lesson idea — Pitch is how high or low a sound is. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for pitch?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still…",
-          "Make a sound map: draw six animals or objects and write high, medium or low under each. Then hum a rising melody and a falling melody and draw each…",
+          "Thinking that high pitch means loud and low pitch means quiet.",
+          "Name high and low and explain why it matters only, with no linked example.",
+          "Make a sound map: draw six animals or objects and write high, medium or low under each.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of pitch?",
+        "question": "Which independent response best applies pitch to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about pitch with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating pitch on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: highest is the bird, then the mouse, then the cow is lowest. Going from the cow (low) to the bird (high) is a rising melody. Pitch means high or low, so a loud sound can still be low… Reasoning: I used pitch by attending to high and low rather than copying the worked model.",
+        "sample_answer": "Sample: original example using pitch on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for pitch. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with pitch, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still… Correction: Strong answer: highest is the bird, then the mouse, then the cow is lowest. Going from the cow (low) to the bird (high) is a rising melody. Pitch means high… Why: the correction restores accurate use of pitch.",
+        "sample_answer": "Sample error: Thinking that high pitch means loud and low pitch means quiet.. Correction: Strong answer: highest is the bird, then the mouse, then the cow is lowest.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Pitch is how high or low a sound is. A small bird chirp is high pitched and a big drum or a tuba is low pitched. A melody is a tune made by changing pitch. When the notes move up, the melody is rising, and when they move down it is falling. If the notes stay at the same pitch,…",
+          "explanation": "Pitch is how high or low a sound is.",
           "options": [
-            "Pitch is how high or low a sound is. A small bird chirp is high pitched and a big drum or a tuba is low pitched. A melody is a tune made by changing pitch. When the notes move up, the melody is rising, and when they move down it is falling. If the notes stay at the same pitch, the melody is repeating. You can show pitch with your hand moving up and down or with a line going up and down on paper. Pitch is different from volume, which is how loud or soft a sound is.",
+            "Pitch is how high or low a sound is.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about pitch?",
+          "question": "Which choice best applies this lesson idea about pitch with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: In the song 'Hot Cross Buns' the first three notes fall: 'Hot cross buns', so the melody falls and the word 'buns' is the lowest note. In the playground, a swing going up is like a rising melody, and when it comes down it is like a falling one. A tiny whistle has high pitch while a big truck horn has a low pitch, even if the whistle is much quieter.\n\nTRY FIRST\nA mouse squeaks, a cow moos and a bird tweets. Order them from highest to lowest pitch, and say whether a melody that goes from the cow to the bird is rising or falling.\n\nFEEDBACK\nStrong answer: highest is the bird, then the mouse, then the cow is lowest. Going from the cow (low) to the bird (high) is a rising melody. Pitch means high or low, so a loud sound can still be low pitched.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
+            "An answer copied without understanding.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about pitch?",
+          "question": "Which choice best applies this lesson idea about pitch with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: In the song 'Hot Cross Buns' the first three notes fall: 'Hot cross buns', so the melody falls and the word 'buns' is the lowest note. In the playground, a swing going up is like a rising melody, and when it comes down it is like a falling one. A tiny whistle has high pitch while a big truck horn has a low pitch, even if the whistle is much quieter. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about pitch?",
+          "question": "Which choice best applies this lesson idea about pitch with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that high pitch means loud and low pitch means quiet. Pitch and loudness are separate, because a quiet whistle is still high and a loud drum is still low. Here is a more helpful example: Example: In the song 'Hot Cross Buns' the first three notes fall: 'Hot cross buns', so the melody falls and the word 'buns' is the lowest note. In the playground, a swing going up is like a rising melody, and when it comes down it is like a falling one. A tiny whistle has high pitch while a big truck horn has a low pitch, even if the whistle is much quieter.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: highest is the bird, then the mouse, then the cow is lowest. Going from the cow (low) to the bird (high) is a rising melody. Pitch means high or low, so a loud sound can still be low pitched.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about pitch?",
+          "question": "Which choice best applies this lesson idea about pitch with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPitch is how high or low a sound is. A small bird chirp is high pitched and a big drum or a tuba is low pitched. A melody is a tune made by changing pitch. When the notes move up, the melody is rising, and when they move down it is falling. If the notes stay at the same pitch, the melody is repeating. You can show pitch with your hand moving up and down or with a line going up and down on paper. Pitch is different from volume, which is how loud or soft a sound is. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

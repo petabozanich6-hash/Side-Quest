@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Perform a one-minute scene for family members. Before you start, write three goals such as facing out, projecting and pausing. Afterwards, ask for two stars and a wish and record which goal you met. Practise slow breathi Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first. The audience should listen quietly and clap at the end.' Facing out and projection make… Reasoning: I used an audience by attending to projection rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words… Correction: Strong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first. The audience should listen quietly and clap at the… Why: the correction restores accurate use of an audience.\n\nParent: Likely misconception: Thinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words unclear. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating an audience on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with an audience, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Perform a one-minute scene for family members. Before you start, write three goals such as facing out, projecting and pausing. Afterwards, ask for two stars and a wish and record which goal you met. Practise slow breathi Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using an audience on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that a loud voice means shouting.. Correction: Strong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words unclear. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating an audience on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with an audience, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about an audience with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for an audience. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first. The audience should listen quietly and clap at the… This matches the lesson skill for an audience.",
+        "explanation": "This matches the taught method for an audience. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first. The audience should listen quietly and clap at the…",
-          "Thinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words…",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "'Turn to face the audience and speak louder from your belly, taking a slow breath first.",
+          "Thinking that a loud voice means shouting.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "A performer speaks too quietly and faces the back wall. Write two changes that would help the audience, and one thing the audience should do. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for an audience; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first. The audience should listen quietly and clap at the…",
-          "Careful use of projection with clear evidence.",
-          "Thinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words…",
-          "When you perform for an audience, you need to be heard and seen. Projection means speaking clearly and loudly enough for the back of the room without…"
+          "'Turn to face the audience and speak louder from your belly, taking a slow breath first.",
+          "Careful use of projection and explain why it matters with clear evidence.",
+          "Thinking that a loud voice means shouting.",
+          "When you perform for an audience, you need to be heard and seen."
         ],
-        "question": "Which statement is a common mistake when practising an audience?",
+        "question": "Which statement is a common mistake when working with an audience?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named projection, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named projection and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the projection used."
+          "Thinking that a loud voice means shouting.",
+          "Name projection and explain why it matters only, without linking it to an audience.",
+          "Apply an audience to new material and name the projection and explain why it matters used."
         ],
-        "question": "A learner is practising an audience. Which approach best shows understanding?",
+        "question": "Which response best applies an audience with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first. The audience should listen quietly and clap at the… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on an audience. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first. The audience should listen quietly and clap at the…",
-          "Thinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words…",
+          "'Turn to face the audience and speak louder from your belly, taking a slow breath first.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that a loud voice means shouting."
         ],
-        "question": "Which response best shows careful thinking about an audience?",
+        "question": "Which response best uses elements, techniques and audience effect for an audience?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about an audience.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words…"
+          "Name a specific element or technique and say what effect it creates for an audience.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that a loud voice means shouting."
         ],
-        "question": "Which habit strengthens evidence about projection?",
+        "question": "Which evidence move best supports a claim about an audience?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
           "Say it looks nice with no element or technique named.",
-          "Example: Tessa speaks her line, 'The treasure is buried here!', using a clear voice that reaches the back row, with her body angled toward…",
-          "Thinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Tessa speaks her line, 'The treasure is buried here!', using a clear voice that reaches the back row, with her",
+          "Thinking that a loud voice means shouting."
         ],
-        "question": "Using this lesson idea — When you perform for an audience, you need to be heard and seen. Projection means speaking clearly and… — which choice is best?",
+        "question": "Using this lesson idea — When you perform for an audience, you need to be heard and seen. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for an audience?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words…",
-          "Perform a one-minute scene for family members. Before you start, write three goals such as facing out, projecting and pausing. Afterwards, ask for…",
+          "Name projection and explain why it matters only, with no linked example.",
+          "Perform a one-minute scene for family members.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Thinking that a loud voice means shouting."
         ],
-        "question": "Which task best shows independent use of an audience?",
+        "question": "Which independent response best applies an audience to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about an audience with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating an audience on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first. The audience should listen quietly and clap at the end.' Facing out and projection make… Reasoning: I used an audience by attending to projection rather than copying the worked model.",
+        "sample_answer": "Sample: original example using an audience on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for an audience. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with an audience, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words… Correction: Strong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first. The audience should listen quietly and clap at the… Why: the correction restores accurate use of an audience.",
+        "sample_answer": "Sample error: Thinking that a loud voice means shouting.. Correction: Strong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "When you perform for an audience, you need to be heard and seen. Projection means speaking clearly and loudly enough for the back of the room without shouting. Face the audience, or at least turn your body partly out, so people can see your face. Pause between lines so the…",
+          "explanation": "When you perform for an audience, you need to be heard and seen.",
           "options": [
-            "When you perform for an audience, you need to be heard and seen. Projection means speaking clearly and loudly enough for the back of the room without shouting. Face the audience, or at least turn your body partly out, so people can see your face. Pause between lines so the audience can react. Good audience members sit quietly, watch carefully, laugh in the right places and clap at the end. After the performance, performers bow together. It is normal to be nervous, and slow breaths can help.",
+            "When you perform for an audience, you need to be heard and seen.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about an audience?",
+          "question": "Which choice best applies this lesson idea about an audience with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Tessa speaks her line, 'The treasure is buried here!', using a clear voice that reaches the back row, with her body angled toward the audience. She waits for a moment of silence before the next line. The audience laughs when the pirate trips and then sits quietly during the tense part. At the end, all actors bow together.\n\nTRY FIRST\nA performer speaks too quietly and faces the back wall. Write two changes that would help the audience, and one thing the audience should do.\n\nFEEDBACK\nStrong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first. The audience should listen quietly and clap at the end.' Facing out and projection make performers easier to hear, and a kind audience supports them.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about an audience?",
+          "question": "Which choice best applies this lesson idea about an audience with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Tessa speaks her line, 'The treasure is buried here!', using a clear voice that reaches the back row, with her body angled toward the audience. She waits for a moment of silence before the next line. The audience laughs when the pirate trips and then sits quietly during the tense part. At the end, all actors bow together. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
+            "An answer copied without understanding.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about an audience?",
+          "question": "Which choice best applies this lesson idea about an audience with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that a loud voice means shouting. Projection means a clear, strong voice from a relaxed body, and shouting can strain your throat and make the words unclear. Here is a more helpful example: Example: Tessa speaks her line, 'The treasure is buried here!', using a clear voice that reaches the back row, with her body angled toward the audience. She waits for a moment of silence before the next line. The audience laughs when the pirate trips and then sits quietly during the tense part. At the end, all actors bow together.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Turn to face the audience and speak louder from your belly, taking a slow breath first. The audience should listen quietly and clap at the end.' Facing out and projection make performers easier to hear, and a kind audience supports them.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about an audience?",
+          "question": "Which choice best applies this lesson idea about an audience with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nWhen you perform for an audience, you need to be heard and seen. Projection means speaking clearly and loudly enough for the back of the room without shouting. Face the audience, or at least turn your body partly out, so people can see your face. Pause between lines so the audience can react. Good audience members sit quietly, watch carefully, laugh in the right places and clap at the end. After the performance, performers bow together. It is normal to be nervous, and slow breaths can help. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

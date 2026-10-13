@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-MSP-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write a Sports Code of Conduct with six rules for players, spectators and officials. For each rule, write a good example and a poor example. Add how a good sport responds to a loss and to a win. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Fair play: tell the referee so the point is not counted. After losing, a good sport says, 'Good game' and may shake hands. Honest play matters more than winning. Reasoning: I used rules by attending to fair play rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score. Correction: Fair play: tell the referee so the point is not counted. After losing, a good sport says, 'Good game' and may shake hands. Honest play matters more than… Why: the correction restores accurate use of rules.\n\nParent: Likely misconception: Believing winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating rules on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with rules, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write a Sports Code of Conduct with six rules for players, spectators and officials. For each rule, write a good example and a poor example. Add how a good sport responds to a loss and to a win. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using rules on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing winning is the only goal of sport.. Correction: Fair play: tell the referee so the point is not counted.. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating rules on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with rules, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about rules with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for rules. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Fair play: tell the referee so the point is not counted. After losing, a good sport says, 'Good game' and may shake hands. Honest play matters more than… This matches the lesson skill for rules.",
+        "explanation": "This matches the taught method for rules. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Believing winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Fair play: tell the referee so the point is not counted. After losing, a good sport says, 'Good game' and may shake hands. Honest play matters more than…"
+          "Believing winning is the only goal of sport",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Fair play: tell the referee so the point is not counted"
         ],
         "question": "A player steps out of bounds before scoring, but the referee did not see it. What is the fair play choice, and what would a good sport say to the other team after losing?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Believing winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for rules; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Rules make games safe and fair. Fair play means following the rules, taking turns, including others and being honest. Sportsmanship means showing respect when…",
-          "Fair play: tell the referee so the point is not counted. After losing, a good sport says, 'Good game' and may shake hands. Honest play matters more than…",
-          "Careful use of fair play with clear evidence.",
-          "Believing winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score."
+          "Rules make games safe and fair",
+          "Fair play: tell the referee so the point is not counted",
+          "Careful use of fair play and explain why it matters with clear evidence",
+          "Believing winning is the only goal of sport"
         ],
-        "question": "Which statement is a common mistake when practising rules?",
+        "question": "Which statement is a common mistake when working with rules?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named fair play, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named fair play and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the fair play used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name fair play and explain why it matters only, without linking it to rules",
+          "Apply rules to new material and name the fair play and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Believing winning is the only goal of sport"
         ],
-        "question": "A learner is practising rules. Which approach best shows understanding?",
+        "question": "Which response best applies rules with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Fair play: tell the referee so the point is not counted. After losing, a good sport says, 'Good game' and may shake hands. Honest play matters more than… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on rules. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Fair play: tell the referee so the point is not counted. After losing, a good sport says, 'Good game' and may shake hands. Honest play matters more than…",
-          "Believing winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score."
+          "Use a put-down and call it honesty",
+          "Believing winning is the only goal of sport",
+          "Fair play: tell the referee so the point is not counted",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which response best shows careful thinking about rules?",
+        "question": "Which response best uses safe, healthy or respectful choices for rules?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about rules.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Believing winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score."
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with rules",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Believing winning is the only goal of sport"
         ],
-        "question": "Which habit strengthens evidence about fair play?",
+        "question": "Which evidence move best supports a claim about rules?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Rules make games safe and fair.) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: in a game, Maya notices her foot touched the line when she served and says, 'That was a fault, your serve.' After losing 5 to 8…",
-          "Believing winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting."
+          "Example: in a game, Maya notices her foot touched the line when she served and says, 'That was a fault, your serve.'",
+          "Believing winning is the only goal of sport",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty"
         ],
-        "question": "Using this lesson idea — Rules make games safe and fair. Fair play means following the rules, taking turns, including others and… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about rules?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete."
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for rules?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example and call that independent work.",
-          "Believing winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score.",
-          "Write a Sports Code of Conduct with six rules for players, spectators and officials. For each rule, write a good example and a poor example. Add how…",
-          "Retype the worked example with no new example."
+          "Believing winning is the only goal of sport",
+          "Name fair play and explain why it matters only, with no linked example",
+          "Write a Sports Code of Conduct with six rules for players, spectators and officials",
+          "Retype the worked example with no new example"
         ],
-        "question": "Which task best shows independent use of rules?",
+        "question": "Which independent response best applies rules to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about rules with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating rules on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Fair play: tell the referee so the point is not counted. After losing, a good sport says, 'Good game' and may shake hands. Honest play matters more than winning. Reasoning: I used rules by attending to fair play rather than copying the worked model.",
+        "sample_answer": "Sample: original example using rules on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for rules. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with rules, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Believing winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score. Correction: Fair play: tell the referee so the point is not counted. After losing, a good sport says, 'Good game' and may shake hands. Honest play matters more than… Why: the correction restores accurate use of rules.",
+        "sample_answer": "Sample error: Believing winning is the only goal of sport.. Correction: Fair play: tell the referee so the point is not counted.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Rules make games safe and fair. Fair play means following the rules, taking turns, including others and being honest. Sportsmanship means showing respect when winning or losing: saying 'good game', accepting referee decisions, shaking hands where that is comfortable and…",
+          "explanation": "Rules make games safe and fair.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Rules make games safe and fair. Fair play means following the rules, taking turns, including others and being honest. Sportsmanship means showing respect when winning or losing: saying 'good game', accepting referee decisions, shaking hands where that is comfortable and encouraging teammates. Everyone, including referees and opponents, deserves respect.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Rules make games safe and fair",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about rules?",
+          "question": "Which choice best applies this lesson idea about rules with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: in a game, Maya notices her foot touched the line when she served and says, 'That was a fault, your serve.' After losing 5 to 8 she says, 'Good game, well played.' Unsportsmanlike would be arguing with the referee or taunting the other team.\n\nTRY FIRST\nA player steps out of bounds before scoring, but the referee did not see it. What is the fair play choice, and what would a good sport say to the other team after losing?\n\nFEEDBACK\nFair play: tell the referee so the point is not counted. After losing, a good sport says, 'Good game' and may shake hands. Honest play matters more than winning.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about rules?",
+          "question": "Which choice best applies this lesson idea about rules with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: in a game, Maya notices her foot touched the line when she served and says, 'That was a fault, your serve.' After losing 5 to 8 she says, 'Good game, well played.' Unsportsmanlike would be arguing with the referee or taunting the other team. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about rules?",
+          "question": "Which choice best applies this lesson idea about rules with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBelieving winning is the only goal of sport. Fair play, effort and respect matter at least as much as the score. Here is a more helpful example: Example: in a game, Maya notices her foot touched the line when she served and says, 'That was a fault, your serve.' After losing 5 to 8 she says, 'Good game, well played.' Unsportsmanlike would be arguing with the referee or taunting the other team.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nFair play: tell the referee so the point is not counted. After losing, a good sport says, 'Good game' and may shake hands. Honest play matters more than winning.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about rules?",
+          "question": "Which choice best applies this lesson idea about rules with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRules make games safe and fair. Fair play means following the rules, taking turns, including others and being honest. Sportsmanship means showing respect when winning or losing: saying 'good game', accepting referee decisions, shaking hands where that is comfortable and encouraging teammates. Everyone, including referees and opponents, deserves respect. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

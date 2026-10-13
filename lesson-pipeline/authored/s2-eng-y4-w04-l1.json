@@ -41,7 +41,7 @@
       "EN2-RECOM-01",
       "EN2-UARL-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Read or invent a short story with one fair twist. List two earlier clues, explain why the twist fits and write an ending that solves the main problem. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: (a) fits planted sound clues; (b) ignores evidence and breaks trust. Reasoning: I used plot twist by attending to ending rather than copying the worked model.\n\nParent: Written model 2: Common error: A twist that contradicts every earlier clue feels random, not clever. Correction: (a) fits planted sound clues; (b) ignores evidence and breaks trust. Why: the correction restores accurate use of plot twist.\n\nParent: Likely misconception: A twist that contradicts every earlier clue feels random, not clever. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating plot twist on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with plot twist, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Read or invent a short story with one fair twist. List two earlier clues, explain why the twist fits and write an ending that solves the main problem. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using plot twist on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: A twist that contradicts every earlier clue feels random, not clever.. Correction: (a) fits planted sound clues;. Why it helps the audience is stated.\n\nParent: Likely misconception: A twist that contradicts every earlier clue feels random, not clever. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating plot twist on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with plot twist, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about plot twist with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for plot twist. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -51,112 +51,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "(a) fits planted sound clues; (b) ignores evidence and breaks trust. This matches the lesson skill for plot twist.",
+        "explanation": "This matches the taught method for plot twist. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work.",
-          "(a) fits planted sound clues; (b) ignores evidence and breaks trust.",
-          "A twist that contradicts every earlier clue feels random, not clever."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "(a) fits planted sound clues",
+          "A twist that contradicts every earlier clue feels random, not clever"
         ],
         "question": "Which ending better fits a story where keys jingle in a coat all chapter: (a) keys were in the coat; (b) a spaceship took them with no earlier hint?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "A twist that contradicts every earlier clue feels random, not clever. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for plot twist; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A satisfying plot twist surprises readers but still fits earlier clues; endings should resolve the main problem without ignoring planted evidence.",
-          "(a) fits planted sound clues; (b) ignores evidence and breaks trust.",
-          "Careful use of ending with clear evidence.",
-          "A twist that contradicts every earlier clue feels random, not clever."
+          "A satisfying plot twist surprises readers but still fits earlier clues",
+          "(a) fits planted sound clues",
+          "Careful use of ending and explain why it matters with clear evidence",
+          "A twist that contradicts every earlier clue feels random, not clever"
         ],
-        "question": "Which statement is a common mistake when practising plot twist?",
+        "question": "Which statement is a common mistake when working with plot twist?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named ending, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named ending and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the ending used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a stated fact."
+          "Apply plot twist to new material and name the ending and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "A twist that contradicts every earlier clue feels random, not clever",
+          "Name ending and explain why it matters only, without linking it to plot twist"
         ],
-        "question": "A learner is practising plot twist. Which approach best shows understanding?",
+        "question": "Which response best applies plot twist with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The skill is shown by quoting or pointing to wording that carries plot twist.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries plot twist. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A twist that contradicts every earlier clue feels random, not clever.",
-          "Point to exact words in the sentence that show plot twist and say what they do.",
-          "Ignore the sentence and invent a more exciting event.",
-          "Say the writing is good without naming any words."
+          "A twist that contradicts every earlier clue feels random, not clever",
+          "Point to exact words in the sentence that show plot twist and say what they do",
+          "Ignore the sentence and invent a more exciting event",
+          "Say the writing is good without naming any words"
         ],
         "question": "Read: \"Beside the oval, Kai practised bowling until the sun slipped low.\" Which choice best uses plot twist from this lesson?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model word-for-word and call that independent work.",
-          "(a) fits planted sound clues; (b) ignores evidence and breaks trust.",
-          "A twist that contradicts every earlier clue feels random, not clever.",
-          "Ignore the words and invent a more exciting event."
+          "Name ending and explain why it matters without linking it to any words in the text",
+          "(a) fits planted sound clues",
+          "A twist that contradicts every earlier clue feels random, not clever",
+          "Copy a model sentence from another story unchanged"
         ],
         "question": "Which statement correctly applies the lesson idea about plot twist?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a model sentence from another story unchanged.",
-          "Treat a missing detail as a stated fact.",
-          "Locate a specific word, phrase or structural clue before deciding.",
-          "Guess from the title alone with no textual clue."
+          "Copy a model sentence from another story unchanged",
+          "Lengthen the answer with adjectives while keeping the same idea",
+          "Locate a specific word, phrase or structural clue before deciding",
+          "Guess from the title alone with no textual clue"
         ],
-        "question": "In a new text, what should you do first to practise ending?",
+        "question": "In a new text, what should you do first to analyse ending and explain why it matters?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Delete the evidence that disagreed with your first guess.",
-          "Change the inaccurate idea or missing evidence, not only the length.",
-          "Add adjectives without fixing the wrong idea.",
-          "Make the answer longer while keeping the same mistake."
+          "Delete the evidence that disagreed with your first guess",
+          "Change the inaccurate idea or missing evidence, not only the length",
+          "Add adjectives without fixing the wrong idea",
+          "Make the answer longer while keeping the same mistake"
         ],
-        "question": "Which revision actually repairs meaning?",
+        "question": "Which revision actually improves meaning for plot twist?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Use a fresh sentence or text and explain one precise choice about plot twist.",
-          "Retype the worked model as the final answer.",
-          "Change fonts and claim the work is new.",
-          "A twist that contradicts every earlier clue feels random, not clever."
+          "Use a fresh sentence or text and explain one precise choice about plot twist",
+          "Retype the worked model as the final answer",
+          "Change fonts and claim the work is new",
+          "A twist that contradicts every earlier clue feels random, not clever"
         ],
-        "question": "Which response shows transfer of plot twist to new material?",
+        "question": "Which response shows accurate use of plot twist on fresh material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about plot twist with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating plot twist on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: (a) fits planted sound clues; (b) ignores evidence and breaks trust. Reasoning: I used plot twist by attending to ending rather than copying the worked model.",
+        "sample_answer": "Sample: original example using plot twist on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for plot twist. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with plot twist, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: A twist that contradicts every earlier clue feels random, not clever. Correction: (a) fits planted sound clues; (b) ignores evidence and breaks trust. Why: the correction restores accurate use of plot twist.",
+        "sample_answer": "Sample error: A twist that contradicts every earlier clue feels random, not clever.. Correction: (a) fits planted sound clues;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -233,14 +233,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "A satisfying plot twist surprises readers but still fits earlier clues; endings should resolve the main problem without ignoring planted evidence. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "A satisfying plot twist surprises readers but still fits earlier clues; endings should resolve the main problem without ignoring planted evidence.",
           "options": [
-            "A guess with no explanation.",
-            "A satisfying plot twist surprises readers but still fits earlier clues; endings should resolve the main problem without ignoring planted evidence.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "A satisfying plot twist surprises readers but still fits earlier clues",
+            "A guess with no explanation",
+            "A claim unrelated to the text"
           ],
-          "question": "Which choice best shows accurate use of this idea about plot twist?",
+          "question": "Which choice best applies this lesson idea about plot twist with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nClue: a muddy paw print by the empty bird feeder. Expected: a cat. Twist that fits: the neighbour’s dog jumps the low fence at dawn. Ending: a taller latch stops the visits. The print prepared the twist.\n\nTRY FIRST\nWhich ending better fits a story where keys jingle in a coat all chapter: (a) keys were in the coat; (b) a spaceship took them with no earlier hint?\n\nFEEDBACK\n(a) fits planted sound clues; (b) ignores evidence and breaks trust.",
@@ -291,14 +291,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
           "options": [
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader."
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation",
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does"
           ],
-          "question": "Which choice best shows accurate use of this idea about plot twist?",
+          "question": "Which choice best applies this lesson idea about plot twist with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nClue: a muddy paw print by the empty bird feeder. Expected: a cat. Twist that fits: the neighbour’s dog jumps the low fence at dawn. Ending: a taller latch stops the visits. The print prepared the twist. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
@@ -317,14 +317,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
-            "A claim unrelated to the text."
+            "A guess with no explanation",
+            "A claim unrelated to the text",
+            "Use an intentionally incorrect attempt as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about plot twist?",
+          "question": "Which choice best applies this lesson idea about plot twist with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA twist that contradicts every earlier clue feels random, not clever. Here is a more productive model: Clue: a muddy paw print by the empty bird feeder. Expected: a cat. Twist that fits: the neighbour’s dog jumps the low fence at dawn. Ending: a taller latch stops the visits. The print prepared the twist.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\n(a) fits planted sound clues; (b) ignores evidence and breaks trust.",
@@ -336,14 +336,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
-            "A claim unrelated to the text."
+            "A guess with no explanation",
+            "A claim unrelated to the text",
+            "Use the method on a new topic, not a reworded copy of the example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about plot twist?",
+          "question": "Which choice best applies this lesson idea about plot twist with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA satisfying plot twist surprises readers but still fits earlier clues; endings should resolve the main problem without ignoring planted evidence. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-SCI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Create a one-page community prep guide for one local hazard. Include warning sources, a household checklist and one school role. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible. Reasoning: I used prepare by attending to community rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking preparation is “worrying only” without actions leaves people unready. Correction: e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible. Why: the correction restores accurate use of prepare.\n\nParent: Likely misconception: Thinking preparation is “worrying only” without actions leaves people unready. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses prepare. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about prepare, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create a one-page community prep guide for one local hazard. Include warning sources, a household checklist and one school role. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about prepare linked to that evidence.\n\nParent: Written model 2: Sample misconception: Thinking preparation is “worrying only” without actions leaves people unready.. Correction: e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible. with evidence.\n\nParent: Likely misconception: Thinking preparation is “worrying only” without actions leaves people unready. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses prepare. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about prepare, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about prepare. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for prepare. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible. This matches the lesson skill for prepare.",
+        "explanation": "This matches the taught method for prepare. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work.",
-          "e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible.",
-          "Thinking preparation is “worrying only” without actions leaves people unready."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible",
+          "Thinking preparation is “worrying only” without actions leaves people unready"
         ],
         "question": "List three preparation actions a family or school could take before a severe storm with heavy rain. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Thinking preparation is “worrying only” without actions leaves people unready. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for prepare; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Communities prepare for natural events with plans, warnings, safe meeting places, emergency kits and landscape care (e.g. clearing gutters before fire season).",
-          "e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible.",
-          "Careful use of community with clear evidence.",
-          "Thinking preparation is “worrying only” without actions leaves people unready."
+          "Communities prepare for natural events with plans, warnings, safe meeting places, emergency kits and landscape care",
+          "e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible",
+          "Careful use of community and explain why it matters with clear evidence",
+          "Thinking preparation is “worrying only” without actions leaves people unready"
         ],
-        "question": "Which statement is a common mistake when practising prepare?",
+        "question": "Which statement is a common mistake when working with prepare?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named community, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named community and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing measurement as if it were recorded.",
-          "Apply the idea with new evidence and name the community used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name community and explain why it matters only, without linking it to prepare",
+          "Apply prepare to new material and name the community and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking preparation is “worrying only” without actions leaves people unready"
         ],
-        "question": "A learner is practising prepare. Which approach best shows understanding?",
+        "question": "Which response best applies prepare with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking preparation is “worrying only” without actions leaves people unready.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation."
+          "Thinking preparation is “worrying only” without actions leaves people unready",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation"
         ],
-        "question": "New examples: steam from a kettle, a germinating bean, a plastic dinosaur, a granite pebble. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: steam from a kettle, a germinating bean, a plastic dinosaur, a granite pebble. Which claim about prepare is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence.",
-          "Thinking preparation is “worrying only” without actions leaves people unready.",
-          "Named observation plus how it supports the claim."
+          "A longer story with no observation",
+          "A label copied from the title with no evidence",
+          "Thinking preparation is “worrying only” without actions leaves people unready",
+          "A named observation plus how it supports the claim"
         ],
         "question": "Which record best supports a science claim about prepare?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about prepare with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work.",
-          "e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible.",
-          "Thinking preparation is “worrying only” without actions leaves people unready."
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible",
+          "Thinking preparation is “worrying only” without actions leaves people unready"
         ],
-        "question": "Using this idea — Communities prepare for natural events with plans, warnings, safe meeting places, emergency kits… — which choice is strongest?",
+        "question": "Using this science idea — Communities prepare for natural events with plans, warnings, safe meeting places, emergency kits — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result.",
-          "Ignore measurements and decide by which looks nicer."
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about prepare?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model objects and call that independent work.",
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation."
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about prepare should change with it",
+          "Any exciting story about the object must be true",
+          "Thinking preparation is “worrying only” without actions leaves people unready"
         ],
-        "question": "Which next step best shows transfer of prepare?",
+        "question": "Which prediction about prepare can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about prepare. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses prepare. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible. Reasoning: I used prepare by attending to community rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about prepare linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for prepare. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about prepare, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Thinking preparation is “worrying only” without actions leaves people unready. Correction: e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible. Why: the correction restores accurate use of prepare.",
+        "sample_answer": "Sample misconception: Thinking preparation is “worrying only” without actions leaves people unready.. Correction: e.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible. with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Communities prepare for natural events with plans, warnings, safe meeting places, emergency kits and landscape care (e.g. clearing gutters before fire season). Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Communities prepare for natural events with plans, warnings, safe meeting places, emergency kits and landscape care (e.g.",
           "options": [
-            "A guess with no evidence.",
-            "Communities prepare for natural events with plans, warnings, safe meeting places, emergency kits and landscape care (e.g. clearing gutters before fire season).",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Communities prepare for natural events with plans, warnings, safe meeting places, emergency kits and landscape care",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about prepare?",
+          "question": "Which choice best applies this lesson idea about prepare with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nFlood prep: know higher ground routes. Fire prep: listen to warnings, prepare a plan. Drought: conserve water. Preparation reduces harm; it does not stop events.\n\nTRY FIRST\nList three preparation actions a family or school could take before a severe storm with heavy rain.\n\nFEEDBACK\ne.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about prepare?",
+          "question": "Which choice best applies this lesson idea about prepare with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nFlood prep: know higher ground routes. Fire prep: listen to warnings, prepare a plan. Drought: conserve water. Preparation reduces harm; it does not stop events. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about prepare?",
+          "question": "Which choice best applies this lesson idea about prepare with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking preparation is “worrying only” without actions leaves people unready. Here is a more productive model: Flood prep: know higher ground routes. Fire prep: listen to warnings, prepare a plan. Drought: conserve water. Preparation reduces harm; it does not stop events.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\ne.g. clear drains; know assembly point; emergency contacts/kit; move valuables higher — any three sensible.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example"
           ],
-          "question": "Which choice best shows accurate use of this idea about prepare?",
+          "question": "Which choice best applies this lesson idea about prepare with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCommunities prepare for natural events with plans, warnings, safe meeting places, emergency kits and landscape care (e.g. clearing gutters before fire season). Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",

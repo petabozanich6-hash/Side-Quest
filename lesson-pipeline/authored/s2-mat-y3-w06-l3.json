@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-AR-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Compute six 3-digit subtractions with regrouping, including at least two with a zero in the minuend. Show regroup marks and estimate one answer first. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Ones: regroup through the tens/hundreds as needed → difference 336. (Working must show how zero tens are handled.) Reasoning: I used column by attending to regroup and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error. Correction: Ones: regroup through the tens/hundreds as needed → difference 336. (Working must show how zero tens are handled.) Why: the correction restores accurate use of column.\n\nParent: Likely misconception: Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses column with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with column, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Compute six 3-digit subtractions with regrouping, including at least two with a zero in the minuend. Show regroup marks and estimate one answer first. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for column; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error.. Correction uses Ones: regroup through the tens/hundreds as needed → difference 336.. Why: restores accurate column.\n\nParent: Likely misconception: Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses column with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with column, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for column, and names places/values. Reject copied model numbers. / Accept a named misconception about column, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Ones: regroup through the tens/hundreds as needed → difference 336. (Working must show how zero tens are handled.) This matches the lesson skill for column.",
+        "explanation": "This matches the taught method for column. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Ones: regroup through the tens/hundreds as needed → difference 336. (Working must show how zero tens are handled.)",
-          "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Ones: regroup through the tens/hundreds as needed → difference 336",
+          "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error"
         ],
         "question": "Subtract 604 − 268 showing regrouping. Watch the zero carefully. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for column; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of regroup and explain why it matters with clear evidence.",
-          "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error.",
-          "Written subtraction aligns places and regroups when a digit is too small: one ten becomes ten ones (and similarly across hundreds).",
-          "Ones: regroup through the tens/hundreds as needed → difference 336. (Working must show how zero tens are handled.)"
+          "Careful use of regroup and explain why it matters with clear evidence",
+          "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error",
+          "Written subtraction aligns places and regroups when a digit is too small: one ten becomes ten ones (and similarly",
+          "Ones: regroup through the tens/hundreds as needed → difference 336"
         ],
-        "question": "Which statement is a common mistake when practising column?",
+        "question": "Which statement is a common mistake when working with column?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named regroup and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named regroup and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the regroup and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name regroup and explain why it matters only, without linking it to column",
+          "Apply column to new material and name the regroup and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error"
         ],
-        "question": "A learner is practising column. Which approach best shows understanding?",
+        "question": "Which response best applies column with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change digits to look neater without checking place value.",
-          "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error.",
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working."
+          "Change digits to look neater without checking place value",
+          "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working"
         ],
-        "question": "Which working note best supports a mathematics answer about column?",
+        "question": "Which working best supports a correct answer for this lesson on column?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught column method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Ones: regroup through the tens/hundreds as needed → difference 336. (Working must show how zero tens are handled.)"
+          "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error",
+          "Read 604 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 604 and 268 as interchangeable",
+          "Ones: regroup through the tens/hundreds as needed → difference 336"
         ],
-        "question": "Using this lesson idea — Written subtraction aligns places and regroups when a digit is too small: one ten becomes ten ones (and… — which statement is true?",
+        "question": "Using the method for column, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either."
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a column problem with numbers such as 604 and 268, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers.",
-          "Copy the worked example and call it independent work."
+          "Use the same column method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 604 and 268 as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error"
         ],
-        "question": "Which practice choice shows transfer of column?",
+        "question": "Solve a fresh column problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name the exact place or step that failed, then show corrected working for column.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer."
+          "Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error",
+          "Written subtraction aligns places and regroups when a digit is too small: one ten becomes ten ones (and similarly",
+          "Ones: regroup through the tens/hundreds as needed → difference 336",
+          "Label units when comparing 604 with 268"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for column?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for column, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses column with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Ones: regroup through the tens/hundreds as needed → difference 336. (Working must show how zero tens are handled.) Reasoning: I used column by attending to regroup and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for column; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about column, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with column, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error. Correction: Ones: regroup through the tens/hundreds as needed → difference 336. (Working must show how zero tens are handled.) Why: the correction restores accurate use of column.",
+        "sample_answer": "Sample misconception: Subtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error.. Correction uses Ones: regroup through the tens/hundreds as needed → difference 336.. Why: restores accurate column.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Written subtraction aligns places and regroups when a digit is too small: one ten becomes ten ones (and similarly across hundreds). Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Written subtraction aligns places and regroups when a digit is too small: one ten becomes ten ones (and similarly across hundreds).",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Written subtraction aligns places and regroups when a digit is too small: one ten becomes ten ones (and similarly across hundreds).",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Written subtraction aligns places and regroups when a digit is too small: one ten becomes ten ones (and similarly",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about column?",
+          "question": "Which choice best applies this lesson idea about column with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n523 − 178: ones 3<8 so regroup — tens become 1, ones 13; 13−8=5. Tens 1<7 so regroup from hundreds — hundreds 4, tens 11; 11−7=4. Hundreds 4−1=3. Difference 345.\n\nTRY FIRST\nSubtract 604 − 268 showing regrouping. Watch the zero carefully.\n\nFEEDBACK\nOnes: regroup through the tens/hundreds as needed → difference 336. (Working must show how zero tens are handled.)",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
           "options": [
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about column?",
+          "question": "Which choice best applies this lesson idea about column with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n523 − 178: ones 3<8 so regroup — tens become 1, ones 13; 13−8=5. Tens 1<7 so regroup from hundreds — hundreds 4, tens 11; 11−7=4. Hundreds 4−1=3. Difference 345. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about column?",
+          "question": "Which choice best applies this lesson idea about column with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSubtracting the smaller digit from the larger regardless of place (top/bottom swap) is a common error. Here is a more productive model: 523 − 178: ones 3<8 so regroup — tens become 1, ones 13; 13−8=5. Tens 1<7 so regroup from hundreds — hundreds 4, tens 11; 11−7=4. Hundreds 4−1=3. Difference 345.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nOnes: regroup through the tens/hundreds as needed → difference 336. (Working must show how zero tens are handled.)",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about column?",
+          "question": "Which choice best applies this lesson idea about column with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nWritten subtraction aligns places and regroups when a digit is too small: one ten becomes ten ones (and similarly across hundreds). Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

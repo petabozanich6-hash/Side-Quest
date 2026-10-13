@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Make a prop and a costume piece for a character using recycled materials. Draw a design plan first with materials and safety choices. Wear them in a short scene and write one improvement. Ask an adult to help with scisso Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness. Materials: cardboard, gold paper, glue and tape. Safety: round points, not sharp.' The… Reasoning: I used a costume piece by attending to recycled materials rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and… Correction: Strong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness. Materials: cardboard, gold paper, glue and… Why: the correction restores accurate use of a costume piece.\n\nParent: Likely misconception: Thinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and easy to move in. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a costume piece on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a costume piece, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Make a prop and a costume piece for a character using recycled materials. Draw a design plan first with materials and safety choices. Wear them in a short scene and write one improvement. Ask an adult to help with scisso Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a costume piece on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that a costume has to be very detailed or bought from a shop.. Correction: Strong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and easy to move in. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a costume piece on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a costume piece, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a costume piece with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a costume piece. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness. Materials: cardboard, gold paper, glue and… This matches the lesson skill for a costume piece.",
+        "explanation": "This matches the taught method for a costume piece. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness. Materials: cardboard, gold paper, glue and…",
-          "Thinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and…",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness.",
+          "Thinking that a costume has to be very detailed or bought from a shop.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "Design a simple crown for a character who is generous and kind. List the materials, one safety choice and one decoration that shows the trait. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a costume piece; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness. Materials: cardboard, gold paper, glue and…",
-          "Careful use of recycled materials with clear evidence.",
-          "Thinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and…",
-          "Props and costumes can be made from recycled materials such as cardboard, paper, fabric scraps and string. A design plan shows what the item is, which…"
+          "'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness.",
+          "Careful use of recycled materials and explain why it ma with clear evidence.",
+          "Thinking that a costume has to be very detailed or bought from a shop.",
+          "Props and costumes can be made from recycled materials such as cardboard, paper, fabric scraps and string."
         ],
-        "question": "Which statement is a common mistake when practising a costume piece?",
+        "question": "Which statement is a common mistake when working with a costume piece?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named recycled materials, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named recycled materials and explain why it ma, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the recycled materials used."
+          "Thinking that a costume has to be very detailed or bought from a shop.",
+          "Name recycled materials and explain why it ma only, without linking it to a costume piece.",
+          "Apply a costume piece to new material and name the recycled materials and explain why it ma used."
         ],
-        "question": "A learner is practising a costume piece. Which approach best shows understanding?",
+        "question": "Which response best applies a costume piece with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness. Materials: cardboard, gold paper, glue and… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a costume piece. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness. Materials: cardboard, gold paper, glue and…",
-          "Thinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that a costume has to be very detailed or bought from a shop.",
+          "'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about a costume piece?",
+        "question": "Which response best uses elements, techniques and audience effect for a costume piece?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and…",
-          "Name a specific source, cue or example and say what it shows about a costume piece.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that a costume has to be very detailed or bought from a shop.",
+          "Name a specific element or technique and say what effect it creates for a costume piece.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which habit strengthens evidence about recycled materials?",
+        "question": "Which evidence move best supports a claim about a costume piece?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: Jin designs a dragon mask. Plan: cardboard base, green paper scales glued in rows, a red paper tongue and elastic string. The…",
-          "Thinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and…",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Example: Jin designs a dragon mask.",
+          "Thinking that a costume has to be very detailed or bought from a shop.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Props and costumes can be made from recycled materials such as cardboard, paper, fabric scraps and string. A… — which choice is best?",
+        "question": "Using this lesson idea — Props and costumes can be made from recycled materials such as cardboard, paper, fabric scraps and — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a costume piece?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and…",
-          "Make a prop and a costume piece for a character using recycled materials. Draw a design plan first with materials and safety choices. Wear them in a…"
+          "Thinking that a costume has to be very detailed or bought from a shop.",
+          "Name recycled materials and explain why it ma only, with no linked example.",
+          "Make a prop and a costume piece for a character using recycled materials."
         ],
-        "question": "Which task best shows independent use of a costume piece?",
+        "question": "Which independent response best applies a costume piece to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a costume piece with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a costume piece on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness. Materials: cardboard, gold paper, glue and tape. Safety: round points, not sharp.' The… Reasoning: I used a costume piece by attending to recycled materials rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a costume piece on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a costume piece. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a costume piece, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and… Correction: Strong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness. Materials: cardboard, gold paper, glue and… Why: the correction restores accurate use of a costume piece.",
+        "sample_answer": "Sample error: Thinking that a costume has to be very detailed or bought from a shop.. Correction: Strong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Props and costumes can be made from recycled materials such as cardboard, paper, fabric scraps and string. A design plan shows what the item is, which materials it uses and how it will be made. Keep props light and soft with no sharp points, and never use things that can hurt…",
+          "explanation": "Props and costumes can be made from recycled materials such as cardboard, paper, fabric scraps and string.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Props and costumes can be made from recycled materials such as cardboard, paper, fabric scraps and string. A design plan shows what the item is, which materials it uses and how it will be made. Keep props light and soft with no sharp points, and never use things that can hurt others. Use scissors carefully, tape securely and ask an adult for help with anything tricky. A good costume piece is simple and shows a key trait of the character, like a gold crown for a king or a feather for a bird."
+            "Props and costumes can be made from recycled materials such as cardboard, paper, fabric scraps and string."
           ],
-          "question": "Which choice best shows accurate use of this idea about a costume piece?",
+          "question": "Which choice best applies this lesson idea about a costume piece with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Jin designs a dragon mask. Plan: cardboard base, green paper scales glued in rows, a red paper tongue and elastic string. The mask is lightweight and has eye holes big enough to see. He cuts the shapes with scissors, folding the edges so nothing is sharp. The green scales and red tongue show 'dragon' from far away.\n\nTRY FIRST\nDesign a simple crown for a character who is generous and kind. List the materials, one safety choice and one decoration that shows the trait.\n\nFEEDBACK\nStrong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness. Materials: cardboard, gold paper, glue and tape. Safety: round points, not sharp.' The decoration is linked to the character trait.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a costume piece?",
+          "question": "Which choice best applies this lesson idea about a costume piece with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Jin designs a dragon mask. Plan: cardboard base, green paper scales glued in rows, a red paper tongue and elastic string. The mask is lightweight and has eye holes big enough to see. He cuts the shapes with scissors, folding the edges so nothing is sharp. The green scales and red tongue show 'dragon' from far away. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a costume piece?",
+          "question": "Which choice best applies this lesson idea about a costume piece with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that a costume has to be very detailed or bought from a shop. Simple recycled materials can show a character just as well, as long as it is safe and easy to move in. Here is a more helpful example: Example: Jin designs a dragon mask. Plan: cardboard base, green paper scales glued in rows, a red paper tongue and elastic string. The mask is lightweight and has eye holes big enough to see. He cuts the shapes with scissors, folding the edges so nothing is sharp. The green scales and red tongue show 'dragon' from far away.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Cardboard band with rounded gold paper points and a paper heart in the middle to show kindness. Materials: cardboard, gold paper, glue and tape. Safety: round points, not sharp.' The decoration is linked to the character trait.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice."
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example."
           ],
-          "question": "Which choice best shows accurate use of this idea about a costume piece?",
+          "question": "Which choice best applies this lesson idea about a costume piece with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nProps and costumes can be made from recycled materials such as cardboard, paper, fabric scraps and string. A design plan shows what the item is, which materials it uses and how it will be made. Keep props light and soft with no sharp points, and never use things that can hurt others. Use scissors carefully, tape securely and ask an adult for help with anything tricky. A good costume piece is simple and shows a key trait of the character, like a gold crown for a king or a feather for a bird. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

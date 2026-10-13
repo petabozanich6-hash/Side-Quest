@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose a sentence of your own and write four ways to say it with different volume, pace, pitch and body choices. Perform two of them for someone and ask them to guess the character or feeling. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy grandfather is slow and soft with a yawn. The same words change… Reasoning: I used volume by attending to pace rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout. Correction: Strong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy grandfather is slow and… Why: the correction restores accurate use of volume.\n\nParent: Likely misconception: Thinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating volume on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with volume, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose a sentence of your own and write four ways to say it with different volume, pace, pitch and body choices. Perform two of them for someone and ask them to guess the character or feeling. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using volume on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking a loud voice is always a good voice.. Correction: Strong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating volume on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with volume, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about volume with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for volume. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy grandfather is slow and… This matches the lesson skill for volume.",
+        "explanation": "This matches the taught method for volume. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy grandfather is slow and…",
-          "Thinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy",
+          "Thinking a loud voice is always a good voice.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "Say 'Come here, please.' in three ways: as a worried parent, an excited friend and a sleepy grandfather. Describe the pace, volume and body for each. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Thinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for volume; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of pace with clear evidence.",
-          "Thinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout.",
-          "In drama, voice and body work together to show a character. Voice has volume (loud or soft), pace (fast or slow), pitch (high or low) and tone (the feeling in…",
-          "Strong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy grandfather is slow and…"
+          "Careful use of pace and explain why it matters with clear evidence.",
+          "Thinking a loud voice is always a good voice.",
+          "In drama, voice and body work together to show a character.",
+          "worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy"
         ],
-        "question": "Which statement is a common mistake when practising volume?",
+        "question": "Which statement is a common mistake when working with volume?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named pace, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named pace and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the pace used.",
+          "Name pace and explain why it matters only, without linking it to volume.",
+          "Apply volume to new material and name the pace and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Thinking a loud voice is always a good voice."
         ],
-        "question": "A learner is practising volume. Which approach best shows understanding?",
+        "question": "Which response best applies volume with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy grandfather is slow and… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on volume. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy grandfather is slow and…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking a loud voice is always a good voice.",
+          "worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy"
         ],
-        "question": "Which response best shows careful thinking about volume?",
+        "question": "Which response best uses elements, techniques and audience effect for volume?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout.",
-          "Name a specific source, cue or example and say what it shows about volume.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking a loud voice is always a good voice.",
+          "Name a specific element or technique and say what effect it creates for volume.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which habit strengthens evidence about pace?",
+        "question": "Which evidence move best supports a claim about volume?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout.",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Thinking a loud voice is always a good voice.",
           "Say it looks nice with no element or technique named.",
-          "Example: for a giant, Omar speaks slowly in a deep, loud voice and takes big stomping steps with his arms wide. For a mouse, he speaks…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: for a giant, Omar speaks slowly in a deep, loud voice and takes big stomping steps with his arms wide."
         ],
-        "question": "Using this lesson idea — In drama, voice and body work together to show a character. Voice has volume (loud or soft), pace (fast or… — which choice is best?",
+        "question": "Using this lesson idea — In drama, voice and body work together to show a character. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for volume?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout.",
-          "Choose a sentence of your own and write four ways to say it with different volume, pace, pitch and body choices. Perform two of them for someone and…"
+          "Thinking a loud voice is always a good voice.",
+          "Name pace and explain why it matters only, with no linked example.",
+          "Choose a sentence of your own and write four ways to say it with different volume, pace, pitch and body choices."
         ],
-        "question": "Which task best shows independent use of volume?",
+        "question": "Which independent response best applies volume to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about volume with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating volume on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy grandfather is slow and soft with a yawn. The same words change… Reasoning: I used volume by attending to pace rather than copying the worked model.",
+        "sample_answer": "Sample: original example using volume on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for volume. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with volume, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout. Correction: Strong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy grandfather is slow and… Why: the correction restores accurate use of volume.",
+        "sample_answer": "Sample error: Thinking a loud voice is always a good voice.. Correction: Strong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "In drama, voice and body work together to show a character. Voice has volume (loud or soft), pace (fast or slow), pitch (high or low) and tone (the feeling in the voice, such as friendly or angry). Body has posture (how you stand), gesture (hand and arm movements) and facial…",
+          "explanation": "In drama, voice and body work together to show a character.",
           "options": [
+            "An answer copied without understanding.",
+            "In drama, voice and body work together to show a character.",
             "A guess with no artistic reason.",
-            "In drama, voice and body work together to show a character. Voice has volume (loud or soft), pace (fast or slow), pitch (high or low) and tone (the feeling in the voice, such as friendly or angry). Body has posture (how you stand), gesture (hand and arm movements) and facial expression. Change these on purpose. A scared character might speak quickly and softly while a giant might speak slowly and loudly. Use a clear voice so the audience can hear, but never shout or strain your throat.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about volume?",
+          "question": "Which choice best applies this lesson idea about volume with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: for a giant, Omar speaks slowly in a deep, loud voice and takes big stomping steps with his arms wide. For a mouse, he speaks quickly in a high, soft voice with tiny steps and his hands held close. The changes in volume, pace, pitch and posture make two clearly different characters.\n\nTRY FIRST\nSay 'Come here, please.' in three ways: as a worried parent, an excited friend and a sleepy grandfather. Describe the pace, volume and body for each.\n\nFEEDBACK\nStrong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy grandfather is slow and soft with a yawn. The same words change meaning when voice and body change.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about volume?",
+          "question": "Which choice best applies this lesson idea about volume with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: for a giant, Omar speaks slowly in a deep, loud voice and takes big stomping steps with his arms wide. For a mouse, he speaks quickly in a high, soft voice with tiny steps and his hands held close. The changes in volume, pace, pitch and posture make two clearly different characters. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
+            "An answer copied without understanding.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about volume?",
+          "question": "Which choice best applies this lesson idea about volume with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking a loud voice is always a good voice. A good drama voice is clear and matched to the character, and sometimes a whisper is more powerful than a shout. Here is a more helpful example: Example: for a giant, Omar speaks slowly in a deep, loud voice and takes big stomping steps with his arms wide. For a mouse, he speaks quickly in a high, soft voice with tiny steps and his hands held close. The changes in volume, pace, pitch and posture make two clearly different characters.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: worried parent is fast and quiet with a frown, excited friend is fast and loud with a big gesture and a smile, sleepy grandfather is slow and soft with a yawn. The same words change meaning when voice and body change.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about volume?",
+          "question": "Which choice best applies this lesson idea about volume with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nIn drama, voice and body work together to show a character. Voice has volume (loud or soft), pace (fast or slow), pitch (high or low) and tone (the feeling in the voice, such as friendly or angry). Body has posture (how you stand), gesture (hand and arm movements) and facial expression. Change these on purpose. A scared character might speak quickly and softly while a giant might speak slowly and loudly. Use a clear voice so the audience can hear, but never shout or strain your throat. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

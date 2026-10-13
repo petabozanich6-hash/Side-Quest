@@ -34,7 +34,7 @@
     "outcome_codes": [
       "HS2-HIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Build a colonies timeline with six foundation dates from a published map/text. Add a caption about First Nations Countries. Do not invent Nation names for each colony. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: First Nations Peoples already lived there; the date marks British colonial government, not the start of human history. Reasoning: I used colony by attending to Australia rather than copying the worked model.\n\nParent: Written model 2: Common error: Learning colony names without First Nations presence repeats erasure. Correction: First Nations Peoples already lived there; the date marks British colonial government, not the start of human history. Why: the correction restores accurate use of colony.\n\nParent: Likely misconception: Learning colony names without First Nations presence repeats erasure. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating colony on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with colony, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Build a colonies timeline with six foundation dates from a published map/text. Add a caption about First Nations Countries. Do not invent Nation names for each colony. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using colony on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Learning colony names without First Nations presence repeats erasure.. Correction: First Nations Peoples already lived there;. Why it helps the audience is stated.\n\nParent: Likely misconception: Learning colony names without First Nations presence repeats erasure. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating colony on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with colony, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about colony with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for colony. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "First Nations Peoples already lived there; the date marks British colonial government, not the start of human history. This matches the lesson skill for colony.",
+        "explanation": "This matches the taught method for colony. The other choices miss a key step or use a common mistake.",
         "options": [
-          "First Nations Peoples already lived there; the date marks British colonial government, not the start of human history.",
-          "Learning colony names without First Nations presence repeats erasure.",
-          "Ignore the source and invent a more exciting story.",
-          "Copy the model places and call that independent work."
+          "First Nations Peoples already lived there",
+          "Learning colony names without First Nations presence repeats erasure",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Why does a colony foundation date not mean the land was empty before that year?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Learning colony names without First Nations presence repeats erasure. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for colony; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of Australia with clear evidence.",
-          "Learning colony names without First Nations presence repeats erasure.",
-          "British colonies spread across Australia through the 1800s (for example New South Wales, Van Diemen’s Land/Tasmania, Western Australia, South Australia,…",
-          "First Nations Peoples already lived there; the date marks British colonial government, not the start of human history."
+          "Careful use of Australia and explain why it matters with clear evidence",
+          "Learning colony names without First Nations presence repeats erasure",
+          "British colonies spread across Australia through the 1800s (for example New South Wales, Van Diemen’s Land/Tasmania",
+          "First Nations Peoples already lived there"
         ],
-        "question": "Which statement is a common mistake when practising colony?",
+        "question": "Which statement is a common mistake when working with colony?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named Australia, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named Australia and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing fact as if it were recorded in a source.",
-          "Apply the idea with new evidence and name the Australia used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name Australia and explain why it matters only, without linking it to colony",
+          "Apply colony to new material and name the Australia and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Learning colony names without First Nations presence repeats erasure"
         ],
-        "question": "A learner is practising colony. Which approach best shows understanding?",
+        "question": "Which response best applies colony with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "First Nations Peoples already lived there; the date marks British colonial government, not the start of human history. uses sources and places appropriately for this lesson.",
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on colony. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Learning colony names without First Nations presence repeats erasure.",
-          "Ignore the source and invent a more exciting story.",
-          "Copy the model places and call that independent work.",
-          "First Nations Peoples already lived there; the date marks British colonial government, not the start of human history."
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Learning colony names without First Nations presence repeats erasure",
+          "First Nations Peoples already lived there"
         ],
-        "question": "Which response best shows careful thinking about colony?",
+        "question": "Which response best uses sources, places or historical/geographic evidence for colony?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Learning colony names without First Nations presence repeats erasure.",
-          "Name a specific source, cue or example and say what it shows about colony."
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Learning colony names without First Nations presence repeats erasure",
+          "Name a specific source or place detail and say what it shows about colony"
         ],
-        "question": "Which habit strengthens evidence about Australia?",
+        "question": "Which evidence move best supports a claim about colony?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (British colonies spread across Australia through the 1800s (for example) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example timeline of colonial foundations from a textbook map. Caption: each new colony sat on First Nations lands. Exact local Nation…",
-          "Learning colony names without First Nations presence repeats erasure.",
-          "Treat a missing fact as if it were recorded in a source.",
-          "Ignore the source and invent a more exciting story."
+          "Example timeline of colonial foundations from a textbook map",
+          "Learning colony names without First Nations presence repeats erasure",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail"
         ],
-        "question": "Using this lesson idea — British colonies spread across Australia through the 1800s (for example New South Wales, Van Diemen’s… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about colony?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete."
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details",
+          "Invent missing details to make the answer sound complete"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for colony?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Build a colonies timeline with six foundation dates from a published map/text. Add a caption about First Nations Countries. Do not invent Nation…",
-          "Retype the worked example with no new example.",
-          "Copy the model places and call that independent work.",
-          "Learning colony names without First Nations presence repeats erasure."
+          "Build a colonies timeline with six foundation dates from a published map/text",
+          "Retype the worked example with no new example",
+          "Learning colony names without First Nations presence repeats erasure",
+          "Name Australia and explain why it matters only, with no linked example"
         ],
-        "question": "Which task best shows independent use of colony?",
+        "question": "Which independent response best applies colony to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about colony with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating colony on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: First Nations Peoples already lived there; the date marks British colonial government, not the start of human history. Reasoning: I used colony by attending to Australia rather than copying the worked model.",
+        "sample_answer": "Sample: original example using colony on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for colony. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with colony, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Learning colony names without First Nations presence repeats erasure. Correction: First Nations Peoples already lived there; the date marks British colonial government, not the start of human history. Why: the correction restores accurate use of colony.",
+        "sample_answer": "Sample error: Learning colony names without First Nations presence repeats erasure.. Correction: First Nations Peoples already lived there;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "British colonies spread across Australia through the 1800s (for example New South Wales, Van Diemen’s Land/Tasmania, Western Australia, South Australia, Victoria, Queensland) on different dates. Expansion meant more pressure on First Nations Countries. Supported records follow…",
+          "explanation": "British colonies spread across Australia through the 1800s (for example New South Wales, Van Diemen’s Land/Tasmania, Western Australia, South Australia, Victoria, Queensland) on different dates.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "British colonies spread across Australia through the 1800s (for example New South Wales, Van Diemen’s Land/Tasmania, Western Australia, South Australia, Victoria, Queensland) on different dates. Expansion meant more pressure on First Nations Countries.",
-            "A claim unrelated to the source or place."
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "British colonies spread across Australia through the 1800s (for example New South Wales, Van Diemen’s Land/Tasmania",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about colony?",
+          "question": "Which choice best applies this lesson idea about colony with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample timeline of colonial foundations from a textbook map. Caption: each new colony sat on First Nations lands. Exact local Nation names need Community confirmation.\n\nTRY FIRST\nWhy does a colony foundation date not mean the land was empty before that year?\n\nFEEDBACK\nFirst Nations Peoples already lived there; the date marks British colonial government, not the start of human history.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim."
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim"
           ],
-          "question": "Which choice best shows accurate use of this idea about colony?",
+          "question": "Which choice best applies this lesson idea about colony with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample timeline of colonial foundations from a textbook map. Caption: each new colony sat on First Nations lands. Exact local Nation names need Community confirmation. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the source or place."
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about colony?",
+          "question": "Which choice best applies this lesson idea about colony with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLearning colony names without First Nations presence repeats erasure. Here is a more productive model: Example timeline of colonial foundations from a textbook map. Caption: each new colony sat on First Nations lands. Exact local Nation names need Community confirmation.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nFirst Nations Peoples already lived there; the date marks British colonial government, not the start of human history.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about colony?",
+          "question": "Which choice best applies this lesson idea about colony with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBritish colonies spread across Australia through the 1800s (for example New South Wales, Van Diemen’s Land/Tasmania, Western Australia, South Australia, Victoria, Queensland) on different dates. Expansion meant more pressure on First Nations Countries. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",

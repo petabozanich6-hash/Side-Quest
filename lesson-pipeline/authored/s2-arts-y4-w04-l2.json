@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write a full response (describe, respond, connect) to a painting you choose. Share with a family member and note one different opinion they had and the evidence they used. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Describe: crowded carriages in orange light. Respond: busy and tense because warm colours are packed tightly. Connect: like my peak-hour bus.' Structure is complete and polite. Reasoning: I used response by attending to compare rather than copying the worked model.\n\nParent: Written model 2: Common error: Only saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork. Correction: Strong answer: 'Describe: crowded carriages in orange light. Respond: busy and tense because warm colours are packed tightly. Connect: like my peak-hour bus.'… Why: the correction restores accurate use of response.\n\nParent: Likely misconception: Only saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating response on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with response, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write a full response (describe, respond, connect) to a painting you choose. Share with a family member and note one different opinion they had and the evidence they used. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using response on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Only saying 'I like it' or 'I hate it'.. Correction: Strong answer: 'Describe: crowded carriages in orange light.. Why it helps the audience is stated.\n\nParent: Likely misconception: Only saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating response on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with response, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about response with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for response. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Describe: crowded carriages in orange light. Respond: busy and tense because warm colours are packed tightly. Connect: like my peak-hour bus.'… This matches the lesson skill for response.",
+        "explanation": "This matches the taught method for response. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Only saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Describe: crowded carriages in orange light. Respond: busy and tense because warm colours are packed tightly. Connect: like my peak-hour bus.'…"
+          "Only saying 'I like it' or 'I hate it'.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'Describe: crowded carriages in orange light."
         ],
         "question": "Respond to an imagined painting of a crowded train in warm oranges. Write describe, respond and connect sentences. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Only saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for response; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Only saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork.",
-          "A written or spoken response to a painting uses describe → respond → connect. Describe the subject and elements, respond with feeling or idea plus reason,…",
-          "Strong answer: 'Describe: crowded carriages in orange light. Respond: busy and tense because warm colours are packed tightly. Connect: like my peak-hour bus.'…",
-          "Careful use of compare with clear evidence."
+          "Only saying 'I like it' or 'I hate it'.",
+          "A written or spoken response to a painting uses describe → respond → connect.",
+          "'Describe: crowded carriages in orange light.",
+          "Careful use of compare and explain why it matters with clear evidence."
         ],
-        "question": "Which statement is a common mistake when practising response?",
+        "question": "Which statement is a common mistake when working with response?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named compare, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named compare and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the compare used.",
+          "Name compare and explain why it matters only, without linking it to response.",
+          "Apply response to new material and name the compare and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Only saying 'I like it' or 'I hate it'."
         ],
-        "question": "A learner is practising response. Which approach best shows understanding?",
+        "question": "Which response best applies response with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Describe: crowded carriages in orange light. Respond: busy and tense because warm colours are packed tightly. Connect: like my peak-hour bus.'… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on response. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Only saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Describe: crowded carriages in orange light. Respond: busy and tense because warm colours are packed tightly. Connect: like my peak-hour bus.'…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Only saying 'I like it' or 'I hate it'.",
+          "'Describe: crowded carriages in orange light."
         ],
-        "question": "Which response best shows careful thinking about response?",
+        "question": "Which response best uses elements, techniques and audience effect for response?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Only saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork.",
-          "Name a specific source, cue or example and say what it shows about response."
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Only saying 'I like it' or 'I hate it'.",
+          "Name a specific element or technique and say what effect it creates for response."
         ],
-        "question": "Which habit strengthens evidence about compare?",
+        "question": "Which evidence move best supports a claim about response?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: Cleo writes, 'I see layered cool blues with one warm window light. It feels hopeful because the light is the brightest spot. It…",
-          "Only saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Example: Cleo writes, 'I see layered cool blues with one warm window light.",
+          "Only saying 'I like it' or 'I hate it'.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — A written or spoken response to a painting uses describe → respond → connect. Describe the subject and… — which choice is best?",
+        "question": "Using this lesson idea — A written or spoken response to a painting uses describe → respond → connect. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for response?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Only saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork.",
-          "Write a full response (describe, respond, connect) to a painting you choose. Share with a family member and note one different opinion they had and…",
+          "Name compare and explain why it matters only, with no linked example.",
+          "Write a full response (describe, respond, connect) to a painting you choose.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Only saying 'I like it' or 'I hate it'."
         ],
-        "question": "Which task best shows independent use of response?",
+        "question": "Which independent response best applies response to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about response with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating response on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Describe: crowded carriages in orange light. Respond: busy and tense because warm colours are packed tightly. Connect: like my peak-hour bus.' Structure is complete and polite. Reasoning: I used response by attending to compare rather than copying the worked model.",
+        "sample_answer": "Sample: original example using response on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for response. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with response, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Only saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork. Correction: Strong answer: 'Describe: crowded carriages in orange light. Respond: busy and tense because warm colours are packed tightly. Connect: like my peak-hour bus.'… Why: the correction restores accurate use of response.",
+        "sample_answer": "Sample error: Only saying 'I like it' or 'I hate it'.. Correction: Strong answer: 'Describe: crowded carriages in orange light.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "A written or spoken response to a painting uses describe → respond → connect. Describe the subject and elements, respond with feeling or idea plus reason, then connect to your own experience or another artwork without claiming your view is the only right one. Use respectful…",
+          "explanation": "A written or spoken response to a painting uses describe → respond → connect.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "A written or spoken response to a painting uses describe → respond → connect. Describe the subject and elements, respond with feeling or idea plus reason, then connect to your own experience or another artwork without claiming your view is the only right one. Use respectful language about artists and other viewers."
+            "A written or spoken response to a painting uses describe → respond → connect."
           ],
-          "question": "Which choice best shows accurate use of this idea about response?",
+          "question": "Which choice best applies this lesson idea about response with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Cleo writes, 'I see layered cool blues with one warm window light. It feels hopeful because the light is the brightest spot. It reminds me of waiting for family to come home. Someone else might feel lonely instead, and that is also fair.'\n\nTRY FIRST\nRespond to an imagined painting of a crowded train in warm oranges. Write describe, respond and connect sentences.\n\nFEEDBACK\nStrong answer: 'Describe: crowded carriages in orange light. Respond: busy and tense because warm colours are packed tightly. Connect: like my peak-hour bus.' Structure is complete and polite.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about response?",
+          "question": "Which choice best applies this lesson idea about response with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Cleo writes, 'I see layered cool blues with one warm window light. It feels hopeful because the light is the brightest spot. It reminds me of waiting for family to come home. Someone else might feel lonely instead, and that is also fair.' Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
+            "An answer copied without understanding.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about response?",
+          "question": "Which choice best applies this lesson idea about response with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nOnly saying 'I like it' or 'I hate it'. A Year 4 response needs reasons from the artwork. Here is a more helpful example: Example: Cleo writes, 'I see layered cool blues with one warm window light. It feels hopeful because the light is the brightest spot. It reminds me of waiting for family to come home. Someone else might feel lonely instead, and that is also fair.'\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Describe: crowded carriages in orange light. Respond: busy and tense because warm colours are packed tightly. Connect: like my peak-hour bus.' Structure is complete and polite.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about response?",
+          "question": "Which choice best applies this lesson idea about response with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA written or spoken response to a painting uses describe → respond → connect. Describe the subject and elements, respond with feeling or idea plus reason, then connect to your own experience or another artwork without claiming your view is the only right one. Use respectful language about artists and other viewers. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

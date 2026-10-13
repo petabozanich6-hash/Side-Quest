@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-MSP-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Set up a small passing game for 3 or 4 players (3 versus 1 works well). Practise 'pass and move' for 3 rounds. Record the longest run of passes and describe where players moved to get open. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: They should move into an open space and call 'Here!' so they are available for the next pass. Moving after passing keeps the ball moving and gives teammates more options. Reasoning: I used passing and moving by attending to open space rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking the person who passes has finished their job. Moving to a new space keeps them part of the play. Correction: They should move into an open space and call 'Here!' so they are available for the next pass. Moving after passing keeps the ball moving and gives teammates… Why: the correction restores accurate use of passing and moving.\n\nParent: Likely misconception: Thinking the person who passes has finished their job. Moving to a new space keeps them part of the play. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating passing and moving on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with passing and moving, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Set up a small passing game for 3 or 4 players (3 versus 1 works well). Practise 'pass and move' for 3 rounds. Record the longest run of passes and describe where players moved to get open. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using passing and moving on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking the person who passes has finished their job.. Correction: They should move into an open space and call 'Here!' so they are available for the next pass.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking the person who passes has finished their job. Moving to a new space keeps them part of the play. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating passing and moving on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with passing and moving, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about passing and moving with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for passing and moving. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "They should move into an open space and call 'Here!' so they are available for the next pass. Moving after passing keeps the ball moving and gives teammates… This matches the lesson skill for passing and moving.",
+        "explanation": "This matches the taught method for passing and moving. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "They should move into an open space and call 'Here!' so they are available for the next pass. Moving after passing keeps the ball moving and gives teammates…",
-          "Thinking the person who passes has finished their job. Moving to a new space keeps them part of the play."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "They should move into an open space and call 'Here!' so they are available for the next pass",
+          "Thinking the person who passes has finished their job"
         ],
         "question": "A player passes the ball and then stands still. Describe what the player should do next and why. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Thinking the person who passes has finished their job. Moving to a new space keeps them part of the play. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for passing and moving; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Passing and moving is a team strategy: after you pass, move into an open space so you can receive the ball again. This keeps the ball moving, makes defenders…",
-          "They should move into an open space and call 'Here!' so they are available for the next pass. Moving after passing keeps the ball moving and gives teammates…",
-          "Careful use of open space with clear evidence.",
-          "Thinking the person who passes has finished their job. Moving to a new space keeps them part of the play."
+          "Passing and moving is a team strategy: after you pass, move into an open space so you can receive the ball again",
+          "They should move into an open space and call 'Here!' so they are available for the next pass",
+          "Careful use of open space and explain why it matters with clear evidence",
+          "Thinking the person who passes has finished their job"
         ],
-        "question": "Which statement is a common mistake when practising passing and moving?",
+        "question": "Which statement is a common mistake when working with passing and moving?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named open space, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named open space and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the open space used."
+          "Repeat the worked example wording with no new evidence",
+          "Thinking the person who passes has finished their job",
+          "Name open space and explain why it matters only, without linking it to passing and moving",
+          "Apply passing and moving to new material and name the open space and explain why it matters used"
         ],
-        "question": "A learner is practising passing and moving. Which approach best shows understanding?",
+        "question": "Which response best applies passing and moving with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "They should move into an open space and call 'Here!' so they are available for the next pass. Moving after passing keeps the ball moving and gives teammates… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on passing and moving. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking the person who passes has finished their job. Moving to a new space keeps them part of the play.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "They should move into an open space and call 'Here!' so they are available for the next pass. Moving after passing keeps the ball moving and gives teammates…"
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking the person who passes has finished their job",
+          "They should move into an open space and call 'Here!' so they are available for the next pass"
         ],
-        "question": "Which response best shows careful thinking about passing and moving?",
+        "question": "Which response best uses safe, healthy or respectful choices for passing and moving?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about passing and moving.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking the person who passes has finished their job. Moving to a new space keeps them part of the play."
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with passing and moving",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking the person who passes has finished their job"
         ],
-        "question": "Which habit strengthens evidence about open space?",
+        "question": "Which evidence move best supports a claim about passing and moving?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Passing and moving is a team strategy: after you pass, move into an) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example: in a 3 versus 1 passing game, Eli passes to Ava and then runs into an empty space on the left. Ava passes back to Eli in the…",
-          "Thinking the person who passes has finished their job. Moving to a new space keeps them part of the play.",
-          "Treat a skipped permission or safety step as if it did not matter."
+          "Use a put-down and call it honesty",
+          "Example: in a 3 versus 1 passing game, Eli passes to Ava and then runs into an empty space on the left",
+          "Thinking the person who passes has finished their job",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Using this lesson idea — Passing and moving is a team strategy: after you pass, move into an open space so you can receive the ball… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about passing and moving?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for passing and moving?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Set up a small passing game for 3 or 4 players (3 versus 1 works well). Practise 'pass and move' for 3 rounds. Record the longest run of passes and…",
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Thinking the person who passes has finished their job. Moving to a new space keeps them part of the play."
+          "Set up a small passing game for 3 or 4 players (3 versus 1 works well)",
+          "Retype the worked example with no new example",
+          "Thinking the person who passes has finished their job",
+          "Name open space and explain why it matters only, with no linked example"
         ],
-        "question": "Which task best shows independent use of passing and moving?",
+        "question": "Which independent response best applies passing and moving to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about passing and moving with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating passing and moving on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: They should move into an open space and call 'Here!' so they are available for the next pass. Moving after passing keeps the ball moving and gives teammates more options. Reasoning: I used passing and moving by attending to open space rather than copying the worked model.",
+        "sample_answer": "Sample: original example using passing and moving on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for passing and moving. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with passing and moving, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking the person who passes has finished their job. Moving to a new space keeps them part of the play. Correction: They should move into an open space and call 'Here!' so they are available for the next pass. Moving after passing keeps the ball moving and gives teammates… Why: the correction restores accurate use of passing and moving.",
+        "sample_answer": "Sample error: Thinking the person who passes has finished their job.. Correction: They should move into an open space and call 'Here!' so they are available for the next pass.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Passing and moving is a team strategy: after you pass, move into an open space so you can receive the ball again. This keeps the ball moving, makes defenders move and helps the team keep possession. Use clear communication ('Here!') and pass to open teammates, not just to…",
+          "explanation": "Passing and moving is a team strategy: after you pass, move into an open space so you can receive the ball again.",
           "options": [
-            "Passing and moving is a team strategy: after you pass, move into an open space so you can receive the ball again. This keeps the ball moving, makes defenders move and helps the team keep possession. Use clear communication ('Here!') and pass to open teammates, not just to friends. Keep the game safe with no contact, soft balls and enough space.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Passing and moving is a team strategy: after you pass, move into an open space so you can receive the ball again",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about passing and moving?",
+          "question": "Which choice best applies this lesson idea about passing and moving with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: in a 3 versus 1 passing game, Eli passes to Ava and then runs into an empty space on the left. Ava passes back to Eli in the space, and they keep the ball for 8 passes. The defender cannot intercept because the ball keeps moving to open players.\n\nTRY FIRST\nA player passes the ball and then stands still. Describe what the player should do next and why.\n\nFEEDBACK\nThey should move into an open space and call 'Here!' so they are available for the next pass. Moving after passing keeps the ball moving and gives teammates more options.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about passing and moving?",
+          "question": "Which choice best applies this lesson idea about passing and moving with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: in a 3 versus 1 passing game, Eli passes to Ava and then runs into an empty space on the left. Ava passes back to Eli in the space, and they keep the ball for 8 passes. The defender cannot intercept because the ball keeps moving to open players. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about passing and moving?",
+          "question": "Which choice best applies this lesson idea about passing and moving with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking the person who passes has finished their job. Moving to a new space keeps them part of the play. Here is a more helpful example: Example: in a 3 versus 1 passing game, Eli passes to Ava and then runs into an empty space on the left. Ava passes back to Eli in the space, and they keep the ball for 8 passes. The defender cannot intercept because the ball keeps moving to open players.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nThey should move into an open space and call 'Here!' so they are available for the next pass. Moving after passing keeps the ball moving and gives teammates more options.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about passing and moving?",
+          "question": "Which choice best applies this lesson idea about passing and moving with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPassing and moving is a team strategy: after you pass, move into an open space so you can receive the ball again. This keeps the ball moving, makes defenders move and helps the team keep possession. Use clear communication ('Here!') and pass to open teammates, not just to friends. Keep the game safe with no contact, soft balls and enough space. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Plan a group artwork with a family member or friends. Write the design brief, list the materials and give each person a job. Draw the layout on a large sheet. Make your section and record how you listened to the other pe Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper. Person 1 plans the layout, person 2 makes the fish, person 3 makes the waves and… Reasoning: I used a class artwork by attending to a design brief rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared… Correction: Strong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper. Person 1 plans the layout, person 2 makes the… Why: the correction restores accurate use of a class artwork.\n\nParent: Likely misconception: Thinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared colours so the parts join together. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a class artwork on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a class artwork, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Plan a group artwork with a family member or friends. Write the design brief, list the materials and give each person a job. Draw the layout on a large sheet. Make your section and record how you listened to the other pe Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a class artwork on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that group work means each person does their own picture on the same paper.. Correction: Strong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared colours so the parts join together. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a class artwork on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a class artwork, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a class artwork with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a class artwork. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper. Person 1 plans the layout, person 2 makes the… This matches the lesson skill for a class artwork.",
+        "explanation": "This matches the taught method for a class artwork. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared…",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper. Person 1 plans the layout, person 2 makes the…"
+          "Thinking that group work means each person does their own picture on the same paper.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'We will make a collage of an ocean scene on one large sheet using blue, green and white paper."
         ],
         "question": "A group of three wants to make a class artwork of the ocean. Write the design brief in one sentence and give each person a job. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a class artwork; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper. Person 1 plans the layout, person 2 makes the…",
-          "Careful use of a design brief with clear evidence.",
-          "Thinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared…",
-          "A class artwork is made by many people working together on one piece. First agree on a design brief: what the artwork shows, the size, the materials and the…"
+          "'We will make a collage of an ocean scene on one large sheet using blue, green and white paper.",
+          "Careful use of a design brief and explain why it matter with clear evidence.",
+          "Thinking that group work means each person does their own picture on the same paper.",
+          "A class artwork is made by many people working together on one piece."
         ],
-        "question": "Which statement is a common mistake when practising a class artwork?",
+        "question": "Which statement is a common mistake when working with a class artwork?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named a design brief, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a design brief and explain why it matter, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a design brief used.",
+          "Thinking that group work means each person does their own picture on the same paper.",
+          "Name a design brief and explain why it matter only, without linking it to a class artwork.",
+          "Apply a class artwork to new material and name the a design brief and explain why it matter used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising a class artwork. Which approach best shows understanding?",
+        "question": "Which response best applies a class artwork with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper. Person 1 plans the layout, person 2 makes the… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a class artwork. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper. Person 1 plans the layout, person 2 makes the…",
-          "Thinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared…",
+          "'We will make a collage of an ocean scene on one large sheet using blue, green and white paper.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that group work means each person does their own picture on the same paper."
         ],
-        "question": "Which response best shows careful thinking about a class artwork?",
+        "question": "Which response best uses elements, techniques and audience effect for a class artwork?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared…",
-          "Name a specific source, cue or example and say what it shows about a class artwork.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
+          "Thinking that group work means each person does their own picture on the same paper.",
+          "Name a specific element or technique and say what effect it creates for a class artwork.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which habit strengthens evidence about a design brief?",
+        "question": "Which evidence move best supports a claim about a class artwork?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Example: a class of four plans a mural of a rainforest. Brief: one large paper, collage and printed leaves. Jobs: Ava draws the layout,…",
-          "Thinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared…",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: a class of four plans a mural of a rainforest.",
+          "Thinking that group work means each person does their own picture on the same paper.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — A class artwork is made by many people working together on one piece. First agree on a design brief: what… — which choice is best?",
+        "question": "Using this lesson idea — A class artwork is made by many people working together on one piece. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a class artwork?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared…",
-          "Plan a group artwork with a family member or friends. Write the design brief, list the materials and give each person a job. Draw the layout on a…",
+          "Thinking that group work means each person does their own picture on the same paper.",
+          "Name a design brief and explain why it matter only, with no linked example.",
+          "Plan a group artwork with a family member or friends.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of a class artwork?",
+        "question": "Which independent response best applies a class artwork to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a class artwork with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a class artwork on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper. Person 1 plans the layout, person 2 makes the fish, person 3 makes the waves and… Reasoning: I used a class artwork by attending to a design brief rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a class artwork on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a class artwork. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a class artwork, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared… Correction: Strong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper. Person 1 plans the layout, person 2 makes the… Why: the correction restores accurate use of a class artwork.",
+        "sample_answer": "Sample error: Thinking that group work means each person does their own picture on the same paper.. Correction: Strong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "A class artwork is made by many people working together on one piece. First agree on a design brief: what the artwork shows, the size, the materials and the techniques, such as printing, collage or drawing. Divide jobs so everyone has a role, such as planning the layout,…",
+          "explanation": "A class artwork is made by many people working together on one piece.",
           "options": [
-            "A class artwork is made by many people working together on one piece. First agree on a design brief: what the artwork shows, the size, the materials and the techniques, such as printing, collage or drawing. Divide jobs so everyone has a role, such as planning the layout, preparing the materials, making sections and putting the sections together. Draw a shared plan so every section fits. Listen to each other's ideas, take turns and agree on one idea. Use one or two main colours so the artwork looks joined up.",
+            "A class artwork is made by many people working together on one piece.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a class artwork?",
+          "question": "Which choice best applies this lesson idea about a class artwork with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a class of four plans a mural of a rainforest. Brief: one large paper, collage and printed leaves. Jobs: Ava draws the layout, Ben prints leaf patterns, Cleo collages the animals and Dev adds the border. They agree on greens, yellows and one red for the parrot, so the mural looks connected. They check the plan each lesson to see that each section fits.\n\nTRY FIRST\nA group of three wants to make a class artwork of the ocean. Write the design brief in one sentence and give each person a job.\n\nFEEDBACK\nStrong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper. Person 1 plans the layout, person 2 makes the fish, person 3 makes the waves and plants.' A clear brief and fair jobs help the artwork fit together.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a class artwork?",
+          "question": "Which choice best applies this lesson idea about a class artwork with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a class of four plans a mural of a rainforest. Brief: one large paper, collage and printed leaves. Jobs: Ava draws the layout, Ben prints leaf patterns, Cleo collages the animals and Dev adds the border. They agree on greens, yellows and one red for the parrot, so the mural looks connected. They check the plan each lesson to see that each section fits. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a class artwork?",
+          "question": "Which choice best applies this lesson idea about a class artwork with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that group work means each person does their own picture on the same paper. A class artwork needs a shared plan, a common theme and a few shared colours so the parts join together. Here is a more helpful example: Example: a class of four plans a mural of a rainforest. Brief: one large paper, collage and printed leaves. Jobs: Ava draws the layout, Ben prints leaf patterns, Cleo collages the animals and Dev adds the border. They agree on greens, yellows and one red for the parrot, so the mural looks connected. They check the plan each lesson to see that each section fits.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'We will make a collage of an ocean scene on one large sheet using blue, green and white paper. Person 1 plans the layout, person 2 makes the fish, person 3 makes the waves and plants.' A clear brief and fair jobs help the artwork fit together.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a class artwork?",
+          "question": "Which choice best applies this lesson idea about a class artwork with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA class artwork is made by many people working together on one piece. First agree on a design brief: what the artwork shows, the size, the materials and the techniques, such as printing, collage or drawing. Divide jobs so everyone has a role, such as planning the layout, preparing the materials, making sections and putting the sections together. Draw a shared plan so every section fits. Listen to each other's ideas, take turns and agree on one idea. Use one or two main colours so the artwork looks joined up. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-DATA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write four survey questions (two fair drafts from biased starters). Pilot one question with at least ten people. Comment on clarity of options. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Neutral stem + balanced options including other/not sure if needed. Reasoning: I used survey by attending to question and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Leading questions produce data that mainly shows the writer’s opinion. Correction: Neutral stem + balanced options including other/not sure if needed. Why: the correction restores accurate use of survey.\n\nParent: Likely misconception: Leading questions produce data that mainly shows the writer’s opinion. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses survey with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with survey, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write four survey questions (two fair drafts from biased starters). Pilot one question with at least ten people. Comment on clarity of options. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for survey; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Leading questions produce data that mainly shows the writer’s opinion.. Correction uses Neutral stem + balanced options including other/not sure if needed.. Why: restores accurate survey.\n\nParent: Likely misconception: Leading questions produce data that mainly shows the writer’s opinion. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses survey with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with survey, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for survey, and names places/values. Reject copied model numbers. / Accept a named misconception about survey, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Neutral stem + balanced options including other/not sure if needed. This matches the lesson skill for survey.",
+        "explanation": "This matches the taught method for survey. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Neutral stem + balanced options including other/not sure if needed.",
-          "Leading questions produce data that mainly shows the writer’s opinion.",
-          "Ignore the task and invent an unrelated answer."
+          "A method that skips the key step taught in this lesson",
+          "Neutral stem + balanced options including other/not sure if needed",
+          "Leading questions produce data that mainly shows the writer’s opinion",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Rewrite a biased question about favourite seasons into a fair multiple-choice question with four options. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Leading questions produce data that mainly shows the writer’s opinion. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for survey; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Neutral stem + balanced options including other/not sure if needed.",
-          "Careful use of question and explain why it matters with clear evidence.",
-          "Leading questions produce data that mainly shows the writer’s opinion.",
-          "Good survey questions are clear, fair and have sensible options. Biased wording pushes people toward one answer."
+          "Neutral stem + balanced options including other/not sure if needed",
+          "Careful use of question and explain why it matters with clear evidence",
+          "Leading questions produce data that mainly shows the writer’s opinion",
+          "Good survey questions are clear, fair and have sensible options"
         ],
-        "question": "Which statement is a common mistake when practising survey?",
+        "question": "Which statement is a common mistake when working with survey?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named question and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named question and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the question and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name question and explain why it matters only, without linking it to survey",
+          "Apply survey to new material and name the question and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Leading questions produce data that mainly shows the writer’s opinion"
         ],
-        "question": "A learner is practising survey. Which approach best shows understanding?",
+        "question": "Which response best applies survey with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value.",
-          "Leading questions produce data that mainly shows the writer’s opinion.",
-          "Show the places, values or steps and say why each step is valid."
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value",
+          "Leading questions produce data that mainly shows the writer’s opinion",
+          "Show each place, value or step and say why that step is valid"
         ],
-        "question": "Which working note best supports a mathematics answer about survey?",
+        "question": "Which working best supports a correct answer for this lesson on survey?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught survey method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Neutral stem + balanced options including other/not sure if needed.",
-          "Leading questions produce data that mainly shows the writer’s opinion."
+          "Read 24 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 24 and 6 as interchangeable",
+          "Neutral stem + balanced options including other/not sure if needed",
+          "Leading questions produce data that mainly shows the writer’s opinion"
         ],
-        "question": "Using this lesson idea — Good survey questions are clear, fair and have sensible options. Biased wording pushes people toward one… — which statement is true?",
+        "question": "Using the method for survey, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either."
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a survey problem with numbers such as 24 and 6, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers.",
-          "Copy the worked example and call it independent work."
+          "Use the same survey method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 24 and 6 as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Leading questions produce data that mainly shows the writer’s opinion"
         ],
-        "question": "Which practice choice shows transfer of survey?",
+        "question": "Solve a fresh survey problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name the exact place or step that failed, then show corrected working for survey.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer."
+          "Leading questions produce data that mainly shows the writer’s opinion",
+          "Good survey questions are clear, fair and have sensible options",
+          "Neutral stem + balanced options including other/not sure if needed",
+          "Label units when comparing 24 with 6"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for survey?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for survey, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses survey with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Neutral stem + balanced options including other/not sure if needed. Reasoning: I used survey by attending to question and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for survey; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about survey, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with survey, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Leading questions produce data that mainly shows the writer’s opinion. Correction: Neutral stem + balanced options including other/not sure if needed. Why: the correction restores accurate use of survey.",
+        "sample_answer": "Sample misconception: Leading questions produce data that mainly shows the writer’s opinion.. Correction uses Neutral stem + balanced options including other/not sure if needed.. Why: restores accurate survey.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Good survey questions are clear, fair and have sensible options. Biased wording pushes people toward one answer. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Good survey questions are clear, fair and have sensible options.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Good survey questions are clear, fair and have sensible options. Biased wording pushes people toward one answer.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Good survey questions are clear, fair and have sensible options",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about survey?",
+          "question": "Which choice best applies this lesson idea about survey with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBiased: “Don’t you agree pizza is best?” Fairer: “Which lunch do you prefer? pizza / sandwich / sushi / other.” Options should cover likely answers.\n\nTRY FIRST\nRewrite a biased question about favourite seasons into a fair multiple-choice question with four options.\n\nFEEDBACK\nNeutral stem + balanced options including other/not sure if needed.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about survey?",
+          "question": "Which choice best applies this lesson idea about survey with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBiased: “Don’t you agree pizza is best?” Fairer: “Which lunch do you prefer? pizza / sandwich / sushi / other.” Options should cover likely answers. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Use an intentionally incorrect attempt as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about survey?",
+          "question": "Which choice best applies this lesson idea about survey with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLeading questions produce data that mainly shows the writer’s opinion. Here is a more productive model: Biased: “Don’t you agree pizza is best?” Fairer: “Which lunch do you prefer? pizza / sandwich / sushi / other.” Options should cover likely answers.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nNeutral stem + balanced options including other/not sure if needed.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about survey?",
+          "question": "Which choice best applies this lesson idea about survey with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nGood survey questions are clear, fair and have sensible options. Biased wording pushes people toward one answer. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

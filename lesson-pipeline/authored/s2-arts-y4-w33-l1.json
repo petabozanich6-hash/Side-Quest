@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Create a stagecraft plan sheet for one scene with labelled set/light/sound and the story reason for each. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: Links each design choice to mood/story, keeps ideas classroom-safe. Reasoning: I used stagecraft by attending to set rather than copying the worked model.\n\nParent: Written model 2: Common error: Piling props because they look cool. Select for story. Correction: Strong answer: Links each design choice to mood/story, keeps ideas classroom-safe. Why: the correction restores accurate use of stagecraft.\n\nParent: Likely misconception: Piling props because they look cool. Select for story. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating stagecraft on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with stagecraft, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create a stagecraft plan sheet for one scene with labelled set/light/sound and the story reason for each. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using stagecraft on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Piling props because they look cool.. Correction: Strong answer: Links each design choice to mood/story, keeps ideas classroom-safe.. Why it helps the audience is stated.\n\nParent: Likely misconception: Piling props because they look cool. Select for story. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating stagecraft on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with stagecraft, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about stagecraft with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for stagecraft. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: Links each design choice to mood/story, keeps ideas classroom-safe. This matches the lesson skill for stagecraft.",
+        "explanation": "This matches the taught method for stagecraft. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: Links each design choice to mood/story, keeps ideas classroom-safe.",
-          "Piling props because they look cool. Select for story.",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "Links each design choice to mood/story, keeps ideas classroom-safe.",
+          "Piling props because they look cool.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "Propose set, light and sound for a library-after-hours mystery scene. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Piling props because they look cool. Select for story. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for stagecraft; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: Links each design choice to mood/story, keeps ideas classroom-safe.",
-          "Careful use of set with clear evidence.",
-          "Piling props because they look cool. Select for story.",
-          "Stagecraft supports story through set, lighting ideas and sound cues. In classrooms, sets can be modular tables/cloths; lighting can be torch angles or open…"
+          "Links each design choice to mood/story, keeps ideas classroom-safe.",
+          "Careful use of set and explain why it matters with clear evidence.",
+          "Piling props because they look cool.",
+          "Stagecraft supports story through set, lighting ideas and sound cues."
         ],
-        "question": "Which statement is a common mistake when practising stagecraft?",
+        "question": "Which statement is a common mistake when working with stagecraft?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named set, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named set and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the set used.",
+          "Name set and explain why it matters only, without linking it to stagecraft.",
+          "Apply stagecraft to new material and name the set and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Piling props because they look cool."
         ],
-        "question": "A learner is practising stagecraft. Which approach best shows understanding?",
+        "question": "Which response best applies stagecraft with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: Links each design choice to mood/story, keeps ideas classroom-safe. uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on stagecraft. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Piling props because they look cool. Select for story.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: Links each design choice to mood/story, keeps ideas classroom-safe."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Piling props because they look cool.",
+          "Links each design choice to mood/story, keeps ideas classroom-safe."
         ],
-        "question": "Which response best shows careful thinking about stagecraft?",
+        "question": "Which response best uses elements, techniques and audience effect for stagecraft?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about stagecraft.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Piling props because they look cool. Select for story."
+          "Name a specific element or technique and say what effect it creates for stagecraft.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Piling props because they look cool."
         ],
-        "question": "Which habit strengthens evidence about set?",
+        "question": "Which evidence move best supports a claim about stagecraft?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: For a storm scene, grey cloth backdrop, torch flickered upward for lightning, drum cue for thunder. Audience reads 'storm'…",
-          "Piling props because they look cool. Select for story.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Example: For a storm scene, grey cloth backdrop, torch flickered upward for lightning, drum cue for thunder.",
+          "Piling props because they look cool.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Stagecraft supports story through set, lighting ideas and sound cues. In classrooms, sets can be modular… — which choice is best?",
+        "question": "Using this lesson idea — Stagecraft supports story through set, lighting ideas and sound cues. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for stagecraft?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Piling props because they look cool. Select for story.",
+          "Name set and explain why it matters only, with no linked example.",
           "Create a stagecraft plan sheet for one scene with labelled set/light/sound and the story reason for each.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Piling props because they look cool."
         ],
-        "question": "Which task best shows independent use of stagecraft?",
+        "question": "Which independent response best applies stagecraft to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about stagecraft with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating stagecraft on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: Links each design choice to mood/story, keeps ideas classroom-safe. Reasoning: I used stagecraft by attending to set rather than copying the worked model.",
+        "sample_answer": "Sample: original example using stagecraft on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for stagecraft. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with stagecraft, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Piling props because they look cool. Select for story. Correction: Strong answer: Links each design choice to mood/story, keeps ideas classroom-safe. Why: the correction restores accurate use of stagecraft.",
+        "sample_answer": "Sample error: Piling props because they look cool.. Correction: Strong answer: Links each design choice to mood/story, keeps ideas classroom-safe.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Stagecraft supports story through set, lighting ideas and sound cues. In classrooms, sets can be modular tables/cloths; lighting can be torch angles or open blinds; sound can be live or device cues. Every design choice should serve meaning, not clutter. Supported responses name…",
+          "explanation": "Stagecraft supports story through set, lighting ideas and sound cues.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Stagecraft supports story through set, lighting ideas and sound cues. In classrooms, sets can be modular tables/cloths; lighting can be torch angles or open blinds; sound can be live or device cues. Every design choice should serve meaning, not clutter."
+            "Stagecraft supports story through set, lighting ideas and sound cues."
           ],
-          "question": "Which choice best shows accurate use of this idea about stagecraft?",
+          "question": "Which choice best applies this lesson idea about stagecraft with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: For a storm scene, grey cloth backdrop, torch flickered upward for lightning, drum cue for thunder. Audience reads 'storm' without explanation.\n\nTRY FIRST\nPropose set, light and sound for a library-after-hours mystery scene.\n\nFEEDBACK\nStrong answer: Links each design choice to mood/story, keeps ideas classroom-safe.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about stagecraft?",
+          "question": "Which choice best applies this lesson idea about stagecraft with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: For a storm scene, grey cloth backdrop, torch flickered upward for lightning, drum cue for thunder. Audience reads 'storm' without explanation. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about stagecraft?",
+          "question": "Which choice best applies this lesson idea about stagecraft with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPiling props because they look cool. Select for story. Here is a more helpful example: Example: For a storm scene, grey cloth backdrop, torch flickered upward for lightning, drum cue for thunder. Audience reads 'storm' without explanation.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: Links each design choice to mood/story, keeps ideas classroom-safe.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about stagecraft?",
+          "question": "Which choice best applies this lesson idea about stagecraft with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nStagecraft supports story through set, lighting ideas and sound cues. In classrooms, sets can be modular tables/cloths; lighting can be torch angles or open blinds; sound can be live or device cues. Every design choice should serve meaning, not clutter. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

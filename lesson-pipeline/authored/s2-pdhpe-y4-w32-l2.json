@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-MSP-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Learn a short folk dance from a school resource. Perform with credit spoken aloud. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Shows respect and acknowledges origin. Reasoning: I used folk by attending to steps rather than copying the worked model.\n\nParent: Written model 2: Common error: Skipping credit claims the dance as “just ours”. Correction: Shows respect and acknowledges origin. Why: the correction restores accurate use of folk.\n\nParent: Likely misconception: Skipping credit claims the dance as “just ours”. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating folk on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with folk, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Learn a short folk dance from a school resource. Perform with credit spoken aloud. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using folk on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Skipping credit claims the dance as “just ours”.. Correction: Shows respect and acknowledges origin.. Why it helps the audience is stated.\n\nParent: Likely misconception: Skipping credit claims the dance as “just ours”. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating folk on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with folk, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about folk with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for folk. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Shows respect and acknowledges origin. This matches the lesson skill for folk.",
+        "explanation": "This matches the taught method for folk. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Skipping credit claims the dance as “just ours”.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Shows respect and acknowledges origin."
+          "Skipping credit claims the dance as “just ours”",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Shows respect and acknowledges origin"
         ],
         "question": "Why credit the culture/source on a performance program?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Skipping credit claims the dance as “just ours”. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for folk; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of steps with clear evidence.",
-          "Skipping credit claims the dance as “just ours”.",
-          "Learning a folk dance follows step progressions, formations and music counts, with culture credited on programs.",
-          "Shows respect and acknowledges origin."
+          "Careful use of steps and explain why it matters with clear evidence",
+          "Skipping credit claims the dance as “just ours”",
+          "Learning a folk dance follows step progressions, formations and music counts, with culture credited on programs",
+          "Shows respect and acknowledges origin"
         ],
-        "question": "Which statement is a common mistake when practising folk?",
+        "question": "Which statement is a common mistake when working with folk?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named steps, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named steps and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the steps used.",
-          "Repeat the worked example wording with no new evidence."
+          "Skipping credit claims the dance as “just ours”",
+          "Name steps and explain why it matters only, without linking it to folk",
+          "Apply folk to new material and name the steps and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising folk. Which approach best shows understanding?",
+        "question": "Which response best applies folk with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Shows respect and acknowledges origin. uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on folk. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Shows respect and acknowledges origin.",
-          "Skipping credit claims the dance as “just ours”.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work."
+          "Shows respect and acknowledges origin",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Skipping credit claims the dance as “just ours”"
         ],
-        "question": "Which response best shows careful thinking about folk?",
+        "question": "Which response best uses safe, healthy or respectful choices for folk?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about folk.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Skipping credit claims the dance as “just ours”."
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with folk",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Skipping credit claims the dance as “just ours”"
         ],
-        "question": "Which habit strengthens evidence about steps?",
+        "question": "Which evidence move best supports a claim about folk?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Learning a folk dance follows step progressions, formations and music) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example: walk through formation → add steps → music; program note names the dance tradition as published.",
-          "Skipping credit claims the dance as “just ours”.",
-          "Treat a skipped permission or safety step as if it did not matter."
+          "Use a put-down and call it honesty",
+          "Example: walk through formation → add steps → music",
+          "Skipping credit claims the dance as “just ours”",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Using this lesson idea — Learning a folk dance follows step progressions, formations and music counts, with culture credited on… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about folk?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for folk?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Skipping credit claims the dance as “just ours”.",
-          "Learn a short folk dance from a school resource. Perform with credit spoken aloud."
+          "Retype the worked example with no new example",
+          "Skipping credit claims the dance as “just ours”",
+          "Name steps and explain why it matters only, with no linked example",
+          "Learn a short folk dance from a school resource"
         ],
-        "question": "Which task best shows independent use of folk?",
+        "question": "Which independent response best applies folk to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about folk with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating folk on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Shows respect and acknowledges origin. Reasoning: I used folk by attending to steps rather than copying the worked model.",
+        "sample_answer": "Sample: original example using folk on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for folk. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with folk, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Skipping credit claims the dance as “just ours”. Correction: Shows respect and acknowledges origin. Why: the correction restores accurate use of folk.",
+        "sample_answer": "Sample error: Skipping credit claims the dance as “just ours”.. Correction: Shows respect and acknowledges origin.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Learning a folk dance follows step progressions, formations and music counts, with culture credited on programs. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Learning a folk dance follows step progressions, formations and music counts, with culture credited on programs.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Learning a folk dance follows step progressions, formations and music counts, with culture credited on programs.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Learning a folk dance follows step progressions, formations and music counts, with culture credited on programs",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about folk?",
+          "question": "Which choice best applies this lesson idea about folk with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: walk through formation → add steps → music; program note names the dance tradition as published.\n\nTRY FIRST\nWhy credit the culture/source on a performance program?\n\nFEEDBACK\nShows respect and acknowledges origin.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about folk?",
+          "question": "Which choice best applies this lesson idea about folk with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: walk through formation → add steps → music; program note names the dance tradition as published. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Use an intentionally unsafe or unhelpful choice as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about folk?",
+          "question": "Which choice best applies this lesson idea about folk with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSkipping credit claims the dance as “just ours”. Here is a more helpful example: Example: walk through formation → add steps → music; program note names the dance tradition as published.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nShows respect and acknowledges origin.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about folk?",
+          "question": "Which choice best applies this lesson idea about folk with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLearning a folk dance follows step progressions, formations and music counts, with culture credited on programs. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Play three short improv rounds with a family member using yes-and. Write one offer you accepted and how you added to it. Anyone may pass on a topic. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon. Blocking: That’s silly, maps aren’t real. Yes-and builds.' Reasoning: I used improvisation by attending to offer rather than copying the worked model.\n\nParent: Written model 2: Common error: Trying to be the funniest person by ignoring partners. Good improv supports the group idea. Correction: Strong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon. Blocking: That’s silly, maps aren’t real. Yes-and builds.' Why: the correction restores accurate use of improvisation.\n\nParent: Likely misconception: Trying to be the funniest person by ignoring partners. Good improv supports the group idea. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating improvisation on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with improvisation, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Play three short improv rounds with a family member using yes-and. Write one offer you accepted and how you added to it. Anyone may pass on a topic. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using improvisation on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Trying to be the funniest person by ignoring partners.. Correction: Strong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon.. Why it helps the audience is stated.\n\nParent: Likely misconception: Trying to be the funniest person by ignoring partners. Good improv supports the group idea. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating improvisation on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with improvisation, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about improvisation with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for improvisation. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon. Blocking: That’s silly, maps aren’t real. Yes-and builds.' This matches the lesson skill for improvisation.",
+        "explanation": "This matches the taught method for improvisation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon. Blocking: That’s silly, maps aren’t real. Yes-and builds.'",
-          "Trying to be the funniest person by ignoring partners. Good improv supports the group idea.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Yes-and: Yes, and the map shows a river we must cross by noon.",
+          "Trying to be the funniest person by ignoring partners.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "Partner says, 'We’re explorers who found a map.' Write a yes-and line and a blocking line; say which builds the scene. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Trying to be the funniest person by ignoring partners. Good improv supports the group idea. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for improvisation; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of offer with clear evidence.",
-          "Trying to be the funniest person by ignoring partners. Good improv supports the group idea.",
-          "Improvisation means making drama in the moment within rules. A strong habit is yes-and: accept a partner’s offer (idea) and add to it instead of blocking.…",
-          "Strong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon. Blocking: That’s silly, maps aren’t real. Yes-and builds.'"
+          "Careful use of offer and explain why it matters with clear evidence.",
+          "Trying to be the funniest person by ignoring partners.",
+          "Improvisation means making drama in the moment within rules.",
+          "Yes-and: Yes, and the map shows a river we must cross by noon."
         ],
-        "question": "Which statement is a common mistake when practising improvisation?",
+        "question": "Which statement is a common mistake when working with improvisation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named offer, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named offer and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the offer used."
+          "Trying to be the funniest person by ignoring partners.",
+          "Name offer and explain why it matters only, without linking it to improvisation.",
+          "Apply improvisation to new material and name the offer and explain why it matters used."
         ],
-        "question": "A learner is practising improvisation. Which approach best shows understanding?",
+        "question": "Which response best applies improvisation with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon. Blocking: That’s silly, maps aren’t real. Yes-and builds.' uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on improvisation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon. Blocking: That’s silly, maps aren’t real. Yes-and builds.'",
-          "Trying to be the funniest person by ignoring partners. Good improv supports the group idea."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Trying to be the funniest person by ignoring partners.",
+          "Yes-and: Yes, and the map shows a river we must cross by noon.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about improvisation?",
+        "question": "Which response best uses elements, techniques and audience effect for improvisation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Trying to be the funniest person by ignoring partners. Good improv supports the group idea.",
-          "Name a specific source, cue or example and say what it shows about improvisation.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
+          "Trying to be the funniest person by ignoring partners.",
+          "Name a specific element or technique and say what effect it creates for improvisation.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which habit strengthens evidence about offer?",
+        "question": "Which evidence move best supports a claim about improvisation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: Offer: 'This lift is stuck.' Accept-and: 'Yes, and I pressed the alarm—can you hear it beeping?' Blocking would be 'No it isn’t,'…",
-          "Trying to be the funniest person by ignoring partners. Good improv supports the group idea.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Example: Offer: 'This lift is stuck.' Accept-and: 'Yes, and I pressed the alarm—can you hear it beeping?' Blocking",
+          "Trying to be the funniest person by ignoring partners.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Improvisation means making drama in the moment within rules. A strong habit is yes-and: accept a partner’s… — which choice is best?",
+        "question": "Using this lesson idea — Improvisation means making drama in the moment within rules. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for improvisation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Trying to be the funniest person by ignoring partners. Good improv supports the group idea.",
-          "Play three short improv rounds with a family member using yes-and. Write one offer you accepted and how you added to it. Anyone may pass on a topic.",
+          "Name offer and explain why it matters only, with no linked example.",
+          "Play three short improv rounds with a family member using yes-and.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Trying to be the funniest person by ignoring partners."
         ],
-        "question": "Which task best shows independent use of improvisation?",
+        "question": "Which independent response best applies improvisation to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about improvisation with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating improvisation on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon. Blocking: That’s silly, maps aren’t real. Yes-and builds.' Reasoning: I used improvisation by attending to offer rather than copying the worked model.",
+        "sample_answer": "Sample: original example using improvisation on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for improvisation. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with improvisation, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Trying to be the funniest person by ignoring partners. Good improv supports the group idea. Correction: Strong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon. Blocking: That’s silly, maps aren’t real. Yes-and builds.' Why: the correction restores accurate use of improvisation.",
+        "sample_answer": "Sample error: Trying to be the funniest person by ignoring partners.. Correction: Strong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Improvisation means making drama in the moment within rules. A strong habit is yes-and: accept a partner’s offer (idea) and add to it instead of blocking. Stay in character, keep ideas appropriate for school and freeze when the leader calls stop. Improvisation is practice in…",
+          "explanation": "Improvisation means making drama in the moment within rules.",
           "options": [
+            "An answer copied without understanding.",
+            "Improvisation means making drama in the moment within rules.",
             "A guess with no artistic reason.",
-            "Improvisation means making drama in the moment within rules. A strong habit is yes-and: accept a partner’s offer (idea) and add to it instead of blocking. Stay in character, keep ideas appropriate for school and freeze when the leader calls stop. Improvisation is practice in listening, not showing off.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about improvisation?",
+          "question": "Which choice best applies this lesson idea about improvisation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Offer: 'This lift is stuck.' Accept-and: 'Yes, and I pressed the alarm—can you hear it beeping?' Blocking would be 'No it isn’t,' which stops the scene.\n\nTRY FIRST\nPartner says, 'We’re explorers who found a map.' Write a yes-and line and a blocking line; say which builds the scene.\n\nFEEDBACK\nStrong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon. Blocking: That’s silly, maps aren’t real. Yes-and builds.'",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about improvisation?",
+          "question": "Which choice best applies this lesson idea about improvisation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Offer: 'This lift is stuck.' Accept-and: 'Yes, and I pressed the alarm—can you hear it beeping?' Blocking would be 'No it isn’t,' which stops the scene. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about improvisation?",
+          "question": "Which choice best applies this lesson idea about improvisation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTrying to be the funniest person by ignoring partners. Good improv supports the group idea. Here is a more helpful example: Example: Offer: 'This lift is stuck.' Accept-and: 'Yes, and I pressed the alarm—can you hear it beeping?' Blocking would be 'No it isn’t,' which stops the scene.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Yes-and: Yes, and the map shows a river we must cross by noon. Blocking: That’s silly, maps aren’t real. Yes-and builds.'",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about improvisation?",
+          "question": "Which choice best applies this lesson idea about improvisation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nImprovisation means making drama in the moment within rules. A strong habit is yes-and: accept a partner’s offer (idea) and add to it instead of blocking. Stay in character, keep ideas appropriate for school and freeze when the leader calls stop. Improvisation is practice in listening, not showing off. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

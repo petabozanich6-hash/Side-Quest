@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Playbuild a three-scene outline with your group or family. List cast and crew jobs and one prop needed for each scene. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.' Reasoning: I used playbuilding by attending to structure rather than copying the worked model.\n\nParent: Written model 2: Common error: Writing jokes first with no story spine. Structure holds the audience. Correction: Strong answer: 'Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.' Why: the correction restores accurate use of playbuilding.\n\nParent: Likely misconception: Writing jokes first with no story spine. Structure holds the audience. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating playbuilding on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with playbuilding, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Playbuild a three-scene outline with your group or family. List cast and crew jobs and one prop needed for each scene. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using playbuilding on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Writing jokes first with no story spine.. Correction: Strong answer: 'Beg: find wallet.. Why it helps the audience is stated.\n\nParent: Likely misconception: Writing jokes first with no story spine. Structure holds the audience. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating playbuilding on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with playbuilding, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about playbuilding with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for playbuilding. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.' This matches the lesson skill for playbuilding.",
+        "explanation": "This matches the taught method for playbuilding. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Writing jokes first with no story spine. Structure holds the audience.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.'"
+          "Writing jokes first with no story spine.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager."
         ],
         "question": "Write a three-part outline for a play about returning a lost item, and name two production jobs besides acting. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Writing jokes first with no story spine. Structure holds the audience. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for playbuilding; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.'",
-          "Careful use of structure with clear evidence.",
-          "Writing jokes first with no story spine. Structure holds the audience.",
-          "Playbuilding means creating an original short play as a group. Agree a story spine: beginning (world and want), middle (conflict), end (change). Assign roles…"
+          "Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.",
+          "Careful use of structure and explain why it matters with clear evidence.",
+          "Writing jokes first with no story spine.",
+          "Playbuilding means creating an original short play as a group."
         ],
-        "question": "Which statement is a common mistake when practising playbuilding?",
+        "question": "Which statement is a common mistake when working with playbuilding?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named structure, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named structure and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the structure used.",
+          "Name structure and explain why it matters only, without linking it to playbuilding.",
+          "Apply playbuilding to new material and name the structure and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Writing jokes first with no story spine."
         ],
-        "question": "A learner is practising playbuilding. Which approach best shows understanding?",
+        "question": "Which response best applies playbuilding with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.' uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on playbuilding. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Writing jokes first with no story spine. Structure holds the audience.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.'"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Writing jokes first with no story spine.",
+          "Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager."
         ],
-        "question": "Which response best shows careful thinking about playbuilding?",
+        "question": "Which response best uses elements, techniques and audience effect for playbuilding?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Writing jokes first with no story spine. Structure holds the audience.",
-          "Name a specific source, cue or example and say what it shows about playbuilding."
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Writing jokes first with no story spine.",
+          "Name a specific element or technique and say what effect it creates for playbuilding."
         ],
-        "question": "Which habit strengthens evidence about structure?",
+        "question": "Which evidence move best supports a claim about playbuilding?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
           "Say it looks nice with no element or technique named.",
-          "Example: Outline — Beg: new student wants a friend. Mid: misunderstanding at lunch. End: honest talk and invitation to join a game. Roles:…",
-          "Writing jokes first with no story spine. Structure holds the audience."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Outline — Beg: new student wants a friend.",
+          "Writing jokes first with no story spine."
         ],
-        "question": "Using this lesson idea — Playbuilding means creating an original short play as a group. Agree a story spine: beginning (world and… — which choice is best?",
+        "question": "Using this lesson idea — Playbuilding means creating an original short play as a group. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for playbuilding?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Writing jokes first with no story spine. Structure holds the audience.",
-          "Playbuild a three-scene outline with your group or family. List cast and crew jobs and one prop needed for each scene.",
+          "Name structure and explain why it matters only, with no linked example.",
+          "Playbuild a three-scene outline with your group or family.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Writing jokes first with no story spine."
         ],
-        "question": "Which task best shows independent use of playbuilding?",
+        "question": "Which independent response best applies playbuilding to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about playbuilding with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating playbuilding on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.' Reasoning: I used playbuilding by attending to structure rather than copying the worked model.",
+        "sample_answer": "Sample: original example using playbuilding on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for playbuilding. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with playbuilding, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Writing jokes first with no story spine. Structure holds the audience. Correction: Strong answer: 'Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.' Why: the correction restores accurate use of playbuilding.",
+        "sample_answer": "Sample error: Writing jokes first with no story spine.. Correction: Strong answer: 'Beg: find wallet.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Playbuilding means creating an original short play as a group. Agree a story spine: beginning (world and want), middle (conflict), end (change). Assign roles including stage manager notes. Write a scene outline before full dialogue so structure stays clear. Supported responses…",
+          "explanation": "Playbuilding means creating an original short play as a group.",
           "options": [
-            "Playbuilding means creating an original short play as a group. Agree a story spine: beginning (world and want), middle (conflict), end (change). Assign roles including stage manager notes. Write a scene outline before full dialogue so structure stays clear.",
+            "Playbuilding means creating an original short play as a group.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about playbuilding?",
+          "question": "Which choice best applies this lesson idea about playbuilding with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Outline — Beg: new student wants a friend. Mid: misunderstanding at lunch. End: honest talk and invitation to join a game. Roles: two actors, one narrator for place changes.\n\nTRY FIRST\nWrite a three-part outline for a play about returning a lost item, and name two production jobs besides acting.\n\nFEEDBACK\nStrong answer: 'Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.'",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about playbuilding?",
+          "question": "Which choice best applies this lesson idea about playbuilding with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Outline — Beg: new student wants a friend. Mid: misunderstanding at lunch. End: honest talk and invitation to join a game. Roles: two actors, one narrator for place changes. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about playbuilding?",
+          "question": "Which choice best applies this lesson idea about playbuilding with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nWriting jokes first with no story spine. Structure holds the audience. Here is a more helpful example: Example: Outline — Beg: new student wants a friend. Mid: misunderstanding at lunch. End: honest talk and invitation to join a game. Roles: two actors, one narrator for place changes.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Beg: find wallet. Mid: fear of blame. End: return with honesty. Jobs: stage manager cues, prop manager.'",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about playbuilding?",
+          "question": "Which choice best applies this lesson idea about playbuilding with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPlaybuilding means creating an original short play as a group. Agree a story spine: beginning (world and want), middle (conflict), end (change). Assign roles including stage manager notes. Write a scene outline before full dialogue so structure stays clear. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

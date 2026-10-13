@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Make or advance your showcase visual piece with a three-entry decision log and a brief quality-check note. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: Each entry names a change and a reason linked to theme or criteria. Reasoning: I used create by attending to draft rather than copying the worked model.\n\nParent: Written model 2: Common error: Refusing to change a first draft. Refining is professional practice. Correction: Strong answer: Each entry names a change and a reason linked to theme or criteria. Why: the correction restores accurate use of create.\n\nParent: Likely misconception: Refusing to change a first draft. Refining is professional practice. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating create on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with create, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Make or advance your showcase visual piece with a three-entry decision log and a brief quality-check note. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using create on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Refusing to change a first draft.. Correction: Strong answer: Each entry names a change and a reason linked to theme or criteria.. Why it helps the audience is stated.\n\nParent: Likely misconception: Refusing to change a first draft. Refining is professional practice. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating create on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with create, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about create with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for create. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: Each entry names a change and a reason linked to theme or criteria. This matches the lesson skill for create.",
+        "explanation": "This matches the taught method for create. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: Each entry names a change and a reason linked to theme or criteria.",
-          "Refusing to change a first draft. Refining is professional practice.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Each entry names a change and a reason linked to theme or criteria.",
+          "Refusing to change a first draft.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "Write two decision-log entries you might make while creating a themed artwork. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Refusing to change a first draft. Refining is professional practice. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for create; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of draft with clear evidence.",
-          "Refusing to change a first draft. Refining is professional practice.",
-          "Creating showcase artworks means turning plans into drafts, then refining against criteria. Keep a decision log: what you changed and why. Quality checks…",
-          "Strong answer: Each entry names a change and a reason linked to theme or criteria."
+          "Careful use of draft and explain why it matters with clear evidence.",
+          "Refusing to change a first draft.",
+          "Creating showcase artworks means turning plans into drafts, then refining against criteria.",
+          "Each entry names a change and a reason linked to theme or criteria."
         ],
-        "question": "Which statement is a common mistake when practising create?",
+        "question": "Which statement is a common mistake when working with create?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named draft, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named draft and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the draft used.",
+          "Apply create to new material and name the draft and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Refusing to change a first draft.",
+          "Name draft and explain why it matters only, without linking it to create."
         ],
-        "question": "A learner is practising create. Which approach best shows understanding?",
+        "question": "Which response best applies create with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: Each entry names a change and a reason linked to theme or criteria. uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on create. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: Each entry names a change and a reason linked to theme or criteria.",
-          "Refusing to change a first draft. Refining is professional practice.",
+          "Each entry names a change and a reason linked to theme or criteria.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Refusing to change a first draft."
         ],
-        "question": "Which response best shows careful thinking about create?",
+        "question": "Which response best uses elements, techniques and audience effect for create?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Refusing to change a first draft. Refining is professional practice.",
-          "Name a specific source, cue or example and say what it shows about create.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Refusing to change a first draft.",
+          "Name a specific element or technique and say what effect it creates for create.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which habit strengthens evidence about draft?",
+        "question": "Which evidence move best supports a claim about create?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
           "Say it looks nice with no element or technique named.",
-          "Example: For theme 'Connections', Mo’s collage draft looked busy; he reduced colours to three and enlarged the central linked hands. Log:…",
-          "Refusing to change a first draft. Refining is professional practice."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: For theme 'Connections', Mo’s collage draft looked busy;",
+          "Refusing to change a first draft."
         ],
-        "question": "Using this lesson idea — Creating showcase artworks means turning plans into drafts, then refining against criteria. Keep a decision… — which choice is best?",
+        "question": "Using this lesson idea — Creating showcase artworks means turning plans into drafts, then refining against criteria. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for create?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Refusing to change a first draft. Refining is professional practice.",
+          "Refusing to change a first draft.",
+          "Name draft and explain why it matters only, with no linked example.",
           "Make or advance your showcase visual piece with a three-entry decision log and a brief quality-check note."
         ],
-        "question": "Which task best shows independent use of create?",
+        "question": "Which independent response best applies create to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about create with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating create on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: Each entry names a change and a reason linked to theme or criteria. Reasoning: I used create by attending to draft rather than copying the worked model.",
+        "sample_answer": "Sample: original example using create on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for create. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with create, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Refusing to change a first draft. Refining is professional practice. Correction: Strong answer: Each entry names a change and a reason linked to theme or criteria. Why: the correction restores accurate use of create.",
+        "sample_answer": "Sample error: Refusing to change a first draft.. Correction: Strong answer: Each entry names a change and a reason linked to theme or criteria.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Creating showcase artworks means turning plans into drafts, then refining against criteria. Keep a decision log: what you changed and why. Quality checks include stepping back, comparing to the brief and asking whether the theme reads clearly for an audience. Supported…",
+          "explanation": "Creating showcase artworks means turning plans into drafts, then refining against criteria.",
           "options": [
+            "An answer copied without understanding.",
+            "Creating showcase artworks means turning plans into drafts, then refining against criteria.",
             "A guess with no artistic reason.",
-            "Creating showcase artworks means turning plans into drafts, then refining against criteria. Keep a decision log: what you changed and why. Quality checks include stepping back, comparing to the brief and asking whether the theme reads clearly for an audience.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about create?",
+          "question": "Which choice best applies this lesson idea about create with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: For theme 'Connections', Mo’s collage draft looked busy; he reduced colours to three and enlarged the central linked hands. Log: 'Simplified for focal clarity.'\n\nTRY FIRST\nWrite two decision-log entries you might make while creating a themed artwork.\n\nFEEDBACK\nStrong answer: Each entry names a change and a reason linked to theme or criteria.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about create?",
+          "question": "Which choice best applies this lesson idea about create with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: For theme 'Connections', Mo’s collage draft looked busy; he reduced colours to three and enlarged the central linked hands. Log: 'Simplified for focal clarity.' Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice."
+            "Use an intentionally weak or disrespectful arts choice as a comparison."
           ],
-          "question": "Which choice best shows accurate use of this idea about create?",
+          "question": "Which choice best applies this lesson idea about create with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRefusing to change a first draft. Refining is professional practice. Here is a more helpful example: Example: For theme 'Connections', Mo’s collage draft looked busy; he reduced colours to three and enlarged the central linked hands. Log: 'Simplified for focal clarity.'\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: Each entry names a change and a reason linked to theme or criteria.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about create?",
+          "question": "Which choice best applies this lesson idea about create with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCreating showcase artworks means turning plans into drafts, then refining against criteria. Keep a decision log: what you changed and why. Quality checks include stepping back, comparing to the brief and asking whether the theme reads clearly for an audience. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

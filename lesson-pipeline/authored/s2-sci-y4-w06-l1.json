@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-SCI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Sketch a local or imagined map with at least five labelled landforms. Write one sentence on how water might move across your map. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Plain; coast/beach; valley. Reasoning: I used landform by attending to hill rather than copying the worked model.\n\nParent: Written model 2: Common error: Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words. Correction: Plain; coast/beach; valley. Why: the correction restores accurate use of landform.\n\nParent: Likely misconception: Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses landform. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about landform, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Sketch a local or imagined map with at least five labelled landforms. Write one sentence on how water might move across your map. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about landform linked to that evidence.\n\nParent: Written model 2: Sample misconception: Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words.. Correction: Plain; coast/beach; valley. with evidence.\n\nParent: Likely misconception: Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses landform. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about landform, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about landform. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for landform. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Plain; coast/beach; valley. This matches the lesson skill for landform.",
+        "explanation": "This matches the taught method for landform. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work.",
-          "Plain; coast/beach; valley.",
-          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Plain; coast/beach; valley",
+          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words"
         ],
         "question": "Name the landform: flat wide farmland; sandy edge where land meets ocean; V-shaped low land between ridges. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for landform; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Landforms are natural features of Earth’s surface such as hills, valleys, plains, rivers and coasts; local areas show a mix of these features.",
-          "Plain; coast/beach; valley.",
-          "Careful use of hill with clear evidence.",
-          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words."
+          "Landforms are natural features of Earth’s surface such as hills, valleys, plains, rivers and coasts",
+          "Plain; coast/beach; valley",
+          "Careful use of hill and explain why it matters with clear evidence",
+          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words"
         ],
-        "question": "Which statement is a common mistake when practising landform?",
+        "question": "Which statement is a common mistake when working with landform?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named hill, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named hill and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the hill used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing measurement as if it were recorded."
+          "Apply landform to new material and name the hill and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words",
+          "Name hill and explain why it matters only, without linking it to landform"
         ],
-        "question": "A learner is practising landform. Which approach best shows understanding?",
+        "question": "Which response best applies landform with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation."
+          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation"
         ],
-        "question": "New examples: steam from a kettle, a germinating bean, a plastic dinosaur, a granite pebble. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: steam from a kettle, a germinating bean, a plastic dinosaur, a granite pebble. Which claim about landform is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence.",
-          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words."
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation",
+          "A label copied from the title with no evidence",
+          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words"
         ],
         "question": "Which record best supports a science claim about landform?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Plain; coast/beach; valley. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about landform with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Plain; coast/beach; valley.",
-          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words.",
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work."
+          "Plain; coast/beach; valley",
+          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words",
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer"
         ],
-        "question": "Using this idea — Landforms are natural features of Earth’s surface such as hills, valleys, plains, rivers and… — which choice is strongest?",
+        "question": "Using this science idea — Landforms are natural features of Earth’s surface such as hills, valleys, plains, rivers and coasts; — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Stop early when you like the first result.",
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster."
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about landform?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model objects and call that independent work.",
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation."
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about landform should change with it",
+          "Any exciting story about the object must be true",
+          "Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words"
         ],
-        "question": "Which next step best shows transfer of landform?",
+        "question": "Which prediction about landform can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about landform. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses landform. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Plain; coast/beach; valley. Reasoning: I used landform by attending to hill rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about landform linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for landform. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about landform, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words. Correction: Plain; coast/beach; valley. Why: the correction restores accurate use of landform.",
+        "sample_answer": "Sample misconception: Calling every bump a mountain without comparing height/size mixes everyday talk with careful landform words.. Correction: Plain; coast/beach; valley. with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Landforms are natural features of Earth’s surface such as hills, valleys, plains, rivers and coasts; local areas show a mix of these features. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Landforms are natural features of Earth’s surface such as hills, valleys, plains, rivers and coasts; local areas show a mix of these features.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Landforms are natural features of Earth’s surface such as hills, valleys, plains, rivers and coasts; local areas show a mix of these features.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Landforms are natural features of Earth’s surface such as hills, valleys, plains, rivers and coasts",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about landform?",
+          "question": "Which choice best applies this lesson idea about landform with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA hill rises above surrounding land; a valley is lower between higher land; a coast meets the sea; a river channel carries water across the land.\n\nTRY FIRST\nName the landform: flat wide farmland; sandy edge where land meets ocean; V-shaped low land between ridges.\n\nFEEDBACK\nPlain; coast/beach; valley.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim"
           ],
-          "question": "Which choice best shows accurate use of this idea about landform?",
+          "question": "Which choice best applies this lesson idea about landform with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA hill rises above surrounding land; a valley is lower between higher land; a coast meets the sea; a river channel carries water across the land. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use an intentionally incorrect claim as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about landform?",
+          "question": "Which choice best applies this lesson idea about landform with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCalling every bump a mountain without comparing height/size mixes everyday talk with careful landform words. Here is a more productive model: A hill rises above surrounding land; a valley is lower between higher land; a coast meets the sea; a river channel carries water across the land.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nPlain; coast/beach; valley.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about landform?",
+          "question": "Which choice best applies this lesson idea about landform with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLandforms are natural features of Earth’s surface such as hills, valleys, plains, rivers and coasts; local areas show a mix of these features. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",

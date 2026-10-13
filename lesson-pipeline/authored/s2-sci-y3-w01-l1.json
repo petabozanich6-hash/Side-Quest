@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-SCI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Observe eight local items. Record living/non-living with two features as evidence for each. Write one borderline case and how you decided. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Leaf on tree and frog are living; dry leaf and bicycle are non-living (leaf was part of a living plant). Reasoning: I used living by attending to non-living and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features. Correction: Leaf on tree and frog are living; dry leaf and bicycle are non-living (leaf was part of a living plant). Why: the correction restores accurate use of living.\n\nParent: Likely misconception: Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses living. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about living, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Observe eight local items. Record living/non-living with two features as evidence for each. Write one borderline case and how you decided. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about living linked to that evidence.\n\nParent: Written model 2: Sample misconception: Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features.. Correction: Leaf on tree and frog are living; with evidence.\n\nParent: Likely misconception: Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses living. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about living, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about living. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for living. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Leaf on tree and frog are living; dry leaf and bicycle are non-living (leaf was part of a living plant). This matches the lesson skill for living.",
+        "explanation": "This matches the taught method for living. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Leaf on tree and frog are living; dry leaf and bicycle are non-living (leaf was part of a living plant).",
-          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features.",
-          "Ignore the task and invent an unrelated answer."
+          "A method that skips the key step taught in this lesson",
+          "Leaf on tree and frog are living",
+          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Sort: leaf on a tree; fallen dry leaf; bicycle; frog. Which are living things right now?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for living; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Leaf on tree and frog are living; dry leaf and bicycle are non-living (leaf was part of a living plant).",
-          "Careful use of non-living and explain why it matters with clear evidence.",
-          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features.",
-          "Living things typically move (themselves or parts), grow, need food/energy and water, sense surroundings and reproduce. Non-living things do not do all of…"
+          "Leaf on tree and frog are living",
+          "Careful use of non-living and explain why it matters with clear evidence",
+          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features",
+          "Living things typically move (themselves or parts), grow, need food/energy and water, sense surroundings and reproduce"
         ],
-        "question": "Which statement is a common mistake when practising living?",
+        "question": "Which statement is a common mistake when working with living?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named non-living and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named non-living and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the non-living and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name non-living and explain why it matters only, without linking it to living",
+          "Apply living to new material and name the non-living and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features"
         ],
-        "question": "A learner is practising living. Which approach best shows understanding?",
+        "question": "Which response best applies living with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a label from the lesson title with no observation.",
-          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting."
+          "Copy a label from the lesson title with no observation",
+          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting"
         ],
-        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which claim about living is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A label copied from the title with no evidence.",
-          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features.",
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation."
+          "A label copied from the title with no evidence",
+          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features",
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation"
         ],
         "question": "Which record best supports a science claim about living?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Leaf on tree and frog are living; dry leaf and bicycle are non-living (leaf was part of a living plant). applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about living with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Leaf on tree and frog are living; dry leaf and bicycle are non-living (leaf was part of a living plant)."
+          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features",
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "Leaf on tree and frog are living"
         ],
-        "question": "Using this idea — Living things typically move (themselves or parts), grow, need food/energy and water, sense… — which choice is strongest?",
+        "question": "Using this science idea — Living things typically move (themselves or parts), grow, need food/energy and water, sense — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result.",
-          "Ignore measurements and decide by which looks nicer."
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about living?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation.",
-          "Copy the worked example and call it independent work."
+          "If the observed feature changes, the claim about living should change with it",
+          "Any exciting story about the object must be true",
+          "Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features",
+          "Results that disagree with the first guess should be discarded"
         ],
-        "question": "Which next step best shows transfer of living?",
+        "question": "Which prediction about living can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about living. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses living. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Leaf on tree and frog are living; dry leaf and bicycle are non-living (leaf was part of a living plant). Reasoning: I used living by attending to non-living and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about living linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for living. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about living, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features. Correction: Leaf on tree and frog are living; dry leaf and bicycle are non-living (leaf was part of a living plant). Why: the correction restores accurate use of living.",
+        "sample_answer": "Sample misconception: Thinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features.. Correction: Leaf on tree and frog are living; with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Living things typically move (themselves or parts), grow, need food/energy and water, sense surroundings and reproduce. Non-living things do not do all of these. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Living things typically move (themselves or parts), grow, need food/energy and water, sense surroundings and reproduce.",
           "options": [
-            "A guess with no evidence.",
-            "Living things typically move (themselves or parts), grow, need food/energy and water, sense surroundings and reproduce. Non-living things do not do all of these.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Living things typically move (themselves or parts), grow, need food/energy and water, sense surroundings and reproduce",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about living?",
+          "question": "Which choice best applies this lesson idea about living with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA worm moves, grows, eats and can reproduce → living. A rock does not grow or reproduce → non-living. A wooden chair was once living material but is not a living thing now.\n\nTRY FIRST\nSort: leaf on a tree; fallen dry leaf; bicycle; frog. Which are living things right now?\n\nFEEDBACK\nLeaf on tree and frog are living; dry leaf and bicycle are non-living (leaf was part of a living plant).",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
           "options": [
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about living?",
+          "question": "Which choice best applies this lesson idea about living with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA worm moves, grows, eats and can reproduce → living. A rock does not grow or reproduce → non-living. A wooden chair was once living material but is not a living thing now. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect claim as a comparison",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about living?",
+          "question": "Which choice best applies this lesson idea about living with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking anything that moves is living (cars) or anything green is living (plastic plant) mixes up features. Here is a more productive model: A worm moves, grows, eats and can reproduce → living. A rock does not grow or reproduce → non-living. A wooden chair was once living material but is not a living thing now.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nLeaf on tree and frog are living; dry leaf and bicycle are non-living (leaf was part of a living plant).",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example.",
           "options": [
-            "A guess with no evidence.",
-            "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the same science idea on a new object, material or context, not a copy of the worked example",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about living?",
+          "question": "Which choice best applies this lesson idea about living with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLiving things typically move (themselves or parts), grow, need food/energy and water, sense surroundings and reproduce. Non-living things do not do all of these. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",

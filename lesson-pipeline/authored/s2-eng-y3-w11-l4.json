@@ -41,7 +41,7 @@
       "EN2-OLC-01",
       "EN2-HANDW-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose or write an 8–12 line poem. Mark two places to pause and one word to stress. Perform it twice, record or note one improvement in pace or clarity, and write a short self-assessment. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Pauses at line ends and key words help listeners hear the meaning; racing through hides the poem's shape. Reasoning: I used performance by attending to pace and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Louder is not automatically better; expression should fit the poem's feeling. Correction: Pauses at line ends and key words help listeners hear the meaning; racing through hides the poem's shape. Why: the correction restores accurate use of performance.\n\nParent: Likely misconception: Louder is not automatically better; expression should fit the poem's feeling. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating performance on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with performance, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose or write an 8–12 line poem. Mark two places to pause and one word to stress. Perform it twice, record or note one improvement in pace or clarity, and write a short self-assessment. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using performance on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Louder is not automatically better;. Correction: Pauses at line ends and key words help listeners hear the meaning;. Why it helps the audience is stated.\n\nParent: Likely misconception: Louder is not automatically better; expression should fit the poem's feeling. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating performance on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with performance, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about performance with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for performance. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -51,47 +51,47 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Pauses at line ends and key words help listeners hear the meaning; racing through hides the poem's shape. This matches the lesson skill for performance.",
+        "explanation": "This matches the taught method for performance. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Pauses at line ends and key words help listeners hear the meaning; racing through hides the poem's shape.",
-          "Louder is not automatically better; expression should fit the poem's feeling.",
-          "Ignore the task and invent an unrelated answer."
+          "A method that skips the key step taught in this lesson.",
+          "Pauses at line ends and key words help listeners hear the meaning;",
+          "Louder is not automatically better;",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "Read two lines about a storm: once too fast, once with pauses at commas and line ends. Which helps a listener?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Louder is not automatically better; expression should fit the poem's feeling. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for performance; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Pauses at line ends and key words help listeners hear the meaning; racing through hides the poem's shape.",
+          "Pauses at line ends and key words help listeners hear the meaning;",
           "Careful use of pace and explain why it matters with clear evidence.",
-          "Louder is not automatically better; expression should fit the poem's feeling.",
+          "Louder is not automatically better;",
           "Performing a poem means reading aloud with clear words, useful pauses and expression that matches the meaning."
         ],
-        "question": "Which statement is a common mistake when practising performance?",
+        "question": "Which statement is a common mistake when working with performance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named pace and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named pace and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the pace and explain why it matters used."
+          "Louder is not automatically better;",
+          "Name pace and explain why it matters only, without linking it to performance.",
+          "Apply performance to new material and name the pace and explain why it matters used."
         ],
-        "question": "A learner is practising performance. Which approach best shows understanding?",
+        "question": "Which response best applies performance with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The skill is shown by quoting or pointing to wording that carries performance.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries performance. The other choices miss a key step or use a common mistake.",
         "options": [
           "Ignore the sentence and invent a more exciting event.",
           "Say the writing is good without naming any words.",
-          "Louder is not automatically better; expression should fit the poem's feeling.",
+          "Louder is not automatically better;",
           "Point to exact words in the sentence that show performance and say what they do."
         ],
         "question": "Read: \"When the ferry horn blasted, Omar gripped the railing and laughed.\" Which choice best uses performance from this lesson?",
@@ -99,64 +99,64 @@
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Pauses at line ends and key words help listeners hear the meaning; racing through hides the poem's shape.",
-          "Louder is not automatically better; expression should fit the poem's feeling.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Pauses at line ends and key words help listeners hear the meaning;",
+          "Louder is not automatically better;",
+          "Copy a model sentence from another story unchanged.",
+          "Name pace and explain why it matters without linking it to any words in the text."
         ],
         "question": "Which statement correctly applies the lesson idea about performance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
         "options": [
           "Locate a specific word, phrase or structural clue before deciding.",
           "Guess from the title alone with no textual clue.",
           "Copy a model sentence from another story unchanged.",
-          "Treat a missing detail as a proven fact."
+          "Lengthen the answer with adjectives while keeping the same idea."
         ],
-        "question": "In a new text, what should you do first to practise pace and explain why it matters?",
+        "question": "In a new text, what should you do first to analyse pace and explain why it matters?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
         "options": [
           "Make the answer longer while keeping the same mistake.",
           "Delete the evidence that disagreed with your first guess.",
           "Change the inaccurate idea or missing evidence, not only the length.",
           "Add adjectives without fixing the wrong idea."
         ],
-        "question": "Which revision actually repairs meaning?",
+        "question": "Which revision actually improves meaning for performance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
         "options": [
           "Use a fresh sentence or text and explain one precise choice about performance.",
           "Retype the worked model as the final answer.",
           "Change fonts and claim the work is new.",
-          "Louder is not automatically better; expression should fit the poem's feeling."
+          "Louder is not automatically better;"
         ],
-        "question": "Which response shows transfer of performance to new material?",
+        "question": "Which response shows accurate use of performance on fresh material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about performance with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating performance on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Pauses at line ends and key words help listeners hear the meaning; racing through hides the poem's shape. Reasoning: I used performance by attending to pace and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: original example using performance on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for performance. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with performance, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Louder is not automatically better; expression should fit the poem's feeling. Correction: Pauses at line ends and key words help listeners hear the meaning; racing through hides the poem's shape. Why: the correction restores accurate use of performance.",
+        "sample_answer": "Sample error: Louder is not automatically better;. Correction: Pauses at line ends and key words help listeners hear the meaning;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -233,14 +233,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Performing a poem means reading aloud with clear words, useful pauses and expression that matches the meaning. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Performing a poem means reading aloud with clear words, useful pauses and expression that matches the meaning.",
           "options": [
-            "A guess with no explanation.",
+            "An answer copied without understanding.",
             "Performing a poem means reading aloud with clear words, useful pauses and expression that matches the meaning.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "A guess with no explanation.",
+            "A claim unrelated to the text."
           ],
-          "question": "Which choice best shows accurate use of this idea about performance?",
+          "question": "Which choice best applies this lesson idea about performance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nFor \"The small grey cat / curled on the mat\", I pause at the line break, soften my voice on curled, and keep every word audible.\n\nTRY FIRST\nRead two lines about a storm: once too fast, once with pauses at commas and line ends. Which helps a listener?\n\nFEEDBACK\nPauses at line ends and key words help listeners hear the meaning; racing through hides the poem's shape.",
@@ -291,14 +291,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
           "options": [
+            "An answer copied without understanding.",
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does",
             "A guess with no explanation.",
-            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "A claim unrelated to the text."
           ],
-          "question": "Which choice best shows accurate use of this idea about performance?",
+          "question": "Which choice best applies this lesson idea about performance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nFor \"The small grey cat / curled on the mat\", I pause at the line break, soften my voice on curled, and keep every word audible. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
@@ -317,14 +317,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
+            "Use an intentionally incorrect attempt as a comparison.",
             "A claim unrelated to the text.",
             "An answer copied without understanding.",
             "A guess with no explanation."
           ],
-          "question": "Which choice best shows accurate use of this idea about performance?",
+          "question": "Which choice best applies this lesson idea about performance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLouder is not automatically better; expression should fit the poem's feeling. Here is a more productive model: For \"The small grey cat / curled on the mat\", I pause at the line break, soften my voice on curled, and keep every word audible.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nPauses at line ends and key words help listeners hear the meaning; racing through hides the poem's shape.",
@@ -336,14 +336,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no explanation.",
-            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
-            "A claim unrelated to the text."
+            "A claim unrelated to the text.",
+            "Use the method on a new topic, not a reworded copy of the example.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about performance?",
+          "question": "Which choice best applies this lesson idea about performance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPerforming a poem means reading aloud with clear words, useful pauses and expression that matches the meaning. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-SCI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Keep a five-day weather log. Graph temperature or rainfall. Write two pattern sentences and one limitation of a short record. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Rainfall (mm) and/or cloud cover columns. Reasoning: I used record by attending to weather rather than copying the worked model.\n\nParent: Written model 2: Common error: Claiming a “climate change proof” from three days overclaims what short weather records can show. Correction: Rainfall (mm) and/or cloud cover columns. Why: the correction restores accurate use of record.\n\nParent: Likely misconception: Claiming a “climate change proof” from three days overclaims what short weather records can show. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses record. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about record, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Keep a five-day weather log. Graph temperature or rainfall. Write two pattern sentences and one limitation of a short record. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about record linked to that evidence.\n\nParent: Written model 2: Sample misconception: Claiming a “climate change proof” from three days overclaims what short weather records can show.. Correction: Rainfall (mm) and/or cloud cover columns. with evidence.\n\nParent: Likely misconception: Claiming a “climate change proof” from three days overclaims what short weather records can show. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses record. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about record, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about record. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for record. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Rainfall (mm) and/or cloud cover columns. This matches the lesson skill for record.",
+        "explanation": "This matches the taught method for record. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Rainfall (mm) and/or cloud cover columns.",
-          "Claiming a “climate change proof” from three days overclaims what short weather records can show.",
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work."
+          "Rainfall (mm) and/or cloud cover columns",
+          "Claiming a “climate change proof” from three days overclaims what short weather records can show",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Design a weather table for five school days. What column would help you spot a rainy pattern?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Claiming a “climate change proof” from three days overclaims what short weather records can show. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for record; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Rainfall (mm) and/or cloud cover columns.",
-          "Careful use of weather with clear evidence.",
-          "Claiming a “climate change proof” from three days overclaims what short weather records can show.",
-          "Recording weather in tables over days lets us see patterns (warming trend, rainy spells) and compare with forecasts carefully."
+          "Rainfall (mm) and/or cloud cover columns",
+          "Careful use of weather and explain why it matters with clear evidence",
+          "Claiming a “climate change proof” from three days overclaims what short weather records can show",
+          "Recording weather in tables over days lets us see patterns (warming trend, rainy spells) and compare with forecasts"
         ],
-        "question": "Which statement is a common mistake when practising record?",
+        "question": "Which statement is a common mistake when working with record?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named weather, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named weather and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing measurement as if it were recorded.",
-          "Apply the idea with new evidence and name the weather used."
+          "Repeat the worked example wording with no new evidence",
+          "Claiming a “climate change proof” from three days overclaims what short weather records can show",
+          "Name weather and explain why it matters only, without linking it to record",
+          "Apply record to new material and name the weather and explain why it matters used"
         ],
-        "question": "A learner is practising record. Which approach best shows understanding?",
+        "question": "Which response best applies record with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Claiming a “climate change proof” from three days overclaims what short weather records can show.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation."
+          "Claiming a “climate change proof” from three days overclaims what short weather records can show",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation"
         ],
-        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which claim about record is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence.",
-          "Claiming a “climate change proof” from three days overclaims what short weather records can show."
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation",
+          "A label copied from the title with no evidence",
+          "Claiming a “climate change proof” from three days overclaims what short weather records can show"
         ],
         "question": "Which record best supports a science claim about record?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Rainfall (mm) and/or cloud cover columns. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about record with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model objects and call that independent work.",
-          "Rainfall (mm) and/or cloud cover columns.",
-          "Claiming a “climate change proof” from three days overclaims what short weather records can show.",
-          "Ignore the observation and invent a more exciting result."
+          "Ignore measurements and decide by which looks nicer",
+          "Rainfall (mm) and/or cloud cover columns",
+          "Claiming a “climate change proof” from three days overclaims what short weather records can show",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Using this idea — Recording weather in tables over days lets us see patterns (warming trend, rainy spells) and… — which choice is strongest?",
+        "question": "Using this science idea — Recording weather in tables over days lets us see patterns (warming trend, rainy spells) and — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Stop early when you like the first result.",
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster."
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about record?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model objects and call that independent work.",
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation."
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about record should change with it",
+          "Any exciting story about the object must be true",
+          "Claiming a “climate change proof” from three days overclaims what short weather records can show"
         ],
-        "question": "Which next step best shows transfer of record?",
+        "question": "Which prediction about record can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about record. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses record. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Rainfall (mm) and/or cloud cover columns. Reasoning: I used record by attending to weather rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about record linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for record. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about record, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Claiming a “climate change proof” from three days overclaims what short weather records can show. Correction: Rainfall (mm) and/or cloud cover columns. Why: the correction restores accurate use of record.",
+        "sample_answer": "Sample misconception: Claiming a “climate change proof” from three days overclaims what short weather records can show.. Correction: Rainfall (mm) and/or cloud cover columns. with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Recording weather in tables over days lets us see patterns (warming trend, rainy spells) and compare with forecasts carefully. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Recording weather in tables over days lets us see patterns (warming trend, rainy spells) and compare with forecasts carefully.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Recording weather in tables over days lets us see patterns (warming trend, rainy spells) and compare with forecasts carefully."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Recording weather in tables over days lets us see patterns (warming trend, rainy spells) and compare with forecasts"
           ],
-          "question": "Which choice best shows accurate use of this idea about record?",
+          "question": "Which choice best applies this lesson idea about record with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTable columns: date, temp, rainfall, cloud, wind. After a week, you might notice cooler mornings or a wet mid-week. Patterns need enough days.\n\nTRY FIRST\nDesign a weather table for five school days. What column would help you spot a rainy pattern?\n\nFEEDBACK\nRainfall (mm) and/or cloud cover columns.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about record?",
+          "question": "Which choice best applies this lesson idea about record with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTable columns: date, temp, rainfall, cloud, wind. After a week, you might notice cooler mornings or a wet mid-week. Patterns need enough days. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about record?",
+          "question": "Which choice best applies this lesson idea about record with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nClaiming a “climate change proof” from three days overclaims what short weather records can show. Here is a more productive model: Table columns: date, temp, rainfall, cloud, wind. After a week, you might notice cooler mornings or a wet mid-week. Patterns need enough days.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nRainfall (mm) and/or cloud cover columns.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about record?",
+          "question": "Which choice best applies this lesson idea about record with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRecording weather in tables over days lets us see patterns (warming trend, rainy spells) and compare with forecasts carefully. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",

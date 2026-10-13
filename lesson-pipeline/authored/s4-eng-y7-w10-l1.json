@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN4-RVL-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Create a relationship map for three characters with six evidence sticky notes placed on early/late chapters. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: Two timed evidences; states what changed or held. Reasoning: I used relationship by attending to power rather than copying the worked model.\n\nParent: Written model 2: Common error: Labelling characters 'good' or 'bad' without relational evidence. Correction: Strong answer: Two timed evidences; states what changed or held. Why: the correction restores accurate use of relationship.\n\nParent: Likely misconception: Labelling characters 'good' or 'bad' without relational evidence. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating relationship on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with relationship, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create a relationship map for three characters with six evidence sticky notes placed on early/late chapters. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using relationship on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Labelling characters 'good' or 'bad' without relational evidence.. Correction: Strong answer: Two timed evidences;. Why it helps the audience is stated.\n\nParent: Likely misconception: Labelling characters 'good' or 'bad' without relational evidence. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating relationship on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with relationship, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about relationship with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for relationship. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -43,112 +43,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: Two timed evidences; states what changed or held. This matches the lesson skill for relationship.",
+        "explanation": "This matches the taught method for relationship. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work.",
-          "Strong answer: Two timed evidences; states what changed or held.",
-          "Labelling characters 'good' or 'bad' without relational evidence."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Two timed evidences; states what changed or held",
+          "Labelling characters 'good' or 'bad' without relational evidence"
         ],
         "question": "Name a relationship in your novel and cite one early and one later moment that shows change or persistence. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Labelling characters 'good' or 'bad' without relational evidence. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for relationship; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of power with clear evidence.",
-          "Labelling characters 'good' or 'bad' without relational evidence.",
-          "Characters are understood through relationships: who has power in a moment, who depends on whom and how those bonds change. Track an evidence trail across…",
-          "Strong answer: Two timed evidences; states what changed or held."
+          "Careful use of power and explain why it matters with clear evidence",
+          "Labelling characters 'good' or 'bad' without relational evidence",
+          "Characters are understood through relationships: who has power in a moment, who depends on whom and how those bonds",
+          "Two timed evidences; states what changed or held"
         ],
-        "question": "Which statement is a common mistake when practising relationship?",
+        "question": "Which statement is a common mistake when working with relationship?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named power, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named power and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a stated fact.",
-          "Apply the idea with new evidence and name the power used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name power and explain why it matters only, without linking it to relationship",
+          "Apply relationship to new material and name the power and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Labelling characters 'good' or 'bad' without relational evidence"
         ],
-        "question": "A learner is practising relationship. Which approach best shows understanding?",
+        "question": "Which response best applies relationship with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The skill is shown by quoting or pointing to wording that carries relationship.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries relationship. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Point to exact words in the sentence that show relationship and say what they do.",
-          "Ignore the sentence and invent a more exciting event.",
-          "Say the writing is good without naming any words.",
-          "Labelling characters 'good' or 'bad' without relational evidence."
+          "Point to exact words in the sentence that show relationship and say what they do",
+          "Ignore the sentence and invent a more exciting event",
+          "Say the writing is good without naming any words",
+          "Labelling characters 'good' or 'bad' without relational evidence"
         ],
         "question": "Read: \"Beside the oval, Kai practised bowling until the sun slipped low.\" Which choice best uses relationship from this lesson?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Labelling characters 'good' or 'bad' without relational evidence.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work.",
-          "Strong answer: Two timed evidences; states what changed or held."
+          "Labelling characters 'good' or 'bad' without relational evidence",
+          "Copy a model sentence from another story unchanged",
+          "Name power and explain why it matters without linking it to any words in the text",
+          "Two timed evidences; states what changed or held"
         ],
         "question": "Which statement correctly applies the lesson idea about relationship?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Guess from the title alone with no textual clue.",
-          "Copy a model sentence from another story unchanged.",
-          "Treat a missing detail as a stated fact.",
-          "Locate a specific word, phrase or structural clue before deciding."
+          "Guess from the title alone with no textual clue",
+          "Copy a model sentence from another story unchanged",
+          "Lengthen the answer with adjectives while keeping the same idea",
+          "Locate precise textual evidence, then explain how language choices shape meaning or effect"
         ],
-        "question": "In a new text, what should you do first to practise power?",
+        "question": "In a new text, what should you do first to analyse power and explain why it matters?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change the inaccurate idea or missing evidence, not only the length.",
-          "Add adjectives without fixing the wrong idea.",
-          "Make the answer longer while keeping the same mistake.",
-          "Delete the evidence that disagreed with your first guess."
+          "Change the inaccurate idea or missing evidence, not only the length",
+          "Add adjectives without fixing the wrong idea",
+          "Make the answer longer while keeping the same mistake",
+          "Delete the evidence that disagreed with your first guess"
         ],
-        "question": "Which revision actually repairs meaning?",
+        "question": "Which revision actually improves meaning for relationship?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked model as the final answer.",
-          "Change fonts and claim the work is new.",
-          "Labelling characters 'good' or 'bad' without relational evidence.",
-          "Use a fresh sentence or text and explain one precise choice about relationship."
+          "Retype the worked model as the final answer",
+          "Change fonts and claim the work is new",
+          "Labelling characters 'good' or 'bad' without relational evidence",
+          "Use a fresh sentence or text and explain one precise choice about relationship"
         ],
-        "question": "Which response shows transfer of relationship to new material?",
+        "question": "Which response shows accurate use of relationship on fresh material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about relationship with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating relationship on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: Two timed evidences; states what changed or held. Reasoning: I used relationship by attending to power rather than copying the worked model.",
+        "sample_answer": "Sample: original example using relationship on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for relationship. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with relationship, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Labelling characters 'good' or 'bad' without relational evidence. Correction: Strong answer: Two timed evidences; states what changed or held. Why: the correction restores accurate use of relationship.",
+        "sample_answer": "Sample error: Labelling characters 'good' or 'bad' without relational evidence.. Correction: Strong answer: Two timed evidences;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -225,14 +225,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Characters are understood through relationships: who has power in a moment, who depends on whom and how those bonds change. Track an evidence trail across chapters rather than one adjective. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Characters are understood through relationships: who has power in a moment, who depends on whom and how those bonds change.",
           "options": [
-            "Characters are understood through relationships: who has power in a moment, who depends on whom and how those bonds change. Track an evidence trail across chapters rather than one adjective.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation."
+            "Characters are understood through relationships: who has power in a moment, who depends on whom and how those bonds",
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation"
           ],
-          "question": "Which choice best shows accurate use of this idea about relationship?",
+          "question": "Which choice best applies this lesson idea about relationship with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nEarly: older sibling gives orders at the gate. Later: same sibling asks the protagonist for help. Power softens; evidence includes dialogue tags and who initiates plans.\n\nTRY FIRST\nName a relationship in your novel and cite one early and one later moment that shows change or persistence.\n\nFEEDBACK\nStrong answer: Two timed evidences; states what changed or held.",
@@ -283,14 +283,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
           "options": [
-            "A guess with no explanation.",
-            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does",
+            "A guess with no explanation",
+            "A claim unrelated to the text"
           ],
-          "question": "Which choice best shows accurate use of this idea about relationship?",
+          "question": "Which choice best applies this lesson idea about relationship with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nEarly: older sibling gives orders at the gate. Later: same sibling asks the protagonist for help. Power softens; evidence includes dialogue tags and who initiates plans. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
@@ -309,14 +309,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
-            "A claim unrelated to the text."
+            "A guess with no explanation",
+            "A claim unrelated to the text",
+            "Use an intentionally incorrect attempt as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about relationship?",
+          "question": "Which choice best applies this lesson idea about relationship with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLabelling characters 'good' or 'bad' without relational evidence. Here is a more productive model: Early: older sibling gives orders at the gate. Later: same sibling asks the protagonist for help. Power softens; evidence includes dialogue tags and who initiates plans.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nStrong answer: Two timed evidences; states what changed or held.",
@@ -328,14 +328,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
           "options": [
-            "A guess with no explanation.",
-            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the method on a new topic, not a reworded copy of the example",
+            "A guess with no explanation",
+            "A claim unrelated to the text"
           ],
-          "question": "Which choice best shows accurate use of this idea about relationship?",
+          "question": "Which choice best applies this lesson idea about relationship with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCharacters are understood through relationships: who has power in a moment, who depends on whom and how those bonds change. Track an evidence trail across chapters rather than one adjective. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",

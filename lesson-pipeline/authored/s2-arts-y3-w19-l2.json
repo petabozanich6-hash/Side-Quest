@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Compose a 30-second dance with three phrases and a title. Write the plan with a drawing of each shape, say which element changes, rehearse it five times and perform it for family. Write one choice you would change. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Phrase 1: still and low (asleep). Phrase 2: slow, stiff arm movements (switching on). Phrase 3: quick, sharp steps around the room (working). The time changes from slow to fast and… Reasoning: I used composing by attending to a short dance rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give… Correction: Strong answer: 'Phrase 1: still and low (asleep). Phrase 2: slow, stiff arm movements (switching on). Phrase 3: quick, sharp steps around the room (working).… Why: the correction restores accurate use of composing.\n\nParent: Likely misconception: Believing that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give credit. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating composing on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with composing, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Compose a 30-second dance with three phrases and a title. Write the plan with a drawing of each shape, say which element changes, rehearse it five times and perform it for family. Write one choice you would change. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using composing on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing that you should copy a dance you have seen.. Correction: Strong answer: 'Phrase 1: still and low (asleep).. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give credit. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating composing on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with composing, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about composing with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for composing. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Phrase 1: still and low (asleep). Phrase 2: slow, stiff arm movements (switching on). Phrase 3: quick, sharp steps around the room (working).… This matches the lesson skill for composing.",
+        "explanation": "This matches the taught method for composing. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Phrase 1: still and low (asleep). Phrase 2: slow, stiff arm movements (switching on). Phrase 3: quick, sharp steps around the room (working).…",
-          "Believing that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give…",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "'Phrase 1: still and low (asleep).",
+          "Believing that you should copy a dance you have seen.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "Compose a three-phrase dance about a robot waking up. Name each phrase, and say which element changes from phrase to phrase. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Believing that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for composing; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of a short dance with clear evidence.",
-          "Believing that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give…",
-          "Composing a dance means making your own sequence and choosing how it looks. Start with a theme, such as an animal or a feeling. Join two or three phrases and…",
-          "Strong answer: 'Phrase 1: still and low (asleep). Phrase 2: slow, stiff arm movements (switching on). Phrase 3: quick, sharp steps around the room (working).…"
+          "Careful use of a short dance and explain why it matters with clear evidence.",
+          "Believing that you should copy a dance you have seen.",
+          "Composing a dance means making your own sequence and choosing how it looks.",
+          "'Phrase 1: still and low (asleep)."
         ],
-        "question": "Which statement is a common mistake when practising composing?",
+        "question": "Which statement is a common mistake when working with composing?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named a short dance, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a short dance and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a short dance used.",
+          "Believing that you should copy a dance you have seen.",
+          "Name a short dance and explain why it matters only, without linking it to composing.",
+          "Apply composing to new material and name the a short dance and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising composing. Which approach best shows understanding?",
+        "question": "Which response best applies composing with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Phrase 1: still and low (asleep). Phrase 2: slow, stiff arm movements (switching on). Phrase 3: quick, sharp steps around the room (working).… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on composing. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Phrase 1: still and low (asleep). Phrase 2: slow, stiff arm movements (switching on). Phrase 3: quick, sharp steps around the room (working).…",
-          "Believing that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give…",
+          "'Phrase 1: still and low (asleep).",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Believing that you should copy a dance you have seen."
         ],
-        "question": "Which response best shows careful thinking about composing?",
+        "question": "Which response best uses elements, techniques and audience effect for composing?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Believing that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give…",
-          "Name a specific source, cue or example and say what it shows about composing.",
-          "Make a bigger claim without naming any source or cue."
-        ],
-        "question": "Which habit strengthens evidence about a short dance?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Example: Cleo composes a 30-second dance about a butterfly. Phrase 1: small, curled, slow movement (cocoon). Phrase 2: arms stretch wide…",
-          "Believing that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give…",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Believing that you should copy a dance you have seen.",
+          "Name a specific element or technique and say what effect it creates for composing.",
           "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — Composing a dance means making your own sequence and choosing how it looks. Start with a theme, such as an… — which choice is best?",
+        "question": "Which evidence move best supports a claim about composing?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Example: Cleo composes a 30-second dance about a butterfly.",
+          "Believing that you should copy a dance you have seen.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
+        ],
+        "question": "Using this lesson idea — Composing a dance means making your own sequence and choosing how it looks. — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for composing?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Believing that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give…",
-          "Compose a 30-second dance with three phrases and a title. Write the plan with a drawing of each shape, say which element changes, rehearse it five…",
+          "Name a short dance and explain why it matters only, with no linked example.",
+          "Compose a 30-second dance with three phrases and a title.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Believing that you should copy a dance you have seen."
         ],
-        "question": "Which task best shows independent use of composing?",
+        "question": "Which independent response best applies composing to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about composing with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating composing on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Phrase 1: still and low (asleep). Phrase 2: slow, stiff arm movements (switching on). Phrase 3: quick, sharp steps around the room (working). The time changes from slow to fast and… Reasoning: I used composing by attending to a short dance rather than copying the worked model.",
+        "sample_answer": "Sample: original example using composing on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for composing. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with composing, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Believing that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give… Correction: Strong answer: 'Phrase 1: still and low (asleep). Phrase 2: slow, stiff arm movements (switching on). Phrase 3: quick, sharp steps around the room (working).… Why: the correction restores accurate use of composing.",
+        "sample_answer": "Sample error: Believing that you should copy a dance you have seen.. Correction: Strong answer: 'Phrase 1: still and low (asleep).. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Composing a dance means making your own sequence and choosing how it looks. Start with a theme, such as an animal or a feeling. Join two or three phrases and decide how to change an element, for example doing the same phrase low and then high, or slow and then fast. Write a…",
+          "explanation": "Composing a dance means making your own sequence and choosing how it looks.",
           "options": [
-            "Composing a dance means making your own sequence and choosing how it looks. Start with a theme, such as an animal or a feeling. Join two or three phrases and decide how to change an element, for example doing the same phrase low and then high, or slow and then fast. Write a plan showing the order, then rehearse until you can remember it. Say why you made each choice. Always compose in a clear, safe space, and you may create the dance with hands only if standing is not possible.",
+            "Composing a dance means making your own sequence and choosing how it looks.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about composing?",
+          "question": "Which choice best applies this lesson idea about composing with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Cleo composes a 30-second dance about a butterfly. Phrase 1: small, curled, slow movement (cocoon). Phrase 2: arms stretch wide with a slow turn (wings open). Phrase 3: light skipping steps along a curved pathway (flying). She changes the time from slow to quick and the level from low to high. Her plan lists these as 1, 2, 3.\n\nTRY FIRST\nCompose a three-phrase dance about a robot waking up. Name each phrase, and say which element changes from phrase to phrase.\n\nFEEDBACK\nStrong answer: 'Phrase 1: still and low (asleep). Phrase 2: slow, stiff arm movements (switching on). Phrase 3: quick, sharp steps around the room (working). The time changes from slow to fast and the energy changes from heavy to sharp.' Each phrase has a purpose.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about composing?",
+          "question": "Which choice best applies this lesson idea about composing with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Cleo composes a 30-second dance about a butterfly. Phrase 1: small, curled, slow movement (cocoon). Phrase 2: arms stretch wide with a slow turn (wings open). Phrase 3: light skipping steps along a curved pathway (flying). She changes the time from slow to quick and the level from low to high. Her plan lists these as 1, 2, 3. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about composing?",
+          "question": "Which choice best applies this lesson idea about composing with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBelieving that you should copy a dance you have seen. Composing means making your own choices, though you can take inspiration from other dances and give credit. Here is a more helpful example: Example: Cleo composes a 30-second dance about a butterfly. Phrase 1: small, curled, slow movement (cocoon). Phrase 2: arms stretch wide with a slow turn (wings open). Phrase 3: light skipping steps along a curved pathway (flying). She changes the time from slow to quick and the level from low to high. Her plan lists these as 1, 2, 3.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Phrase 1: still and low (asleep). Phrase 2: slow, stiff arm movements (switching on). Phrase 3: quick, sharp steps around the room (working). The time changes from slow to fast and the energy changes from heavy to sharp.' Each phrase has a purpose.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about composing?",
+          "question": "Which choice best applies this lesson idea about composing with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nComposing a dance means making your own sequence and choosing how it looks. Start with a theme, such as an animal or a feeling. Join two or three phrases and decide how to change an element, for example doing the same phrase low and then high, or slow and then fast. Write a plan showing the order, then rehearse until you can remember it. Say why you made each choice. Always compose in a clear, safe space, and you may create the dance with hands only if standing is not possible. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

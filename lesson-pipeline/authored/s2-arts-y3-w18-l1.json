@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose two pieces of music with different moods. For each, write the tempo, dynamics and mood, then plan movements for each using body, space, time and energy. Perform them or draw a picture of each, and say how the move Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the fast tempo, loud dynamics and high pitch, so the dance and music… Reasoning: I used music mood by attending to a movement response rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or… Correction: Strong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the fast tempo, loud dynamics… Why: the correction restores accurate use of music mood.\n\nParent: Likely misconception: Thinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or contrast can be just as powerful. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating music mood on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with music mood, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose two pieces of music with different moods. For each, write the tempo, dynamics and mood, then plan movements for each using body, space, time and energy. Perform them or draw a picture of each, and say how the move Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using music mood on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that dancers must always move exactly the way the music sounds.. Correction: Strong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or contrast can be just as powerful. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating music mood on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with music mood, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about music mood with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for music mood. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the fast tempo, loud dynamics… This matches the lesson skill for music mood.",
+        "explanation": "This matches the taught method for music mood. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or…",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the fast tempo, loud dynamics…"
+          "Thinking that dancers must always move exactly the way the music sounds.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the"
         ],
         "question": "Imagine music that is fast, loud and high. Describe the body shapes, level, speed and energy you would use to match it. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for music mood; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the fast tempo, loud dynamics…",
-          "Careful use of a movement response with clear evidence.",
-          "Thinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or…",
-          "Music can give ideas for movement. Listen to the beat, tempo, pitch and dynamics and choose movements that match the mood. Slow, soft, low music might suit…"
+          "'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the",
+          "Careful use of a movement response and explain why it m with clear evidence.",
+          "Thinking that dancers must always move exactly the way the music sounds.",
+          "Music can give ideas for movement."
         ],
-        "question": "Which statement is a common mistake when practising music mood?",
+        "question": "Which statement is a common mistake when working with music mood?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named a movement response, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a movement response and explain why it m, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a movement response used.",
+          "Name a movement response and explain why it m only, without linking it to music mood.",
+          "Apply music mood to new material and name the a movement response and explain why it m used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Thinking that dancers must always move exactly the way the music sounds."
         ],
-        "question": "A learner is practising music mood. Which approach best shows understanding?",
+        "question": "Which response best applies music mood with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the fast tempo, loud dynamics… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on music mood. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the fast tempo, loud dynamics…",
-          "Thinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or…",
+          "'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that dancers must always move exactly the way the music sounds."
         ],
-        "question": "Which response best shows careful thinking about music mood?",
+        "question": "Which response best uses elements, techniques and audience effect for music mood?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or…",
-          "Name a specific source, cue or example and say what it shows about music mood.",
-          "Make a bigger claim without naming any source or cue."
-        ],
-        "question": "Which habit strengthens evidence about a movement response?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Example: Sana listens to a slow lullaby. She chooses to sway slowly with arms curved, at a low level, and she lets her energy feel soft.…",
-          "Thinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or…",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that dancers must always move exactly the way the music sounds.",
+          "Name a specific element or technique and say what effect it creates for music mood.",
           "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — Music can give ideas for movement. Listen to the beat, tempo, pitch and dynamics and choose movements that… — which choice is best?",
+        "question": "Which evidence move best supports a claim about music mood?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Example: Sana listens to a slow lullaby.",
+          "Thinking that dancers must always move exactly the way the music sounds.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
+        ],
+        "question": "Using this lesson idea — Music can give ideas for movement. — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for music mood?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or…",
-          "Choose two pieces of music with different moods. For each, write the tempo, dynamics and mood, then plan movements for each using body, space, time…",
+          "Thinking that dancers must always move exactly the way the music sounds.",
+          "Name a movement response and explain why it m only, with no linked example.",
+          "Choose two pieces of music with different moods.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of music mood?",
+        "question": "Which independent response best applies music mood to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about music mood with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating music mood on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the fast tempo, loud dynamics and high pitch, so the dance and music… Reasoning: I used music mood by attending to a movement response rather than copying the worked model.",
+        "sample_answer": "Sample: original example using music mood on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for music mood. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with music mood, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or… Correction: Strong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the fast tempo, loud dynamics… Why: the correction restores accurate use of music mood.",
+        "sample_answer": "Sample error: Thinking that dancers must always move exactly the way the music sounds.. Correction: Strong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Music can give ideas for movement. Listen to the beat, tempo, pitch and dynamics and choose movements that match the mood. Slow, soft, low music might suit smooth, low, heavy movements, and fast, loud, high music might suit quick, sharp, high movements. You can also choose to…",
+          "explanation": "Music can give ideas for movement.",
           "options": [
+            "An answer copied without understanding.",
+            "Music can give ideas for movement.",
             "A guess with no artistic reason.",
-            "Music can give ideas for movement. Listen to the beat, tempo, pitch and dynamics and choose movements that match the mood. Slow, soft, low music might suit smooth, low, heavy movements, and fast, loud, high music might suit quick, sharp, high movements. You can also choose to move against the mood on purpose, as long as you can explain why. Move in a clear, safe space at a comfortable volume and listen for any pause or change in the music that tells you to change.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about music mood?",
+          "question": "Which choice best applies this lesson idea about music mood with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Sana listens to a slow lullaby. She chooses to sway slowly with arms curved, at a low level, and she lets her energy feel soft. When the music gets a bit louder, she grows taller. When the tempo slows at the end, she lowers to the floor and stops. Her movement follows the mood and the changes in the music.\n\nTRY FIRST\nImagine music that is fast, loud and high. Describe the body shapes, level, speed and energy you would use to match it.\n\nFEEDBACK\nStrong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the fast tempo, loud dynamics and high pitch, so the dance and music feel connected.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about music mood?",
+          "question": "Which choice best applies this lesson idea about music mood with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Sana listens to a slow lullaby. She chooses to sway slowly with arms curved, at a low level, and she lets her energy feel soft. When the music gets a bit louder, she grows taller. When the tempo slows at the end, she lowers to the floor and stops. Her movement follows the mood and the changes in the music. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about music mood?",
+          "question": "Which choice best applies this lesson idea about music mood with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that dancers must always move exactly the way the music sounds. Dancers can choose different responses as long as they give a reason, and silence or contrast can be just as powerful. Here is a more helpful example: Example: Sana listens to a slow lullaby. She chooses to sway slowly with arms curved, at a low level, and she lets her energy feel soft. When the music gets a bit louder, she grows taller. When the tempo slows at the end, she lowers to the floor and stops. Her movement follows the mood and the changes in the music.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Quick, sharp jumps and hops at a high level, with arms stretched out and a bright energy.' These choices match the fast tempo, loud dynamics and high pitch, so the dance and music feel connected.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about music mood?",
+          "question": "Which choice best applies this lesson idea about music mood with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nMusic can give ideas for movement. Listen to the beat, tempo, pitch and dynamics and choose movements that match the mood. Slow, soft, low music might suit smooth, low, heavy movements, and fast, loud, high music might suit quick, sharp, high movements. You can also choose to move against the mood on purpose, as long as you can explain why. Move in a clear, safe space at a comfortable volume and listen for any pause or change in the music that tells you to change. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

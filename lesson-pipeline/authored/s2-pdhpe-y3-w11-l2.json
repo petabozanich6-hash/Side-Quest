@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-IHW-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose three mixed meals your family eats. List the ingredients, sort each into a group, and say which groups are present and which are missing. Suggest one change that would add a missing group. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat, not one of the five groups. The toastie has three groups. Reasoning: I used mixed foods by attending to ingredients rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately. Correction: Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat, not one of the five groups. The toastie… Why: the correction restores accurate use of mixed foods.\n\nParent: Likely misconception: Believing a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating mixed foods on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with mixed foods, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose three mixed meals your family eats. List the ingredients, sort each into a group, and say which groups are present and which are missing. Suggest one change that would add a missing group. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using mixed foods on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing a mixed food belongs to only one group.. Correction: Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating mixed foods on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with mixed foods, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about mixed foods with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for mixed foods. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat, not one of the five groups. The toastie… This matches the lesson skill for mixed foods.",
+        "explanation": "This matches the taught method for mixed foods. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat, not one of the five groups. The toastie…",
-          "Believing a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat",
+          "Believing a mixed food belongs to only one group"
         ],
         "question": "Sort the parts of a cheese and tomato toastie: bread, cheese, tomato and butter. Which groups does it include?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Believing a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for mixed foods; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Sorting foods needs careful thinking because many foods are mixed, such as pizza, a stir-fry or a sandwich. To sort a mixed meal, look at each ingredient and…",
-          "Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat, not one of the five groups. The toastie…",
-          "Careful use of ingredients with clear evidence.",
-          "Believing a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately."
+          "Sorting foods needs careful thinking because many foods are mixed, such as pizza, a stir-fry or a sandwich",
+          "Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat",
+          "Careful use of ingredients and explain why it matters with clear evidence",
+          "Believing a mixed food belongs to only one group"
         ],
-        "question": "Which statement is a common mistake when practising mixed foods?",
+        "question": "Which statement is a common mistake when working with mixed foods?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named ingredients, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named ingredients and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the ingredients used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name ingredients and explain why it matters only, without linking it to mixed foods",
+          "Apply mixed foods to new material and name the ingredients and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Believing a mixed food belongs to only one group"
         ],
-        "question": "A learner is practising mixed foods. Which approach best shows understanding?",
+        "question": "Which response best applies mixed foods with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat, not one of the five groups. The toastie… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on mixed foods. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Believing a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat, not one of the five groups. The toastie…"
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Believing a mixed food belongs to only one group",
+          "Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat"
         ],
-        "question": "Which response best shows careful thinking about mixed foods?",
+        "question": "Which response best uses safe, healthy or respectful choices for mixed foods?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Believing a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately.",
-          "Name a specific source, cue or example and say what it shows about mixed foods.",
-          "Make a bigger claim without naming any source or cue."
+          "Use a put-down and call it honesty",
+          "Believing a mixed food belongs to only one group",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with mixed foods",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which habit strengthens evidence about ingredients?",
+        "question": "Which evidence move best supports a claim about mixed foods?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Sorting foods needs careful thinking because many foods are mixed, such) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example: a chicken and vegetable stir-fry with rice. Chicken: lean meat group. Broccoli and carrot: vegetables. Rice: grain foods. Soy…",
-          "Believing a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately.",
-          "Treat a skipped permission or safety step as if it did not matter."
+          "Use a put-down and call it honesty",
+          "Example: a chicken and vegetable stir-fry with rice",
+          "Believing a mixed food belongs to only one group",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Using this lesson idea — Sorting foods needs careful thinking because many foods are mixed, such as pizza, a stir-fry or a sandwich.… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about mixed foods?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for mixed foods?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Believing a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately.",
-          "Choose three mixed meals your family eats. List the ingredients, sort each into a group, and say which groups are present and which are missing.…"
+          "Retype the worked example with no new example",
+          "Believing a mixed food belongs to only one group",
+          "Name ingredients and explain why it matters only, with no linked example",
+          "Choose three mixed meals your family eats"
         ],
-        "question": "Which task best shows independent use of mixed foods?",
+        "question": "Which independent response best applies mixed foods to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about mixed foods with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating mixed foods on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat, not one of the five groups. The toastie has three groups. Reasoning: I used mixed foods by attending to ingredients rather than copying the worked model.",
+        "sample_answer": "Sample: original example using mixed foods on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for mixed foods. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with mixed foods, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Believing a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately. Correction: Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat, not one of the five groups. The toastie… Why: the correction restores accurate use of mixed foods.",
+        "sample_answer": "Sample error: Believing a mixed food belongs to only one group.. Correction: Bread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Sorting foods needs careful thinking because many foods are mixed, such as pizza, a stir-fry or a sandwich. To sort a mixed meal, look at each ingredient and put it in its own group. Packaged foods have ingredient lists that help. Foods that do not fit any of the five groups,…",
+          "explanation": "Sorting foods needs careful thinking because many foods are mixed, such as pizza, a stir-fry or a sandwich.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Sorting foods needs careful thinking because many foods are mixed, such as pizza, a stir-fry or a sandwich. To sort a mixed meal, look at each ingredient and put it in its own group. Packaged foods have ingredient lists that help. Foods that do not fit any of the five groups, such as lollies or cakes, are 'sometimes foods', which are eaten less often and in small amounts."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Sorting foods needs careful thinking because many foods are mixed, such as pizza, a stir-fry or a sandwich"
           ],
-          "question": "Which choice best shows accurate use of this idea about mixed foods?",
+          "question": "Which choice best applies this lesson idea about mixed foods with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a chicken and vegetable stir-fry with rice. Chicken: lean meat group. Broccoli and carrot: vegetables. Rice: grain foods. Soy sauce is only a flavouring. The meal has three groups; adding fruit afterwards makes four.\n\nTRY FIRST\nSort the parts of a cheese and tomato toastie: bread, cheese, tomato and butter. Which groups does it include?\n\nFEEDBACK\nBread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat, not one of the five groups. The toastie has three groups.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about mixed foods?",
+          "question": "Which choice best applies this lesson idea about mixed foods with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a chicken and vegetable stir-fry with rice. Chicken: lean meat group. Broccoli and carrot: vegetables. Rice: grain foods. Soy sauce is only a flavouring. The meal has three groups; adding fruit afterwards makes four. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Use an intentionally unsafe or unhelpful choice as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about mixed foods?",
+          "question": "Which choice best applies this lesson idea about mixed foods with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBelieving a mixed food belongs to only one group. Mixed meals may include several groups, so each ingredient is sorted separately. Here is a more helpful example: Example: a chicken and vegetable stir-fry with rice. Chicken: lean meat group. Broccoli and carrot: vegetables. Rice: grain foods. Soy sauce is only a flavouring. The meal has three groups; adding fruit afterwards makes four.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nBread: grain foods. Cheese: milk, yoghurt and cheese group. Tomato: vegetables. Butter: a small amount of added fat, not one of the five groups. The toastie has three groups.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about mixed foods?",
+          "question": "Which choice best applies this lesson idea about mixed foods with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSorting foods needs careful thinking because many foods are mixed, such as pizza, a stir-fry or a sandwich. To sort a mixed meal, look at each ingredient and put it in its own group. Packaged foods have ingredient lists that help. Foods that do not fit any of the five groups, such as lollies or cakes, are 'sometimes foods', which are eaten less often and in small amounts. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

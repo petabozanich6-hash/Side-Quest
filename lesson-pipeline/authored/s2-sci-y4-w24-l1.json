@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-SCI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Test five materials in water. Record soluble/insoluble and one rate note. Recover salt from saltwater by evaporation if allowed. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Sugar usually dissolves faster in warm; chalk remains mostly insoluble/visible. Reasoning: I used dissolve by attending to solution rather than copying the worked model.\n\nParent: Written model 2: Common error: Saying dissolved salt is “destroyed” is false — it can return when water evaporates. Correction: Sugar usually dissolves faster in warm; chalk remains mostly insoluble/visible. Why: the correction restores accurate use of dissolve.\n\nParent: Likely misconception: Saying dissolved salt is “destroyed” is false — it can return when water evaporates. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses dissolve. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about dissolve, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Test five materials in water. Record soluble/insoluble and one rate note. Recover salt from saltwater by evaporation if allowed. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about dissolve linked to that evidence.\n\nParent: Written model 2: Sample misconception: Saying dissolved salt is “destroyed” is false — it can return when water evaporates.. Correction: Sugar usually dissolves faster in warm; with evidence.\n\nParent: Likely misconception: Saying dissolved salt is “destroyed” is false — it can return when water evaporates. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses dissolve. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about dissolve, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about dissolve. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for dissolve. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Sugar usually dissolves faster in warm; chalk remains mostly insoluble/visible. This matches the lesson skill for dissolve.",
+        "explanation": "This matches the taught method for dissolve. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Sugar usually dissolves faster in warm; chalk remains mostly insoluble/visible.",
-          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates.",
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work."
+          "Sugar usually dissolves faster in warm",
+          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Predict: sugar in warm water vs cold (same amounts); chalk dust in water. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Saying dissolved salt is “destroyed” is false — it can return when water evaporates. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for dissolve; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Dissolving mixes a soluble material into a liquid so it seems to disappear; the material is still there as a solution. Insoluble materials stay visible.",
-          "Sugar usually dissolves faster in warm; chalk remains mostly insoluble/visible.",
-          "Careful use of solution with clear evidence.",
-          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates."
+          "Dissolving mixes a soluble material into a liquid so it seems to disappear",
+          "Sugar usually dissolves faster in warm",
+          "Careful use of solution and explain why it matters with clear evidence",
+          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates"
         ],
-        "question": "Which statement is a common mistake when practising dissolve?",
+        "question": "Which statement is a common mistake when working with dissolve?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named solution, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named solution and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the solution used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing measurement as if it were recorded."
+          "Apply dissolve to new material and name the solution and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates",
+          "Name solution and explain why it matters only, without linking it to dissolve"
         ],
-        "question": "A learner is practising dissolve. Which approach best shows understanding?",
+        "question": "Which response best applies dissolve with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a label from the lesson title with no observation.",
-          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting."
+          "Copy a label from the lesson title with no observation",
+          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting"
         ],
-        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which claim about dissolve is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates.",
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence."
+          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates",
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation",
+          "A label copied from the title with no evidence"
         ],
         "question": "Which record best supports a science claim about dissolve?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Sugar usually dissolves faster in warm; chalk remains mostly insoluble/visible. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about dissolve with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model objects and call that independent work.",
-          "Sugar usually dissolves faster in warm; chalk remains mostly insoluble/visible.",
-          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates.",
-          "Ignore the observation and invent a more exciting result."
+          "Ignore measurements and decide by which looks nicer",
+          "Sugar usually dissolves faster in warm",
+          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Using this idea — Dissolving mixes a soluble material into a liquid so it seems to disappear; the material is still… — which choice is strongest?",
+        "question": "Using this science idea — Dissolving mixes a soluble material into a liquid so it seems to disappear; — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Stop early when you like the first result.",
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster."
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about dissolve?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a dramatic result with no observation.",
-          "Copy the model objects and call that independent work.",
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged."
+          "Saying dissolved salt is “destroyed” is false — it can return when water evaporates",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about dissolve should change with it",
+          "Any exciting story about the object must be true"
         ],
-        "question": "Which next step best shows transfer of dissolve?",
+        "question": "Which prediction about dissolve can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about dissolve. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses dissolve. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Sugar usually dissolves faster in warm; chalk remains mostly insoluble/visible. Reasoning: I used dissolve by attending to solution rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about dissolve linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for dissolve. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about dissolve, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Saying dissolved salt is “destroyed” is false — it can return when water evaporates. Correction: Sugar usually dissolves faster in warm; chalk remains mostly insoluble/visible. Why: the correction restores accurate use of dissolve.",
+        "sample_answer": "Sample misconception: Saying dissolved salt is “destroyed” is false — it can return when water evaporates.. Correction: Sugar usually dissolves faster in warm; with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Dissolving mixes a soluble material into a liquid so it seems to disappear; the material is still there as a solution. Insoluble materials stay visible. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Dissolving mixes a soluble material into a liquid so it seems to disappear; the material is still there as a solution.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Dissolving mixes a soluble material into a liquid so it seems to disappear; the material is still there as a solution. Insoluble materials stay visible."
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Dissolving mixes a soluble material into a liquid so it seems to disappear",
+            "Dissolving mixes a soluble material into a liquid so it seems to disappear; the material is still there as a solution"
           ],
-          "question": "Which choice best shows accurate use of this idea about dissolve?",
+          "question": "Which choice best applies this lesson idea about dissolve with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSalt in water dissolves (soluble). Sand in water settles (insoluble). Stirring and temperature can affect how fast something dissolves.\n\nTRY FIRST\nPredict: sugar in warm water vs cold (same amounts); chalk dust in water.\n\nFEEDBACK\nSugar usually dissolves faster in warm; chalk remains mostly insoluble/visible.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about dissolve?",
+          "question": "Which choice best applies this lesson idea about dissolve with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSalt in water dissolves (soluble). Sand in water settles (insoluble). Stirring and temperature can affect how fast something dissolves. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect claim as a comparison",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about dissolve?",
+          "question": "Which choice best applies this lesson idea about dissolve with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSaying dissolved salt is “destroyed” is false — it can return when water evaporates. Here is a more productive model: Salt in water dissolves (soluble). Sand in water settles (insoluble). Stirring and temperature can affect how fast something dissolves.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nSugar usually dissolves faster in warm; chalk remains mostly insoluble/visible.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about dissolve?",
+          "question": "Which choice best applies this lesson idea about dissolve with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDissolving mixes a soluble material into a liquid so it seems to disappear; the material is still there as a solution. Insoluble materials stay visible. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",

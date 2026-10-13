@@ -83,7 +83,17 @@ def _strip_strong_prefix(text: str) -> str:
 
 
 def _option(text: str, n: int = 120) -> str:
-    return _first_sentence(_strip_strong_prefix(text), n)
+    """Short option text with no ellipsis truncation markers."""
+    text = _first_sentence(_strip_strong_prefix(text), n)
+    # Source material sometimes already ends with "..." / "…"; strip rather than fail.
+    text = ELLIPSIS.sub('', text)
+    text = re.sub(r'\s*\.\.\.\s*', ' ', text)
+    text = re.sub(r'\s*…\s*', ' ', text)
+    text = _clean(text).rstrip('.,;:')
+    if text and not text.endswith(('!', '?')):
+        # Keep declarative option phrasing; avoid reintroducing ellipsis.
+        pass
+    return text
 
 
 def _explain(correct: str, why: str, distractor_why: str) -> str:
@@ -541,10 +551,12 @@ def build_skill_quiz(seed_key: str, subject: str, rule: str, model: str, prompt:
             correct_habit, wrongs,
             'Strong answers name specific evidence and what it shows.',
             seed_key, 'q5', pad=pad))
+        idea = _first_sentence(rule, 72) or v0
+        # Keep the stem short; do not embed long lesson titles that force option truncation.
         items.append(shuffle_mc(
-            f'Using this lesson idea — {_first_sentence(rule, 100)} — which choice is best?',
+            f'Which choice best applies this lesson idea about {v0}?',
             _option(model) or answer_s, [pitfall_s, wrongs[0], wrongs[1]],
-            'The stronger choice matches the taught idea with concrete detail.',
+            f'The stronger choice matches the taught idea ({idea}) with concrete detail.',
             seed_key, 'q6', pad=pad))
         items.append(shuffle_mc(
             f'Which action keeps {focus} accurate for {v0}?',

@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-CWT-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write a report plan for your chosen question: title, four to five headings, two facts you hope to find under each and a sources-to-seek list. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order. Reasoning: I used plan by attending to sections and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Random headings that ignore the question waste drafting time. Correction: Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order. Why: the correction restores accurate use of plan.\n\nParent: Likely misconception: Random headings that ignore the question waste drafting time. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating plan on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with plan, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write a report plan for your chosen question: title, four to five headings, two facts you hope to find under each and a sources-to-seek list. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using plan on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Random headings that ignore the question waste drafting time.. Correction: Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order.. Why it helps the audience is stated.\n\nParent: Likely misconception: Random headings that ignore the question waste drafting time. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating plan on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with plan, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about plan with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for plan. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -43,112 +43,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order. This matches the lesson skill for plan.",
+        "explanation": "This matches the taught method for plan. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order.",
-          "Random headings that ignore the question waste drafting time.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order",
+          "Random headings that ignore the question waste drafting time",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Plan four section headings for: Why do shadows change length?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Random headings that ignore the question waste drafting time. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for plan; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of sections and explain why it matters with clear evidence.",
-          "Random headings that ignore the question waste drafting time.",
-          "Planning a research report means deciding headings/sections that answer the research question in a sensible order.",
-          "Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order."
+          "Careful use of sections and explain why it matters with clear evidence",
+          "Random headings that ignore the question waste drafting time",
+          "Planning a research report means deciding headings/sections that answer the research question in a sensible order",
+          "Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order"
         ],
-        "question": "Which statement is a common mistake when practising plan?",
+        "question": "Which statement is a common mistake when working with plan?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named sections and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named sections and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the sections and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence."
+          "Random headings that ignore the question waste drafting time",
+          "Name sections and explain why it matters only, without linking it to plan",
+          "Apply plan to new material and name the sections and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising plan. Which approach best shows understanding?",
+        "question": "Which response best applies plan with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The skill is shown by quoting or pointing to wording that carries plan.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries plan. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Point to exact words in the sentence that show plan and say what they do.",
-          "Ignore the sentence and invent a more exciting event.",
-          "Say the writing is good without naming any words.",
-          "Random headings that ignore the question waste drafting time."
+          "Point to exact words in the sentence that show plan and say what they do",
+          "Ignore the sentence and invent a more exciting event",
+          "Say the writing is good without naming any words",
+          "Random headings that ignore the question waste drafting time"
         ],
         "question": "Read: \"Under the pier, Sam found a locked tin and a dripping map.\" Which choice best uses plan from this lesson?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Random headings that ignore the question waste drafting time.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order."
+          "Random headings that ignore the question waste drafting time",
+          "Copy a model sentence from another story unchanged",
+          "Name sections and explain why it matters without linking it to any words in the text",
+          "Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order"
         ],
         "question": "Which statement correctly applies the lesson idea about plan?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Guess from the title alone with no textual clue.",
-          "Copy a model sentence from another story unchanged.",
-          "Treat a missing detail as a proven fact.",
-          "Locate a specific word, phrase or structural clue before deciding."
+          "Guess from the title alone with no textual clue",
+          "Copy a model sentence from another story unchanged",
+          "Lengthen the answer with adjectives while keeping the same idea",
+          "Locate a specific word, phrase or structural clue before deciding"
         ],
-        "question": "In a new text, what should you do first to practise sections and explain why it matters?",
+        "question": "In a new text, what should you do first to analyse sections and explain why it matters?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Add adjectives without fixing the wrong idea.",
-          "Make the answer longer while keeping the same mistake.",
-          "Delete the evidence that disagreed with your first guess.",
-          "Change the inaccurate idea or missing evidence, not only the length."
+          "Add adjectives without fixing the wrong idea",
+          "Make the answer longer while keeping the same mistake",
+          "Delete the evidence that disagreed with your first guess",
+          "Change the inaccurate idea or missing evidence, not only the length"
         ],
-        "question": "Which revision actually repairs meaning?",
+        "question": "Which revision actually improves meaning for plan?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change fonts and claim the work is new.",
-          "Random headings that ignore the question waste drafting time.",
-          "Use a fresh sentence or text and explain one precise choice about plan.",
-          "Retype the worked model as the final answer."
+          "Change fonts and claim the work is new",
+          "Random headings that ignore the question waste drafting time",
+          "Use a fresh sentence or text and explain one precise choice about plan",
+          "Retype the worked model as the final answer"
         ],
-        "question": "Which response shows transfer of plan to new material?",
+        "question": "Which response shows accurate use of plan on fresh material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about plan with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating plan on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order. Reasoning: I used plan by attending to sections and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: original example using plan on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for plan. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with plan, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Random headings that ignore the question waste drafting time. Correction: Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order. Why: the correction restores accurate use of plan.",
+        "sample_answer": "Sample error: Random headings that ignore the question waste drafting time.. Correction: Possible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -225,14 +225,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Planning a research report means deciding headings/sections that answer the research question in a sensible order. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Planning a research report means deciding headings/sections that answer the research question in a sensible order.",
           "options": [
-            "A guess with no explanation.",
-            "Planning a research report means deciding headings/sections that answer the research question in a sensible order.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Planning a research report means deciding headings/sections that answer the research question in a sensible order",
+            "A guess with no explanation",
+            "A claim unrelated to the text"
           ],
-          "question": "Which choice best shows accurate use of this idea about plan?",
+          "question": "Which choice best applies this lesson idea about plan with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nQuestion: How do honeybees find flowers? Sections: Introduction; Bee senses; The waggle dance; Conclusion.\n\nTRY FIRST\nPlan four section headings for: Why do shadows change length?\n\nFEEDBACK\nPossible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order.",
@@ -283,14 +283,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
           "options": [
-            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation."
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does",
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation"
           ],
-          "question": "Which choice best shows accurate use of this idea about plan?",
+          "question": "Which choice best applies this lesson idea about plan with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nQuestion: How do honeybees find flowers? Sections: Introduction; Bee senses; The waggle dance; Conclusion. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
@@ -309,14 +309,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A guess with no explanation.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no explanation",
+            "A claim unrelated to the text"
           ],
-          "question": "Which choice best shows accurate use of this idea about plan?",
+          "question": "Which choice best applies this lesson idea about plan with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRandom headings that ignore the question waste drafting time. Here is a more productive model: Question: How do honeybees find flowers? Sections: Introduction; Bee senses; The waggle dance; Conclusion.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nPossible: Introduction; Sun position; Shadow length; Conclusion — or similar logical order.",
@@ -328,14 +328,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
           "options": [
-            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation."
+            "Use the method on a new topic, not a reworded copy of the example",
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation"
           ],
-          "question": "Which choice best shows accurate use of this idea about plan?",
+          "question": "Which choice best applies this lesson idea about plan with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPlanning a research report means deciding headings/sections that answer the research question in a sensible order. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",

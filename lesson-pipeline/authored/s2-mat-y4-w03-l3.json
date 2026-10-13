@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-RN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Solve ten place-value word problems. For five, write a one-sentence place-value reason and show a chart or expanded form. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match. Reasoning: I used problem by attending to place value rather than copying the worked model.\n\nParent: Written model 2: Common error: Answering with only a circle and no place-value reason is incomplete for this lesson. Correction: Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match. Why: the correction restores accurate use of problem.\n\nParent: Likely misconception: Answering with only a circle and no place-value reason is incomplete for this lesson. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses problem with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with problem, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Solve ten place-value word problems. For five, write a one-sentence place-value reason and show a chart or expanded form. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for problem; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Answering with only a circle and no place-value reason is incomplete for this lesson.. Correction uses Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match.. Why: restores accurate problem.\n\nParent: Likely misconception: Answering with only a circle and no place-value reason is incomplete for this lesson. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses problem with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with problem, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for problem, and names places/values. Reject copied model numbers. / Accept a named misconception about problem, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match. This matches the lesson skill for problem.",
+        "explanation": "This matches the taught method for problem. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model numbers and call that independent work.",
-          "Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match.",
-          "Answering with only a circle and no place-value reason is incomplete for this lesson.",
-          "Ignore place value and read digits from left to right as ones only."
+          "A method that skips the key step taught in this lesson",
+          "Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match",
+          "Answering with only a circle and no place-value reason is incomplete for this lesson",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "A library has 14,250 fiction and 14,520 non-fiction books. Which collection is larger and how do you know?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Answering with only a circle and no place-value reason is incomplete for this lesson. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for problem; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Answering with only a circle and no place-value reason is incomplete for this lesson.",
-          "Place-value problem solving uses reading, comparing or partitioning as a strategy and records a reason that refers to places or expanded parts.",
-          "Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match.",
-          "Careful use of place value with clear evidence."
+          "Answering with only a circle and no place-value reason is incomplete for this lesson",
+          "Place-value problem solving uses reading, comparing or partitioning as a strategy and records a reason that refers to",
+          "Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match",
+          "Careful use of place value and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising problem?",
+        "question": "Which statement is a common mistake when working with problem?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named place value, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named place value and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing zero as if it does not change the value.",
-          "Apply the idea with new evidence and name the place value used."
+          "Repeat the worked example wording with no new evidence",
+          "Answering with only a circle and no place-value reason is incomplete for this lesson",
+          "Name place value and explain why it matters only, without linking it to problem",
+          "Apply problem to new material and name the place value and explain why it matters used"
         ],
-        "question": "A learner is practising problem. Which approach best shows understanding?",
+        "question": "Which response best applies problem with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change digits to look neater without checking place value.",
-          "Answering with only a circle and no place-value reason is incomplete for this lesson.",
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working."
+          "Change digits to look neater without checking place value",
+          "Answering with only a circle and no place-value reason is incomplete for this lesson",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working"
         ],
-        "question": "Which working note best supports a mathematics answer about problem?",
+        "question": "Which working best supports a correct answer for this lesson on problem?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught problem method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match.",
-          "Answering with only a circle and no place-value reason is incomplete for this lesson.",
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work."
+          "Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match",
+          "Answering with only a circle and no place-value reason is incomplete for this lesson",
+          "Read 14,250 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 14,250 and 14,520 as interchangeable"
         ],
-        "question": "Using this lesson idea — Place-value problem solving uses reading, comparing or partitioning as a strategy and records a reason that… — which statement is true?",
+        "question": "Using the method for problem, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed."
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a problem problem with numbers such as 14,250 and 14,520, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model numbers and call that independent work.",
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers."
+          "Answering with only a circle and no place-value reason is incomplete for this lesson",
+          "Use the same problem method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 14,250 and 14,520 as the answer",
+          "Change only handwriting and keep the same numbers"
         ],
-        "question": "Which practice choice shows transfer of problem?",
+        "question": "Solve a fresh problem problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name the exact place or step that failed, then show corrected working for problem.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer."
+          "Answering with only a circle and no place-value reason is incomplete for this lesson",
+          "Place-value problem solving uses reading, comparing or partitioning as a strategy and records a reason that refers to",
+          "Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match",
+          "Label units when comparing 14,250 with 14,520"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for problem?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for problem, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses problem with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match. Reasoning: I used problem by attending to place value rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for problem; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about problem, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with problem, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Answering with only a circle and no place-value reason is incomplete for this lesson. Correction: Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match. Why: the correction restores accurate use of problem.",
+        "sample_answer": "Sample misconception: Answering with only a circle and no place-value reason is incomplete for this lesson.. Correction uses Non-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match.. Why: restores accurate problem.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Place-value problem solving uses reading, comparing or partitioning as a strategy and records a reason that refers to places or expanded parts. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Place-value problem solving uses reading, comparing or partitioning as a strategy and records a reason that refers to places or expanded parts.",
           "options": [
-            "Place-value problem solving uses reading, comparing or partitioning as a strategy and records a reason that refers to places or expanded parts.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Place-value problem solving uses reading, comparing or partitioning as a strategy and records a reason that refers to",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about problem?",
+          "question": "Which choice best applies this lesson idea about problem with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nProblem: Which fundraising total is larger, $36,080 or $36,800? Strategy: compare hundreds. Reason: 8 hundreds > 0 hundreds after matching higher places.\n\nTRY FIRST\nA library has 14,250 fiction and 14,520 non-fiction books. Which collection is larger and how do you know?\n\nFEEDBACK\nNon-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about problem?",
+          "question": "Which choice best applies this lesson idea about problem with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nProblem: Which fundraising total is larger, $36,080 or $36,800? Strategy: compare hundreds. Reason: 8 hundreds > 0 hundreds after matching higher places. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about problem?",
+          "question": "Which choice best applies this lesson idea about problem with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAnswering with only a circle and no place-value reason is incomplete for this lesson. Here is a more productive model: Problem: Which fundraising total is larger, $36,080 or $36,800? Strategy: compare hundreds. Reason: 8 hundreds > 0 hundreds after matching higher places.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nNon-fiction 14,520; tens/hundreds comparison after ten-thousands and thousands match.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about problem?",
+          "question": "Which choice best applies this lesson idea about problem with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPlace-value problem solving uses reading, comparing or partitioning as a strategy and records a reason that refers to places or expanded parts. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

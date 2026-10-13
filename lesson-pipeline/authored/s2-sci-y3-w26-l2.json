@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-DDT-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Collect one small data set (at least 10 items). Store it in a labelled table (paper or digital). Write why your labels help a future reader. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Columns/labels, units, date and a clear file/page title. Reasoning: I used collect by attending to store and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Storing without labels makes the data hard to reuse later. Correction: Columns/labels, units, date and a clear file/page title. Why: the correction restores accurate use of collect.\n\nParent: Likely misconception: Storing without labels makes the data hard to reuse later. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses collect. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about collect, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Collect one small data set (at least 10 items). Store it in a labelled table (paper or digital). Write why your labels help a future reader. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about collect linked to that evidence.\n\nParent: Written model 2: Sample misconception: Storing without labels makes the data hard to reuse later.. Correction: Columns/labels, units, date and a clear file/page title. with evidence.\n\nParent: Likely misconception: Storing without labels makes the data hard to reuse later. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses collect. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about collect, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about collect. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for collect. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Columns/labels, units, date and a clear file/page title. This matches the lesson skill for collect.",
+        "explanation": "This matches the taught method for collect. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Columns/labels, units, date and a clear file/page title.",
-          "Storing without labels makes the data hard to reuse later.",
-          "Ignore the task and invent an unrelated answer."
+          "A method that skips the key step taught in this lesson",
+          "Columns/labels, units, date and a clear file/page title",
+          "Storing without labels makes the data hard to reuse later",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Improve this store: one photo of mixed numbers with no labels. What would you add?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Storing without labels makes the data hard to reuse later. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for collect; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Collecting and storing data means gathering facts carefully and organising them so they can be found again (tables, folders, labelled files).",
-          "Columns/labels, units, date and a clear file/page title.",
-          "Careful use of store and explain why it matters with clear evidence.",
-          "Storing without labels makes the data hard to reuse later."
+          "Collecting and storing data means gathering facts carefully and organising them so they can be found again (tables",
+          "Columns/labels, units, date and a clear file/page title",
+          "Careful use of store and explain why it matters with clear evidence",
+          "Storing without labels makes the data hard to reuse later"
         ],
-        "question": "Which statement is a common mistake when practising collect?",
+        "question": "Which statement is a common mistake when working with collect?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named store and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named store and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the store and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name store and explain why it matters only, without linking it to collect",
+          "Apply collect to new material and name the store and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Storing without labels makes the data hard to reuse later"
         ],
-        "question": "A learner is practising collect. Which approach best shows understanding?",
+        "question": "Which response best applies collect with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation.",
-          "Storing without labels makes the data hard to reuse later."
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation",
+          "Storing without labels makes the data hard to reuse later"
         ],
-        "question": "New examples: a charging phone, a nesting bird, glass marble, fallen dry leaf. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: a charging phone, a nesting bird, a glass marble, a fallen dry leaf. Which claim about collect is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence.",
-          "Storing without labels makes the data hard to reuse later.",
-          "Named observation plus how it supports the claim."
+          "A longer story with no observation",
+          "A label copied from the title with no evidence",
+          "Storing without labels makes the data hard to reuse later",
+          "A named observation plus how it supports the claim"
         ],
         "question": "Which record best supports a science claim about collect?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Columns/labels, units, date and a clear file/page title. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about collect with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Columns/labels, units, date and a clear file/page title.",
-          "Storing without labels makes the data hard to reuse later."
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "Columns/labels, units, date and a clear file/page title",
+          "Storing without labels makes the data hard to reuse later"
         ],
-        "question": "Using this idea — Collecting and storing data means gathering facts carefully and organising them so they can be… — which choice is strongest?",
+        "question": "Using this science idea — Collecting and storing data means gathering facts carefully and organising them so they can be — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result.",
-          "Ignore measurements and decide by which looks nicer."
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about collect?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation.",
-          "Copy the worked example and call it independent work.",
-          "Test or describe a new object or context and cite fresh evidence."
+          "Any exciting story about the object must be true",
+          "Storing without labels makes the data hard to reuse later",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about collect should change with it"
         ],
-        "question": "Which next step best shows transfer of collect?",
+        "question": "Which prediction about collect can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about collect. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses collect. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Columns/labels, units, date and a clear file/page title. Reasoning: I used collect by attending to store and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about collect linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for collect. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about collect, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Storing without labels makes the data hard to reuse later. Correction: Columns/labels, units, date and a clear file/page title. Why: the correction restores accurate use of collect.",
+        "sample_answer": "Sample misconception: Storing without labels makes the data hard to reuse later.. Correction: Columns/labels, units, date and a clear file/page title. with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Collecting and storing data means gathering facts carefully and organising them so they can be found again (tables, folders, labelled files). Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Collecting and storing data means gathering facts carefully and organising them so they can be found again (tables, folders, labelled files).",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Collecting and storing data means gathering facts carefully and organising them so they can be found again (tables, folders, labelled files).",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Collecting and storing data means gathering facts carefully and organising them so they can be found again (tables",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about collect?",
+          "question": "Which choice best applies this lesson idea about collect with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nClass plant heights: table with name | height_cm | date. Saving the table with a clear filename beats a random photo of messy scrap paper.\n\nTRY FIRST\nImprove this store: one photo of mixed numbers with no labels. What would you add?\n\nFEEDBACK\nColumns/labels, units, date and a clear file/page title.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
           "options": [
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about collect?",
+          "question": "Which choice best applies this lesson idea about collect with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nClass plant heights: table with name | height_cm | date. Saving the table with a clear filename beats a random photo of messy scrap paper. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use an intentionally incorrect claim as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about collect?",
+          "question": "Which choice best applies this lesson idea about collect with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nStoring without labels makes the data hard to reuse later. Here is a more productive model: Class plant heights: table with name | height_cm | date. Saving the table with a clear filename beats a random photo of messy scrap paper.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nColumns/labels, units, date and a clear file/page title.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use the same science idea on a new object, material or context, not a copy of the worked example"
           ],
-          "question": "Which choice best shows accurate use of this idea about collect?",
+          "question": "Which choice best applies this lesson idea about collect with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCollecting and storing data means gathering facts carefully and organising them so they can be found again (tables, folders, labelled files). Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",

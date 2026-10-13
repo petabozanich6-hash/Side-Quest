@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Form a household ensemble with body percussion or objects. Assign parts, rehearse with a count-in and record two balance changes you made. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Shaker plays softer; melody plays a little clearer. Leader listens from the front to check balance.' Reasoning: I used ensemble by attending to cue rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking the loudest player is the best player. Ensemble skill is balance and listening. Correction: Strong answer: 'Shaker plays softer; melody plays a little clearer. Leader listens from the front to check balance.' Why: the correction restores accurate use of ensemble.\n\nParent: Likely misconception: Thinking the loudest player is the best player. Ensemble skill is balance and listening. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating ensemble on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with ensemble, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Form a household ensemble with body percussion or objects. Assign parts, rehearse with a count-in and record two balance changes you made. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using ensemble on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking the loudest player is the best player.. Correction: Strong answer: 'Shaker plays softer; melody plays a little clearer.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking the loudest player is the best player. Ensemble skill is balance and listening. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating ensemble on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with ensemble, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about ensemble with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for ensemble. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Shaker plays softer; melody plays a little clearer. Leader listens from the front to check balance.' This matches the lesson skill for ensemble.",
+        "explanation": "This matches the taught method for ensemble. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Shaker plays softer; melody plays a little clearer. Leader listens from the front to check balance.'",
-          "Thinking the loudest player is the best player. Ensemble skill is balance and listening."
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "Shaker plays softer; melody plays a little clearer.",
+          "Thinking the loudest player is the best player."
         ],
         "question": "The shaker covers the melody in an ensemble. Write two fixes and one listening check. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Thinking the loudest player is the best player. Ensemble skill is balance and listening. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for ensemble; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "An ensemble plays together with a shared pulse. Watch the leader for start and stop cues, listen so your part is not louder than the melody and count silent…",
-          "Strong answer: 'Shaker plays softer; melody plays a little clearer. Leader listens from the front to check balance.'",
-          "Careful use of cue with clear evidence.",
-          "Thinking the loudest player is the best player. Ensemble skill is balance and listening."
+          "An ensemble plays together with a shared pulse.",
+          "Shaker plays softer; melody plays a little clearer.",
+          "Careful use of cue and explain why it matters with clear evidence.",
+          "Thinking the loudest player is the best player."
         ],
-        "question": "Which statement is a common mistake when practising ensemble?",
+        "question": "Which statement is a common mistake when working with ensemble?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named cue, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named cue and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the cue used.",
+          "Thinking the loudest player is the best player.",
+          "Name cue and explain why it matters only, without linking it to ensemble.",
+          "Apply ensemble to new material and name the cue and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising ensemble. Which approach best shows understanding?",
+        "question": "Which response best applies ensemble with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Shaker plays softer; melody plays a little clearer. Leader listens from the front to check balance.' uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on ensemble. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Shaker plays softer; melody plays a little clearer. Leader listens from the front to check balance.'",
-          "Thinking the loudest player is the best player. Ensemble skill is balance and listening."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking the loudest player is the best player.",
+          "Shaker plays softer; melody plays a little clearer.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about ensemble?",
+        "question": "Which response best uses elements, techniques and audience effect for ensemble?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about ensemble.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking the loudest player is the best player. Ensemble skill is balance and listening."
-        ],
-        "question": "Which habit strengthens evidence about cue?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
+          "Name a specific element or technique and say what effect it creates for ensemble.",
           "Say it looks nice with no element or technique named.",
-          "Example: a group of four assigns drum (pulse), shaker (ti-ti), xylophone (melody) and triangle (beat 1). The drum softens after the first…",
-          "Thinking the loudest player is the best player. Ensemble skill is balance and listening.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking the loudest player is the best player."
         ],
-        "question": "Using this lesson idea — An ensemble plays together with a shared pulse. Watch the leader for start and stop cues, listen so your… — which choice is best?",
+        "question": "Which evidence move best supports a claim about ensemble?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: a group of four assigns drum (pulse), shaker (ti-ti), xylophone (melody) and triangle (beat 1).",
+          "Thinking the loudest player is the best player.",
+          "Say it looks nice with no element or technique named."
+        ],
+        "question": "Using this lesson idea — An ensemble plays together with a shared pulse. — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for ensemble?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking the loudest player is the best player. Ensemble skill is balance and listening.",
-          "Form a household ensemble with body percussion or objects. Assign parts, rehearse with a count-in and record two balance changes you made.",
+          "Name cue and explain why it matters only, with no linked example.",
+          "Form a household ensemble with body percussion or objects.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Thinking the loudest player is the best player."
         ],
-        "question": "Which task best shows independent use of ensemble?",
+        "question": "Which independent response best applies ensemble to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about ensemble with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating ensemble on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Shaker plays softer; melody plays a little clearer. Leader listens from the front to check balance.' Reasoning: I used ensemble by attending to cue rather than copying the worked model.",
+        "sample_answer": "Sample: original example using ensemble on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for ensemble. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with ensemble, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking the loudest player is the best player. Ensemble skill is balance and listening. Correction: Strong answer: 'Shaker plays softer; melody plays a little clearer. Leader listens from the front to check balance.' Why: the correction restores accurate use of ensemble.",
+        "sample_answer": "Sample error: Thinking the loudest player is the best player.. Correction: Strong answer: 'Shaker plays softer; melody plays a little clearer.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "An ensemble plays together with a shared pulse. Watch the leader for start and stop cues, listen so your part is not louder than the melody and count silent bars carefully. Agree tempo and dynamics before the first note. Put instruments down quietly when finished. Supported…",
+          "explanation": "An ensemble plays together with a shared pulse.",
           "options": [
+            "An answer copied without understanding.",
+            "An ensemble plays together with a shared pulse.",
             "A guess with no artistic reason.",
-            "An ensemble plays together with a shared pulse. Watch the leader for start and stop cues, listen so your part is not louder than the melody and count silent bars carefully. Agree tempo and dynamics before the first note. Put instruments down quietly when finished.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about ensemble?",
+          "question": "Which choice best applies this lesson idea about ensemble with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a group of four assigns drum (pulse), shaker (ti-ti), xylophone (melody) and triangle (beat 1). The drum softens after the first run so the melody can be heard. They start on a four-beat count-in.\n\nTRY FIRST\nThe shaker covers the melody in an ensemble. Write two fixes and one listening check.\n\nFEEDBACK\nStrong answer: 'Shaker plays softer; melody plays a little clearer. Leader listens from the front to check balance.'",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about ensemble?",
+          "question": "Which choice best applies this lesson idea about ensemble with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a group of four assigns drum (pulse), shaker (ti-ti), xylophone (melody) and triangle (beat 1). The drum softens after the first run so the melody can be heard. They start on a four-beat count-in. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
+            "An answer copied without understanding.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about ensemble?",
+          "question": "Which choice best applies this lesson idea about ensemble with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking the loudest player is the best player. Ensemble skill is balance and listening. Here is a more helpful example: Example: a group of four assigns drum (pulse), shaker (ti-ti), xylophone (melody) and triangle (beat 1). The drum softens after the first run so the melody can be heard. They start on a four-beat count-in.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Shaker plays softer; melody plays a little clearer. Leader listens from the front to check balance.'",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice."
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example."
           ],
-          "question": "Which choice best shows accurate use of this idea about ensemble?",
+          "question": "Which choice best applies this lesson idea about ensemble with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAn ensemble plays together with a shared pulse. Watch the leader for start and stop cues, listen so your part is not louder than the melody and count silent bars carefully. Agree tempo and dynamics before the first note. Put instruments down quietly when finished. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

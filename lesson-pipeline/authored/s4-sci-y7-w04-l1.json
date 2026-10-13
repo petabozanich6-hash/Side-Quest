@@ -34,7 +34,7 @@
     "outcome_codes": [
       "SC4-WS-04"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Build a table and appropriate graph from provided or collected data; write conclusion + two limitations. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: Column graph; conclusion compares categories with data reference. Reasoning: I used table by attending to graph choice rather than copying the worked model.\n\nParent: Written model 2: Common error: Drawing a line through unordered categories. Match graph to data type. Correction: Strong answer: Column graph; conclusion compares categories with data reference. Why: the correction restores accurate use of table.\n\nParent: Likely misconception: Drawing a line through unordered categories. Match graph to data type. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses table. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about table, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Build a table and appropriate graph from provided or collected data; write conclusion + two limitations. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about table linked to that evidence.\n\nParent: Written model 2: Sample misconception: Drawing a line through unordered categories.. Correction: Strong answer: Column graph; with evidence.\n\nParent: Likely misconception: Drawing a line through unordered categories. Match graph to data type. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses table. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about table, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about table. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for table. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: Column graph; conclusion compares categories with data reference. This matches the lesson skill for table.",
+        "explanation": "This matches the taught method for table. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model objects and call that independent work.",
-          "Strong answer: Column graph; conclusion compares categories with data reference.",
-          "Drawing a line through unordered categories. Match graph to data type.",
-          "Ignore the observation and invent a more exciting result."
+          "A method that skips the key step taught in this lesson",
+          "Column graph; conclusion compares categories with data reference",
+          "Drawing a line through unordered categories",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Given category data for three insulator types’ final temperatures, choose graph type and write a one-sentence evidenced conclusion. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Drawing a line through unordered categories. Match graph to data type. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for table; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose graphs that match data (column for categories; line for continuous change over time). Identify trends and write conclusions that answer the question…",
-          "Strong answer: Column graph; conclusion compares categories with data reference.",
-          "Careful use of graph choice with clear evidence.",
-          "Drawing a line through unordered categories. Match graph to data type."
+          "Choose graphs that match data (column for categories",
+          "Column graph; conclusion compares categories with data reference",
+          "Careful use of graph choice and explain why it matters with clear evidence",
+          "Drawing a line through unordered categories"
         ],
-        "question": "Which statement is a common mistake when practising table?",
+        "question": "Which statement is a common mistake when working with table?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named graph choice, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named graph choice and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the graph choice used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing measurement as if it were recorded."
+          "Apply table to new material and name the graph choice and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Drawing a line through unordered categories",
+          "Name graph choice and explain why it matters only, without linking it to table"
         ],
-        "question": "A learner is practising table. Which approach best shows understanding?",
+        "question": "Which response best applies table with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a label from the lesson title with no observation.",
-          "Drawing a line through unordered categories. Match graph to data type.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting."
+          "Copy a label from the lesson title with no observation",
+          "Drawing a line through unordered categories",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting"
         ],
-        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: yeast making bread rise, a spinning fan, copper wire, a tadpole. Which claim about table is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A label copied from the title with no evidence.",
-          "Drawing a line through unordered categories. Match graph to data type.",
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation."
+          "A label copied from the title with no evidence",
+          "Drawing a line through unordered categories",
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation"
         ],
         "question": "Which record best supports a science claim about table?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: Column graph; conclusion compares categories with data reference. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about table with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work.",
-          "Strong answer: Column graph; conclusion compares categories with data reference.",
-          "Drawing a line through unordered categories. Match graph to data type."
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "Column graph; conclusion compares categories with data reference",
+          "Drawing a line through unordered categories"
         ],
-        "question": "Using this idea — Choose graphs that match data (column for categories; line for continuous change over time).… — which choice is strongest?",
+        "question": "Using this science idea — Choose graphs that match data (column for categories; line for continuous change over time). — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result.",
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same."
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer",
+          "Identify the independent variable, control the rest, and record repeatable measurements"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about table?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation.",
-          "Copy the model objects and call that independent work.",
-          "Test or describe a new object or context and cite fresh evidence."
+          "Any exciting story about the object must be true",
+          "Drawing a line through unordered categories",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about table should change with it"
         ],
-        "question": "Which next step best shows transfer of table?",
+        "question": "Which prediction about table can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about table. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses table. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Strong answer: Column graph; conclusion compares categories with data reference. Reasoning: I used table by attending to graph choice rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about table linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for table. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about table, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Drawing a line through unordered categories. Match graph to data type. Correction: Strong answer: Column graph; conclusion compares categories with data reference. Why: the correction restores accurate use of table.",
+        "sample_answer": "Sample misconception: Drawing a line through unordered categories.. Correction: Strong answer: Column graph; with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Choose graphs that match data (column for categories; line for continuous change over time). Identify trends and write conclusions that answer the question and stay within the evidence—mention limitations. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Choose graphs that match data (column for categories; line for continuous change over time).",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Choose graphs that match data (column for categories; line for continuous change over time). Identify trends and write conclusions that answer the question and stay within the evidence—mention limitations.",
-            "A claim unrelated to the observation or test."
+            "Choose graphs that match data (column for categories",
+            "An answer copied without understanding",
+            "Choose graphs that match data (column for categories; line for continuous change over time)",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about table?",
+          "question": "Which choice best applies this lesson idea about table with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLine graph of temp vs time shows a downward trend. Conclusion: Under these conditions, the insulated cup cooled more slowly than the plain cup across 10 minutes. Limitation: only two cup types tested.\n\nTRY FIRST\nGiven category data for three insulator types’ final temperatures, choose graph type and write a one-sentence evidenced conclusion.\n\nFEEDBACK\nStrong answer: Column graph; conclusion compares categories with data reference.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim"
           ],
-          "question": "Which choice best shows accurate use of this idea about table?",
+          "question": "Which choice best applies this lesson idea about table with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLine graph of temp vs time shows a downward trend. Conclusion: Under these conditions, the insulated cup cooled more slowly than the plain cup across 10 minutes. Limitation: only two cup types tested. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect claim as a comparison",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about table?",
+          "question": "Which choice best applies this lesson idea about table with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDrawing a line through unordered categories. Match graph to data type. Here is a more productive model: Line graph of temp vs time shows a downward trend. Conclusion: Under these conditions, the insulated cup cooled more slowly than the plain cup across 10 minutes. Limitation: only two cup types tested.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nStrong answer: Column graph; conclusion compares categories with data reference.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example"
           ],
-          "question": "Which choice best shows accurate use of this idea about table?",
+          "question": "Which choice best applies this lesson idea about table with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nChoose graphs that match data (column for categories; line for continuous change over time). Identify trends and write conclusions that answer the question and stay within the evidence—mention limitations. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Make a portfolio of four pieces from this course, one from each art form if possible. Write a label for each. Then write a one-page reflection with strengths, challenges and goals for next year. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'My favourite work is my printed pattern. I improved at mixing colours. A challenge was keeping time in group dance, so I counted aloud. My goal is to compose a longer piece.' It has… Reasoning: I used a reflection by attending to a portfolio rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning. Correction: Strong answer: 'My favourite work is my printed pattern. I improved at mixing colours. A challenge was keeping time in group dance, so I counted aloud. My… Why: the correction restores accurate use of a reflection.\n\nParent: Likely misconception: Thinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a reflection on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a reflection, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Make a portfolio of four pieces from this course, one from each art form if possible. Write a label for each. Then write a one-page reflection with strengths, challenges and goals for next year. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a reflection on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that a reflection should only mention what went well.. Correction: Strong answer: 'My favourite work is my printed pattern.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a reflection on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a reflection, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a reflection with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a reflection. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'My favourite work is my printed pattern. I improved at mixing colours. A challenge was keeping time in group dance, so I counted aloud. My… This matches the lesson skill for a reflection.",
+        "explanation": "This matches the taught method for a reflection. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'My favourite work is my printed pattern. I improved at mixing colours. A challenge was keeping time in group dance, so I counted aloud. My…",
-          "Thinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning."
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'My favourite work is my printed pattern.",
+          "Thinking that a reflection should only mention what went well."
         ],
         "question": "Write a four-sentence reflection naming a favourite work, a skill you improved, a challenge and a goal. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Thinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a reflection; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A reflection is looking back at the year to see what you have learned and how you have grown. A portfolio is a collection of your best work, with labels.…",
-          "Strong answer: 'My favourite work is my printed pattern. I improved at mixing colours. A challenge was keeping time in group dance, so I counted aloud. My…",
-          "Careful use of a portfolio with clear evidence.",
-          "Thinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning."
+          "A reflection is looking back at the year to see what you have learned and how you have grown.",
+          "'My favourite work is my printed pattern.",
+          "Careful use of a portfolio and explain why it matters with clear evidence.",
+          "Thinking that a reflection should only mention what went well."
         ],
-        "question": "Which statement is a common mistake when practising a reflection?",
+        "question": "Which statement is a common mistake when working with a reflection?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named a portfolio, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a portfolio and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a portfolio used."
+          "Thinking that a reflection should only mention what went well.",
+          "Name a portfolio and explain why it matters only, without linking it to a reflection.",
+          "Apply a reflection to new material and name the a portfolio and explain why it matters used."
         ],
-        "question": "A learner is practising a reflection. Which approach best shows understanding?",
+        "question": "Which response best applies a reflection with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'My favourite work is my printed pattern. I improved at mixing colours. A challenge was keeping time in group dance, so I counted aloud. My… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a reflection. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'My favourite work is my printed pattern. I improved at mixing colours. A challenge was keeping time in group dance, so I counted aloud. My…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that a reflection should only mention what went well.",
+          "'My favourite work is my printed pattern."
         ],
-        "question": "Which response best shows careful thinking about a reflection?",
+        "question": "Which response best uses elements, techniques and audience effect for a reflection?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning.",
-          "Name a specific source, cue or example and say what it shows about a reflection.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that a reflection should only mention what went well.",
+          "Name a specific element or technique and say what effect it creates for a reflection.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which habit strengthens evidence about a portfolio?",
+        "question": "Which evidence move best supports a claim about a reflection?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Example: Ben's reflection: 'My best artwork is my collage because the overlapping layers made it look deep. I learned to mix colours, keep…",
-          "Thinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Ben's reflection: 'My best artwork is my collage because the overlapping layers made it look deep.",
+          "Thinking that a reflection should only mention what went well.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — A reflection is looking back at the year to see what you have learned and how you have grown. A portfolio is… — which choice is best?",
+        "question": "Using this lesson idea — A reflection is looking back at the year to see what you have learned and how you have grown. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a reflection?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning.",
-          "Make a portfolio of four pieces from this course, one from each art form if possible. Write a label for each. Then write a one-page reflection with…",
+          "Name a portfolio and explain why it matters only, with no linked example.",
+          "Make a portfolio of four pieces from this course, one from each art form if possible.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Thinking that a reflection should only mention what went well."
         ],
-        "question": "Which task best shows independent use of a reflection?",
+        "question": "Which independent response best applies a reflection to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a reflection with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a reflection on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'My favourite work is my printed pattern. I improved at mixing colours. A challenge was keeping time in group dance, so I counted aloud. My goal is to compose a longer piece.' It has… Reasoning: I used a reflection by attending to a portfolio rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a reflection on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a reflection. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a reflection, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning. Correction: Strong answer: 'My favourite work is my printed pattern. I improved at mixing colours. A challenge was keeping time in group dance, so I counted aloud. My… Why: the correction restores accurate use of a reflection.",
+        "sample_answer": "Sample error: Thinking that a reflection should only mention what went well.. Correction: Strong answer: 'My favourite work is my printed pattern.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "A reflection is looking back at the year to see what you have learned and how you have grown. A portfolio is a collection of your best work, with labels. Choose pieces from different art forms: a drawing or print, a piece of music, a drama and a dance. For each, write what you…",
+          "explanation": "A reflection is looking back at the year to see what you have learned and how you have grown.",
           "options": [
-            "A reflection is looking back at the year to see what you have learned and how you have grown. A portfolio is a collection of your best work, with labels. Choose pieces from different art forms: a drawing or print, a piece of music, a drama and a dance. For each, write what you made, which elements you used and what you would change. Name a skill you have improved, a challenge you overcame and your goals for next year. Be honest and specific, and use evidence from your work.",
+            "A reflection is looking back at the year to see what you have learned and how you have grown.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a reflection?",
+          "question": "Which choice best applies this lesson idea about a reflection with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Ben's reflection: 'My best artwork is my collage because the overlapping layers made it look deep. I learned to mix colours, keep a steady beat and stay in role. A challenge was singing in tune, which I practised by humming. My goal next year is to try a new instrument.' He names a favourite work, skills, a challenge and a goal, using evidence.\n\nTRY FIRST\nWrite a four-sentence reflection naming a favourite work, a skill you improved, a challenge and a goal.\n\nFEEDBACK\nStrong answer: 'My favourite work is my printed pattern. I improved at mixing colours. A challenge was keeping time in group dance, so I counted aloud. My goal is to compose a longer piece.' It has all four parts and is specific.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
+            "An answer copied without understanding.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a reflection?",
+          "question": "Which choice best applies this lesson idea about a reflection with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Ben's reflection: 'My best artwork is my collage because the overlapping layers made it look deep. I learned to mix colours, keep a steady beat and stay in role. A challenge was singing in tune, which I practised by humming. My goal next year is to try a new instrument.' He names a favourite work, skills, a challenge and a goal, using evidence. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
+            "An answer copied without understanding.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a reflection?",
+          "question": "Which choice best applies this lesson idea about a reflection with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that a reflection should only mention what went well. Honest reflections name challenges and how you worked on them, since this shows real learning. Here is a more helpful example: Example: Ben's reflection: 'My best artwork is my collage because the overlapping layers made it look deep. I learned to mix colours, keep a steady beat and stay in role. A challenge was singing in tune, which I practised by humming. My goal next year is to try a new instrument.' He names a favourite work, skills, a challenge and a goal, using evidence.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'My favourite work is my printed pattern. I improved at mixing colours. A challenge was keeping time in group dance, so I counted aloud. My goal is to compose a longer piece.' It has all four parts and is specific.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a reflection?",
+          "question": "Which choice best applies this lesson idea about a reflection with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA reflection is looking back at the year to see what you have learned and how you have grown. A portfolio is a collection of your best work, with labels. Choose pieces from different art forms: a drawing or print, a piece of music, a drama and a dance. For each, write what you made, which elements you used and what you would change. Name a skill you have improved, a challenge you overcame and your goals for next year. Be honest and specific, and use evidence from your work. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

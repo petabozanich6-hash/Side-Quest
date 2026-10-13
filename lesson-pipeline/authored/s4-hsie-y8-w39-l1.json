@@ -46,10 +46,10 @@
         "correct_index": 1,
         "explanation": "This matches the taught method for practising. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model places and call that independent work.",
-          "place/time clear; claim linked to source; limits stated; no invented cultural detail.",
+          "A method that skips the key step taught in this lesson",
+          "place/time clear; claim linked to source; limits stated; no invented cultural detail",
           "Treating myths as literal fact without labelling belief, or ignoring scale and perspective for practising the",
-          "Ignore the source and invent a more exciting story."
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "For practising the presentation, write a located description, one sourced observation and one evidenced explanation. Which response is most accurate?",
         "type": "multiple_choice"
@@ -58,22 +58,22 @@
         "correct_index": 2,
         "explanation": "This is the misconception to avoid for practising; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "place/time clear; claim linked to source; limits stated; no invented cultural detail.",
-          "Careful use of presentation with clear evidence.",
+          "place/time clear; claim linked to source; limits stated; no invented cultural detail",
+          "Careful use of presentation and explain why it matters with clear evidence",
           "Treating myths as literal fact without labelling belief, or ignoring scale and perspective for practising the",
-          "Stage 4 HSIE develops historical/geographic inquiry for practising the presentation."
+          "Stage 4 HSIE develops historical/geographic inquiry for practising the presentation"
         ],
         "question": "Which statement is a common mistake when working with practising?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and a named presentation, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "explanation": "Understanding is shown by new evidence and a named presentation and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Treating myths as literal fact without labelling belief, or ignoring scale and perspective for practising the",
-          "Name presentation only, without linking it to practising.",
-          "Apply practising to new material and name the presentation used.",
-          "Repeat the worked example wording with no new evidence."
+          "Name presentation and explain why it matters only, without linking it to practising",
+          "Apply practising to new material and name the presentation and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
         "question": "Which response best applies practising with new evidence?",
         "type": "multiple_choice"
@@ -83,9 +83,9 @@
         "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on practising. The other choices miss a key step or use a common mistake.",
         "options": [
           "Treating myths as literal fact without labelling belief, or ignoring scale and perspective for practising the",
-          "place/time clear; claim linked to source; limits stated; no invented cultural detail.",
-          "Make a bigger claim without naming any source or place detail.",
-          "Copy a classmate’s sentence with no local detail."
+          "place/time clear; claim linked to source; limits stated; no invented cultural detail",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail"
         ],
         "question": "Which response best evaluates sources, places or historical/geographic evidence when analysing practising?",
         "type": "multiple_choice"
@@ -94,34 +94,34 @@
         "correct_index": 3,
         "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or place detail.",
-          "Copy a classmate’s sentence with no local detail.",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
           "Treating myths as literal fact without labelling belief, or ignoring scale and perspective for practising the",
-          "Name a specific source or place detail and say what it shows about practising."
+          "Name a specific source or place detail and say what it shows about practising"
         ],
         "question": "Which evidence move best supports a claim about practising?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "explanation": "The stronger choice matches the taught idea (Stage 4 HSIE develops historical/geographic inquiry for practising the) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or place detail.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Example for Practising the presentation: locate the topic, cite a source/detail, and state one limit of the evidence.",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Example for Practising the presentation: locate the topic, cite a source/detail, and state one limit of the evidence",
           "Treating myths as literal fact without labelling belief, or ignoring scale and perspective for practising the"
         ],
-        "question": "Using this lesson idea — Stage 4 HSIE develops historical/geographic inquiry for practising the presentation. — which choice is best?",
+        "question": "Which choice best applies this lesson idea about practising?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
         "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts, acknowledge limits of the evidence, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every claim as equally reliable without checking a source or cue."
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
         ],
         "question": "Which action keeps sources, places or historical/geographic evidence accurate for practising?",
         "type": "multiple_choice"
@@ -130,9 +130,9 @@
         "correct_index": 1,
         "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name presentation only, with no linked example.",
+          "Name presentation and explain why it matters only, with no linked example",
           "Independently complete a substantial task on practising the presentation: use at least two published sources or data",
-          "Retype the worked example with no new example.",
+          "Retype the worked example with no new example",
           "Treating myths as literal fact without labelling belief, or ignoring scale and perspective for practising the"
         ],
         "question": "Which independent response best applies practising to new material?",
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Stage 4 HSIE develops historical/geographic inquiry for practising the presentation.",
+          "explanation": "Stage 4 HSIE develops historical/geographic inquiry for practising the presentation. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake. Apply the lesson idea with evidence.",
           "options": [
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Stage 4 HSIE develops historical/geographic inquiry for practising the presentation."
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Stage 4 HSIE develops historical/geographic inquiry for practising the presentation"
           ],
-          "question": "Which choice best shows accurate use of this idea about practising?",
+          "question": "Which choice best applies this lesson idea about practising with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample for Practising the presentation: locate the topic, cite a source/detail, and state one limit of the evidence.\n\nTRY FIRST\nFor practising the presentation, write a located description, one sourced observation and one evidenced explanation.\n\nFEEDBACK\nStrong answer: place/time clear; claim linked to source; limits stated; no invented cultural detail.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim."
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim"
           ],
-          "question": "Which choice best shows accurate use of this idea about practising?",
+          "question": "Which choice best applies this lesson idea about practising with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample for Practising the presentation: locate the topic, cite a source/detail, and state one limit of the evidence. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "explanation": "Use an intentionally incorrect claim as a comparison. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "Use an intentionally incorrect claim as a comparison.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about practising?",
+          "question": "Which choice best applies this lesson idea about practising with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTreating myths as literal fact without labelling belief, or ignoring scale and perspective for practising the presentation. Here is a more productive model: Example for Practising the presentation: locate the topic, cite a source/detail, and state one limit of the evidence.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nStrong answer: place/time clear; claim linked to source; limits stated; no invented cultural detail.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no evidence.",
-            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding."
+            "A claim unrelated to the source or place",
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about practising?",
+          "question": "Which choice best applies this lesson idea about practising with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nStage 4 HSIE develops historical/geographic inquiry for practising the presentation. Students locate in time/place, use published sources, weigh perspectives and state evidence limits. Catalogue alignment uses HT4-1. Do not invent Country names, Dreaming stories or unverified cultural claims. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",

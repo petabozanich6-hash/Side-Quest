@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-RRS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Fourteen-item relationships review + showcase charter. Two goals. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Any firm no+exit; ask before posting photos. Reasoning: I used review by attending to empathy rather than copying the worked model.\n\nParent: Written model 2: Common error: Review without reporting pathways leaves students stuck. Correction: Any firm no+exit; ask before posting photos. Why: the correction restores accurate use of review.\n\nParent: Likely misconception: Review without reporting pathways leaves students stuck. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating review on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with review, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Fourteen-item relationships review + showcase charter. Two goals. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using review on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Review without reporting pathways leaves students stuck.. Correction: Any firm no+exit; ask before posting photos.. Why it helps the audience is stated.\n\nParent: Likely misconception: Review without reporting pathways leaves students stuck. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating review on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with review, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about review with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for review. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Any firm no+exit; ask before posting photos. This matches the lesson skill for review.",
+        "explanation": "This matches the taught method for review. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Any firm no+exit; ask before posting photos.",
-          "Review without reporting pathways leaves students stuck.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work."
+          "Any firm no+exit; ask before posting photos",
+          "Review without reporting pathways leaves students stuck",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Mini: one refusal script; one online privacy rule. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Review without reporting pathways leaves students stuck. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for review; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Review without reporting pathways leaves students stuck.",
-          "Unit review connects empathy, communication, peer influence, bullying upstanding and online respect.",
-          "Any firm no+exit; ask before posting photos.",
-          "Careful use of empathy with clear evidence."
+          "Review without reporting pathways leaves students stuck",
+          "Unit review connects empathy, communication, peer influence, bullying upstanding and online respect",
+          "Any firm no+exit; ask before posting photos",
+          "Careful use of empathy and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising review?",
+        "question": "Which statement is a common mistake when working with review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named empathy, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named empathy and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the empathy used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name empathy and explain why it matters only, without linking it to review",
+          "Apply review to new material and name the empathy and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Review without reporting pathways leaves students stuck"
         ],
-        "question": "A learner is practising review. Which approach best shows understanding?",
+        "question": "Which response best applies review with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Any firm no+exit; ask before posting photos. uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on review. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Review without reporting pathways leaves students stuck.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Any firm no+exit; ask before posting photos."
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Review without reporting pathways leaves students stuck",
+          "Any firm no+exit; ask before posting photos"
         ],
-        "question": "Which response best shows careful thinking about review?",
+        "question": "Which response best uses safe, healthy or respectful choices for review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Review without reporting pathways leaves students stuck.",
-          "Name a specific source, cue or example and say what it shows about review.",
-          "Make a bigger claim without naming any source or cue."
+          "Use a put-down and call it honesty",
+          "Review without reporting pathways leaves students stuck",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with review",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which habit strengthens evidence about empathy?",
+        "question": "Which evidence move best supports a claim about review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Unit review connects empathy, communication, peer influence, bullying) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Review path: empathy → I-messages → influence checklist → refusal → upstander → online charter.",
-          "Review without reporting pathways leaves students stuck.",
-          "Treat a skipped permission or safety step as if it did not matter."
+          "Use a put-down and call it honesty",
+          "Review path: empathy → I-messages → influence checklist → refusal → upstander → online charter",
+          "Review without reporting pathways leaves students stuck",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Using this lesson idea — Unit review connects empathy, communication, peer influence, bullying upstanding and online respect. — which choice is best?",
+        "question": "Which choice best applies this lesson idea about review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster."
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Review without reporting pathways leaves students stuck.",
-          "Fourteen-item relationships review + showcase charter. Two goals."
+          "Retype the worked example with no new example",
+          "Review without reporting pathways leaves students stuck",
+          "Name empathy and explain why it matters only, with no linked example",
+          "Fourteen-item relationships review + showcase charter"
         ],
-        "question": "Which task best shows independent use of review?",
+        "question": "Which independent response best applies review to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about review with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating review on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Any firm no+exit; ask before posting photos. Reasoning: I used review by attending to empathy rather than copying the worked model.",
+        "sample_answer": "Sample: original example using review on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for review. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with review, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Review without reporting pathways leaves students stuck. Correction: Any firm no+exit; ask before posting photos. Why: the correction restores accurate use of review.",
+        "sample_answer": "Sample error: Review without reporting pathways leaves students stuck.. Correction: Any firm no+exit; ask before posting photos.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Unit review connects empathy, communication, peer influence, bullying upstanding and online respect. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Unit review connects empathy, communication, peer influence, bullying upstanding and online respect. Supported choices follow the actual cues, rules and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Unit review connects empathy, communication, peer influence, bullying upstanding and online respect."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Unit review connects empathy, communication, peer influence, bullying upstanding and online respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview path: empathy → I-messages → influence checklist → refusal → upstander → online charter.\n\nTRY FIRST\nMini: one refusal script; one online privacy rule.\n\nFEEDBACK\nAny firm no+exit; ask before posting photos.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview path: empathy → I-messages → influence checklist → refusal → upstander → online charter. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview without reporting pathways leaves students stuck. Here is a more helpful example: Review path: empathy → I-messages → influence checklist → refusal → upstander → online charter.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nAny firm no+exit; ask before posting photos.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nUnit review connects empathy, communication, peer influence, bullying upstanding and online respect. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

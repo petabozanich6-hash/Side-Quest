@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN4-ECA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write a full character analysis paragraph (120–160 words) with topic, embedded quote, explanation and link. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: Arguable trait; quote ready to embed with explanation to follow. Reasoning: I used analysis paragraph by attending to topic sentence rather than copying the worked model.\n\nParent: Written model 2: Common error: Starting with plot summary ('First she went…') instead of an analytical claim. Correction: Strong answer: Arguable trait; quote ready to embed with explanation to follow. Why: the correction restores accurate use of analysis paragraph.\n\nParent: Likely misconception: Starting with plot summary ('First she went…') instead of an analytical claim. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating analysis paragraph on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with analysis paragraph, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write a full character analysis paragraph (120–160 words) with topic, embedded quote, explanation and link. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using analysis paragraph on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Starting with plot summary ('First she went…') instead of an analytical claim.. Correction: Strong answer: Arguable trait;. Why it helps the audience is stated.\n\nParent: Likely misconception: Starting with plot summary ('First she went…') instead of an analytical claim. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating analysis paragraph on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with analysis paragraph, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about analysis paragraph with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for analysis paragraph. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -43,112 +43,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: Arguable trait; quote ready to embed with explanation to follow. This matches the lesson skill for analysis paragraph.",
+        "explanation": "This matches the taught method for analysis paragraph. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: Arguable trait; quote ready to embed with explanation to follow.",
-          "Starting with plot summary ('First she went…') instead of an analytical claim.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
+          "Arguable trait; quote ready to embed with explanation to follow",
+          "Starting with plot summary ('First she went') instead of an analytical claim",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Write a topic sentence + embedded quote stem for one character trait. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Starting with plot summary ('First she went…') instead of an analytical claim. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for analysis paragraph; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of topic sentence with clear evidence.",
-          "Starting with plot summary ('First she went…') instead of an analytical claim.",
-          "A character analysis paragraph opens with a topic sentence about a trait or role, embeds a short quotation, explains how the evidence works and links back to…",
-          "Strong answer: Arguable trait; quote ready to embed with explanation to follow."
+          "Careful use of topic sentence and explain why it matter with clear evidence",
+          "Starting with plot summary ('First she went') instead of an analytical claim",
+          "A character analysis paragraph opens with a topic sentence about a trait or role, embeds a short quotation, explains",
+          "Arguable trait; quote ready to embed with explanation to follow"
         ],
-        "question": "Which statement is a common mistake when practising analysis paragraph?",
+        "question": "Which statement is a common mistake when working with analysis paragraph?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named topic sentence, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named topic sentence and explain why it matter, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the topic sentence used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a stated fact."
+          "Apply analysis paragraph to new material and name the topic sentence and explain why it matter used",
+          "Repeat the worked example wording with no new evidence",
+          "Starting with plot summary ('First she went') instead of an analytical claim",
+          "Name topic sentence and explain why it matter only, without linking it to analysis paragraph"
         ],
-        "question": "A learner is practising analysis paragraph. Which approach best shows understanding?",
+        "question": "Which response best applies analysis paragraph with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The skill is shown by quoting or pointing to wording that carries analysis paragraph.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries analysis paragraph. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Starting with plot summary ('First she went…') instead of an analytical claim.",
-          "Point to exact words in the sentence that show analysis paragraph and say what they do.",
-          "Ignore the sentence and invent a more exciting event.",
-          "Say the writing is good without naming any words."
+          "Starting with plot summary ('First she went') instead of an analytical claim",
+          "Point to exact words in the sentence that show analysis paragraph and say what they do",
+          "Ignore the sentence and invent a more exciting event",
+          "Say the writing is good without naming any words"
         ],
         "question": "Read: \"Under the pier, Sam found a locked tin and a dripping map.\" Which choice best uses analysis paragraph from this lesson?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: Arguable trait; quote ready to embed with explanation to follow.",
-          "Starting with plot summary ('First she went…') instead of an analytical claim.",
-          "Ignore the words and invent a more exciting event.",
-          "Copy the model word-for-word and call that independent work."
+          "Arguable trait; quote ready to embed with explanation to follow",
+          "Starting with plot summary ('First she went') instead of an analytical claim",
+          "Copy a model sentence from another story unchanged",
+          "Name topic sentence and explain why it matter without linking it to any words in the text"
         ],
         "question": "Which statement correctly applies the lesson idea about analysis paragraph?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Guess from the title alone with no textual clue.",
-          "Copy a model sentence from another story unchanged.",
-          "Treat a missing detail as a stated fact.",
-          "Locate a specific word, phrase or structural clue before deciding."
+          "Guess from the title alone with no textual clue",
+          "Copy a model sentence from another story unchanged",
+          "Lengthen the answer with adjectives while keeping the same idea",
+          "Locate precise textual evidence, then explain how language choices shape meaning or effect"
         ],
-        "question": "In a new text, what should you do first to practise topic sentence?",
+        "question": "In a new text, what should you do first to analyse topic sentence and explain why it matter?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make the answer longer while keeping the same mistake.",
-          "Delete the evidence that disagreed with your first guess.",
-          "Change the inaccurate idea or missing evidence, not only the length.",
-          "Add adjectives without fixing the wrong idea."
+          "Make the answer longer while keeping the same mistake",
+          "Delete the evidence that disagreed with your first guess",
+          "Change the inaccurate idea or missing evidence, not only the length",
+          "Add adjectives without fixing the wrong idea"
         ],
-        "question": "Which revision actually repairs meaning?",
+        "question": "Which revision actually improves meaning for analysis paragraph?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked model as the final answer.",
-          "Change fonts and claim the work is new.",
-          "Starting with plot summary ('First she went…') instead of an analytical claim.",
-          "Use a fresh sentence or text and explain one precise choice about analysis paragraph."
+          "Retype the worked model as the final answer",
+          "Change fonts and claim the work is new",
+          "Starting with plot summary ('First she went') instead of an analytical claim",
+          "Use a fresh sentence or text and explain one precise choice about analysis paragraph"
         ],
-        "question": "Which response shows transfer of analysis paragraph to new material?",
+        "question": "Which response shows accurate use of analysis paragraph on fresh material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about analysis paragraph with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating analysis paragraph on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: Arguable trait; quote ready to embed with explanation to follow. Reasoning: I used analysis paragraph by attending to topic sentence rather than copying the worked model.",
+        "sample_answer": "Sample: original example using analysis paragraph on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for analysis paragraph. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with analysis paragraph, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Starting with plot summary ('First she went…') instead of an analytical claim. Correction: Strong answer: Arguable trait; quote ready to embed with explanation to follow. Why: the correction restores accurate use of analysis paragraph.",
+        "sample_answer": "Sample error: Starting with plot summary ('First she went…') instead of an analytical claim.. Correction: Strong answer: Arguable trait;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -225,14 +225,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "A character analysis paragraph opens with a topic sentence about a trait or role, embeds a short quotation, explains how the evidence works and links back to the character’s want or relationships. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "A character analysis paragraph opens with a topic sentence about a trait or role, embeds a short quotation, explains how the evidence works and links back to the character’s want or relationships.",
           "options": [
-            "A character analysis paragraph opens with a topic sentence about a trait or role, embeds a short quotation, explains how the evidence works and links back to the character’s want or relationships.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation."
+            "A character analysis paragraph opens with a topic sentence about a trait or role, embeds a short quotation, explains",
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation"
           ],
-          "question": "Which choice best shows accurate use of this idea about analysis paragraph?",
+          "question": "Which choice best applies this lesson idea about analysis paragraph with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTopic: Maya’s caution protects her brother but delays the truth. Quote: 'Not yet—wait for the siren to fade.' Explanation: she prioritises safety over curiosity. Link: the relationship shapes the plot pace.\n\nTRY FIRST\nWrite a topic sentence + embedded quote stem for one character trait.\n\nFEEDBACK\nStrong answer: Arguable trait; quote ready to embed with explanation to follow.",
@@ -283,14 +283,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
           "options": [
-            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation."
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does",
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation"
           ],
-          "question": "Which choice best shows accurate use of this idea about analysis paragraph?",
+          "question": "Which choice best applies this lesson idea about analysis paragraph with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTopic: Maya’s caution protects her brother but delays the truth. Quote: 'Not yet—wait for the siren to fade.' Explanation: she prioritises safety over curiosity. Link: the relationship shapes the plot pace. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
@@ -309,14 +309,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
-            "A claim unrelated to the text."
+            "A guess with no explanation",
+            "A claim unrelated to the text",
+            "Use an intentionally incorrect attempt as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about analysis paragraph?",
+          "question": "Which choice best applies this lesson idea about analysis paragraph with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nStarting with plot summary ('First she went…') instead of an analytical claim. Here is a more productive model: Topic: Maya’s caution protects her brother but delays the truth. Quote: 'Not yet—wait for the siren to fade.' Explanation: she prioritises safety over curiosity. Link: the relationship shapes the plot pace.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nStrong answer: Arguable trait; quote ready to embed with explanation to follow.",
@@ -328,14 +328,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task.",
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
           "options": [
-            "A guess with no explanation.",
-            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the method on a new topic, not a reworded copy of the example",
+            "A guess with no explanation",
+            "A claim unrelated to the text"
           ],
-          "question": "Which choice best shows accurate use of this idea about analysis paragraph?",
+          "question": "Which choice best applies this lesson idea about analysis paragraph with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA character analysis paragraph opens with a topic sentence about a trait or role, embeds a short quotation, explains how the evidence works and links back to the character’s want or relationships. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",

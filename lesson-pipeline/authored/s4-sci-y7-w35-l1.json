@@ -34,7 +34,7 @@
     "outcome_codes": [
       "SC4-PW-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Independently complete a task on energy investigation: produce notes/diagrams/data as appropriate, include evidence-linked claims, follow safety rules, and write a five-sentence reflection with one next science skill goa Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: net force or circuit path reasoned; units where needed; safety noted for electricity. Reasoning: I used energy investigation by attending to evidence rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking no motion means no forces, or that current is 'used up' after the first bulb. Correction: Strong answer: net force or circuit path reasoned; units where needed; safety noted for electricity. Why: the correction restores accurate use of energy investigation.\n\nParent: Likely misconception: Thinking no motion means no forces, or that current is 'used up' after the first bulb. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses energy investigation. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about energy investigation, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Independently complete a task on energy investigation: produce notes/diagrams/data as appropriate, include evidence-linked claims, follow safety rules, and write a five-sentence reflection with one next science skill goa Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about energy investigation linked to that evidence.\n\nParent: Written model 2: Sample misconception: Thinking no motion means no forces, or that current is 'used up' after the first bulb.. Correction: Strong answer: net force or circuit path reasoned; with evidence.\n\nParent: Likely misconception: Thinking no motion means no forces, or that current is 'used up' after the first bulb. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses energy investigation. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about energy investigation, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about energy investigation. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for energy investigation. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: net force or circuit path reasoned; units where needed; safety noted for electricity. This matches the lesson skill for energy investigation.",
+        "explanation": "This matches the taught method for energy investigation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: net force or circuit path reasoned; units where needed; safety noted for electricity.",
-          "Thinking no motion means no forces, or that current is 'used up' after the first bulb.",
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work."
+          "net force or circuit path reasoned",
+          "Thinking no motion means no forces, or that current is 'used up' after the first bulb",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Solve or explain two force/energy/circuit items for energy investigation with a force diagram or circuit sketch. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking no motion means no forces, or that current is 'used up' after the first bulb. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for energy investigation; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: net force or circuit path reasoned; units where needed; safety noted for electricity.",
-          "Careful use of evidence with clear evidence.",
-          "Thinking no motion means no forces, or that current is 'used up' after the first bulb.",
-          "Year 7 science develops energy investigation using scientific models, school-safe practical skills and evidence-based conclusions. State the question or idea,…"
+          "net force or circuit path reasoned",
+          "Careful use of evidence and explain why it matters with clear evidence",
+          "Thinking no motion means no forces, or that current is 'used up' after the first bulb",
+          "Year 7 science develops energy investigation using scientific models, school-safe practical skills and evidence-based"
         ],
-        "question": "Which statement is a common mistake when practising energy investigation?",
+        "question": "Which statement is a common mistake when working with energy investigation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named evidence, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named evidence and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing measurement as if it were recorded.",
-          "Apply the idea with new evidence and name the evidence used."
+          "Repeat the worked example wording with no new evidence",
+          "Thinking no motion means no forces, or that current is 'used up' after the first bulb",
+          "Name evidence and explain why it matters only, without linking it to energy investigation",
+          "Apply energy investigation to new material and name the evidence and explain why it matters used"
         ],
-        "question": "A learner is practising energy investigation. Which approach best shows understanding?",
+        "question": "Which response best applies energy investigation with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a label from the lesson title with no observation.",
-          "Thinking no motion means no forces, or that current is 'used up' after the first bulb.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting."
+          "Copy a label from the lesson title with no observation",
+          "Thinking no motion means no forces, or that current is 'used up' after the first bulb",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting"
         ],
-        "question": "New examples: a charging phone, a nesting bird, glass marble, fallen dry leaf. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: a charging phone, a nesting bird, a glass marble, a fallen dry leaf. Which claim about energy investigation is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking no motion means no forces, or that current is 'used up' after the first bulb.",
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence."
+          "Thinking no motion means no forces, or that current is 'used up' after the first bulb",
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation",
+          "A label copied from the title with no evidence"
         ],
         "question": "Which record best supports a science claim about energy investigation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: net force or circuit path reasoned; units where needed; safety noted for electricity. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about energy investigation with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work.",
-          "Strong answer: net force or circuit path reasoned; units where needed; safety noted for electricity.",
-          "Thinking no motion means no forces, or that current is 'used up' after the first bulb."
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "net force or circuit path reasoned",
+          "Thinking no motion means no forces, or that current is 'used up' after the first bulb"
         ],
-        "question": "Using this idea — Year 7 science develops energy investigation using scientific models, school-safe practical skills… — which choice is strongest?",
+        "question": "Using this science idea — Year 7 science develops energy investigation using scientific models, school-safe practical skills — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result."
+          "Ignore measurements and decide by which looks nicer",
+          "Identify the independent variable, control the rest, and record repeatable measurements",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about energy investigation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation.",
-          "Copy the model objects and call that independent work.",
-          "Test or describe a new object or context and cite fresh evidence."
+          "Any exciting story about the object must be true",
+          "Thinking no motion means no forces, or that current is 'used up' after the first bulb",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about energy investigation should change with it"
         ],
-        "question": "Which next step best shows transfer of energy investigation?",
+        "question": "Which prediction about energy investigation can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about energy investigation. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses energy investigation. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Strong answer: net force or circuit path reasoned; units where needed; safety noted for electricity. Reasoning: I used energy investigation by attending to evidence rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about energy investigation linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for energy investigation. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about energy investigation, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Thinking no motion means no forces, or that current is 'used up' after the first bulb. Correction: Strong answer: net force or circuit path reasoned; units where needed; safety noted for electricity. Why: the correction restores accurate use of energy investigation.",
+        "sample_answer": "Sample misconception: Thinking no motion means no forces, or that current is 'used up' after the first bulb.. Correction: Strong answer: net force or circuit path reasoned; with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Year 7 science develops energy investigation using scientific models, school-safe practical skills and evidence-based conclusions. State the question or idea, apply a clear method or explanation, record observations with units and link claims to evidence. Catalogue alignment…",
+          "explanation": "Year 7 science develops energy investigation using scientific models, school-safe practical skills and evidence-based conclusions.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Year 7 science develops energy investigation using scientific models, school-safe practical skills and evidence-based conclusions. State the question or idea, apply a clear method or explanation, record observations with units and link claims to evidence. Catalogue alignment uses SC4-PW-01; content-point mapping remains pending.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Year 7 science develops energy investigation using scientific models, school-safe practical skills and evidence-based",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about energy investigation?",
+          "question": "Which choice best applies this lesson idea about energy investigation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample for Energy investigation: unbalanced forces change motion; a 5 N right and 2 N left net 3 N right. For circuits, complete path needed for current (school kits only).\n\nTRY FIRST\nSolve or explain two force/energy/circuit items for energy investigation with a force diagram or circuit sketch.\n\nFEEDBACK\nStrong answer: net force or circuit path reasoned; units where needed; safety noted for electricity.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about energy investigation?",
+          "question": "Which choice best applies this lesson idea about energy investigation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample for Energy investigation: unbalanced forces change motion; a 5 N right and 2 N left net 3 N right. For circuits, complete path needed for current (school kits only). Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about energy investigation?",
+          "question": "Which choice best applies this lesson idea about energy investigation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking no motion means no forces, or that current is 'used up' after the first bulb. Here is a more productive model: Example for Energy investigation: unbalanced forces change motion; a 5 N right and 2 N left net 3 N right. For circuits, complete path needed for current (school kits only).\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nStrong answer: net force or circuit path reasoned; units where needed; safety noted for electricity.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about energy investigation?",
+          "question": "Which choice best applies this lesson idea about energy investigation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nYear 7 science develops energy investigation using scientific models, school-safe practical skills and evidence-based conclusions. State the question or idea, apply a clear method or explanation, record observations with units and link claims to evidence. Catalogue alignment uses SC4-PW-01; content-point mapping remains pending. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",

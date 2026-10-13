@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Play a pitch echo game with someone at home with five short patterns using high, middle and low notes. Write each pattern as H, M or L. Then do a siren warm-up and describe how your voice moved. Stop if your voice feels  Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high. If my high note is too low, I will listen again and slide my voice up a little.' Listening… Reasoning: I used a pitch game by attending to a siren rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice. Correction: Strong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high. If my high note is too low, I will listen again and… Why: the correction restores accurate use of a pitch game.\n\nParent: Likely misconception: Thinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a pitch game on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a pitch game, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Play a pitch echo game with someone at home with five short patterns using high, middle and low notes. Write each pattern as H, M or L. Then do a siren warm-up and describe how your voice moved. Stop if your voice feels  Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a pitch game on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that you must sing loudly or high to be good at singing.. Correction: Strong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a pitch game on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a pitch game, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a pitch game with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a pitch game. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high. If my high note is too low, I will listen again and… This matches the lesson skill for a pitch game.",
+        "explanation": "This matches the taught method for a pitch game. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high. If my high note is too low, I will listen again and…"
+          "Thinking that you must sing loudly or high to be good at singing.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'I will listen to all three notes first, think them in my head, then sing low, high, high."
         ],
         "question": "Your partner sings 'low, high, high' and you need to match it. Write what you will do before singing, and how you will fix it if your note is wrong. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Thinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a pitch game; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of a siren with clear evidence.",
-          "Thinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice.",
-          "Singing is easier and safer for your voice when you warm up first with gentle sounds. Try a siren, sliding your voice from low to high and back with an 'oo'…",
-          "Strong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high. If my high note is too low, I will listen again and…"
+          "Careful use of a siren and explain why it matters with clear evidence.",
+          "Thinking that you must sing loudly or high to be good at singing.",
+          "Singing is easier and safer for your voice when you warm up first with gentle sounds.",
+          "'I will listen to all three notes first, think them in my head, then sing low, high, high."
         ],
-        "question": "Which statement is a common mistake when practising a pitch game?",
+        "question": "Which statement is a common mistake when working with a pitch game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named a siren, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a siren and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a siren used.",
+          "Thinking that you must sing loudly or high to be good at singing.",
+          "Name a siren and explain why it matters only, without linking it to a pitch game.",
+          "Apply a pitch game to new material and name the a siren and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising a pitch game. Which approach best shows understanding?",
+        "question": "Which response best applies a pitch game with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high. If my high note is too low, I will listen again and… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a pitch game. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high. If my high note is too low, I will listen again and…",
-          "Thinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice."
-        ],
-        "question": "Which response best shows careful thinking about a pitch game?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
-        "options": [
-          "Name a specific source, cue or example and say what it shows about a pitch game.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice."
-        ],
-        "question": "Which habit strengthens evidence about a siren?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Example: Ravi plays a pitch echo game with his sister. She hums a low note, and he listens, then hums it back. Next she sings a high note,…",
-          "Thinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice.",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that you must sing loudly or high to be good at singing.",
+          "'I will listen to all three notes first, think them in my head, then sing low, high, high.",
           "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — Singing is easier and safer for your voice when you warm up first with gentle sounds. Try a siren, sliding… — which choice is best?",
+        "question": "Which response best uses elements, techniques and audience effect for a pitch game?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name a specific element or technique and say what effect it creates for a pitch game.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that you must sing loudly or high to be good at singing."
+        ],
+        "question": "Which evidence move best supports a claim about a pitch game?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Example: Ravi plays a pitch echo game with his sister.",
+          "Thinking that you must sing loudly or high to be good at singing.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
+        ],
+        "question": "Using this lesson idea — Singing is easier and safer for your voice when you warm up first with gentle sounds. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a pitch game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice.",
-          "Play a pitch echo game with someone at home with five short patterns using high, middle and low notes. Write each pattern as H, M or L. Then do a…",
+          "Thinking that you must sing loudly or high to be good at singing.",
+          "Name a siren and explain why it matters only, with no linked example.",
+          "Play a pitch echo game with someone at home with five short patterns using high, middle and low notes.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of a pitch game?",
+        "question": "Which independent response best applies a pitch game to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a pitch game with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a pitch game on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high. If my high note is too low, I will listen again and slide my voice up a little.' Listening… Reasoning: I used a pitch game by attending to a siren rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a pitch game on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a pitch game. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a pitch game, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice. Correction: Strong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high. If my high note is too low, I will listen again and… Why: the correction restores accurate use of a pitch game.",
+        "sample_answer": "Sample error: Thinking that you must sing loudly or high to be good at singing.. Correction: Strong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Singing is easier and safer for your voice when you warm up first with gentle sounds. Try a siren, sliding your voice from low to high and back with an 'oo' sound, and humming. To match pitch, listen first to the note, think of it in your head and then sing it back. Sing at a…",
+          "explanation": "Singing is easier and safer for your voice when you warm up first with gentle sounds.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Singing is easier and safer for your voice when you warm up first with gentle sounds. Try a siren, sliding your voice from low to high and back with an 'oo' sound, and humming. To match pitch, listen first to the note, think of it in your head and then sing it back. Sing at a comfortable volume, stand tall with relaxed shoulders and sip water. Never shout or strain, and stop if your throat feels sore. If you are not comfortable singing, you can hum or tap the pitch pattern.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Singing is easier and safer for your voice when you warm up first with gentle sounds.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a pitch game?",
+          "question": "Which choice best applies this lesson idea about a pitch game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Ravi plays a pitch echo game with his sister. She hums a low note, and he listens, then hums it back. Next she sings a high note, then a middle note, then a low note, and he copies the pattern. If his note is too low, he listens again and moves his voice up a little until the sounds match.\n\nTRY FIRST\nYour partner sings 'low, high, high' and you need to match it. Write what you will do before singing, and how you will fix it if your note is wrong.\n\nFEEDBACK\nStrong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high. If my high note is too low, I will listen again and slide my voice up a little.' Listening before singing and adjusting is how pitch matching works.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about a pitch game?",
+          "question": "Which choice best applies this lesson idea about a pitch game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Ravi plays a pitch echo game with his sister. She hums a low note, and he listens, then hums it back. Next she sings a high note, then a middle note, then a low note, and he copies the pattern. If his note is too low, he listens again and moves his voice up a little until the sounds match. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a pitch game?",
+          "question": "Which choice best applies this lesson idea about a pitch game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that you must sing loudly or high to be good at singing. Good singing is gentle, in tune and in time, and shouting can hurt your voice. Here is a more helpful example: Example: Ravi plays a pitch echo game with his sister. She hums a low note, and he listens, then hums it back. Next she sings a high note, then a middle note, then a low note, and he copies the pattern. If his note is too low, he listens again and moves his voice up a little until the sounds match.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'I will listen to all three notes first, think them in my head, then sing low, high, high. If my high note is too low, I will listen again and slide my voice up a little.' Listening before singing and adjusting is how pitch matching works.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice."
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example."
           ],
-          "question": "Which choice best shows accurate use of this idea about a pitch game?",
+          "question": "Which choice best applies this lesson idea about a pitch game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSinging is easier and safer for your voice when you warm up first with gentle sounds. Try a siren, sliding your voice from low to high and back with an 'oo' sound, and humming. To match pitch, listen first to the note, think of it in your head and then sing it back. Sing at a comfortable volume, stand tall with relaxed shoulders and sip water. Never shout or strain, and stop if your throat feels sore. If you are not comfortable singing, you can hum or tap the pitch pattern. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

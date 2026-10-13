@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose a song you know well. Sing it three times: once to check your breath at the end of each line, once tapping the beat and once with a family member. Write one thing that improved. If singing is uncomfortable, hum or Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Listen to the count-in and start on beat one with everyone. Take a breath at the end of the phrase before the next line.' A count-in keeps singers together, and planned breaths stop… Reasoning: I used posture by attending to breath rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice. Correction: Strong answer: 'Listen to the count-in and start on beat one with everyone. Take a breath at the end of the phrase before the next line.' A count-in keeps… Why: the correction restores accurate use of posture.\n\nParent: Likely misconception: Thinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating posture on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with posture, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose a song you know well. Sing it three times: once to check your breath at the end of each line, once tapping the beat and once with a family member. Write one thing that improved. If singing is uncomfortable, hum or Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using posture on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that singing louder helps you stay in tune.. Correction: Strong answer: 'Listen to the count-in and start on beat one with everyone.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating posture on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with posture, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about posture with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for posture. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Listen to the count-in and start on beat one with everyone. Take a breath at the end of the phrase before the next line.' A count-in keeps… This matches the lesson skill for posture.",
+        "explanation": "This matches the taught method for posture. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Listen to the count-in and start on beat one with everyone. Take a breath at the end of the phrase before the next line.' A count-in keeps…"
+          "Thinking that singing louder helps you stay in tune.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'Listen to the count-in and start on beat one with everyone."
         ],
         "question": "A singer starts too early and runs out of breath in the middle of a phrase. Write two changes that would fix this. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Thinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for posture; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice.",
-          "Singing in tune means matching the pitch of the song, and singing in time means keeping to the beat. Stand or sit tall with relaxed shoulders, take a low,…",
-          "Strong answer: 'Listen to the count-in and start on beat one with everyone. Take a breath at the end of the phrase before the next line.' A count-in keeps…",
-          "Careful use of breath with clear evidence."
+          "Thinking that singing louder helps you stay in tune.",
+          "Singing in tune means matching the pitch of the song, and singing in time means keeping to the beat.",
+          "'Listen to the count-in and start on beat one with everyone.",
+          "Careful use of breath and explain why it matters with clear evidence."
         ],
-        "question": "Which statement is a common mistake when practising posture?",
+        "question": "Which statement is a common mistake when working with posture?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named breath, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named breath and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the breath used.",
+          "Thinking that singing louder helps you stay in tune.",
+          "Name breath and explain why it matters only, without linking it to posture.",
+          "Apply posture to new material and name the breath and explain why it matters used.",
           "Repeat the worked example wording with no new evidence."
         ],
-        "question": "A learner is practising posture. Which approach best shows understanding?",
+        "question": "Which response best applies posture with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Listen to the count-in and start on beat one with everyone. Take a breath at the end of the phrase before the next line.' A count-in keeps… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on posture. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Listen to the count-in and start on beat one with everyone. Take a breath at the end of the phrase before the next line.' A count-in keeps…",
-          "Thinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice.",
+          "'Listen to the count-in and start on beat one with everyone.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that singing louder helps you stay in tune."
         ],
-        "question": "Which response best shows careful thinking about posture?",
+        "question": "Which response best uses elements, techniques and audience effect for posture?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice.",
-          "Name a specific source, cue or example and say what it shows about posture.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
-        ],
-        "question": "Which habit strengthens evidence about breath?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 3,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Thinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice.",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Thinking that singing louder helps you stay in tune.",
+          "Name a specific element or technique and say what effect it creates for posture.",
           "Say it looks nice with no element or technique named.",
-          "Example: Mia and Jo sing 'Row, row, row your boat'. They sit tall, take a breath before each line and tap the beat on their knees. On…"
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Singing in tune means matching the pitch of the song, and singing in time means keeping to the beat. Stand… — which choice is best?",
+        "question": "Which evidence move best supports a claim about posture?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Thinking that singing louder helps you stay in tune.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Mia and Jo sing 'Row, row, row your boat'."
+        ],
+        "question": "Using this lesson idea — Singing in tune means matching the pitch of the song, and singing in time means keeping to the beat. — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for posture?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose a song you know well. Sing it three times: once to check your breath at the end of each line, once tapping the beat and once with a family…",
+          "Choose a song you know well.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice."
+          "Thinking that singing louder helps you stay in tune.",
+          "Name breath and explain why it matters only, with no linked example."
         ],
-        "question": "Which task best shows independent use of posture?",
+        "question": "Which independent response best applies posture to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about posture with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating posture on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Listen to the count-in and start on beat one with everyone. Take a breath at the end of the phrase before the next line.' A count-in keeps singers together, and planned breaths stop… Reasoning: I used posture by attending to breath rather than copying the worked model.",
+        "sample_answer": "Sample: original example using posture on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for posture. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with posture, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice. Correction: Strong answer: 'Listen to the count-in and start on beat one with everyone. Take a breath at the end of the phrase before the next line.' A count-in keeps… Why: the correction restores accurate use of posture.",
+        "sample_answer": "Sample error: Thinking that singing louder helps you stay in tune.. Correction: Strong answer: 'Listen to the count-in and start on beat one with everyone.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Singing in tune means matching the pitch of the song, and singing in time means keeping to the beat. Stand or sit tall with relaxed shoulders, take a low, quiet breath into your belly and sing with a gentle, clear voice. Listen to the others and to the accompaniment. Start…",
+          "explanation": "Singing in tune means matching the pitch of the song, and singing in time means keeping to the beat.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Singing in tune means matching the pitch of the song, and singing in time means keeping to the beat. Stand or sit tall with relaxed shoulders, take a low, quiet breath into your belly and sing with a gentle, clear voice. Listen to the others and to the accompaniment. Start together on a count-in. If your voice goes flat, listen again and aim a little higher. Breathe at the end of phrases, not in the middle of words. Sip water, and stop singing if your throat feels sore.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Singing in tune means matching the pitch of the song, and singing in time means keeping to the beat.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about posture?",
+          "question": "Which choice best applies this lesson idea about posture with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Mia and Jo sing 'Row, row, row your boat'. They sit tall, take a breath before each line and tap the beat on their knees. On 'gently down the stream' Jo's voice goes too low. She listens to Mia and brings her pitch up. They finish together after a final count of 4. Their singing is in tune and in time.\n\nTRY FIRST\nA singer starts too early and runs out of breath in the middle of a phrase. Write two changes that would fix this.\n\nFEEDBACK\nStrong answer: 'Listen to the count-in and start on beat one with everyone. Take a breath at the end of the phrase before the next line.' A count-in keeps singers together, and planned breaths stop running out of air.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about posture?",
+          "question": "Which choice best applies this lesson idea about posture with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Mia and Jo sing 'Row, row, row your boat'. They sit tall, take a breath before each line and tap the beat on their knees. On 'gently down the stream' Jo's voice goes too low. She listens to Mia and brings her pitch up. They finish together after a final count of 4. Their singing is in tune and in time. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about posture?",
+          "question": "Which choice best applies this lesson idea about posture with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that singing louder helps you stay in tune. Listening carefully and singing gently matters most, and loud singing can strain your voice. Here is a more helpful example: Example: Mia and Jo sing 'Row, row, row your boat'. They sit tall, take a breath before each line and tap the beat on their knees. On 'gently down the stream' Jo's voice goes too low. She listens to Mia and brings her pitch up. They finish together after a final count of 4. Their singing is in tune and in time.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Listen to the count-in and start on beat one with everyone. Take a breath at the end of the phrase before the next line.' A count-in keeps singers together, and planned breaths stop running out of air.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice."
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example."
           ],
-          "question": "Which choice best shows accurate use of this idea about posture?",
+          "question": "Which choice best applies this lesson idea about posture with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSinging in tune means matching the pitch of the song, and singing in time means keeping to the beat. Stand or sit tall with relaxed shoulders, take a low, quiet breath into your belly and sing with a gentle, clear voice. Listen to the others and to the accompaniment. Start together on a count-in. If your voice goes flat, listen again and aim a little higher. Breathe at the end of phrases, not in the middle of words. Sip water, and stop singing if your throat feels sore. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

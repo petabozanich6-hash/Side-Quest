@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-CWT-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write three compound and three complex sentences about an outdoor activity. Mark independent clauses, circle conjunctions, and explain why the because- or although-clause cannot stand alone. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was changing.' The new reason is one possible completion. Reasoning: I used compound by attending to complex and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Joining any two fragments with and does not automatically create two independent clauses. Correction: Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was changing.' The new reason is one possible… Why: the correction restores accurate use of compound.\n\nParent: Likely misconception: Joining any two fragments with and does not automatically create two independent clauses. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating compound on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with compound, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write three compound and three complex sentences about an outdoor activity. Mark independent clauses, circle conjunctions, and explain why the because- or although-clause cannot stand alone. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using compound on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Joining any two fragments with and does not automatically create two independent clauses.. Correction: Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was. Why it helps the audience is stated.\n\nParent: Likely misconception: Joining any two fragments with and does not automatically create two independent clauses. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating compound on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with compound, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about compound with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for compound. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -43,43 +43,43 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was changing.' The new reason is one possible… This matches the lesson skill for compound.",
+        "explanation": "This matches the taught method for compound. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was changing.' The new reason is one possible…",
+          "A method that skips the key step taught in this lesson.",
+          "Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was",
           "Joining any two fragments with and does not automatically create two independent clauses.",
-          "Ignore the task and invent an unrelated answer."
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "Combine 'Nia packed the lunch' and 'the group left early' using and, then express a reason using because. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Joining any two fragments with and does not automatically create two independent clauses. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for compound; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was changing.' The new reason is one possible…",
+          "Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was",
           "Careful use of complex and explain why it matters with clear evidence.",
           "Joining any two fragments with and does not automatically create two independent clauses.",
-          "A compound sentence links two independent clauses, often with and, but or so. A complex sentence includes a clause that cannot stand alone, introduced by…"
+          "A compound sentence links two independent clauses, often with and, but or so."
         ],
-        "question": "Which statement is a common mistake when practising compound?",
+        "question": "Which statement is a common mistake when working with compound?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named complex and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named complex and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the complex and explain why it matters used."
+          "Joining any two fragments with and does not automatically create two independent clauses.",
+          "Name complex and explain why it matters only, without linking it to compound.",
+          "Apply compound to new material and name the complex and explain why it matters used."
         ],
-        "question": "A learner is practising compound. Which approach best shows understanding?",
+        "question": "Which response best applies compound with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The skill is shown by quoting or pointing to wording that carries compound.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries compound. The other choices miss a key step or use a common mistake.",
         "options": [
           "Say the writing is good without naming any words.",
           "Joining any two fragments with and does not automatically create two independent clauses.",
@@ -91,64 +91,64 @@
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was changing.' The new reason is one possible…",
+          "Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was",
           "Joining any two fragments with and does not automatically create two independent clauses.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Copy a model sentence from another story unchanged.",
+          "Name complex and explain why it matters without linking it to any words in the text."
         ],
         "question": "Which statement correctly applies the lesson idea about compound?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
         "options": [
           "Guess from the title alone with no textual clue.",
           "Copy a model sentence from another story unchanged.",
-          "Treat a missing detail as a proven fact.",
+          "Lengthen the answer with adjectives while keeping the same idea.",
           "Locate a specific word, phrase or structural clue before deciding."
         ],
-        "question": "In a new text, what should you do first to practise complex and explain why it matters?",
+        "question": "In a new text, what should you do first to analyse complex and explain why it matters?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
         "options": [
           "Make the answer longer while keeping the same mistake.",
           "Delete the evidence that disagreed with your first guess.",
           "Change the inaccurate idea or missing evidence, not only the length.",
           "Add adjectives without fixing the wrong idea."
         ],
-        "question": "Which revision actually repairs meaning?",
+        "question": "Which revision actually improves meaning for compound?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
         "options": [
           "Use a fresh sentence or text and explain one precise choice about compound.",
           "Retype the worked model as the final answer.",
           "Change fonts and claim the work is new.",
           "Joining any two fragments with and does not automatically create two independent clauses."
         ],
-        "question": "Which response shows transfer of compound to new material?",
+        "question": "Which response shows accurate use of compound on fresh material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about compound with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating compound on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was changing.' The new reason is one possible completion. Reasoning: I used compound by attending to complex and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: original example using compound on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for compound. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with compound, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Joining any two fragments with and does not automatically create two independent clauses. Correction: Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was changing.' The new reason is one possible… Why: the correction restores accurate use of compound.",
+        "sample_answer": "Sample error: Joining any two fragments with and does not automatically create two independent clauses.. Correction: Compound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -225,14 +225,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "A compound sentence links two independent clauses, often with and, but or so. A complex sentence includes a clause that cannot stand alone, introduced by words such as because, although or when. A supported explanation follows the actual words and purpose of the task. Apply the…",
+          "explanation": "A compound sentence links two independent clauses, often with and, but or so.",
           "options": [
             "A claim unrelated to the text.",
             "An answer copied without understanding.",
             "A guess with no explanation.",
-            "A compound sentence links two independent clauses, often with and, but or so. A complex sentence includes a clause that cannot stand alone, introduced by words such as because, although or when."
+            "A compound sentence links two independent clauses, often with and, but or so."
           ],
-          "question": "Which choice best shows accurate use of this idea about compound?",
+          "question": "Which choice best applies this lesson idea about compound with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCompound: 'The path was muddy, so we wore boots.' Both halves can stand alone. Complex: 'We wore boots because the path was muddy.' The 'because' part needs the main clause to complete its meaning.\n\nTRY FIRST\nCombine 'Nia packed the lunch' and 'the group left early' using and, then express a reason using because.\n\nFEEDBACK\nCompound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was changing.' The new reason is one possible completion.",
@@ -283,14 +283,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
           "options": [
             "A claim unrelated to the text.",
             "An answer copied without understanding.",
             "A guess with no explanation.",
-            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader."
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does"
           ],
-          "question": "Which choice best shows accurate use of this idea about compound?",
+          "question": "Which choice best applies this lesson idea about compound with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCompound: 'The path was muddy, so we wore boots.' Both halves can stand alone. Complex: 'We wore boots because the path was muddy.' The 'because' part needs the main clause to complete its meaning. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
@@ -309,14 +309,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
+            "Use an intentionally incorrect attempt as a comparison.",
             "A claim unrelated to the text.",
             "An answer copied without understanding.",
             "A guess with no explanation."
           ],
-          "question": "Which choice best shows accurate use of this idea about compound?",
+          "question": "Which choice best applies this lesson idea about compound with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nJoining any two fragments with and does not automatically create two independent clauses. Here is a more productive model: Compound: 'The path was muddy, so we wore boots.' Both halves can stand alone. Complex: 'We wore boots because the path was muddy.' The 'because' part needs the main clause to complete its meaning.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nCompound: 'Nia packed the lunch, and the group left early.' Complex: 'The group left early because the weather was changing.' The new reason is one possible completion.",
@@ -328,14 +328,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the method on a new topic, not a reworded copy of the example.",
             "A guess with no explanation.",
-            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "A claim unrelated to the text."
           ],
-          "question": "Which choice best shows accurate use of this idea about compound?",
+          "question": "Which choice best applies this lesson idea about compound with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA compound sentence links two independent clauses, often with and, but or so. A complex sentence includes a clause that cannot stand alone, introduced by words such as because, although or when. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",

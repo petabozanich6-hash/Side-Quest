@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-SMI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Run two resilience mini-games with encouragement rules. Reflect which language helped persistence. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: e.g. “Shake it off — next turn. We’ve got this.” Reasoning: I used challenge by attending to encourage rather than copying the worked model.\n\nParent: Written model 2: Common error: Humiliating challenges destroy resilience. Correction: e.g. “Shake it off — next turn. We’ve got this.” Why: the correction restores accurate use of challenge.\n\nParent: Likely misconception: Humiliating challenges destroy resilience. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating challenge on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with challenge, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Run two resilience mini-games with encouragement rules. Reflect which language helped persistence. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using challenge on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Humiliating challenges destroy resilience.. Correction: e.g. “Shake it off — next turn. We’ve got this.”. Why it helps the audience is stated.\n\nParent: Likely misconception: Humiliating challenges destroy resilience. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating challenge on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with challenge, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about challenge with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for challenge. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,11 +45,11 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "e.g. “Shake it off — next turn. We’ve got this.” This matches the lesson skill for challenge.",
+        "explanation": "This matches the taught method for challenge. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Humiliating challenges destroy resilience.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
+          "Humiliating challenges destroy resilience",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
           "e.g. “Shake it off — next turn. We’ve got this.”"
         ],
         "question": "Rewrite unhelpful talk: “You’re useless.” Which response is most accurate?",
@@ -57,100 +57,100 @@
       },
       {
         "correct_index": 3,
-        "explanation": "Humiliating challenges destroy resilience. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for challenge; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Resilience challenge games use safe retries, encouragement language and celebration of effort as well as success.",
+          "Resilience challenge games use safe retries, encouragement language and celebration of effort as well as success",
           "e.g. “Shake it off — next turn. We’ve got this.”",
-          "Careful use of encourage with clear evidence.",
-          "Humiliating challenges destroy resilience."
+          "Careful use of encourage and explain why it matters with clear evidence",
+          "Humiliating challenges destroy resilience"
         ],
-        "question": "Which statement is a common mistake when practising challenge?",
+        "question": "Which statement is a common mistake when working with challenge?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named encourage, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named encourage and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the encourage used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a skipped permission or safety step as if it did not matter."
+          "Apply challenge to new material and name the encourage and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Humiliating challenges destroy resilience",
+          "Name encourage and explain why it matters only, without linking it to challenge"
         ],
-        "question": "A learner is practising challenge. Which approach best shows understanding?",
+        "question": "Which response best applies challenge with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "e.g. “Shake it off — next turn. We’ve got this.” uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on challenge. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
+          "Use a put-down and call it honesty",
+          "Humiliating challenges destroy resilience",
           "e.g. “Shake it off — next turn. We’ve got this.”",
-          "Humiliating challenges destroy resilience."
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which response best shows careful thinking about challenge?",
+        "question": "Which response best uses safe, healthy or respectful choices for challenge?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Humiliating challenges destroy resilience.",
-          "Name a specific source, cue or example and say what it shows about challenge.",
-          "Make a bigger claim without naming any source or cue."
+          "Use a put-down and call it honesty",
+          "Humiliating challenges destroy resilience",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with challenge",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which habit strengthens evidence about encourage?",
+        "question": "Which evidence move best supports a claim about challenge?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Resilience challenge games use safe retries, encouragement language and) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example: balance-beanbag relay — drop means restart from cone; teammates say “try again”, not blame.",
-          "Humiliating challenges destroy resilience."
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example: balance-beanbag relay — drop means restart from cone",
+          "Humiliating challenges destroy resilience"
         ],
-        "question": "Using this lesson idea — Resilience challenge games use safe retries, encouragement language and celebration of effort as well as… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about challenge?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for challenge?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Run two resilience mini-games with encouragement rules. Reflect which language helped persistence.",
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Humiliating challenges destroy resilience."
+          "Run two resilience mini-games with encouragement rules",
+          "Retype the worked example with no new example",
+          "Humiliating challenges destroy resilience",
+          "Name encourage and explain why it matters only, with no linked example"
         ],
-        "question": "Which task best shows independent use of challenge?",
+        "question": "Which independent response best applies challenge to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about challenge with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating challenge on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: e.g. “Shake it off — next turn. We’ve got this.” Reasoning: I used challenge by attending to encourage rather than copying the worked model.",
+        "sample_answer": "Sample: original example using challenge on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for challenge. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with challenge, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Humiliating challenges destroy resilience. Correction: e.g. “Shake it off — next turn. We’ve got this.” Why: the correction restores accurate use of challenge.",
+        "sample_answer": "Sample error: Humiliating challenges destroy resilience.. Correction: e.g. “Shake it off — next turn. We’ve got this.”. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Resilience challenge games use safe retries, encouragement language and celebration of effort as well as success. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Resilience challenge games use safe retries, encouragement language and celebration of effort as well as success.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Resilience challenge games use safe retries, encouragement language and celebration of effort as well as success."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Resilience challenge games use safe retries, encouragement language and celebration of effort as well as success"
           ],
-          "question": "Which choice best shows accurate use of this idea about challenge?",
+          "question": "Which choice best applies this lesson idea about challenge with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: balance-beanbag relay — drop means restart from cone; teammates say “try again”, not blame.\n\nTRY FIRST\nRewrite unhelpful talk: “You’re useless.”\n\nFEEDBACK\ne.g. “Shake it off — next turn. We’ve got this.”",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or"
           ],
-          "question": "Which choice best shows accurate use of this idea about challenge?",
+          "question": "Which choice best applies this lesson idea about challenge with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: balance-beanbag relay — drop means restart from cone; teammates say “try again”, not blame. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about challenge?",
+          "question": "Which choice best applies this lesson idea about challenge with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nHumiliating challenges destroy resilience. Here is a more helpful example: Example: balance-beanbag relay — drop means restart from cone; teammates say “try again”, not blame.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\ne.g. “Shake it off — next turn. We’ve got this.”",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about challenge?",
+          "question": "Which choice best applies this lesson idea about challenge with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nResilience challenge games use safe retries, encouragement language and celebration of effort as well as success. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose three favourite songs or rhymes. Tap the beat gently and clap the rhythm of a line from each, then write the rhythm as ta and ti-ti. Teach one rhythm to someone at home. Sit or stand, whichever is comfortable, and Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is ti-ti ta ti-ti, over a steady beat. The beat stays even while the… Reasoning: I used a steady beat by attending to a rhythm rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short… Correction: Strong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is ti-ti ta ti-ti, over a… Why: the correction restores accurate use of a steady beat.\n\nParent: Likely misconception: Thinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short sounds that fits over it. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a steady beat on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a steady beat, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose three favourite songs or rhymes. Tap the beat gently and clap the rhythm of a line from each, then write the rhythm as ta and ti-ti. Teach one rhythm to someone at home. Sit or stand, whichever is comfortable, and Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a steady beat on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that the beat and the rhythm are the same thing.. Correction: Strong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short sounds that fits over it. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a steady beat on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a steady beat, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a steady beat with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a steady beat. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is ti-ti ta ti-ti, over a… This matches the lesson skill for a steady beat.",
+        "explanation": "This matches the taught method for a steady beat. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is ti-ti ta ti-ti, over a…",
-          "Thinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short…"
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is",
+          "Thinking that the beat and the rhythm are the same thing."
         ],
         "question": "Say the words 'pizza and pasta' while tapping a steady beat. Which words fall on one beat each, and which words share a beat?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a steady beat; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is ti-ti ta ti-ti, over a…",
-          "Careful use of a rhythm with clear evidence.",
-          "Thinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short…",
-          "The beat is the steady pulse in music, like a heartbeat or a clock ticking. It stays the same while the melody changes. The rhythm is the pattern of long and…"
+          "'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is",
+          "Careful use of a rhythm and explain why it matters with clear evidence.",
+          "Thinking that the beat and the rhythm are the same thing.",
+          "The beat is the steady pulse in music, like a heartbeat or a clock ticking."
         ],
-        "question": "Which statement is a common mistake when practising a steady beat?",
+        "question": "Which statement is a common mistake when working with a steady beat?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named a rhythm, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a rhythm and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a rhythm used.",
+          "Name a rhythm and explain why it matters only, without linking it to a steady beat.",
+          "Apply a steady beat to new material and name the a rhythm and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Thinking that the beat and the rhythm are the same thing."
         ],
-        "question": "A learner is practising a steady beat. Which approach best shows understanding?",
+        "question": "Which response best applies a steady beat with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is ti-ti ta ti-ti, over a… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a steady beat. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short…",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is ti-ti ta ti-ti, over a…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that the beat and the rhythm are the same thing.",
+          "'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is"
         ],
-        "question": "Which response best shows careful thinking about a steady beat?",
+        "question": "Which response best uses elements, techniques and audience effect for a steady beat?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short…",
-          "Name a specific source, cue or example and say what it shows about a steady beat.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that the beat and the rhythm are the same thing.",
+          "Name a specific element or technique and say what effect it creates for a steady beat.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which habit strengthens evidence about a rhythm?",
+        "question": "Which evidence move best supports a claim about a steady beat?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short…",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Thinking that the beat and the rhythm are the same thing.",
           "Say it looks nice with no element or technique named.",
-          "Example: in 'Twinkle, Twinkle, Little Star' the beat is steady taps while the words are clapped. The words 'Twin-kle twin-kle lit-tle…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: in 'Twinkle, Twinkle, Little Star' the beat is steady taps while the words are clapped."
         ],
-        "question": "Using this lesson idea — The beat is the steady pulse in music, like a heartbeat or a clock ticking. It stays the same while the… — which choice is best?",
+        "question": "Using this lesson idea — The beat is the steady pulse in music, like a heartbeat or a clock ticking. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a steady beat?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short…",
-          "Choose three favourite songs or rhymes. Tap the beat gently and clap the rhythm of a line from each, then write the rhythm as ta and ti-ti. Teach…",
+          "Name a rhythm and explain why it matters only, with no linked example.",
+          "Choose three favourite songs or rhymes.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Thinking that the beat and the rhythm are the same thing."
         ],
-        "question": "Which task best shows independent use of a steady beat?",
+        "question": "Which independent response best applies a steady beat to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a steady beat with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a steady beat on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is ti-ti ta ti-ti, over a steady beat. The beat stays even while the… Reasoning: I used a steady beat by attending to a rhythm rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a steady beat on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a steady beat. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a steady beat, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short… Correction: Strong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is ti-ti ta ti-ti, over a… Why: the correction restores accurate use of a steady beat.",
+        "sample_answer": "Sample error: Thinking that the beat and the rhythm are the same thing.. Correction: Strong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "The beat is the steady pulse in music, like a heartbeat or a clock ticking. It stays the same while the melody changes. The rhythm is the pattern of long and short sounds that fits over the beat. A quarter note, said 'ta', lasts one beat, a pair of eighth notes, said 'ti-ti',…",
+          "explanation": "The beat is the steady pulse in music, like a heartbeat or a clock ticking.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "The beat is the steady pulse in music, like a heartbeat or a clock ticking. It stays the same while the melody changes. The rhythm is the pattern of long and short sounds that fits over the beat. A quarter note, said 'ta', lasts one beat, a pair of eighth notes, said 'ti-ti', share one beat and a quarter rest, a silent beat, is shown with a small symbol. You can tap the beat and clap the rhythm of a song at the same time to hear the difference.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "The beat is the steady pulse in music, like a heartbeat or a clock ticking.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a steady beat?",
+          "question": "Which choice best applies this lesson idea about a steady beat with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: in 'Twinkle, Twinkle, Little Star' the beat is steady taps while the words are clapped. The words 'Twin-kle twin-kle lit-tle star' have the rhythm ta ta ta ta ta ta taa (one syllable per beat, with the last one held for two beats). A song with 'ti-ti ta' would have two short sounds on one beat and then one long one. The beat never changes, but the rhythm can.\n\nTRY FIRST\nSay the words 'pizza and pasta' while tapping a steady beat. Which words fall on one beat each, and which words share a beat?\n\nFEEDBACK\nStrong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is ti-ti ta ti-ti, over a steady beat. The beat stays even while the words make the rhythm.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
+            "An answer copied without understanding.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a steady beat?",
+          "question": "Which choice best applies this lesson idea about a steady beat with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: in 'Twinkle, Twinkle, Little Star' the beat is steady taps while the words are clapped. The words 'Twin-kle twin-kle lit-tle star' have the rhythm ta ta ta ta ta ta taa (one syllable per beat, with the last one held for two beats). A song with 'ti-ti ta' would have two short sounds on one beat and then one long one. The beat never changes, but the rhythm can. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a steady beat?",
+          "question": "Which choice best applies this lesson idea about a steady beat with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that the beat and the rhythm are the same thing. The beat is the steady pulse that does not change, and the rhythm is the pattern of long and short sounds that fits over it. Here is a more helpful example: Example: in 'Twinkle, Twinkle, Little Star' the beat is steady taps while the words are clapped. The words 'Twin-kle twin-kle lit-tle star' have the rhythm ta ta ta ta ta ta taa (one syllable per beat, with the last one held for two beats). A song with 'ti-ti ta' would have two short sounds on one beat and then one long one. The beat never changes, but the rhythm can.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Piz-za and pas-ta: piz-za (ti-ti) share one beat, and (ta) takes one beat, then pas-ta (ti-ti).' So the rhythm is ti-ti ta ti-ti, over a steady beat. The beat stays even while the words make the rhythm.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a steady beat?",
+          "question": "Which choice best applies this lesson idea about a steady beat with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThe beat is the steady pulse in music, like a heartbeat or a clock ticking. It stays the same while the melody changes. The rhythm is the pattern of long and short sounds that fits over the beat. A quarter note, said 'ta', lasts one beat, a pair of eighth notes, said 'ti-ti', share one beat and a quarter rest, a silent beat, is shown with a small symbol. You can tap the beat and clap the rhythm of a song at the same time to hear the difference. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

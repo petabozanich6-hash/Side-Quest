@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Create and film (optional) or perform an energy study with labelled contrasts. Write how stillness helped the audience see the change. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze. Contrast is strong/light.' Reasoning: I used energy quality by attending to contrast rather than copying the worked model.\n\nParent: Written model 2: Common error: Copying risky moves from videos. Only use classroom-safe movements. Correction: Strong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze. Contrast is strong/light.' Why: the correction restores accurate use of energy quality.\n\nParent: Likely misconception: Copying risky moves from videos. Only use classroom-safe movements. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating energy quality on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with energy quality, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create and film (optional) or perform an energy study with labelled contrasts. Write how stillness helped the audience see the change. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using energy quality on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Copying risky moves from videos.. Correction: Strong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze.. Why it helps the audience is stated.\n\nParent: Likely misconception: Copying risky moves from videos. Only use classroom-safe movements. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating energy quality on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with energy quality, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about energy quality with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for energy quality. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze. Contrast is strong/light.' This matches the lesson skill for energy quality.",
+        "explanation": "This matches the taught method for energy quality. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze. Contrast is strong/light.'",
-          "Copying risky moves from videos. Only use classroom-safe movements."
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "Counts 1–8 strong sharp;",
+          "Copying risky moves from videos."
         ],
         "question": "Design a 16-count study with two opposite energies and a stillness. Name the contrast. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Copying risky moves from videos. Only use classroom-safe movements. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for energy quality; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Exploring energy means practising contrasting qualities: percussive versus sustained, bound versus free, strong versus light. Use contrast so the audience…",
-          "Strong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze. Contrast is strong/light.'",
-          "Careful use of contrast with clear evidence.",
-          "Copying risky moves from videos. Only use classroom-safe movements."
+          "Exploring energy means practising contrasting qualities: percussive versus sustained, bound versus free, strong versus",
+          "Counts 1–8 strong sharp;",
+          "Careful use of contrast and explain why it matters with clear evidence.",
+          "Copying risky moves from videos."
         ],
-        "question": "Which statement is a common mistake when practising energy quality?",
+        "question": "Which statement is a common mistake when working with energy quality?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named contrast, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named contrast and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the contrast used.",
+          "Apply energy quality to new material and name the contrast and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Copying risky moves from videos.",
+          "Name contrast and explain why it matters only, without linking it to energy quality."
         ],
-        "question": "A learner is practising energy quality. Which approach best shows understanding?",
+        "question": "Which response best applies energy quality with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze. Contrast is strong/light.' uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on energy quality. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze. Contrast is strong/light.'",
-          "Copying risky moves from videos. Only use classroom-safe movements.",
-          "Say it looks nice with no element or technique named."
+          "Copying risky moves from videos.",
+          "Counts 1–8 strong sharp;",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which response best shows careful thinking about energy quality?",
+        "question": "Which response best uses elements, techniques and audience effect for energy quality?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copying risky moves from videos. Only use classroom-safe movements.",
-          "Name a specific source, cue or example and say what it shows about energy quality.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
+          "Copying risky moves from videos.",
+          "Name a specific element or technique and say what effect it creates for energy quality.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which habit strengthens evidence about contrast?",
+        "question": "Which evidence move best supports a claim about energy quality?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: A study contrasts stomps (strong, percussive) with floating turns (light, sustained). The freeze between them makes both clearer.",
-          "Copying risky moves from videos. Only use classroom-safe movements.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Example: A study contrasts stomps (strong, percussive) with floating turns (light, sustained).",
+          "Copying risky moves from videos.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Exploring energy means practising contrasting qualities: percussive versus sustained, bound versus free,… — which choice is best?",
+        "question": "Using this lesson idea — Exploring energy means practising contrasting qualities: percussive versus sustained, bound versus — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for energy quality?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copying risky moves from videos. Only use classroom-safe movements.",
-          "Create and film (optional) or perform an energy study with labelled contrasts. Write how stillness helped the audience see the change.",
+          "Name contrast and explain why it matters only, with no linked example.",
+          "Create and film (optional) or perform an energy study with labelled contrasts.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Copying risky moves from videos."
         ],
-        "question": "Which task best shows independent use of energy quality?",
+        "question": "Which independent response best applies energy quality to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about energy quality with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating energy quality on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze. Contrast is strong/light.' Reasoning: I used energy quality by attending to contrast rather than copying the worked model.",
+        "sample_answer": "Sample: original example using energy quality on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for energy quality. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with energy quality, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Copying risky moves from videos. Only use classroom-safe movements. Correction: Strong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze. Contrast is strong/light.' Why: the correction restores accurate use of energy quality.",
+        "sample_answer": "Sample error: Copying risky moves from videos.. Correction: Strong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Exploring energy means practising contrasting qualities: percussive versus sustained, bound versus free, strong versus light. Use contrast so the audience notices change. Keep knees soft on jumps and leave space between dancers. Supported responses name the element or technique…",
+          "explanation": "Exploring energy means practising contrasting qualities: percussive versus sustained, bound versus free, strong versus light.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Exploring energy means practising contrasting qualities: percussive versus sustained, bound versus free, strong versus light. Use contrast so the audience notices change. Keep knees soft on jumps and leave space between dancers.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Exploring energy means practising contrasting qualities: percussive versus sustained, bound versus free, strong versus",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about energy quality?",
+          "question": "Which choice best applies this lesson idea about energy quality with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: A study contrasts stomps (strong, percussive) with floating turns (light, sustained). The freeze between them makes both clearer.\n\nTRY FIRST\nDesign a 16-count study with two opposite energies and a stillness. Name the contrast.\n\nFEEDBACK\nStrong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze. Contrast is strong/light.'",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
+            "An answer copied without understanding.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about energy quality?",
+          "question": "Which choice best applies this lesson idea about energy quality with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: A study contrasts stomps (strong, percussive) with floating turns (light, sustained). The freeze between them makes both clearer. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about energy quality?",
+          "question": "Which choice best applies this lesson idea about energy quality with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCopying risky moves from videos. Only use classroom-safe movements. Here is a more helpful example: Example: A study contrasts stomps (strong, percussive) with floating turns (light, sustained). The freeze between them makes both clearer.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Counts 1–8 strong sharp; 9–14 light smooth; 15–16 freeze. Contrast is strong/light.'",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about energy quality?",
+          "question": "Which choice best applies this lesson idea about energy quality with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExploring energy means practising contrasting qualities: percussive versus sustained, bound versus free, strong versus light. Use contrast so the audience notices change. Keep knees soft on jumps and leave space between dancers. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

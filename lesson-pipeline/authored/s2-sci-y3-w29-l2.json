@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-DDT-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Design and build a minimal game (digital or board-with-algorithm cards). Playtest with a partner twice. Record one bug fixed after playtest. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: e.g. catch fruit; left/right keys; catch 5 to win. Reasoning: I used game by attending to goal and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: A game with no way to win or lose is unfinished for this lesson’s purpose. Correction: e.g. catch fruit; left/right keys; catch 5 to win. Why: the correction restores accurate use of game.\n\nParent: Likely misconception: A game with no way to win or lose is unfinished for this lesson’s purpose. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses game. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about game, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Design and build a minimal game (digital or board-with-algorithm cards). Playtest with a partner twice. Record one bug fixed after playtest. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about game linked to that evidence.\n\nParent: Written model 2: Sample misconception: A game with no way to win or lose is unfinished for this lesson’s purpose.. Correction: e.g. catch fruit; left/right keys; catch 5 to win. with evidence.\n\nParent: Likely misconception: A game with no way to win or lose is unfinished for this lesson’s purpose. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses game. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about game, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about game. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for game. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "e.g. catch fruit; left/right keys; catch 5 to win. This matches the lesson skill for game.",
+        "explanation": "This matches the taught method for game. The other choices miss a key step or use a common mistake.",
         "options": [
-          "e.g. catch fruit; left/right keys; catch 5 to win.",
-          "A game with no way to win or lose is unfinished for this lesson’s purpose.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "e.g. catch fruit; left/right keys; catch 5 to win",
+          "A game with no way to win or lose is unfinished for this lesson’s purpose",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "List goal, one control and one win condition for a tiny catcher game. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "A game with no way to win or lose is unfinished for this lesson’s purpose. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for game; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "e.g. catch fruit; left/right keys; catch 5 to win.",
-          "Careful use of goal and explain why it matters with clear evidence.",
-          "A game with no way to win or lose is unfinished for this lesson’s purpose.",
-          "Coding a simple game needs a goal, controls (events), win/lose conditions and lots of testing with friends as players."
+          "e.g. catch fruit; left/right keys; catch 5 to win",
+          "Careful use of goal and explain why it matters with clear evidence",
+          "A game with no way to win or lose is unfinished for this lesson’s purpose",
+          "Coding a simple game needs a goal, controls (events), win/lose conditions and lots of testing with friends as players"
         ],
-        "question": "Which statement is a common mistake when practising game?",
+        "question": "Which statement is a common mistake when working with game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named goal and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named goal and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the goal and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence."
+          "A game with no way to win or lose is unfinished for this lesson’s purpose",
+          "Name goal and explain why it matters only, without linking it to game",
+          "Apply game to new material and name the goal and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising game. Which approach best shows understanding?",
+        "question": "Which response best applies game with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A game with no way to win or lose is unfinished for this lesson’s purpose.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation."
+          "A game with no way to win or lose is unfinished for this lesson’s purpose",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation"
         ],
-        "question": "New examples: a charging phone, a nesting bird, glass marble, fallen dry leaf. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: a charging phone, a nesting bird, a glass marble, a fallen dry leaf. Which claim about game is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A game with no way to win or lose is unfinished for this lesson’s purpose.",
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence."
+          "A game with no way to win or lose is unfinished for this lesson’s purpose",
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation",
+          "A label copied from the title with no evidence"
         ],
         "question": "Which record best supports a science claim about game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "e.g. catch fruit; left/right keys; catch 5 to win. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about game with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "e.g. catch fruit; left/right keys; catch 5 to win.",
-          "A game with no way to win or lose is unfinished for this lesson’s purpose."
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "e.g. catch fruit; left/right keys; catch 5 to win",
+          "A game with no way to win or lose is unfinished for this lesson’s purpose"
         ],
-        "question": "Using this idea — Coding a simple game needs a goal, controls (events), win/lose conditions and lots of testing with… — which choice is strongest?",
+        "question": "Using this science idea — Coding a simple game needs a goal, controls (events), win/lose conditions and lots of testing with — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result."
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about game?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation.",
-          "Copy the worked example and call it independent work."
+          "If the observed feature changes, the claim about game should change with it",
+          "Any exciting story about the object must be true",
+          "A game with no way to win or lose is unfinished for this lesson’s purpose",
+          "Results that disagree with the first guess should be discarded"
         ],
-        "question": "Which next step best shows transfer of game?",
+        "question": "Which prediction about game can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about game. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses game. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: e.g. catch fruit; left/right keys; catch 5 to win. Reasoning: I used game by attending to goal and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about game linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for game. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about game, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: A game with no way to win or lose is unfinished for this lesson’s purpose. Correction: e.g. catch fruit; left/right keys; catch 5 to win. Why: the correction restores accurate use of game.",
+        "sample_answer": "Sample misconception: A game with no way to win or lose is unfinished for this lesson’s purpose.. Correction: e.g. catch fruit; left/right keys; catch 5 to win. with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Coding a simple game needs a goal, controls (events), win/lose conditions and lots of testing with friends as players. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Coding a simple game needs a goal, controls (events), win/lose conditions and lots of testing with friends as players.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Coding a simple game needs a goal, controls (events), win/lose conditions and lots of testing with friends as players."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Coding a simple game needs a goal, controls (events), win/lose conditions and lots of testing with friends as players"
           ],
-          "question": "Which choice best shows accurate use of this idea about game?",
+          "question": "Which choice best applies this lesson idea about game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nGoal: catch three stars. Controls: arrow keys move. Win: score 3. Test if stars are too fast — adjust speed block.\n\nTRY FIRST\nList goal, one control and one win condition for a tiny catcher game.\n\nFEEDBACK\ne.g. catch fruit; left/right keys; catch 5 to win.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
           "options": [
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about game?",
+          "question": "Which choice best applies this lesson idea about game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nGoal: catch three stars. Controls: arrow keys move. Win: score 3. Test if stars are too fast — adjust speed block. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about game?",
+          "question": "Which choice best applies this lesson idea about game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA game with no way to win or lose is unfinished for this lesson’s purpose. Here is a more productive model: Goal: catch three stars. Controls: arrow keys move. Win: score 3. Test if stars are too fast — adjust speed block.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\ne.g. catch fruit; left/right keys; catch 5 to win.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example.",
           "options": [
-            "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use the same science idea on a new object, material or context, not a copy of the worked example",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about game?",
+          "question": "Which choice best applies this lesson idea about game with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCoding a simple game needs a goal, controls (events), win/lose conditions and lots of testing with friends as players. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",

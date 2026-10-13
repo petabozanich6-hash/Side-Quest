@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Design and make a foam tile print with a simple picture of your choice, then print it at least four times. Make one in a second colour. Write one sentence about what the repeated prints look like together and what you wo Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every part.' Patchy prints come from uneven paint or uneven pressure. Reasoning: I used a foam tile by attending to a roller rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper. Correction: Strong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every part.' Patchy prints… Why: the correction restores accurate use of a foam tile.\n\nParent: Likely misconception: Thinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a foam tile on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a foam tile, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Design and make a foam tile print with a simple picture of your choice, then print it at least four times. Make one in a second colour. Write one sentence about what the repeated prints look like together and what you wo Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a foam tile on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that sliding the paper makes it stick better.. Correction: Strong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a foam tile on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a foam tile, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a foam tile with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a foam tile. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every part.' Patchy prints… This matches the lesson skill for a foam tile.",
+        "explanation": "This matches the taught method for a foam tile. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every part.' Patchy prints…",
-          "Thinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper."
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every",
+          "Thinking that sliding the paper makes it stick better."
         ],
         "question": "Your first print is patchy and some lines are missing. Name two changes you could make for the next print. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a foam tile; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every part.' Patchy prints…",
-          "Careful use of a roller with clear evidence.",
-          "Thinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper.",
-          "To make a print, plan the design on paper first, then draw it lightly into the foam tile with a blunt pencil so the lines are pushed in. Roll a thin layer of…"
+          "'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every",
+          "Careful use of a roller and explain why it matters with clear evidence.",
+          "Thinking that sliding the paper makes it stick better.",
+          "To make a print, plan the design on paper first, then draw it lightly into the foam tile with a blunt pencil so the"
         ],
-        "question": "Which statement is a common mistake when practising a foam tile?",
+        "question": "Which statement is a common mistake when working with a foam tile?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named a roller, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a roller and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a roller used."
+          "Thinking that sliding the paper makes it stick better.",
+          "Name a roller and explain why it matters only, without linking it to a foam tile.",
+          "Apply a foam tile to new material and name the a roller and explain why it matters used."
         ],
-        "question": "A learner is practising a foam tile. Which approach best shows understanding?",
+        "question": "Which response best applies a foam tile with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every part.' Patchy prints… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a foam tile. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every part.' Patchy prints…",
-          "Thinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper.",
-          "Say it looks nice with no element or technique named."
+          "Thinking that sliding the paper makes it stick better.",
+          "'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which response best shows careful thinking about a foam tile?",
+        "question": "Which response best uses elements, techniques and audience effect for a foam tile?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
-        "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper.",
-          "Name a specific source, cue or example and say what it shows about a foam tile."
-        ],
-        "question": "Which habit strengthens evidence about a roller?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
           "Say it looks nice with no element or technique named.",
-          "Example: Max designs a sun with rays. He pushes the lines into the foam. He rolls yellow on the tile, presses it onto card and lifts it…",
-          "Thinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that sliding the paper makes it stick better.",
+          "Name a specific element or technique and say what effect it creates for a foam tile."
         ],
-        "question": "Using this lesson idea — To make a print, plan the design on paper first, then draw it lightly into the foam tile with a blunt pencil… — which choice is best?",
+        "question": "Which evidence move best supports a claim about a foam tile?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Max designs a sun with rays.",
+          "Thinking that sliding the paper makes it stick better.",
+          "Say it looks nice with no element or technique named."
+        ],
+        "question": "Using this lesson idea — To make a print, plan the design on paper first, then draw it lightly into the foam tile with a — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a foam tile?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper.",
-          "Design and make a foam tile print with a simple picture of your choice, then print it at least four times. Make one in a second colour. Write one…",
+          "Thinking that sliding the paper makes it stick better.",
+          "Name a roller and explain why it matters only, with no linked example.",
+          "Design and make a foam tile print with a simple picture of your choice, then print it at least four times.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of a foam tile?",
+        "question": "Which independent response best applies a foam tile to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a foam tile with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a foam tile on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every part.' Patchy prints come from uneven paint or uneven pressure. Reasoning: I used a foam tile by attending to a roller rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a foam tile on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a foam tile. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a foam tile, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper. Correction: Strong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every part.' Patchy prints… Why: the correction restores accurate use of a foam tile.",
+        "sample_answer": "Sample error: Thinking that sliding the paper makes it stick better.. Correction: Strong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "To make a print, plan the design on paper first, then draw it lightly into the foam tile with a blunt pencil so the lines are pushed in. Roll a thin layer of paint evenly across the tile, place the paper on top, press with a clean hand or a clean roller, and peel it off slowly.…",
+          "explanation": "To make a print, plan the design on paper first, then draw it lightly into the foam tile with a blunt pencil so the lines are pushed in.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "To make a print, plan the design on paper first, then draw it lightly into the foam tile with a blunt pencil so the lines are pushed in. Roll a thin layer of paint evenly across the tile, place the paper on top, press with a clean hand or a clean roller, and peel it off slowly. Reprint by re-rolling the paint. Lay prints flat to dry and clean the tile and tools straight away. Press, don't slide, so the print does not smudge."
+            "To make a print, plan the design on paper first, then draw it lightly into the foam tile with a blunt pencil so the"
           ],
-          "question": "Which choice best shows accurate use of this idea about a foam tile?",
+          "question": "Which choice best applies this lesson idea about a foam tile with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Max designs a sun with rays. He pushes the lines into the foam. He rolls yellow on the tile, presses it onto card and lifts it slowly. The first print is light, so he adds a little more paint and prints again. The second print is bold and clear, so he makes a row of four and lays them flat to dry on a tray.\n\nTRY FIRST\nYour first print is patchy and some lines are missing. Name two changes you could make for the next print.\n\nFEEDBACK\nStrong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every part.' Patchy prints come from uneven paint or uneven pressure.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a foam tile?",
+          "question": "Which choice best applies this lesson idea about a foam tile with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Max designs a sun with rays. He pushes the lines into the foam. He rolls yellow on the tile, presses it onto card and lifts it slowly. The first print is light, so he adds a little more paint and prints again. The second print is bold and clear, so he makes a row of four and lays them flat to dry on a tray. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
+            "An answer copied without understanding.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a foam tile?",
+          "question": "Which choice best applies this lesson idea about a foam tile with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that sliding the paper makes it stick better. Sliding blurs and smudges the print, so press down firmly without moving the paper. Here is a more helpful example: Example: Max designs a sun with rays. He pushes the lines into the foam. He rolls yellow on the tile, presses it onto card and lifts it slowly. The first print is light, so he adds a little more paint and prints again. The second print is bold and clear, so he makes a row of four and lays them flat to dry on a tray.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Roll the paint more evenly over the whole tile, and press with the flat of my hand all over so the paper touches every part.' Patchy prints come from uneven paint or uneven pressure.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a foam tile?",
+          "question": "Which choice best applies this lesson idea about a foam tile with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTo make a print, plan the design on paper first, then draw it lightly into the foam tile with a blunt pencil so the lines are pushed in. Roll a thin layer of paint evenly across the tile, place the paper on top, press with a clean hand or a clean roller, and peel it off slowly. Reprint by re-rolling the paint. Lay prints flat to dry and clean the tile and tools straight away. Press, don't slide, so the print does not smudge. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

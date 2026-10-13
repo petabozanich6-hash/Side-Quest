@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-SCI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 12-item living-things review. For four items write a one-sentence evidence reason. List two next science goals. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Living; swimming help; take up water/anchor. Reasoning: I used review by attending to living and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Review labels without evidence sentences are weaker. Correction: Living; swimming help; take up water/anchor. Why: the correction restores accurate use of review.\n\nParent: Likely misconception: Review labels without evidence sentences are weaker. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses review. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about review, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 12-item living-things review. For four items write a one-sentence evidence reason. List two next science goals. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about review linked to that evidence.\n\nParent: Written model 2: Sample misconception: Review labels without evidence sentences are weaker.. Correction: Living; swimming help; take up water/anchor. with evidence.\n\nParent: Likely misconception: Review labels without evidence sentences are weaker. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses review. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about review, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about review. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for review. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Living; swimming help; take up water/anchor. This matches the lesson skill for review.",
+        "explanation": "This matches the taught method for review. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Review labels without evidence sentences are weaker.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Living; swimming help; take up water/anchor."
+          "Review labels without evidence sentences are weaker",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Living; swimming help; take up water/anchor"
         ],
         "question": "Mini: living or not for mushroom discussion (living); adaptation for webbed feet; job of roots. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Review labels without evidence sentences are weaker. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for review; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Review labels without evidence sentences are weaker.",
-          "Unit review connects living/non-living features, classification, adaptations, habitats and plant parts/needs with evidence language.",
-          "Living; swimming help; take up water/anchor.",
-          "Careful use of living and explain why it matters with clear evidence."
+          "Review labels without evidence sentences are weaker",
+          "Unit review connects living/non-living features, classification, adaptations, habitats and plant parts/needs with",
+          "Living; swimming help; take up water/anchor",
+          "Careful use of living and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising review?",
+        "question": "Which statement is a common mistake when working with review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named living and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named living and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the living and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence."
+          "Review labels without evidence sentences are weaker",
+          "Name living and explain why it matters only, without linking it to review",
+          "Apply review to new material and name the living and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising review. Which approach best shows understanding?",
+        "question": "Which response best applies review with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Review labels without evidence sentences are weaker.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation."
+          "Review labels without evidence sentences are weaker",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation"
         ],
-        "question": "New examples: a charging phone, a nesting bird, glass marble, fallen dry leaf. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: a charging phone, a nesting bird, a glass marble, a fallen dry leaf. Which claim about review is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Review labels without evidence sentences are weaker.",
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence."
+          "Review labels without evidence sentences are weaker",
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation",
+          "A label copied from the title with no evidence"
         ],
         "question": "Which record best supports a science claim about review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Living; swimming help; take up water/anchor. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about review with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Living; swimming help; take up water/anchor.",
-          "Review labels without evidence sentences are weaker."
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "Living; swimming help; take up water/anchor",
+          "Review labels without evidence sentences are weaker"
         ],
-        "question": "Using this idea — Unit review connects living/non-living features, classification, adaptations, habitats and plant… — which choice is strongest?",
+        "question": "Using this science idea — Unit review connects living/non-living features, classification, adaptations, habitats and plant — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result."
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a dramatic result with no observation.",
-          "Copy the worked example and call it independent work.",
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged."
+          "Review labels without evidence sentences are weaker",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about review should change with it",
+          "Any exciting story about the object must be true"
         ],
-        "question": "Which next step best shows transfer of review?",
+        "question": "Which prediction about review can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about review. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses review. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Living; swimming help; take up water/anchor. Reasoning: I used review by attending to living and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about review linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for review. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about review, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Review labels without evidence sentences are weaker. Correction: Living; swimming help; take up water/anchor. Why: the correction restores accurate use of review.",
+        "sample_answer": "Sample misconception: Review labels without evidence sentences are weaker.. Correction: Living; swimming help; take up water/anchor. with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Unit review connects living/non-living features, classification, adaptations, habitats and plant parts/needs with evidence language. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Unit review connects living/non-living features, classification, adaptations, habitats and plant parts/needs with evidence language.",
           "options": [
-            "Unit review connects living/non-living features, classification, adaptations, habitats and plant parts/needs with evidence language.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Unit review connects living/non-living features, classification, adaptations, habitats and plant parts/needs with",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview path: living features → classify with a key → adaptation in a habitat → plant part jobs → local investigation finding.\n\nTRY FIRST\nMini: living or not for mushroom discussion (living); adaptation for webbed feet; job of roots.\n\nFEEDBACK\nLiving; swimming help; take up water/anchor.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
           "options": [
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the science idea visible: name the observation, property or test step you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview path: living features → classify with a key → adaptation in a habitat → plant part jobs → local investigation finding. Look at each observation, variable or design choice that carries the idea.\n\nTRY FIRST\nList the key observations or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview labels without evidence sentences are weaker. Here is a more productive model: Review path: living features → classify with a key → adaptation in a habitat → plant part jobs → local investigation finding.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nLiving; swimming help; take up water/anchor.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations. Supported records follow the actual observations and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same science idea on a new object, material or context, not a copy of the worked example.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new object, material or context, not a copy of the worked example. Review accuracy of observations."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use the same science idea on a new object, material or context, not a copy of the worked example"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nUnit review connects living/non-living features, classification, adaptations, habitats and plant parts/needs with evidence language. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInvestigate or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different objects or data.",

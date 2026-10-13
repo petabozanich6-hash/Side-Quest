@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Rehearse your story dance three times with a different focus each time. After each run write one change you made and one new problem. Ask a family member to give a star and a wish after the third run. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Hold the final shape for three counts and look at the audience. I will rehearse again and ask them if the end is clear.' A held final shape shows the ending, and checking with a… Reasoning: I used rehearsal by attending to a focus rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement. Correction: Strong answer: 'Hold the final shape for three counts and look at the audience. I will rehearse again and ask them if the end is clear.' A held final shape… Why: the correction restores accurate use of rehearsal.\n\nParent: Likely misconception: Believing that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating rehearsal on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with rehearsal, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Rehearse your story dance three times with a different focus each time. After each run write one change you made and one new problem. Ask a family member to give a star and a wish after the third run. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using rehearsal on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing that more rehearsals without any change will fix problems.. Correction: Strong answer: 'Hold the final shape for three counts and look at the audience.. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating rehearsal on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with rehearsal, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about rehearsal with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for rehearsal. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Hold the final shape for three counts and look at the audience. I will rehearse again and ask them if the end is clear.' A held final shape… This matches the lesson skill for rehearsal.",
+        "explanation": "This matches the taught method for rehearsal. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Hold the final shape for three counts and look at the audience. I will rehearse again and ask them if the end is clear.' A held final shape…",
-          "Believing that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "'Hold the final shape for three counts and look at the audience.",
+          "Believing that more rehearsals without any change will fix problems.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "After a rehearsal, your viewer says they could not tell when the dance ended. Write one change and say how you will check that it worked. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Believing that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for rehearsal; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of a focus with clear evidence.",
-          "Believing that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement.",
-          "Rehearsing means practising a dance over and over to improve it. Start slowly and make sure the order is right. Then work on one thing at a time, such as…",
-          "Strong answer: 'Hold the final shape for three counts and look at the audience. I will rehearse again and ask them if the end is clear.' A held final shape…"
+          "Careful use of a focus and explain why it matters with clear evidence.",
+          "Believing that more rehearsals without any change will fix problems.",
+          "Rehearsing means practising a dance over and over to improve it.",
+          "'Hold the final shape for three counts and look at the audience."
         ],
-        "question": "Which statement is a common mistake when practising rehearsal?",
+        "question": "Which statement is a common mistake when working with rehearsal?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named a focus, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a focus and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the a focus used.",
+          "Apply rehearsal to new material and name the a focus and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Believing that more rehearsals without any change will fix problems.",
+          "Name a focus and explain why it matters only, without linking it to rehearsal."
         ],
-        "question": "A learner is practising rehearsal. Which approach best shows understanding?",
+        "question": "Which response best applies rehearsal with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Hold the final shape for three counts and look at the audience. I will rehearse again and ask them if the end is clear.' A held final shape… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on rehearsal. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Hold the final shape for three counts and look at the audience. I will rehearse again and ask them if the end is clear.' A held final shape…",
-          "Believing that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Believing that more rehearsals without any change will fix problems.",
+          "'Hold the final shape for three counts and look at the audience.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about rehearsal?",
+        "question": "Which response best uses elements, techniques and audience effect for rehearsal?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Believing that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement.",
-          "Name a specific source, cue or example and say what it shows about rehearsal.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail."
-        ],
-        "question": "Which habit strengthens evidence about a focus?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 3,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Believing that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement.",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Believing that more rehearsals without any change will fix problems.",
+          "Name a specific element or technique and say what effect it creates for rehearsal.",
           "Say it looks nice with no element or technique named.",
-          "Example: Jade rehearses 'The Seed' three times. Run 1: she corrects the order of the movements. Run 2: her focus is on holding the curled…"
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Rehearsing means practising a dance over and over to improve it. Start slowly and make sure the order is… — which choice is best?",
+        "question": "Which evidence move best supports a claim about rehearsal?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Believing that more rehearsals without any change will fix problems.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Jade rehearses 'The Seed' three times."
+        ],
+        "question": "Using this lesson idea — Rehearsing means practising a dance over and over to improve it. — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for rehearsal?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Believing that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement.",
-          "Rehearse your story dance three times with a different focus each time. After each run write one change you made and one new problem. Ask a family…"
+          "Believing that more rehearsals without any change will fix problems.",
+          "Name a focus and explain why it matters only, with no linked example.",
+          "Rehearse your story dance three times with a different focus each time."
         ],
-        "question": "Which task best shows independent use of rehearsal?",
+        "question": "Which independent response best applies rehearsal to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about rehearsal with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating rehearsal on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Hold the final shape for three counts and look at the audience. I will rehearse again and ask them if the end is clear.' A held final shape shows the ending, and checking with a… Reasoning: I used rehearsal by attending to a focus rather than copying the worked model.",
+        "sample_answer": "Sample: original example using rehearsal on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for rehearsal. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with rehearsal, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Believing that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement. Correction: Strong answer: 'Hold the final shape for three counts and look at the audience. I will rehearse again and ask them if the end is clear.' A held final shape… Why: the correction restores accurate use of rehearsal.",
+        "sample_answer": "Sample error: Believing that more rehearsals without any change will fix problems.. Correction: Strong answer: 'Hold the final shape for three counts and look at the audience.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Rehearsing means practising a dance over and over to improve it. Start slowly and make sure the order is right. Then work on one thing at a time, such as making the shapes clearer, keeping the timing or showing the character. Ask a friend or family member to watch and give…",
+          "explanation": "Rehearsing means practising a dance over and over to improve it.",
           "options": [
+            "An answer copied without understanding.",
+            "Rehearsing means practising a dance over and over to improve it.",
             "A guess with no artistic reason.",
-            "Rehearsing means practising a dance over and over to improve it. Start slowly and make sure the order is right. Then work on one thing at a time, such as making the shapes clearer, keeping the timing or showing the character. Ask a friend or family member to watch and give feedback as a star and a wish. Make one change after each rehearsal and write it down. Drink water, stretch and rest between runs. A well-rehearsed dance looks confident and tells the story clearly.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about rehearsal?",
+          "question": "Which choice best applies this lesson idea about rehearsal with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Jade rehearses 'The Seed' three times. Run 1: she corrects the order of the movements. Run 2: her focus is on holding the curled shape for three counts at the start. Run 3: her focus is on the big flower shape at the end. A friend says, 'Star: I could see the seed growing. Wish: hold the last shape longer.' She writes the change in her notes.\n\nTRY FIRST\nAfter a rehearsal, your viewer says they could not tell when the dance ended. Write one change and say how you will check that it worked.\n\nFEEDBACK\nStrong answer: 'Hold the final shape for three counts and look at the audience. I will rehearse again and ask them if the end is clear.' A held final shape shows the ending, and checking with a viewer shows if it worked.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about rehearsal?",
+          "question": "Which choice best applies this lesson idea about rehearsal with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Jade rehearses 'The Seed' three times. Run 1: she corrects the order of the movements. Run 2: her focus is on holding the curled shape for three counts at the start. Run 3: her focus is on the big flower shape at the end. A friend says, 'Star: I could see the seed growing. Wish: hold the last shape longer.' She writes the change in her notes. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about rehearsal?",
+          "question": "Which choice best applies this lesson idea about rehearsal with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBelieving that more rehearsals without any change will fix problems. Rehearsal works best when each run has one clear focus and one improvement. Here is a more helpful example: Example: Jade rehearses 'The Seed' three times. Run 1: she corrects the order of the movements. Run 2: her focus is on holding the curled shape for three counts at the start. Run 3: her focus is on the big flower shape at the end. A friend says, 'Star: I could see the seed growing. Wish: hold the last shape longer.' She writes the change in her notes.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Hold the final shape for three counts and look at the audience. I will rehearse again and ask them if the end is clear.' A held final shape shows the ending, and checking with a viewer shows if it worked.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about rehearsal?",
+          "question": "Which choice best applies this lesson idea about rehearsal with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRehearsing means practising a dance over and over to improve it. Start slowly and make sure the order is right. Then work on one thing at a time, such as making the shapes clearer, keeping the timing or showing the character. Ask a friend or family member to watch and give feedback as a star and a wish. Make one change after each rehearsal and write it down. Drink water, stretch and rest between runs. A well-rehearsed dance looks confident and tells the story clearly. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

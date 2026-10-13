@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-MR-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Solve twelve division-with-remainder problems. For each, state quotient and remainder and write a one-line context decision for six. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: 3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed. Reasoning: I used remainder by attending to quotient rather than copying the worked model.\n\nParent: Written model 2: Common error: Dropping the remainder without reading the question can undercount what is needed. Correction: 3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed. Why: the correction restores accurate use of remainder.\n\nParent: Likely misconception: Dropping the remainder without reading the question can undercount what is needed. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses remainder with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with remainder, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Solve twelve division-with-remainder problems. For each, state quotient and remainder and write a one-line context decision for six. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for remainder; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Dropping the remainder without reading the question can undercount what is needed.. Correction uses 3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed.. Why: restores accurate remainder.\n\nParent: Likely misconception: Dropping the remainder without reading the question can undercount what is needed. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses remainder with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with remainder, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for remainder, and names places/values. Reject copied model numbers. / Accept a named misconception about remainder, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed. This matches the lesson skill for remainder.",
+        "explanation": "This matches the taught method for remainder. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work.",
-          "3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed.",
-          "Dropping the remainder without reading the question can undercount what is needed."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed",
+          "Dropping the remainder without reading the question can undercount what is needed"
         ],
         "question": "17 ÷ 5 = ? Explain the remainder in a sharing story and a packing story. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Dropping the remainder without reading the question can undercount what is needed. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for remainder; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Remainders are what is left after equal groups; context decides whether to keep the remainder, round up or ignore leftover pieces.",
-          "3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed.",
-          "Careful use of quotient with clear evidence.",
-          "Dropping the remainder without reading the question can undercount what is needed."
+          "Remainders are what is left after equal groups",
+          "3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed",
+          "Careful use of quotient and explain why it matters with clear evidence",
+          "Dropping the remainder without reading the question can undercount what is needed"
         ],
-        "question": "Which statement is a common mistake when practising remainder?",
+        "question": "Which statement is a common mistake when working with remainder?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named quotient, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named quotient and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing zero as if it does not change the value.",
-          "Apply the idea with new evidence and name the quotient used.",
-          "Repeat the worked example wording with no new evidence."
+          "Dropping the remainder without reading the question can undercount what is needed",
+          "Name quotient and explain why it matters only, without linking it to remainder",
+          "Apply remainder to new material and name the quotient and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising remainder. Which approach best shows understanding?",
+        "question": "Which response best applies remainder with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change digits to look neater without checking place value.",
-          "Dropping the remainder without reading the question can undercount what is needed.",
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working."
+          "Change digits to look neater without checking place value",
+          "Dropping the remainder without reading the question can undercount what is needed",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working"
         ],
-        "question": "Which working note best supports a mathematics answer about remainder?",
+        "question": "Which working best supports a correct answer for this lesson on remainder?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught remainder method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed.",
-          "Dropping the remainder without reading the question can undercount what is needed.",
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work."
+          "3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed",
+          "Dropping the remainder without reading the question can undercount what is needed",
+          "Read 17 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 17 and 5 as interchangeable"
         ],
-        "question": "Using this lesson idea — Remainders are what is left after equal groups; context decides whether to keep the remainder, round up or… — which statement is true?",
+        "question": "Using the method for remainder, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match."
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a remainder problem with numbers such as 17 and 5, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers.",
-          "Copy the model numbers and call that independent work.",
-          "Solve a fresh problem with different numbers and explain the method."
+          "Retype the worked model numbers 17 and 5 as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Dropping the remainder without reading the question can undercount what is needed",
+          "Use the same remainder method on new numbers and name the places or values that matter"
         ],
-        "question": "Which practice choice shows transfer of remainder?",
+        "question": "Solve a fresh remainder problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Just add more digits until it looks longer.",
-          "Name the exact place or step that failed, then show corrected working for remainder.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits."
+          "Label units when comparing 17 with 5",
+          "Dropping the remainder without reading the question can undercount what is needed",
+          "Remainders are what is left after equal groups",
+          "3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for remainder?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for remainder, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses remainder with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: 3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed. Reasoning: I used remainder by attending to quotient rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for remainder; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about remainder, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with remainder, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Dropping the remainder without reading the question can undercount what is needed. Correction: 3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed. Why: the correction restores accurate use of remainder.",
+        "sample_answer": "Sample misconception: Dropping the remainder without reading the question can undercount what is needed.. Correction uses 3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed.. Why: restores accurate remainder.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Remainders are what is left after equal groups; context decides whether to keep the remainder, round up or ignore leftover pieces. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Remainders are what is left after equal groups; context decides whether to keep the remainder, round up or ignore leftover pieces.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Remainders are what is left after equal groups; context decides whether to keep the remainder, round up or ignore leftover pieces.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Remainders are what is left after equal groups",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about remainder?",
+          "question": "Which choice best applies this lesson idea about remainder with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n20 ÷ 6 = 3 remainder 2. Sharing 20 apples among 6 people: 3 each, 2 left. If packing boxes of 6, you need 4 boxes to hold all 20 (round up).\n\nTRY FIRST\n17 ÷ 5 = ? Explain the remainder in a sharing story and a packing story.\n\nFEEDBACK\n3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about remainder?",
+          "question": "Which choice best applies this lesson idea about remainder with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\n20 ÷ 6 = 3 remainder 2. Sharing 20 apples among 6 people: 3 each, 2 left. If packing boxes of 6, you need 4 boxes to hold all 20 (round up). Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Use an intentionally incorrect attempt as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about remainder?",
+          "question": "Which choice best applies this lesson idea about remainder with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDropping the remainder without reading the question can undercount what is needed. Here is a more productive model: 20 ÷ 6 = 3 remainder 2. Sharing 20 apples among 6 people: 3 each, 2 left. If packing boxes of 6, you need 4 boxes to hold all 20 (round up).\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\n3 r2; sharing: 3 each, 2 left; packing full groups of 5: 4 groups needed to hold all if leftovers must be packed.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about remainder?",
+          "question": "Which choice best applies this lesson idea about remainder with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nRemainders are what is left after equal groups; context decides whether to keep the remainder, round up or ignore leftover pieces. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

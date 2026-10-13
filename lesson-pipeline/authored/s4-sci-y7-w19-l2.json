@@ -34,7 +34,7 @@
     "outcome_codes": [
       "SC4-CW-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Independently complete a task on materials in everyday products: produce notes/diagrams/data as appropriate, include evidence-linked claims, follow safety rules, and write a five-sentence reflection with one next science Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: model matches state/mixture behaviour; separation method fits property. Reasoning: I used materials in everyday products by attending to evidence rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking dissolving 'destroys' the solute, or that gases have no particles. Correction: Strong answer: model matches state/mixture behaviour; separation method fits property. Why: the correction restores accurate use of materials in everyday products.\n\nParent: Likely misconception: Thinking dissolving 'destroys' the solute, or that gases have no particles. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses materials in everyday products. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about materials in everyday products, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Independently complete a task on materials in everyday products: produce notes/diagrams/data as appropriate, include evidence-linked claims, follow safety rules, and write a five-sentence reflection with one next science Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about materials in everyday products linked to that evidence.\n\nParent: Written model 2: Sample misconception: Thinking dissolving 'destroys' the solute, or that gases have no particles.. Correction: Strong answer: model matches state/mixture behaviour; with evidence.\n\nParent: Likely misconception: Thinking dissolving 'destroys' the solute, or that gases have no particles. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses materials in everyday products. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about materials in everyday products, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about materials in everyday products. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for materials in everyday products. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: model matches state/mixture behaviour; separation method fits property. This matches the lesson skill for materials in everyday products.",
+        "explanation": "This matches the taught method for materials in everyday products. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking dissolving 'destroys' the solute, or that gases have no particles.",
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work.",
-          "Strong answer: model matches state/mixture behaviour; separation method fits property."
+          "Thinking dissolving 'destroys' the solute, or that gases have no particles",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "model matches state/mixture behaviour"
         ],
         "question": "Use the particle/mixture model twice for materials in everyday products with before/after diagrams. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Thinking dissolving 'destroys' the solute, or that gases have no particles. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for materials in everyday products; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of evidence with clear evidence.",
-          "Thinking dissolving 'destroys' the solute, or that gases have no particles.",
-          "Year 7 science develops materials in everyday products using scientific models, school-safe practical skills and evidence-based conclusions. State the…",
-          "Strong answer: model matches state/mixture behaviour; separation method fits property."
+          "Careful use of evidence and explain why it matters with clear evidence",
+          "Thinking dissolving 'destroys' the solute, or that gases have no particles",
+          "Year 7 science develops materials in everyday products using scientific models, school-safe practical skills and",
+          "model matches state/mixture behaviour"
         ],
-        "question": "Which statement is a common mistake when practising materials in everyday products?",
+        "question": "Which statement is a common mistake when working with materials in everyday products?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named evidence, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named evidence and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the evidence used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing measurement as if it were recorded."
+          "Apply materials in everyday products to new material and name the evidence and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking dissolving 'destroys' the solute, or that gases have no particles",
+          "Name evidence and explain why it matters only, without linking it to materials in everyday products"
         ],
-        "question": "A learner is practising materials in everyday products. Which approach best shows understanding?",
+        "question": "Which response best applies materials in everyday products with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting.",
-          "Copy a label from the lesson title with no observation.",
-          "Thinking dissolving 'destroys' the solute, or that gases have no particles."
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting",
+          "Copy a label from the lesson title with no observation",
+          "Thinking dissolving 'destroys' the solute, or that gases have no particles"
         ],
-        "question": "New examples: a charging phone, a nesting bird, glass marble, fallen dry leaf. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: a charging phone, a nesting bird, a glass marble, a fallen dry leaf. Which claim about materials in everyday products is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Named observation plus how it supports the claim.",
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence.",
-          "Thinking dissolving 'destroys' the solute, or that gases have no particles."
+          "A named observation plus how it supports the claim",
+          "A longer story with no observation",
+          "A label copied from the title with no evidence",
+          "Thinking dissolving 'destroys' the solute, or that gases have no particles"
         ],
         "question": "Which record best supports a science claim about materials in everyday products?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: model matches state/mixture behaviour; separation method fits property. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about materials in everyday products with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work.",
-          "Strong answer: model matches state/mixture behaviour; separation method fits property.",
-          "Thinking dissolving 'destroys' the solute, or that gases have no particles."
+          "Change several conditions at once so something happens faster",
+          "Ignore measurements and decide by which looks nicer",
+          "model matches state/mixture behaviour",
+          "Thinking dissolving 'destroys' the solute, or that gases have no particles"
         ],
-        "question": "Using this idea — Year 7 science develops materials in everyday products using scientific models, school-safe… — which choice is strongest?",
+        "question": "Using this science idea — Year 7 science develops materials in everyday products using scientific models, school-safe — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Stop early when you like the first result.",
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster."
+          "Stop early when you like the first result",
+          "Ignore measurements and decide by which looks nicer",
+          "Identify the independent variable, control the rest, and record repeatable measurements",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about materials in everyday products?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a dramatic result with no observation.",
-          "Copy the model objects and call that independent work.",
-          "Test or describe a new object or context and cite fresh evidence.",
-          "Repeat the worked example objects unchanged."
+          "Thinking dissolving 'destroys' the solute, or that gases have no particles",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about materials in everyday products should change with it",
+          "Any exciting story about the object must be true"
         ],
-        "question": "Which next step best shows transfer of materials in everyday products?",
+        "question": "Which prediction about materials in everyday products can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about materials in everyday products. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses materials in everyday products. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Strong answer: model matches state/mixture behaviour; separation method fits property. Reasoning: I used materials in everyday products by attending to evidence rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about materials in everyday products linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for materials in everyday products. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about materials in everyday products, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Thinking dissolving 'destroys' the solute, or that gases have no particles. Correction: Strong answer: model matches state/mixture behaviour; separation method fits property. Why: the correction restores accurate use of materials in everyday products.",
+        "sample_answer": "Sample misconception: Thinking dissolving 'destroys' the solute, or that gases have no particles.. Correction: Strong answer: model matches state/mixture behaviour; with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Year 7 science develops materials in everyday products using scientific models, school-safe practical skills and evidence-based conclusions. State the question or idea, apply a clear method or explanation, record observations with units and link claims to evidence. Catalogue…",
+          "explanation": "Year 7 science develops materials in everyday products using scientific models, school-safe practical skills and evidence-based conclusions.",
           "options": [
-            "A guess with no evidence.",
-            "Year 7 science develops materials in everyday products using scientific models, school-safe practical skills and evidence-based conclusions. State the question or idea, apply a clear method or explanation, record observations with units and link claims to evidence. Catalogue alignment uses SC4-CW-01; content-point mapping remains pending.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Year 7 science develops materials in everyday products using scientific models, school-safe practical skills and",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about materials in everyday products?",
+          "question": "Which choice best applies this lesson idea about materials in everyday products with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample for Materials in everyday products: particle model—particles closer in solids than gases; dissolving is mixture formation; filtration separates insoluble solids.\n\nTRY FIRST\nUse the particle/mixture model twice for materials in everyday products with before/after diagrams.\n\nFEEDBACK\nStrong answer: model matches state/mixture behaviour; separation method fits property.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "A guess with no evidence.",
-            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about materials in everyday products?",
+          "question": "Which choice best applies this lesson idea about materials in everyday products with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample for Materials in everyday products: particle model—particles closer in solids than gases; dissolving is mixture formation; filtration separates insoluble solids. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about materials in everyday products?",
+          "question": "Which choice best applies this lesson idea about materials in everyday products with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking dissolving 'destroys' the solute, or that gases have no particles. Here is a more productive model: Example for Materials in everyday products: particle model—particles closer in solids than gases; dissolving is mixture formation; filtration separates insoluble solids.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nStrong answer: model matches state/mixture behaviour; separation method fits property.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "A guess with no evidence.",
-            "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example",
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test"
           ],
-          "question": "Which choice best shows accurate use of this idea about materials in everyday products?",
+          "question": "Which choice best applies this lesson idea about materials in everyday products with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nYear 7 science develops materials in everyday products using scientific models, school-safe practical skills and evidence-based conclusions. State the question or idea, apply a clear method or explanation, record observations with units and link claims to evidence. Catalogue alignment uses SC4-CW-01; content-point mapping remains pending. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",

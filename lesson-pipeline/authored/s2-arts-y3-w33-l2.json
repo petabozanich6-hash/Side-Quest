@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Plan a group pattern with at least three formations and one canon. Draw an overhead map with arrows for each dancer's pathway. Rehearse with family or practise by yourself and draw stick figures for each formation. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Start in a straight line. Move into a circle by walking in curves. Do a three-count phrase as a canon, starting one after another.' A change of formation and a canon make the pattern… Reasoning: I used a formation by attending to a canon rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see. Correction: Strong answer: 'Start in a straight line. Move into a circle by walking in curves. Do a three-count phrase as a canon, starting one after another.' A change… Why: the correction restores accurate use of a formation.\n\nParent: Likely misconception: Thinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a formation on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a formation, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Plan a group pattern with at least three formations and one canon. Draw an overhead map with arrows for each dancer's pathway. Rehearse with family or practise by yourself and draw stick figures for each formation. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a formation on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that the best group dance has dancers close together and moving fast.. Correction: Strong answer: 'Start in a straight line.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a formation on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a formation, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a formation with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a formation. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Start in a straight line. Move into a circle by walking in curves. Do a three-count phrase as a canon, starting one after another.' A change… This matches the lesson skill for a formation.",
+        "explanation": "This matches the taught method for a formation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Start in a straight line. Move into a circle by walking in curves. Do a three-count phrase as a canon, starting one after another.' A change…",
-          "Thinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see.",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "'Start in a straight line.",
+          "Thinking that the best group dance has dancers close together and moving fast.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "Plan a group dance pattern for three dancers using a line, a circle and a canon. Describe what each formation looks like. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a formation; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Start in a straight line. Move into a circle by walking in curves. Do a three-count phrase as a canon, starting one after another.' A change…",
-          "Careful use of a canon with clear evidence.",
-          "Thinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see.",
-          "In group dance, dancers make patterns using formations such as lines, circles, diagonals or clusters. A pathway is the line each dancer draws on the floor,…"
+          "'Start in a straight line.",
+          "Careful use of a canon and explain why it matters with clear evidence.",
+          "Thinking that the best group dance has dancers close together and moving fast.",
+          "In group dance, dancers make patterns using formations such as lines, circles, diagonals or clusters."
         ],
-        "question": "Which statement is a common mistake when practising a formation?",
+        "question": "Which statement is a common mistake when working with a formation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named a canon, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a canon and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the a canon used.",
+          "Apply a formation to new material and name the a canon and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Thinking that the best group dance has dancers close together and moving fast.",
+          "Name a canon and explain why it matters only, without linking it to a formation."
         ],
-        "question": "A learner is practising a formation. Which approach best shows understanding?",
+        "question": "Which response best applies a formation with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Start in a straight line. Move into a circle by walking in curves. Do a three-count phrase as a canon, starting one after another.' A change… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a formation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Start in a straight line. Move into a circle by walking in curves. Do a three-count phrase as a canon, starting one after another.' A change…",
-          "Thinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see.",
+          "'Start in a straight line.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that the best group dance has dancers close together and moving fast."
         ],
-        "question": "Which response best shows careful thinking about a formation?",
+        "question": "Which response best uses elements, techniques and audience effect for a formation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see.",
-          "Name a specific source, cue or example and say what it shows about a formation."
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that the best group dance has dancers close together and moving fast.",
+          "Name a specific element or technique and say what effect it creates for a formation."
         ],
-        "question": "Which habit strengthens evidence about a canon?",
+        "question": "Which evidence move best supports a claim about a formation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: a group of four plans a phrase in a canon. Dancer 1 starts: step, turn, reach. Dancer 2 starts two counts later, then Dancer 3…",
-          "Thinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Example: a group of four plans a phrase in a canon.",
+          "Thinking that the best group dance has dancers close together and moving fast.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — In group dance, dancers make patterns using formations such as lines, circles, diagonals or clusters. A… — which choice is best?",
+        "question": "Using this lesson idea — In group dance, dancers make patterns using formations such as lines, circles, diagonals or — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a formation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see.",
-          "Plan a group pattern with at least three formations and one canon. Draw an overhead map with arrows for each dancer's pathway. Rehearse with family…",
+          "Name a canon and explain why it matters only, with no linked example.",
+          "Plan a group pattern with at least three formations and one canon.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Thinking that the best group dance has dancers close together and moving fast."
         ],
-        "question": "Which task best shows independent use of a formation?",
+        "question": "Which independent response best applies a formation to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a formation with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a formation on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Start in a straight line. Move into a circle by walking in curves. Do a three-count phrase as a canon, starting one after another.' A change of formation and a canon make the pattern… Reasoning: I used a formation by attending to a canon rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a formation on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a formation. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a formation, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see. Correction: Strong answer: 'Start in a straight line. Move into a circle by walking in curves. Do a three-count phrase as a canon, starting one after another.' A change… Why: the correction restores accurate use of a formation.",
+        "sample_answer": "Sample error: Thinking that the best group dance has dancers close together and moving fast.. Correction: Strong answer: 'Start in a straight line.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "In group dance, dancers make patterns using formations such as lines, circles, diagonals or clusters. A pathway is the line each dancer draws on the floor, and in a group they can cross, follow or split. A canon is when dancers do the same movement but start one after another,…",
+          "explanation": "In group dance, dancers make patterns using formations such as lines, circles, diagonals or clusters.",
           "options": [
-            "In group dance, dancers make patterns using formations such as lines, circles, diagonals or clusters. A pathway is the line each dancer draws on the floor, and in a group they can cross, follow or split. A canon is when dancers do the same movement but start one after another, like a round in music. Good spacing means keeping an arm's length between dancers so no one bumps. The dance looks stronger when all dancers face the same direction at the right moment.",
+            "In group dance, dancers make patterns using formations such as lines, circles, diagonals or clusters.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a formation?",
+          "question": "Which choice best applies this lesson idea about a formation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a group of four plans a phrase in a canon. Dancer 1 starts: step, turn, reach. Dancer 2 starts two counts later, then Dancer 3 and Dancer 4. They begin in a straight line, move into a circle and end in a cluster. They keep an arm's length apart and watch the leader's count to keep in time.\n\nTRY FIRST\nPlan a group dance pattern for three dancers using a line, a circle and a canon. Describe what each formation looks like.\n\nFEEDBACK\nStrong answer: 'Start in a straight line. Move into a circle by walking in curves. Do a three-count phrase as a canon, starting one after another.' A change of formation and a canon make the pattern interesting while staying safe with spacing.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a formation?",
+          "question": "Which choice best applies this lesson idea about a formation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a group of four plans a phrase in a canon. Dancer 1 starts: step, turn, reach. Dancer 2 starts two counts later, then Dancer 3 and Dancer 4. They begin in a straight line, move into a circle and end in a cluster. They keep an arm's length apart and watch the leader's count to keep in time. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a formation?",
+          "question": "Which choice best applies this lesson idea about a formation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that the best group dance has dancers close together and moving fast. Clear spacing and a planned pattern are safer and easier to see. Here is a more helpful example: Example: a group of four plans a phrase in a canon. Dancer 1 starts: step, turn, reach. Dancer 2 starts two counts later, then Dancer 3 and Dancer 4. They begin in a straight line, move into a circle and end in a cluster. They keep an arm's length apart and watch the leader's count to keep in time.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Start in a straight line. Move into a circle by walking in curves. Do a three-count phrase as a canon, starting one after another.' A change of formation and a canon make the pattern interesting while staying safe with spacing.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a formation?",
+          "question": "Which choice best applies this lesson idea about a formation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nIn group dance, dancers make patterns using formations such as lines, circles, diagonals or clusters. A pathway is the line each dancer draws on the floor, and in a group they can cross, follow or split. A canon is when dancers do the same movement but start one after another, like a round in music. Good spacing means keeping an arm's length between dancers so no one bumps. The dance looks stronger when all dancers face the same direction at the right moment. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

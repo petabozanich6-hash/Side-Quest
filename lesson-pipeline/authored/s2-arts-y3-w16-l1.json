@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose three things: a robot, a feather and a storm. For each write a body shape, a space choice, a speed and an energy. Try each with movement in a clear space or describe it with a drawing, and tell someone what change Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Body: curled round like a shell. Level: low near the floor. Time: very slow. Energy: smooth and heavy.' These choices match the snail, whereas a high, quick and sharp movement would… Reasoning: I used body by attending to space rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning. Correction: Strong answer: 'Body: curled round like a shell. Level: low near the floor. Time: very slow. Energy: smooth and heavy.' These choices match the snail, whereas… Why: the correction restores accurate use of body.\n\nParent: Likely misconception: Thinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating body on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with body, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose three things: a robot, a feather and a storm. For each write a body shape, a space choice, a speed and an energy. Try each with movement in a clear space or describe it with a drawing, and tell someone what change Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using body on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that dance is only about steps.. Correction: Strong answer: 'Body: curled round like a shell.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating body on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with body, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about body with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for body. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Body: curled round like a shell. Level: low near the floor. Time: very slow. Energy: smooth and heavy.' These choices match the snail, whereas… This matches the lesson skill for body.",
+        "explanation": "This matches the taught method for body. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Body: curled round like a shell. Level: low near the floor. Time: very slow. Energy: smooth and heavy.' These choices match the snail, whereas…"
+          "Thinking that dance is only about steps.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'Body: curled round like a shell."
         ],
         "question": "A dance shows a snail crossing a path. Choose a body shape, a level, a speed and an energy for it. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for body; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Body: curled round like a shell. Level: low near the floor. Time: very slow. Energy: smooth and heavy.' These choices match the snail, whereas…",
-          "Careful use of space with clear evidence.",
-          "Thinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning.",
-          "Dance is made from elements. Body is what moves, such as arms, legs and torso, and the shapes you make. Space is where you move: high, middle or low levels,…"
+          "'Body: curled round like a shell.",
+          "Careful use of space and explain why it matters with clear evidence.",
+          "Thinking that dance is only about steps.",
+          "Dance is made from elements."
         ],
-        "question": "Which statement is a common mistake when practising body?",
+        "question": "Which statement is a common mistake when working with body?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named space, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named space and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the space used."
+          "Thinking that dance is only about steps.",
+          "Name space and explain why it matters only, without linking it to body.",
+          "Apply body to new material and name the space and explain why it matters used."
         ],
-        "question": "A learner is practising body. Which approach best shows understanding?",
+        "question": "Which response best applies body with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Body: curled round like a shell. Level: low near the floor. Time: very slow. Energy: smooth and heavy.' These choices match the snail, whereas… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on body. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Body: curled round like a shell. Level: low near the floor. Time: very slow. Energy: smooth and heavy.' These choices match the snail, whereas…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that dance is only about steps.",
+          "'Body: curled round like a shell."
         ],
-        "question": "Which response best shows careful thinking about body?",
+        "question": "Which response best uses elements, techniques and audience effect for body?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning.",
-          "Name a specific source, cue or example and say what it shows about body.",
-          "Make a bigger claim without naming any source or cue."
-        ],
-        "question": "Which habit strengthens evidence about space?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Example: a dance about a leaf blowing in the wind. Body: arms curve and a spin. Space: moves from low to high, and travels sideways across…",
-          "Thinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning.",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that dance is only about steps.",
+          "Name a specific element or technique and say what effect it creates for body.",
           "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — Dance is made from elements. Body is what moves, such as arms, legs and torso, and the shapes you make.… — which choice is best?",
+        "question": "Which evidence move best supports a claim about body?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Example: a dance about a leaf blowing in the wind.",
+          "Thinking that dance is only about steps.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
+        ],
+        "question": "Using this lesson idea — Dance is made from elements. — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for body?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning.",
-          "Choose three things: a robot, a feather and a storm. For each write a body shape, a space choice, a speed and an energy. Try each with movement in a…",
+          "Name space and explain why it matters only, with no linked example.",
+          "Choose three things: a robot, a feather and a storm.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Thinking that dance is only about steps."
         ],
-        "question": "Which task best shows independent use of body?",
+        "question": "Which independent response best applies body to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about body with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating body on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Body: curled round like a shell. Level: low near the floor. Time: very slow. Energy: smooth and heavy.' These choices match the snail, whereas a high, quick and sharp movement would… Reasoning: I used body by attending to space rather than copying the worked model.",
+        "sample_answer": "Sample: original example using body on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for body. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with body, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning. Correction: Strong answer: 'Body: curled round like a shell. Level: low near the floor. Time: very slow. Energy: smooth and heavy.' These choices match the snail, whereas… Why: the correction restores accurate use of body.",
+        "sample_answer": "Sample error: Thinking that dance is only about steps.. Correction: Strong answer: 'Body: curled round like a shell.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Dance is made from elements. Body is what moves, such as arms, legs and torso, and the shapes you make. Space is where you move: high, middle or low levels, big or small movements and directions like forward, backward and sideways. Time is when and how fast you move, including…",
+          "explanation": "Dance is made from elements.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Dance is made from elements. Body is what moves, such as arms, legs and torso, and the shapes you make. Space is where you move: high, middle or low levels, big or small movements and directions like forward, backward and sideways. Time is when and how fast you move, including beat, tempo and pauses. Energy is how you move: smooth, sharp, heavy or light. Dancers choose these elements to create a mood. Dance in a clear space with safe footwear, and stop if anything hurts."
+            "Dance is made from elements."
           ],
-          "question": "Which choice best shows accurate use of this idea about body?",
+          "question": "Which choice best applies this lesson idea about body with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a dance about a leaf blowing in the wind. Body: arms curve and a spin. Space: moves from low to high, and travels sideways across the room. Time: a slow start, then faster, then a stop. Energy: light and floaty. The elements together show the leaf blowing away. If the energy changed to heavy and sharp, it would look like a rock.\n\nTRY FIRST\nA dance shows a snail crossing a path. Choose a body shape, a level, a speed and an energy for it.\n\nFEEDBACK\nStrong answer: 'Body: curled round like a shell. Level: low near the floor. Time: very slow. Energy: smooth and heavy.' These choices match the snail, whereas a high, quick and sharp movement would look like a different creature.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no artistic reason.",
+            "An answer copied without understanding.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about body?",
+          "question": "Which choice best applies this lesson idea about body with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a dance about a leaf blowing in the wind. Body: arms curve and a spin. Space: moves from low to high, and travels sideways across the room. Time: a slow start, then faster, then a stop. Energy: light and floaty. The elements together show the leaf blowing away. If the energy changed to heavy and sharp, it would look like a rock. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about body?",
+          "question": "Which choice best applies this lesson idea about body with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that dance is only about steps. Dance uses all of the elements, and changing one element, such as the energy or level, can change the whole meaning. Here is a more helpful example: Example: a dance about a leaf blowing in the wind. Body: arms curve and a spin. Space: moves from low to high, and travels sideways across the room. Time: a slow start, then faster, then a stop. Energy: light and floaty. The elements together show the leaf blowing away. If the energy changed to heavy and sharp, it would look like a rock.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Body: curled round like a shell. Level: low near the floor. Time: very slow. Energy: smooth and heavy.' These choices match the snail, whereas a high, quick and sharp movement would look like a different creature.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about body?",
+          "question": "Which choice best applies this lesson idea about body with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDance is made from elements. Body is what moves, such as arms, legs and torso, and the shapes you make. Space is where you move: high, middle or low levels, big or small movements and directions like forward, backward and sideways. Time is when and how fast you move, including beat, tempo and pauses. Energy is how you move: smooth, sharp, heavy or light. Dancers choose these elements to create a mood. Dance in a clear space with safe footwear, and stop if anything hurts. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-NSM-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 14-item time review. Show working for elapsed and conversions. List two time skills to practise next. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: 6:30; 2 hours; 35 minutes; PM. Reasoning: I used review by attending to clock and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Review without drawing or time lines hides counting errors. Correction: 6:30; 2 hours; 35 minutes; PM. Why: the correction restores accurate use of review.\n\nParent: Likely misconception: Review without drawing or time lines hides counting errors. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses review with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with review, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a 14-item time review. Show working for elapsed and conversions. List two time skills to practise next. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for review; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Review without drawing or time lines hides counting errors.. Correction uses 6:30; 2 hours; 35 minutes; PM.. Why: restores accurate review.\n\nParent: Likely misconception: Review without drawing or time lines hides counting errors. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses review with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with review, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for review, and names places/values. Reject copied model numbers. / Accept a named misconception about review, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "6:30; 2 hours; 35 minutes; PM. This matches the lesson skill for review.",
+        "explanation": "This matches the taught method for review. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "6:30; 2 hours; 35 minutes; PM.",
-          "Review without drawing or time lines hides counting errors."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "6:30; 2 hours; 35 minutes; PM",
+          "Review without drawing or time lines hides counting errors"
         ],
         "question": "Mini: digital for half past 6; 120 minutes in hours; elapsed 1:50→2:25; AM/PM for evening bedtime 8:30. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Review without drawing or time lines hides counting errors. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for review; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of clock and explain why it matters with clear evidence.",
-          "Review without drawing or time lines hides counting errors.",
-          "Time unit review connects analog/digital reading, AM/PM, conversions, calendars, elapsed time, timetables and short schedules.",
-          "6:30; 2 hours; 35 minutes; PM."
+          "Careful use of clock and explain why it matters with clear evidence",
+          "Review without drawing or time lines hides counting errors",
+          "Time unit review connects analog/digital reading, AM/PM, conversions, calendars, elapsed time, timetables and short",
+          "6:30; 2 hours; 35 minutes; PM"
         ],
-        "question": "Which statement is a common mistake when practising review?",
+        "question": "Which statement is a common mistake when working with review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named clock and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named clock and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the clock and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name clock and explain why it matters only, without linking it to review",
+          "Apply review to new material and name the clock and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Review without drawing or time lines hides counting errors"
         ],
-        "question": "A learner is practising review. Which approach best shows understanding?",
+        "question": "Which response best applies review with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change digits to look neater without checking place value.",
-          "Review without drawing or time lines hides counting errors.",
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working."
+          "Change digits to look neater without checking place value",
+          "Review without drawing or time lines hides counting errors",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working"
         ],
-        "question": "Which working note best supports a mathematics answer about review?",
+        "question": "Which working best supports a correct answer for this lesson on review?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught review method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "6:30; 2 hours; 35 minutes; PM.",
-          "Review without drawing or time lines hides counting errors.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "6:30; 2 hours; 35 minutes; PM",
+          "Review without drawing or time lines hides counting errors",
+          "Read 6 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 6 and 120 as interchangeable"
         ],
-        "question": "Using this lesson idea — Time unit review connects analog/digital reading, AM/PM, conversions, calendars, elapsed time, timetables… — which statement is true?",
+        "question": "Using the method for review, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed."
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a review problem with numbers such as 6 and 120, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers.",
-          "Copy the worked example and call it independent work."
+          "Use the same review method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 6 and 120 as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Review without drawing or time lines hides counting errors"
         ],
-        "question": "Which practice choice shows transfer of review?",
+        "question": "Solve a fresh review problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer.",
-          "Name the exact place or step that failed, then show corrected working for review."
+          "Time unit review connects analog/digital reading, AM/PM, conversions, calendars, elapsed time, timetables and short",
+          "6:30; 2 hours; 35 minutes; PM",
+          "Label units when comparing 6 with 120",
+          "Review without drawing or time lines hides counting errors"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for review?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for review, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses review with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: 6:30; 2 hours; 35 minutes; PM. Reasoning: I used review by attending to clock and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for review; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about review, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with review, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Review without drawing or time lines hides counting errors. Correction: 6:30; 2 hours; 35 minutes; PM. Why: the correction restores accurate use of review.",
+        "sample_answer": "Sample misconception: Review without drawing or time lines hides counting errors.. Correction uses 6:30; 2 hours; 35 minutes; PM.. Why: restores accurate review.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Time unit review connects analog/digital reading, AM/PM, conversions, calendars, elapsed time, timetables and short schedules. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Time unit review connects analog/digital reading, AM/PM, conversions, calendars, elapsed time, timetables and short schedules.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Time unit review connects analog/digital reading, AM/PM, conversions, calendars, elapsed time, timetables and short schedules."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Time unit review connects analog/digital reading, AM/PM, conversions, calendars, elapsed time, timetables and short"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview path: read a clock → convert minutes/hours → elapsed → calendar day → timetable cell → enough-time decision.\n\nTRY FIRST\nMini: digital for half past 6; 120 minutes in hours; elapsed 1:50→2:25; AM/PM for evening bedtime 8:30.\n\nFEEDBACK\n6:30; 2 hours; 35 minutes; PM.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview path: read a clock → convert minutes/hours → elapsed → calendar day → timetable cell → enough-time decision. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReview without drawing or time lines hides counting errors. Here is a more productive model: Review path: read a clock → convert minutes/hours → elapsed → calendar day → timetable cell → enough-time decision.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\n6:30; 2 hours; 35 minutes; PM.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about review?",
+          "question": "Which choice best applies this lesson idea about review with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nTime unit review connects analog/digital reading, AM/PM, conversions, calendars, elapsed time, timetables and short schedules. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

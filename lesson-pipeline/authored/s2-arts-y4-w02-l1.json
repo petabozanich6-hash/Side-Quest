@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Make a five-step value scale for one colour. Then paint or colour a simple object using at least one tint, one mid value and one shade. Label each. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Sky: blue + white tint. Sea: mostly blue. Under the boat: blue + tiny black (or more dark blue) for shade.' Small amounts of dark colour prevent muddy mixes. Reasoning: I used tint by attending to tone rather than copying the worked model.\n\nParent: Written model 2: Common error: Adding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first. Correction: Strong answer: 'Sky: blue + white tint. Sea: mostly blue. Under the boat: blue + tiny black (or more dark blue) for shade.' Small amounts of dark colour… Why: the correction restores accurate use of tint.\n\nParent: Likely misconception: Adding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating tint on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with tint, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Make a five-step value scale for one colour. Then paint or colour a simple object using at least one tint, one mid value and one shade. Label each. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using tint on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Adding large amounts of black to darken a colour.. Correction: Strong answer: 'Sky: blue + white tint.. Why it helps the audience is stated.\n\nParent: Likely misconception: Adding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating tint on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with tint, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about tint with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for tint. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Sky: blue + white tint. Sea: mostly blue. Under the boat: blue + tiny black (or more dark blue) for shade.' Small amounts of dark colour… This matches the lesson skill for tint.",
+        "explanation": "This matches the taught method for tint. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Adding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Sky: blue + white tint. Sea: mostly blue. Under the boat: blue + tiny black (or more dark blue) for shade.' Small amounts of dark colour…"
+          "Adding large amounts of black to darken a colour.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'Sky: blue + white tint."
         ],
         "question": "You have blue paint, white, black and grey. How would you make a pale sky tint, a mid-blue sea and a dark shade under a boat?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Adding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for tint; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of tone with clear evidence.",
-          "Adding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first.",
-          "A tint is a colour lightened with white. A shade is a colour darkened with a small amount of black or a darker colour. A tone is a colour softened with grey…",
-          "Strong answer: 'Sky: blue + white tint. Sea: mostly blue. Under the boat: blue + tiny black (or more dark blue) for shade.' Small amounts of dark colour…"
+          "Careful use of tone and explain why it matters with clear evidence.",
+          "Adding large amounts of black to darken a colour.",
+          "A tint is a colour lightened with white.",
+          "'Sky: blue + white tint."
         ],
-        "question": "Which statement is a common mistake when practising tint?",
+        "question": "Which statement is a common mistake when working with tint?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named tone, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named tone and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the tone used."
+          "Adding large amounts of black to darken a colour.",
+          "Name tone and explain why it matters only, without linking it to tint.",
+          "Apply tint to new material and name the tone and explain why it matters used."
         ],
-        "question": "A learner is practising tint. Which approach best shows understanding?",
+        "question": "Which response best applies tint with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Sky: blue + white tint. Sea: mostly blue. Under the boat: blue + tiny black (or more dark blue) for shade.' Small amounts of dark colour… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on tint. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Sky: blue + white tint. Sea: mostly blue. Under the boat: blue + tiny black (or more dark blue) for shade.' Small amounts of dark colour…",
-          "Adding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first."
-        ],
-        "question": "Which response best shows careful thinking about tint?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
-        "options": [
-          "Name a specific source, cue or example and say what it shows about tint.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Adding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first."
-        ],
-        "question": "Which habit strengthens evidence about tone?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Example: Ana makes five greens: pale tint with white, mid green, green mixed with a touch of grey (tone), dark green with more blue, and a…",
-          "Adding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first.",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Adding large amounts of black to darken a colour.",
+          "'Sky: blue + white tint.",
           "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — A tint is a colour lightened with white. A shade is a colour darkened with a small amount of black or a… — which choice is best?",
+        "question": "Which response best uses elements, techniques and audience effect for tint?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name a specific element or technique and say what effect it creates for tint.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Adding large amounts of black to darken a colour."
+        ],
+        "question": "Which evidence move best supports a claim about tint?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Example: Ana makes five greens: pale tint with white, mid green, green mixed with a touch of grey (tone), dark green",
+          "Adding large amounts of black to darken a colour.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
+        ],
+        "question": "Using this lesson idea — A tint is a colour lightened with white. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for tint?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Adding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first.",
-          "Make a five-step value scale for one colour. Then paint or colour a simple object using at least one tint, one mid value and one shade. Label each.",
+          "Name tone and explain why it matters only, with no linked example.",
+          "Make a five-step value scale for one colour.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Adding large amounts of black to darken a colour."
         ],
-        "question": "Which task best shows independent use of tint?",
+        "question": "Which independent response best applies tint to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about tint with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating tint on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Sky: blue + white tint. Sea: mostly blue. Under the boat: blue + tiny black (or more dark blue) for shade.' Small amounts of dark colour prevent muddy mixes. Reasoning: I used tint by attending to tone rather than copying the worked model.",
+        "sample_answer": "Sample: original example using tint on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for tint. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with tint, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Adding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first. Correction: Strong answer: 'Sky: blue + white tint. Sea: mostly blue. Under the boat: blue + tiny black (or more dark blue) for shade.' Small amounts of dark colour… Why: the correction restores accurate use of tint.",
+        "sample_answer": "Sample error: Adding large amounts of black to darken a colour.. Correction: Strong answer: 'Sky: blue + white tint.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "A tint is a colour lightened with white. A shade is a colour darkened with a small amount of black or a darker colour. A tone is a colour softened with grey or a little of its opposite. Value means how light or dark a colour is. Practise a value scale of one hue from pale tint…",
+          "explanation": "A tint is a colour lightened with white.",
           "options": [
+            "An answer copied without understanding.",
+            "A tint is a colour lightened with white.",
             "A guess with no artistic reason.",
-            "A tint is a colour lightened with white. A shade is a colour darkened with a small amount of black or a darker colour. A tone is a colour softened with grey or a little of its opposite. Value means how light or dark a colour is. Practise a value scale of one hue from pale tint to deep shade so you can choose the right strength for sky, midground and shadow.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about tint?",
+          "question": "Which choice best applies this lesson idea about tint with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Ana makes five greens: pale tint with white, mid green, green mixed with a touch of grey (tone), dark green with more blue, and a shade with a tiny dab of black. She uses the tint for sunlit leaves and the shade for under the tree.\n\nTRY FIRST\nYou have blue paint, white, black and grey. How would you make a pale sky tint, a mid-blue sea and a dark shade under a boat?\n\nFEEDBACK\nStrong answer: 'Sky: blue + white tint. Sea: mostly blue. Under the boat: blue + tiny black (or more dark blue) for shade.' Small amounts of dark colour prevent muddy mixes.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about tint?",
+          "question": "Which choice best applies this lesson idea about tint with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Ana makes five greens: pale tint with white, mid green, green mixed with a touch of grey (tone), dark green with more blue, and a shade with a tiny dab of black. She uses the tint for sunlit leaves and the shade for under the tree. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about tint?",
+          "question": "Which choice best applies this lesson idea about tint with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAdding large amounts of black to darken a colour. Black quickly dulls mixes, so add tiny amounts or use a darker related colour first. Here is a more helpful example: Example: Ana makes five greens: pale tint with white, mid green, green mixed with a touch of grey (tone), dark green with more blue, and a shade with a tiny dab of black. She uses the tint for sunlit leaves and the shade for under the tree.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Sky: blue + white tint. Sea: mostly blue. Under the boat: blue + tiny black (or more dark blue) for shade.' Small amounts of dark colour prevent muddy mixes.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about tint?",
+          "question": "Which choice best applies this lesson idea about tint with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA tint is a colour lightened with white. A shade is a colour darkened with a small amount of black or a darker colour. A tone is a colour softened with grey or a little of its opposite. Value means how light or dark a colour is. Practise a value scale of one hue from pale tint to deep shade so you can choose the right strength for sky, midground and shadow. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

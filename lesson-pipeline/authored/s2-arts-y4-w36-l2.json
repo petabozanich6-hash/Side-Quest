@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Produce a one-page showcase plan: theme, items, roles, timeline, tech list. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: Dates/tasks clear; roles such as stage manager, programme editor, display lead. Reasoning: I used showcase plan by attending to item list rather than copying the worked model.\n\nParent: Written model 2: Common error: Leaving display labels until guests arrive. Build buffer time. Correction: Strong answer: Dates/tasks clear; roles such as stage manager, programme editor, display lead. Why: the correction restores accurate use of showcase plan.\n\nParent: Likely misconception: Leaving display labels until guests arrive. Build buffer time. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating showcase plan on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with showcase plan, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Produce a one-page showcase plan: theme, items, roles, timeline, tech list. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using showcase plan on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Leaving display labels until guests arrive.. Correction: Strong answer: Dates/tasks clear;. Why it helps the audience is stated.\n\nParent: Likely misconception: Leaving display labels until guests arrive. Build buffer time. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating showcase plan on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with showcase plan, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about showcase plan with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for showcase plan. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: Dates/tasks clear; roles such as stage manager, programme editor, display lead. This matches the lesson skill for showcase plan.",
+        "explanation": "This matches the taught method for showcase plan. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: Dates/tasks clear; roles such as stage manager, programme editor, display lead.",
-          "Leaving display labels until guests arrive. Build buffer time.",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "Dates/tasks clear; roles such as stage manager, programme editor, display lead.",
+          "Leaving display labels until guests arrive.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "Make a four-line timeline and assign three non-acting roles. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Leaving display labels until guests arrive. Build buffer time. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for showcase plan; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: Dates/tasks clear; roles such as stage manager, programme editor, display lead.",
-          "Careful use of item list with clear evidence.",
-          "Leaving display labels until guests arrive. Build buffer time.",
-          "Planning artworks and performances means an item list, roles (performers, stage manager, display team) and a timeline counting back from show day. Include…"
+          "Dates/tasks clear; roles such as stage manager, programme editor, display lead.",
+          "Careful use of item list and explain why it matters with clear evidence.",
+          "Leaving display labels until guests arrive.",
+          "Planning artworks and performances means an item list, roles (performers, stage manager, display team) and a timeline"
         ],
-        "question": "Which statement is a common mistake when practising showcase plan?",
+        "question": "Which statement is a common mistake when working with showcase plan?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named item list, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named item list and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the item list used.",
+          "Name item list and explain why it matters only, without linking it to showcase plan.",
+          "Apply showcase plan to new material and name the item list and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Leaving display labels until guests arrive."
         ],
-        "question": "A learner is practising showcase plan. Which approach best shows understanding?",
+        "question": "Which response best applies showcase plan with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: Dates/tasks clear; roles such as stage manager, programme editor, display lead. uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on showcase plan. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: Dates/tasks clear; roles such as stage manager, programme editor, display lead.",
-          "Leaving display labels until guests arrive. Build buffer time."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Leaving display labels until guests arrive.",
+          "Dates/tasks clear; roles such as stage manager, programme editor, display lead.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about showcase plan?",
+        "question": "Which response best uses elements, techniques and audience effect for showcase plan?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Leaving display labels until guests arrive. Build buffer time.",
-          "Name a specific source, cue or example and say what it shows about showcase plan.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Leaving display labels until guests arrive.",
+          "Name a specific element or technique and say what effect it creates for showcase plan.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which habit strengthens evidence about item list?",
+        "question": "Which evidence move best supports a claim about showcase plan?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
           "Example: Timeline — Week A select items, Week B rehearse, Week C polish + labels, Show day tech check morning.",
-          "Leaving display labels until guests arrive. Build buffer time.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Leaving display labels until guests arrive.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Planning artworks and performances means an item list, roles (performers, stage manager, display team) and a… — which choice is best?",
+        "question": "Using this lesson idea — Planning artworks and performances means an item list, roles (performers, stage manager, display — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for showcase plan?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
           "Produce a one-page showcase plan: theme, items, roles, timeline, tech list.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Leaving display labels until guests arrive. Build buffer time."
+          "Leaving display labels until guests arrive.",
+          "Name item list and explain why it matters only, with no linked example."
         ],
-        "question": "Which task best shows independent use of showcase plan?",
+        "question": "Which independent response best applies showcase plan to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about showcase plan with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating showcase plan on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: Dates/tasks clear; roles such as stage manager, programme editor, display lead. Reasoning: I used showcase plan by attending to item list rather than copying the worked model.",
+        "sample_answer": "Sample: original example using showcase plan on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for showcase plan. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with showcase plan, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Leaving display labels until guests arrive. Build buffer time. Correction: Strong answer: Dates/tasks clear; roles such as stage manager, programme editor, display lead. Why: the correction restores accurate use of showcase plan.",
+        "sample_answer": "Sample error: Leaving display labels until guests arrive.. Correction: Strong answer: Dates/tasks clear;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Planning artworks and performances means an item list, roles (performers, stage manager, display team) and a timeline counting back from show day. Include tech needs and rehearsal slots. Share the plan so nobody is surprised. Supported responses name the element or technique…",
+          "explanation": "Planning artworks and performances means an item list, roles (performers, stage manager, display team) and a timeline counting back from show day.",
           "options": [
+            "An answer copied without understanding.",
+            "Planning artworks and performances means an item list, roles (performers, stage manager, display team) and a timeline",
             "A guess with no artistic reason.",
-            "Planning artworks and performances means an item list, roles (performers, stage manager, display team) and a timeline counting back from show day. Include tech needs and rehearsal slots. Share the plan so nobody is surprised.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about showcase plan?",
+          "question": "Which choice best applies this lesson idea about showcase plan with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Timeline — Week A select items, Week B rehearse, Week C polish + labels, Show day tech check morning.\n\nTRY FIRST\nMake a four-line timeline and assign three non-acting roles.\n\nFEEDBACK\nStrong answer: Dates/tasks clear; roles such as stage manager, programme editor, display lead.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about showcase plan?",
+          "question": "Which choice best applies this lesson idea about showcase plan with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Timeline — Week A select items, Week B rehearse, Week C polish + labels, Show day tech check morning. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about showcase plan?",
+          "question": "Which choice best applies this lesson idea about showcase plan with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLeaving display labels until guests arrive. Build buffer time. Here is a more helpful example: Example: Timeline — Week A select items, Week B rehearse, Week C polish + labels, Show day tech check morning.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: Dates/tasks clear; roles such as stage manager, programme editor, display lead.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about showcase plan?",
+          "question": "Which choice best applies this lesson idea about showcase plan with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPlanning artworks and performances means an item list, roles (performers, stage manager, display team) and a timeline counting back from show day. Include tech needs and rehearsal slots. Share the plan so nobody is surprised. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

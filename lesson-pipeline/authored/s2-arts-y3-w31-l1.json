@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: With an adult, choose two cultural dances from a library book or approved website. For each write the place it comes from, two things you can see and one question you would ask a person from that community. Do not copy s Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet. It is from Ireland. A respectful action is to use a source chosen by my… Reasoning: I used a cultural dance by attending to a tradition rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for… Correction: Strong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet. It is from Ireland. A… Why: the correction restores accurate use of a cultural dance.\n\nParent: Likely misconception: Thinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for particular people, so we ask and learn from the right sources. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a cultural dance on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a cultural dance, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: With an adult, choose two cultural dances from a library book or approved website. For each write the place it comes from, two things you can see and one question you would ask a person from that community. Do not copy s Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a cultural dance on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that all dances from the same culture are the same, or that any dance can be copied for fun.. Correction: Strong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for particular people, so we ask and learn from the right sources. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a cultural dance on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a cultural dance, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a cultural dance with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a cultural dance. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet. It is from Ireland. A… This matches the lesson skill for a cultural dance.",
+        "explanation": "This matches the taught method for a cultural dance. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet. It is from Ireland. A…",
-          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for…",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet.",
+          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "Choose a cultural dance and describe two things you can see (formation, steps, speed), where it is from and one respectful action before learning more. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a cultural dance; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of a tradition with clear evidence.",
-          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for…",
-          "Dance is part of every culture and often shows celebrations, stories, work or beliefs. Examples include Scottish Highland dancing, Irish step dancing, Greek…",
-          "Strong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet. It is from Ireland. A…"
+          "Careful use of a tradition and explain why it matters with clear evidence.",
+          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun.",
+          "Dance is part of every culture and often shows celebrations, stories, work or beliefs.",
+          "'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet."
         ],
-        "question": "Which statement is a common mistake when practising a cultural dance?",
+        "question": "Which statement is a common mistake when working with a cultural dance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named a tradition, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a tradition and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a tradition used.",
+          "Name a tradition and explain why it matters only, without linking it to a cultural dance.",
+          "Apply a cultural dance to new material and name the a tradition and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun."
         ],
-        "question": "A learner is practising a cultural dance. Which approach best shows understanding?",
+        "question": "Which response best applies a cultural dance with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet. It is from Ireland. A… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a cultural dance. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet. It is from Ireland. A…",
-          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun.",
+          "'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about a cultural dance?",
+        "question": "Which response best uses elements, techniques and audience effect for a cultural dance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about a cultural dance.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for…"
-        ],
-        "question": "Which habit strengthens evidence about a tradition?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Name a specific element or technique and say what effect it creates for a cultural dance.",
           "Say it looks nice with no element or technique named.",
-          "Example: Ravi watches a short video of a Greek circle dance chosen by his teacher. He writes: 'The dancers hold hands in a line that…",
-          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun."
         ],
-        "question": "Using this lesson idea — Dance is part of every culture and often shows celebrations, stories, work or beliefs. Examples include… — which choice is best?",
+        "question": "Which evidence move best supports a claim about a cultural dance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Ravi watches a short video of a Greek circle dance chosen by his teacher.",
+          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun."
+        ],
+        "question": "Using this lesson idea — Dance is part of every culture and often shows celebrations, stories, work or beliefs. — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a cultural dance?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for…",
-          "With an adult, choose two cultural dances from a library book or approved website. For each write the place it comes from, two things you can see…"
+          "Thinking that all dances from the same culture are the same, or that any dance can be copied for fun.",
+          "Name a tradition and explain why it matters only, with no linked example.",
+          "With an adult, choose two cultural dances from a library book or approved website."
         ],
-        "question": "Which task best shows independent use of a cultural dance?",
+        "question": "Which independent response best applies a cultural dance to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a cultural dance with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a cultural dance on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet. It is from Ireland. A respectful action is to use a source chosen by my… Reasoning: I used a cultural dance by attending to a tradition rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a cultural dance on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a cultural dance. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a cultural dance, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for… Correction: Strong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet. It is from Ireland. A… Why: the correction restores accurate use of a cultural dance.",
+        "sample_answer": "Sample error: Thinking that all dances from the same culture are the same, or that any dance can be copied for fun.. Correction: Strong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Dance is part of every culture and often shows celebrations, stories, work or beliefs. Examples include Scottish Highland dancing, Irish step dancing, Greek circle dances, Indian classical and folk dances, Samoan and Tongan dances and kapa haka from Aotearoa New Zealand. Each…",
+          "explanation": "Dance is part of every culture and often shows celebrations, stories, work or beliefs.",
           "options": [
-            "Dance is part of every culture and often shows celebrations, stories, work or beliefs. Examples include Scottish Highland dancing, Irish step dancing, Greek circle dances, Indian classical and folk dances, Samoan and Tongan dances and kapa haka from Aotearoa New Zealand. Each tradition has its own steps, clothing, music and meaning. Some dances are sacred or restricted, so they are only for particular people or occasions. Learn about a cultural dance from a published source, a teacher or a community member who is happy to share it, and name where it comes from. Never mock or change a dance.",
+            "Dance is part of every culture and often shows celebrations, stories, work or beliefs.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a cultural dance?",
+          "question": "Which choice best applies this lesson idea about a cultural dance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Ravi watches a short video of a Greek circle dance chosen by his teacher. He writes: 'The dancers hold hands in a line that curves into a circle. The steps are in time with the music and the group moves together. It comes from Greece and is often danced at celebrations.' He names the formation, the time and the origin, and does not guess the meaning of any parts he does not know.\n\nTRY FIRST\nChoose a cultural dance and describe two things you can see (formation, steps, speed), where it is from and one respectful action before learning more.\n\nFEEDBACK\nStrong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet. It is from Ireland. A respectful action is to use a source chosen by my teacher and say where the dance comes from.' It describes elements, names the origin and shows respect.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about a cultural dance?",
+          "question": "Which choice best applies this lesson idea about a cultural dance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Ravi watches a short video of a Greek circle dance chosen by his teacher. He writes: 'The dancers hold hands in a line that curves into a circle. The steps are in time with the music and the group moves together. It comes from Greece and is often danced at celebrations.' He names the formation, the time and the origin, and does not guess the meaning of any parts he does not know. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a cultural dance?",
+          "question": "Which choice best applies this lesson idea about a cultural dance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that all dances from the same culture are the same, or that any dance can be copied for fun. Each dance has its own meaning, and some are only for particular people, so we ask and learn from the right sources. Here is a more helpful example: Example: Ravi watches a short video of a Greek circle dance chosen by his teacher. He writes: 'The dancers hold hands in a line that curves into a circle. The steps are in time with the music and the group moves together. It comes from Greece and is often danced at celebrations.' He names the formation, the time and the origin, and does not guess the meaning of any parts he does not know.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'In an Irish step dance the dancers keep their arms by their sides and make quick, light steps with their feet. It is from Ireland. A respectful action is to use a source chosen by my teacher and say where the dance comes from.' It describes elements, names the origin and shows respect.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice."
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example."
           ],
-          "question": "Which choice best shows accurate use of this idea about a cultural dance?",
+          "question": "Which choice best applies this lesson idea about a cultural dance with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDance is part of every culture and often shows celebrations, stories, work or beliefs. Examples include Scottish Highland dancing, Irish step dancing, Greek circle dances, Indian classical and folk dances, Samoan and Tongan dances and kapa haka from Aotearoa New Zealand. Each tradition has its own steps, clothing, music and meaning. Some dances are sacred or restricted, so they are only for particular people or occasions. Learn about a cultural dance from a published source, a teacher or a community member who is happy to share it, and name where it comes from. Never mock or change a dance. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

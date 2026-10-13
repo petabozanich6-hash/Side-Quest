@@ -34,7 +34,7 @@
     "outcome_codes": [
       "HS2-ACH-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Create your own signs-of-the-year calendar for your area using what you can observe, such as flowering trees, birds and weather, across at least four months. Label it clearly as your own. List one published First Nations Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Look at community-approved published calendars from different Nations, such as those shared by First Nations organisations, and note that the number and names of seasons differ. Reasoning: I used season by attending to calendar and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians. Correction: Look at community-approved published calendars from different Nations, such as those shared by First Nations organisations, and note that the number and names… Why: the correction restores accurate use of season.\n\nParent: Likely misconception: Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating season on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with season, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Create your own signs-of-the-year calendar for your area using what you can observe, such as flowering trees, birds and weather, across at least four months. Label it clearly as your own. List one published First Nations Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using season on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians.. Correction: Look at community-approved published calendars from different Nations, such as those shared by First Nations. Why it helps the audience is stated.\n\nParent: Likely misconception: Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating season on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with season, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about season with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for season. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Look at community-approved published calendars from different Nations, such as those shared by First Nations organisations, and note that the number and names… This matches the lesson skill for season.",
+        "explanation": "This matches the taught method for season. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Look at community-approved published calendars from different Nations, such as those shared by First Nations organisations, and note that the number and names…",
-          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Look at community-approved published calendars from different Nations, such as those shared by First Nations",
+          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians"
         ],
         "question": "A student says \"All Aboriginal calendars have four seasons\". What should they do to correct this, and what kind of source should they use?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for season; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of calendar and explain why it matters with clear evidence.",
-          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians.",
-          "Many First Nations have seasonal calendars based on local signs such as flowering plants, animal behaviour and weather, rather than the four fixed seasons…",
-          "Look at community-approved published calendars from different Nations, such as those shared by First Nations organisations, and note that the number and names…"
+          "Careful use of calendar and explain why it matters with clear evidence",
+          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians",
+          "Many First Nations have seasonal calendars based on local signs such as flowering plants, animal behaviour and weather",
+          "Look at community-approved published calendars from different Nations, such as those shared by First Nations"
         ],
-        "question": "Which statement is a common mistake when practising season?",
+        "question": "Which statement is a common mistake when working with season?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named calendar and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named calendar and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the calendar and explain why it matters used."
+          "Repeat the worked example wording with no new evidence",
+          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians",
+          "Name calendar and explain why it matters only, without linking it to season",
+          "Apply season to new material and name the calendar and explain why it matters used"
         ],
-        "question": "A learner is practising season. Which approach best shows understanding?",
+        "question": "Which response best applies season with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Look at community-approved published calendars from different Nations, such as those shared by First Nations organisations, and note that the number and names… uses sources and places appropriately for this lesson.",
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on season. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Look at community-approved published calendars from different Nations, such as those shared by First Nations organisations, and note that the number and names…",
-          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians."
+          "Copy a classmate’s sentence with no local detail",
+          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians",
+          "Look at community-approved published calendars from different Nations, such as those shared by First Nations",
+          "Make a bigger claim without naming any source or place detail"
         ],
-        "question": "Which response best shows careful thinking about season?",
+        "question": "Which response best uses sources, places or historical/geographic evidence for season?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians.",
-          "Name a specific source, cue or example and say what it shows about season.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy a classmate’s sentence with no local detail",
+          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians",
+          "Name a specific source or place detail and say what it shows about season",
+          "Make a bigger claim without naming any source or place detail"
         ],
-        "question": "Which habit strengthens evidence about calendar and explain why it matters?",
+        "question": "Which evidence move best supports a claim about season?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Many First Nations have seasonal calendars based on local signs such as) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Example: a class looks at a community-approved seasonal calendar published by a First Nations organisation. They record how the calendar…",
-          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians.",
-          "Treat a missing detail as a proven fact."
+          "Copy a classmate’s sentence with no local detail",
+          "Example: a class looks at a community-approved seasonal calendar published by a First Nations organisation",
+          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians",
+          "Make a bigger claim without naming any source or place detail"
         ],
-        "question": "Using this lesson idea — Many First Nations have seasonal calendars based on local signs such as flowering plants, animal behaviour… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about season?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for season?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked example with no new example.",
-          "Copy the worked example and call it independent work.",
-          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians.",
-          "Create your own signs-of-the-year calendar for your area using what you can observe, such as flowering trees, birds and weather, across at least…"
+          "Retype the worked example with no new example",
+          "Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians",
+          "Name calendar and explain why it matters only, with no linked example",
+          "Create your own signs-of-the-year calendar for your area using what you can observe, such as flowering trees, birds and"
         ],
-        "question": "Which task best shows independent use of season?",
+        "question": "Which independent response best applies season to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about season with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating season on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Look at community-approved published calendars from different Nations, such as those shared by First Nations organisations, and note that the number and names of seasons differ. Reasoning: I used season by attending to calendar and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: original example using season on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for season. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with season, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians. Correction: Look at community-approved published calendars from different Nations, such as those shared by First Nations organisations, and note that the number and names… Why: the correction restores accurate use of season.",
+        "sample_answer": "Sample error: Painting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians.. Correction: Look at community-approved published calendars from different Nations, such as those shared by First Nations. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Many First Nations have seasonal calendars based on local signs such as flowering plants, animal behaviour and weather, rather than the four fixed seasons used in many school calendars. The number and names of seasons differ between Nations, so calendars must come from…",
+          "explanation": "Many First Nations have seasonal calendars based on local signs such as flowering plants, animal behaviour and weather, rather than the four fixed seasons used in many school calendars.",
           "options": [
-            "Many First Nations have seasonal calendars based on local signs such as flowering plants, animal behaviour and weather, rather than the four fixed seasons used in many school calendars. The number and names of seasons differ between Nations, so calendars must come from community-approved sources and are not interchangeable.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Many First Nations have seasonal calendars based on local signs such as flowering plants, animal behaviour and weather",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about season?",
+          "question": "Which choice best applies this lesson idea about season with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a class looks at a community-approved seasonal calendar published by a First Nations organisation. They record how the calendar uses signs such as the flowering of a plant to mark a change, then compare the number of seasons with the four-season calendar on the classroom wall.\n\nTRY FIRST\nA student says \"All Aboriginal calendars have four seasons\". What should they do to correct this, and what kind of source should they use?\n\nFEEDBACK\nLook at community-approved published calendars from different Nations, such as those shared by First Nations organisations, and note that the number and names of seasons differ.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the source or place."
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about season?",
+          "question": "Which choice best applies this lesson idea about season with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a class looks at a community-approved seasonal calendar published by a First Nations organisation. They record how the calendar uses signs such as the flowering of a plant to mark a change, then compare the number of seasons with the four-season calendar on the classroom wall. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect claim as a comparison",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
           ],
-          "question": "Which choice best shows accurate use of this idea about season?",
+          "question": "Which choice best applies this lesson idea about season with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPainting a local calendar and calling it an Aboriginal calendar claims knowledge that belongs to Custodians. Here is a more productive model: Example: a class looks at a community-approved seasonal calendar published by a First Nations organisation. They record how the calendar uses signs such as the flowering of a plant to mark a change, then compare the number of seasons with the four-season calendar on the classroom wall.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nLook at community-approved published calendars from different Nations, such as those shared by First Nations organisations, and note that the number and names of seasons differ.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence."
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example"
           ],
-          "question": "Which choice best shows accurate use of this idea about season?",
+          "question": "Which choice best applies this lesson idea about season with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nMany First Nations have seasonal calendars based on local signs such as flowering plants, animal behaviour and weather, rather than the four fixed seasons used in many school calendars. The number and names of seasons differ between Nations, so calendars must come from community-approved sources and are not interchangeable. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",

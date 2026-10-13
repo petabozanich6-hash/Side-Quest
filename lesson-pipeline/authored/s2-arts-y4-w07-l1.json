@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Copy a four-note melody onto staff paper (or lined paper as a staff). Label letter names, clap it and perform it. Write one tricky spot and how you fixed it. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing. Reasoning: I used notation by attending to staff rather than copying the worked model.\n\nParent: Written model 2: Common error: Guessing pitches by how the notes look without checking line/space names. Accurate naming comes first. Correction: Strong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing. Why: the correction restores accurate use of notation.\n\nParent: Likely misconception: Guessing pitches by how the notes look without checking line/space names. Accurate naming comes first. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating notation on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with notation, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Copy a four-note melody onto staff paper (or lined paper as a staff). Label letter names, clap it and perform it. Write one tricky spot and how you fixed it. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using notation on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Guessing pitches by how the notes look without checking line/space names.. Correction: Strong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing.. Why it helps the audience is stated.\n\nParent: Likely misconception: Guessing pitches by how the notes look without checking line/space names. Accurate naming comes first. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating notation on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with notation, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about notation with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for notation. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing. This matches the lesson skill for notation.",
+        "explanation": "This matches the taught method for notation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing.",
-          "Guessing pitches by how the notes look without checking line/space names. Accurate naming comes first.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing.",
+          "Guessing pitches by how the notes look without checking line/space names.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "A staff shows E on a line, then F in the next space up. Is the second note higher or lower, and what should you do before playing?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Guessing pitches by how the notes look without checking line/space names. Accurate naming comes first. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for notation; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Simple notation shows pitch and rhythm on a staff of five lines. Note heads sit on a line or in a space; higher on the staff usually means higher pitch in…",
-          "Strong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing.",
-          "Careful use of staff with clear evidence.",
-          "Guessing pitches by how the notes look without checking line/space names. Accurate naming comes first."
+          "Simple notation shows pitch and rhythm on a staff of five lines.",
+          "'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing.",
+          "Careful use of staff and explain why it matters with clear evidence.",
+          "Guessing pitches by how the notes look without checking line/space names."
         ],
-        "question": "Which statement is a common mistake when practising notation?",
+        "question": "Which statement is a common mistake when working with notation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named staff, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named staff and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the staff used."
+          "Guessing pitches by how the notes look without checking line/space names.",
+          "Name staff and explain why it matters only, without linking it to notation.",
+          "Apply notation to new material and name the staff and explain why it matters used."
         ],
-        "question": "A learner is practising notation. Which approach best shows understanding?",
+        "question": "Which response best applies notation with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing. uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on notation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing.",
-          "Guessing pitches by how the notes look without checking line/space names. Accurate naming comes first.",
-          "Say it looks nice with no element or technique named."
+          "Guessing pitches by how the notes look without checking line/space names.",
+          "'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which response best shows careful thinking about notation?",
+        "question": "Which response best uses elements, techniques and audience effect for notation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Guessing pitches by how the notes look without checking line/space names. Accurate naming comes first.",
-          "Name a specific source, cue or example and say what it shows about notation."
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Guessing pitches by how the notes look without checking line/space names.",
+          "Name a specific element or technique and say what effect it creates for notation."
         ],
-        "question": "Which habit strengthens evidence about staff?",
+        "question": "Which evidence move best supports a claim about notation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Example: a four-beat melody on the staff shows G–A–B–G. Pat reads each letter, claps four even beats, then plays it on xylophone bars…",
-          "Guessing pitches by how the notes look without checking line/space names. Accurate naming comes first.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: a four-beat melody on the staff shows G–A–B–G.",
+          "Guessing pitches by how the notes look without checking line/space names.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — Simple notation shows pitch and rhythm on a staff of five lines. Note heads sit on a line or in a space;… — which choice is best?",
+        "question": "Using this lesson idea — Simple notation shows pitch and rhythm on a staff of five lines. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for notation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Guessing pitches by how the notes look without checking line/space names. Accurate naming comes first.",
-          "Copy a four-note melody onto staff paper (or lined paper as a staff). Label letter names, clap it and perform it. Write one tricky spot and how you…",
+          "Guessing pitches by how the notes look without checking line/space names.",
+          "Name staff and explain why it matters only, with no linked example.",
+          "Copy a four-note melody onto staff paper (or lined paper as a staff).",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of notation?",
+        "question": "Which independent response best applies notation to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about notation with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating notation on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing. Reasoning: I used notation by attending to staff rather than copying the worked model.",
+        "sample_answer": "Sample: original example using notation on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for notation. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with notation, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Guessing pitches by how the notes look without checking line/space names. Accurate naming comes first. Correction: Strong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing. Why: the correction restores accurate use of notation.",
+        "sample_answer": "Sample error: Guessing pitches by how the notes look without checking line/space names.. Correction: Strong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Simple notation shows pitch and rhythm on a staff of five lines. Note heads sit on a line or in a space; higher on the staff usually means higher pitch in treble clef. Letter names (such as C D E F G) help you read a short melody. Start by naming each note, then clap the…",
+          "explanation": "Simple notation shows pitch and rhythm on a staff of five lines.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Simple notation shows pitch and rhythm on a staff of five lines. Note heads sit on a line or in a space; higher on the staff usually means higher pitch in treble clef. Letter names (such as C D E F G) help you read a short melody. Start by naming each note, then clap the rhythm, then play or sing. Keep eyes moving ahead of the note you are playing.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Simple notation shows pitch and rhythm on a staff of five lines.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about notation?",
+          "question": "Which choice best applies this lesson idea about notation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a four-beat melody on the staff shows G–A–B–G. Pat reads each letter, claps four even beats, then plays it on xylophone bars labelled the same way.\n\nTRY FIRST\nA staff shows E on a line, then F in the next space up. Is the second note higher or lower, and what should you do before playing?\n\nFEEDBACK\nStrong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about notation?",
+          "question": "Which choice best applies this lesson idea about notation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a four-beat melody on the staff shows G–A–B–G. Pat reads each letter, claps four even beats, then plays it on xylophone bars labelled the same way. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
+            "An answer copied without understanding.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about notation?",
+          "question": "Which choice best applies this lesson idea about notation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nGuessing pitches by how the notes look without checking line/space names. Accurate naming comes first. Here is a more helpful example: Example: a four-beat melody on the staff shows G–A–B–G. Pat reads each letter, claps four even beats, then plays it on xylophone bars labelled the same way.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Higher. Name the notes, clap the rhythm, then play slowly.' Reading order prevents guessing.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about notation?",
+          "question": "Which choice best applies this lesson idea about notation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSimple notation shows pitch and rhythm on a staff of five lines. Note heads sit on a line or in a space; higher on the staff usually means higher pitch in treble clef. Letter names (such as C D E F G) help you read a short melody. Start by naming each note, then clap the rhythm, then play or sing. Keep eyes moving ahead of the note you are playing. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

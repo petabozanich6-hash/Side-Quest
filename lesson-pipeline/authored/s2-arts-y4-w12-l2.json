@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write and perform a one-minute two-character scene with circumstances, two beats and a visible reaction. Reflect on what your body showed. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Beat 1: race for the seat. Beat 2: see an elderly passenger—character gives up the seat. Reaction shows values.' Reasoning: I used character scene by attending to beat rather than copying the worked model.\n\nParent: Written model 2: Common error: Writing long speeches with no reaction. Drama needs change between beats. Correction: Strong answer: 'Beat 1: race for the seat. Beat 2: see an elderly passenger—character gives up the seat. Reaction shows values.' Why: the correction restores accurate use of character scene.\n\nParent: Likely misconception: Writing long speeches with no reaction. Drama needs change between beats. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating character scene on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with character scene, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write and perform a one-minute two-character scene with circumstances, two beats and a visible reaction. Reflect on what your body showed. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using character scene on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Writing long speeches with no reaction.. Correction: Strong answer: 'Beat 1: race for the seat.. Why it helps the audience is stated.\n\nParent: Likely misconception: Writing long speeches with no reaction. Drama needs change between beats. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating character scene on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with character scene, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about character scene with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for character scene. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Beat 1: race for the seat. Beat 2: see an elderly passenger—character gives up the seat. Reaction shows values.' This matches the lesson skill for character scene.",
+        "explanation": "This matches the taught method for character scene. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Beat 1: race for the seat. Beat 2: see an elderly passenger—character gives up the seat. Reaction shows values.'",
-          "Writing long speeches with no reaction. Drama needs change between beats.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "Beat 1: race for the seat.",
+          "Writing long speeches with no reaction.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "Plan a two-beat scene where a character wants the last seat on a bus. Include one clear reaction. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Writing long speeches with no reaction. Drama needs change between beats. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for character scene; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Writing long speeches with no reaction. Drama needs change between beats.",
-          "A character scene has given circumstances (who, where, when) and beats (small units where the action shifts). Strong scenes show reactions: characters change…",
-          "Strong answer: 'Beat 1: race for the seat. Beat 2: see an elderly passenger—character gives up the seat. Reaction shows values.'",
-          "Careful use of beat with clear evidence."
+          "Writing long speeches with no reaction.",
+          "A character scene has given circumstances (who, where, when) and beats (small units where the action shifts).",
+          "Beat 1: race for the seat.",
+          "Careful use of beat and explain why it matters with clear evidence."
         ],
-        "question": "Which statement is a common mistake when practising character scene?",
+        "question": "Which statement is a common mistake when working with character scene?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named beat, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named beat and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the beat used."
+          "Writing long speeches with no reaction.",
+          "Name beat and explain why it matters only, without linking it to character scene.",
+          "Apply character scene to new material and name the beat and explain why it matters used."
         ],
-        "question": "A learner is practising character scene. Which approach best shows understanding?",
+        "question": "Which response best applies character scene with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Beat 1: race for the seat. Beat 2: see an elderly passenger—character gives up the seat. Reaction shows values.' uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on character scene. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Beat 1: race for the seat. Beat 2: see an elderly passenger—character gives up the seat. Reaction shows values.'",
-          "Writing long speeches with no reaction. Drama needs change between beats.",
+          "Writing long speeches with no reaction.",
+          "Beat 1: race for the seat.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
+        ],
+        "question": "Which response best uses elements, techniques and audience effect for character scene?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Writing long speeches with no reaction.",
+          "Name a specific element or technique and say what effect it creates for character scene.",
           "Say it looks nice with no element or technique named."
         ],
-        "question": "Which response best shows careful thinking about character scene?",
+        "question": "Which evidence move best supports a claim about character scene?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Writing long speeches with no reaction. Drama needs change between beats.",
-          "Name a specific source, cue or example and say what it shows about character scene.",
-          "Make a bigger claim without naming any source or cue."
-        ],
-        "question": "Which habit strengthens evidence about beat?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
           "Say it looks nice with no element or technique named.",
-          "Example: Circumstances: lost property room after lunch. Beat 1: two students search. Beat 2: one finds a diary and hesitates. Reaction:…",
-          "Writing long speeches with no reaction. Drama needs change between beats."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Circumstances: lost property room after lunch.",
+          "Writing long speeches with no reaction."
         ],
-        "question": "Using this lesson idea — A character scene has given circumstances (who, where, when) and beats (small units where the action… — which choice is best?",
+        "question": "Using this lesson idea — A character scene has given circumstances (who, where, when) and beats (small units where the — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for character scene?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Writing long speeches with no reaction. Drama needs change between beats.",
-          "Write and perform a one-minute two-character scene with circumstances, two beats and a visible reaction. Reflect on what your body showed.",
+          "Name beat and explain why it matters only, with no linked example.",
+          "Write and perform a one-minute two-character scene with circumstances, two beats and a visible reaction.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Writing long speeches with no reaction."
         ],
-        "question": "Which task best shows independent use of character scene?",
+        "question": "Which independent response best applies character scene to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about character scene with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating character scene on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Beat 1: race for the seat. Beat 2: see an elderly passenger—character gives up the seat. Reaction shows values.' Reasoning: I used character scene by attending to beat rather than copying the worked model.",
+        "sample_answer": "Sample: original example using character scene on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for character scene. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with character scene, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Writing long speeches with no reaction. Drama needs change between beats. Correction: Strong answer: 'Beat 1: race for the seat. Beat 2: see an elderly passenger—character gives up the seat. Reaction shows values.' Why: the correction restores accurate use of character scene.",
+        "sample_answer": "Sample error: Writing long speeches with no reaction.. Correction: Strong answer: 'Beat 1: race for the seat.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "A character scene has given circumstances (who, where, when) and beats (small units where the action shifts). Strong scenes show reactions: characters change because of what they hear. Keep dialogue short and playable; show more than you tell. Supported responses name the…",
+          "explanation": "A character scene has given circumstances (who, where, when) and beats (small units where the action shifts).",
           "options": [
+            "An answer copied without understanding.",
+            "A character scene has given circumstances (who, where, when) and beats (small units where the action shifts).",
             "A guess with no artistic reason.",
-            "A character scene has given circumstances (who, where, when) and beats (small units where the action shifts). Strong scenes show reactions: characters change because of what they hear. Keep dialogue short and playable; show more than you tell.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about character scene?",
+          "question": "Which choice best applies this lesson idea about character scene with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Circumstances: lost property room after lunch. Beat 1: two students search. Beat 2: one finds a diary and hesitates. Reaction: the owner enters and both freeze, then negotiate kindly.\n\nTRY FIRST\nPlan a two-beat scene where a character wants the last seat on a bus. Include one clear reaction.\n\nFEEDBACK\nStrong answer: 'Beat 1: race for the seat. Beat 2: see an elderly passenger—character gives up the seat. Reaction shows values.'",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about character scene?",
+          "question": "Which choice best applies this lesson idea about character scene with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Circumstances: lost property room after lunch. Beat 1: two students search. Beat 2: one finds a diary and hesitates. Reaction: the owner enters and both freeze, then negotiate kindly. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about character scene?",
+          "question": "Which choice best applies this lesson idea about character scene with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nWriting long speeches with no reaction. Drama needs change between beats. Here is a more helpful example: Example: Circumstances: lost property room after lunch. Beat 1: two students search. Beat 2: one finds a diary and hesitates. Reaction: the owner enters and both freeze, then negotiate kindly.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Beat 1: race for the seat. Beat 2: see an elderly passenger—character gives up the seat. Reaction shows values.'",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about character scene?",
+          "question": "Which choice best applies this lesson idea about character scene with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA character scene has given circumstances (who, where, when) and beats (small units where the action shifts). Strong scenes show reactions: characters change because of what they hear. Keep dialogue short and playable; show more than you tell. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

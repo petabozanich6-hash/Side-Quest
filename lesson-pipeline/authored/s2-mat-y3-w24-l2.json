@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-GM-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete a grounds/home length investigation: at least five measures, unit choices, a results table and three comparison sentences. Note one measurement challenge. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Height/path often m or cm; table often cm; justify each choice. Reasoning: I used investigation by attending to grounds and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Measuring without a recording plan loses which number belongs to which place. Correction: Height/path often m or cm; table often cm; justify each choice. Why: the correction restores accurate use of investigation.\n\nParent: Likely misconception: Measuring without a recording plan loses which number belongs to which place. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses investigation with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with investigation, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a grounds/home length investigation: at least five measures, unit choices, a results table and three comparison sentences. Note one measurement challenge. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for investigation; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Measuring without a recording plan loses which number belongs to which place.. Correction uses Height/path often m or cm;. Why: restores accurate investigation.\n\nParent: Likely misconception: Measuring without a recording plan loses which number belongs to which place. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses investigation with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with investigation, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for investigation, and names places/values. Reject copied model numbers. / Accept a named misconception about investigation, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Height/path often m or cm; table often cm; justify each choice. This matches the lesson skill for investigation.",
+        "explanation": "This matches the taught method for investigation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Height/path often m or cm; table often cm; justify each choice.",
-          "Measuring without a recording plan loses which number belongs to which place.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Height/path often m or cm",
+          "Measuring without a recording plan loses which number belongs to which place",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Design measures for: a doorway height; a table length; a short outdoor path. Choose units. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Measuring without a recording plan loses which number belongs to which place. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for investigation; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A length investigation of school/home grounds plans what to measure, chooses units, records results and compares findings.",
-          "Height/path often m or cm; table often cm; justify each choice.",
-          "Careful use of grounds and explain why it matters with clear evidence.",
-          "Measuring without a recording plan loses which number belongs to which place."
+          "A length investigation of school/home grounds plans what to measure, chooses units, records results and compares",
+          "Height/path often m or cm",
+          "Careful use of grounds and explain why it matters with clear evidence",
+          "Measuring without a recording plan loses which number belongs to which place"
         ],
-        "question": "Which statement is a common mistake when practising investigation?",
+        "question": "Which statement is a common mistake when working with investigation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named grounds and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named grounds and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the grounds and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence."
+          "Measuring without a recording plan loses which number belongs to which place",
+          "Name grounds and explain why it matters only, without linking it to investigation",
+          "Apply investigation to new material and name the grounds and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising investigation. Which approach best shows understanding?",
+        "question": "Which response best applies investigation with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change digits to look neater without checking place value.",
-          "Measuring without a recording plan loses which number belongs to which place.",
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working."
+          "Change digits to look neater without checking place value",
+          "Measuring without a recording plan loses which number belongs to which place",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working"
         ],
-        "question": "Which working note best supports a mathematics answer about investigation?",
+        "question": "Which working best supports a correct answer for this lesson on investigation?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught investigation method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Height/path often m or cm; table often cm; justify each choice.",
-          "Measuring without a recording plan loses which number belongs to which place."
+          "Read 24 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 24 and 6 as interchangeable",
+          "Height/path often m or cm",
+          "Measuring without a recording plan loses which number belongs to which place"
         ],
-        "question": "Using this lesson idea — A length investigation of school/home grounds plans what to measure, chooses units, records results and… — which statement is true?",
+        "question": "Using the method for investigation, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed."
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a investigation problem with numbers such as 24 and 6, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers.",
-          "Copy the worked example and call it independent work."
+          "Use the same investigation method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 24 and 6 as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Measuring without a recording plan loses which number belongs to which place"
         ],
-        "question": "Which practice choice shows transfer of investigation?",
+        "question": "Solve a fresh investigation problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name the exact place or step that failed, then show corrected working for investigation.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer."
+          "Measuring without a recording plan loses which number belongs to which place",
+          "A length investigation of school/home grounds plans what to measure, chooses units, records results and compares",
+          "Height/path often m or cm",
+          "Label units when comparing 24 with 6"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for investigation?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for investigation, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses investigation with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Height/path often m or cm; table often cm; justify each choice. Reasoning: I used investigation by attending to grounds and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for investigation; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about investigation, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with investigation, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Measuring without a recording plan loses which number belongs to which place. Correction: Height/path often m or cm; table often cm; justify each choice. Why: the correction restores accurate use of investigation.",
+        "sample_answer": "Sample misconception: Measuring without a recording plan loses which number belongs to which place.. Correction uses Height/path often m or cm;. Why: restores accurate investigation.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "A length investigation of school/home grounds plans what to measure, chooses units, records results and compares findings. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "A length investigation of school/home grounds plans what to measure, chooses units, records results and compares findings.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "A length investigation of school/home grounds plans what to measure, chooses units, records results and compares findings."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "A length investigation of school/home grounds plans what to measure, chooses units, records results and compares"
           ],
-          "question": "Which choice best shows accurate use of this idea about investigation?",
+          "question": "Which choice best applies this lesson idea about investigation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPlan: measure path width in cm, garden length in m, step distance roughly in m. Record in a table and compare which is longest.\n\nTRY FIRST\nDesign measures for: a doorway height; a table length; a short outdoor path. Choose units.\n\nFEEDBACK\nHeight/path often m or cm; table often cm; justify each choice.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
           "options": [
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about investigation?",
+          "question": "Which choice best applies this lesson idea about investigation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPlan: measure path width in cm, garden length in m, step distance roughly in m. Record in a table and compare which is longest. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about investigation?",
+          "question": "Which choice best applies this lesson idea about investigation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nMeasuring without a recording plan loses which number belongs to which place. Here is a more productive model: Plan: measure path width in cm, garden length in m, step distance roughly in m. Record in a table and compare which is longest.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nHeight/path often m or cm; table often cm; justify each choice.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about investigation?",
+          "question": "Which choice best applies this lesson idea about investigation with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA length investigation of school/home grounds plans what to measure, chooses units, records results and compares findings. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DRA-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Perform the scripted play (or key scenes) with checklist complete and a short cast reflection afterwards. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: Includes props check, quiet rule, entrance order, water, curtain-call places. Reasoning: I used scripted play by attending to performance ready rather than copying the worked model.\n\nParent: Written model 2: Common error: Improvising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake. Correction: Strong answer: Includes props check, quiet rule, entrance order, water, curtain-call places. Why: the correction restores accurate use of scripted play.\n\nParent: Likely misconception: Improvising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating scripted play on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with scripted play, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Perform the scripted play (or key scenes) with checklist complete and a short cast reflection afterwards. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using scripted play on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Improvising new blocking during the show for fun.. Correction: Strong answer: Includes props check, quiet rule, entrance order, water, curtain-call places.. Why it helps the audience is stated.\n\nParent: Likely misconception: Improvising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating scripted play on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with scripted play, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about scripted play with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for scripted play. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: Includes props check, quiet rule, entrance order, water, curtain-call places. This matches the lesson skill for scripted play.",
+        "explanation": "This matches the taught method for scripted play. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: Includes props check, quiet rule, entrance order, water, curtain-call places.",
-          "Improvising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake.",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "Includes props check, quiet rule, entrance order, water, curtain-call places.",
+          "Improvising new blocking during the show for fun.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "Write a backstage checklist of five items for performance day. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Improvising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for scripted play; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: Includes props check, quiet rule, entrance order, water, curtain-call places.",
-          "Careful use of performance ready with clear evidence.",
-          "Improvising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake.",
-          "Performing a scripted play needs locked blocking, reliable props tables, quiet backstage and planned transitions. A curtain call thanks the audience together.…"
+          "Includes props check, quiet rule, entrance order, water, curtain-call places.",
+          "Careful use of performance ready and explain why it mat with clear evidence.",
+          "Improvising new blocking during the show for fun.",
+          "Performing a scripted play needs locked blocking, reliable props tables, quiet backstage and planned transitions."
         ],
-        "question": "Which statement is a common mistake when practising scripted play?",
+        "question": "Which statement is a common mistake when working with scripted play?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named performance ready, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named performance ready and explain why it mat, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the performance ready used.",
+          "Apply scripted play to new material and name the performance ready and explain why it mat used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Improvising new blocking during the show for fun.",
+          "Name performance ready and explain why it mat only, without linking it to scripted play."
         ],
-        "question": "A learner is practising scripted play. Which approach best shows understanding?",
+        "question": "Which response best applies scripted play with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: Includes props check, quiet rule, entrance order, water, curtain-call places. uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on scripted play. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Improvising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: Includes props check, quiet rule, entrance order, water, curtain-call places."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Improvising new blocking during the show for fun.",
+          "Includes props check, quiet rule, entrance order, water, curtain-call places."
         ],
-        "question": "Which response best shows careful thinking about scripted play?",
+        "question": "Which response best uses elements, techniques and audience effect for scripted play?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Improvising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake.",
-          "Name a specific source, cue or example and say what it shows about scripted play.",
-          "Make a bigger claim without naming any source or cue."
-        ],
-        "question": "Which habit strengthens evidence about performance ready?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Example: Prop table labelled Scene 1–3; transition music 10 seconds; cast bows in one line on leader cue.",
-          "Improvising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake.",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Improvising new blocking during the show for fun.",
+          "Name a specific element or technique and say what effect it creates for scripted play.",
           "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — Performing a scripted play needs locked blocking, reliable props tables, quiet backstage and planned… — which choice is best?",
+        "question": "Which evidence move best supports a claim about scripted play?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Example: Prop table labelled Scene 1–3;",
+          "Improvising new blocking during the show for fun.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
+        ],
+        "question": "Using this lesson idea — Performing a scripted play needs locked blocking, reliable props tables, quiet backstage and — which choice is best?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for scripted play?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Improvising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake.",
+          "Name performance ready and explain why it mat only, with no linked example.",
           "Perform the scripted play (or key scenes) with checklist complete and a short cast reflection afterwards.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Improvising new blocking during the show for fun."
         ],
-        "question": "Which task best shows independent use of scripted play?",
+        "question": "Which independent response best applies scripted play to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about scripted play with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating scripted play on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: Includes props check, quiet rule, entrance order, water, curtain-call places. Reasoning: I used scripted play by attending to performance ready rather than copying the worked model.",
+        "sample_answer": "Sample: original example using scripted play on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for scripted play. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with scripted play, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Improvising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake. Correction: Strong answer: Includes props check, quiet rule, entrance order, water, curtain-call places. Why: the correction restores accurate use of scripted play.",
+        "sample_answer": "Sample error: Improvising new blocking during the show for fun.. Correction: Strong answer: Includes props check, quiet rule, entrance order, water, curtain-call places.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Performing a scripted play needs locked blocking, reliable props tables, quiet backstage and planned transitions. A curtain call thanks the audience together. Check costumes for trip hazards. Supported responses name the element or technique and its effect.",
+          "explanation": "Performing a scripted play needs locked blocking, reliable props tables, quiet backstage and planned transitions.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Performing a scripted play needs locked blocking, reliable props tables, quiet backstage and planned transitions. A curtain call thanks the audience together. Check costumes for trip hazards."
+            "Performing a scripted play needs locked blocking, reliable props tables, quiet backstage and planned transitions."
           ],
-          "question": "Which choice best shows accurate use of this idea about scripted play?",
+          "question": "Which choice best applies this lesson idea about scripted play with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Prop table labelled Scene 1–3; transition music 10 seconds; cast bows in one line on leader cue.\n\nTRY FIRST\nWrite a backstage checklist of five items for performance day.\n\nFEEDBACK\nStrong answer: Includes props check, quiet rule, entrance order, water, curtain-call places.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about scripted play?",
+          "question": "Which choice best applies this lesson idea about scripted play with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Prop table labelled Scene 1–3; transition music 10 seconds; cast bows in one line on leader cue. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about scripted play?",
+          "question": "Which choice best applies this lesson idea about scripted play with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nImprovising new blocking during the show for fun. Stick to rehearsed plans unless recovering a mistake. Here is a more helpful example: Example: Prop table labelled Scene 1–3; transition music 10 seconds; cast bows in one line on leader cue.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: Includes props check, quiet rule, entrance order, water, curtain-call places.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about scripted play?",
+          "question": "Which choice best applies this lesson idea about scripted play with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPerforming a scripted play needs locked blocking, reliable props tables, quiet backstage and planned transitions. A curtain call thanks the audience together. Check costumes for trip hazards. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

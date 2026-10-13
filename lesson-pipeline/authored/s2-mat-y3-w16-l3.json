@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-PF-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Run four sharing investigations with different totals and group sizes. Record quotient, remainder and a fair-share sentence. Design one investigation where cutting the remainder into fractional shares would be needed. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Among 3: 6 each r2. Among 5: 4 each r0. Reasoning: I used share by attending to fair and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Giving some people more \"to finish the pile\" without agreement breaks fairness. Correction: Among 3: 6 each r2. Among 5: 4 each r0. Why: the correction restores accurate use of share.\n\nParent: Likely misconception: Giving some people more \"to finish the pile\" without agreement breaks fairness. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses share with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with share, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Run four sharing investigations with different totals and group sizes. Record quotient, remainder and a fair-share sentence. Design one investigation where cutting the remainder into fractional shares would be needed. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for share; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Giving some people more \"to finish the pile\" without agreement breaks fairness.. Correction uses Among 3: 6 each r2. Among 5: 4 each r0.. Why: restores accurate share.\n\nParent: Likely misconception: Giving some people more \"to finish the pile\" without agreement breaks fairness. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses share with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with share, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for share, and names places/values. Reject copied model numbers. / Accept a named misconception about share, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Among 3: 6 each r2. Among 5: 4 each r0. This matches the lesson skill for share.",
+        "explanation": "This matches the taught method for share. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Among 3: 6 each r2. Among 5: 4 each r0.",
-          "Giving some people more \"to finish the pile\" without agreement breaks fairness."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Among 3: 6 each r2. Among 5: 4 each r0",
+          "Giving some people more \"to finish the pile\" without agreement breaks fairness"
         ],
         "question": "Investigate: share 20 counters among 3, then among 5. Record equal share and leftover each time. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Giving some people more \"to finish the pile\" without agreement breaks fairness. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for share; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of fair and explain why it matters with clear evidence.",
-          "Giving some people more \"to finish the pile\" without agreement breaks fairness.",
-          "Sharing fairly means making equal shares. Sometimes a remainder means some items cannot make another full equal share without cutting.",
-          "Among 3: 6 each r2. Among 5: 4 each r0."
+          "Careful use of fair and explain why it matters with clear evidence",
+          "Giving some people more \"to finish the pile\" without agreement breaks fairness",
+          "Sharing fairly means making equal shares",
+          "Among 3: 6 each r2. Among 5: 4 each r0"
         ],
-        "question": "Which statement is a common mistake when practising share?",
+        "question": "Which statement is a common mistake when working with share?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named fair and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named fair and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the fair and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name fair and explain why it matters only, without linking it to share",
+          "Apply share to new material and name the fair and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Giving some people more \"to finish the pile\" without agreement breaks fairness"
         ],
-        "question": "A learner is practising share. Which approach best shows understanding?",
+        "question": "Which response best applies share with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change digits to look neater without checking place value.",
-          "Giving some people more \"to finish the pile\" without agreement breaks fairness.",
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working."
+          "Change digits to look neater without checking place value",
+          "Giving some people more \"to finish the pile\" without agreement breaks fairness",
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working"
         ],
-        "question": "Which working note best supports a mathematics answer about share?",
+        "question": "Which working best supports a correct answer for this lesson on share?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught share method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Giving some people more \"to finish the pile\" without agreement breaks fairness.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Among 3: 6 each r2. Among 5: 4 each r0."
+          "Giving some people more \"to finish the pile\" without agreement breaks fairness",
+          "Read 20 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 20 and 3, as interchangeable",
+          "Among 3: 6 each r2. Among 5: 4 each r0"
         ],
-        "question": "Using this lesson idea — Sharing fairly means making equal shares. Sometimes a remainder means some items cannot make another full… — which statement is true?",
+        "question": "Using the method for share, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either."
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a share problem with numbers such as 20 and 3,, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers.",
-          "Copy the worked example and call it independent work."
+          "Use the same share method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 20 and 3, as the answer",
+          "Change only handwriting and keep the same numbers",
+          "Giving some people more \"to finish the pile\" without agreement breaks fairness"
         ],
-        "question": "Which practice choice shows transfer of share?",
+        "question": "Solve a fresh share problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name the exact place or step that failed, then show corrected working for share.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer."
+          "Giving some people more \"to finish the pile\" without agreement breaks fairness",
+          "Sharing fairly means making equal shares",
+          "Among 3: 6 each r2. Among 5: 4 each r0",
+          "Label units when comparing 20 with 3"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for share?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for share, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses share with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Among 3: 6 each r2. Among 5: 4 each r0. Reasoning: I used share by attending to fair and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for share; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about share, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with share, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Giving some people more \"to finish the pile\" without agreement breaks fairness. Correction: Among 3: 6 each r2. Among 5: 4 each r0. Why: the correction restores accurate use of share.",
+        "sample_answer": "Sample misconception: Giving some people more \"to finish the pile\" without agreement breaks fairness.. Correction uses Among 3: 6 each r2. Among 5: 4 each r0.. Why: restores accurate share.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Sharing fairly means making equal shares. Sometimes a remainder means some items cannot make another full equal share without cutting. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Sharing fairly means making equal shares.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Sharing fairly means making equal shares. Sometimes a remainder means some items cannot make another full equal share without cutting."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Sharing fairly means making equal shares"
           ],
-          "question": "Which choice best shows accurate use of this idea about share?",
+          "question": "Which choice best applies this lesson idea about share with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nShare 14 stickers among 4 people: each gets 3, with 2 left (14÷4 = 3 r2). Fair whole shares stop at 3 each unless items can be split further.\n\nTRY FIRST\nInvestigate: share 20 counters among 3, then among 5. Record equal share and leftover each time.\n\nFEEDBACK\nAmong 3: 6 each r2. Among 5: 4 each r0.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid"
           ],
-          "question": "Which choice best shows accurate use of this idea about share?",
+          "question": "Which choice best applies this lesson idea about share with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nShare 14 stickers among 4 people: each gets 3, with 2 left (14÷4 = 3 r2). Fair whole shares stop at 3 each unless items can be split further. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about share?",
+          "question": "Which choice best applies this lesson idea about share with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nGiving some people more \"to finish the pile\" without agreement breaks fairness. Here is a more productive model: Share 14 stickers among 4 people: each gets 3, with 2 left (14÷4 = 3 r2). Fair whole shares stop at 3 each unless items can be split further.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nAmong 3: 6 each r2. Among 5: 4 each r0.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places."
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working",
+            "Use the method on new numbers or a new context, not a copy of the worked example"
           ],
-          "question": "Which choice best shows accurate use of this idea about share?",
+          "question": "Which choice best applies this lesson idea about share with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSharing fairly means making equal shares. Sometimes a remainder means some items cannot make another full equal share without cutting. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

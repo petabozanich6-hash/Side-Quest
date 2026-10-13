@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-DATA-02"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete an eighteen-item data fluency set. Rewrite three overclaims as fair conclusions. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Mode 6; range 6. Reasoning: I used fluency by attending to data rather than copying the worked model.\n\nParent: Written model 2: Common error: Describing without naming the sample (“people think…”) invents unsupported claims. Correction: Mode 6; range 6. Why: the correction restores accurate use of fluency.\n\nParent: Likely misconception: Describing without naming the sample (“people think…”) invents unsupported claims. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses fluency with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with fluency, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete an eighteen-item data fluency set. Rewrite three overclaims as fair conclusions. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for fluency; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Describing without naming the sample (“people think…”) invents unsupported claims.. Correction uses Mode 6; range 6.. Why: restores accurate fluency.\n\nParent: Likely misconception: Describing without naming the sample (“people think…”) invents unsupported claims. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses fluency with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with fluency, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for fluency, and names places/values. Reject copied model numbers. / Accept a named misconception about fluency, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Mode 6; range 6. This matches the lesson skill for fluency.",
+        "explanation": "This matches the taught method for fluency. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Mode 6; range 6.",
-          "Describing without naming the sample (“people think…”) invents unsupported claims.",
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work."
+          "Mode 6; range 6",
+          "Describing without naming the sample (“people think”) invents unsupported claims",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Data 4, 6, 6, 6, 10 — mode and range?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Describing without naming the sample (“people think…”) invents unsupported claims. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for fluency; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of data with clear evidence.",
-          "Describing without naming the sample (“people think…”) invents unsupported claims.",
-          "Data fluency practises reading displays, comparing categories and writing mode/range descriptions.",
-          "Mode 6; range 6."
+          "Careful use of data and explain why it matters with clear evidence",
+          "Describing without naming the sample (“people think”) invents unsupported claims",
+          "Data fluency practises reading displays, comparing categories and writing mode/range descriptions",
+          "Mode 6; range 6"
         ],
-        "question": "Which statement is a common mistake when practising fluency?",
+        "question": "Which statement is a common mistake when working with fluency?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named data, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named data and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the data used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing zero as if it does not change the value."
+          "Apply fluency to new material and name the data and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Describing without naming the sample (“people think”) invents unsupported claims",
+          "Name data and explain why it matters only, without linking it to fluency"
         ],
-        "question": "A learner is practising fluency. Which approach best shows understanding?",
+        "question": "Which response best applies fluency with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value.",
-          "Describing without naming the sample (“people think…”) invents unsupported claims.",
-          "Show the places, values or steps and say why each step is valid."
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value",
+          "Describing without naming the sample (“people think”) invents unsupported claims",
+          "Show each place, value or step and say why that step is valid"
         ],
-        "question": "Which working note best supports a mathematics answer about fluency?",
+        "question": "Which working best supports a correct answer for this lesson on fluency?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught fluency method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work.",
-          "Set: read a total; find mode; compare two columns; spot an overclaim. Prefer evidence sentences.",
-          "Describing without naming the sample (“people think…”) invents unsupported claims."
+          "Read 4, from left to right as ones only, ignoring place value",
+          "Ignore units and treat 4, and 6, as interchangeable",
+          "Mode 6; range 6",
+          "Describing without naming the sample (“people think”) invents unsupported claims"
         ],
-        "question": "Using this lesson idea — Data fluency practises reading displays, comparing categories and writing mode/range descriptions. — which statement is true?",
+        "question": "Using the method for fluency, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either."
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a fluency problem with numbers such as 4, and 6,, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Change only handwriting and keep the same numbers.",
-          "Copy the model numbers and call that independent work.",
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer."
+          "Change only handwriting and keep the same numbers",
+          "Describing without naming the sample (“people think”) invents unsupported claims",
+          "Use the same fluency method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 4, and 6, as the answer"
         ],
-        "question": "Which practice choice shows transfer of fluency?",
+        "question": "Solve a fresh fluency problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer.",
-          "Name the exact place or step that failed, then show corrected working for fluency."
+          "Data fluency practises reading displays, comparing categories and writing mode/range descriptions",
+          "Mode 6; range 6",
+          "Label units when comparing 4, with 6",
+          "Describing without naming the sample (“people think”) invents unsupported claims"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for fluency?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for fluency, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses fluency with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Mode 6; range 6. Reasoning: I used fluency by attending to data rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for fluency; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about fluency, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with fluency, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Describing without naming the sample (“people think…”) invents unsupported claims. Correction: Mode 6; range 6. Why: the correction restores accurate use of fluency.",
+        "sample_answer": "Sample misconception: Describing without naming the sample (“people think…”) invents unsupported claims.. Correction uses Mode 6; range 6.. Why: restores accurate fluency.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Data fluency practises reading displays, comparing categories and writing mode/range descriptions. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Data fluency practises reading displays, comparing categories and writing mode/range descriptions. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Data fluency practises reading displays, comparing categories and writing mode/range descriptions.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Data fluency practises reading displays, comparing categories and writing mode/range descriptions",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about fluency?",
+          "question": "Which choice best applies this lesson idea about fluency with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSet: read a total; find mode; compare two columns; spot an overclaim. Prefer evidence sentences.\n\nTRY FIRST\nData 4, 6, 6, 6, 10 — mode and range?\n\nFEEDBACK\nMode 6; range 6.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about fluency?",
+          "question": "Which choice best applies this lesson idea about fluency with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSet: read a total; find mode; compare two columns; spot an overclaim. Prefer evidence sentences. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use an intentionally incorrect attempt as a comparison",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about fluency?",
+          "question": "Which choice best applies this lesson idea about fluency with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDescribing without naming the sample (“people think…”) invents unsupported claims. Here is a more productive model: Set: read a total; find mode; compare two columns; spot an overclaim. Prefer evidence sentences.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nMode 6; range 6.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about fluency?",
+          "question": "Which choice best applies this lesson idea about fluency with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nData fluency practises reading displays, comparing categories and writing mode/range descriptions. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

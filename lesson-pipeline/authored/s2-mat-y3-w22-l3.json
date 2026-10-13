@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-GM-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Solve eight length word problems (totals, differences, comparisons). Convert to one unit before calculating. Write a sentence answer with units. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: 3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first). Reasoning: I used length problem by attending to add and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Adding 3 + 150 without converting units invents a nonsense length. Correction: 3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first). Why: the correction restores accurate use of length problem.\n\nParent: Likely misconception: Adding 3 + 150 without converting units invents a nonsense length. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses length problem with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with length problem, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Solve eight length word problems (totals, differences, comparisons). Convert to one unit before calculating. Write a sentence answer with units. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for length problem; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Adding 3 + 150 without converting units invents a nonsense length.. Correction uses 3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first).. Why: restores accurate length problem.\n\nParent: Likely misconception: Adding 3 + 150 without converting units invents a nonsense length. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses length problem with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with length problem, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for length problem, and names places/values. Reject copied model numbers. / Accept a named misconception about length problem, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first). This matches the lesson skill for length problem.",
+        "explanation": "This matches the taught method for length problem. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first).",
-          "Adding 3 + 150 without converting units invents a nonsense length."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first)",
+          "Adding 3 + 150 without converting units invents a nonsense length"
         ],
         "question": "A path is 3 m long and extended by 150 cm. New length in metres and centimetres?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Adding 3 + 150 without converting units invents a nonsense length. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for length problem; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first).",
-          "Careful use of add and explain why it matters with clear evidence.",
-          "Adding 3 + 150 without converting units invents a nonsense length.",
-          "Length problems combine measures using addition, subtraction or comparison while keeping units consistent."
+          "3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first)",
+          "Careful use of add and explain why it matters with clear evidence",
+          "Adding 3 + 150 without converting units invents a nonsense length",
+          "Length problems combine measures using addition, subtraction or comparison while keeping units consistent"
         ],
-        "question": "Which statement is a common mistake when practising length problem?",
+        "question": "Which statement is a common mistake when working with length problem?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named add and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named add and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the add and explain why it matters used."
+          "Repeat the worked example wording with no new evidence",
+          "Adding 3 + 150 without converting units invents a nonsense length",
+          "Name add and explain why it matters only, without linking it to length problem",
+          "Apply length problem to new material and name the add and explain why it matters used"
         ],
-        "question": "A learner is practising length problem. Which approach best shows understanding?",
+        "question": "Which response best applies length problem with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Show the places, values or steps and say why each step is valid.",
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value.",
-          "Adding 3 + 150 without converting units invents a nonsense length."
+          "Show each place, value or step and say why that step is valid",
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value",
+          "Adding 3 + 150 without converting units invents a nonsense length"
         ],
-        "question": "Which working note best supports a mathematics answer about length problem?",
+        "question": "Which working best supports a correct answer for this lesson on length problem?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught length problem method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first).",
-          "Adding 3 + 150 without converting units invents a nonsense length.",
-          "Ignore the task and invent an unrelated answer."
+          "Ignore units and treat 3 and 150 as interchangeable",
+          "3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first)",
+          "Adding 3 + 150 without converting units invents a nonsense length",
+          "Read 3 from left to right as ones only, ignoring place value"
         ],
-        "question": "Using this lesson idea — Length problems combine measures using addition, subtraction or comparison while keeping units consistent. — which statement is true?",
+        "question": "Using the method for length problem, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match.",
-          "Average the two answers without checking either."
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match",
+          "Average the two answers without checking either"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a length problem problem with numbers such as 3 and 150, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers."
+          "Adding 3 + 150 without converting units invents a nonsense length",
+          "Use the same length problem method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 3 and 150 as the answer",
+          "Change only handwriting and keep the same numbers"
         ],
-        "question": "Which practice choice shows transfer of length problem?",
+        "question": "Solve a fresh length problem problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Just add more digits until it looks longer.",
-          "Name the exact place or step that failed, then show corrected working for length problem.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits."
+          "Label units when comparing 3 with 150",
+          "Adding 3 + 150 without converting units invents a nonsense length",
+          "Length problems combine measures using addition, subtraction or comparison while keeping units consistent",
+          "3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first)"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for length problem?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for length problem, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses length problem with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: 3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first). Reasoning: I used length problem by attending to add and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for length problem; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about length problem, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with length problem, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Adding 3 + 150 without converting units invents a nonsense length. Correction: 3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first). Why: the correction restores accurate use of length problem.",
+        "sample_answer": "Sample misconception: Adding 3 + 150 without converting units invents a nonsense length.. Correction uses 3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first).. Why: restores accurate length problem.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Length problems combine measures using addition, subtraction or comparison while keeping units consistent. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Length problems combine measures using addition, subtraction or comparison while keeping units consistent.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Length problems combine measures using addition, subtraction or comparison while keeping units consistent.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Length problems combine measures using addition, subtraction or comparison while keeping units consistent",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about length problem?",
+          "question": "Which choice best applies this lesson idea about length problem with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA ribbon 120 cm and another 85 cm total 205 cm = 2 m 5 cm. Difference 120−85=35 cm.\n\nTRY FIRST\nA path is 3 m long and extended by 150 cm. New length in metres and centimetres?\n\nFEEDBACK\n3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first).",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid.",
           "options": [
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about length problem?",
+          "question": "Which choice best applies this lesson idea about length problem with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA ribbon 120 cm and another 85 cm total 205 cm = 2 m 5 cm. Difference 120−85=35 cm. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about length problem?",
+          "question": "Which choice best applies this lesson idea about length problem with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAdding 3 + 150 without converting units invents a nonsense length. Here is a more productive model: A ribbon 120 cm and another 85 cm total 205 cm = 2 m 5 cm. Difference 120−85=35 cm.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\n3 m + 1 m 50 cm = 4 m 50 cm (convert 150 cm first).",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding.",
-            "A guess with no working."
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A calculation unrelated to the numbers given",
+            "An answer copied without understanding",
+            "A guess with no working"
           ],
-          "question": "Which choice best shows accurate use of this idea about length problem?",
+          "question": "Which choice best applies this lesson idea about length problem with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nLength problems combine measures using addition, subtraction or comparison while keeping units consistent. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

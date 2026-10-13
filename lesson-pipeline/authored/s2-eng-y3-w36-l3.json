@@ -41,7 +41,7 @@
       "EN2-VOCAB-01",
       "EN2-SPELL-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write ten research questions on two topics. Label each open or closed. Keep your three strongest open questions and justify why they are researchable. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Example: Why do shadows change length during the day? Reasoning: I used question by attending to open and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Questions that already contain the full answer are not research questions. Correction: Example: Why do shadows change length during the day? Why: the correction restores accurate use of question.\n\nParent: Likely misconception: Questions that already contain the full answer are not research questions. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating question on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with question, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write ten research questions on two topics. Label each open or closed. Keep your three strongest open questions and justify why they are researchable. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using question on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Questions that already contain the full answer are not research questions.. Correction: Example: Why do shadows change length during the day?. Why it helps the audience is stated.\n\nParent: Likely misconception: Questions that already contain the full answer are not research questions. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating question on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with question, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about question with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for question. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -51,59 +51,59 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Example: Why do shadows change length during the day? This matches the lesson skill for question.",
+        "explanation": "This matches the taught method for question. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
+          "A method that skips the key step taught in this lesson",
           "Example: Why do shadows change length during the day?",
-          "Questions that already contain the full answer are not research questions.",
-          "Ignore the task and invent an unrelated answer."
+          "Questions that already contain the full answer are not research questions",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Rewrite \"Do shadows exist?\" as a stronger research question. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Questions that already contain the full answer are not research questions. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for question; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Questions that already contain the full answer are not research questions.",
-          "Good research questions are open enough to need investigation but clear enough to answer with facts; closed yes/no questions are often too thin.",
+          "Questions that already contain the full answer are not research questions",
+          "Good research questions are open enough to need investigation but clear enough to answer with facts",
           "Example: Why do shadows change length during the day?",
-          "Careful use of open and explain why it matters with clear evidence."
+          "Careful use of open and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising question?",
+        "question": "Which statement is a common mistake when working with question?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named open and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named open and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the open and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact."
+          "Apply question to new material and name the open and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Questions that already contain the full answer are not research questions",
+          "Name open and explain why it matters only, without linking it to question"
         ],
-        "question": "A learner is practising question. Which approach best shows understanding?",
+        "question": "Which response best applies question with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The skill is shown by quoting or pointing to wording that carries question.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries question. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Point to exact words in the sentence that show question and say what they do.",
-          "Ignore the sentence and invent a more exciting event.",
-          "Say the writing is good without naming any words.",
-          "Questions that already contain the full answer are not research questions."
+          "Point to exact words in the sentence that show question and say what they do",
+          "Ignore the sentence and invent a more exciting event",
+          "Say the writing is good without naming any words",
+          "Questions that already contain the full answer are not research questions"
         ],
         "question": "Read: \"After the blackout, Tess lit a candle and read the crumpled note.\" Which choice best uses question from this lesson?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Questions that already contain the full answer are not research questions.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
+          "Questions that already contain the full answer are not research questions",
+          "Copy a model sentence from another story unchanged",
+          "Name open and explain why it matters without linking it to any words in the text",
           "Example: Why do shadows change length during the day?"
         ],
         "question": "Which statement correctly applies the lesson idea about question?",
@@ -111,52 +111,52 @@
       },
       {
         "correct_index": 2,
-        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a model sentence from another story unchanged.",
-          "Treat a missing detail as a proven fact.",
-          "Locate a specific word, phrase or structural clue before deciding.",
-          "Guess from the title alone with no textual clue."
+          "Copy a model sentence from another story unchanged",
+          "Lengthen the answer with adjectives while keeping the same idea",
+          "Locate a specific word, phrase or structural clue before deciding",
+          "Guess from the title alone with no textual clue"
         ],
-        "question": "In a new text, what should you do first to practise open and explain why it matters?",
+        "question": "In a new text, what should you do first to analyse open and explain why it matters?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make the answer longer while keeping the same mistake.",
-          "Delete the evidence that disagreed with your first guess.",
-          "Change the inaccurate idea or missing evidence, not only the length.",
-          "Add adjectives without fixing the wrong idea."
+          "Make the answer longer while keeping the same mistake",
+          "Delete the evidence that disagreed with your first guess",
+          "Change the inaccurate idea or missing evidence, not only the length",
+          "Add adjectives without fixing the wrong idea"
         ],
-        "question": "Which revision actually repairs meaning?",
+        "question": "Which revision actually improves meaning for question?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Questions that already contain the full answer are not research questions.",
-          "Use a fresh sentence or text and explain one precise choice about question.",
-          "Retype the worked model as the final answer.",
-          "Change fonts and claim the work is new."
+          "Questions that already contain the full answer are not research questions",
+          "Use a fresh sentence or text and explain one precise choice about question",
+          "Retype the worked model as the final answer",
+          "Change fonts and claim the work is new"
         ],
-        "question": "Which response shows transfer of question to new material?",
+        "question": "Which response shows accurate use of question on fresh material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about question with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating question on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Example: Why do shadows change length during the day? Reasoning: I used question by attending to open and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: original example using question on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for question. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with question, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Questions that already contain the full answer are not research questions. Correction: Example: Why do shadows change length during the day? Why: the correction restores accurate use of question.",
+        "sample_answer": "Sample error: Questions that already contain the full answer are not research questions.. Correction: Example: Why do shadows change length during the day?. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -233,14 +233,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Good research questions are open enough to need investigation but clear enough to answer with facts; closed yes/no questions are often too thin. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Good research questions are open enough to need investigation but clear enough to answer with facts; closed yes/no questions are often too thin.",
           "options": [
-            "A guess with no explanation.",
-            "Good research questions are open enough to need investigation but clear enough to answer with facts; closed yes/no questions are often too thin.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Good research questions are open enough to need investigation but clear enough to answer with facts",
+            "A guess with no explanation",
+            "A claim unrelated to the text"
           ],
-          "question": "Which choice best shows accurate use of this idea about question?",
+          "question": "Which choice best applies this lesson idea about question with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThin: \"Are bees cool?\" Stronger: \"How do honeybees communicate the direction of flowers?\"\n\nTRY FIRST\nRewrite \"Do shadows exist?\" as a stronger research question.\n\nFEEDBACK\nExample: Why do shadows change length during the day?",
@@ -291,14 +291,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
           "options": [
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader."
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation",
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does"
           ],
-          "question": "Which choice best shows accurate use of this idea about question?",
+          "question": "Which choice best applies this lesson idea about question with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThin: \"Are bees cool?\" Stronger: \"How do honeybees communicate the direction of flowers?\" Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
@@ -317,14 +317,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error."
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation",
+            "Use an intentionally incorrect attempt as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about question?",
+          "question": "Which choice best applies this lesson idea about question with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nQuestions that already contain the full answer are not research questions. Here is a more productive model: Thin: \"Are bees cool?\" Stronger: \"How do honeybees communicate the direction of flowers?\"\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nExample: Why do shadows change length during the day?",
@@ -336,14 +336,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
-            "A claim unrelated to the text."
+            "A guess with no explanation",
+            "A claim unrelated to the text",
+            "Use the method on a new topic, not a reworded copy of the example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about question?",
+          "question": "Which choice best applies this lesson idea about question with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nGood research questions are open enough to need investigation but clear enough to answer with facts; closed yes/no questions are often too thin. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Make two instruments from recycled materials, such as a shaker and a rubber-band guitar. Draw a plan with the materials, test the pitch of each band and write which gives high or low sounds. Ask an adult to help and use  Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note. To make the high one higher, stretch it tighter.' Thinner, shorter and tighter bands… Reasoning: I used a shaker by attending to a rubber-band guitar rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck… Correction: Strong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note. To make the high one higher, stretch it tighter.'… Why: the correction restores accurate use of a shaker.\n\nParent: Likely misconception: Thinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck both hard. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a shaker on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a shaker, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Make two instruments from recycled materials, such as a shaker and a rubber-band guitar. Draw a plan with the materials, test the pitch of each band and write which gives high or low sounds. Ask an adult to help and use  Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a shaker on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that bigger sounds mean higher notes.. Correction: Strong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck both hard. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a shaker on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a shaker, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a shaker with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a shaker. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note. To make the high one higher, stretch it tighter.'… This matches the lesson skill for a shaker.",
+        "explanation": "This matches the taught method for a shaker. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck…",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note. To make the high one higher, stretch it tighter.'…"
+          "Thinking that bigger sounds mean higher notes.",
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'A thin, short, tight band for the high note and a thick, long, loose band for the low note."
         ],
         "question": "You want a rubber-band guitar to play a high note and a low note. Which rubber bands would you use for each, and how can you make the high note even higher?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Thinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck… That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a shaker; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of a rubber-band guitar with clear evidence.",
-          "Thinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck…",
-          "You can make simple instruments from clean recycled materials. A shaker is a container with dry rice or beans inside, sealed tightly. A rubber-band guitar is…",
-          "Strong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note. To make the high one higher, stretch it tighter.'…"
+          "Careful use of a rubber-band guitar and explain why it with clear evidence.",
+          "Thinking that bigger sounds mean higher notes.",
+          "You can make simple instruments from clean recycled materials.",
+          "'A thin, short, tight band for the high note and a thick, long, loose band for the low note."
         ],
-        "question": "Which statement is a common mistake when practising a shaker?",
+        "question": "Which statement is a common mistake when working with a shaker?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named a rubber-band guitar, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a rubber-band guitar and explain why it, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a rubber-band guitar used.",
+          "Name a rubber-band guitar and explain why it only, without linking it to a shaker.",
+          "Apply a shaker to new material and name the a rubber-band guitar and explain why it used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Thinking that bigger sounds mean higher notes."
         ],
-        "question": "A learner is practising a shaker. Which approach best shows understanding?",
+        "question": "Which response best applies a shaker with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note. To make the high one higher, stretch it tighter.'… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a shaker. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck…",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note. To make the high one higher, stretch it tighter.'…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that bigger sounds mean higher notes.",
+          "'A thin, short, tight band for the high note and a thick, long, loose band for the low note."
         ],
-        "question": "Which response best shows careful thinking about a shaker?",
+        "question": "Which response best uses elements, techniques and audience effect for a shaker?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck…",
-          "Name a specific source, cue or example and say what it shows about a shaker.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that bigger sounds mean higher notes.",
+          "Name a specific element or technique and say what effect it creates for a shaker.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which habit strengthens evidence about a rubber-band guitar?",
+        "question": "Which evidence move best supports a claim about a shaker?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
           "Say it looks nice with no element or technique named.",
-          "Example: Lily makes a rubber-band guitar with an empty tissue box and three bands of different thickness. The thin band makes the highest…",
-          "Thinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Lily makes a rubber-band guitar with an empty tissue box and three bands of different thickness.",
+          "Thinking that bigger sounds mean higher notes."
         ],
-        "question": "Using this lesson idea — You can make simple instruments from clean recycled materials. A shaker is a container with dry rice or… — which choice is best?",
+        "question": "Using this lesson idea — You can make simple instruments from clean recycled materials. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a shaker?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make two instruments from recycled materials, such as a shaker and a rubber-band guitar. Draw a plan with the materials, test the pitch of each band…",
+          "Make two instruments from recycled materials, such as a shaker and a rubber-band guitar.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck…"
+          "Thinking that bigger sounds mean higher notes.",
+          "Name a rubber-band guitar and explain why it only, with no linked example."
         ],
-        "question": "Which task best shows independent use of a shaker?",
+        "question": "Which independent response best applies a shaker to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a shaker with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a shaker on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note. To make the high one higher, stretch it tighter.' Thinner, shorter and tighter bands… Reasoning: I used a shaker by attending to a rubber-band guitar rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a shaker on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a shaker. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a shaker, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck… Correction: Strong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note. To make the high one higher, stretch it tighter.'… Why: the correction restores accurate use of a shaker.",
+        "sample_answer": "Sample error: Thinking that bigger sounds mean higher notes.. Correction: Strong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "You can make simple instruments from clean recycled materials. A shaker is a container with dry rice or beans inside, sealed tightly. A rubber-band guitar is a box with rubber bands stretched across. A shorter, tighter or thinner rubber band gives a higher pitch, and a longer,…",
+          "explanation": "You can make simple instruments from clean recycled materials.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "You can make simple instruments from clean recycled materials. A shaker is a container with dry rice or beans inside, sealed tightly. A rubber-band guitar is a box with rubber bands stretched across. A shorter, tighter or thinner rubber band gives a higher pitch, and a longer, looser or thicker one gives a lower pitch. A water bottle instrument changes pitch with the water level when you tap it. Use plastic, not glass. Seal everything securely and ask an adult to help cut or tape anything tricky.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "You can make simple instruments from clean recycled materials.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a shaker?",
+          "question": "Which choice best applies this lesson idea about a shaker with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Lily makes a rubber-band guitar with an empty tissue box and three bands of different thickness. The thin band makes the highest pitch and the thick band makes the lowest. She tightens the middle one to make it higher and checks that the bands sit securely and do not snap. She also seals a rice shaker with strong tape.\n\nTRY FIRST\nYou want a rubber-band guitar to play a high note and a low note. Which rubber bands would you use for each, and how can you make the high note even higher?\n\nFEEDBACK\nStrong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note. To make the high one higher, stretch it tighter.' Thinner, shorter and tighter bands vibrate faster and sound higher.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about a shaker?",
+          "question": "Which choice best applies this lesson idea about a shaker with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Lily makes a rubber-band guitar with an empty tissue box and three bands of different thickness. The thin band makes the highest pitch and the thick band makes the lowest. She tightens the middle one to make it higher and checks that the bands sit securely and do not snap. She also seals a rice shaker with strong tape. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice."
+            "Use an intentionally weak or disrespectful arts choice as a comparison."
           ],
-          "question": "Which choice best shows accurate use of this idea about a shaker?",
+          "question": "Which choice best applies this lesson idea about a shaker with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that bigger sounds mean higher notes. Size and loudness are different from pitch, because a thick band sounds lower than a thin one even if you pluck both hard. Here is a more helpful example: Example: Lily makes a rubber-band guitar with an empty tissue box and three bands of different thickness. The thin band makes the highest pitch and the thick band makes the lowest. She tightens the middle one to make it higher and checks that the bands sit securely and do not snap. She also seals a rice shaker with strong tape.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'A thin, short, tight band for the high note and a thick, long, loose band for the low note. To make the high one higher, stretch it tighter.' Thinner, shorter and tighter bands vibrate faster and sound higher.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a shaker?",
+          "question": "Which choice best applies this lesson idea about a shaker with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nYou can make simple instruments from clean recycled materials. A shaker is a container with dry rice or beans inside, sealed tightly. A rubber-band guitar is a box with rubber bands stretched across. A shorter, tighter or thinner rubber band gives a higher pitch, and a longer, looser or thicker one gives a lower pitch. A water bottle instrument changes pitch with the water level when you tap it. Use plastic, not glass. Seal everything securely and ask an adult to help cut or tape anything tricky. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

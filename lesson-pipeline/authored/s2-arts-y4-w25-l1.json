@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-VIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete a sculpture project from brief to finish with a four-photo or four-sketch process diary and criteria self-check. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.' Reasoning: I used sculpture project by attending to brief rather than copying the worked model.\n\nParent: Written model 2: Common error: Skipping documentation. Process evidence helps reflection and marking. Correction: Strong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.' Why: the correction restores accurate use of sculpture project.\n\nParent: Likely misconception: Skipping documentation. Process evidence helps reflection and marking. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating sculpture project on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with sculpture project, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete a sculpture project from brief to finish with a four-photo or four-sketch process diary and criteria self-check. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using sculpture project on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Skipping documentation. Process evidence helps reflection and marking.. Correction: Strong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.'. Why it helps the audience is stated.\n\nParent: Likely misconception: Skipping documentation. Process evidence helps reflection and marking. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating sculpture project on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with sculpture project, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about sculpture project with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for sculpture project. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.' This matches the lesson skill for sculpture project.",
+        "explanation": "This matches the taught method for sculpture project. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.'",
+          "Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.",
           "Skipping documentation. Process evidence helps reflection and marking.",
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work."
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson."
         ],
         "question": "Write a sculpture brief for a freestanding 'bridge' form including two criteria. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Skipping documentation. Process evidence helps reflection and marking. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for sculpture project; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.'",
-          "Careful use of brief with clear evidence.",
+          "Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.",
+          "Careful use of brief and explain why it matters with clear evidence.",
           "Skipping documentation. Process evidence helps reflection and marking.",
-          "A sculpture project uses a design brief: subject, size, materials, structure plan and success criteria such as freestanding balance, intentional negative…"
+          "A sculpture project uses a design brief: subject, size, materials, structure plan and success criteria such as"
         ],
-        "question": "Which statement is a common mistake when practising sculpture project?",
+        "question": "Which statement is a common mistake when working with sculpture project?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named brief, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named brief and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the brief used.",
+          "Name brief and explain why it matters only, without linking it to sculpture project.",
+          "Apply sculpture project to new material and name the brief and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Skipping documentation. Process evidence helps reflection and marking."
         ],
-        "question": "A learner is practising sculpture project. Which approach best shows understanding?",
+        "question": "Which response best applies sculpture project with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.' uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on sculpture project. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Skipping documentation. Process evidence helps reflection and marking.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.'"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Skipping documentation. Process evidence helps reflection and marking.",
+          "Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch."
         ],
-        "question": "Which response best shows careful thinking about sculpture project?",
+        "question": "Which response best uses elements, techniques and audience effect for sculpture project?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
+          "Copy another artwork’s sacred design without permission or guidance.",
           "Skipping documentation. Process evidence helps reflection and marking.",
-          "Name a specific source, cue or example and say what it shows about sculpture project.",
-          "Make a bigger claim without naming any source or cue."
+          "Name a specific element or technique and say what effect it creates for sculpture project.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which habit strengthens evidence about brief?",
+        "question": "Which evidence move best supports a claim about sculpture project?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Example: Brief — 'Seed pod, 20 cm, clay + wire armature, must stand, textured surface.' Criteria met after widening base. Photo log shows…",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Brief — 'Seed pod, 20 cm, clay + wire armature, must stand, textured surface.' Criteria met after widening",
           "Skipping documentation. Process evidence helps reflection and marking.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — A sculpture project uses a design brief: subject, size, materials, structure plan and success criteria such… — which choice is best?",
+        "question": "Using this lesson idea — A sculpture project uses a design brief: subject, size, materials, structure plan and success — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for sculpture project?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
           "Skipping documentation. Process evidence helps reflection and marking.",
-          "Complete a sculpture project from brief to finish with a four-photo or four-sketch process diary and criteria self-check.",
+          "Name brief and explain why it matters only, with no linked example.",
+          "Complete a sculpture project from brief to finish with a four-photo or four-sketch process diary and criteria",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of sculpture project?",
+        "question": "Which independent response best applies sculpture project to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about sculpture project with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating sculpture project on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.' Reasoning: I used sculpture project by attending to brief rather than copying the worked model.",
+        "sample_answer": "Sample: original example using sculpture project on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for sculpture project. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with sculpture project, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Skipping documentation. Process evidence helps reflection and marking. Correction: Strong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.' Why: the correction restores accurate use of sculpture project.",
+        "sample_answer": "Sample error: Skipping documentation. Process evidence helps reflection and marking.. Correction: Strong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.'. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "A sculpture project uses a design brief: subject, size, materials, structure plan and success criteria such as freestanding balance, intentional negative space and secure joins. Document stages with photos or sketches. Allow drying or setting time before moving fragile work.…",
+          "explanation": "A sculpture project uses a design brief: subject, size, materials, structure plan and success criteria such as freestanding balance, intentional negative space and secure joins.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "A sculpture project uses a design brief: subject, size, materials, structure plan and success criteria such as freestanding balance, intentional negative space and secure joins. Document stages with photos or sketches. Allow drying or setting time before moving fragile work."
+            "A sculpture project uses a design brief: subject, size, materials, structure plan and success criteria such as"
           ],
-          "question": "Which choice best shows accurate use of this idea about sculpture project?",
+          "question": "Which choice best applies this lesson idea about sculpture project with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Brief — 'Seed pod, 20 cm, clay + wire armature, must stand, textured surface.' Criteria met after widening base. Photo log shows armature, form, texture, finish.\n\nTRY FIRST\nWrite a sculpture brief for a freestanding 'bridge' form including two criteria.\n\nFEEDBACK\nStrong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.'",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about sculpture project?",
+          "question": "Which choice best applies this lesson idea about sculpture project with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Brief — 'Seed pod, 20 cm, clay + wire armature, must stand, textured surface.' Criteria met after widening base. Photo log shows armature, form, texture, finish. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice."
+            "Use an intentionally weak or disrespectful arts choice as a comparison."
           ],
-          "question": "Which choice best shows accurate use of this idea about sculpture project?",
+          "question": "Which choice best applies this lesson idea about sculpture project with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSkipping documentation. Process evidence helps reflection and marking. Here is a more helpful example: Example: Brief — 'Seed pod, 20 cm, clay + wire armature, must stand, textured surface.' Criteria met after widening base. Photo log shows armature, form, texture, finish.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Card and tape bridge, 25 cm span, must stand alone, clear negative space under arch.'",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice."
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example."
           ],
-          "question": "Which choice best shows accurate use of this idea about sculpture project?",
+          "question": "Which choice best applies this lesson idea about sculpture project with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA sculpture project uses a design brief: subject, size, materials, structure plan and success criteria such as freestanding balance, intentional negative space and secure joins. Document stages with photos or sketches. Allow drying or setting time before moving fragile work. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

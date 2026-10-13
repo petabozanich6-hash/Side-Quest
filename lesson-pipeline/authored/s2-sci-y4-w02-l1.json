@@ -34,7 +34,7 @@
     "outcome_codes": [
       "ST2-SCI-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Diagram a flowering plant life cycle with five labelled stages. Note one need (water/light/warmth) important at germination. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Germination; flowering; seed production/fruiting. Reasoning: I used plant by attending to life cycle rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking plants “just appear” skips the seed and flower stages that connect generations. Correction: Germination; flowering; seed production/fruiting. Why: the correction restores accurate use of plant.\n\nParent: Likely misconception: Thinking plants “just appear” skips the seed and flower stages that connect generations. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses plant. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about plant, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Require a new example, named observations and a claim–evidence link. / Require misconception + corrected claim + evidence reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Diagram a flowering plant life cycle with five labelled stages. Note one need (water/light/warmth) important at germination. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new object/context, two named observations, claim about plant linked to that evidence.\n\nParent: Written model 2: Sample misconception: Thinking plants “just appear” skips the seed and flower stages that connect generations.. Correction: Germination; flowering; seed production/fruiting. with evidence.\n\nParent: Likely misconception: Thinking plants “just appear” skips the seed and flower stages that connect generations. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Investigate or describe a fresh example (not the worked objects) that uses plant. Record evidence and explain how it supports your claim.\n\nParent: Short-answer focus 2: Name one science misconception about plant, correct it with evidence, and say why the correction works.\n\nParent: Marking notes: Accept a new example with named observations and a claim–evidence link about plant. Reject title-only labels with no observation. / Accept a misconception plus corrected claim and evidence reason for plant. Reject wording changes that leave the same error..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Germination; flowering; seed production/fruiting. This matches the lesson skill for plant.",
+        "explanation": "This matches the taught method for plant. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the observation and invent a more exciting result.",
-          "Copy the model objects and call that independent work.",
-          "Germination; flowering; seed production/fruiting.",
-          "Thinking plants “just appear” skips the seed and flower stages that connect generations."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Germination; flowering; seed production/fruiting",
+          "Thinking plants “just appear” skips the seed and flower stages that connect generations"
         ],
         "question": "Label the stage: seed swells and root emerges; plant makes flowers; new seeds form in a fruit/pod. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Thinking plants “just appear” skips the seed and flower stages that connect generations. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for plant; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Germination; flowering; seed production/fruiting.",
-          "Careful use of life cycle with clear evidence.",
-          "Thinking plants “just appear” skips the seed and flower stages that connect generations.",
-          "Plant life cycles include seed, germination, growth, flowering and seed production so the next generation can begin."
+          "Germination; flowering; seed production/fruiting",
+          "Careful use of life cycle and explain why it matters with clear evidence",
+          "Thinking plants “just appear” skips the seed and flower stages that connect generations",
+          "Plant life cycles include seed, germination, growth, flowering and seed production so the next generation can begin"
         ],
-        "question": "Which statement is a common mistake when practising plant?",
+        "question": "Which statement is a common mistake when working with plant?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named life cycle, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named life cycle and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the life cycle used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing measurement as if it were recorded."
+          "Apply plant to new material and name the life cycle and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking plants “just appear” skips the seed and flower stages that connect generations",
+          "Name life cycle and explain why it matters only, without linking it to plant"
         ],
-        "question": "A learner is practising plant. Which approach best shows understanding?",
+        "question": "Which response best applies plant with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Trustworthy science claims rest on observable evidence.",
+        "explanation": "Trustworthy science claims rest on observable evidence linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a label from the lesson title with no observation.",
-          "Thinking plants “just appear” skips the seed and flower stages that connect generations.",
-          "Use observable features or measurements as evidence, not appearance alone.",
-          "Decide from which object looks most exciting."
+          "Copy a label from the lesson title with no observation",
+          "Thinking plants “just appear” skips the seed and flower stages that connect generations",
+          "Use observable features or measurements as evidence, not appearance alone",
+          "Decide from which object looks most exciting"
         ],
-        "question": "New examples: a charging phone, a nesting bird, glass marble, fallen dry leaf. Which habit makes a scientific sort or claim trustworthy?",
+        "question": "New examples: a charging phone, a nesting bird, a glass marble, a fallen dry leaf. Which claim about plant is most trustworthy?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Science claims need named observations linked to the claim.",
+        "explanation": "Science claims need named observations linked to the claim. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A longer story with no observation.",
-          "A label copied from the title with no evidence.",
-          "Thinking plants “just appear” skips the seed and flower stages that connect generations.",
-          "Named observation plus how it supports the claim."
+          "A longer story with no observation",
+          "A label copied from the title with no evidence",
+          "Thinking plants “just appear” skips the seed and flower stages that connect generations",
+          "A named observation plus how it supports the claim"
         ],
         "question": "Which record best supports a science claim about plant?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Germination; flowering; seed production/fruiting. applies the science idea with evidence.",
+        "explanation": "The strongest choice applies the taught idea about plant with evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model objects and call that independent work.",
-          "Germination; flowering; seed production/fruiting.",
-          "Thinking plants “just appear” skips the seed and flower stages that connect generations.",
-          "Ignore the observation and invent a more exciting result."
+          "Ignore measurements and decide by which looks nicer",
+          "Germination; flowering; seed production/fruiting",
+          "Thinking plants “just appear” skips the seed and flower stages that connect generations",
+          "Change several conditions at once so something happens faster"
         ],
-        "question": "Using this idea — Plant life cycles include seed, germination, growth, flowering and seed production so the next… — which choice is strongest?",
+        "question": "Using this science idea — Plant life cycles include seed, germination, growth, flowering and seed production so the next — which choice is strongest?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Fair tests change one variable and control the rest.",
+        "explanation": "Fair tests change one variable, control the rest, and use recorded evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore measurements and decide by which looks nicer.",
-          "Change one variable and keep the other conditions the same.",
-          "Change several conditions at once so something happens faster.",
-          "Stop early when you like the first result."
+          "Ignore measurements and decide by which looks nicer",
+          "Change one variable and keep the other conditions the same",
+          "Change several conditions at once so something happens faster",
+          "Stop early when you like the first result"
         ],
-        "question": "Which investigation habit keeps a comparison fair?",
+        "question": "Which investigation design best tests an idea about plant?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Transfer needs a new object or context with evidence.",
+        "explanation": "Scientific predictions stay open to new observations rather than protecting a first guess. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example objects unchanged.",
-          "Invent a dramatic result with no observation.",
-          "Copy the model objects and call that independent work.",
-          "Test or describe a new object or context and cite fresh evidence."
+          "Any exciting story about the object must be true",
+          "Thinking plants “just appear” skips the seed and flower stages that connect generations",
+          "Results that disagree with the first guess should be discarded",
+          "If the observed feature changes, the claim about plant should change with it"
         ],
-        "question": "Which next step best shows transfer of plant?",
+        "question": "Which prediction about plant can be checked with evidence?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require a new example, named observations and a claim–evidence link.",
+        "marking_guide": "Accept a new example with named observations and a claim–evidence link about plant. Reject title-only labels with no observation.",
         "question": "Investigate or describe a fresh example (not the worked objects) that uses plant. Record evidence and explain how it supports your claim.",
-        "sample_answer": "Original response on new material: Germination; flowering; seed production/fruiting. Reasoning: I used plant by attending to life cycle rather than copying the worked model.",
+        "sample_answer": "Sample: new object/context, two named observations, claim about plant linked to that evidence.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + corrected claim + evidence reason.",
+        "marking_guide": "Accept a misconception plus corrected claim and evidence reason for plant. Reject wording changes that leave the same error.",
         "question": "Name one science misconception about plant, correct it with evidence, and say why the correction works.",
-        "sample_answer": "Common error: Thinking plants “just appear” skips the seed and flower stages that connect generations. Correction: Germination; flowering; seed production/fruiting. Why: the correction restores accurate use of plant.",
+        "sample_answer": "Sample misconception: Thinking plants “just appear” skips the seed and flower stages that connect generations.. Correction: Germination; flowering; seed production/fruiting. with evidence.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Plant life cycles include seed, germination, growth, flowering and seed production so the next generation can begin. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Plant life cycles include seed, germination, growth, flowering and seed production so the next generation can begin.",
           "options": [
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Plant life cycles include seed, germination, growth, flowering and seed production so the next generation can begin."
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Plant life cycles include seed, germination, growth, flowering and seed production so the next generation can begin"
           ],
-          "question": "Which choice best shows accurate use of this idea about plant?",
+          "question": "Which choice best applies this lesson idea about plant with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBean: seed → germinating seedling → leafy plant → flower → pod with seeds. Water, warmth and light needs support healthy stages.\n\nTRY FIRST\nLabel the stage: seed swells and root emerges; plant makes flowers; new seeds form in a fruit/pod.\n\nFEEDBACK\nGermination; flowering; seed production/fruiting.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the observation or test.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Make the science idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A claim unrelated to the observation or test",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about plant?",
+          "question": "Which choice best applies this lesson idea about plant with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBean: seed → germinating seedling → leafy plant → flower → pod with seeds. Water, warmth and light needs support healthy stages. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific science error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use an intentionally incorrect claim as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about plant?",
+          "question": "Which choice best applies this lesson idea about plant with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking plants “just appear” skips the seed and flower stages that connect generations. Here is a more productive model: Bean: seed → germinating seedling → leafy plant → flower → pod with seeds. Water, warmth and light needs support healthy stages.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nGermination; flowering; seed production/fruiting.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations and purpose of the task.",
+          "explanation": "Use the same science idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same science idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the observation or test."
+            "A guess with no evidence",
+            "A claim unrelated to the observation or test",
+            "Use the same science idea on a new place, person, source or context, not a copy of the worked example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about plant?",
+          "question": "Which choice best applies this lesson idea about plant with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPlant life cycles include seed, germination, growth, flowering and seed production so the next generation can begin. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same science idea as the model, but contain different evidence.",

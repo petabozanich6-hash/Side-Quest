@@ -34,7 +34,7 @@
     "outcome_codes": [
       "HS2-HIS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write a draft conclusion (8–12 sentences) with at least four evidence links and one limit. Peer check for invented claims. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: It keeps the answer honest and shows what still needs respectful research. Reasoning: I used analyse by attending to conclude rather than copying the worked model.\n\nParent: Written model 2: Common error: A conclusion with no evidence is only an opinion. Correction: It keeps the answer honest and shows what still needs respectful research. Why: the correction restores accurate use of analyse.\n\nParent: Likely misconception: A conclusion with no evidence is only an opinion. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating analyse on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with analyse, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write a draft conclusion (8–12 sentences) with at least four evidence links and one limit. Peer check for invented claims. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using analyse on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: A conclusion with no evidence is only an opinion.. Correction: It keeps the answer honest and shows what still needs respectful research.. Why it helps the audience is stated.\n\nParent: Likely misconception: A conclusion with no evidence is only an opinion. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating analyse on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with analyse, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about analyse with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for analyse. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "It keeps the answer honest and shows what still needs respectful research. This matches the lesson skill for analyse.",
+        "explanation": "This matches the taught method for analyse. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the source and invent a more exciting story.",
-          "Copy the model places and call that independent work.",
-          "It keeps the answer honest and shows what still needs respectful research.",
-          "A conclusion with no evidence is only an opinion."
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "It keeps the answer honest and shows what still needs respectful research",
+          "A conclusion with no evidence is only an opinion"
         ],
         "question": "Why name missing voices in a conclusion?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "A conclusion with no evidence is only an opinion. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for analyse; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of conclude with clear evidence.",
-          "A conclusion with no evidence is only an opinion.",
-          "Analysing and drawing conclusions means answering the inquiry question with evidence sentences and naming limits, including whose voices are missing.",
-          "It keeps the answer honest and shows what still needs respectful research."
+          "Careful use of conclude and explain why it matters with clear evidence",
+          "A conclusion with no evidence is only an opinion",
+          "Analysing and drawing conclusions means answering the inquiry question with evidence sentences and naming limits",
+          "It keeps the answer honest and shows what still needs respectful research"
         ],
-        "question": "Which statement is a common mistake when practising analyse?",
+        "question": "Which statement is a common mistake when working with analyse?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named conclude, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named conclude and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Treat a missing fact as if it were recorded in a source.",
-          "Apply the idea with new evidence and name the conclude used."
+          "Repeat the worked example wording with no new evidence",
+          "A conclusion with no evidence is only an opinion",
+          "Name conclude and explain why it matters only, without linking it to analyse",
+          "Apply analyse to new material and name the conclude and explain why it matters used"
         ],
-        "question": "A learner is practising analyse. Which approach best shows understanding?",
+        "question": "Which response best applies analyse with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "It keeps the answer honest and shows what still needs respectful research. uses sources and places appropriately for this lesson.",
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on analyse. The other choices miss a key step or use a common mistake.",
         "options": [
-          "It keeps the answer honest and shows what still needs respectful research.",
-          "A conclusion with no evidence is only an opinion.",
-          "Ignore the source and invent a more exciting story.",
-          "Copy the model places and call that independent work."
+          "It keeps the answer honest and shows what still needs respectful research",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "A conclusion with no evidence is only an opinion"
         ],
-        "question": "Which response best shows careful thinking about analyse?",
+        "question": "Which response best uses sources, places or historical/geographic evidence for analyse?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "A conclusion with no evidence is only an opinion.",
-          "Name a specific source, cue or example and say what it shows about analyse."
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "A conclusion with no evidence is only an opinion",
+          "Name a specific source or place detail and say what it shows about analyse"
         ],
-        "question": "Which habit strengthens evidence about conclude?",
+        "question": "Which evidence move best supports a claim about analyse?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Analysing and drawing conclusions means answering the inquiry question) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example conclusion frame: “The sources show… because… A limit is… First Nations perspectives were / were not available in our sources…”",
-          "A conclusion with no evidence is only an opinion.",
-          "Treat a missing fact as if it were recorded in a source.",
-          "Ignore the source and invent a more exciting story."
+          "Example conclusion frame: “The sources show because A limit is First Nations perspectives were / were not available",
+          "A conclusion with no evidence is only an opinion",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail"
         ],
-        "question": "Using this lesson idea — Analysing and drawing conclusions means answering the inquiry question with evidence sentences and naming… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about analyse?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster."
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for analyse?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked example with no new example.",
-          "Copy the model places and call that independent work.",
-          "A conclusion with no evidence is only an opinion.",
-          "Write a draft conclusion (8–12 sentences) with at least four evidence links and one limit. Peer check for invented claims."
+          "Retype the worked example with no new example",
+          "A conclusion with no evidence is only an opinion",
+          "Name conclude and explain why it matters only, with no linked example",
+          "Write a draft conclusion (8–12 sentences) with at least four evidence links and one limit"
         ],
-        "question": "Which task best shows independent use of analyse?",
+        "question": "Which independent response best applies analyse to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about analyse with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating analyse on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: It keeps the answer honest and shows what still needs respectful research. Reasoning: I used analyse by attending to conclude rather than copying the worked model.",
+        "sample_answer": "Sample: original example using analyse on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for analyse. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with analyse, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: A conclusion with no evidence is only an opinion. Correction: It keeps the answer honest and shows what still needs respectful research. Why: the correction restores accurate use of analyse.",
+        "sample_answer": "Sample error: A conclusion with no evidence is only an opinion.. Correction: It keeps the answer honest and shows what still needs respectful research.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Analysing and drawing conclusions means answering the inquiry question with evidence sentences and naming limits, including whose voices are missing. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Analysing and drawing conclusions means answering the inquiry question with evidence sentences and naming limits, including whose voices are missing.",
           "options": [
-            "A guess with no evidence.",
-            "Analysing and drawing conclusions means answering the inquiry question with evidence sentences and naming limits, including whose voices are missing.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Analysing and drawing conclusions means answering the inquiry question with evidence sentences and naming limits",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
           ],
-          "question": "Which choice best shows accurate use of this idea about analyse?",
+          "question": "Which choice best applies this lesson idea about analyse with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample conclusion frame: “The sources show… because… A limit is… First Nations perspectives were / were not available in our sources…”\n\nTRY FIRST\nWhy name missing voices in a conclusion?\n\nFEEDBACK\nIt keeps the answer honest and shows what still needs respectful research.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the source or place."
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about analyse?",
+          "question": "Which choice best applies this lesson idea about analyse with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample conclusion frame: “The sources show… because… A limit is… First Nations perspectives were / were not available in our sources…” Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about analyse?",
+          "question": "Which choice best applies this lesson idea about analyse with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA conclusion with no evidence is only an opinion. Here is a more productive model: Example conclusion frame: “The sources show… because… A limit is… First Nations perspectives were / were not available in our sources…”\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nIt keeps the answer honest and shows what still needs respectful research.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about analyse?",
+          "question": "Which choice best applies this lesson idea about analyse with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nAnalysing and drawing conclusions means answering the inquiry question with evidence sentences and naming limits, including whose voices are missing. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",

@@ -34,7 +34,7 @@
     "outcome_codes": [
       "MA2-2DS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Complete an eighteen-item shape naming/properties fluency set. Justify six with a property sentence. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Square. Reasoning: I used fluency by attending to shape rather than copying the worked model.\n\nParent: Written model 2: Common error: Calling every diamond-drawn square a rhombus-only name without checking angles misses the square. Correction: Square. Why: the correction restores accurate use of fluency.\n\nParent: Likely misconception: Calling every diamond-drawn square a rhombus-only name without checking angles misses the square. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses fluency with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with fluency, show corrected working, and say why the correction works.\n\nParent: Marking notes: Require new numbers, visible working and named places/values. / Require a real misconception, corrected working and a method reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Complete an eighteen-item shape naming/properties fluency set. Justify six with a property sentence. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: new numbers solved with visible working for fluency; key places/values named. Do not award marks for retyping the model.\n\nParent: Written model 2: Sample misconception: Calling every diamond-drawn square a rhombus-only name without checking angles misses the square.. Correction uses Square.. Why: restores accurate fluency.\n\nParent: Likely misconception: Calling every diamond-drawn square a rhombus-only name without checking angles misses the square. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Solve one fresh problem that uses fluency with different numbers from the worked model. Show working and name the places or values that matter.\n\nParent: Short-answer focus 2: Describe one likely mistake with fluency, show corrected working, and say why the correction works.\n\nParent: Marking notes: Accept any mathematically valid solution that uses new numbers, shows working for fluency, and names places/values. Reject copied model numbers. / Accept a named misconception about fluency, corrected working, and a method reason. Reject vague “I was wrong” with no repair..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Square. This matches the lesson skill for fluency.",
+        "explanation": "This matches the taught method for fluency. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square.",
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work.",
-          "Square."
+          "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Square"
         ],
         "question": "Name the quadrilateral with 4 equal sides and 4 right angles. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for fluency; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Shape-name fluency practises correct names linked to properties, not only to a familiar orientation.",
-          "Square.",
-          "Careful use of shape with clear evidence.",
-          "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square."
+          "Shape-name fluency practises correct names linked to properties, not only to a familiar orientation",
+          "Square",
+          "Careful use of shape and explain why it matters with clear evidence",
+          "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square"
         ],
-        "question": "Which statement is a common mistake when practising fluency?",
+        "question": "Which statement is a common mistake when working with fluency?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named shape, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named shape and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing zero as if it does not change the value.",
-          "Apply the idea with new evidence and name the shape used.",
-          "Repeat the worked example wording with no new evidence."
+          "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square",
+          "Name shape and explain why it matters only, without linking it to fluency",
+          "Apply fluency to new material and name the shape and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising fluency. Which approach best shows understanding?",
+        "question": "Which response best applies fluency with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Mathematics answers need labelled working tied to place value or quantity.",
+        "explanation": "Mathematics answers need labelled working tied to place value, quantity or the asked operation. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Write only a final number with no working.",
-          "Change digits to look neater without checking place value.",
-          "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square.",
-          "Show the places, values or steps and say why each step is valid."
+          "Write only a final number with no working",
+          "Change digits to look neater without checking place value",
+          "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square",
+          "Show each place, value or step and say why that step is valid"
         ],
-        "question": "Which working note best supports a mathematics answer about fluency?",
+        "question": "Which working best supports a correct answer for this lesson on fluency?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The correct statement applies the method; the others break it.",
+        "explanation": "The correct statement applies the taught fluency method; the others break place value, units or the asked quantity. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore place value and read digits from left to right as ones only.",
-          "Copy the model numbers and call that independent work.",
-          "Set: name hexagon; square vs rhombus; triangle type by sides. Prefer property tests over “looks like”.",
-          "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square."
+          "Read 4 from left to right as ones only, ignoring place value",
+          "Ignore units and treat 4 and 4 as interchangeable",
+          "Square",
+          "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square"
         ],
-        "question": "Using this lesson idea — Shape-name fluency practises correct names linked to properties, not only to a familiar orientation. — which statement is true?",
+        "question": "Using the method for fluency, which statement is true?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Disagreement is resolved by checking places, operations and the question focus.",
+        "explanation": "Disagreement is resolved by checking places, operations and the question focus, not by blending answers. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Average the two answers without checking either.",
-          "Recheck places, operations and whether the question asked for the quantity you computed.",
-          "Pick the longer-looking working automatically.",
-          "Delete units so the answers appear to match."
+          "Average the two answers without checking either",
+          "Recheck places, operations and whether the question asked for the quantity you computed",
+          "Pick the longer-looking working automatically",
+          "Delete units so the answers appear to match"
         ],
-        "question": "Which error should you repair first if two methods disagree?",
+        "question": "If two methods disagree on a fluency problem with numbers such as 4 and 4, what should you check first?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer requires new numbers with the same method.",
+        "explanation": "Transfer requires new numbers with the same mathematical method and a named reason. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the model numbers and call that independent work.",
-          "Solve a fresh problem with different numbers and explain the method.",
-          "Retype the worked model numbers as the answer.",
-          "Change only handwriting and keep the same numbers."
+          "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square",
+          "Use the same fluency method on new numbers and name the places or values that matter",
+          "Retype the worked model numbers 4 and 4 as the answer",
+          "Change only handwriting and keep the same numbers"
         ],
-        "question": "Which practice choice shows transfer of fluency?",
+        "question": "Solve a fresh fluency problem that uses different numbers from the worked model and explain one key step.?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Useful feedback names the failed step and shows corrected working.",
+        "explanation": "Recognising the warned misconception protects accuracy on new problems. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name the exact place or step that failed, then show corrected working for fluency.",
-          "Praise neat handwriting even when the places are wrong.",
-          "Tell the learner to skip working and only keep the final digits.",
-          "Just add more digits until it looks longer."
+          "Calling every diamond-drawn square a rhombus-only name without checking angles misses the square",
+          "Shape-name fluency practises correct names linked to properties, not only to a familiar orientation",
+          "Square",
+          "Label units when comparing 4 with 4"
         ],
-        "question": "Which feedback comment is most useful after a mistake?",
+        "question": "Which error is the lesson warning against for fluency?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require new numbers, visible working and named places/values.",
+        "marking_guide": "Accept any mathematically valid solution that uses new numbers, shows working for fluency, and names places/values. Reject copied model numbers.",
         "question": "Solve one fresh problem that uses fluency with different numbers from the worked model. Show working and name the places or values that matter.",
-        "sample_answer": "Original response on new material: Square. Reasoning: I used fluency by attending to shape rather than copying the worked model.",
+        "sample_answer": "Sample: new numbers solved with visible working for fluency; key places/values named. Do not award marks for retyping the model.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require a real misconception, corrected working and a method reason.",
+        "marking_guide": "Accept a named misconception about fluency, corrected working, and a method reason. Reject vague “I was wrong” with no repair.",
         "question": "Describe one likely mistake with fluency, show corrected working, and say why the correction works.",
-        "sample_answer": "Common error: Calling every diamond-drawn square a rhombus-only name without checking angles misses the square. Correction: Square. Why: the correction restores accurate use of fluency.",
+        "sample_answer": "Sample misconception: Calling every diamond-drawn square a rhombus-only name without checking angles misses the square.. Correction uses Square.. Why: restores accurate fluency.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Shape-name fluency practises correct names linked to properties, not only to a familiar orientation. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Shape-name fluency practises correct names linked to properties, not only to a familiar orientation. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no working.",
-            "Shape-name fluency practises correct names linked to properties, not only to a familiar orientation.",
-            "A calculation unrelated to the numbers given."
+            "A guess with no working",
+            "A calculation unrelated to the numbers given",
+            "Shape-name fluency practises correct names linked to properties, not only to a familiar orientation",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about fluency?",
+          "question": "Which choice best applies this lesson idea about fluency with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSet: name hexagon; square vs rhombus; triangle type by sides. Prefer property tests over “looks like”.\n\nTRY FIRST\nName the quadrilateral with 4 equal sides and 4 right angles.\n\nFEEDBACK\nSquare.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Make the method visible: name the values, places or steps you used and say why that step is valid. Supported working follows the actual numbers and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "A guess with no working.",
-            "Make the method visible: name the values, places or steps you used and say why that step is valid.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the method visible: name the values, places or steps you used and say why that step is valid",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about fluency?",
+          "question": "Which choice best applies this lesson idea about fluency with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSet: name hexagon; square vs rhombus; triangle type by sides. Prefer property tests over “looks like”. Look at each number, place or distance that carries the method.\n\nTRY FIRST\nWrite the key numbers from the model and say what each one represents in the method.\n\nFEEDBACK\nThe most useful working names the quantities and the reason for each step, not only the final answer.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "A guess with no working.",
-            "Use an intentionally incorrect attempt as a comparison. Name its specific mathematical error, then show the corrected working.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect attempt as a comparison",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about fluency?",
+          "question": "Which choice best applies this lesson idea about fluency with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCalling every diamond-drawn square a rhombus-only name without checking angles misses the square. Here is a more productive model: Set: name hexagon; square vs rhombus; triangle type by sides. Prefer property tests over “looks like”.\n\nTRY FIRST\nDescribe why the warned-against approach gives the wrong value or meaning, then write corrected working.\n\nFEEDBACK\nSquare.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places. Supported working follows the actual numbers and purpose of the task.",
+          "explanation": "Use the method on new numbers or a new context, not a copy of the worked example.",
           "options": [
-            "A guess with no working.",
-            "Use the method on new numbers or a new context, not a copy of the worked example. Review accuracy and units or places.",
-            "A calculation unrelated to the numbers given.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the method on new numbers or a new context, not a copy of the worked example",
+            "A guess with no working",
+            "A calculation unrelated to the numbers given"
           ],
-          "question": "Which choice best shows accurate use of this idea about fluency?",
+          "question": "Which choice best applies this lesson idea about fluency with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nShape-name fluency practises correct names linked to properties, not only to a familiar orientation. Now choose different numbers to show you can transfer the method.\n\nTRY FIRST\nSolve one fresh problem that uses the same skill and write a short reason for your answer.\n\nFEEDBACK\nThe new problem should use the same method as the model, but contain different numbers.",

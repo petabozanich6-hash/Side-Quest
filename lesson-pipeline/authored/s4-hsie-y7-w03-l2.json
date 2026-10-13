@@ -34,7 +34,7 @@
     "outcome_codes": [
       "HT4-1"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Analyse two primary sources on the same topic; compare what each can and cannot answer. Credit publication details. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: All four steps; usefulness tied to the question; inference labelled. Reasoning: I used source analysis by attending to origin rather than copying the worked model.\n\nParent: Written model 2: Common error: Reading a source as a complete picture of everyone’s life. Most sources are partial. Correction: Strong answer: All four steps; usefulness tied to the question; inference labelled. Why: the correction restores accurate use of source analysis.\n\nParent: Likely misconception: Reading a source as a complete picture of everyone’s life. Most sources are partial. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating source analysis on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with source analysis, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Analyse two primary sources on the same topic; compare what each can and cannot answer. Credit publication details. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using source analysis on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Reading a source as a complete picture of everyone’s life.. Correction: Strong answer: All four steps;. Why it helps the audience is stated.\n\nParent: Likely misconception: Reading a source as a complete picture of everyone’s life. Most sources are partial. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating source analysis on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with source analysis, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about source analysis with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for source analysis. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Strong answer: All four steps; usefulness tied to the question; inference labelled. This matches the lesson skill for source analysis.",
+        "explanation": "This matches the taught method for source analysis. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: All four steps; usefulness tied to the question; inference labelled.",
-          "Reading a source as a complete picture of everyone’s life. Most sources are partial.",
-          "Ignore the source and invent a more exciting story.",
-          "Copy the model places and call that independent work."
+          "All four steps; usefulness tied to the question; inference labelled",
+          "Reading a source as a complete picture of everyone’s life",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "For a published image or text extract, complete origin → description → perspective → usefulness for one inquiry question. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Reading a source as a complete picture of everyone’s life. Most sources are partial. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for source analysis; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Reading a source as a complete picture of everyone’s life. Most sources are partial.",
-          "Interpreting a primary source uses origin (who/when/where/why), content description, perspective and usefulness for a specific inquiry question. Separate what…",
-          "Strong answer: All four steps; usefulness tied to the question; inference labelled.",
-          "Careful use of origin with clear evidence."
+          "Reading a source as a complete picture of everyone’s life",
+          "Interpreting a primary source uses origin (who/when/where/why), content description, perspective and usefulness for a",
+          "All four steps; usefulness tied to the question; inference labelled",
+          "Careful use of origin and explain why it matters with clear evidence"
         ],
-        "question": "Which statement is a common mistake when practising source analysis?",
+        "question": "Which statement is a common mistake when working with source analysis?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named origin, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named origin and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing fact as if it were recorded in a source.",
-          "Apply the idea with new evidence and name the origin used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name origin and explain why it matters only, without linking it to source analysis",
+          "Apply source analysis to new material and name the origin and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Reading a source as a complete picture of everyone’s life"
         ],
-        "question": "A learner is practising source analysis. Which approach best shows understanding?",
+        "question": "Which response best applies source analysis with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answer: All four steps; usefulness tied to the question; inference labelled. uses sources and places appropriately for this lesson.",
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on source analysis. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Strong answer: All four steps; usefulness tied to the question; inference labelled.",
-          "Reading a source as a complete picture of everyone’s life. Most sources are partial.",
-          "Ignore the source and invent a more exciting story.",
-          "Copy the model places and call that independent work."
+          "All four steps; usefulness tied to the question; inference labelled",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Reading a source as a complete picture of everyone’s life"
         ],
-        "question": "Which response best shows careful thinking about source analysis?",
+        "question": "Which response best evaluates sources, places or historical/geographic evidence when analysing source analysis?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Reading a source as a complete picture of everyone’s life. Most sources are partial.",
-          "Name a specific source, cue or example and say what it shows about source analysis.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy a classmate’s sentence with no local detail",
+          "Reading a source as a complete picture of everyone’s life",
+          "Name a specific source or place detail and say what it shows about source analysis",
+          "Make a bigger claim without naming any source or place detail"
         ],
-        "question": "Which habit strengthens evidence about origin?",
+        "question": "Which evidence move best supports a claim about source analysis?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Interpreting a primary source uses origin (who/when/where/why), content) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the source and invent a more exciting story.",
-          "Example inquiry: How did farmers work near the Nile? A tomb scene showing sowing may be useful for tools and seasons but may idealise…",
-          "Reading a source as a complete picture of everyone’s life. Most sources are partial.",
-          "Treat a missing fact as if it were recorded in a source."
+          "Copy a classmate’s sentence with no local detail",
+          "Example inquiry: How did farmers work near the Nile?",
+          "Reading a source as a complete picture of everyone’s life",
+          "Make a bigger claim without naming any source or place detail"
         ],
-        "question": "Using this lesson idea — Interpreting a primary source uses origin (who/when/where/why), content description, perspective and… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about source analysis?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for source analysis?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Reading a source as a complete picture of everyone’s life. Most sources are partial.",
-          "Analyse two primary sources on the same topic; compare what each can and cannot answer. Credit publication details.",
-          "Retype the worked example with no new example.",
-          "Copy the model places and call that independent work."
+          "Name origin and explain why it matters only, with no linked example",
+          "Analyse two primary sources on the same topic",
+          "Retype the worked example with no new example",
+          "Reading a source as a complete picture of everyone’s life"
         ],
-        "question": "Which task best shows independent use of source analysis?",
+        "question": "Which independent response best applies source analysis to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about source analysis with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating source analysis on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: All four steps; usefulness tied to the question; inference labelled. Reasoning: I used source analysis by attending to origin rather than copying the worked model.",
+        "sample_answer": "Sample: original example using source analysis on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for source analysis. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with source analysis, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Reading a source as a complete picture of everyone’s life. Most sources are partial. Correction: Strong answer: All four steps; usefulness tied to the question; inference labelled. Why: the correction restores accurate use of source analysis.",
+        "sample_answer": "Sample error: Reading a source as a complete picture of everyone’s life.. Correction: Strong answer: All four steps;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Interpreting a primary source uses origin (who/when/where/why), content description, perspective and usefulness for a specific inquiry question. Separate what the source says from what you infer. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Interpreting a primary source uses origin (who/when/where/why), content description, perspective and usefulness for a specific inquiry question.",
           "options": [
-            "Interpreting a primary source uses origin (who/when/where/why), content description, perspective and usefulness for a specific inquiry question. Separate what the source says from what you infer.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Interpreting a primary source uses origin (who/when/where/why), content description, perspective and usefulness for a",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about source analysis?",
+          "question": "Which choice best applies this lesson idea about source analysis with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample inquiry: How did farmers work near the Nile? A tomb scene showing sowing may be useful for tools and seasons but may idealise elite views of labour.\n\nTRY FIRST\nFor a published image or text extract, complete origin → description → perspective → usefulness for one inquiry question.\n\nFEEDBACK\nStrong answer: All four steps; usefulness tied to the question; inference labelled.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about source analysis?",
+          "question": "Which choice best applies this lesson idea about source analysis with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample inquiry: How did farmers work near the Nile? A tomb scene showing sowing may be useful for tools and seasons but may idealise elite views of labour. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about source analysis?",
+          "question": "Which choice best applies this lesson idea about source analysis with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReading a source as a complete picture of everyone’s life. Most sources are partial. Here is a more productive model: Example inquiry: How did farmers work near the Nile? A tomb scene showing sowing may be useful for tools and seasons but may idealise elite views of labour.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nStrong answer: All four steps; usefulness tied to the question; inference labelled.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about source analysis?",
+          "question": "Which choice best applies this lesson idea about source analysis with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nInterpreting a primary source uses origin (who/when/where/why), content description, perspective and usefulness for a specific inquiry question. Separate what the source says from what you infer. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",

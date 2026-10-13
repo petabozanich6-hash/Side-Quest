@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-MUS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Learn a short round with a family member. Write down the words, mark where the second group begins and sing it as a round. Then sing in unison. Write which was harder and one thing that helped you keep your part. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat. I can also follow the words on a lyric card.' Staying with your own part and watching… Reasoning: I used unison by attending to a round rather than copying the worked model.\n\nParent: Written model 2: Common error: Believing that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts. Correction: Strong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat. I can also follow the words on a lyric card.'… Why: the correction restores accurate use of unison.\n\nParent: Likely misconception: Believing that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating unison on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with unison, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Learn a short round with a family member. Write down the words, mark where the second group begins and sing it as a round. Then sing in unison. Write which was harder and one thing that helped you keep your part. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using unison on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Believing that singing in a round means you should sing louder than the other group to be heard.. Correction: Strong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat.. Why it helps the audience is stated.\n\nParent: Likely misconception: Believing that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating unison on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with unison, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about unison with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for unison. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat. I can also follow the words on a lyric card.'… This matches the lesson skill for unison.",
+        "explanation": "This matches the taught method for unison. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat. I can also follow the words on a lyric card.'…",
-          "Believing that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts.",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "'Listen to my own group and sing a little softer than the others, and look at the leader's beat.",
+          "Believing that singing in a round means you should sing louder than the other group to be heard.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "In a round, a singer gets confused by the other group's tune. Write two ways they can keep their place. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Believing that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for unison; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of a round with clear evidence.",
-          "Believing that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts.",
-          "When a group sings together, they can sing in unison, which means everyone sings the same notes at the same time. In a round, such as 'Row, row, row your…",
-          "Strong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat. I can also follow the words on a lyric card.'…"
+          "Careful use of a round and explain why it matters with clear evidence.",
+          "Believing that singing in a round means you should sing louder than the other group to be heard.",
+          "When a group sings together, they can sing in unison, which means everyone sings the same notes at the same time.",
+          "'Listen to my own group and sing a little softer than the others, and look at the leader's beat."
         ],
-        "question": "Which statement is a common mistake when practising unison?",
+        "question": "Which statement is a common mistake when working with unison?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Understanding is shown by new evidence and named a round, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a round and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a round used."
+          "Believing that singing in a round means you should sing louder than the other group to be heard.",
+          "Name a round and explain why it matters only, without linking it to unison.",
+          "Apply unison to new material and name the a round and explain why it matters used."
         ],
-        "question": "A learner is practising unison. Which approach best shows understanding?",
+        "question": "Which response best applies unison with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat. I can also follow the words on a lyric card.'… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on unison. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat. I can also follow the words on a lyric card.'…",
-          "Believing that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts.",
-          "Say it looks nice with no element or technique named."
+          "Believing that singing in a round means you should sing louder than the other group to be heard.",
+          "'Listen to my own group and sing a little softer than the others, and look at the leader's beat.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Which response best shows careful thinking about unison?",
+        "question": "Which response best uses elements, techniques and audience effect for unison?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about unison.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Believing that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts."
+          "Name a specific element or technique and say what effect it creates for unison.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Believing that singing in a round means you should sing louder than the other group to be heard."
         ],
-        "question": "Which habit strengthens evidence about a round?",
+        "question": "Which evidence move best supports a claim about unison?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: a class sings 'Row, row, row your boat' in unison first. Then the leader splits them into two groups. Group 1 starts, and Group 2…",
-          "Believing that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Example: a class sings 'Row, row, row your boat' in unison first.",
+          "Believing that singing in a round means you should sing louder than the other group to be heard.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — When a group sings together, they can sing in unison, which means everyone sings the same notes at the same… — which choice is best?",
+        "question": "Using this lesson idea — When a group sings together, they can sing in unison, which means everyone sings the same notes at — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for unison?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Believing that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts.",
-          "Learn a short round with a family member. Write down the words, mark where the second group begins and sing it as a round. Then sing in unison.…",
+          "Believing that singing in a round means you should sing louder than the other group to be heard.",
+          "Name a round and explain why it matters only, with no linked example.",
+          "Learn a short round with a family member.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of unison?",
+        "question": "Which independent response best applies unison to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about unison with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating unison on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat. I can also follow the words on a lyric card.' Staying with your own part and watching… Reasoning: I used unison by attending to a round rather than copying the worked model.",
+        "sample_answer": "Sample: original example using unison on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for unison. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with unison, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Believing that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts. Correction: Strong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat. I can also follow the words on a lyric card.'… Why: the correction restores accurate use of unison.",
+        "sample_answer": "Sample error: Believing that singing in a round means you should sing louder than the other group to be heard.. Correction: Strong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "When a group sings together, they can sing in unison, which means everyone sings the same notes at the same time. In a round, such as 'Row, row, row your boat', the group splits and each part begins at a different time while singing the same tune. A song may have verses that…",
+          "explanation": "When a group sings together, they can sing in unison, which means everyone sings the same notes at the same time.",
           "options": [
-            "When a group sings together, they can sing in unison, which means everyone sings the same notes at the same time. In a round, such as 'Row, row, row your boat', the group splits and each part begins at a different time while singing the same tune. A song may have verses that tell the story and a chorus that repeats. To sing together well, listen to the other parts, keep the beat and watch the leader. Count in before starting, and sing at a volume so you can hear the other voices.",
+            "When a group sings together, they can sing in unison, which means everyone sings the same notes at the same time.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about unison?",
+          "question": "Which choice best applies this lesson idea about unison with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a class sings 'Row, row, row your boat' in unison first. Then the leader splits them into two groups. Group 1 starts, and Group 2 begins when Group 1 reaches 'gently down the stream'. Each group keeps its own beat and listens to the other. At the end, Group 1 finishes first and Group 2 finishes last, so the leader signals the end together.\n\nTRY FIRST\nIn a round, a singer gets confused by the other group's tune. Write two ways they can keep their place.\n\nFEEDBACK\nStrong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat. I can also follow the words on a lyric card.' Staying with your own part and watching the leader helps hold your place.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about unison?",
+          "question": "Which choice best applies this lesson idea about unison with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: a class sings 'Row, row, row your boat' in unison first. Then the leader splits them into two groups. Group 1 starts, and Group 2 begins when Group 1 reaches 'gently down the stream'. Each group keeps its own beat and listens to the other. At the end, Group 1 finishes first and Group 2 finishes last, so the leader signals the end together. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice."
+            "Use an intentionally weak or disrespectful arts choice as a comparison."
           ],
-          "question": "Which choice best shows accurate use of this idea about unison?",
+          "question": "Which choice best applies this lesson idea about unison with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nBelieving that singing in a round means you should sing louder than the other group to be heard. Each group sings at the same volume so you can hear both parts. Here is a more helpful example: Example: a class sings 'Row, row, row your boat' in unison first. Then the leader splits them into two groups. Group 1 starts, and Group 2 begins when Group 1 reaches 'gently down the stream'. Each group keeps its own beat and listens to the other. At the end, Group 1 finishes first and Group 2 finishes last, so the leader signals the end together.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Listen to my own group and sing a little softer than the others, and look at the leader's beat. I can also follow the words on a lyric card.' Staying with your own part and watching the leader helps hold your place.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about unison?",
+          "question": "Which choice best applies this lesson idea about unison with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nWhen a group sings together, they can sing in unison, which means everyone sings the same notes at the same time. In a round, such as 'Row, row, row your boat', the group splits and each part begins at a different time while singing the same tune. A song may have verses that tell the story and a chorus that repeats. To sing together well, listen to the other parts, keep the beat and watch the leader. Count in before starting, and sing at a volume so you can hear the other voices. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

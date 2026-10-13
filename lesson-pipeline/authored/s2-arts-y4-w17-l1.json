@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Compose a 16-count phrase with shapes, levels and pathways labelled on a floor-plan sketch. Teach it to someone else. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Angular shapes; low then high; curved pathway into a line.' Specific elements listed. Reasoning: I used shape by attending to level rather than copying the worked model.\n\nParent: Written model 2: Common error: Only travelling in straight lines at one level. Variety is a Year 4 skill focus. Correction: Strong answer: 'Angular shapes; low then high; curved pathway into a line.' Specific elements listed. Why: the correction restores accurate use of shape.\n\nParent: Likely misconception: Only travelling in straight lines at one level. Variety is a Year 4 skill focus. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating shape on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with shape, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Compose a 16-count phrase with shapes, levels and pathways labelled on a floor-plan sketch. Teach it to someone else. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using shape on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Only travelling in straight lines at one level.. Correction: Strong answer: 'Angular shapes;. Why it helps the audience is stated.\n\nParent: Likely misconception: Only travelling in straight lines at one level. Variety is a Year 4 skill focus. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating shape on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with shape, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about shape with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for shape. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Angular shapes; low then high; curved pathway into a line.' Specific elements listed. This matches the lesson skill for shape.",
+        "explanation": "This matches the taught method for shape. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Angular shapes; low then high; curved pathway into a line.' Specific elements listed.",
-          "Only travelling in straight lines at one level. Variety is a Year 4 skill focus."
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "'Angular shapes; low then high; curved pathway into a line.' Specific elements listed.",
+          "Only travelling in straight lines at one level."
         ],
         "question": "Plan a phrase using one shape family, two levels and one pathway type. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Only travelling in straight lines at one level. Variety is a Year 4 skill focus. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for shape; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Dancers make shapes with the body (curved, angular, wide, narrow), use levels (low, middle, high) and travel on pathways (straight, curved, zigzag).…",
-          "Strong answer: 'Angular shapes; low then high; curved pathway into a line.' Specific elements listed.",
-          "Careful use of level with clear evidence.",
-          "Only travelling in straight lines at one level. Variety is a Year 4 skill focus."
+          "Dancers make shapes with the body (curved, angular, wide, narrow), use levels (low, middle, high) and travel on",
+          "'Angular shapes; low then high; curved pathway into a line.' Specific elements listed.",
+          "Careful use of level and explain why it matters with clear evidence.",
+          "Only travelling in straight lines at one level."
         ],
-        "question": "Which statement is a common mistake when practising shape?",
+        "question": "Which statement is a common mistake when working with shape?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named level, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named level and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the level used.",
+          "Name level and explain why it matters only, without linking it to shape.",
+          "Apply shape to new material and name the level and explain why it matters used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Only travelling in straight lines at one level."
         ],
-        "question": "A learner is practising shape. Which approach best shows understanding?",
+        "question": "Which response best applies shape with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: 'Angular shapes; low then high; curved pathway into a line.' Specific elements listed. uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on shape. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Only travelling in straight lines at one level. Variety is a Year 4 skill focus.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Angular shapes; low then high; curved pathway into a line.' Specific elements listed."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Only travelling in straight lines at one level.",
+          "'Angular shapes; low then high; curved pathway into a line.' Specific elements listed."
         ],
-        "question": "Which response best shows careful thinking about shape?",
+        "question": "Which response best uses elements, techniques and audience effect for shape?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about shape.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Only travelling in straight lines at one level. Variety is a Year 4 skill focus."
+          "Name a specific element or technique and say what effect it creates for shape.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Only travelling in straight lines at one level."
         ],
-        "question": "Which habit strengthens evidence about level?",
+        "question": "Which evidence move best supports a claim about shape?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Example: Group starts in a circle at middle level, melts to low shapes, then travels a zigzag pathway to a final high angular formation.",
-          "Only travelling in straight lines at one level. Variety is a Year 4 skill focus.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Example: Group starts in a circle at middle level, melts to low shapes, then travels a zigzag pathway to a final high",
+          "Only travelling in straight lines at one level.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — Dancers make shapes with the body (curved, angular, wide, narrow), use levels (low, middle, high) and travel… — which choice is best?",
+        "question": "Using this lesson idea — Dancers make shapes with the body (curved, angular, wide, narrow), use levels (low, middle, high) — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable."
+          "Treat every claim as equally reliable without checking a source or cue."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for shape?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Only travelling in straight lines at one level. Variety is a Year 4 skill focus.",
-          "Compose a 16-count phrase with shapes, levels and pathways labelled on a floor-plan sketch. Teach it to someone else.",
+          "Only travelling in straight lines at one level.",
+          "Name level and explain why it matters only, with no linked example.",
+          "Compose a 16-count phrase with shapes, levels and pathways labelled on a floor-plan sketch.",
           "Retype the worked example with no new example."
         ],
-        "question": "Which task best shows independent use of shape?",
+        "question": "Which independent response best applies shape to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about shape with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating shape on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Angular shapes; low then high; curved pathway into a line.' Specific elements listed. Reasoning: I used shape by attending to level rather than copying the worked model.",
+        "sample_answer": "Sample: original example using shape on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for shape. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with shape, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Only travelling in straight lines at one level. Variety is a Year 4 skill focus. Correction: Strong answer: 'Angular shapes; low then high; curved pathway into a line.' Specific elements listed. Why: the correction restores accurate use of shape.",
+        "sample_answer": "Sample error: Only travelling in straight lines at one level.. Correction: Strong answer: 'Angular shapes;. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Dancers make shapes with the body (curved, angular, wide, narrow), use levels (low, middle, high) and travel on pathways (straight, curved, zigzag). Formations are group arrangements such as lines, circles or scattered. Varying these elements keeps choreography interesting.…",
+          "explanation": "Dancers make shapes with the body (curved, angular, wide, narrow), use levels (low, middle, high) and travel on pathways (straight, curved, zigzag).",
           "options": [
+            "An answer copied without understanding.",
+            "Dancers make shapes with the body (curved, angular, wide, narrow), use levels (low, middle, high) and travel on",
             "A guess with no artistic reason.",
-            "Dancers make shapes with the body (curved, angular, wide, narrow), use levels (low, middle, high) and travel on pathways (straight, curved, zigzag). Formations are group arrangements such as lines, circles or scattered. Varying these elements keeps choreography interesting.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about shape?",
+          "question": "Which choice best applies this lesson idea about shape with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Group starts in a circle at middle level, melts to low shapes, then travels a zigzag pathway to a final high angular formation.\n\nTRY FIRST\nPlan a phrase using one shape family, two levels and one pathway type.\n\nFEEDBACK\nStrong answer: 'Angular shapes; low then high; curved pathway into a line.' Specific elements listed.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
+            "A comment that only says it looks nice with no element named.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
-            "A comment that only says it looks nice with no element named."
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about shape?",
+          "question": "Which choice best applies this lesson idea about shape with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Group starts in a circle at middle level, melts to low shapes, then travels a zigzag pathway to a final high angular formation. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about shape?",
+          "question": "Which choice best applies this lesson idea about shape with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nOnly travelling in straight lines at one level. Variety is a Year 4 skill focus. Here is a more helpful example: Example: Group starts in a circle at middle level, melts to low shapes, then travels a zigzag pathway to a final high angular formation.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Angular shapes; low then high; curved pathway into a line.' Specific elements listed.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about shape?",
+          "question": "Which choice best applies this lesson idea about shape with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDancers make shapes with the body (curved, angular, wide, narrow), use levels (low, middle, high) and travel on pathways (straight, curved, zigzag). Formations are group arrangements such as lines, circles or scattered. Varying these elements keeps choreography interesting. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

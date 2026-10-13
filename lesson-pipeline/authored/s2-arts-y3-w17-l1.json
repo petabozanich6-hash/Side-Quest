@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Make a chart with two columns for locomotor and non-locomotor movements and add at least five in each. Then link three movements into a short sequence with a pathway for each, and perform it in a clear space or draw it a Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: locomotor are skip, slide and march. Non-locomotor are twist and bend. A pathway could be a zigzag for the skip and a curve for the slide. Travelling movements move you across the… Reasoning: I used a locomotor movement by attending to a non-locomotor movement rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot. Correction: Strong answer: locomotor are skip, slide and march. Non-locomotor are twist and bend. A pathway could be a zigzag for the skip and a curve for the slide.… Why: the correction restores accurate use of a locomotor movement.\n\nParent: Likely misconception: Thinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a locomotor movement on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a locomotor movement, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Make a chart with two columns for locomotor and non-locomotor movements and add at least five in each. Then link three movements into a short sequence with a pathway for each, and perform it in a clear space or draw it a Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a locomotor movement on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that if you stay in one place it is not dancing.. Correction: Strong answer: locomotor are skip, slide and march.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a locomotor movement on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a locomotor movement, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a locomotor movement with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a locomotor movement. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 2,
-        "explanation": "Strong answer: locomotor are skip, slide and march. Non-locomotor are twist and bend. A pathway could be a zigzag for the skip and a curve for the slide.… This matches the lesson skill for a locomotor movement.",
+        "explanation": "This matches the taught method for a locomotor movement. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: locomotor are skip, slide and march. Non-locomotor are twist and bend. A pathway could be a zigzag for the skip and a curve for the slide.…",
-          "Thinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot."
+          "A claim that names no evidence from the lesson material.",
+          "A method that skips the key step taught in this lesson.",
+          "locomotor are skip, slide and march.",
+          "Thinking that if you stay in one place it is not dancing."
         ],
         "question": "Sort these into locomotor or non-locomotor: skip, twist, slide, bend, march. Then add a pathway for the travelling ones. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Thinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a locomotor movement; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot.",
-          "Dancers move in two main ways. Locomotor movements travel from place to place, such as walking, skipping, hopping, galloping and sliding. Non-locomotor…",
-          "Strong answer: locomotor are skip, slide and march. Non-locomotor are twist and bend. A pathway could be a zigzag for the skip and a curve for the slide.…",
-          "Careful use of a non-locomotor movement with clear evidence."
+          "Thinking that if you stay in one place it is not dancing.",
+          "Dancers move in two main ways.",
+          "locomotor are skip, slide and march.",
+          "Careful use of a non-locomotor movement and explain why with clear evidence."
         ],
-        "question": "Which statement is a common mistake when practising a locomotor movement?",
+        "question": "Which statement is a common mistake when working with a locomotor movement?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named a non-locomotor movement, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a non-locomotor movement and explain why, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Apply the idea with new evidence and name the a non-locomotor movement used.",
+          "Name a non-locomotor movement and explain why only, without linking it to a locomotor movement.",
+          "Apply a locomotor movement to new material and name the a non-locomotor movement and explain why used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Thinking that if you stay in one place it is not dancing."
         ],
-        "question": "A learner is practising a locomotor movement. Which approach best shows understanding?",
+        "question": "Which response best applies a locomotor movement with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Strong answer: locomotor are skip, slide and march. Non-locomotor are twist and bend. A pathway could be a zigzag for the skip and a curve for the slide.… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a locomotor movement. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot.",
           "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: locomotor are skip, slide and march. Non-locomotor are twist and bend. A pathway could be a zigzag for the skip and a curve for the slide.…"
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that if you stay in one place it is not dancing.",
+          "locomotor are skip, slide and march."
         ],
-        "question": "Which response best shows careful thinking about a locomotor movement?",
+        "question": "Which response best uses elements, techniques and audience effect for a locomotor movement?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot.",
-          "Name a specific source, cue or example and say what it shows about a locomotor movement.",
-          "Make a bigger claim without naming any source or cue."
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that if you stay in one place it is not dancing.",
+          "Name a specific element or technique and say what effect it creates for a locomotor movement.",
+          "Say it looks nice with no element or technique named."
         ],
-        "question": "Which habit strengthens evidence about a non-locomotor movement?",
+        "question": "Which evidence move best supports a claim about a locomotor movement?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Example: in a dance about a kangaroo, Ali hops forward in a straight pathway (locomotor), stops, and then stretches tall and sways side to…",
-          "Thinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot.",
-          "Invent a sacred First Nations design without permission or guidance.",
-          "Say it looks nice with no element or technique named."
+          "Example: in a dance about a kangaroo, Ali hops forward in a straight pathway (locomotor), stops, and then stretches",
+          "Thinking that if you stay in one place it is not dancing.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
         ],
-        "question": "Using this lesson idea — Dancers move in two main ways. Locomotor movements travel from place to place, such as walking, skipping,… — which choice is best?",
+        "question": "Using this lesson idea — Dancers move in two main ways. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful.",
           "Invent missing details to make the answer sound complete."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a locomotor movement?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot.",
-          "Make a chart with two columns for locomotor and non-locomotor movements and add at least five in each. Then link three movements into a short…",
+          "Name a non-locomotor movement and explain why only, with no linked example.",
+          "Make a chart with two columns for locomotor and non-locomotor movements and add at least five in each.",
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work."
+          "Thinking that if you stay in one place it is not dancing."
         ],
-        "question": "Which task best shows independent use of a locomotor movement?",
+        "question": "Which independent response best applies a locomotor movement to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a locomotor movement with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a locomotor movement on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: locomotor are skip, slide and march. Non-locomotor are twist and bend. A pathway could be a zigzag for the skip and a curve for the slide. Travelling movements move you across the… Reasoning: I used a locomotor movement by attending to a non-locomotor movement rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a locomotor movement on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a locomotor movement. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a locomotor movement, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot. Correction: Strong answer: locomotor are skip, slide and march. Non-locomotor are twist and bend. A pathway could be a zigzag for the skip and a curve for the slide.… Why: the correction restores accurate use of a locomotor movement.",
+        "sample_answer": "Sample error: Thinking that if you stay in one place it is not dancing.. Correction: Strong answer: locomotor are skip, slide and march.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Dancers move in two main ways. Locomotor movements travel from place to place, such as walking, skipping, hopping, galloping and sliding. Non-locomotor movements stay in one spot, such as stretching, twisting, swaying and bending. A pathway is the line you make on the floor,…",
+          "explanation": "Dancers move in two main ways.",
           "options": [
+            "An answer copied without understanding.",
+            "Dancers move in two main ways.",
             "A guess with no artistic reason.",
-            "Dancers move in two main ways. Locomotor movements travel from place to place, such as walking, skipping, hopping, galloping and sliding. Non-locomotor movements stay in one spot, such as stretching, twisting, swaying and bending. A pathway is the line you make on the floor, like a straight line, a curve or a zigzag. Dancers can also make a shape with their body, such as wide, narrow, curved or twisted. Always check for clear space, move at a speed where you can stay in control and stop if you feel dizzy.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a locomotor movement?",
+          "question": "Which choice best applies this lesson idea about a locomotor movement with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: in a dance about a kangaroo, Ali hops forward in a straight pathway (locomotor), stops, and then stretches tall and sways side to side (non-locomotor). Next he gallops in a curved pathway and ends in a curled shape. A list of movements: hop, stretch, sway, gallop, curl. Two are locomotor and three are non-locomotor.\n\nTRY FIRST\nSort these into locomotor or non-locomotor: skip, twist, slide, bend, march. Then add a pathway for the travelling ones.\n\nFEEDBACK\nStrong answer: locomotor are skip, slide and march. Non-locomotor are twist and bend. A pathway could be a zigzag for the skip and a curve for the slide. Travelling movements move you across the floor, and non-locomotor movements stay in place.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about a locomotor movement?",
+          "question": "Which choice best applies this lesson idea about a locomotor movement with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: in a dance about a kangaroo, Ali hops forward in a straight pathway (locomotor), stops, and then stretches tall and sways side to side (non-locomotor). Next he gallops in a curved pathway and ends in a curled shape. A list of movements: hop, stretch, sway, gallop, curl. Two are locomotor and three are non-locomotor. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
+            "An answer copied without understanding.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a locomotor movement?",
+          "question": "Which choice best applies this lesson idea about a locomotor movement with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that if you stay in one place it is not dancing. Non-locomotor movements are a key part of dance, and a dance can use only movements in one spot. Here is a more helpful example: Example: in a dance about a kangaroo, Ali hops forward in a straight pathway (locomotor), stops, and then stretches tall and sways side to side (non-locomotor). Next he gallops in a curved pathway and ends in a curled shape. A list of movements: hop, stretch, sway, gallop, curl. Two are locomotor and three are non-locomotor.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: locomotor are skip, slide and march. Non-locomotor are twist and bend. A pathway could be a zigzag for the skip and a curve for the slide. Travelling movements move you across the floor, and non-locomotor movements stay in place.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a locomotor movement?",
+          "question": "Which choice best applies this lesson idea about a locomotor movement with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDancers move in two main ways. Locomotor movements travel from place to place, such as walking, skipping, hopping, galloping and sliding. Non-locomotor movements stay in one spot, such as stretching, twisting, swaying and bending. A pathway is the line you make on the floor, like a straight line, a curve or a zigzag. Dancers can also make a shape with their body, such as wide, narrow, curved or twisted. Always check for clear space, move at a speed where you can stay in control and stop if you feel dizzy. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

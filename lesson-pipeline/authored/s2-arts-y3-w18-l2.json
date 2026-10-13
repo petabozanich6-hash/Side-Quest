@@ -34,7 +34,7 @@
     "outcome_codes": [
       "CA2-DAN-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Make a four-beat rhythm pattern and a different eight-beat pattern using at least three movements and one rest. Practise with a favourite song, counting aloud first. Teach one to someone at home and ask them to show if t Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Strong answer: 'Step, clap, step, rest. The rest happens on beat four, and I stay still but keep counting in my head.' A rest is a silent beat that still takes up time. Reasoning: I used a steady beat by attending to a rhythm pattern rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat. Correction: Strong answer: 'Step, clap, step, rest. The rest happens on beat four, and I stay still but keep counting in my head.' A rest is a silent beat that still… Why: the correction restores accurate use of a steady beat.\n\nParent: Likely misconception: Thinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a steady beat on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a steady beat, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Make a four-beat rhythm pattern and a different eight-beat pattern using at least three movements and one rest. Practise with a favourite song, counting aloud first. Teach one to someone at home and ask them to show if t Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a steady beat on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that if you are not moving, you are out of time.. Correction: Strong answer: 'Step, clap, step, rest.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a steady beat on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a steady beat, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a steady beat with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a steady beat. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Strong answer: 'Step, clap, step, rest. The rest happens on beat four, and I stay still but keep counting in my head.' A rest is a silent beat that still… This matches the lesson skill for a steady beat.",
+        "explanation": "This matches the taught method for a steady beat. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Step, clap, step, rest. The rest happens on beat four, and I stay still but keep counting in my head.' A rest is a silent beat that still…",
-          "Thinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat.",
-          "Say it looks nice with no element or technique named."
+          "A method that skips the key step taught in this lesson.",
+          "'Step, clap, step, rest.",
+          "Thinking that if you are not moving, you are out of time.",
+          "A claim that names no evidence from the lesson material."
         ],
         "question": "Create a four-beat pattern using step, clap and rest. Write it as a list, and say which beat you would count the rest on. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Thinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a steady beat; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of a rhythm pattern with clear evidence.",
-          "Thinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat.",
-          "Dancing in time means moving on the beat. Find the beat by listening for the steady pulse and tapping your foot. A rhythm pattern is a repeated group of long…",
-          "Strong answer: 'Step, clap, step, rest. The rest happens on beat four, and I stay still but keep counting in my head.' A rest is a silent beat that still…"
+          "Careful use of a rhythm pattern and explain why it matt with clear evidence.",
+          "Thinking that if you are not moving, you are out of time.",
+          "Dancing in time means moving on the beat.",
+          "'Step, clap, step, rest."
         ],
-        "question": "Which statement is a common mistake when practising a steady beat?",
+        "question": "Which statement is a common mistake when working with a steady beat?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Understanding is shown by new evidence and named a rhythm pattern, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named a rhythm pattern and explain why it matt, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Apply the idea with new evidence and name the a rhythm pattern used.",
+          "Apply a steady beat to new material and name the a rhythm pattern and explain why it matt used.",
           "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right.",
-          "Invent a sacred First Nations design without permission or guidance."
+          "Thinking that if you are not moving, you are out of time.",
+          "Name a rhythm pattern and explain why it matt only, without linking it to a steady beat."
         ],
-        "question": "A learner is practising a steady beat. Which approach best shows understanding?",
+        "question": "Which response best applies a steady beat with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answer: 'Step, clap, step, rest. The rest happens on beat four, and I stay still but keep counting in my head.' A rest is a silent beat that still… uses elements, techniques and audience effect appropriately for this lesson.",
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on a steady beat. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say it looks nice with no element or technique named.",
-          "Copy the example artwork or script and call that independent work.",
-          "Strong answer: 'Step, clap, step, rest. The rest happens on beat four, and I stay still but keep counting in my head.' A rest is a silent beat that still…",
-          "Thinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat."
-        ],
-        "question": "Which response best shows careful thinking about a steady beat?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
-        "options": [
-          "Name a specific source, cue or example and say what it shows about a steady beat.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat."
-        ],
-        "question": "Which habit strengthens evidence about a rhythm pattern?",
-        "type": "multiple_choice"
-      },
-      {
-        "correct_index": 0,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
-        "options": [
-          "Example: Max claps a steady beat and steps in a pattern of step, step, clap, rest over four beats. He says 1, 2, 3, 4 as he goes. The…",
-          "Thinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat.",
-          "Invent a sacred First Nations design without permission or guidance.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that if you are not moving, you are out of time.",
+          "'Step, clap, step, rest.",
           "Say it looks nice with no element or technique named."
         ],
-        "question": "Using this lesson idea — Dancing in time means moving on the beat. Find the beat by listening for the steady pulse and tapping your… — which choice is best?",
+        "question": "Which response best uses elements, techniques and audience effect for a steady beat?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name a specific element or technique and say what effect it creates for a steady beat.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance.",
+          "Thinking that if you are not moving, you are out of time."
+        ],
+        "question": "Which evidence move best supports a claim about a steady beat?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice matches the taught idea with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Example: Max claps a steady beat and steps in a pattern of step, step, clap, rest over four beats.",
+          "Thinking that if you are not moving, you are out of time.",
+          "Say it looks nice with no element or technique named.",
+          "Copy another artwork’s sacred design without permission or guidance."
+        ],
+        "question": "Using this lesson idea — Dancing in time means moving on the beat. — which choice is best?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
           "Invent missing details to make the answer sound complete.",
           "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Treat every claim as equally reliable without checking a source or cue.",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful."
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps elements, techniques and audience effect accurate for a steady beat?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
           "Retype the worked example with no new example.",
-          "Copy the example artwork or script and call that independent work.",
-          "Thinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat.",
-          "Make a four-beat rhythm pattern and a different eight-beat pattern using at least three movements and one rest. Practise with a favourite song,…"
+          "Thinking that if you are not moving, you are out of time.",
+          "Name a rhythm pattern and explain why it matt only, with no linked example.",
+          "Make a four-beat rhythm pattern and a different eight-beat pattern using at least three movements and one rest."
         ],
-        "question": "Which task best shows independent use of a steady beat?",
+        "question": "Which independent response best applies a steady beat to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a steady beat with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a steady beat on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Strong answer: 'Step, clap, step, rest. The rest happens on beat four, and I stay still but keep counting in my head.' A rest is a silent beat that still takes up time. Reasoning: I used a steady beat by attending to a rhythm pattern rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a steady beat on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a steady beat. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a steady beat, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat. Correction: Strong answer: 'Step, clap, step, rest. The rest happens on beat four, and I stay still but keep counting in my head.' A rest is a silent beat that still… Why: the correction restores accurate use of a steady beat.",
+        "sample_answer": "Sample error: Thinking that if you are not moving, you are out of time.. Correction: Strong answer: 'Step, clap, step, rest.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Dancing in time means moving on the beat. Find the beat by listening for the steady pulse and tapping your foot. A rhythm pattern is a repeated group of long and short movements that fits over the beat. You can show a rhythm pattern with steps, claps and stamps: for example…",
+          "explanation": "Dancing in time means moving on the beat.",
           "options": [
-            "Dancing in time means moving on the beat. Find the beat by listening for the steady pulse and tapping your foot. A rhythm pattern is a repeated group of long and short movements that fits over the beat. You can show a rhythm pattern with steps, claps and stamps: for example step, step, clap. Count 1, 2, 3, 4 to stay together. If you lose the beat, stop for a moment, listen and join in again on beat one. Keep stamping soft and wear safe shoes or bare feet.",
+            "Dancing in time means moving on the beat.",
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason."
           ],
-          "question": "Which choice best shows accurate use of this idea about a steady beat?",
+          "question": "Which choice best applies this lesson idea about a steady beat with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Max claps a steady beat and steps in a pattern of step, step, clap, rest over four beats. He says 1, 2, 3, 4 as he goes. The first step and second step each take one beat, the clap takes one beat and the rest is silent for one beat. When the music speeds up, his steps speed up evenly, so he is still in time.\n\nTRY FIRST\nCreate a four-beat pattern using step, clap and rest. Write it as a list, and say which beat you would count the rest on.\n\nFEEDBACK\nStrong answer: 'Step, clap, step, rest. The rest happens on beat four, and I stay still but keep counting in my head.' A rest is a silent beat that still takes up time.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect.",
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. Apply the lesson idea with evidence. The other choices miss a key step or use a common mistake.",
           "options": [
             "A comment that only says it looks nice with no element named.",
             "An answer copied without understanding.",
             "A guess with no artistic reason.",
             "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates."
           ],
-          "question": "Which choice best shows accurate use of this idea about a steady beat?",
+          "question": "Which choice best applies this lesson idea about a steady beat with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Max claps a steady beat and steps in a pattern of step, step, clap, rest over four beats. He says 1, 2, 3, 4 as he goes. The first step and second step each take one beat, the clap takes one beat and the rest is silent for one beat. When the music speeds up, his steps speed up evenly, so he is still in time. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
             "A guess with no artistic reason.",
-            "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
-            "A comment that only says it looks nice with no element named."
+            "A comment that only says it looks nice with no element named.",
+            "Use an intentionally weak or disrespectful arts choice as a comparison.",
+            "An answer copied without understanding."
           ],
-          "question": "Which choice best shows accurate use of this idea about a steady beat?",
+          "question": "Which choice best applies this lesson idea about a steady beat with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that if you are not moving, you are out of time. A rest is part of the rhythm, and counting inside your head helps you rejoin on the right beat. Here is a more helpful example: Example: Max claps a steady beat and steps in a pattern of step, step, clap, rest over four beats. He says 1, 2, 3, 4 as he goes. The first step and second step each take one beat, the clap takes one beat and the rest is silent for one beat. When the music speeds up, his steps speed up evenly, so he is still in time.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nStrong answer: 'Step, clap, step, rest. The rest happens on beat four, and I stay still but keep counting in my head.' A rest is a silent beat that still takes up time.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect.",
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
           "options": [
+            "An answer copied without understanding.",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example.",
             "A guess with no artistic reason.",
-            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
-            "A comment that only says it looks nice with no element named.",
-            "An answer copied without understanding."
+            "A comment that only says it looks nice with no element named."
           ],
-          "question": "Which choice best shows accurate use of this idea about a steady beat?",
+          "question": "Which choice best applies this lesson idea about a steady beat with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDancing in time means moving on the beat. Find the beat by listening for the steady pulse and tapping your foot. A rhythm pattern is a repeated group of long and short movements that fits over the beat. You can show a rhythm pattern with steps, claps and stamps: for example step, step, clap. Count 1, 2, 3, 4 to stay together. If you lose the beat, stop for a moment, listen and join in again on beat one. Keep stamping soft and wear safe shoes or bare feet. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",

@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-RRS-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Write a five-step disagreement plan as a flowchart and use it on two made-up problems (a game rule and a shared item). For each, write a fair solution and name when an adult must help. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Step 1: stop and breathe. Step 2: 'I feel worried because I put a lot of work into the drawing and I would like us to decide together.' This begins calmly and shares the problem without blame. Reasoning: I used a disagreement by attending to calming down rather than copying the worked model.\n\nParent: Written model 2: Common error: Thinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept. Correction: Step 1: stop and breathe. Step 2: 'I feel worried because I put a lot of work into the drawing and I would like us to decide together.' This begins calmly and… Why: the correction restores accurate use of a disagreement.\n\nParent: Likely misconception: Thinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a disagreement on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a disagreement, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Write a five-step disagreement plan as a flowchart and use it on two made-up problems (a game rule and a shared item). For each, write a fair solution and name when an adult must help. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using a disagreement on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking that the loudest person, or the winner of an argument, has solved it.. Correction: Step 1: stop and breathe.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating a disagreement on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with a disagreement, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about a disagreement with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for a disagreement. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 3,
-        "explanation": "Step 1: stop and breathe. Step 2: 'I feel worried because I put a lot of work into the drawing and I would like us to decide together.' This begins calmly and… This matches the lesson skill for a disagreement.",
+        "explanation": "This matches the taught method for a disagreement. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Thinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Step 1: stop and breathe. Step 2: 'I feel worried because I put a lot of work into the drawing and I would like us to decide together.' This begins calmly and…"
+          "Thinking that the loudest person, or the winner of an argument, has solved it",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson",
+          "Step 1: stop and breathe"
         ],
         "question": "Two friends disagree about who owns a drawing they made together. Write the first two steps of a fair solution, using an 'I' statement. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Thinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for a disagreement; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of calming down with clear evidence.",
-          "Thinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept.",
-          "Disagreements are normal when people have different ideas. A fair way to solve one is: stop and calm down, say what happened using an 'I' statement, listen to…",
-          "Step 1: stop and breathe. Step 2: 'I feel worried because I put a lot of work into the drawing and I would like us to decide together.' This begins calmly and…"
+          "Careful use of calming down and explain why it matters with clear evidence",
+          "Thinking that the loudest person, or the winner of an argument, has solved it",
+          "Disagreements are normal when people have different ideas",
+          "Step 1: stop and breathe"
         ],
-        "question": "Which statement is a common mistake when practising a disagreement?",
+        "question": "Which statement is a common mistake when working with a disagreement?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named calming down, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named calming down and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the calming down used.",
-          "Repeat the worked example wording with no new evidence."
+          "Thinking that the loudest person, or the winner of an argument, has solved it",
+          "Name calming down and explain why it matters only, without linking it to a disagreement",
+          "Apply a disagreement to new material and name the calming down and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising a disagreement. Which approach best shows understanding?",
+        "question": "Which response best applies a disagreement with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Step 1: stop and breathe. Step 2: 'I feel worried because I put a lot of work into the drawing and I would like us to decide together.' This begins calmly and… uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on a disagreement. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Step 1: stop and breathe. Step 2: 'I feel worried because I put a lot of work into the drawing and I would like us to decide together.' This begins calmly and…",
-          "Thinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work."
+          "Step 1: stop and breathe",
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Thinking that the loudest person, or the winner of an argument, has solved it"
         ],
-        "question": "Which response best shows careful thinking about a disagreement?",
+        "question": "Which response best uses safe, healthy or respectful choices for a disagreement?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Thinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept.",
-          "Name a specific source, cue or example and say what it shows about a disagreement.",
-          "Make a bigger claim without naming any source or cue."
+          "Use a put-down and call it honesty",
+          "Thinking that the loudest person, or the winner of an argument, has solved it",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with a disagreement",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which habit strengthens evidence about calming down?",
+        "question": "Which evidence move best supports a claim about a disagreement?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Disagreements are normal when people have different ideas.) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example: two children both want the last turn on the swing. Step 1: calm down with a slow breath. Step 2: 'I feel upset because I wanted a…",
-          "Thinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept."
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example: two children both want the last turn on the swing",
+          "Thinking that the loudest person, or the winner of an argument, has solved it"
         ],
-        "question": "Using this lesson idea — Disagreements are normal when people have different ideas. A fair way to solve one is: stop and calm down,… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about a disagreement?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details."
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for a disagreement?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Write a five-step disagreement plan as a flowchart and use it on two made-up problems (a game rule and a shared item). For each, write a fair…",
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Thinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept."
+          "Write a five-step disagreement plan as a flowchart and use it on two made-up problems (a game rule and a shared item)",
+          "Retype the worked example with no new example",
+          "Thinking that the loudest person, or the winner of an argument, has solved it",
+          "Name calming down and explain why it matters only, with no linked example"
         ],
-        "question": "Which task best shows independent use of a disagreement?",
+        "question": "Which independent response best applies a disagreement to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about a disagreement with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating a disagreement on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Step 1: stop and breathe. Step 2: 'I feel worried because I put a lot of work into the drawing and I would like us to decide together.' This begins calmly and shares the problem without blame. Reasoning: I used a disagreement by attending to calming down rather than copying the worked model.",
+        "sample_answer": "Sample: original example using a disagreement on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for a disagreement. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with a disagreement, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Thinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept. Correction: Step 1: stop and breathe. Step 2: 'I feel worried because I put a lot of work into the drawing and I would like us to decide together.' This begins calmly and… Why: the correction restores accurate use of a disagreement.",
+        "sample_answer": "Sample error: Thinking that the loudest person, or the winner of an argument, has solved it.. Correction: Step 1: stop and breathe.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Disagreements are normal when people have different ideas. A fair way to solve one is: stop and calm down, say what happened using an 'I' statement, listen to the other person, think of options together and choose one that is fair to everyone. If the problem is too big, or…",
+          "explanation": "Disagreements are normal when people have different ideas.",
           "options": [
-            "A guess with no reason.",
-            "Disagreements are normal when people have different ideas. A fair way to solve one is: stop and calm down, say what happened using an 'I' statement, listen to the other person, think of options together and choose one that is fair to everyone. If the problem is too big, or someone is unsafe or being hurt, ask a trusted adult for help. Hurting people or things never solves a disagreement.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Disagreements are normal when people have different ideas",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about a disagreement?",
+          "question": "Which choice best applies this lesson idea about a disagreement with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: two children both want the last turn on the swing. Step 1: calm down with a slow breath. Step 2: 'I feel upset because I wanted a turn.' Step 3: listen ('I only had one go'). Step 4: options (take turns, 10 swings each, ask a teacher). Step 5: choose 10 swings each, then swap. They say thank you.\n\nTRY FIRST\nTwo friends disagree about who owns a drawing they made together. Write the first two steps of a fair solution, using an 'I' statement.\n\nFEEDBACK\nStep 1: stop and breathe. Step 2: 'I feel worried because I put a lot of work into the drawing and I would like us to decide together.' This begins calmly and shares the problem without blame.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about a disagreement?",
+          "question": "Which choice best applies this lesson idea about a disagreement with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: two children both want the last turn on the swing. Step 1: calm down with a slow breath. Step 2: 'I feel upset because I wanted a turn.' Step 3: listen ('I only had one go'). Step 4: options (take turns, 10 swings each, ask a teacher). Step 5: choose 10 swings each, then swap. They say thank you. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Use an intentionally unsafe or unhelpful choice as a comparison",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about a disagreement?",
+          "question": "Which choice best applies this lesson idea about a disagreement with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nThinking that the loudest person, or the winner of an argument, has solved it. A good solution is one that both people can accept. Here is a more helpful example: Example: two children both want the last turn on the swing. Step 1: calm down with a slow breath. Step 2: 'I feel upset because I wanted a turn.' Step 3: listen ('I only had one go'). Step 4: options (take turns, 10 swings each, ask a teacher). Step 5: choose 10 swings each, then swap. They say thank you.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nStep 1: stop and breathe. Step 2: 'I feel worried because I put a lot of work into the drawing and I would like us to decide together.' This begins calmly and shares the problem without blame.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "A guess with no reason.",
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect"
           ],
-          "question": "Which choice best shows accurate use of this idea about a disagreement?",
+          "question": "Which choice best applies this lesson idea about a disagreement with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nDisagreements are normal when people have different ideas. A fair way to solve one is: stop and calm down, say what happened using an 'I' statement, listen to the other person, think of options together and choose one that is fair to everyone. If the problem is too big, or someone is unsafe or being hurt, ask a trusted adult for help. Hurting people or things never solves a disagreement. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",

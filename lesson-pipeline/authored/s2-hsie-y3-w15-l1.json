@@ -34,7 +34,7 @@
     "outcome_codes": [
       "HS2-GEO-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Choose one coastal and one inland town. Use a published climate source to write two differences and give at least two causes for each, using words such as distance from the equator, coast and height. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts are more common. Reasoning: I used climate by attending to coast and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data. Correction: Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts are more common. Why: the correction restores accurate use of climate.\n\nParent: Likely misconception: Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating climate on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with climate, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Choose one coastal and one inland town. Use a published climate source to write two differences and give at least two causes for each, using words such as distance from the equator, coast and height. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using climate on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data.. Correction: Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts. Why it helps the audience is stated.\n\nParent: Likely misconception: Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating climate on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with climate, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about climate with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for climate. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -44,112 +44,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts are more common. This matches the lesson skill for climate.",
+        "explanation": "This matches the taught method for climate. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the worked example and call it independent work.",
-          "Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts are more common.",
-          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data.",
-          "Ignore the task and invent an unrelated answer."
+          "A method that skips the key step taught in this lesson",
+          "Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts",
+          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "Why might Canberra, which is inland and higher above sea level, have colder winters than Sydney on the coast?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for climate; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Places differ because of location. Nearness to the equator, being on the coast or inland and height above sea level all change temperature and rainfall.…",
-          "Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts are more common.",
-          "Careful use of coast and explain why it matters with clear evidence.",
-          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data."
+          "Places differ because of location",
+          "Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts",
+          "Careful use of coast and explain why it matters with clear evidence",
+          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data"
         ],
-        "question": "Which statement is a common mistake when practising climate?",
+        "question": "Which statement is a common mistake when working with climate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named coast and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named coast and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the coast and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name coast and explain why it matters only, without linking it to climate",
+          "Apply climate to new material and name the coast and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data"
         ],
-        "question": "A learner is practising climate. Which approach best shows understanding?",
+        "question": "Which response best applies climate with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts are more common. uses sources and places appropriately for this lesson.",
+        "explanation": "The stronger choice uses sources, places or historical/geographic evidence appropriately for this lesson on climate. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts are more common.",
-          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data"
         ],
-        "question": "Which response best shows careful thinking about climate?",
+        "question": "Which response best uses sources, places or historical/geographic evidence for climate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Name a specific source, cue or example and say what it shows about climate.",
-          "Make a bigger claim without naming any source or cue.",
-          "Copy a classmate’s sentence with no local detail.",
-          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data."
+          "Name a specific source or place detail and say what it shows about climate",
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data"
         ],
-        "question": "Which habit strengthens evidence about coast and explain why it matters?",
+        "question": "Which evidence move best supports a claim about climate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Places differ because of location.) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a missing detail as a proven fact.",
-          "Ignore the task and invent an unrelated answer.",
-          "Example: Darwin is hot all year because it is closer to the equator. Hobart is cooler because it is further south and close to the…",
-          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data."
+          "Make a bigger claim without naming any source or place detail",
+          "Copy a classmate’s sentence with no local detail",
+          "Example: Darwin is hot all year because it is closer to the equator",
+          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data"
         ],
-        "question": "Using this lesson idea — Places differ because of location. Nearness to the equator, being on the coast or inland and height above… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about climate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore safety or cultural protocols to finish faster.",
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete."
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check facts, acknowledge limits of the evidence, and avoid inventing details",
+          "Invent missing details to make the answer sound complete"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps sources, places or historical/geographic evidence accurate for climate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 0,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose one coastal and one inland town. Use a published climate source to write two differences and give at least two causes for each, using words…",
-          "Retype the worked example with no new example.",
-          "Copy the worked example and call it independent work.",
-          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data."
+          "Choose one coastal and one inland town",
+          "Retype the worked example with no new example",
+          "Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data",
+          "Name coast and explain why it matters only, with no linked example"
         ],
-        "question": "Which task best shows independent use of climate?",
+        "question": "Which independent response best applies climate to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about climate with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating climate on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts are more common. Reasoning: I used climate by attending to coast and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: original example using climate on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for climate. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with climate, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data. Correction: Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts are more common. Why: the correction restores accurate use of climate.",
+        "sample_answer": "Sample error: Saying \"they are different because they are different places\" gives no cause that can be checked against a map or data.. Correction: Canberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -226,14 +226,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Places differ because of location. Nearness to the equator, being on the coast or inland and height above sea level all change temperature and rainfall. People's choices, resources and history also make places different. Supported records follow the actual sources and purpose…",
+          "explanation": "Places differ because of location.",
           "options": [
-            "A guess with no evidence.",
-            "Places differ because of location. Nearness to the equator, being on the coast or inland and height above sea level all change temperature and rainfall. People's choices, resources and history also make places different.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Places differ because of location",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
           ],
-          "question": "Which choice best shows accurate use of this idea about climate?",
+          "question": "Which choice best applies this lesson idea about climate with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Darwin is hot all year because it is closer to the equator. Hobart is cooler because it is further south and close to the Southern Ocean. Coastal places often have milder temperatures than inland places at the same latitude.\n\nTRY FIRST\nWhy might Canberra, which is inland and higher above sea level, have colder winters than Sydney on the coast?\n\nFEEDBACK\nCanberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts are more common.",
@@ -284,14 +284,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
           "options": [
-            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding.",
-            "A guess with no evidence."
+            "Make the HSIE idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A claim unrelated to the source or place",
+            "An answer copied without understanding",
+            "A guess with no evidence"
           ],
-          "question": "Which choice best shows accurate use of this idea about climate?",
+          "question": "Which choice best applies this lesson idea about climate with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: Darwin is hot all year because it is closer to the equator. Hobart is cooler because it is further south and close to the Southern Ocean. Coastal places often have milder temperatures than inland places at the same latitude. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
@@ -310,14 +310,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect claim as a comparison.",
           "options": [
-            "A guess with no evidence.",
-            "Use an intentionally incorrect claim as a comparison. Name its specific HSIE error, then show the corrected evidence-based claim.",
-            "A claim unrelated to the source or place.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Use an intentionally incorrect claim as a comparison",
+            "A guess with no evidence",
+            "A claim unrelated to the source or place"
           ],
-          "question": "Which choice best shows accurate use of this idea about climate?",
+          "question": "Which choice best applies this lesson idea about climate with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nSaying \"they are different because they are different places\" gives no cause that can be checked against a map or data. Here is a more productive model: Example: Darwin is hot all year because it is closer to the equator. Hobart is cooler because it is further south and close to the Southern Ocean. Coastal places often have milder temperatures than inland places at the same latitude.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nCanberra is higher above sea level and further from the sea's mild influence, so winter nights are colder and frosts are more common.",
@@ -329,14 +329,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual sources and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no evidence.",
-            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
-            "A claim unrelated to the source or place."
+            "A guess with no evidence",
+            "A claim unrelated to the source or place",
+            "Use the same HSIE idea on a new place, person, source or context, not a copy of the worked example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about climate?",
+          "question": "Which choice best applies this lesson idea about climate with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nPlaces differ because of location. Nearness to the equator, being on the coast or inland and height above sea level all change temperature and rainfall. People's choices, resources and history also make places different. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same HSIE idea as the model, but contain different evidence.",

@@ -33,7 +33,7 @@
     "outcome_codes": [
       "EN2-RECOM-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Read two short argument paragraphs. For each, identify claim, two supports and one weak or missing support. Explain which argument is stronger and why. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Claim: borrow more science kits. Support: kits help memory of investigations. Reasoning: I used argument by attending to claim and explain why it matters rather than copying the worked model.\n\nParent: Written model 2: Common error: A story detail that does not connect to the claim is not useful support. Correction: Claim: borrow more science kits. Support: kits help memory of investigations. Why: the correction restores accurate use of argument.\n\nParent: Likely misconception: A story detail that does not connect to the claim is not useful support. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating argument on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with argument, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Read two short argument paragraphs. For each, identify claim, two supports and one weak or missing support. Explain which argument is stronger and why. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using argument on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: A story detail that does not connect to the claim is not useful support.. Correction: Claim: borrow more science kits.. Why it helps the audience is stated.\n\nParent: Likely misconception: A story detail that does not connect to the claim is not useful support. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating argument on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with argument, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about argument with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for argument. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -43,112 +43,112 @@
     "quiz": [
       {
         "correct_index": 0,
-        "explanation": "Claim: borrow more science kits. Support: kits help memory of investigations. This matches the lesson skill for argument.",
+        "explanation": "This matches the taught method for argument. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Claim: borrow more science kits. Support: kits help memory of investigations.",
-          "A story detail that does not connect to the claim is not useful support.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work."
+          "Claim: borrow more science kits",
+          "A story detail that does not connect to the claim is not useful support",
+          "A claim that names no evidence from the lesson material",
+          "A method that skips the key step taught in this lesson"
         ],
         "question": "Find the claim and one support in: \"Our class should borrow more science kits. Hands-on kits help us remember investigations.\" Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "A story detail that does not connect to the claim is not useful support. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for argument; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Careful use of claim and explain why it matters with clear evidence.",
-          "A story detail that does not connect to the claim is not useful support.",
-          "Reading an argument means finding the claim, the supporting reasons and deciding whether the support is relevant and enough.",
-          "Claim: borrow more science kits. Support: kits help memory of investigations."
+          "Careful use of claim and explain why it matters with clear evidence",
+          "A story detail that does not connect to the claim is not useful support",
+          "Reading an argument means finding the claim, the supporting reasons and deciding whether the support is relevant and",
+          "Claim: borrow more science kits"
         ],
-        "question": "Which statement is a common mistake when practising argument?",
+        "question": "Which statement is a common mistake when working with argument?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Understanding is shown by new evidence and named claim and explain why it matters, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named claim and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Choose randomly because any option could be right.",
-          "Treat a missing detail as a proven fact.",
-          "Apply the idea with new evidence and name the claim and explain why it matters used.",
-          "Repeat the worked example wording with no new evidence."
+          "A story detail that does not connect to the claim is not useful support",
+          "Name claim and explain why it matters only, without linking it to argument",
+          "Apply argument to new material and name the claim and explain why it matters used",
+          "Repeat the worked example wording with no new evidence"
         ],
-        "question": "A learner is practising argument. Which approach best shows understanding?",
+        "question": "Which response best applies argument with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The skill is shown by quoting or pointing to wording that carries argument.",
+        "explanation": "The skill is shown by quoting or pointing to wording that carries argument. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Say the writing is good without naming any words.",
-          "A story detail that does not connect to the claim is not useful support.",
-          "Point to exact words in the sentence that show argument and say what they do.",
-          "Ignore the sentence and invent a more exciting event."
+          "Say the writing is good without naming any words",
+          "A story detail that does not connect to the claim is not useful support",
+          "Point to exact words in the sentence that show argument and say what they do",
+          "Ignore the sentence and invent a more exciting event"
         ],
         "question": "Read: \"In the dusty shed, Lila oiled the bike chain before the race.\" Which choice best uses argument from this lesson?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "The correct statement applies the language skill; the others miss the evidence.",
+        "explanation": "The correct statement applies the language skill with textual evidence. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A story detail that does not connect to the claim is not useful support.",
-          "Ignore the task and invent an unrelated answer.",
-          "Copy the worked example and call it independent work.",
-          "Claim: borrow more science kits. Support: kits help memory of investigations."
+          "A story detail that does not connect to the claim is not useful support",
+          "Copy a model sentence from another story unchanged",
+          "Name claim and explain why it matters without linking it to any words in the text",
+          "Claim: borrow more science kits"
         ],
         "question": "Which statement correctly applies the lesson idea about argument?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Start from a specific textual clue, then explain its effect.",
+        "explanation": "Start from a specific textual clue, then explain its effect. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Guess from the title alone with no textual clue.",
-          "Copy a model sentence from another story unchanged.",
-          "Treat a missing detail as a proven fact.",
-          "Locate a specific word, phrase or structural clue before deciding."
+          "Guess from the title alone with no textual clue",
+          "Copy a model sentence from another story unchanged",
+          "Lengthen the answer with adjectives while keeping the same idea",
+          "Locate a specific word, phrase or structural clue before deciding"
         ],
-        "question": "In a new text, what should you do first to practise claim and explain why it matters?",
+        "question": "In a new text, what should you do first to analyse claim and explain why it matters?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Repair means fixing meaning or evidence, not padding.",
+        "explanation": "Repair means fixing meaning or evidence, not padding. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Delete the evidence that disagreed with your first guess.",
-          "Change the inaccurate idea or missing evidence, not only the length.",
-          "Add adjectives without fixing the wrong idea.",
-          "Make the answer longer while keeping the same mistake."
+          "Delete the evidence that disagreed with your first guess",
+          "Change the inaccurate idea or missing evidence, not only the length",
+          "Add adjectives without fixing the wrong idea",
+          "Make the answer longer while keeping the same mistake"
         ],
-        "question": "Which revision actually repairs meaning?",
+        "question": "Which revision actually improves meaning for argument?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Transfer needs fresh material with an explained language choice.",
+        "explanation": "Accurate transfer needs fresh material with an explained language choice. The other choices miss a key step or use a common mistake.",
         "options": [
-          "A story detail that does not connect to the claim is not useful support.",
-          "Use a fresh sentence or text and explain one precise choice about argument.",
-          "Retype the worked model as the final answer.",
-          "Change fonts and claim the work is new."
+          "A story detail that does not connect to the claim is not useful support",
+          "Use a fresh sentence or text and explain one precise choice about argument",
+          "Retype the worked model as the final answer",
+          "Change fonts and claim the work is new"
         ],
-        "question": "Which response shows transfer of argument to new material?",
+        "question": "Which response shows accurate use of argument on fresh material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about argument with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating argument on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Claim: borrow more science kits. Support: kits help memory of investigations. Reasoning: I used argument by attending to claim and explain why it matters rather than copying the worked model.",
+        "sample_answer": "Sample: original example using argument on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for argument. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with argument, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: A story detail that does not connect to the claim is not useful support. Correction: Claim: borrow more science kits. Support: kits help memory of investigations. Why: the correction restores accurate use of argument.",
+        "sample_answer": "Sample error: A story detail that does not connect to the claim is not useful support.. Correction: Claim: borrow more science kits.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -225,14 +225,14 @@
       {
         "check": {
           "correct_index": 1,
-          "explanation": "Reading an argument means finding the claim, the supporting reasons and deciding whether the support is relevant and enough. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Reading an argument means finding the claim, the supporting reasons and deciding whether the support is relevant and enough.",
           "options": [
-            "A guess with no explanation.",
-            "Reading an argument means finding the claim, the supporting reasons and deciding whether the support is relevant and enough.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding."
+            "An answer copied without understanding",
+            "Reading an argument means finding the claim, the supporting reasons and deciding whether the support is relevant and",
+            "A guess with no explanation",
+            "A claim unrelated to the text"
           ],
-          "question": "Which choice best shows accurate use of this idea about argument?",
+          "question": "Which choice best applies this lesson idea about argument with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nClaim: \"The oval needs shade sails.\" Support: \"Students wait in full sun for sport.\" The support is relevant because it links heat to the request.\n\nTRY FIRST\nFind the claim and one support in: \"Our class should borrow more science kits. Hands-on kits help us remember investigations.\"\n\nFEEDBACK\nClaim: borrow more science kits. Support: kits help memory of investigations.",
@@ -283,14 +283,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does for a reader.",
-            "A claim unrelated to the text."
+            "A guess with no explanation",
+            "A claim unrelated to the text",
+            "Make your choice visible: select the exact detail in the model that demonstrates the skill, and describe what it does",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about argument?",
+          "question": "Which choice best applies this lesson idea about argument with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nClaim: \"The oval needs shade sails.\" Support: \"Students wait in full sun for sport.\" The support is relevant because it links heat to the request. Think about how this word or relationship creates meaning.\n\nTRY FIRST\nUnderline or quote one precise detail in the model and explain its effect.\n\nFEEDBACK\nThe most useful evidence is a specific choice in the example, followed by an explanation of the effect on meaning.",
@@ -309,14 +309,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use an intentionally incorrect attempt as a comparison.",
           "options": [
-            "Use an intentionally incorrect attempt as a comparison. Name its specific error, then show how a revision fixes that error.",
-            "A claim unrelated to the text.",
-            "An answer copied without understanding.",
-            "A guess with no explanation."
+            "Use an intentionally incorrect attempt as a comparison",
+            "A claim unrelated to the text",
+            "An answer copied without understanding",
+            "A guess with no explanation"
           ],
-          "question": "Which choice best shows accurate use of this idea about argument?",
+          "question": "Which choice best applies this lesson idea about argument with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nA story detail that does not connect to the claim is not useful support. Here is a more productive model: Claim: \"The oval needs shade sails.\" Support: \"Students wait in full sun for sport.\" The support is relevant because it links heat to the request.\n\nTRY FIRST\nDescribe why the warned-against approach would weaken your work, then write a corrected version.\n\nFEEDBACK\nClaim: borrow more science kits. Support: kits help memory of investigations.",
@@ -328,14 +328,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity. A supported explanation follows the actual words and purpose of the task. Apply the lesson idea with evidence.",
+          "explanation": "Use the method on a new topic, not a reworded copy of the example.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no explanation.",
-            "Use the method on a new topic, not a reworded copy of the example. Review the result for accuracy and reader clarity.",
-            "A claim unrelated to the text."
+            "A guess with no explanation",
+            "A claim unrelated to the text",
+            "Use the method on a new topic, not a reworded copy of the example",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about argument?",
+          "question": "Which choice best applies this lesson idea about argument with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nReading an argument means finding the claim, the supporting reasons and deciding whether the support is relevant and enough. Now choose different people, facts or text to show you can transfer the idea.\n\nTRY FIRST\nMake one fresh example demonstrating the skill and explain your main choice.\n\nFEEDBACK\nThe new example should meet the same purpose as the model, but contain original material.",

@@ -35,7 +35,7 @@
     "outcome_codes": [
       "PH2-MSP-01"
     ],
-    "parent_notes": "Parent: Marking guidance for the independent task: Practise striking/fielding stations with safety marshals. Note one fielding cue. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Original response on new material: Wait turn behind line; no throw at people; call mine — any three. Reasoning: I used field by attending to strike rather than copying the worked model.\n\nParent: Written model 2: Common error: Crowding the batter is dangerous. Correction: Wait turn behind line; no throw at people; call mine — any three. Why: the correction restores accurate use of field.\n\nParent: Likely misconception: Crowding the batter is dangerous. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating field on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with field, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Require independently produced work with a specific supporting detail. / Require misconception + correction + purpose-linked reason..",
+    "parent_notes": "Parent: Marking guidance for the independent task: Practise striking/fielding stations with safety marshals. Note one fielding cue. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using field on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Crowding the batter is dangerous.. Correction: Wait turn behind line; no throw at people; call mine — any three.. Why it helps the audience is stated.\n\nParent: Likely misconception: Crowding the batter is dangerous. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating field on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with field, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about field with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for field. Reject corrections that do not change the inaccurate idea..",
     "pass": 1,
     "pass_mark": 0.9,
     "planner_fields": null,
@@ -45,112 +45,112 @@
     "quiz": [
       {
         "correct_index": 1,
-        "explanation": "Wait turn behind line; no throw at people; call mine — any three. This matches the lesson skill for field.",
+        "explanation": "This matches the taught method for field. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy the example and call that independent work.",
-          "Wait turn behind line; no throw at people; call mine — any three.",
-          "Crowding the batter is dangerous.",
-          "Ignore the safety rule because the first idea looked exciting."
+          "A method that skips the key step taught in this lesson",
+          "Wait turn behind line; no throw at people; call mine — any three",
+          "Crowding the batter is dangerous",
+          "A claim that names no evidence from the lesson material"
         ],
         "question": "List three safety rules for striking/fielding. Which response is most accurate?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Crowding the batter is dangerous. That misconception weakens accuracy; the other choices align with the lesson idea.",
+        "explanation": "This is the misconception to avoid for field; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Fielding and striking games combine hitting a ball and fielding with safe zones, clear bases/markers and no body-targeting throws.",
-          "Wait turn behind line; no throw at people; call mine — any three.",
-          "Careful use of strike with clear evidence.",
-          "Crowding the batter is dangerous."
+          "Fielding and striking games combine hitting a ball and fielding with safe zones, clear bases/markers and no",
+          "Wait turn behind line; no throw at people; call mine — any three",
+          "Careful use of strike and explain why it matters with clear evidence",
+          "Crowding the batter is dangerous"
         ],
-        "question": "Which statement is a common mistake when practising field?",
+        "question": "Which statement is a common mistake when working with field?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Understanding is shown by new evidence and named strike, not by copying the model.",
+        "explanation": "Understanding is shown by new evidence and a named strike and explain why it matters, not by copying the model. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Apply the idea with new evidence and name the strike used.",
-          "Repeat the worked example wording with no new evidence.",
-          "Choose randomly because any option could be right."
+          "Name strike and explain why it matters only, without linking it to field",
+          "Apply field to new material and name the strike and explain why it matters used",
+          "Repeat the worked example wording with no new evidence",
+          "Crowding the batter is dangerous"
         ],
-        "question": "A learner is practising field. Which approach best shows understanding?",
+        "question": "Which response best applies field with new evidence?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Wait turn behind line; no throw at people; call mine — any three. uses safe, healthy, respectful choices appropriately for this lesson.",
+        "explanation": "The stronger choice uses safe, healthy or respectful choices appropriately for this lesson on field. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Copy the example and call that independent work.",
-          "Wait turn behind line; no throw at people; call mine — any three.",
-          "Crowding the batter is dangerous."
+          "Use a put-down and call it honesty",
+          "Crowding the batter is dangerous",
+          "Wait turn behind line; no throw at people; call mine — any three",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which response best shows careful thinking about field?",
+        "question": "Which response best uses safe, healthy or respectful choices for field?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "Strong answers name specific evidence and what it shows.",
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Copy a classmate’s sentence with no local detail.",
-          "Crowding the batter is dangerous.",
-          "Name a specific source, cue or example and say what it shows about field.",
-          "Make a bigger claim without naming any source or cue."
+          "Use a put-down and call it honesty",
+          "Crowding the batter is dangerous",
+          "Name a body cue, safety rule or wellbeing strategy and say how it helps with field",
+          "Choose the fastest option even when it ignores safety"
         ],
-        "question": "Which habit strengthens evidence about strike?",
+        "question": "Which evidence move best supports a claim about field?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 2,
-        "explanation": "The stronger choice matches the taught idea with concrete detail.",
+        "explanation": "The stronger choice matches the taught idea (Fielding and striking games combine hitting a ball and fielding with) with concrete detail. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat a skipped permission or safety step as if it did not matter.",
-          "Ignore the safety rule because the first idea looked exciting.",
-          "Example: tee strike; fielders return to marker; batter safe path.",
-          "Crowding the batter is dangerous."
+          "Choose the fastest option even when it ignores safety",
+          "Use a put-down and call it honesty",
+          "Example: tee strike; fielders return to marker; batter safe path",
+          "Crowding the batter is dangerous"
         ],
-        "question": "Using this lesson idea — Fielding and striking games combine hitting a ball and fielding with safe zones, clear bases/markers and no… — which choice is best?",
+        "question": "Which choice best applies this lesson idea about field?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 1,
-        "explanation": "Respect and accuracy mean checking evidence and honouring limits/protocols.",
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Treat every online claim as equally reliable.",
-          "Check facts/cues, acknowledge limits, and avoid inventing details.",
-          "Invent missing details to make the answer sound complete.",
-          "Ignore safety or cultural protocols to finish faster."
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check safety and fairness, include others, and explain the healthier choice",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
         ],
-        "question": "Which action shows respect and accuracy together?",
+        "question": "Which action keeps safe, healthy or respectful choices accurate for field?",
         "type": "multiple_choice"
       },
       {
         "correct_index": 3,
-        "explanation": "Independence requires a new example that still uses the skill.",
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
         "options": [
-          "Retype the worked example with no new example.",
-          "Copy the example and call that independent work.",
-          "Crowding the batter is dangerous.",
-          "Practise striking/fielding stations with safety marshals. Note one fielding cue."
+          "Retype the worked example with no new example",
+          "Crowding the batter is dangerous",
+          "Name strike and explain why it matters only, with no linked example",
+          "Practise striking/fielding stations with safety marshals"
         ],
-        "question": "Which task best shows independent use of field?",
+        "question": "Which independent response best applies field to new material?",
         "type": "multiple_choice"
       },
       {
         "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
-        "marking_guide": "Require independently produced work with a specific supporting detail.",
+        "marking_guide": "Accept original work about field with a specific supporting detail. Reject copied model wording with no new material.",
         "question": "Produce a fresh example demonstrating field on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
-        "sample_answer": "Original response on new material: Wait turn behind line; no throw at people; call mine — any three. Reasoning: I used field by attending to strike rather than copying the worked model.",
+        "sample_answer": "Sample: original example using field on new material; names a specific word, source or choice and explains its effect.",
         "type": "short_answer"
       },
       {
         "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
-        "marking_guide": "Require misconception + correction + purpose-linked reason.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for field. Reject corrections that do not change the inaccurate idea.",
         "question": "Name one likely error with field, correct it, and explain why the correction helps a reader or audience.",
-        "sample_answer": "Common error: Crowding the batter is dangerous. Correction: Wait turn behind line; no throw at people; call mine — any three. Why: the correction restores accurate use of field.",
+        "sample_answer": "Sample error: Crowding the batter is dangerous.. Correction: Wait turn behind line; no throw at people; call mine — any three.. Why it helps the audience is stated.",
         "type": "short_answer"
       }
     ],
@@ -227,14 +227,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Fielding and striking games combine hitting a ball and fielding with safe zones, clear bases/markers and no body-targeting throws. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Fielding and striking games combine hitting a ball and fielding with safe zones, clear bases/markers and no body-targeting throws.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Fielding and striking games combine hitting a ball and fielding with safe zones, clear bases/markers and no body-targeting throws.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Fielding and striking games combine hitting a ball and fielding with safe zones, clear bases/markers and no",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about field?",
+          "question": "Which choice best applies this lesson idea about field with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: tee strike; fielders return to marker; batter safe path.\n\nTRY FIRST\nList three safety rules for striking/fielding.\n\nFEEDBACK\nWait turn behind line; no throw at people; call mine — any three.",
@@ -285,14 +285,14 @@
       {
         "check": {
           "correct_index": 2,
-          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
           "options": [
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or others.",
-            "A choice unrelated to safety, health or respect."
+            "A guess with no reason",
+            "A choice unrelated to safety, health or respect",
+            "Make the PDHPE idea visible: name the body cue, safety rule or wellbeing strategy you used and say why it helps you or",
+            "An answer copied without understanding"
           ],
-          "question": "Which choice best shows accurate use of this idea about field?",
+          "question": "Which choice best applies this lesson idea about field with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nExample: tee strike; fielders return to marker; batter safe path. Look at each cue, rule or choice that carries the idea.\n\nTRY FIRST\nList the key cues, rules or choices from the example and say what each one does for safety, health or relationships.\n\nFEEDBACK\nThe most useful reasoning names the cue, rule or strategy and the reason it helps, not only a label such as \"good\".",
@@ -311,14 +311,14 @@
       {
         "check": {
           "correct_index": 3,
-          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use an intentionally unsafe or unhelpful choice as a comparison.",
           "options": [
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason.",
-            "Use an intentionally unsafe or unhelpful choice as a comparison. Name the specific PDHPE error, then show the safer or more respectful choice."
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason",
+            "Use an intentionally unsafe or unhelpful choice as a comparison"
           ],
-          "question": "Which choice best shows accurate use of this idea about field?",
+          "question": "Which choice best applies this lesson idea about field with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nCrowding the batter is dangerous. Here is a more helpful example: Example: tee strike; fielders return to marker; batter safe path.\n\nTRY FIRST\nDescribe why the warned-against choice does not work, then write a safer, kinder or healthier choice with a reason.\n\nFEEDBACK\nWait turn behind line; no throw at people; call mine — any three.",
@@ -330,14 +330,14 @@
       {
         "check": {
           "correct_index": 0,
-          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion. Supported choices follow the actual cues, rules and purpose of the task.",
+          "explanation": "Use the same PDHPE idea in a new place, game or situation, not a copy of the example.",
           "options": [
-            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example. Review safety, fairness and inclusion.",
-            "A choice unrelated to safety, health or respect.",
-            "An answer copied without understanding.",
-            "A guess with no reason."
+            "Use the same PDHPE idea in a new place, game or situation, not a copy of the example",
+            "A choice unrelated to safety, health or respect",
+            "An answer copied without understanding",
+            "A guess with no reason"
           ],
-          "question": "Which choice best shows accurate use of this idea about field?",
+          "question": "Which choice best applies this lesson idea about field with clear evidence?",
           "type": "multiple_choice"
         },
         "example": "WORKED MODEL\nFielding and striking games combine hitting a ball and fielding with safe zones, clear bases/markers and no body-targeting throws. Now choose a different situation to show you can transfer the idea.\n\nTRY FIRST\nDescribe or practise one fresh situation that uses the same skill and write a short reason for your choice.\n\nFEEDBACK\nThe new situation should use the same PDHPE idea as the example, but happen in a different place or with different people.",
