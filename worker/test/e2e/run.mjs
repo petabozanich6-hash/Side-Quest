@@ -308,7 +308,7 @@ await step("J. XP, progress and evidence update; XP is awarded exactly once", as
   const dash = await api("GET", "/dashboard/child", childToken);
   ok(dash.json.xp >= xp0 + 45 && dash.json.xp < xp0 + 45 + 40, `expected ${xp0} + 45 XP got ` + dash.json.xp);
   ok(dash.json.completed.length === 1, "completed list");
-  const again = await api("POST", `/submissions/${submissionId}/feedback`, parentToken, { status: "demonstrated", feedback_text: "again" });
+  const again = await api("POST", `/submissions/${submissionId}/feedback`, parentToken, { status: "demonstrated", feedback_text: "Lovely folding, Mia!" });
   ok(again.status === 200 && again.json.xp_awarded === 0, "XP awarded twice");
   const dash2 = await api("GET", "/dashboard/child", childToken);
   ok(dash2.json.xp < dash.json.xp + 45, "XP was awarded again on re-review");
