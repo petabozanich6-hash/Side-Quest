@@ -2604,3 +2604,1300 @@ Imagine a wetland gradually becoming drier. A population of plants contains inhe
 
 **Visual:** Paired panels showing bilby claws versus burrow use, duck webbed feet versus swimming, and a plant stem cross-section; label observed feature separately from proposed function. Cursor: preserve scientific qualifications and all prose; accessible classification interactions; no reflections.
 
+
+---
+
+# Part II — Original Stage 3 lesson-by-lesson inventory
+
+This is the complete **1,280-record Stage 3 inventory** presently accessible in the repository. Each row preserves the original ID, year, subject, week, lesson, role and topic. The full teaching is in Part I **only if the manuscript status says it is present**. Source statuses such as `queued` and `authored_in_pr` are reproduced exactly from the inventory; a PR authoring status is not evidence the teaching is included in this master file. The broader 19,202-lesson inventory is not present in this Stage 3 CSV.
+
+| Lesson ID | Year | Learning area | Week | Number | Teaching role | Existing lesson focus | Original source status | Full manuscript in Part I? |
+|---|---:|---|---:|---:|---|---|---|---|
+| s3-eng-y5-w01-l1 | 5 | English | 1 | 1 | Reading | Plot structure and story arcs | authored_in_pr | No — not in Part I |
+| s3-eng-y5-w01-l2 | 5 | English | 1 | 2 | Writing | Plot structure and story arcs | authored_in_pr | No — not in Part I |
+| s3-eng-y5-w01-l3 | 5 | English | 1 | 3 | Language and spelling | Plot structure and story arcs | authored_in_pr | No — not in Part I |
+| s3-eng-y5-w01-l4 | 5 | English | 1 | 4 | Speaking and handwriting | Plot structure and story arcs | authored_in_pr | No — not in Part I |
+| s3-mat-y5-w01-l1 | 5 | Mathematics | 1 | 1 | Concept | Reading and writing numbers to the millions | queued | Yes — full draft, review pending |
+| s3-mat-y5-w01-l2 | 5 | Mathematics | 1 | 2 | Strategies | Place value charts and expanded form | queued | Yes — full draft, review pending |
+| s3-mat-y5-w01-l3 | 5 | Mathematics | 1 | 3 | Problem solving | Comparing and ordering large numbers | queued | Yes — full draft, review pending |
+| s3-mat-y5-w01-l4 | 5 | Mathematics | 1 | 4 | Fluency and review | Number sense warm-ups and fluency | queued | Yes — full draft, review pending |
+| s3-sci-y5-w01-l1 | 5 | Science and Technology | 1 | 1 | Investigate | Adaptations of plants and animals | queued | Yes — full draft, review pending |
+| s3-sci-y5-w01-l2 | 5 | Science and Technology | 1 | 2 | Apply and make | Adaptations of plants and animals | queued | Yes — full draft, review pending |
+| s3-hsie-y5-w01-l1 | 5 | HSIE | 1 | 1 | Investigate | First Nations Peoples and Country | queued | Yes — full draft, review pending |
+| s3-hsie-y5-w01-l2 | 5 | HSIE | 1 | 2 | Apply and respond | First Nations Peoples and Country | queued | Yes — full draft, review pending |
+| s3-pdh-y5-w01-l1 | 5 | PDHPE | 1 | 1 | Learn and discuss | Identity and self-awareness | queued | Yes — full draft, review pending |
+| s3-pdh-y5-w01-l2 | 5 | PDHPE | 1 | 2 | Practise and apply | Identity and self-awareness | queued | Yes — full draft, review pending |
+| s3-arts-y5-w01-l1 | 5 | Creative Arts | 1 | 1 | Explore and learn | Drawing techniques | queued | Yes — full draft, review pending |
+| s3-arts-y5-w01-l2 | 5 | Creative Arts | 1 | 2 | Create and perform | Drawing techniques | queued | Yes — full draft, review pending |
+| s3-eng-y5-w02-l1 | 5 | English | 2 | 1 | Reading | Developing characters | queued | Yes — full draft, review pending |
+| s3-eng-y5-w02-l2 | 5 | English | 2 | 2 | Writing | Developing characters | queued | Yes — full draft, review pending |
+| s3-eng-y5-w02-l3 | 5 | English | 2 | 3 | Language and spelling | Developing characters | queued | Yes — full draft, review pending |
+| s3-eng-y5-w02-l4 | 5 | English | 2 | 4 | Speaking and handwriting | Developing characters | queued | Yes — full draft, review pending |
+| s3-mat-y5-w02-l1 | 5 | Mathematics | 2 | 1 | Concept | Rounding to the nearest ten, hundred and thousand | queued | Yes — full draft, review pending |
+| s3-mat-y5-w02-l2 | 5 | Mathematics | 2 | 2 | Strategies | Estimating with rounded numbers | queued | Yes — full draft, review pending |
+| s3-mat-y5-w02-l3 | 5 | Mathematics | 2 | 3 | Problem solving | Number lines and large number patterns | queued | Yes — full draft, review pending |
+| s3-mat-y5-w02-l4 | 5 | Mathematics | 2 | 4 | Fluency and review | Quick check: place value and rounding | queued | Yes — full draft, review pending |
+| s3-sci-y5-w02-l1 | 5 | Science and Technology | 2 | 1 | Investigate | Structural and behavioural adaptations | queued | Yes — full draft, review pending |
+| s3-sci-y5-w02-l2 | 5 | Science and Technology | 2 | 2 | Apply and make | Structural and behavioural adaptations | queued | No — not in Part I |
+| s3-hsie-y5-w02-l1 | 5 | HSIE | 2 | 1 | Investigate | Contact and its impact | queued | No — not in Part I |
+| s3-hsie-y5-w02-l2 | 5 | HSIE | 2 | 2 | Apply and respond | Contact and its impact | queued | No — not in Part I |
+| s3-pdh-y5-w02-l1 | 5 | PDHPE | 2 | 1 | Learn and discuss | Strengths and values | queued | No — not in Part I |
+| s3-pdh-y5-w02-l2 | 5 | PDHPE | 2 | 2 | Practise and apply | Strengths and values | queued | No — not in Part I |
+| s3-arts-y5-w02-l1 | 5 | Creative Arts | 2 | 1 | Explore and learn | Colour and tone | queued | No — not in Part I |
+| s3-arts-y5-w02-l2 | 5 | Creative Arts | 2 | 2 | Create and perform | Colour and tone | queued | No — not in Part I |
+| s3-eng-y5-w03-l1 | 5 | English | 3 | 1 | Reading | Setting and mood | queued | No — not in Part I |
+| s3-eng-y5-w03-l2 | 5 | English | 3 | 2 | Writing | Setting and mood | queued | No — not in Part I |
+| s3-eng-y5-w03-l3 | 5 | English | 3 | 3 | Language and spelling | Setting and mood | queued | No — not in Part I |
+| s3-eng-y5-w03-l4 | 5 | English | 3 | 4 | Speaking and handwriting | Setting and mood | queued | No — not in Part I |
+| s3-mat-y5-w03-l1 | 5 | Mathematics | 3 | 1 | Concept | Number sequences and rules | queued | No — not in Part I |
+| s3-mat-y5-w03-l2 | 5 | Mathematics | 3 | 2 | Strategies | Skip counting forwards and backwards | queued | No — not in Part I |
+| s3-mat-y5-w03-l3 | 5 | Mathematics | 3 | 3 | Problem solving | Roman numerals and other number systems | queued | No — not in Part I |
+| s3-mat-y5-w03-l4 | 5 | Mathematics | 3 | 4 | Fluency and review | Fluency: sequences and counting | queued | No — not in Part I |
+| s3-sci-y5-w03-l1 | 5 | Science and Technology | 3 | 1 | Investigate | Food chains and food webs | queued | No — not in Part I |
+| s3-sci-y5-w03-l2 | 5 | Science and Technology | 3 | 2 | Apply and make | Food chains and food webs | queued | No — not in Part I |
+| s3-hsie-y5-w03-l1 | 5 | HSIE | 3 | 1 | Investigate | Early explorers and navigators | queued | No — not in Part I |
+| s3-hsie-y5-w03-l2 | 5 | HSIE | 3 | 2 | Apply and respond | Early explorers and navigators | queued | No — not in Part I |
+| s3-pdh-y5-w03-l1 | 5 | PDHPE | 3 | 1 | Learn and discuss | Managing emotions | queued | No — not in Part I |
+| s3-pdh-y5-w03-l2 | 5 | PDHPE | 3 | 2 | Practise and apply | Managing emotions | queued | No — not in Part I |
+| s3-arts-y5-w03-l1 | 5 | Creative Arts | 3 | 1 | Explore and learn | Painting | queued | No — not in Part I |
+| s3-arts-y5-w03-l2 | 5 | Creative Arts | 3 | 2 | Create and perform | Painting | queued | No — not in Part I |
+| s3-eng-y5-w04-l1 | 5 | English | 4 | 1 | Reading | Writing a narrative | queued | No — not in Part I |
+| s3-eng-y5-w04-l2 | 5 | English | 4 | 2 | Writing | Writing a narrative | queued | No — not in Part I |
+| s3-eng-y5-w04-l3 | 5 | English | 4 | 3 | Language and spelling | Writing a narrative | queued | No — not in Part I |
+| s3-eng-y5-w04-l4 | 5 | English | 4 | 4 | Speaking and handwriting | Writing a narrative | queued | No — not in Part I |
+| s3-mat-y5-w04-l1 | 5 | Mathematics | 4 | 1 | Concept | Reading large numbers in real life | queued | No — not in Part I |
+| s3-mat-y5-w04-l2 | 5 | Mathematics | 4 | 2 | Strategies | Place value problem solving | queued | No — not in Part I |
+| s3-mat-y5-w04-l3 | 5 | Mathematics | 4 | 3 | Problem solving | Mini investigation: how big is a million | queued | No — not in Part I |
+| s3-mat-y5-w04-l4 | 5 | Mathematics | 4 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y5-w04-l1 | 5 | Science and Technology | 4 | 1 | Investigate | Survival and change | queued | No — not in Part I |
+| s3-sci-y5-w04-l2 | 5 | Science and Technology | 4 | 2 | Apply and make | Survival and change | queued | No — not in Part I |
+| s3-hsie-y5-w04-l1 | 5 | HSIE | 4 | 1 | Investigate | The First Fleet and Sydney Cove | queued | No — not in Part I |
+| s3-hsie-y5-w04-l2 | 5 | HSIE | 4 | 2 | Apply and respond | The First Fleet and Sydney Cove | queued | No — not in Part I |
+| s3-pdh-y5-w04-l1 | 5 | PDHPE | 4 | 1 | Learn and discuss | Resilience | queued | No — not in Part I |
+| s3-pdh-y5-w04-l2 | 5 | PDHPE | 4 | 2 | Practise and apply | Resilience | queued | No — not in Part I |
+| s3-arts-y5-w04-l1 | 5 | Creative Arts | 4 | 1 | Explore and learn | Artists and their influences | queued | No — not in Part I |
+| s3-arts-y5-w04-l2 | 5 | Creative Arts | 4 | 2 | Create and perform | Artists and their influences | queued | No — not in Part I |
+| s3-eng-y5-w05-l1 | 5 | English | 5 | 1 | Reading | Identifying bias and opinion | queued | No — not in Part I |
+| s3-eng-y5-w05-l2 | 5 | English | 5 | 2 | Writing | Identifying bias and opinion | queued | No — not in Part I |
+| s3-eng-y5-w05-l3 | 5 | English | 5 | 3 | Language and spelling | Identifying bias and opinion | queued | No — not in Part I |
+| s3-eng-y5-w05-l4 | 5 | English | 5 | 4 | Speaking and handwriting | Identifying bias and opinion | queued | No — not in Part I |
+| s3-mat-y5-w05-l1 | 5 | Mathematics | 5 | 1 | Concept | Mental strategies for addition | queued | No — not in Part I |
+| s3-mat-y5-w05-l2 | 5 | Mathematics | 5 | 2 | Strategies | Mental strategies for subtraction | queued | No — not in Part I |
+| s3-mat-y5-w05-l3 | 5 | Mathematics | 5 | 3 | Problem solving | Using the inverse to check answers | queued | No — not in Part I |
+| s3-mat-y5-w05-l4 | 5 | Mathematics | 5 | 4 | Fluency and review | Fluency: addition and subtraction facts | queued | No — not in Part I |
+| s3-sci-y5-w05-l1 | 5 | Science and Technology | 5 | 1 | Investigate | Investigation: adaptations | queued | No — not in Part I |
+| s3-sci-y5-w05-l2 | 5 | Science and Technology | 5 | 2 | Apply and make | Investigation: adaptations | queued | No — not in Part I |
+| s3-hsie-y5-w05-l1 | 5 | HSIE | 5 | 1 | Investigate | Investigation: early contact | queued | No — not in Part I |
+| s3-hsie-y5-w05-l2 | 5 | HSIE | 5 | 2 | Apply and respond | Investigation: early contact | queued | No — not in Part I |
+| s3-pdh-y5-w05-l1 | 5 | PDHPE | 5 | 1 | Learn and discuss | Investigation: wellbeing | queued | No — not in Part I |
+| s3-pdh-y5-w05-l2 | 5 | PDHPE | 5 | 2 | Practise and apply | Investigation: wellbeing | queued | No — not in Part I |
+| s3-arts-y5-w05-l1 | 5 | Creative Arts | 5 | 1 | Explore and learn | Investigation: an artwork | queued | No — not in Part I |
+| s3-arts-y5-w05-l2 | 5 | Creative Arts | 5 | 2 | Create and perform | Investigation: an artwork | queued | No — not in Part I |
+| s3-eng-y5-w06-l1 | 5 | English | 6 | 1 | Reading | Building an argument | queued | No — not in Part I |
+| s3-eng-y5-w06-l2 | 5 | English | 6 | 2 | Writing | Building an argument | queued | No — not in Part I |
+| s3-eng-y5-w06-l3 | 5 | English | 6 | 3 | Language and spelling | Building an argument | queued | No — not in Part I |
+| s3-eng-y5-w06-l4 | 5 | English | 6 | 4 | Speaking and handwriting | Building an argument | queued | No — not in Part I |
+| s3-mat-y5-w06-l1 | 5 | Mathematics | 6 | 1 | Concept | Written addition with large numbers | queued | No — not in Part I |
+| s3-mat-y5-w06-l2 | 5 | Mathematics | 6 | 2 | Strategies | Written subtraction with regrouping | queued | No — not in Part I |
+| s3-mat-y5-w06-l3 | 5 | Mathematics | 6 | 3 | Problem solving | Estimating sums and differences | queued | No — not in Part I |
+| s3-mat-y5-w06-l4 | 5 | Mathematics | 6 | 4 | Fluency and review | Fluency: written methods practice | queued | No — not in Part I |
+| s3-sci-y5-w06-l1 | 5 | Science and Technology | 6 | 1 | Investigate | States of matter | queued | No — not in Part I |
+| s3-sci-y5-w06-l2 | 5 | Science and Technology | 6 | 2 | Apply and make | States of matter | queued | No — not in Part I |
+| s3-hsie-y5-w06-l1 | 5 | HSIE | 6 | 1 | Investigate | The Australian colonies | queued | No — not in Part I |
+| s3-hsie-y5-w06-l2 | 5 | HSIE | 6 | 2 | Apply and respond | The Australian colonies | queued | No — not in Part I |
+| s3-pdh-y5-w06-l1 | 5 | PDHPE | 6 | 1 | Learn and discuss | Communication skills | queued | No — not in Part I |
+| s3-pdh-y5-w06-l2 | 5 | PDHPE | 6 | 2 | Practise and apply | Communication skills | queued | No — not in Part I |
+| s3-arts-y5-w06-l1 | 5 | Creative Arts | 6 | 1 | Explore and learn | Reading music notation | queued | No — not in Part I |
+| s3-arts-y5-w06-l2 | 5 | Creative Arts | 6 | 2 | Create and perform | Reading music notation | queued | No — not in Part I |
+| s3-eng-y5-w07-l1 | 5 | English | 7 | 1 | Reading | Persuasive devices | queued | No — not in Part I |
+| s3-eng-y5-w07-l2 | 5 | English | 7 | 2 | Writing | Persuasive devices | queued | No — not in Part I |
+| s3-eng-y5-w07-l3 | 5 | English | 7 | 3 | Language and spelling | Persuasive devices | queued | No — not in Part I |
+| s3-eng-y5-w07-l4 | 5 | English | 7 | 4 | Speaking and handwriting | Persuasive devices | queued | No — not in Part I |
+| s3-mat-y5-w07-l1 | 5 | Mathematics | 7 | 1 | Concept | Addition and subtraction word problems | queued | No — not in Part I |
+| s3-mat-y5-w07-l2 | 5 | Mathematics | 7 | 2 | Strategies | Multi-step problems | queued | No — not in Part I |
+| s3-mat-y5-w07-l3 | 5 | Mathematics | 7 | 3 | Problem solving | Choosing the right operation | queued | No — not in Part I |
+| s3-mat-y5-w07-l4 | 5 | Mathematics | 7 | 4 | Fluency and review | Fluency: problem solving warm-ups | queued | No — not in Part I |
+| s3-sci-y5-w07-l1 | 5 | Science and Technology | 7 | 1 | Investigate | Changes of state | queued | No — not in Part I |
+| s3-sci-y5-w07-l2 | 5 | Science and Technology | 7 | 2 | Apply and make | Changes of state | queued | No — not in Part I |
+| s3-hsie-y5-w07-l1 | 5 | HSIE | 7 | 1 | Investigate | Reasons for colonisation | queued | No — not in Part I |
+| s3-hsie-y5-w07-l2 | 5 | HSIE | 7 | 2 | Apply and respond | Reasons for colonisation | queued | No — not in Part I |
+| s3-pdh-y5-w07-l1 | 5 | PDHPE | 7 | 1 | Learn and discuss | Respectful relationships | queued | No — not in Part I |
+| s3-pdh-y5-w07-l2 | 5 | PDHPE | 7 | 2 | Practise and apply | Respectful relationships | queued | No — not in Part I |
+| s3-arts-y5-w07-l1 | 5 | Creative Arts | 7 | 1 | Explore and learn | Rhythm and melody | queued | No — not in Part I |
+| s3-arts-y5-w07-l2 | 5 | Creative Arts | 7 | 2 | Create and perform | Rhythm and melody | queued | No — not in Part I |
+| s3-eng-y5-w08-l1 | 5 | English | 8 | 1 | Reading | Writing and presenting a persuasive text | queued | No — not in Part I |
+| s3-eng-y5-w08-l2 | 5 | English | 8 | 2 | Writing | Writing and presenting a persuasive text | queued | No — not in Part I |
+| s3-eng-y5-w08-l3 | 5 | English | 8 | 3 | Language and spelling | Writing and presenting a persuasive text | queued | No — not in Part I |
+| s3-eng-y5-w08-l4 | 5 | English | 8 | 4 | Speaking and handwriting | Writing and presenting a persuasive text | queued | No — not in Part I |
+| s3-mat-y5-w08-l1 | 5 | Mathematics | 8 | 1 | Concept | Number sentences and the equals sign | queued | No — not in Part I |
+| s3-mat-y5-w08-l2 | 5 | Mathematics | 8 | 2 | Strategies | Finding missing numbers | queued | No — not in Part I |
+| s3-mat-y5-w08-l3 | 5 | Mathematics | 8 | 3 | Problem solving | Real-life addition and subtraction | queued | No — not in Part I |
+| s3-mat-y5-w08-l4 | 5 | Mathematics | 8 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y5-w08-l1 | 5 | Science and Technology | 8 | 1 | Investigate | Properties and uses of materials | queued | No — not in Part I |
+| s3-sci-y5-w08-l2 | 5 | Science and Technology | 8 | 2 | Apply and make | Properties and uses of materials | queued | No — not in Part I |
+| s3-hsie-y5-w08-l1 | 5 | HSIE | 8 | 1 | Investigate | Convicts and free settlers | queued | No — not in Part I |
+| s3-hsie-y5-w08-l2 | 5 | HSIE | 8 | 2 | Apply and respond | Convicts and free settlers | queued | No — not in Part I |
+| s3-pdh-y5-w08-l1 | 5 | PDHPE | 8 | 1 | Learn and discuss | Friendships and peer influence | queued | No — not in Part I |
+| s3-pdh-y5-w08-l2 | 5 | PDHPE | 8 | 2 | Practise and apply | Friendships and peer influence | queued | No — not in Part I |
+| s3-arts-y5-w08-l1 | 5 | Creative Arts | 8 | 1 | Explore and learn | Singing and playing | queued | No — not in Part I |
+| s3-arts-y5-w08-l2 | 5 | Creative Arts | 8 | 2 | Create and perform | Singing and playing | queued | No — not in Part I |
+| s3-eng-y5-w09-l1 | 5 | English | 9 | 1 | Reading | Simile, metaphor and personification | queued | No — not in Part I |
+| s3-eng-y5-w09-l2 | 5 | English | 9 | 2 | Writing | Simile, metaphor and personification | queued | No — not in Part I |
+| s3-eng-y5-w09-l3 | 5 | English | 9 | 3 | Language and spelling | Simile, metaphor and personification | queued | No — not in Part I |
+| s3-eng-y5-w09-l4 | 5 | English | 9 | 4 | Speaking and handwriting | Simile, metaphor and personification | queued | No — not in Part I |
+| s3-mat-y5-w09-l1 | 5 | Mathematics | 9 | 1 | Concept | Multiplication facts and patterns | queued | No — not in Part I |
+| s3-mat-y5-w09-l2 | 5 | Mathematics | 9 | 2 | Strategies | Multiplying by 10, 100 and 1000 | queued | No — not in Part I |
+| s3-mat-y5-w09-l3 | 5 | Mathematics | 9 | 3 | Problem solving | Mental multiplication strategies | queued | No — not in Part I |
+| s3-mat-y5-w09-l4 | 5 | Mathematics | 9 | 4 | Fluency and review | Fluency: times tables | queued | No — not in Part I |
+| s3-sci-y5-w09-l1 | 5 | Science and Technology | 9 | 1 | Investigate | Reversible and irreversible changes | queued | No — not in Part I |
+| s3-sci-y5-w09-l2 | 5 | Science and Technology | 9 | 2 | Apply and make | Reversible and irreversible changes | queued | No — not in Part I |
+| s3-hsie-y5-w09-l1 | 5 | HSIE | 9 | 1 | Investigate | Life in the colonies | queued | No — not in Part I |
+| s3-hsie-y5-w09-l2 | 5 | HSIE | 9 | 2 | Apply and respond | Life in the colonies | queued | No — not in Part I |
+| s3-pdh-y5-w09-l1 | 5 | PDHPE | 9 | 1 | Learn and discuss | Resolving conflict | queued | No — not in Part I |
+| s3-pdh-y5-w09-l2 | 5 | PDHPE | 9 | 2 | Practise and apply | Resolving conflict | queued | No — not in Part I |
+| s3-arts-y5-w09-l1 | 5 | Creative Arts | 9 | 1 | Explore and learn | Performing in a group | queued | No — not in Part I |
+| s3-arts-y5-w09-l2 | 5 | Creative Arts | 9 | 2 | Create and perform | Performing in a group | queued | No — not in Part I |
+| s3-eng-y5-w10-l1 | 5 | English | 10 | 1 | Reading | Imagery and sound devices | queued | No — not in Part I |
+| s3-eng-y5-w10-l2 | 5 | English | 10 | 2 | Writing | Imagery and sound devices | queued | No — not in Part I |
+| s3-eng-y5-w10-l3 | 5 | English | 10 | 3 | Language and spelling | Imagery and sound devices | queued | No — not in Part I |
+| s3-eng-y5-w10-l4 | 5 | English | 10 | 4 | Speaking and handwriting | Imagery and sound devices | queued | No — not in Part I |
+| s3-mat-y5-w10-l1 | 5 | Mathematics | 10 | 1 | Concept | Written multiplication by a one-digit number | queued | No — not in Part I |
+| s3-mat-y5-w10-l2 | 5 | Mathematics | 10 | 2 | Strategies | Written multiplication by a two-digit number | queued | No — not in Part I |
+| s3-mat-y5-w10-l3 | 5 | Mathematics | 10 | 3 | Problem solving | Estimating products | queued | No — not in Part I |
+| s3-mat-y5-w10-l4 | 5 | Mathematics | 10 | 4 | Fluency and review | Fluency: multiplication practice | queued | No — not in Part I |
+| s3-sci-y5-w10-l1 | 5 | Science and Technology | 10 | 1 | Investigate | Investigation: materials and change | queued | No — not in Part I |
+| s3-sci-y5-w10-l2 | 5 | Science and Technology | 10 | 2 | Apply and make | Investigation: materials and change | queued | No — not in Part I |
+| s3-hsie-y5-w10-l1 | 5 | HSIE | 10 | 1 | Investigate | Investigation: a colony | queued | No — not in Part I |
+| s3-hsie-y5-w10-l2 | 5 | HSIE | 10 | 2 | Apply and respond | Investigation: a colony | queued | No — not in Part I |
+| s3-pdh-y5-w10-l1 | 5 | PDHPE | 10 | 1 | Learn and discuss | Investigation: relationships | queued | No — not in Part I |
+| s3-pdh-y5-w10-l2 | 5 | PDHPE | 10 | 2 | Practise and apply | Investigation: relationships | queued | No — not in Part I |
+| s3-arts-y5-w10-l1 | 5 | Creative Arts | 10 | 1 | Explore and learn | Investigation: a performance | queued | No — not in Part I |
+| s3-arts-y5-w10-l2 | 5 | Creative Arts | 10 | 2 | Create and perform | Investigation: a performance | queued | No — not in Part I |
+| s3-eng-y5-w11-l1 | 5 | English | 11 | 1 | Reading | Reading and performing poems | queued | No — not in Part I |
+| s3-eng-y5-w11-l2 | 5 | English | 11 | 2 | Writing | Reading and performing poems | queued | No — not in Part I |
+| s3-eng-y5-w11-l3 | 5 | English | 11 | 3 | Language and spelling | Reading and performing poems | queued | No — not in Part I |
+| s3-eng-y5-w11-l4 | 5 | English | 11 | 4 | Speaking and handwriting | Reading and performing poems | queued | No — not in Part I |
+| s3-mat-y5-w11-l1 | 5 | Mathematics | 11 | 1 | Concept | Division facts and the link to multiplication | queued | No — not in Part I |
+| s3-mat-y5-w11-l2 | 5 | Mathematics | 11 | 2 | Strategies | Short division with remainders | queued | No — not in Part I |
+| s3-mat-y5-w11-l3 | 5 | Mathematics | 11 | 3 | Problem solving | Interpreting remainders | queued | No — not in Part I |
+| s3-mat-y5-w11-l4 | 5 | Mathematics | 11 | 4 | Fluency and review | Fluency: division practice | queued | No — not in Part I |
+| s3-sci-y5-w11-l1 | 5 | Science and Technology | 11 | 1 | Investigate | Sources of light | queued | No — not in Part I |
+| s3-sci-y5-w11-l2 | 5 | Science and Technology | 11 | 2 | Apply and make | Sources of light | queued | No — not in Part I |
+| s3-hsie-y5-w11-l1 | 5 | HSIE | 11 | 1 | Investigate | The gold rushes | queued | No — not in Part I |
+| s3-hsie-y5-w11-l2 | 5 | HSIE | 11 | 2 | Apply and respond | The gold rushes | queued | No — not in Part I |
+| s3-pdh-y5-w11-l1 | 5 | PDHPE | 11 | 1 | Learn and discuss | Identifying risk | queued | No — not in Part I |
+| s3-pdh-y5-w11-l2 | 5 | PDHPE | 11 | 2 | Practise and apply | Identifying risk | queued | No — not in Part I |
+| s3-arts-y5-w11-l1 | 5 | Creative Arts | 11 | 1 | Explore and learn | Reading a script | queued | No — not in Part I |
+| s3-arts-y5-w11-l2 | 5 | Creative Arts | 11 | 2 | Create and perform | Reading a script | queued | No — not in Part I |
+| s3-eng-y5-w12-l1 | 5 | English | 12 | 1 | Reading | Writing a poem | queued | No — not in Part I |
+| s3-eng-y5-w12-l2 | 5 | English | 12 | 2 | Writing | Writing a poem | queued | No — not in Part I |
+| s3-eng-y5-w12-l3 | 5 | English | 12 | 3 | Language and spelling | Writing a poem | queued | No — not in Part I |
+| s3-eng-y5-w12-l4 | 5 | English | 12 | 4 | Speaking and handwriting | Writing a poem | queued | No — not in Part I |
+| s3-mat-y5-w12-l1 | 5 | Mathematics | 12 | 1 | Concept | Multiplication and division word problems | queued | No — not in Part I |
+| s3-mat-y5-w12-l2 | 5 | Mathematics | 12 | 2 | Strategies | Multi-step problems with all four operations | queued | No — not in Part I |
+| s3-mat-y5-w12-l3 | 5 | Mathematics | 12 | 3 | Problem solving | Area models for multiplication | queued | No — not in Part I |
+| s3-mat-y5-w12-l4 | 5 | Mathematics | 12 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y5-w12-l1 | 5 | Science and Technology | 12 | 1 | Investigate | Reflection and refraction | queued | No — not in Part I |
+| s3-sci-y5-w12-l2 | 5 | Science and Technology | 12 | 2 | Apply and make | Reflection and refraction | queued | No — not in Part I |
+| s3-hsie-y5-w12-l1 | 5 | HSIE | 12 | 1 | Investigate | Diverse communities in colonial life | queued | No — not in Part I |
+| s3-hsie-y5-w12-l2 | 5 | HSIE | 12 | 2 | Apply and respond | Diverse communities in colonial life | queued | No — not in Part I |
+| s3-pdh-y5-w12-l1 | 5 | PDHPE | 12 | 1 | Learn and discuss | Safe decisions | queued | No — not in Part I |
+| s3-pdh-y5-w12-l2 | 5 | PDHPE | 12 | 2 | Practise and apply | Safe decisions | queued | No — not in Part I |
+| s3-arts-y5-w12-l1 | 5 | Creative Arts | 12 | 1 | Explore and learn | Character and voice | queued | No — not in Part I |
+| s3-arts-y5-w12-l2 | 5 | Creative Arts | 12 | 2 | Create and perform | Character and voice | queued | No — not in Part I |
+| s3-eng-y5-w13-l1 | 5 | English | 13 | 1 | Reading | Research skills and note taking | queued | No — not in Part I |
+| s3-eng-y5-w13-l2 | 5 | English | 13 | 2 | Writing | Research skills and note taking | queued | No — not in Part I |
+| s3-eng-y5-w13-l3 | 5 | English | 13 | 3 | Language and spelling | Research skills and note taking | queued | No — not in Part I |
+| s3-eng-y5-w13-l4 | 5 | English | 13 | 4 | Speaking and handwriting | Research skills and note taking | queued | No — not in Part I |
+| s3-mat-y5-w13-l1 | 5 | Mathematics | 13 | 1 | Concept | Factors and multiples | queued | No — not in Part I |
+| s3-mat-y5-w13-l2 | 5 | Mathematics | 13 | 2 | Strategies | Prime and composite numbers | queued | No — not in Part I |
+| s3-mat-y5-w13-l3 | 5 | Mathematics | 13 | 3 | Problem solving | Common factors and multiples | queued | No — not in Part I |
+| s3-mat-y5-w13-l4 | 5 | Mathematics | 13 | 4 | Fluency and review | Fluency: factors and multiples | queued | No — not in Part I |
+| s3-sci-y5-w13-l1 | 5 | Science and Technology | 13 | 1 | Investigate | Shadows and opaque materials | queued | No — not in Part I |
+| s3-sci-y5-w13-l2 | 5 | Science and Technology | 13 | 2 | Apply and make | Shadows and opaque materials | queued | No — not in Part I |
+| s3-hsie-y5-w13-l1 | 5 | HSIE | 13 | 1 | Investigate | Women, children and workers | queued | No — not in Part I |
+| s3-hsie-y5-w13-l2 | 5 | HSIE | 13 | 2 | Apply and respond | Women, children and workers | queued | No — not in Part I |
+| s3-pdh-y5-w13-l1 | 5 | PDHPE | 13 | 1 | Learn and discuss | Online safety | queued | No — not in Part I |
+| s3-pdh-y5-w13-l2 | 5 | PDHPE | 13 | 2 | Practise and apply | Online safety | queued | No — not in Part I |
+| s3-arts-y5-w13-l1 | 5 | Creative Arts | 13 | 1 | Explore and learn | Improvisation | queued | No — not in Part I |
+| s3-arts-y5-w13-l2 | 5 | Creative Arts | 13 | 2 | Create and perform | Improvisation | queued | No — not in Part I |
+| s3-eng-y5-w14-l1 | 5 | English | 14 | 1 | Reading | Structuring an information report | queued | No — not in Part I |
+| s3-eng-y5-w14-l2 | 5 | English | 14 | 2 | Writing | Structuring an information report | queued | No — not in Part I |
+| s3-eng-y5-w14-l3 | 5 | English | 14 | 3 | Language and spelling | Structuring an information report | queued | No — not in Part I |
+| s3-eng-y5-w14-l4 | 5 | English | 14 | 4 | Speaking and handwriting | Structuring an information report | queued | No — not in Part I |
+| s3-mat-y5-w14-l1 | 5 | Mathematics | 14 | 1 | Concept | Square numbers and their patterns | queued | No — not in Part I |
+| s3-mat-y5-w14-l2 | 5 | Mathematics | 14 | 2 | Strategies | Number patterns and rules | queued | No — not in Part I |
+| s3-mat-y5-w14-l3 | 5 | Mathematics | 14 | 3 | Problem solving | Growing patterns and tables of values | queued | No — not in Part I |
+| s3-mat-y5-w14-l4 | 5 | Mathematics | 14 | 4 | Fluency and review | Fluency: patterns and rules | queued | No — not in Part I |
+| s3-sci-y5-w14-l1 | 5 | Science and Technology | 14 | 1 | Investigate | Colour and the spectrum | queued | No — not in Part I |
+| s3-sci-y5-w14-l2 | 5 | Science and Technology | 14 | 2 | Apply and make | Colour and the spectrum | queued | No — not in Part I |
+| s3-hsie-y5-w14-l1 | 5 | HSIE | 14 | 1 | Investigate | Colonial towns and heritage | queued | No — not in Part I |
+| s3-hsie-y5-w14-l2 | 5 | HSIE | 14 | 2 | Apply and respond | Colonial towns and heritage | queued | No — not in Part I |
+| s3-pdh-y5-w14-l1 | 5 | PDHPE | 14 | 1 | Learn and discuss | First aid basics | queued | No — not in Part I |
+| s3-pdh-y5-w14-l2 | 5 | PDHPE | 14 | 2 | Practise and apply | First aid basics | queued | No — not in Part I |
+| s3-arts-y5-w14-l1 | 5 | Creative Arts | 14 | 1 | Explore and learn | Performing a scene | queued | No — not in Part I |
+| s3-arts-y5-w14-l2 | 5 | Creative Arts | 14 | 2 | Create and perform | Performing a scene | queued | No — not in Part I |
+| s3-eng-y5-w15-l1 | 5 | English | 15 | 1 | Reading | Writing with technical language | queued | No — not in Part I |
+| s3-eng-y5-w15-l2 | 5 | English | 15 | 2 | Writing | Writing with technical language | queued | No — not in Part I |
+| s3-eng-y5-w15-l3 | 5 | English | 15 | 3 | Language and spelling | Writing with technical language | queued | No — not in Part I |
+| s3-eng-y5-w15-l4 | 5 | English | 15 | 4 | Speaking and handwriting | Writing with technical language | queued | No — not in Part I |
+| s3-mat-y5-w15-l1 | 5 | Mathematics | 15 | 1 | Concept | Equivalent number sentences | queued | No — not in Part I |
+| s3-mat-y5-w15-l2 | 5 | Mathematics | 15 | 2 | Strategies | Balancing equations | queued | No — not in Part I |
+| s3-mat-y5-w15-l3 | 5 | Mathematics | 15 | 3 | Problem solving | Using a symbol for an unknown number | queued | No — not in Part I |
+| s3-mat-y5-w15-l4 | 5 | Mathematics | 15 | 4 | Fluency and review | Fluency: missing numbers | queued | No — not in Part I |
+| s3-sci-y5-w15-l1 | 5 | Science and Technology | 15 | 1 | Investigate | Investigation: light | queued | No — not in Part I |
+| s3-sci-y5-w15-l2 | 5 | Science and Technology | 15 | 2 | Apply and make | Investigation: light | queued | No — not in Part I |
+| s3-hsie-y5-w15-l1 | 5 | HSIE | 15 | 1 | Investigate | Investigation: colonial life | queued | No — not in Part I |
+| s3-hsie-y5-w15-l2 | 5 | HSIE | 15 | 2 | Apply and respond | Investigation: colonial life | queued | No — not in Part I |
+| s3-pdh-y5-w15-l1 | 5 | PDHPE | 15 | 1 | Learn and discuss | Investigation: staying safe | queued | No — not in Part I |
+| s3-pdh-y5-w15-l2 | 5 | PDHPE | 15 | 2 | Practise and apply | Investigation: staying safe | queued | No — not in Part I |
+| s3-arts-y5-w15-l1 | 5 | Creative Arts | 15 | 1 | Explore and learn | Investigation: a drama | queued | No — not in Part I |
+| s3-arts-y5-w15-l2 | 5 | Creative Arts | 15 | 2 | Create and perform | Investigation: a drama | queued | No — not in Part I |
+| s3-eng-y5-w16-l1 | 5 | English | 16 | 1 | Reading | Presenting research | queued | No — not in Part I |
+| s3-eng-y5-w16-l2 | 5 | English | 16 | 2 | Writing | Presenting research | queued | No — not in Part I |
+| s3-eng-y5-w16-l3 | 5 | English | 16 | 3 | Language and spelling | Presenting research | queued | No — not in Part I |
+| s3-eng-y5-w16-l4 | 5 | English | 16 | 4 | Speaking and handwriting | Presenting research | queued | No — not in Part I |
+| s3-mat-y5-w16-l1 | 5 | Mathematics | 16 | 1 | Concept | Using patterns to solve problems | queued | No — not in Part I |
+| s3-mat-y5-w16-l2 | 5 | Mathematics | 16 | 2 | Strategies | Describing patterns in words | queued | No — not in Part I |
+| s3-mat-y5-w16-l3 | 5 | Mathematics | 16 | 3 | Problem solving | Investigation: patterns in the world around us | queued | No — not in Part I |
+| s3-mat-y5-w16-l4 | 5 | Mathematics | 16 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y5-w16-l1 | 5 | Science and Technology | 16 | 1 | Investigate | Earth, Sun and Moon | queued | No — not in Part I |
+| s3-sci-y5-w16-l2 | 5 | Science and Technology | 16 | 2 | Apply and make | Earth, Sun and Moon | queued | No — not in Part I |
+| s3-hsie-y5-w16-l1 | 5 | HSIE | 16 | 1 | Investigate | Asia and its countries | queued | No — not in Part I |
+| s3-hsie-y5-w16-l2 | 5 | HSIE | 16 | 2 | Apply and respond | Asia and its countries | queued | No — not in Part I |
+| s3-pdh-y5-w16-l1 | 5 | PDHPE | 16 | 1 | Learn and discuss | Food groups and nutrition | queued | No — not in Part I |
+| s3-pdh-y5-w16-l2 | 5 | PDHPE | 16 | 2 | Practise and apply | Food groups and nutrition | queued | No — not in Part I |
+| s3-arts-y5-w16-l1 | 5 | Creative Arts | 16 | 1 | Explore and learn | Elements of dance | queued | No — not in Part I |
+| s3-arts-y5-w16-l2 | 5 | Creative Arts | 16 | 2 | Create and perform | Elements of dance | queued | No — not in Part I |
+| s3-eng-y5-w17-l1 | 5 | English | 17 | 1 | Reading | Reading a class novel | queued | No — not in Part I |
+| s3-eng-y5-w17-l2 | 5 | English | 17 | 2 | Writing | Reading a class novel | queued | No — not in Part I |
+| s3-eng-y5-w17-l3 | 5 | English | 17 | 3 | Language and spelling | Reading a class novel | queued | No — not in Part I |
+| s3-eng-y5-w17-l4 | 5 | English | 17 | 4 | Speaking and handwriting | Reading a class novel | queued | No — not in Part I |
+| s3-mat-y5-w17-l1 | 5 | Mathematics | 17 | 1 | Concept | Fractions as parts of a whole and of a set | queued | No — not in Part I |
+| s3-mat-y5-w17-l2 | 5 | Mathematics | 17 | 2 | Strategies | Equivalent fractions | queued | No — not in Part I |
+| s3-mat-y5-w17-l3 | 5 | Mathematics | 17 | 3 | Problem solving | Simplifying fractions | queued | No — not in Part I |
+| s3-mat-y5-w17-l4 | 5 | Mathematics | 17 | 4 | Fluency and review | Fluency: fraction recognition | queued | No — not in Part I |
+| s3-sci-y5-w17-l1 | 5 | Science and Technology | 17 | 1 | Investigate | Planets of the solar system | queued | No — not in Part I |
+| s3-sci-y5-w17-l2 | 5 | Science and Technology | 17 | 2 | Apply and make | Planets of the solar system | queued | No — not in Part I |
+| s3-hsie-y5-w17-l1 | 5 | HSIE | 17 | 1 | Investigate | Asia: environments and climate | queued | No — not in Part I |
+| s3-hsie-y5-w17-l2 | 5 | HSIE | 17 | 2 | Apply and respond | Asia: environments and climate | queued | No — not in Part I |
+| s3-pdh-y5-w17-l1 | 5 | PDHPE | 17 | 1 | Learn and discuss | Reading food labels | queued | No — not in Part I |
+| s3-pdh-y5-w17-l2 | 5 | PDHPE | 17 | 2 | Practise and apply | Reading food labels | queued | No — not in Part I |
+| s3-arts-y5-w17-l1 | 5 | Creative Arts | 17 | 1 | Explore and learn | Choreographing a phrase | queued | No — not in Part I |
+| s3-arts-y5-w17-l2 | 5 | Creative Arts | 17 | 2 | Create and perform | Choreographing a phrase | queued | No — not in Part I |
+| s3-eng-y5-w18-l1 | 5 | English | 18 | 1 | Reading | Character and motivation | queued | No — not in Part I |
+| s3-eng-y5-w18-l2 | 5 | English | 18 | 2 | Writing | Character and motivation | queued | No — not in Part I |
+| s3-eng-y5-w18-l3 | 5 | English | 18 | 3 | Language and spelling | Character and motivation | queued | No — not in Part I |
+| s3-eng-y5-w18-l4 | 5 | English | 18 | 4 | Speaking and handwriting | Character and motivation | queued | No — not in Part I |
+| s3-mat-y5-w18-l1 | 5 | Mathematics | 18 | 1 | Concept | Comparing and ordering fractions | queued | No — not in Part I |
+| s3-mat-y5-w18-l2 | 5 | Mathematics | 18 | 2 | Strategies | Fractions on a number line | queued | No — not in Part I |
+| s3-mat-y5-w18-l3 | 5 | Mathematics | 18 | 3 | Problem solving | Mixed numbers and improper fractions | queued | No — not in Part I |
+| s3-mat-y5-w18-l4 | 5 | Mathematics | 18 | 4 | Fluency and review | Fluency: comparing fractions | queued | No — not in Part I |
+| s3-sci-y5-w18-l1 | 5 | Science and Technology | 18 | 1 | Investigate | Day, night and seasons | queued | No — not in Part I |
+| s3-sci-y5-w18-l2 | 5 | Science and Technology | 18 | 2 | Apply and make | Day, night and seasons | queued | No — not in Part I |
+| s3-hsie-y5-w18-l1 | 5 | HSIE | 18 | 1 | Investigate | Connections between Australia and Asia | queued | No — not in Part I |
+| s3-hsie-y5-w18-l2 | 5 | HSIE | 18 | 2 | Apply and respond | Connections between Australia and Asia | queued | No — not in Part I |
+| s3-pdh-y5-w18-l1 | 5 | PDHPE | 18 | 1 | Learn and discuss | Planning healthy meals | queued | No — not in Part I |
+| s3-pdh-y5-w18-l2 | 5 | PDHPE | 18 | 2 | Practise and apply | Planning healthy meals | queued | No — not in Part I |
+| s3-arts-y5-w18-l1 | 5 | Creative Arts | 18 | 1 | Explore and learn | Dance from different cultures | queued | No — not in Part I |
+| s3-arts-y5-w18-l2 | 5 | Creative Arts | 18 | 2 | Create and perform | Dance from different cultures | queued | No — not in Part I |
+| s3-eng-y5-w19-l1 | 5 | English | 19 | 1 | Reading | Theme and author purpose | queued | No — not in Part I |
+| s3-eng-y5-w19-l2 | 5 | English | 19 | 2 | Writing | Theme and author purpose | queued | No — not in Part I |
+| s3-eng-y5-w19-l3 | 5 | English | 19 | 3 | Language and spelling | Theme and author purpose | queued | No — not in Part I |
+| s3-eng-y5-w19-l4 | 5 | English | 19 | 4 | Speaking and handwriting | Theme and author purpose | queued | No — not in Part I |
+| s3-mat-y5-w19-l1 | 5 | Mathematics | 19 | 1 | Concept | Adding fractions with the same denominator | queued | No — not in Part I |
+| s3-mat-y5-w19-l2 | 5 | Mathematics | 19 | 2 | Strategies | Subtracting fractions with the same denominator | queued | No — not in Part I |
+| s3-mat-y5-w19-l3 | 5 | Mathematics | 19 | 3 | Problem solving | Adding and subtracting with related denominators | queued | No — not in Part I |
+| s3-mat-y5-w19-l4 | 5 | Mathematics | 19 | 4 | Fluency and review | Fluency: fraction addition and subtraction | queued | No — not in Part I |
+| s3-sci-y5-w19-l1 | 5 | Science and Technology | 19 | 1 | Investigate | Space exploration | queued | No — not in Part I |
+| s3-sci-y5-w19-l2 | 5 | Science and Technology | 19 | 2 | Apply and make | Space exploration | queued | No — not in Part I |
+| s3-hsie-y5-w19-l1 | 5 | HSIE | 19 | 1 | Investigate | Trade and culture | queued | No — not in Part I |
+| s3-hsie-y5-w19-l2 | 5 | HSIE | 19 | 2 | Apply and respond | Trade and culture | queued | No — not in Part I |
+| s3-pdh-y5-w19-l1 | 5 | PDHPE | 19 | 1 | Learn and discuss | Physical activity guidelines | queued | No — not in Part I |
+| s3-pdh-y5-w19-l2 | 5 | PDHPE | 19 | 2 | Practise and apply | Physical activity guidelines | queued | No — not in Part I |
+| s3-arts-y5-w19-l1 | 5 | Creative Arts | 19 | 1 | Explore and learn | Performing dance | queued | No — not in Part I |
+| s3-arts-y5-w19-l2 | 5 | Creative Arts | 19 | 2 | Create and perform | Performing dance | queued | No — not in Part I |
+| s3-eng-y5-w20-l1 | 5 | English | 20 | 1 | Reading | Responding to the novel | queued | No — not in Part I |
+| s3-eng-y5-w20-l2 | 5 | English | 20 | 2 | Writing | Responding to the novel | queued | No — not in Part I |
+| s3-eng-y5-w20-l3 | 5 | English | 20 | 3 | Language and spelling | Responding to the novel | queued | No — not in Part I |
+| s3-eng-y5-w20-l4 | 5 | English | 20 | 4 | Speaking and handwriting | Responding to the novel | queued | No — not in Part I |
+| s3-mat-y5-w20-l1 | 5 | Mathematics | 20 | 1 | Concept | Fractions of a quantity | queued | No — not in Part I |
+| s3-mat-y5-w20-l2 | 5 | Mathematics | 20 | 2 | Strategies | Fraction word problems | queued | No — not in Part I |
+| s3-mat-y5-w20-l3 | 5 | Mathematics | 20 | 3 | Problem solving | Investigation: fractions in cooking and sharing | queued | No — not in Part I |
+| s3-mat-y5-w20-l4 | 5 | Mathematics | 20 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y5-w20-l1 | 5 | Science and Technology | 20 | 1 | Investigate | Investigation: the solar system | queued | No — not in Part I |
+| s3-sci-y5-w20-l2 | 5 | Science and Technology | 20 | 2 | Apply and make | Investigation: the solar system | queued | No — not in Part I |
+| s3-hsie-y5-w20-l1 | 5 | HSIE | 20 | 1 | Investigate | Investigation: Asia | queued | No — not in Part I |
+| s3-hsie-y5-w20-l2 | 5 | HSIE | 20 | 2 | Apply and respond | Investigation: Asia | queued | No — not in Part I |
+| s3-pdh-y5-w20-l1 | 5 | PDHPE | 20 | 1 | Learn and discuss | Investigation: healthy choices | queued | No — not in Part I |
+| s3-pdh-y5-w20-l2 | 5 | PDHPE | 20 | 2 | Practise and apply | Investigation: healthy choices | queued | No — not in Part I |
+| s3-arts-y5-w20-l1 | 5 | Creative Arts | 20 | 1 | Explore and learn | Investigation: choreography | queued | No — not in Part I |
+| s3-arts-y5-w20-l2 | 5 | Creative Arts | 20 | 2 | Create and perform | Investigation: choreography | queued | No — not in Part I |
+| s3-eng-y5-w21-l1 | 5 | English | 21 | 1 | Reading | Complex and compound sentences | queued | No — not in Part I |
+| s3-eng-y5-w21-l2 | 5 | English | 21 | 2 | Writing | Complex and compound sentences | queued | No — not in Part I |
+| s3-eng-y5-w21-l3 | 5 | English | 21 | 3 | Language and spelling | Complex and compound sentences | queued | No — not in Part I |
+| s3-eng-y5-w21-l4 | 5 | English | 21 | 4 | Speaking and handwriting | Complex and compound sentences | queued | No — not in Part I |
+| s3-mat-y5-w21-l1 | 5 | Mathematics | 21 | 1 | Concept | Tenths and hundredths | queued | No — not in Part I |
+| s3-mat-y5-w21-l2 | 5 | Mathematics | 21 | 2 | Strategies | Decimal place value to thousandths | queued | No — not in Part I |
+| s3-mat-y5-w21-l3 | 5 | Mathematics | 21 | 3 | Problem solving | Comparing and ordering decimals | queued | No — not in Part I |
+| s3-mat-y5-w21-l4 | 5 | Mathematics | 21 | 4 | Fluency and review | Fluency: decimal place value | queued | No — not in Part I |
+| s3-sci-y5-w21-l1 | 5 | Science and Technology | 21 | 1 | Investigate | Structures and forces | queued | No — not in Part I |
+| s3-sci-y5-w21-l2 | 5 | Science and Technology | 21 | 2 | Apply and make | Structures and forces | queued | No — not in Part I |
+| s3-hsie-y5-w21-l1 | 5 | HSIE | 21 | 1 | Investigate | Natural environments and resources | queued | No — not in Part I |
+| s3-hsie-y5-w21-l2 | 5 | HSIE | 21 | 2 | Apply and respond | Natural environments and resources | queued | No — not in Part I |
+| s3-pdh-y5-w21-l1 | 5 | PDHPE | 21 | 1 | Learn and discuss | Running, jumping and throwing | queued | No — not in Part I |
+| s3-pdh-y5-w21-l2 | 5 | PDHPE | 21 | 2 | Practise and apply | Running, jumping and throwing | queued | No — not in Part I |
+| s3-arts-y5-w21-l1 | 5 | Creative Arts | 21 | 1 | Explore and learn | Sculpture and form | queued | No — not in Part I |
+| s3-arts-y5-w21-l2 | 5 | Creative Arts | 21 | 2 | Create and perform | Sculpture and form | queued | No — not in Part I |
+| s3-eng-y5-w22-l1 | 5 | English | 22 | 1 | Reading | Clauses and conjunctions | queued | No — not in Part I |
+| s3-eng-y5-w22-l2 | 5 | English | 22 | 2 | Writing | Clauses and conjunctions | queued | No — not in Part I |
+| s3-eng-y5-w22-l3 | 5 | English | 22 | 3 | Language and spelling | Clauses and conjunctions | queued | No — not in Part I |
+| s3-eng-y5-w22-l4 | 5 | English | 22 | 4 | Speaking and handwriting | Clauses and conjunctions | queued | No — not in Part I |
+| s3-mat-y5-w22-l1 | 5 | Mathematics | 22 | 1 | Concept | Adding and subtracting decimals | queued | No — not in Part I |
+| s3-mat-y5-w22-l2 | 5 | Mathematics | 22 | 2 | Strategies | Multiplying decimals by 10 and 100 | queued | No — not in Part I |
+| s3-mat-y5-w22-l3 | 5 | Mathematics | 22 | 3 | Problem solving | Rounding decimals | queued | No — not in Part I |
+| s3-mat-y5-w22-l4 | 5 | Mathematics | 22 | 4 | Fluency and review | Fluency: decimal operations | queued | No — not in Part I |
+| s3-sci-y5-w22-l1 | 5 | Science and Technology | 22 | 1 | Investigate | Strong and stable designs | queued | No — not in Part I |
+| s3-sci-y5-w22-l2 | 5 | Science and Technology | 22 | 2 | Apply and make | Strong and stable designs | queued | No — not in Part I |
+| s3-hsie-y5-w22-l1 | 5 | HSIE | 22 | 1 | Investigate | Natural hazards | queued | No — not in Part I |
+| s3-hsie-y5-w22-l2 | 5 | HSIE | 22 | 2 | Apply and respond | Natural hazards | queued | No — not in Part I |
+| s3-pdh-y5-w22-l1 | 5 | PDHPE | 22 | 1 | Learn and discuss | Ball skills | queued | No — not in Part I |
+| s3-pdh-y5-w22-l2 | 5 | PDHPE | 22 | 2 | Practise and apply | Ball skills | queued | No — not in Part I |
+| s3-arts-y5-w22-l1 | 5 | Creative Arts | 22 | 1 | Explore and learn | Working with clay and wire | queued | No — not in Part I |
+| s3-arts-y5-w22-l2 | 5 | Creative Arts | 22 | 2 | Create and perform | Working with clay and wire | queued | No — not in Part I |
+| s3-eng-y5-w23-l1 | 5 | English | 23 | 1 | Reading | Punctuation: commas and apostrophes | queued | No — not in Part I |
+| s3-eng-y5-w23-l2 | 5 | English | 23 | 2 | Writing | Punctuation: commas and apostrophes | queued | No — not in Part I |
+| s3-eng-y5-w23-l3 | 5 | English | 23 | 3 | Language and spelling | Punctuation: commas and apostrophes | queued | No — not in Part I |
+| s3-eng-y5-w23-l4 | 5 | English | 23 | 4 | Speaking and handwriting | Punctuation: commas and apostrophes | queued | No — not in Part I |
+| s3-mat-y5-w23-l1 | 5 | Mathematics | 23 | 1 | Concept | Fractions, decimals and percentages | queued | No — not in Part I |
+| s3-mat-y5-w23-l2 | 5 | Mathematics | 23 | 2 | Strategies | Common percentages: 10, 25, 50 and 100 | queued | No — not in Part I |
+| s3-mat-y5-w23-l3 | 5 | Mathematics | 23 | 3 | Problem solving | Converting between fractions, decimals and percentages | queued | No — not in Part I |
+| s3-mat-y5-w23-l4 | 5 | Mathematics | 23 | 4 | Fluency and review | Fluency: benchmark percentages | queued | No — not in Part I |
+| s3-sci-y5-w23-l1 | 5 | Science and Technology | 23 | 1 | Investigate | Bridges and towers | queued | No — not in Part I |
+| s3-sci-y5-w23-l2 | 5 | Science and Technology | 23 | 2 | Apply and make | Bridges and towers | queued | No — not in Part I |
+| s3-hsie-y5-w23-l1 | 5 | HSIE | 23 | 1 | Investigate | Managing environments | queued | No — not in Part I |
+| s3-hsie-y5-w23-l2 | 5 | HSIE | 23 | 2 | Apply and respond | Managing environments | queued | No — not in Part I |
+| s3-pdh-y5-w23-l1 | 5 | PDHPE | 23 | 1 | Learn and discuss | Fitness components | queued | No — not in Part I |
+| s3-pdh-y5-w23-l2 | 5 | PDHPE | 23 | 2 | Practise and apply | Fitness components | queued | No — not in Part I |
+| s3-arts-y5-w23-l1 | 5 | Creative Arts | 23 | 1 | Explore and learn | Design for a purpose | queued | No — not in Part I |
+| s3-arts-y5-w23-l2 | 5 | Creative Arts | 23 | 2 | Create and perform | Design for a purpose | queued | No — not in Part I |
+| s3-eng-y5-w24-l1 | 5 | English | 24 | 1 | Reading | Direct and indirect speech | queued | No — not in Part I |
+| s3-eng-y5-w24-l2 | 5 | English | 24 | 2 | Writing | Direct and indirect speech | queued | No — not in Part I |
+| s3-eng-y5-w24-l3 | 5 | English | 24 | 3 | Language and spelling | Direct and indirect speech | queued | No — not in Part I |
+| s3-eng-y5-w24-l4 | 5 | English | 24 | 4 | Speaking and handwriting | Direct and indirect speech | queued | No — not in Part I |
+| s3-mat-y5-w24-l1 | 5 | Mathematics | 24 | 1 | Concept | Money: adding, subtracting and giving change | queued | No — not in Part I |
+| s3-mat-y5-w24-l2 | 5 | Mathematics | 24 | 2 | Strategies | Rounding amounts of money | queued | No — not in Part I |
+| s3-mat-y5-w24-l3 | 5 | Mathematics | 24 | 3 | Problem solving | Planning a budget | queued | No — not in Part I |
+| s3-mat-y5-w24-l4 | 5 | Mathematics | 24 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y5-w24-l1 | 5 | Science and Technology | 24 | 1 | Investigate | Testing and improving a design | queued | No — not in Part I |
+| s3-sci-y5-w24-l2 | 5 | Science and Technology | 24 | 2 | Apply and make | Testing and improving a design | queued | No — not in Part I |
+| s3-hsie-y5-w24-l1 | 5 | HSIE | 24 | 1 | Investigate | Sustainable futures | queued | No — not in Part I |
+| s3-hsie-y5-w24-l2 | 5 | HSIE | 24 | 2 | Apply and respond | Sustainable futures | queued | No — not in Part I |
+| s3-pdh-y5-w24-l1 | 5 | PDHPE | 24 | 1 | Learn and discuss | Setting personal bests | queued | No — not in Part I |
+| s3-pdh-y5-w24-l2 | 5 | PDHPE | 24 | 2 | Practise and apply | Setting personal bests | queued | No — not in Part I |
+| s3-arts-y5-w24-l1 | 5 | Creative Arts | 24 | 1 | Explore and learn | Making a sculpture | queued | No — not in Part I |
+| s3-arts-y5-w24-l2 | 5 | Creative Arts | 24 | 2 | Create and perform | Making a sculpture | queued | No — not in Part I |
+| s3-eng-y5-w25-l1 | 5 | English | 25 | 1 | Reading | Prefixes and suffixes | queued | No — not in Part I |
+| s3-eng-y5-w25-l2 | 5 | English | 25 | 2 | Writing | Prefixes and suffixes | queued | No — not in Part I |
+| s3-eng-y5-w25-l3 | 5 | English | 25 | 3 | Language and spelling | Prefixes and suffixes | queued | No — not in Part I |
+| s3-eng-y5-w25-l4 | 5 | English | 25 | 4 | Speaking and handwriting | Prefixes and suffixes | queued | No — not in Part I |
+| s3-mat-y5-w25-l1 | 5 | Mathematics | 25 | 1 | Concept | Measuring length in millimetres, centimetres, metres and kilometres | queued | No — not in Part I |
+| s3-mat-y5-w25-l2 | 5 | Mathematics | 25 | 2 | Strategies | Converting units of length | queued | No — not in Part I |
+| s3-mat-y5-w25-l3 | 5 | Mathematics | 25 | 3 | Problem solving | Estimating and measuring lengths | queued | No — not in Part I |
+| s3-mat-y5-w25-l4 | 5 | Mathematics | 25 | 4 | Fluency and review | Fluency: length conversions | queued | No — not in Part I |
+| s3-sci-y5-w25-l1 | 5 | Science and Technology | 25 | 1 | Investigate | Investigation: design challenge | queued | No — not in Part I |
+| s3-sci-y5-w25-l2 | 5 | Science and Technology | 25 | 2 | Apply and make | Investigation: design challenge | queued | No — not in Part I |
+| s3-hsie-y5-w25-l1 | 5 | HSIE | 25 | 1 | Investigate | Investigation: environments | queued | No — not in Part I |
+| s3-hsie-y5-w25-l2 | 5 | HSIE | 25 | 2 | Apply and respond | Investigation: environments | queued | No — not in Part I |
+| s3-pdh-y5-w25-l1 | 5 | PDHPE | 25 | 1 | Learn and discuss | Investigation: movement skills | queued | No — not in Part I |
+| s3-pdh-y5-w25-l2 | 5 | PDHPE | 25 | 2 | Practise and apply | Investigation: movement skills | queued | No — not in Part I |
+| s3-arts-y5-w25-l1 | 5 | Creative Arts | 25 | 1 | Explore and learn | Investigation: a sculpture | queued | No — not in Part I |
+| s3-arts-y5-w25-l2 | 5 | Creative Arts | 25 | 2 | Create and perform | Investigation: a sculpture | queued | No — not in Part I |
+| s3-eng-y5-w26-l1 | 5 | English | 26 | 1 | Reading | Roots and word origins | queued | No — not in Part I |
+| s3-eng-y5-w26-l2 | 5 | English | 26 | 2 | Writing | Roots and word origins | queued | No — not in Part I |
+| s3-eng-y5-w26-l3 | 5 | English | 26 | 3 | Language and spelling | Roots and word origins | queued | No — not in Part I |
+| s3-eng-y5-w26-l4 | 5 | English | 26 | 4 | Speaking and handwriting | Roots and word origins | queued | No — not in Part I |
+| s3-mat-y5-w26-l1 | 5 | Mathematics | 26 | 1 | Concept | Perimeter of rectangles and other shapes | queued | No — not in Part I |
+| s3-mat-y5-w26-l2 | 5 | Mathematics | 26 | 2 | Strategies | Perimeter problems | queued | No — not in Part I |
+| s3-mat-y5-w26-l3 | 5 | Mathematics | 26 | 3 | Problem solving | Scale drawings and simple maps | queued | No — not in Part I |
+| s3-mat-y5-w26-l4 | 5 | Mathematics | 26 | 4 | Fluency and review | Fluency: perimeter practice | queued | No — not in Part I |
+| s3-sci-y5-w26-l1 | 5 | Science and Technology | 26 | 1 | Investigate | Algorithms and flowcharts | queued | No — not in Part I |
+| s3-sci-y5-w26-l2 | 5 | Science and Technology | 26 | 2 | Apply and make | Algorithms and flowcharts | queued | No — not in Part I |
+| s3-hsie-y5-w26-l1 | 5 | HSIE | 26 | 1 | Investigate | What is democracy | queued | No — not in Part I |
+| s3-hsie-y5-w26-l2 | 5 | HSIE | 26 | 2 | Apply and respond | What is democracy | queued | No — not in Part I |
+| s3-pdh-y5-w26-l1 | 5 | PDHPE | 26 | 1 | Learn and discuss | Invasion games and tactics | queued | No — not in Part I |
+| s3-pdh-y5-w26-l2 | 5 | PDHPE | 26 | 2 | Practise and apply | Invasion games and tactics | queued | No — not in Part I |
+| s3-arts-y5-w26-l1 | 5 | Creative Arts | 26 | 1 | Explore and learn | Pulse and tempo | queued | No — not in Part I |
+| s3-arts-y5-w26-l2 | 5 | Creative Arts | 26 | 2 | Create and perform | Pulse and tempo | queued | No — not in Part I |
+| s3-eng-y5-w27-l1 | 5 | English | 27 | 1 | Reading | Homophones and tricky words | queued | No — not in Part I |
+| s3-eng-y5-w27-l2 | 5 | English | 27 | 2 | Writing | Homophones and tricky words | queued | No — not in Part I |
+| s3-eng-y5-w27-l3 | 5 | English | 27 | 3 | Language and spelling | Homophones and tricky words | queued | No — not in Part I |
+| s3-eng-y5-w27-l4 | 5 | English | 27 | 4 | Speaking and handwriting | Homophones and tricky words | queued | No — not in Part I |
+| s3-mat-y5-w27-l1 | 5 | Mathematics | 27 | 1 | Concept | Area of rectangles | queued | No — not in Part I |
+| s3-mat-y5-w27-l2 | 5 | Mathematics | 27 | 2 | Strategies | Area of composite shapes | queued | No — not in Part I |
+| s3-mat-y5-w27-l3 | 5 | Mathematics | 27 | 3 | Problem solving | Comparing area and perimeter | queued | No — not in Part I |
+| s3-mat-y5-w27-l4 | 5 | Mathematics | 27 | 4 | Fluency and review | Fluency: area practice | queued | No — not in Part I |
+| s3-sci-y5-w27-l1 | 5 | Science and Technology | 27 | 1 | Investigate | Programming with variables | queued | No — not in Part I |
+| s3-sci-y5-w27-l2 | 5 | Science and Technology | 27 | 2 | Apply and make | Programming with variables | queued | No — not in Part I |
+| s3-hsie-y5-w27-l1 | 5 | HSIE | 27 | 1 | Investigate | Voting and elections | queued | No — not in Part I |
+| s3-hsie-y5-w27-l2 | 5 | HSIE | 27 | 2 | Apply and respond | Voting and elections | queued | No — not in Part I |
+| s3-pdh-y5-w27-l1 | 5 | PDHPE | 27 | 1 | Learn and discuss | Net and wall games | queued | No — not in Part I |
+| s3-pdh-y5-w27-l2 | 5 | PDHPE | 27 | 2 | Practise and apply | Net and wall games | queued | No — not in Part I |
+| s3-arts-y5-w27-l1 | 5 | Creative Arts | 27 | 1 | Explore and learn | Composing a melody | queued | No — not in Part I |
+| s3-arts-y5-w27-l2 | 5 | Creative Arts | 27 | 2 | Create and perform | Composing a melody | queued | No — not in Part I |
+| s3-eng-y5-w28-l1 | 5 | English | 28 | 1 | Reading | Spelling strategies | queued | No — not in Part I |
+| s3-eng-y5-w28-l2 | 5 | English | 28 | 2 | Writing | Spelling strategies | queued | No — not in Part I |
+| s3-eng-y5-w28-l3 | 5 | English | 28 | 3 | Language and spelling | Spelling strategies | queued | No — not in Part I |
+| s3-eng-y5-w28-l4 | 5 | English | 28 | 4 | Speaking and handwriting | Spelling strategies | queued | No — not in Part I |
+| s3-mat-y5-w28-l1 | 5 | Mathematics | 28 | 1 | Concept | Area and perimeter problems | queued | No — not in Part I |
+| s3-mat-y5-w28-l2 | 5 | Mathematics | 28 | 2 | Strategies | Investigation: design a room | queued | No — not in Part I |
+| s3-mat-y5-w28-l3 | 5 | Mathematics | 28 | 3 | Problem solving | Real-life measurement problems | queued | No — not in Part I |
+| s3-mat-y5-w28-l4 | 5 | Mathematics | 28 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y5-w28-l1 | 5 | Science and Technology | 28 | 1 | Investigate | Programming with decisions | queued | No — not in Part I |
+| s3-sci-y5-w28-l2 | 5 | Science and Technology | 28 | 2 | Apply and make | Programming with decisions | queued | No — not in Part I |
+| s3-hsie-y5-w28-l1 | 5 | HSIE | 28 | 1 | Investigate | Laws and rules | queued | No — not in Part I |
+| s3-hsie-y5-w28-l2 | 5 | HSIE | 28 | 2 | Apply and respond | Laws and rules | queued | No — not in Part I |
+| s3-pdh-y5-w28-l1 | 5 | PDHPE | 28 | 1 | Learn and discuss | Striking and fielding games | queued | No — not in Part I |
+| s3-pdh-y5-w28-l2 | 5 | PDHPE | 28 | 2 | Practise and apply | Striking and fielding games | queued | No — not in Part I |
+| s3-arts-y5-w28-l1 | 5 | Creative Arts | 28 | 1 | Explore and learn | Using instruments and technology | queued | No — not in Part I |
+| s3-arts-y5-w28-l2 | 5 | Creative Arts | 28 | 2 | Create and perform | Using instruments and technology | queued | No — not in Part I |
+| s3-eng-y5-w29-l1 | 5 | English | 29 | 1 | Reading | Reading images and layout | queued | No — not in Part I |
+| s3-eng-y5-w29-l2 | 5 | English | 29 | 2 | Writing | Reading images and layout | queued | No — not in Part I |
+| s3-eng-y5-w29-l3 | 5 | English | 29 | 3 | Language and spelling | Reading images and layout | queued | No — not in Part I |
+| s3-eng-y5-w29-l4 | 5 | English | 29 | 4 | Speaking and handwriting | Reading images and layout | queued | No — not in Part I |
+| s3-mat-y5-w29-l1 | 5 | Mathematics | 29 | 1 | Concept | Volume and cubic centimetres | queued | No — not in Part I |
+| s3-mat-y5-w29-l2 | 5 | Mathematics | 29 | 2 | Strategies | Volume of rectangular prisms | queued | No — not in Part I |
+| s3-mat-y5-w29-l3 | 5 | Mathematics | 29 | 3 | Problem solving | Capacity: millilitres and litres | queued | No — not in Part I |
+| s3-mat-y5-w29-l4 | 5 | Mathematics | 29 | 4 | Fluency and review | Fluency: volume and capacity | queued | No — not in Part I |
+| s3-sci-y5-w29-l1 | 5 | Science and Technology | 29 | 1 | Investigate | Debugging programs | queued | No — not in Part I |
+| s3-sci-y5-w29-l2 | 5 | Science and Technology | 29 | 2 | Apply and make | Debugging programs | queued | No — not in Part I |
+| s3-hsie-y5-w29-l1 | 5 | HSIE | 29 | 1 | Investigate | Rights and responsibilities | queued | No — not in Part I |
+| s3-hsie-y5-w29-l2 | 5 | HSIE | 29 | 2 | Apply and respond | Rights and responsibilities | queued | No — not in Part I |
+| s3-pdh-y5-w29-l1 | 5 | PDHPE | 29 | 1 | Learn and discuss | Fair play and teamwork | queued | No — not in Part I |
+| s3-pdh-y5-w29-l2 | 5 | PDHPE | 29 | 2 | Practise and apply | Fair play and teamwork | queued | No — not in Part I |
+| s3-arts-y5-w29-l1 | 5 | Creative Arts | 29 | 1 | Explore and learn | Recording and sharing | queued | No — not in Part I |
+| s3-arts-y5-w29-l2 | 5 | Creative Arts | 29 | 2 | Create and perform | Recording and sharing | queued | No — not in Part I |
+| s3-eng-y5-w30-l1 | 5 | English | 30 | 1 | Reading | Analysing advertisements | queued | No — not in Part I |
+| s3-eng-y5-w30-l2 | 5 | English | 30 | 2 | Writing | Analysing advertisements | queued | No — not in Part I |
+| s3-eng-y5-w30-l3 | 5 | English | 30 | 3 | Language and spelling | Analysing advertisements | queued | No — not in Part I |
+| s3-eng-y5-w30-l4 | 5 | English | 30 | 4 | Speaking and handwriting | Analysing advertisements | queued | No — not in Part I |
+| s3-mat-y5-w30-l1 | 5 | Mathematics | 30 | 1 | Concept | Mass: grams, kilograms and tonnes | queued | No — not in Part I |
+| s3-mat-y5-w30-l2 | 5 | Mathematics | 30 | 2 | Strategies | Converting units of mass | queued | No — not in Part I |
+| s3-mat-y5-w30-l3 | 5 | Mathematics | 30 | 3 | Problem solving | Mass and capacity problems | queued | No — not in Part I |
+| s3-mat-y5-w30-l4 | 5 | Mathematics | 30 | 4 | Fluency and review | Fluency: mass and capacity conversions | queued | No — not in Part I |
+| s3-sci-y5-w30-l1 | 5 | Science and Technology | 30 | 1 | Investigate | Investigation: coding project | queued | No — not in Part I |
+| s3-sci-y5-w30-l2 | 5 | Science and Technology | 30 | 2 | Apply and make | Investigation: coding project | queued | No — not in Part I |
+| s3-hsie-y5-w30-l1 | 5 | HSIE | 30 | 1 | Investigate | Investigation: democracy | queued | No — not in Part I |
+| s3-hsie-y5-w30-l2 | 5 | HSIE | 30 | 2 | Apply and respond | Investigation: democracy | queued | No — not in Part I |
+| s3-pdh-y5-w30-l1 | 5 | PDHPE | 30 | 1 | Learn and discuss | Investigation: game strategy | queued | No — not in Part I |
+| s3-pdh-y5-w30-l2 | 5 | PDHPE | 30 | 2 | Practise and apply | Investigation: game strategy | queued | No — not in Part I |
+| s3-arts-y5-w30-l1 | 5 | Creative Arts | 30 | 1 | Explore and learn | Investigation: a composition | queued | No — not in Part I |
+| s3-arts-y5-w30-l2 | 5 | Creative Arts | 30 | 2 | Create and perform | Investigation: a composition | queued | No — not in Part I |
+| s3-eng-y5-w31-l1 | 5 | English | 31 | 1 | Reading | Reading websites and digital texts | queued | No — not in Part I |
+| s3-eng-y5-w31-l2 | 5 | English | 31 | 2 | Writing | Reading websites and digital texts | queued | No — not in Part I |
+| s3-eng-y5-w31-l3 | 5 | English | 31 | 3 | Language and spelling | Reading websites and digital texts | queued | No — not in Part I |
+| s3-eng-y5-w31-l4 | 5 | English | 31 | 4 | Speaking and handwriting | Reading websites and digital texts | queued | No — not in Part I |
+| s3-mat-y5-w31-l1 | 5 | Mathematics | 31 | 1 | Concept | Time: 12-hour and 24-hour time | queued | No — not in Part I |
+| s3-mat-y5-w31-l2 | 5 | Mathematics | 31 | 2 | Strategies | Elapsed time | queued | No — not in Part I |
+| s3-mat-y5-w31-l3 | 5 | Mathematics | 31 | 3 | Problem solving | Timetables | queued | No — not in Part I |
+| s3-mat-y5-w31-l4 | 5 | Mathematics | 31 | 4 | Fluency and review | Fluency: reading time | queued | No — not in Part I |
+| s3-sci-y5-w31-l1 | 5 | Science and Technology | 31 | 1 | Investigate | Where food and fibre come from | queued | No — not in Part I |
+| s3-sci-y5-w31-l2 | 5 | Science and Technology | 31 | 2 | Apply and make | Where food and fibre come from | queued | No — not in Part I |
+| s3-hsie-y5-w31-l1 | 5 | HSIE | 31 | 1 | Investigate | Needs and wants | queued | No — not in Part I |
+| s3-hsie-y5-w31-l2 | 5 | HSIE | 31 | 2 | Apply and respond | Needs and wants | queued | No — not in Part I |
+| s3-pdh-y5-w31-l1 | 5 | PDHPE | 31 | 1 | Learn and discuss | Dance styles | queued | No — not in Part I |
+| s3-pdh-y5-w31-l2 | 5 | PDHPE | 31 | 2 | Practise and apply | Dance styles | queued | No — not in Part I |
+| s3-arts-y5-w31-l1 | 5 | Creative Arts | 31 | 1 | Explore and learn | Drama conventions | queued | No — not in Part I |
+| s3-arts-y5-w31-l2 | 5 | Creative Arts | 31 | 2 | Create and perform | Drama conventions | queued | No — not in Part I |
+| s3-eng-y5-w32-l1 | 5 | English | 32 | 1 | Reading | Creating a multimodal text | queued | No — not in Part I |
+| s3-eng-y5-w32-l2 | 5 | English | 32 | 2 | Writing | Creating a multimodal text | queued | No — not in Part I |
+| s3-eng-y5-w32-l3 | 5 | English | 32 | 3 | Language and spelling | Creating a multimodal text | queued | No — not in Part I |
+| s3-eng-y5-w32-l4 | 5 | English | 32 | 4 | Speaking and handwriting | Creating a multimodal text | queued | No — not in Part I |
+| s3-mat-y5-w32-l1 | 5 | Mathematics | 32 | 1 | Concept | Time and duration problems | queued | No — not in Part I |
+| s3-mat-y5-w32-l2 | 5 | Mathematics | 32 | 2 | Strategies | Calendars and timelines | queued | No — not in Part I |
+| s3-mat-y5-w32-l3 | 5 | Mathematics | 32 | 3 | Problem solving | Investigation: planning a trip | queued | No — not in Part I |
+| s3-mat-y5-w32-l4 | 5 | Mathematics | 32 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y5-w32-l1 | 5 | Science and Technology | 32 | 1 | Investigate | Farming in Australia | queued | No — not in Part I |
+| s3-sci-y5-w32-l2 | 5 | Science and Technology | 32 | 2 | Apply and make | Farming in Australia | queued | No — not in Part I |
+| s3-hsie-y5-w32-l1 | 5 | HSIE | 32 | 1 | Investigate | Making choices | queued | No — not in Part I |
+| s3-hsie-y5-w32-l2 | 5 | HSIE | 32 | 2 | Apply and respond | Making choices | queued | No — not in Part I |
+| s3-pdh-y5-w32-l1 | 5 | PDHPE | 32 | 1 | Learn and discuss | Gymnastic sequences | queued | No — not in Part I |
+| s3-pdh-y5-w32-l2 | 5 | PDHPE | 32 | 2 | Practise and apply | Gymnastic sequences | queued | No — not in Part I |
+| s3-arts-y5-w32-l1 | 5 | Creative Arts | 32 | 1 | Explore and learn | Theatre roles | queued | No — not in Part I |
+| s3-arts-y5-w32-l2 | 5 | Creative Arts | 32 | 2 | Create and perform | Theatre roles | queued | No — not in Part I |
+| s3-eng-y5-w33-l1 | 5 | English | 33 | 1 | Reading | Explanations: how and why | queued | No — not in Part I |
+| s3-eng-y5-w33-l2 | 5 | English | 33 | 2 | Writing | Explanations: how and why | queued | No — not in Part I |
+| s3-eng-y5-w33-l3 | 5 | English | 33 | 3 | Language and spelling | Explanations: how and why | queued | No — not in Part I |
+| s3-eng-y5-w33-l4 | 5 | English | 33 | 4 | Speaking and handwriting | Explanations: how and why | queued | No — not in Part I |
+| s3-mat-y5-w33-l1 | 5 | Mathematics | 33 | 1 | Concept | Types of angles | queued | No — not in Part I |
+| s3-mat-y5-w33-l2 | 5 | Mathematics | 33 | 2 | Strategies | Measuring angles with a protractor | queued | No — not in Part I |
+| s3-mat-y5-w33-l3 | 5 | Mathematics | 33 | 3 | Problem solving | Drawing angles | queued | No — not in Part I |
+| s3-mat-y5-w33-l4 | 5 | Mathematics | 33 | 4 | Fluency and review | Fluency: estimating angles | queued | No — not in Part I |
+| s3-sci-y5-w33-l1 | 5 | Science and Technology | 33 | 1 | Investigate | Plants and animals in agriculture | queued | No — not in Part I |
+| s3-sci-y5-w33-l2 | 5 | Science and Technology | 33 | 2 | Apply and make | Plants and animals in agriculture | queued | No — not in Part I |
+| s3-hsie-y5-w33-l1 | 5 | HSIE | 33 | 1 | Investigate | Resources and scarcity | queued | No — not in Part I |
+| s3-hsie-y5-w33-l2 | 5 | HSIE | 33 | 2 | Apply and respond | Resources and scarcity | queued | No — not in Part I |
+| s3-pdh-y5-w33-l1 | 5 | PDHPE | 33 | 1 | Learn and discuss | Creating a routine | queued | No — not in Part I |
+| s3-pdh-y5-w33-l2 | 5 | PDHPE | 33 | 2 | Practise and apply | Creating a routine | queued | No — not in Part I |
+| s3-arts-y5-w33-l1 | 5 | Creative Arts | 33 | 1 | Explore and learn | Rehearsing a play | queued | No — not in Part I |
+| s3-arts-y5-w33-l2 | 5 | Creative Arts | 33 | 2 | Create and perform | Rehearsing a play | queued | No — not in Part I |
+| s3-eng-y5-w34-l1 | 5 | English | 34 | 1 | Reading | Writing an explanation | queued | No — not in Part I |
+| s3-eng-y5-w34-l2 | 5 | English | 34 | 2 | Writing | Writing an explanation | queued | No — not in Part I |
+| s3-eng-y5-w34-l3 | 5 | English | 34 | 3 | Language and spelling | Writing an explanation | queued | No — not in Part I |
+| s3-eng-y5-w34-l4 | 5 | English | 34 | 4 | Speaking and handwriting | Writing an explanation | queued | No — not in Part I |
+| s3-mat-y5-w34-l1 | 5 | Mathematics | 34 | 1 | Concept | Properties of 2D shapes | queued | No — not in Part I |
+| s3-mat-y5-w34-l2 | 5 | Mathematics | 34 | 2 | Strategies | Triangles and quadrilaterals | queued | No — not in Part I |
+| s3-mat-y5-w34-l3 | 5 | Mathematics | 34 | 3 | Problem solving | Symmetry | queued | No — not in Part I |
+| s3-mat-y5-w34-l4 | 5 | Mathematics | 34 | 4 | Fluency and review | Fluency: naming shapes | queued | No — not in Part I |
+| s3-sci-y5-w34-l1 | 5 | Science and Technology | 34 | 1 | Investigate | Sustainable farming | queued | No — not in Part I |
+| s3-sci-y5-w34-l2 | 5 | Science and Technology | 34 | 2 | Apply and make | Sustainable farming | queued | No — not in Part I |
+| s3-hsie-y5-w34-l1 | 5 | HSIE | 34 | 1 | Investigate | Work, business and money | queued | No — not in Part I |
+| s3-hsie-y5-w34-l2 | 5 | HSIE | 34 | 2 | Apply and respond | Work, business and money | queued | No — not in Part I |
+| s3-pdh-y5-w34-l1 | 5 | PDHPE | 34 | 1 | Learn and discuss | Performing and evaluating | queued | No — not in Part I |
+| s3-pdh-y5-w34-l2 | 5 | PDHPE | 34 | 2 | Practise and apply | Performing and evaluating | queued | No — not in Part I |
+| s3-arts-y5-w34-l1 | 5 | Creative Arts | 34 | 1 | Explore and learn | Performing a play | queued | No — not in Part I |
+| s3-arts-y5-w34-l2 | 5 | Creative Arts | 34 | 2 | Create and perform | Performing a play | queued | No — not in Part I |
+| s3-eng-y5-w35-l1 | 5 | English | 35 | 1 | Reading | Writing procedures | queued | No — not in Part I |
+| s3-eng-y5-w35-l2 | 5 | English | 35 | 2 | Writing | Writing procedures | queued | No — not in Part I |
+| s3-eng-y5-w35-l3 | 5 | English | 35 | 3 | Language and spelling | Writing procedures | queued | No — not in Part I |
+| s3-eng-y5-w35-l4 | 5 | English | 35 | 4 | Speaking and handwriting | Writing procedures | queued | No — not in Part I |
+| s3-mat-y5-w35-l1 | 5 | Mathematics | 35 | 1 | Concept | Properties of 3D objects | queued | No — not in Part I |
+| s3-mat-y5-w35-l2 | 5 | Mathematics | 35 | 2 | Strategies | Prisms, pyramids and their nets | queued | No — not in Part I |
+| s3-mat-y5-w35-l3 | 5 | Mathematics | 35 | 3 | Problem solving | Drawing and building 3D objects | queued | No — not in Part I |
+| s3-mat-y5-w35-l4 | 5 | Mathematics | 35 | 4 | Fluency and review | Fluency: faces, edges and vertices | queued | No — not in Part I |
+| s3-sci-y5-w35-l1 | 5 | Science and Technology | 35 | 1 | Investigate | Investigation: food and fibre | queued | No — not in Part I |
+| s3-sci-y5-w35-l2 | 5 | Science and Technology | 35 | 2 | Apply and make | Investigation: food and fibre | queued | No — not in Part I |
+| s3-hsie-y5-w35-l1 | 5 | HSIE | 35 | 1 | Investigate | Investigation: a class business | queued | No — not in Part I |
+| s3-hsie-y5-w35-l2 | 5 | HSIE | 35 | 2 | Apply and respond | Investigation: a class business | queued | No — not in Part I |
+| s3-pdh-y5-w35-l1 | 5 | PDHPE | 35 | 1 | Learn and discuss | Investigation: performance | queued | No — not in Part I |
+| s3-pdh-y5-w35-l2 | 5 | PDHPE | 35 | 2 | Practise and apply | Investigation: performance | queued | No — not in Part I |
+| s3-arts-y5-w35-l1 | 5 | Creative Arts | 35 | 1 | Explore and learn | Investigation: a production | queued | No — not in Part I |
+| s3-arts-y5-w35-l2 | 5 | Creative Arts | 35 | 2 | Create and perform | Investigation: a production | queued | No — not in Part I |
+| s3-eng-y5-w36-l1 | 5 | English | 36 | 1 | Reading | Reading and writing reviews | queued | No — not in Part I |
+| s3-eng-y5-w36-l2 | 5 | English | 36 | 2 | Writing | Reading and writing reviews | queued | No — not in Part I |
+| s3-eng-y5-w36-l3 | 5 | English | 36 | 3 | Language and spelling | Reading and writing reviews | queued | No — not in Part I |
+| s3-eng-y5-w36-l4 | 5 | English | 36 | 4 | Speaking and handwriting | Reading and writing reviews | queued | No — not in Part I |
+| s3-mat-y5-w36-l1 | 5 | Mathematics | 36 | 1 | Concept | Grid references and maps | queued | No — not in Part I |
+| s3-mat-y5-w36-l2 | 5 | Mathematics | 36 | 2 | Strategies | Translation, reflection and rotation | queued | No — not in Part I |
+| s3-mat-y5-w36-l3 | 5 | Mathematics | 36 | 3 | Problem solving | Investigation: tessellating patterns | queued | No — not in Part I |
+| s3-mat-y5-w36-l4 | 5 | Mathematics | 36 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y5-w36-l1 | 5 | Science and Technology | 36 | 1 | Investigate | Planning a fair test | queued | No — not in Part I |
+| s3-sci-y5-w36-l2 | 5 | Science and Technology | 36 | 2 | Apply and make | Planning a fair test | queued | No — not in Part I |
+| s3-hsie-y5-w36-l1 | 5 | HSIE | 36 | 1 | Investigate | Asking inquiry questions | queued | No — not in Part I |
+| s3-hsie-y5-w36-l2 | 5 | HSIE | 36 | 2 | Apply and respond | Asking inquiry questions | queued | No — not in Part I |
+| s3-pdh-y5-w36-l1 | 5 | PDHPE | 36 | 1 | Learn and discuss | Changes in growing | queued | No — not in Part I |
+| s3-pdh-y5-w36-l2 | 5 | PDHPE | 36 | 2 | Practise and apply | Changes in growing | queued | No — not in Part I |
+| s3-arts-y5-w36-l1 | 5 | Creative Arts | 36 | 1 | Explore and learn | Selecting and refining work | queued | No — not in Part I |
+| s3-arts-y5-w36-l2 | 5 | Creative Arts | 36 | 2 | Create and perform | Selecting and refining work | queued | No — not in Part I |
+| s3-eng-y5-w37-l1 | 5 | English | 37 | 1 | Reading | Fluency and comprehension | queued | No — not in Part I |
+| s3-eng-y5-w37-l2 | 5 | English | 37 | 2 | Writing | Fluency and comprehension | queued | No — not in Part I |
+| s3-eng-y5-w37-l3 | 5 | English | 37 | 3 | Language and spelling | Fluency and comprehension | queued | No — not in Part I |
+| s3-eng-y5-w37-l4 | 5 | English | 37 | 4 | Speaking and handwriting | Fluency and comprehension | queued | No — not in Part I |
+| s3-mat-y5-w37-l1 | 5 | Mathematics | 37 | 1 | Concept | Collecting data | queued | No — not in Part I |
+| s3-mat-y5-w37-l2 | 5 | Mathematics | 37 | 2 | Strategies | Tables, picture graphs and column graphs | queued | No — not in Part I |
+| s3-mat-y5-w37-l3 | 5 | Mathematics | 37 | 3 | Problem solving | Reading and interpreting graphs | queued | No — not in Part I |
+| s3-mat-y5-w37-l4 | 5 | Mathematics | 37 | 4 | Fluency and review | Fluency: reading graphs | queued | No — not in Part I |
+| s3-sci-y5-w37-l1 | 5 | Science and Technology | 37 | 1 | Investigate | Collecting and graphing data | queued | No — not in Part I |
+| s3-sci-y5-w37-l2 | 5 | Science and Technology | 37 | 2 | Apply and make | Collecting and graphing data | queued | No — not in Part I |
+| s3-hsie-y5-w37-l1 | 5 | HSIE | 37 | 1 | Investigate | Locating and evaluating sources | queued | No — not in Part I |
+| s3-hsie-y5-w37-l2 | 5 | HSIE | 37 | 2 | Apply and respond | Locating and evaluating sources | queued | No — not in Part I |
+| s3-pdh-y5-w37-l1 | 5 | PDHPE | 37 | 1 | Learn and discuss | Introduction to puberty | queued | No — not in Part I |
+| s3-pdh-y5-w37-l2 | 5 | PDHPE | 37 | 2 | Practise and apply | Introduction to puberty | queued | No — not in Part I |
+| s3-arts-y5-w37-l1 | 5 | Creative Arts | 37 | 1 | Explore and learn | Curating an exhibition | queued | No — not in Part I |
+| s3-arts-y5-w37-l2 | 5 | Creative Arts | 37 | 2 | Create and perform | Curating an exhibition | queued | No — not in Part I |
+| s3-eng-y5-w38-l1 | 5 | English | 38 | 1 | Reading | Writing portfolio | queued | No — not in Part I |
+| s3-eng-y5-w38-l2 | 5 | English | 38 | 2 | Writing | Writing portfolio | queued | No — not in Part I |
+| s3-eng-y5-w38-l3 | 5 | English | 38 | 3 | Language and spelling | Writing portfolio | queued | No — not in Part I |
+| s3-eng-y5-w38-l4 | 5 | English | 38 | 4 | Speaking and handwriting | Writing portfolio | queued | No — not in Part I |
+| s3-mat-y5-w38-l1 | 5 | Mathematics | 38 | 1 | Concept | Line graphs | queued | No — not in Part I |
+| s3-mat-y5-w38-l2 | 5 | Mathematics | 38 | 2 | Strategies | Comparing data displays | queued | No — not in Part I |
+| s3-mat-y5-w38-l3 | 5 | Mathematics | 38 | 3 | Problem solving | Describing and summarising data | queued | No — not in Part I |
+| s3-mat-y5-w38-l4 | 5 | Mathematics | 38 | 4 | Fluency and review | Fluency: data practice | queued | No — not in Part I |
+| s3-sci-y5-w38-l1 | 5 | Science and Technology | 38 | 1 | Investigate | Drawing conclusions | queued | No — not in Part I |
+| s3-sci-y5-w38-l2 | 5 | Science and Technology | 38 | 2 | Apply and make | Drawing conclusions | queued | No — not in Part I |
+| s3-hsie-y5-w38-l1 | 5 | HSIE | 38 | 1 | Investigate | Analysing and interpreting | queued | No — not in Part I |
+| s3-hsie-y5-w38-l2 | 5 | HSIE | 38 | 2 | Apply and respond | Analysing and interpreting | queued | No — not in Part I |
+| s3-pdh-y5-w38-l1 | 5 | PDHPE | 38 | 1 | Learn and discuss | Hygiene and health | queued | No — not in Part I |
+| s3-pdh-y5-w38-l2 | 5 | PDHPE | 38 | 2 | Practise and apply | Hygiene and health | queued | No — not in Part I |
+| s3-arts-y5-w38-l1 | 5 | Creative Arts | 38 | 1 | Explore and learn | Rehearsing performances | queued | No — not in Part I |
+| s3-arts-y5-w38-l2 | 5 | Creative Arts | 38 | 2 | Create and perform | Rehearsing performances | queued | No — not in Part I |
+| s3-eng-y5-w39-l1 | 5 | English | 39 | 1 | Reading | Spelling and grammar review | queued | No — not in Part I |
+| s3-eng-y5-w39-l2 | 5 | English | 39 | 2 | Writing | Spelling and grammar review | queued | No — not in Part I |
+| s3-eng-y5-w39-l3 | 5 | English | 39 | 3 | Language and spelling | Spelling and grammar review | queued | No — not in Part I |
+| s3-eng-y5-w39-l4 | 5 | English | 39 | 4 | Speaking and handwriting | Spelling and grammar review | queued | No — not in Part I |
+| s3-mat-y5-w39-l1 | 5 | Mathematics | 39 | 1 | Concept | Chance: likelihood and the probability scale | queued | No — not in Part I |
+| s3-mat-y5-w39-l2 | 5 | Mathematics | 39 | 2 | Strategies | Fair and unfair games | queued | No — not in Part I |
+| s3-mat-y5-w39-l3 | 5 | Mathematics | 39 | 3 | Problem solving | Chance experiments and recording results | queued | No — not in Part I |
+| s3-mat-y5-w39-l4 | 5 | Mathematics | 39 | 4 | Fluency and review | Fluency: chance language | queued | No — not in Part I |
+| s3-sci-y5-w39-l1 | 5 | Science and Technology | 39 | 1 | Investigate | Presenting a STEM project | queued | No — not in Part I |
+| s3-sci-y5-w39-l2 | 5 | Science and Technology | 39 | 2 | Apply and make | Presenting a STEM project | queued | No — not in Part I |
+| s3-hsie-y5-w39-l1 | 5 | HSIE | 39 | 1 | Investigate | Presenting an inquiry project | queued | No — not in Part I |
+| s3-hsie-y5-w39-l2 | 5 | HSIE | 39 | 2 | Apply and respond | Presenting an inquiry project | queued | No — not in Part I |
+| s3-pdh-y5-w39-l1 | 5 | PDHPE | 39 | 1 | Learn and discuss | Respect and privacy | queued | No — not in Part I |
+| s3-pdh-y5-w39-l2 | 5 | PDHPE | 39 | 2 | Practise and apply | Respect and privacy | queued | No — not in Part I |
+| s3-arts-y5-w39-l1 | 5 | Creative Arts | 39 | 1 | Explore and learn | Class showcase | queued | No — not in Part I |
+| s3-arts-y5-w39-l2 | 5 | Creative Arts | 39 | 2 | Create and perform | Class showcase | queued | No — not in Part I |
+| s3-eng-y5-w40-l1 | 5 | English | 40 | 1 | Reading | Year 5 English celebration | queued | No — not in Part I |
+| s3-eng-y5-w40-l2 | 5 | English | 40 | 2 | Writing | Year 5 English celebration | queued | No — not in Part I |
+| s3-eng-y5-w40-l3 | 5 | English | 40 | 3 | Language and spelling | Year 5 English celebration | queued | No — not in Part I |
+| s3-eng-y5-w40-l4 | 5 | English | 40 | 4 | Speaking and handwriting | Year 5 English celebration | queued | No — not in Part I |
+| s3-mat-y5-w40-l1 | 5 | Mathematics | 40 | 1 | Concept | Year 5 investigation: planning | queued | No — not in Part I |
+| s3-mat-y5-w40-l2 | 5 | Mathematics | 40 | 2 | Strategies | Year 5 investigation: carrying it out and presenting | queued | No — not in Part I |
+| s3-mat-y5-w40-l3 | 5 | Mathematics | 40 | 3 | Problem solving | Year 5 skills check | queued | No — not in Part I |
+| s3-mat-y5-w40-l4 | 5 | Mathematics | 40 | 4 | Fluency and review | Reflection and celebration | queued | No — not in Part I |
+| s3-sci-y5-w40-l1 | 5 | Science and Technology | 40 | 1 | Investigate | Year 5 science and technology reflection | queued | No — not in Part I |
+| s3-sci-y5-w40-l2 | 5 | Science and Technology | 40 | 2 | Apply and make | Year 5 science and technology reflection | queued | No — not in Part I |
+| s3-hsie-y5-w40-l1 | 5 | HSIE | 40 | 1 | Investigate | Year 5 HSIE reflection | queued | No — not in Part I |
+| s3-hsie-y5-w40-l2 | 5 | HSIE | 40 | 2 | Apply and respond | Year 5 HSIE reflection | queued | No — not in Part I |
+| s3-pdh-y5-w40-l1 | 5 | PDHPE | 40 | 1 | Learn and discuss | Year 5 PDHPE reflection | queued | No — not in Part I |
+| s3-pdh-y5-w40-l2 | 5 | PDHPE | 40 | 2 | Practise and apply | Year 5 PDHPE reflection | queued | No — not in Part I |
+| s3-arts-y5-w40-l1 | 5 | Creative Arts | 40 | 1 | Explore and learn | Year 5 creative arts reflection | queued | No — not in Part I |
+| s3-arts-y5-w40-l2 | 5 | Creative Arts | 40 | 2 | Create and perform | Year 5 creative arts reflection | queued | No — not in Part I |
+| s3-eng-y6-w01-l1 | 6 | English | 1 | 1 | Reading | Voice and style | queued | No — not in Part I |
+| s3-eng-y6-w01-l2 | 6 | English | 1 | 2 | Writing | Voice and style | queued | No — not in Part I |
+| s3-eng-y6-w01-l3 | 6 | English | 1 | 3 | Language and spelling | Voice and style | queued | No — not in Part I |
+| s3-eng-y6-w01-l4 | 6 | English | 1 | 4 | Speaking and handwriting | Voice and style | queued | No — not in Part I |
+| s3-mat-y6-w01-l1 | 6 | Mathematics | 1 | 1 | Concept | Reading and writing very large numbers | queued | No — not in Part I |
+| s3-mat-y6-w01-l2 | 6 | Mathematics | 1 | 2 | Strategies | Place value and expanded form | queued | Yes — full draft, review pending |
+| s3-mat-y6-w01-l3 | 6 | Mathematics | 1 | 3 | Problem solving | Comparing and ordering large numbers | queued | No — rejected draft |
+| s3-mat-y6-w01-l4 | 6 | Mathematics | 1 | 4 | Fluency and review | Number sense warm-ups | queued | No — rejected draft |
+| s3-sci-y6-w01-l1 | 6 | Science and Technology | 1 | 1 | Investigate | Ecosystems and habitats | queued | No — not in Part I |
+| s3-sci-y6-w01-l2 | 6 | Science and Technology | 1 | 2 | Apply and make | Ecosystems and habitats | queued | No — not in Part I |
+| s3-hsie-y6-w01-l1 | 6 | HSIE | 1 | 1 | Investigate | Colonies to nation | queued | No — not in Part I |
+| s3-hsie-y6-w01-l2 | 6 | HSIE | 1 | 2 | Apply and respond | Colonies to nation | queued | No — not in Part I |
+| s3-pdh-y6-w01-l1 | 6 | PDHPE | 1 | 1 | Learn and discuss | Mental health and wellbeing | queued | No — not in Part I |
+| s3-pdh-y6-w01-l2 | 6 | PDHPE | 1 | 2 | Practise and apply | Mental health and wellbeing | queued | No — not in Part I |
+| s3-arts-y6-w01-l1 | 6 | Creative Arts | 1 | 1 | Explore and learn | Art and meaning | queued | No — not in Part I |
+| s3-arts-y6-w01-l2 | 6 | Creative Arts | 1 | 2 | Create and perform | Art and meaning | queued | No — not in Part I |
+| s3-eng-y6-w02-l1 | 6 | English | 2 | 1 | Reading | Building suspense | queued | No — not in Part I |
+| s3-eng-y6-w02-l2 | 6 | English | 2 | 2 | Writing | Building suspense | queued | No — not in Part I |
+| s3-eng-y6-w02-l3 | 6 | English | 2 | 3 | Language and spelling | Building suspense | queued | No — not in Part I |
+| s3-eng-y6-w02-l4 | 6 | English | 2 | 4 | Speaking and handwriting | Building suspense | queued | No — not in Part I |
+| s3-mat-y6-w02-l1 | 6 | Mathematics | 2 | 1 | Concept | Rounding and estimating | queued | No — not in Part I |
+| s3-mat-y6-w02-l2 | 6 | Mathematics | 2 | 2 | Strategies | Estimating to check reasonableness | queued | No — not in Part I |
+| s3-mat-y6-w02-l3 | 6 | Mathematics | 2 | 3 | Problem solving | Number lines and scales | queued | No — not in Part I |
+| s3-mat-y6-w02-l4 | 6 | Mathematics | 2 | 4 | Fluency and review | Quick check: place value | queued | No — not in Part I |
+| s3-sci-y6-w02-l1 | 6 | Science and Technology | 2 | 1 | Investigate | Energy flow in ecosystems | queued | No — not in Part I |
+| s3-sci-y6-w02-l2 | 6 | Science and Technology | 2 | 2 | Apply and make | Energy flow in ecosystems | queued | No — not in Part I |
+| s3-hsie-y6-w02-l1 | 6 | HSIE | 2 | 1 | Investigate | The road to Federation | queued | No — not in Part I |
+| s3-hsie-y6-w02-l2 | 6 | HSIE | 2 | 2 | Apply and respond | The road to Federation | queued | No — not in Part I |
+| s3-pdh-y6-w02-l1 | 6 | PDHPE | 2 | 1 | Learn and discuss | Coping with stress | queued | No — not in Part I |
+| s3-pdh-y6-w02-l2 | 6 | PDHPE | 2 | 2 | Practise and apply | Coping with stress | queued | No — not in Part I |
+| s3-arts-y6-w02-l1 | 6 | Creative Arts | 2 | 1 | Explore and learn | Symbols and ideas | queued | No — not in Part I |
+| s3-arts-y6-w02-l2 | 6 | Creative Arts | 2 | 2 | Create and perform | Symbols and ideas | queued | No — not in Part I |
+| s3-eng-y6-w03-l1 | 6 | English | 3 | 1 | Reading | Show, do not tell | queued | No — not in Part I |
+| s3-eng-y6-w03-l2 | 6 | English | 3 | 2 | Writing | Show, do not tell | queued | No — not in Part I |
+| s3-eng-y6-w03-l3 | 6 | English | 3 | 3 | Language and spelling | Show, do not tell | queued | No — not in Part I |
+| s3-eng-y6-w03-l4 | 6 | English | 3 | 4 | Speaking and handwriting | Show, do not tell | queued | No — not in Part I |
+| s3-mat-y6-w03-l1 | 6 | Mathematics | 3 | 1 | Concept | Number patterns and sequences | queued | No — not in Part I |
+| s3-mat-y6-w03-l2 | 6 | Mathematics | 3 | 2 | Strategies | Square and cube numbers | queued | No — not in Part I |
+| s3-mat-y6-w03-l3 | 6 | Mathematics | 3 | 3 | Problem solving | Number puzzles | queued | No — not in Part I |
+| s3-mat-y6-w03-l4 | 6 | Mathematics | 3 | 4 | Fluency and review | Fluency: patterns | queued | No — not in Part I |
+| s3-sci-y6-w03-l1 | 6 | Science and Technology | 3 | 1 | Investigate | Human impact on ecosystems | queued | No — not in Part I |
+| s3-sci-y6-w03-l2 | 6 | Science and Technology | 3 | 2 | Apply and make | Human impact on ecosystems | queued | No — not in Part I |
+| s3-hsie-y6-w03-l1 | 6 | HSIE | 3 | 1 | Investigate | The Australian Constitution | queued | No — not in Part I |
+| s3-hsie-y6-w03-l2 | 6 | HSIE | 3 | 2 | Apply and respond | The Australian Constitution | queued | No — not in Part I |
+| s3-pdh-y6-w03-l1 | 6 | PDHPE | 3 | 1 | Learn and discuss | Seeking help | queued | No — not in Part I |
+| s3-pdh-y6-w03-l2 | 6 | PDHPE | 3 | 2 | Practise and apply | Seeking help | queued | No — not in Part I |
+| s3-arts-y6-w03-l1 | 6 | Creative Arts | 3 | 1 | Explore and learn | Printmaking | queued | No — not in Part I |
+| s3-arts-y6-w03-l2 | 6 | Creative Arts | 3 | 2 | Create and perform | Printmaking | queued | No — not in Part I |
+| s3-eng-y6-w04-l1 | 6 | English | 4 | 1 | Reading | Writing and publishing a narrative | queued | No — not in Part I |
+| s3-eng-y6-w04-l2 | 6 | English | 4 | 2 | Writing | Writing and publishing a narrative | queued | No — not in Part I |
+| s3-eng-y6-w04-l3 | 6 | English | 4 | 3 | Language and spelling | Writing and publishing a narrative | queued | No — not in Part I |
+| s3-eng-y6-w04-l4 | 6 | English | 4 | 4 | Speaking and handwriting | Writing and publishing a narrative | queued | No — not in Part I |
+| s3-mat-y6-w04-l1 | 6 | Mathematics | 4 | 1 | Concept | Large numbers in the real world | queued | No — not in Part I |
+| s3-mat-y6-w04-l2 | 6 | Mathematics | 4 | 2 | Strategies | Place value problem solving | queued | No — not in Part I |
+| s3-mat-y6-w04-l3 | 6 | Mathematics | 4 | 3 | Problem solving | Investigation: populations and distances | queued | No — not in Part I |
+| s3-mat-y6-w04-l4 | 6 | Mathematics | 4 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y6-w04-l1 | 6 | Science and Technology | 4 | 1 | Investigate | Protecting living things | queued | No — not in Part I |
+| s3-sci-y6-w04-l2 | 6 | Science and Technology | 4 | 2 | Apply and make | Protecting living things | queued | No — not in Part I |
+| s3-hsie-y6-w04-l1 | 6 | HSIE | 4 | 1 | Investigate | Federation celebrations and people | queued | No — not in Part I |
+| s3-hsie-y6-w04-l2 | 6 | HSIE | 4 | 2 | Apply and respond | Federation celebrations and people | queued | No — not in Part I |
+| s3-pdh-y6-w04-l1 | 6 | PDHPE | 4 | 1 | Learn and discuss | Positive self-talk | queued | No — not in Part I |
+| s3-pdh-y6-w04-l2 | 6 | PDHPE | 4 | 2 | Practise and apply | Positive self-talk | queued | No — not in Part I |
+| s3-arts-y6-w04-l1 | 6 | Creative Arts | 4 | 1 | Explore and learn | Responding to artworks | queued | No — not in Part I |
+| s3-arts-y6-w04-l2 | 6 | Creative Arts | 4 | 2 | Create and perform | Responding to artworks | queued | No — not in Part I |
+| s3-eng-y6-w05-l1 | 6 | English | 5 | 1 | Reading | Writing a speech | queued | No — not in Part I |
+| s3-eng-y6-w05-l2 | 6 | English | 5 | 2 | Writing | Writing a speech | queued | No — not in Part I |
+| s3-eng-y6-w05-l3 | 6 | English | 5 | 3 | Language and spelling | Writing a speech | queued | No — not in Part I |
+| s3-eng-y6-w05-l4 | 6 | English | 5 | 4 | Speaking and handwriting | Writing a speech | queued | No — not in Part I |
+| s3-mat-y6-w05-l1 | 6 | Mathematics | 5 | 1 | Concept | Mental strategies for all four operations | queued | No — not in Part I |
+| s3-mat-y6-w05-l2 | 6 | Mathematics | 5 | 2 | Strategies | Efficient written addition and subtraction | queued | No — not in Part I |
+| s3-mat-y6-w05-l3 | 6 | Mathematics | 5 | 3 | Problem solving | Estimating answers | queued | No — not in Part I |
+| s3-mat-y6-w05-l4 | 6 | Mathematics | 5 | 4 | Fluency and review | Fluency: mental maths | queued | No — not in Part I |
+| s3-sci-y6-w05-l1 | 6 | Science and Technology | 5 | 1 | Investigate | Investigation: an ecosystem | queued | No — not in Part I |
+| s3-sci-y6-w05-l2 | 6 | Science and Technology | 5 | 2 | Apply and make | Investigation: an ecosystem | queued | No — not in Part I |
+| s3-hsie-y6-w05-l1 | 6 | HSIE | 5 | 1 | Investigate | Investigation: Federation | queued | No — not in Part I |
+| s3-hsie-y6-w05-l2 | 6 | HSIE | 5 | 2 | Apply and respond | Investigation: Federation | queued | No — not in Part I |
+| s3-pdh-y6-w05-l1 | 6 | PDHPE | 5 | 1 | Learn and discuss | Investigation: mental health | queued | No — not in Part I |
+| s3-pdh-y6-w05-l2 | 6 | PDHPE | 5 | 2 | Practise and apply | Investigation: mental health | queued | No — not in Part I |
+| s3-arts-y6-w05-l1 | 6 | Creative Arts | 5 | 1 | Explore and learn | Investigation: art and ideas | queued | No — not in Part I |
+| s3-arts-y6-w05-l2 | 6 | Creative Arts | 5 | 2 | Create and perform | Investigation: art and ideas | queued | No — not in Part I |
+| s3-eng-y6-w06-l1 | 6 | English | 6 | 1 | Reading | Rebuttal and counter-argument | queued | No — not in Part I |
+| s3-eng-y6-w06-l2 | 6 | English | 6 | 2 | Writing | Rebuttal and counter-argument | queued | No — not in Part I |
+| s3-eng-y6-w06-l3 | 6 | English | 6 | 3 | Language and spelling | Rebuttal and counter-argument | queued | No — not in Part I |
+| s3-eng-y6-w06-l4 | 6 | English | 6 | 4 | Speaking and handwriting | Rebuttal and counter-argument | queued | No — not in Part I |
+| s3-mat-y6-w06-l1 | 6 | Mathematics | 6 | 1 | Concept | Multiplying by two-digit numbers | queued | No — not in Part I |
+| s3-mat-y6-w06-l2 | 6 | Mathematics | 6 | 2 | Strategies | Dividing larger numbers | queued | No — not in Part I |
+| s3-mat-y6-w06-l3 | 6 | Mathematics | 6 | 3 | Problem solving | Remainders as fractions and decimals | queued | No — not in Part I |
+| s3-mat-y6-w06-l4 | 6 | Mathematics | 6 | 4 | Fluency and review | Fluency: written multiplication and division | queued | No — not in Part I |
+| s3-sci-y6-w06-l1 | 6 | Science and Technology | 6 | 1 | Investigate | Physical changes | queued | No — not in Part I |
+| s3-sci-y6-w06-l2 | 6 | Science and Technology | 6 | 2 | Apply and make | Physical changes | queued | No — not in Part I |
+| s3-hsie-y6-w06-l1 | 6 | HSIE | 6 | 1 | Investigate | Citizens and citizenship | queued | No — not in Part I |
+| s3-hsie-y6-w06-l2 | 6 | HSIE | 6 | 2 | Apply and respond | Citizens and citizenship | queued | No — not in Part I |
+| s3-pdh-y6-w06-l1 | 6 | PDHPE | 6 | 1 | Learn and discuss | Respectful relationships | queued | No — not in Part I |
+| s3-pdh-y6-w06-l2 | 6 | PDHPE | 6 | 2 | Practise and apply | Respectful relationships | queued | No — not in Part I |
+| s3-arts-y6-w06-l1 | 6 | Creative Arts | 6 | 1 | Explore and learn | Ensemble playing | queued | No — not in Part I |
+| s3-arts-y6-w06-l2 | 6 | Creative Arts | 6 | 2 | Create and perform | Ensemble playing | queued | No — not in Part I |
+| s3-eng-y6-w07-l1 | 6 | English | 7 | 1 | Reading | Debating skills | queued | No — not in Part I |
+| s3-eng-y6-w07-l2 | 6 | English | 7 | 2 | Writing | Debating skills | queued | No — not in Part I |
+| s3-eng-y6-w07-l3 | 6 | English | 7 | 3 | Language and spelling | Debating skills | queued | No — not in Part I |
+| s3-eng-y6-w07-l4 | 6 | English | 7 | 4 | Speaking and handwriting | Debating skills | queued | No — not in Part I |
+| s3-mat-y6-w07-l1 | 6 | Mathematics | 7 | 1 | Concept | Multi-step word problems | queued | No — not in Part I |
+| s3-mat-y6-w07-l2 | 6 | Mathematics | 7 | 2 | Strategies | Choosing and justifying strategies | queued | No — not in Part I |
+| s3-mat-y6-w07-l3 | 6 | Mathematics | 7 | 3 | Problem solving | Problems with extra or missing information | queued | No — not in Part I |
+| s3-mat-y6-w07-l4 | 6 | Mathematics | 7 | 4 | Fluency and review | Fluency: problem warm-ups | queued | No — not in Part I |
+| s3-sci-y6-w07-l1 | 6 | Science and Technology | 7 | 1 | Investigate | Chemical changes | queued | No — not in Part I |
+| s3-sci-y6-w07-l2 | 6 | Science and Technology | 7 | 2 | Apply and make | Chemical changes | queued | No — not in Part I |
+| s3-hsie-y6-w07-l1 | 6 | HSIE | 7 | 1 | Investigate | Democratic values | queued | No — not in Part I |
+| s3-hsie-y6-w07-l2 | 6 | HSIE | 7 | 2 | Apply and respond | Democratic values | queued | No — not in Part I |
+| s3-pdh-y6-w07-l1 | 6 | PDHPE | 7 | 1 | Learn and discuss | Consent and personal boundaries | queued | No — not in Part I |
+| s3-pdh-y6-w07-l2 | 6 | PDHPE | 7 | 2 | Practise and apply | Consent and personal boundaries | queued | No — not in Part I |
+| s3-arts-y6-w07-l1 | 6 | Creative Arts | 7 | 1 | Explore and learn | Harmony and texture | queued | No — not in Part I |
+| s3-arts-y6-w07-l2 | 6 | Creative Arts | 7 | 2 | Create and perform | Harmony and texture | queued | No — not in Part I |
+| s3-eng-y6-w08-l1 | 6 | English | 8 | 1 | Reading | Delivering a persuasive speech | queued | No — not in Part I |
+| s3-eng-y6-w08-l2 | 6 | English | 8 | 2 | Writing | Delivering a persuasive speech | queued | No — not in Part I |
+| s3-eng-y6-w08-l3 | 6 | English | 8 | 3 | Language and spelling | Delivering a persuasive speech | queued | No — not in Part I |
+| s3-eng-y6-w08-l4 | 6 | English | 8 | 4 | Speaking and handwriting | Delivering a persuasive speech | queued | No — not in Part I |
+| s3-mat-y6-w08-l1 | 6 | Mathematics | 8 | 1 | Concept | Using a calculator wisely | queued | No — not in Part I |
+| s3-mat-y6-w08-l2 | 6 | Mathematics | 8 | 2 | Strategies | Checking with inverse operations | queued | No — not in Part I |
+| s3-mat-y6-w08-l3 | 6 | Mathematics | 8 | 3 | Problem solving | Real-life operations problems | queued | No — not in Part I |
+| s3-mat-y6-w08-l4 | 6 | Mathematics | 8 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y6-w08-l1 | 6 | Science and Technology | 8 | 1 | Investigate | Mixtures and solutions | queued | No — not in Part I |
+| s3-sci-y6-w08-l2 | 6 | Science and Technology | 8 | 2 | Apply and make | Mixtures and solutions | queued | No — not in Part I |
+| s3-hsie-y6-w08-l1 | 6 | HSIE | 8 | 1 | Investigate | Elections and voting | queued | No — not in Part I |
+| s3-hsie-y6-w08-l2 | 6 | HSIE | 8 | 2 | Apply and respond | Elections and voting | queued | No — not in Part I |
+| s3-pdh-y6-w08-l1 | 6 | PDHPE | 8 | 1 | Learn and discuss | Peer pressure | queued | No — not in Part I |
+| s3-pdh-y6-w08-l2 | 6 | PDHPE | 8 | 2 | Practise and apply | Peer pressure | queued | No — not in Part I |
+| s3-arts-y6-w08-l1 | 6 | Creative Arts | 8 | 1 | Explore and learn | Music technology | queued | No — not in Part I |
+| s3-arts-y6-w08-l2 | 6 | Creative Arts | 8 | 2 | Create and perform | Music technology | queued | No — not in Part I |
+| s3-eng-y6-w09-l1 | 6 | English | 9 | 1 | Reading | Poetic forms: haiku, sonnet and free verse | queued | No — not in Part I |
+| s3-eng-y6-w09-l2 | 6 | English | 9 | 2 | Writing | Poetic forms: haiku, sonnet and free verse | queued | No — not in Part I |
+| s3-eng-y6-w09-l3 | 6 | English | 9 | 3 | Language and spelling | Poetic forms: haiku, sonnet and free verse | queued | No — not in Part I |
+| s3-eng-y6-w09-l4 | 6 | English | 9 | 4 | Speaking and handwriting | Poetic forms: haiku, sonnet and free verse | queued | No — not in Part I |
+| s3-mat-y6-w09-l1 | 6 | Mathematics | 9 | 1 | Concept | Order of operations | queued | No — not in Part I |
+| s3-mat-y6-w09-l2 | 6 | Mathematics | 9 | 2 | Strategies | Brackets and number sentences | queued | No — not in Part I |
+| s3-mat-y6-w09-l3 | 6 | Mathematics | 9 | 3 | Problem solving | Writing and solving number sentences | queued | No — not in Part I |
+| s3-mat-y6-w09-l4 | 6 | Mathematics | 9 | 4 | Fluency and review | Fluency: order of operations | queued | No — not in Part I |
+| s3-sci-y6-w09-l1 | 6 | Science and Technology | 9 | 1 | Investigate | Separating mixtures | queued | No — not in Part I |
+| s3-sci-y6-w09-l2 | 6 | Science and Technology | 9 | 2 | Apply and make | Separating mixtures | queued | No — not in Part I |
+| s3-hsie-y6-w09-l1 | 6 | HSIE | 9 | 1 | Investigate | Active citizens | queued | No — not in Part I |
+| s3-hsie-y6-w09-l2 | 6 | HSIE | 9 | 2 | Apply and respond | Active citizens | queued | No — not in Part I |
+| s3-pdh-y6-w09-l1 | 6 | PDHPE | 9 | 1 | Learn and discuss | Online relationships | queued | No — not in Part I |
+| s3-pdh-y6-w09-l2 | 6 | PDHPE | 9 | 2 | Practise and apply | Online relationships | queued | No — not in Part I |
+| s3-arts-y6-w09-l1 | 6 | Creative Arts | 9 | 1 | Explore and learn | Performing as an ensemble | queued | No — not in Part I |
+| s3-arts-y6-w09-l2 | 6 | Creative Arts | 9 | 2 | Create and perform | Performing as an ensemble | queued | No — not in Part I |
+| s3-eng-y6-w10-l1 | 6 | English | 10 | 1 | Reading | Language and meaning | queued | No — not in Part I |
+| s3-eng-y6-w10-l2 | 6 | English | 10 | 2 | Writing | Language and meaning | queued | No — not in Part I |
+| s3-eng-y6-w10-l3 | 6 | English | 10 | 3 | Language and spelling | Language and meaning | queued | No — not in Part I |
+| s3-eng-y6-w10-l4 | 6 | English | 10 | 4 | Speaking and handwriting | Language and meaning | queued | No — not in Part I |
+| s3-mat-y6-w10-l1 | 6 | Mathematics | 10 | 1 | Concept | Factors, multiples and divisibility tests | queued | No — not in Part I |
+| s3-mat-y6-w10-l2 | 6 | Mathematics | 10 | 2 | Strategies | Prime and composite numbers | queued | No — not in Part I |
+| s3-mat-y6-w10-l3 | 6 | Mathematics | 10 | 3 | Problem solving | Factor trees | queued | No — not in Part I |
+| s3-mat-y6-w10-l4 | 6 | Mathematics | 10 | 4 | Fluency and review | Fluency: divisibility | queued | No — not in Part I |
+| s3-sci-y6-w10-l1 | 6 | Science and Technology | 10 | 1 | Investigate | Investigation: a chemical change | queued | No — not in Part I |
+| s3-sci-y6-w10-l2 | 6 | Science and Technology | 10 | 2 | Apply and make | Investigation: a chemical change | queued | No — not in Part I |
+| s3-hsie-y6-w10-l1 | 6 | HSIE | 10 | 1 | Investigate | Investigation: citizenship | queued | No — not in Part I |
+| s3-hsie-y6-w10-l2 | 6 | HSIE | 10 | 2 | Apply and respond | Investigation: citizenship | queued | No — not in Part I |
+| s3-pdh-y6-w10-l1 | 6 | PDHPE | 10 | 1 | Learn and discuss | Investigation: respect and consent | queued | No — not in Part I |
+| s3-pdh-y6-w10-l2 | 6 | PDHPE | 10 | 2 | Practise and apply | Investigation: respect and consent | queued | No — not in Part I |
+| s3-arts-y6-w10-l1 | 6 | Creative Arts | 10 | 1 | Explore and learn | Investigation: an ensemble piece | queued | No — not in Part I |
+| s3-arts-y6-w10-l2 | 6 | Creative Arts | 10 | 2 | Create and perform | Investigation: an ensemble piece | queued | No — not in Part I |
+| s3-eng-y6-w11-l1 | 6 | English | 11 | 1 | Reading | Poems from different cultures | queued | No — not in Part I |
+| s3-eng-y6-w11-l2 | 6 | English | 11 | 2 | Writing | Poems from different cultures | queued | No — not in Part I |
+| s3-eng-y6-w11-l3 | 6 | English | 11 | 3 | Language and spelling | Poems from different cultures | queued | No — not in Part I |
+| s3-eng-y6-w11-l4 | 6 | English | 11 | 4 | Speaking and handwriting | Poems from different cultures | queued | No — not in Part I |
+| s3-mat-y6-w11-l1 | 6 | Mathematics | 11 | 1 | Concept | Square numbers and square roots | queued | No — not in Part I |
+| s3-mat-y6-w11-l2 | 6 | Mathematics | 11 | 2 | Strategies | Cube numbers | queued | No — not in Part I |
+| s3-mat-y6-w11-l3 | 6 | Mathematics | 11 | 3 | Problem solving | Number patterns and rules | queued | No — not in Part I |
+| s3-mat-y6-w11-l4 | 6 | Mathematics | 11 | 4 | Fluency and review | Fluency: squares and cubes | queued | No — not in Part I |
+| s3-sci-y6-w11-l1 | 6 | Science and Technology | 11 | 1 | Investigate | Forms of energy | queued | No — not in Part I |
+| s3-sci-y6-w11-l2 | 6 | Science and Technology | 11 | 2 | Apply and make | Forms of energy | queued | No — not in Part I |
+| s3-hsie-y6-w11-l1 | 6 | HSIE | 11 | 1 | Investigate | Waves of migration | queued | No — not in Part I |
+| s3-hsie-y6-w11-l2 | 6 | HSIE | 11 | 2 | Apply and respond | Waves of migration | queued | No — not in Part I |
+| s3-pdh-y6-w11-l1 | 6 | PDHPE | 11 | 1 | Learn and discuss | Online and digital safety | queued | No — not in Part I |
+| s3-pdh-y6-w11-l2 | 6 | PDHPE | 11 | 2 | Practise and apply | Online and digital safety | queued | No — not in Part I |
+| s3-arts-y6-w11-l1 | 6 | Creative Arts | 11 | 1 | Explore and learn | Improvisation skills | queued | No — not in Part I |
+| s3-arts-y6-w11-l2 | 6 | Creative Arts | 11 | 2 | Create and perform | Improvisation skills | queued | No — not in Part I |
+| s3-eng-y6-w12-l1 | 6 | English | 12 | 1 | Reading | Writing and performing poetry | queued | No — not in Part I |
+| s3-eng-y6-w12-l2 | 6 | English | 12 | 2 | Writing | Writing and performing poetry | queued | No — not in Part I |
+| s3-eng-y6-w12-l3 | 6 | English | 12 | 3 | Language and spelling | Writing and performing poetry | queued | No — not in Part I |
+| s3-eng-y6-w12-l4 | 6 | English | 12 | 4 | Speaking and handwriting | Writing and performing poetry | queued | No — not in Part I |
+| s3-mat-y6-w12-l1 | 6 | Mathematics | 12 | 1 | Concept | Algebraic thinking: using letters for unknowns | queued | No — not in Part I |
+| s3-mat-y6-w12-l2 | 6 | Mathematics | 12 | 2 | Strategies | Equivalent number sentences and balance | queued | No — not in Part I |
+| s3-mat-y6-w12-l3 | 6 | Mathematics | 12 | 3 | Problem solving | Investigation: number puzzles and patterns | queued | No — not in Part I |
+| s3-mat-y6-w12-l4 | 6 | Mathematics | 12 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y6-w12-l1 | 6 | Science and Technology | 12 | 1 | Investigate | Electric circuits | queued | No — not in Part I |
+| s3-sci-y6-w12-l2 | 6 | Science and Technology | 12 | 2 | Apply and make | Electric circuits | queued | No — not in Part I |
+| s3-hsie-y6-w12-l1 | 6 | HSIE | 12 | 1 | Investigate | Migrant stories | queued | No — not in Part I |
+| s3-hsie-y6-w12-l2 | 6 | HSIE | 12 | 2 | Apply and respond | Migrant stories | queued | No — not in Part I |
+| s3-pdh-y6-w12-l1 | 6 | PDHPE | 12 | 1 | Learn and discuss | Community safety | queued | No — not in Part I |
+| s3-pdh-y6-w12-l2 | 6 | PDHPE | 12 | 2 | Practise and apply | Community safety | queued | No — not in Part I |
+| s3-arts-y6-w12-l1 | 6 | Creative Arts | 12 | 1 | Explore and learn | Playbuilding | queued | No — not in Part I |
+| s3-arts-y6-w12-l2 | 6 | Creative Arts | 12 | 2 | Create and perform | Playbuilding | queued | No — not in Part I |
+| s3-eng-y6-w13-l1 | 6 | English | 13 | 1 | Reading | Evaluating sources | queued | No — not in Part I |
+| s3-eng-y6-w13-l2 | 6 | English | 13 | 2 | Writing | Evaluating sources | queued | No — not in Part I |
+| s3-eng-y6-w13-l3 | 6 | English | 13 | 3 | Language and spelling | Evaluating sources | queued | No — not in Part I |
+| s3-eng-y6-w13-l4 | 6 | English | 13 | 4 | Speaking and handwriting | Evaluating sources | queued | No — not in Part I |
+| s3-mat-y6-w13-l1 | 6 | Mathematics | 13 | 1 | Concept | Equivalent fractions and simplifying | queued | No — not in Part I |
+| s3-mat-y6-w13-l2 | 6 | Mathematics | 13 | 2 | Strategies | Comparing and ordering fractions | queued | No — not in Part I |
+| s3-mat-y6-w13-l3 | 6 | Mathematics | 13 | 3 | Problem solving | Mixed numbers and improper fractions | queued | No — not in Part I |
+| s3-mat-y6-w13-l4 | 6 | Mathematics | 13 | 4 | Fluency and review | Fluency: fraction skills | queued | No — not in Part I |
+| s3-sci-y6-w13-l1 | 6 | Science and Technology | 13 | 1 | Investigate | Conductors and insulators | queued | No — not in Part I |
+| s3-sci-y6-w13-l2 | 6 | Science and Technology | 13 | 2 | Apply and make | Conductors and insulators | queued | No — not in Part I |
+| s3-hsie-y6-w13-l1 | 6 | HSIE | 13 | 1 | Investigate | Contributions of migrants | queued | No — not in Part I |
+| s3-hsie-y6-w13-l2 | 6 | HSIE | 13 | 2 | Apply and respond | Contributions of migrants | queued | No — not in Part I |
+| s3-pdh-y6-w13-l1 | 6 | PDHPE | 13 | 1 | Learn and discuss | Substances and health | queued | No — not in Part I |
+| s3-pdh-y6-w13-l2 | 6 | PDHPE | 13 | 2 | Practise and apply | Substances and health | queued | No — not in Part I |
+| s3-arts-y6-w13-l1 | 6 | Creative Arts | 13 | 1 | Explore and learn | Mask and movement | queued | No — not in Part I |
+| s3-arts-y6-w13-l2 | 6 | Creative Arts | 13 | 2 | Create and perform | Mask and movement | queued | No — not in Part I |
+| s3-eng-y6-w14-l1 | 6 | English | 14 | 1 | Reading | Planning a research report | queued | No — not in Part I |
+| s3-eng-y6-w14-l2 | 6 | English | 14 | 2 | Writing | Planning a research report | queued | No — not in Part I |
+| s3-eng-y6-w14-l3 | 6 | English | 14 | 3 | Language and spelling | Planning a research report | queued | No — not in Part I |
+| s3-eng-y6-w14-l4 | 6 | English | 14 | 4 | Speaking and handwriting | Planning a research report | queued | No — not in Part I |
+| s3-mat-y6-w14-l1 | 6 | Mathematics | 14 | 1 | Concept | Adding and subtracting fractions with different denominators | queued | No — not in Part I |
+| s3-mat-y6-w14-l2 | 6 | Mathematics | 14 | 2 | Strategies | Adding and subtracting mixed numbers | queued | No — not in Part I |
+| s3-mat-y6-w14-l3 | 6 | Mathematics | 14 | 3 | Problem solving | Fraction word problems | queued | No — not in Part I |
+| s3-mat-y6-w14-l4 | 6 | Mathematics | 14 | 4 | Fluency and review | Fluency: fraction operations | queued | No — not in Part I |
+| s3-sci-y6-w14-l1 | 6 | Science and Technology | 14 | 1 | Investigate | Renewable energy | queued | No — not in Part I |
+| s3-sci-y6-w14-l2 | 6 | Science and Technology | 14 | 2 | Apply and make | Renewable energy | queued | No — not in Part I |
+| s3-hsie-y6-w14-l1 | 6 | HSIE | 14 | 1 | Investigate | Australian identity | queued | No — not in Part I |
+| s3-hsie-y6-w14-l2 | 6 | HSIE | 14 | 2 | Apply and respond | Australian identity | queued | No — not in Part I |
+| s3-pdh-y6-w14-l1 | 6 | PDHPE | 14 | 1 | Learn and discuss | Emergency responses | queued | No — not in Part I |
+| s3-pdh-y6-w14-l2 | 6 | PDHPE | 14 | 2 | Practise and apply | Emergency responses | queued | No — not in Part I |
+| s3-arts-y6-w14-l1 | 6 | Creative Arts | 14 | 1 | Explore and learn | Performing a devised piece | queued | No — not in Part I |
+| s3-arts-y6-w14-l2 | 6 | Creative Arts | 14 | 2 | Create and perform | Performing a devised piece | queued | No — not in Part I |
+| s3-eng-y6-w15-l1 | 6 | English | 15 | 1 | Reading | Writing a report | queued | No — not in Part I |
+| s3-eng-y6-w15-l2 | 6 | English | 15 | 2 | Writing | Writing a report | queued | No — not in Part I |
+| s3-eng-y6-w15-l3 | 6 | English | 15 | 3 | Language and spelling | Writing a report | queued | No — not in Part I |
+| s3-eng-y6-w15-l4 | 6 | English | 15 | 4 | Speaking and handwriting | Writing a report | queued | No — not in Part I |
+| s3-mat-y6-w15-l1 | 6 | Mathematics | 15 | 1 | Concept | Multiplying fractions by whole numbers | queued | No — not in Part I |
+| s3-mat-y6-w15-l2 | 6 | Mathematics | 15 | 2 | Strategies | Fractions of a quantity | queued | No — not in Part I |
+| s3-mat-y6-w15-l3 | 6 | Mathematics | 15 | 3 | Problem solving | Fractions of amounts in real life | queued | No — not in Part I |
+| s3-mat-y6-w15-l4 | 6 | Mathematics | 15 | 4 | Fluency and review | Fluency: fractions of amounts | queued | No — not in Part I |
+| s3-sci-y6-w15-l1 | 6 | Science and Technology | 15 | 1 | Investigate | Investigation: electricity | queued | No — not in Part I |
+| s3-sci-y6-w15-l2 | 6 | Science and Technology | 15 | 2 | Apply and make | Investigation: electricity | queued | No — not in Part I |
+| s3-hsie-y6-w15-l1 | 6 | HSIE | 15 | 1 | Investigate | Investigation: migration | queued | No — not in Part I |
+| s3-hsie-y6-w15-l2 | 6 | HSIE | 15 | 2 | Apply and respond | Investigation: migration | queued | No — not in Part I |
+| s3-pdh-y6-w15-l1 | 6 | PDHPE | 15 | 1 | Learn and discuss | Investigation: safe choices | queued | No — not in Part I |
+| s3-pdh-y6-w15-l2 | 6 | PDHPE | 15 | 2 | Practise and apply | Investigation: safe choices | queued | No — not in Part I |
+| s3-arts-y6-w15-l1 | 6 | Creative Arts | 15 | 1 | Explore and learn | Investigation: a devised drama | queued | No — not in Part I |
+| s3-arts-y6-w15-l2 | 6 | Creative Arts | 15 | 2 | Create and perform | Investigation: a devised drama | queued | No — not in Part I |
+| s3-eng-y6-w16-l1 | 6 | English | 16 | 1 | Reading | Presenting findings | queued | No — not in Part I |
+| s3-eng-y6-w16-l2 | 6 | English | 16 | 2 | Writing | Presenting findings | queued | No — not in Part I |
+| s3-eng-y6-w16-l3 | 6 | English | 16 | 3 | Language and spelling | Presenting findings | queued | No — not in Part I |
+| s3-eng-y6-w16-l4 | 6 | English | 16 | 4 | Speaking and handwriting | Presenting findings | queued | No — not in Part I |
+| s3-mat-y6-w16-l1 | 6 | Mathematics | 16 | 1 | Concept | Fractions on the number line | queued | No — not in Part I |
+| s3-mat-y6-w16-l2 | 6 | Mathematics | 16 | 2 | Strategies | Using fractions to solve problems | queued | No — not in Part I |
+| s3-mat-y6-w16-l3 | 6 | Mathematics | 16 | 3 | Problem solving | Investigation: fractions in music and recipes | queued | No — not in Part I |
+| s3-mat-y6-w16-l4 | 6 | Mathematics | 16 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y6-w16-l1 | 6 | Science and Technology | 16 | 1 | Investigate | Earth layers and plate movement | queued | No — not in Part I |
+| s3-sci-y6-w16-l2 | 6 | Science and Technology | 16 | 2 | Apply and make | Earth layers and plate movement | queued | No — not in Part I |
+| s3-hsie-y6-w16-l1 | 6 | HSIE | 16 | 1 | Investigate | The world and its regions | queued | No — not in Part I |
+| s3-hsie-y6-w16-l2 | 6 | HSIE | 16 | 2 | Apply and respond | The world and its regions | queued | No — not in Part I |
+| s3-pdh-y6-w16-l1 | 6 | PDHPE | 16 | 1 | Learn and discuss | Healthy lifestyle habits | queued | No — not in Part I |
+| s3-pdh-y6-w16-l2 | 6 | PDHPE | 16 | 2 | Practise and apply | Healthy lifestyle habits | queued | No — not in Part I |
+| s3-arts-y6-w16-l1 | 6 | Creative Arts | 16 | 1 | Explore and learn | Dance and storytelling | queued | No — not in Part I |
+| s3-arts-y6-w16-l2 | 6 | Creative Arts | 16 | 2 | Create and perform | Dance and storytelling | queued | No — not in Part I |
+| s3-eng-y6-w17-l1 | 6 | English | 17 | 1 | Reading | Reading a novel | queued | No — not in Part I |
+| s3-eng-y6-w17-l2 | 6 | English | 17 | 2 | Writing | Reading a novel | queued | No — not in Part I |
+| s3-eng-y6-w17-l3 | 6 | English | 17 | 3 | Language and spelling | Reading a novel | queued | No — not in Part I |
+| s3-eng-y6-w17-l4 | 6 | English | 17 | 4 | Speaking and handwriting | Reading a novel | queued | No — not in Part I |
+| s3-mat-y6-w17-l1 | 6 | Mathematics | 17 | 1 | Concept | Decimal place value to thousandths | queued | No — not in Part I |
+| s3-mat-y6-w17-l2 | 6 | Mathematics | 17 | 2 | Strategies | Comparing and ordering decimals | queued | No — not in Part I |
+| s3-mat-y6-w17-l3 | 6 | Mathematics | 17 | 3 | Problem solving | Rounding decimals | queued | No — not in Part I |
+| s3-mat-y6-w17-l4 | 6 | Mathematics | 17 | 4 | Fluency and review | Fluency: decimals | queued | No — not in Part I |
+| s3-sci-y6-w17-l1 | 6 | Science and Technology | 17 | 1 | Investigate | Earthquakes and volcanoes | queued | No — not in Part I |
+| s3-sci-y6-w17-l2 | 6 | Science and Technology | 17 | 2 | Apply and make | Earthquakes and volcanoes | queued | No — not in Part I |
+| s3-hsie-y6-w17-l1 | 6 | HSIE | 17 | 1 | Investigate | Global connections | queued | No — not in Part I |
+| s3-hsie-y6-w17-l2 | 6 | HSIE | 17 | 2 | Apply and respond | Global connections | queued | No — not in Part I |
+| s3-pdh-y6-w17-l1 | 6 | PDHPE | 17 | 1 | Learn and discuss | Nutrition and active living | queued | No — not in Part I |
+| s3-pdh-y6-w17-l2 | 6 | PDHPE | 17 | 2 | Practise and apply | Nutrition and active living | queued | No — not in Part I |
+| s3-arts-y6-w17-l1 | 6 | Creative Arts | 17 | 1 | Explore and learn | Group choreography | queued | No — not in Part I |
+| s3-arts-y6-w17-l2 | 6 | Creative Arts | 17 | 2 | Create and perform | Group choreography | queued | No — not in Part I |
+| s3-eng-y6-w18-l1 | 6 | English | 18 | 1 | Reading | Character change | queued | No — not in Part I |
+| s3-eng-y6-w18-l2 | 6 | English | 18 | 2 | Writing | Character change | queued | No — not in Part I |
+| s3-eng-y6-w18-l3 | 6 | English | 18 | 3 | Language and spelling | Character change | queued | No — not in Part I |
+| s3-eng-y6-w18-l4 | 6 | English | 18 | 4 | Speaking and handwriting | Character change | queued | No — not in Part I |
+| s3-mat-y6-w18-l1 | 6 | Mathematics | 18 | 1 | Concept | Adding and subtracting decimals | queued | No — not in Part I |
+| s3-mat-y6-w18-l2 | 6 | Mathematics | 18 | 2 | Strategies | Multiplying decimals by whole numbers | queued | No — not in Part I |
+| s3-mat-y6-w18-l3 | 6 | Mathematics | 18 | 3 | Problem solving | Dividing decimals by whole numbers | queued | No — not in Part I |
+| s3-mat-y6-w18-l4 | 6 | Mathematics | 18 | 4 | Fluency and review | Fluency: decimal operations | queued | No — not in Part I |
+| s3-sci-y6-w18-l1 | 6 | Science and Technology | 18 | 1 | Investigate | Weathering and erosion | queued | No — not in Part I |
+| s3-sci-y6-w18-l2 | 6 | Science and Technology | 18 | 2 | Apply and make | Weathering and erosion | queued | No — not in Part I |
+| s3-hsie-y6-w18-l1 | 6 | HSIE | 18 | 1 | Investigate | Australia and the world | queued | No — not in Part I |
+| s3-hsie-y6-w18-l2 | 6 | HSIE | 18 | 2 | Apply and respond | Australia and the world | queued | No — not in Part I |
+| s3-pdh-y6-w18-l1 | 6 | PDHPE | 18 | 1 | Learn and discuss | Goal setting | queued | No — not in Part I |
+| s3-pdh-y6-w18-l2 | 6 | PDHPE | 18 | 2 | Practise and apply | Goal setting | queued | No — not in Part I |
+| s3-arts-y6-w18-l1 | 6 | Creative Arts | 18 | 1 | Explore and learn | Dance and culture | queued | No — not in Part I |
+| s3-arts-y6-w18-l2 | 6 | Creative Arts | 18 | 2 | Create and perform | Dance and culture | queued | No — not in Part I |
+| s3-eng-y6-w19-l1 | 6 | English | 19 | 1 | Reading | Themes and messages | queued | No — not in Part I |
+| s3-eng-y6-w19-l2 | 6 | English | 19 | 2 | Writing | Themes and messages | queued | No — not in Part I |
+| s3-eng-y6-w19-l3 | 6 | English | 19 | 3 | Language and spelling | Themes and messages | queued | No — not in Part I |
+| s3-eng-y6-w19-l4 | 6 | English | 19 | 4 | Speaking and handwriting | Themes and messages | queued | No — not in Part I |
+| s3-mat-y6-w19-l1 | 6 | Mathematics | 19 | 1 | Concept | Percentages as parts of 100 | queued | No — not in Part I |
+| s3-mat-y6-w19-l2 | 6 | Mathematics | 19 | 2 | Strategies | Fractions, decimals and percentages | queued | No — not in Part I |
+| s3-mat-y6-w19-l3 | 6 | Mathematics | 19 | 3 | Problem solving | Finding percentages of quantities | queued | No — not in Part I |
+| s3-mat-y6-w19-l4 | 6 | Mathematics | 19 | 4 | Fluency and review | Fluency: percentages | queued | No — not in Part I |
+| s3-sci-y6-w19-l1 | 6 | Science and Technology | 19 | 1 | Investigate | Natural hazards and responses | queued | No — not in Part I |
+| s3-sci-y6-w19-l2 | 6 | Science and Technology | 19 | 2 | Apply and make | Natural hazards and responses | queued | No — not in Part I |
+| s3-hsie-y6-w19-l1 | 6 | HSIE | 19 | 1 | Investigate | Global organisations | queued | No — not in Part I |
+| s3-hsie-y6-w19-l2 | 6 | HSIE | 19 | 2 | Apply and respond | Global organisations | queued | No — not in Part I |
+| s3-pdh-y6-w19-l1 | 6 | PDHPE | 19 | 1 | Learn and discuss | Planning an active week | queued | No — not in Part I |
+| s3-pdh-y6-w19-l2 | 6 | PDHPE | 19 | 2 | Practise and apply | Planning an active week | queued | No — not in Part I |
+| s3-arts-y6-w19-l1 | 6 | Creative Arts | 19 | 1 | Explore and learn | Performing and evaluating | queued | No — not in Part I |
+| s3-arts-y6-w19-l2 | 6 | Creative Arts | 19 | 2 | Create and perform | Performing and evaluating | queued | No — not in Part I |
+| s3-eng-y6-w20-l1 | 6 | English | 20 | 1 | Reading | Literary response | queued | No — not in Part I |
+| s3-eng-y6-w20-l2 | 6 | English | 20 | 2 | Writing | Literary response | queued | No — not in Part I |
+| s3-eng-y6-w20-l3 | 6 | English | 20 | 3 | Language and spelling | Literary response | queued | No — not in Part I |
+| s3-eng-y6-w20-l4 | 6 | English | 20 | 4 | Speaking and handwriting | Literary response | queued | No — not in Part I |
+| s3-mat-y6-w20-l1 | 6 | Mathematics | 20 | 1 | Concept | Percentage problems | queued | No — not in Part I |
+| s3-mat-y6-w20-l2 | 6 | Mathematics | 20 | 2 | Strategies | Discounts and sales | queued | No — not in Part I |
+| s3-mat-y6-w20-l3 | 6 | Mathematics | 20 | 3 | Problem solving | Investigation: survey results as percentages | queued | No — not in Part I |
+| s3-mat-y6-w20-l4 | 6 | Mathematics | 20 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y6-w20-l1 | 6 | Science and Technology | 20 | 1 | Investigate | Investigation: changing Earth | queued | No — not in Part I |
+| s3-sci-y6-w20-l2 | 6 | Science and Technology | 20 | 2 | Apply and make | Investigation: changing Earth | queued | No — not in Part I |
+| s3-hsie-y6-w20-l1 | 6 | HSIE | 20 | 1 | Investigate | Investigation: global connections | queued | No — not in Part I |
+| s3-hsie-y6-w20-l2 | 6 | HSIE | 20 | 2 | Apply and respond | Investigation: global connections | queued | No — not in Part I |
+| s3-pdh-y6-w20-l1 | 6 | PDHPE | 20 | 1 | Learn and discuss | Investigation: healthy lifestyle | queued | No — not in Part I |
+| s3-pdh-y6-w20-l2 | 6 | PDHPE | 20 | 2 | Practise and apply | Investigation: healthy lifestyle | queued | No — not in Part I |
+| s3-arts-y6-w20-l1 | 6 | Creative Arts | 20 | 1 | Explore and learn | Investigation: a dance story | queued | No — not in Part I |
+| s3-arts-y6-w20-l2 | 6 | Creative Arts | 20 | 2 | Create and perform | Investigation: a dance story | queued | No — not in Part I |
+| s3-eng-y6-w21-l1 | 6 | English | 21 | 1 | Reading | Cohesion and linking ideas | queued | No — not in Part I |
+| s3-eng-y6-w21-l2 | 6 | English | 21 | 2 | Writing | Cohesion and linking ideas | queued | No — not in Part I |
+| s3-eng-y6-w21-l3 | 6 | English | 21 | 3 | Language and spelling | Cohesion and linking ideas | queued | No — not in Part I |
+| s3-eng-y6-w21-l4 | 6 | English | 21 | 4 | Speaking and handwriting | Cohesion and linking ideas | queued | No — not in Part I |
+| s3-mat-y6-w21-l1 | 6 | Mathematics | 21 | 1 | Concept | Earning and spending money | queued | No — not in Part I |
+| s3-mat-y6-w21-l2 | 6 | Mathematics | 21 | 2 | Strategies | Calculating change and totals | queued | No — not in Part I |
+| s3-mat-y6-w21-l3 | 6 | Mathematics | 21 | 3 | Problem solving | Rounding and estimating costs | queued | No — not in Part I |
+| s3-mat-y6-w21-l4 | 6 | Mathematics | 21 | 4 | Fluency and review | Fluency: money calculations | queued | No — not in Part I |
+| s3-sci-y6-w21-l1 | 6 | Science and Technology | 21 | 1 | Investigate | Systems and mechanisms | queued | No — not in Part I |
+| s3-sci-y6-w21-l2 | 6 | Science and Technology | 21 | 2 | Apply and make | Systems and mechanisms | queued | No — not in Part I |
+| s3-hsie-y6-w21-l1 | 6 | HSIE | 21 | 1 | Investigate | World environments | queued | No — not in Part I |
+| s3-hsie-y6-w21-l2 | 6 | HSIE | 21 | 2 | Apply and respond | World environments | queued | No — not in Part I |
+| s3-pdh-y6-w21-l1 | 6 | PDHPE | 21 | 1 | Learn and discuss | Athletics | queued | No — not in Part I |
+| s3-pdh-y6-w21-l2 | 6 | PDHPE | 21 | 2 | Practise and apply | Athletics | queued | No — not in Part I |
+| s3-arts-y6-w21-l1 | 6 | Creative Arts | 21 | 1 | Explore and learn | Photography and framing | queued | No — not in Part I |
+| s3-arts-y6-w21-l2 | 6 | Creative Arts | 21 | 2 | Create and perform | Photography and framing | queued | No — not in Part I |
+| s3-eng-y6-w22-l1 | 6 | English | 22 | 1 | Reading | Complex sentences and clauses | queued | No — not in Part I |
+| s3-eng-y6-w22-l2 | 6 | English | 22 | 2 | Writing | Complex sentences and clauses | queued | No — not in Part I |
+| s3-eng-y6-w22-l3 | 6 | English | 22 | 3 | Language and spelling | Complex sentences and clauses | queued | No — not in Part I |
+| s3-eng-y6-w22-l4 | 6 | English | 22 | 4 | Speaking and handwriting | Complex sentences and clauses | queued | No — not in Part I |
+| s3-mat-y6-w22-l1 | 6 | Mathematics | 22 | 1 | Concept | Unit prices and best buys | queued | No — not in Part I |
+| s3-mat-y6-w22-l2 | 6 | Mathematics | 22 | 2 | Strategies | Discounts and percentages | queued | No — not in Part I |
+| s3-mat-y6-w22-l3 | 6 | Mathematics | 22 | 3 | Problem solving | Comparing prices | queued | No — not in Part I |
+| s3-mat-y6-w22-l4 | 6 | Mathematics | 22 | 4 | Fluency and review | Fluency: shopping maths | queued | No — not in Part I |
+| s3-sci-y6-w22-l1 | 6 | Science and Technology | 22 | 1 | Investigate | Gears, levers and pulleys | queued | No — not in Part I |
+| s3-sci-y6-w22-l2 | 6 | Science and Technology | 22 | 2 | Apply and make | Gears, levers and pulleys | queued | No — not in Part I |
+| s3-hsie-y6-w22-l1 | 6 | HSIE | 22 | 1 | Investigate | Climate and climate zones | queued | No — not in Part I |
+| s3-hsie-y6-w22-l2 | 6 | HSIE | 22 | 2 | Apply and respond | Climate and climate zones | queued | No — not in Part I |
+| s3-pdh-y6-w22-l1 | 6 | PDHPE | 22 | 1 | Learn and discuss | Fitness training | queued | No — not in Part I |
+| s3-pdh-y6-w22-l2 | 6 | PDHPE | 22 | 2 | Practise and apply | Fitness training | queued | No — not in Part I |
+| s3-arts-y6-w22-l1 | 6 | Creative Arts | 22 | 1 | Explore and learn | Digital art | queued | No — not in Part I |
+| s3-arts-y6-w22-l2 | 6 | Creative Arts | 22 | 2 | Create and perform | Digital art | queued | No — not in Part I |
+| s3-eng-y6-w23-l1 | 6 | English | 23 | 1 | Reading | Punctuation for effect | queued | No — not in Part I |
+| s3-eng-y6-w23-l2 | 6 | English | 23 | 2 | Writing | Punctuation for effect | queued | No — not in Part I |
+| s3-eng-y6-w23-l3 | 6 | English | 23 | 3 | Language and spelling | Punctuation for effect | queued | No — not in Part I |
+| s3-eng-y6-w23-l4 | 6 | English | 23 | 4 | Speaking and handwriting | Punctuation for effect | queued | No — not in Part I |
+| s3-mat-y6-w23-l1 | 6 | Mathematics | 23 | 1 | Concept | Budgeting basics | queued | No — not in Part I |
+| s3-mat-y6-w23-l2 | 6 | Mathematics | 23 | 2 | Strategies | Needs, wants and saving | queued | No — not in Part I |
+| s3-mat-y6-w23-l3 | 6 | Mathematics | 23 | 3 | Problem solving | Planning a budget for an event | queued | No — not in Part I |
+| s3-mat-y6-w23-l4 | 6 | Mathematics | 23 | 4 | Fluency and review | Fluency: budget calculations | queued | No — not in Part I |
+| s3-sci-y6-w23-l1 | 6 | Science and Technology | 23 | 1 | Investigate | Designing a mechanism | queued | No — not in Part I |
+| s3-sci-y6-w23-l2 | 6 | Science and Technology | 23 | 2 | Apply and make | Designing a mechanism | queued | No — not in Part I |
+| s3-hsie-y6-w23-l1 | 6 | HSIE | 23 | 1 | Investigate | Human impacts on environments | queued | No — not in Part I |
+| s3-hsie-y6-w23-l2 | 6 | HSIE | 23 | 2 | Apply and respond | Human impacts on environments | queued | No — not in Part I |
+| s3-pdh-y6-w23-l1 | 6 | PDHPE | 23 | 1 | Learn and discuss | Measuring performance | queued | No — not in Part I |
+| s3-pdh-y6-w23-l2 | 6 | PDHPE | 23 | 2 | Practise and apply | Measuring performance | queued | No — not in Part I |
+| s3-arts-y6-w23-l1 | 6 | Creative Arts | 23 | 1 | Explore and learn | Stop motion animation | queued | No — not in Part I |
+| s3-arts-y6-w23-l2 | 6 | Creative Arts | 23 | 2 | Create and perform | Stop motion animation | queued | No — not in Part I |
+| s3-eng-y6-w24-l1 | 6 | English | 24 | 1 | Reading | Editing for clarity | queued | No — not in Part I |
+| s3-eng-y6-w24-l2 | 6 | English | 24 | 2 | Writing | Editing for clarity | queued | No — not in Part I |
+| s3-eng-y6-w24-l3 | 6 | English | 24 | 3 | Language and spelling | Editing for clarity | queued | No — not in Part I |
+| s3-eng-y6-w24-l4 | 6 | English | 24 | 4 | Speaking and handwriting | Editing for clarity | queued | No — not in Part I |
+| s3-mat-y6-w24-l1 | 6 | Mathematics | 24 | 1 | Concept | Simple profit and loss | queued | No — not in Part I |
+| s3-mat-y6-w24-l2 | 6 | Mathematics | 24 | 2 | Strategies | Income and expenses tables | queued | No — not in Part I |
+| s3-mat-y6-w24-l3 | 6 | Mathematics | 24 | 3 | Problem solving | Investigation: plan a class market stall | queued | No — not in Part I |
+| s3-mat-y6-w24-l4 | 6 | Mathematics | 24 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y6-w24-l1 | 6 | Science and Technology | 24 | 1 | Investigate | Building and testing | queued | No — not in Part I |
+| s3-sci-y6-w24-l2 | 6 | Science and Technology | 24 | 2 | Apply and make | Building and testing | queued | No — not in Part I |
+| s3-hsie-y6-w24-l1 | 6 | HSIE | 24 | 1 | Investigate | Environmental action | queued | No — not in Part I |
+| s3-hsie-y6-w24-l2 | 6 | HSIE | 24 | 2 | Apply and respond | Environmental action | queued | No — not in Part I |
+| s3-pdh-y6-w24-l1 | 6 | PDHPE | 24 | 1 | Learn and discuss | Personal challenge | queued | No — not in Part I |
+| s3-pdh-y6-w24-l2 | 6 | PDHPE | 24 | 2 | Practise and apply | Personal challenge | queued | No — not in Part I |
+| s3-arts-y6-w24-l1 | 6 | Creative Arts | 24 | 1 | Explore and learn | Making a short film | queued | No — not in Part I |
+| s3-arts-y6-w24-l2 | 6 | Creative Arts | 24 | 2 | Create and perform | Making a short film | queued | No — not in Part I |
+| s3-eng-y6-w25-l1 | 6 | English | 25 | 1 | Reading | Word origins | queued | No — not in Part I |
+| s3-eng-y6-w25-l2 | 6 | English | 25 | 2 | Writing | Word origins | queued | No — not in Part I |
+| s3-eng-y6-w25-l3 | 6 | English | 25 | 3 | Language and spelling | Word origins | queued | No — not in Part I |
+| s3-eng-y6-w25-l4 | 6 | English | 25 | 4 | Speaking and handwriting | Word origins | queued | No — not in Part I |
+| s3-mat-y6-w25-l1 | 6 | Mathematics | 25 | 1 | Concept | Area of rectangles, squares and composite shapes | queued | No — not in Part I |
+| s3-mat-y6-w25-l2 | 6 | Mathematics | 25 | 2 | Strategies | Area of triangles | queued | No — not in Part I |
+| s3-mat-y6-w25-l3 | 6 | Mathematics | 25 | 3 | Problem solving | Area units and conversions | queued | No — not in Part I |
+| s3-mat-y6-w25-l4 | 6 | Mathematics | 25 | 4 | Fluency and review | Fluency: area practice | queued | No — not in Part I |
+| s3-sci-y6-w25-l1 | 6 | Science and Technology | 25 | 1 | Investigate | Investigation: engineering challenge | queued | No — not in Part I |
+| s3-sci-y6-w25-l2 | 6 | Science and Technology | 25 | 2 | Apply and make | Investigation: engineering challenge | queued | No — not in Part I |
+| s3-hsie-y6-w25-l1 | 6 | HSIE | 25 | 1 | Investigate | Investigation: environmental change | queued | No — not in Part I |
+| s3-hsie-y6-w25-l2 | 6 | HSIE | 25 | 2 | Apply and respond | Investigation: environmental change | queued | No — not in Part I |
+| s3-pdh-y6-w25-l1 | 6 | PDHPE | 25 | 1 | Learn and discuss | Investigation: fitness | queued | No — not in Part I |
+| s3-pdh-y6-w25-l2 | 6 | PDHPE | 25 | 2 | Practise and apply | Investigation: fitness | queued | No — not in Part I |
+| s3-arts-y6-w25-l1 | 6 | Creative Arts | 25 | 1 | Explore and learn | Investigation: media arts | queued | No — not in Part I |
+| s3-arts-y6-w25-l2 | 6 | Creative Arts | 25 | 2 | Create and perform | Investigation: media arts | queued | No — not in Part I |
+| s3-eng-y6-w26-l1 | 6 | English | 26 | 1 | Reading | Latin and Greek roots | queued | No — not in Part I |
+| s3-eng-y6-w26-l2 | 6 | English | 26 | 2 | Writing | Latin and Greek roots | queued | No — not in Part I |
+| s3-eng-y6-w26-l3 | 6 | English | 26 | 3 | Language and spelling | Latin and Greek roots | queued | No — not in Part I |
+| s3-eng-y6-w26-l4 | 6 | English | 26 | 4 | Speaking and handwriting | Latin and Greek roots | queued | No — not in Part I |
+| s3-mat-y6-w26-l1 | 6 | Mathematics | 26 | 1 | Concept | Perimeter and area compared | queued | No — not in Part I |
+| s3-mat-y6-w26-l2 | 6 | Mathematics | 26 | 2 | Strategies | Composite shapes and problem solving | queued | No — not in Part I |
+| s3-mat-y6-w26-l3 | 6 | Mathematics | 26 | 3 | Problem solving | Area investigation: design a garden | queued | No — not in Part I |
+| s3-mat-y6-w26-l4 | 6 | Mathematics | 26 | 4 | Fluency and review | Fluency: area and perimeter | queued | No — not in Part I |
+| s3-sci-y6-w26-l1 | 6 | Science and Technology | 26 | 1 | Investigate | Data and spreadsheets | queued | No — not in Part I |
+| s3-sci-y6-w26-l2 | 6 | Science and Technology | 26 | 2 | Apply and make | Data and spreadsheets | queued | No — not in Part I |
+| s3-hsie-y6-w26-l1 | 6 | HSIE | 26 | 1 | Investigate | Three levels of government | queued | No — not in Part I |
+| s3-hsie-y6-w26-l2 | 6 | HSIE | 26 | 2 | Apply and respond | Three levels of government | queued | No — not in Part I |
+| s3-pdh-y6-w26-l1 | 6 | PDHPE | 26 | 1 | Learn and discuss | Team sport skills | queued | No — not in Part I |
+| s3-pdh-y6-w26-l2 | 6 | PDHPE | 26 | 2 | Practise and apply | Team sport skills | queued | No — not in Part I |
+| s3-arts-y6-w26-l1 | 6 | Creative Arts | 26 | 1 | Explore and learn | Lyrics and song structure | queued | No — not in Part I |
+| s3-arts-y6-w26-l2 | 6 | Creative Arts | 26 | 2 | Create and perform | Lyrics and song structure | queued | No — not in Part I |
+| s3-eng-y6-w27-l1 | 6 | English | 27 | 1 | Reading | Spelling rules and exceptions | queued | No — not in Part I |
+| s3-eng-y6-w27-l2 | 6 | English | 27 | 2 | Writing | Spelling rules and exceptions | queued | No — not in Part I |
+| s3-eng-y6-w27-l3 | 6 | English | 27 | 3 | Language and spelling | Spelling rules and exceptions | queued | No — not in Part I |
+| s3-eng-y6-w27-l4 | 6 | English | 27 | 4 | Speaking and handwriting | Spelling rules and exceptions | queued | No — not in Part I |
+| s3-mat-y6-w27-l1 | 6 | Mathematics | 27 | 1 | Concept | Volume of rectangular prisms | queued | No — not in Part I |
+| s3-mat-y6-w27-l2 | 6 | Mathematics | 27 | 2 | Strategies | Cubic units and conversions | queued | No — not in Part I |
+| s3-mat-y6-w27-l3 | 6 | Mathematics | 27 | 3 | Problem solving | Capacity and volume links | queued | No — not in Part I |
+| s3-mat-y6-w27-l4 | 6 | Mathematics | 27 | 4 | Fluency and review | Fluency: volume | queued | No — not in Part I |
+| s3-sci-y6-w27-l1 | 6 | Science and Technology | 27 | 1 | Investigate | Designing an app | queued | No — not in Part I |
+| s3-sci-y6-w27-l2 | 6 | Science and Technology | 27 | 2 | Apply and make | Designing an app | queued | No — not in Part I |
+| s3-hsie-y6-w27-l1 | 6 | HSIE | 27 | 1 | Investigate | Making and changing laws | queued | No — not in Part I |
+| s3-hsie-y6-w27-l2 | 6 | HSIE | 27 | 2 | Apply and respond | Making and changing laws | queued | No — not in Part I |
+| s3-pdh-y6-w27-l1 | 6 | PDHPE | 27 | 1 | Learn and discuss | Tactics and strategy | queued | No — not in Part I |
+| s3-pdh-y6-w27-l2 | 6 | PDHPE | 27 | 2 | Practise and apply | Tactics and strategy | queued | No — not in Part I |
+| s3-arts-y6-w27-l1 | 6 | Creative Arts | 27 | 1 | Explore and learn | Songwriting | queued | No — not in Part I |
+| s3-arts-y6-w27-l2 | 6 | Creative Arts | 27 | 2 | Create and perform | Songwriting | queued | No — not in Part I |
+| s3-eng-y6-w28-l1 | 6 | English | 28 | 1 | Reading | Vocabulary building | queued | No — not in Part I |
+| s3-eng-y6-w28-l2 | 6 | English | 28 | 2 | Writing | Vocabulary building | queued | No — not in Part I |
+| s3-eng-y6-w28-l3 | 6 | English | 28 | 3 | Language and spelling | Vocabulary building | queued | No — not in Part I |
+| s3-eng-y6-w28-l4 | 6 | English | 28 | 4 | Speaking and handwriting | Vocabulary building | queued | No — not in Part I |
+| s3-mat-y6-w28-l1 | 6 | Mathematics | 28 | 1 | Concept | Volume and capacity problems | queued | No — not in Part I |
+| s3-mat-y6-w28-l2 | 6 | Mathematics | 28 | 2 | Strategies | Packaging and containers | queued | No — not in Part I |
+| s3-mat-y6-w28-l3 | 6 | Mathematics | 28 | 3 | Problem solving | Investigation: design a container | queued | No — not in Part I |
+| s3-mat-y6-w28-l4 | 6 | Mathematics | 28 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y6-w28-l1 | 6 | Science and Technology | 28 | 1 | Investigate | Coding with inputs and outputs | queued | No — not in Part I |
+| s3-sci-y6-w28-l2 | 6 | Science and Technology | 28 | 2 | Apply and make | Coding with inputs and outputs | queued | No — not in Part I |
+| s3-hsie-y6-w28-l1 | 6 | HSIE | 28 | 1 | Investigate | Australian courts and justice | queued | No — not in Part I |
+| s3-hsie-y6-w28-l2 | 6 | HSIE | 28 | 2 | Apply and respond | Australian courts and justice | queued | No — not in Part I |
+| s3-pdh-y6-w28-l1 | 6 | PDHPE | 28 | 1 | Learn and discuss | Leadership and officiating | queued | No — not in Part I |
+| s3-pdh-y6-w28-l2 | 6 | PDHPE | 28 | 2 | Practise and apply | Leadership and officiating | queued | No — not in Part I |
+| s3-arts-y6-w28-l1 | 6 | Creative Arts | 28 | 1 | Explore and learn | Arranging and rehearsing | queued | No — not in Part I |
+| s3-arts-y6-w28-l2 | 6 | Creative Arts | 28 | 2 | Create and perform | Arranging and rehearsing | queued | No — not in Part I |
+| s3-eng-y6-w29-l1 | 6 | English | 29 | 1 | Reading | Persuasion in media | queued | No — not in Part I |
+| s3-eng-y6-w29-l2 | 6 | English | 29 | 2 | Writing | Persuasion in media | queued | No — not in Part I |
+| s3-eng-y6-w29-l3 | 6 | English | 29 | 3 | Language and spelling | Persuasion in media | queued | No — not in Part I |
+| s3-eng-y6-w29-l4 | 6 | English | 29 | 4 | Speaking and handwriting | Persuasion in media | queued | No — not in Part I |
+| s3-mat-y6-w29-l1 | 6 | Mathematics | 29 | 1 | Concept | 12-hour and 24-hour time | queued | No — not in Part I |
+| s3-mat-y6-w29-l2 | 6 | Mathematics | 29 | 2 | Strategies | Elapsed time and timetables | queued | No — not in Part I |
+| s3-mat-y6-w29-l3 | 6 | Mathematics | 29 | 3 | Problem solving | Time zones | queued | No — not in Part I |
+| s3-mat-y6-w29-l4 | 6 | Mathematics | 29 | 4 | Fluency and review | Fluency: time calculations | queued | No — not in Part I |
+| s3-sci-y6-w29-l1 | 6 | Science and Technology | 29 | 1 | Investigate | Testing and improving | queued | No — not in Part I |
+| s3-sci-y6-w29-l2 | 6 | Science and Technology | 29 | 2 | Apply and make | Testing and improving | queued | No — not in Part I |
+| s3-hsie-y6-w29-l1 | 6 | HSIE | 29 | 1 | Investigate | Human rights | queued | No — not in Part I |
+| s3-hsie-y6-w29-l2 | 6 | HSIE | 29 | 2 | Apply and respond | Human rights | queued | No — not in Part I |
+| s3-pdh-y6-w29-l1 | 6 | PDHPE | 29 | 1 | Learn and discuss | Sportsmanship | queued | No — not in Part I |
+| s3-pdh-y6-w29-l2 | 6 | PDHPE | 29 | 2 | Practise and apply | Sportsmanship | queued | No — not in Part I |
+| s3-arts-y6-w29-l1 | 6 | Creative Arts | 29 | 1 | Explore and learn | Recording a song | queued | No — not in Part I |
+| s3-arts-y6-w29-l2 | 6 | Creative Arts | 29 | 2 | Create and perform | Recording a song | queued | No — not in Part I |
+| s3-eng-y6-w30-l1 | 6 | English | 30 | 1 | Reading | Bias and point of view | queued | No — not in Part I |
+| s3-eng-y6-w30-l2 | 6 | English | 30 | 2 | Writing | Bias and point of view | queued | No — not in Part I |
+| s3-eng-y6-w30-l3 | 6 | English | 30 | 3 | Language and spelling | Bias and point of view | queued | No — not in Part I |
+| s3-eng-y6-w30-l4 | 6 | English | 30 | 4 | Speaking and handwriting | Bias and point of view | queued | No — not in Part I |
+| s3-mat-y6-w30-l1 | 6 | Mathematics | 30 | 1 | Concept | Reading timetables and schedules | queued | No — not in Part I |
+| s3-mat-y6-w30-l2 | 6 | Mathematics | 30 | 2 | Strategies | Time and duration problems | queued | No — not in Part I |
+| s3-mat-y6-w30-l3 | 6 | Mathematics | 30 | 3 | Problem solving | Investigation: planning a journey | queued | No — not in Part I |
+| s3-mat-y6-w30-l4 | 6 | Mathematics | 30 | 4 | Fluency and review | Fluency: timetables | queued | No — not in Part I |
+| s3-sci-y6-w30-l1 | 6 | Science and Technology | 30 | 1 | Investigate | Investigation: digital project | queued | No — not in Part I |
+| s3-sci-y6-w30-l2 | 6 | Science and Technology | 30 | 2 | Apply and make | Investigation: digital project | queued | No — not in Part I |
+| s3-hsie-y6-w30-l1 | 6 | HSIE | 30 | 1 | Investigate | Investigation: government | queued | No — not in Part I |
+| s3-hsie-y6-w30-l2 | 6 | HSIE | 30 | 2 | Apply and respond | Investigation: government | queued | No — not in Part I |
+| s3-pdh-y6-w30-l1 | 6 | PDHPE | 30 | 1 | Learn and discuss | Investigation: team sport | queued | No — not in Part I |
+| s3-pdh-y6-w30-l2 | 6 | PDHPE | 30 | 2 | Practise and apply | Investigation: team sport | queued | No — not in Part I |
+| s3-arts-y6-w30-l1 | 6 | Creative Arts | 30 | 1 | Explore and learn | Investigation: songwriting | queued | No — not in Part I |
+| s3-arts-y6-w30-l2 | 6 | Creative Arts | 30 | 2 | Create and perform | Investigation: songwriting | queued | No — not in Part I |
+| s3-eng-y6-w31-l1 | 6 | English | 31 | 1 | Reading | News and online texts | queued | No — not in Part I |
+| s3-eng-y6-w31-l2 | 6 | English | 31 | 2 | Writing | News and online texts | queued | No — not in Part I |
+| s3-eng-y6-w31-l3 | 6 | English | 31 | 3 | Language and spelling | News and online texts | queued | No — not in Part I |
+| s3-eng-y6-w31-l4 | 6 | English | 31 | 4 | Speaking and handwriting | News and online texts | queued | No — not in Part I |
+| s3-mat-y6-w31-l1 | 6 | Mathematics | 31 | 1 | Concept | Length and units of length | queued | No — not in Part I |
+| s3-mat-y6-w31-l2 | 6 | Mathematics | 31 | 2 | Strategies | Converting units of length | queued | No — not in Part I |
+| s3-mat-y6-w31-l3 | 6 | Mathematics | 31 | 3 | Problem solving | Mass and units of mass | queued | No — not in Part I |
+| s3-mat-y6-w31-l4 | 6 | Mathematics | 31 | 4 | Fluency and review | Fluency: conversions | queued | No — not in Part I |
+| s3-sci-y6-w31-l1 | 6 | Science and Technology | 31 | 1 | Investigate | Sustainable technologies | queued | No — not in Part I |
+| s3-sci-y6-w31-l2 | 6 | Science and Technology | 31 | 2 | Apply and make | Sustainable technologies | queued | No — not in Part I |
+| s3-hsie-y6-w31-l1 | 6 | HSIE | 31 | 1 | Investigate | Consumer choices | queued | No — not in Part I |
+| s3-hsie-y6-w31-l2 | 6 | HSIE | 31 | 2 | Apply and respond | Consumer choices | queued | No — not in Part I |
+| s3-pdh-y6-w31-l1 | 6 | PDHPE | 31 | 1 | Learn and discuss | Rhythmic movement | queued | No — not in Part I |
+| s3-pdh-y6-w31-l2 | 6 | PDHPE | 31 | 2 | Practise and apply | Rhythmic movement | queued | No — not in Part I |
+| s3-arts-y6-w31-l1 | 6 | Creative Arts | 31 | 1 | Explore and learn | Directing and designing | queued | No — not in Part I |
+| s3-arts-y6-w31-l2 | 6 | Creative Arts | 31 | 2 | Create and perform | Directing and designing | queued | No — not in Part I |
+| s3-eng-y6-w32-l1 | 6 | English | 32 | 1 | Reading | Creating a media text | queued | No — not in Part I |
+| s3-eng-y6-w32-l2 | 6 | English | 32 | 2 | Writing | Creating a media text | queued | No — not in Part I |
+| s3-eng-y6-w32-l3 | 6 | English | 32 | 3 | Language and spelling | Creating a media text | queued | No — not in Part I |
+| s3-eng-y6-w32-l4 | 6 | English | 32 | 4 | Speaking and handwriting | Creating a media text | queued | No — not in Part I |
+| s3-mat-y6-w32-l1 | 6 | Mathematics | 32 | 1 | Concept | Scale drawings and maps | queued | No — not in Part I |
+| s3-mat-y6-w32-l2 | 6 | Mathematics | 32 | 2 | Strategies | Using scales to solve problems | queued | No — not in Part I |
+| s3-mat-y6-w32-l3 | 6 | Mathematics | 32 | 3 | Problem solving | Measurement problem solving | queued | No — not in Part I |
+| s3-mat-y6-w32-l4 | 6 | Mathematics | 32 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y6-w32-l1 | 6 | Science and Technology | 32 | 1 | Investigate | Food processing and packaging | queued | No — not in Part I |
+| s3-sci-y6-w32-l2 | 6 | Science and Technology | 32 | 2 | Apply and make | Food processing and packaging | queued | No — not in Part I |
+| s3-hsie-y6-w32-l1 | 6 | HSIE | 32 | 1 | Investigate | Advertising and decisions | queued | No — not in Part I |
+| s3-hsie-y6-w32-l2 | 6 | HSIE | 32 | 2 | Apply and respond | Advertising and decisions | queued | No — not in Part I |
+| s3-pdh-y6-w32-l1 | 6 | PDHPE | 32 | 1 | Learn and discuss | Dance sequences | queued | No — not in Part I |
+| s3-pdh-y6-w32-l2 | 6 | PDHPE | 32 | 2 | Practise and apply | Dance sequences | queued | No — not in Part I |
+| s3-arts-y6-w32-l1 | 6 | Creative Arts | 32 | 1 | Explore and learn | Costumes, sets and props | queued | No — not in Part I |
+| s3-arts-y6-w32-l2 | 6 | Creative Arts | 32 | 2 | Create and perform | Costumes, sets and props | queued | No — not in Part I |
+| s3-eng-y6-w33-l1 | 6 | English | 33 | 1 | Reading | Note taking and summarising | queued | No — not in Part I |
+| s3-eng-y6-w33-l2 | 6 | English | 33 | 2 | Writing | Note taking and summarising | queued | No — not in Part I |
+| s3-eng-y6-w33-l3 | 6 | English | 33 | 3 | Language and spelling | Note taking and summarising | queued | No — not in Part I |
+| s3-eng-y6-w33-l4 | 6 | English | 33 | 4 | Speaking and handwriting | Note taking and summarising | queued | No — not in Part I |
+| s3-mat-y6-w33-l1 | 6 | Mathematics | 33 | 1 | Concept | Angles: types, measuring and drawing | queued | No — not in Part I |
+| s3-mat-y6-w33-l2 | 6 | Mathematics | 33 | 2 | Strategies | Angles on a straight line and at a point | queued | No — not in Part I |
+| s3-mat-y6-w33-l3 | 6 | Mathematics | 33 | 3 | Problem solving | Angle problems | queued | No — not in Part I |
+| s3-mat-y6-w33-l4 | 6 | Mathematics | 33 | 4 | Fluency and review | Fluency: angles | queued | No — not in Part I |
+| s3-sci-y6-w33-l1 | 6 | Science and Technology | 33 | 1 | Investigate | Reducing waste | queued | No — not in Part I |
+| s3-sci-y6-w33-l2 | 6 | Science and Technology | 33 | 2 | Apply and make | Reducing waste | queued | No — not in Part I |
+| s3-hsie-y6-w33-l1 | 6 | HSIE | 33 | 1 | Investigate | Entrepreneurs and enterprise | queued | No — not in Part I |
+| s3-hsie-y6-w33-l2 | 6 | HSIE | 33 | 2 | Apply and respond | Entrepreneurs and enterprise | queued | No — not in Part I |
+| s3-pdh-y6-w33-l1 | 6 | PDHPE | 33 | 1 | Learn and discuss | Creative movement | queued | No — not in Part I |
+| s3-pdh-y6-w33-l2 | 6 | PDHPE | 33 | 2 | Practise and apply | Creative movement | queued | No — not in Part I |
+| s3-arts-y6-w33-l1 | 6 | Creative Arts | 33 | 1 | Explore and learn | Rehearsing a production | queued | No — not in Part I |
+| s3-arts-y6-w33-l2 | 6 | Creative Arts | 33 | 2 | Create and perform | Rehearsing a production | queued | No — not in Part I |
+| s3-eng-y6-w34-l1 | 6 | English | 34 | 1 | Reading | Writing for different purposes | queued | No — not in Part I |
+| s3-eng-y6-w34-l2 | 6 | English | 34 | 2 | Writing | Writing for different purposes | queued | No — not in Part I |
+| s3-eng-y6-w34-l3 | 6 | English | 34 | 3 | Language and spelling | Writing for different purposes | queued | No — not in Part I |
+| s3-eng-y6-w34-l4 | 6 | English | 34 | 4 | Speaking and handwriting | Writing for different purposes | queued | No — not in Part I |
+| s3-mat-y6-w34-l1 | 6 | Mathematics | 34 | 1 | Concept | Properties of 2D shapes | queued | No — not in Part I |
+| s3-mat-y6-w34-l2 | 6 | Mathematics | 34 | 2 | Strategies | Classifying triangles and quadrilaterals | queued | No — not in Part I |
+| s3-mat-y6-w34-l3 | 6 | Mathematics | 34 | 3 | Problem solving | Symmetry and transformations | queued | No — not in Part I |
+| s3-mat-y6-w34-l4 | 6 | Mathematics | 34 | 4 | Fluency and review | Fluency: shape properties | queued | No — not in Part I |
+| s3-sci-y6-w34-l1 | 6 | Science and Technology | 34 | 1 | Investigate | Designing a sustainable product | queued | No — not in Part I |
+| s3-sci-y6-w34-l2 | 6 | Science and Technology | 34 | 2 | Apply and make | Designing a sustainable product | queued | No — not in Part I |
+| s3-hsie-y6-w34-l1 | 6 | HSIE | 34 | 1 | Investigate | Budgeting and saving | queued | No — not in Part I |
+| s3-hsie-y6-w34-l2 | 6 | HSIE | 34 | 2 | Apply and respond | Budgeting and saving | queued | No — not in Part I |
+| s3-pdh-y6-w34-l1 | 6 | PDHPE | 34 | 1 | Learn and discuss | Performing for an audience | queued | No — not in Part I |
+| s3-pdh-y6-w34-l2 | 6 | PDHPE | 34 | 2 | Practise and apply | Performing for an audience | queued | No — not in Part I |
+| s3-arts-y6-w34-l1 | 6 | Creative Arts | 34 | 1 | Explore and learn | Performing a production | queued | No — not in Part I |
+| s3-arts-y6-w34-l2 | 6 | Creative Arts | 34 | 2 | Create and perform | Performing a production | queued | No — not in Part I |
+| s3-eng-y6-w35-l1 | 6 | English | 35 | 1 | Reading | Formal and informal language | queued | No — not in Part I |
+| s3-eng-y6-w35-l2 | 6 | English | 35 | 2 | Writing | Formal and informal language | queued | No — not in Part I |
+| s3-eng-y6-w35-l3 | 6 | English | 35 | 3 | Language and spelling | Formal and informal language | queued | No — not in Part I |
+| s3-eng-y6-w35-l4 | 6 | English | 35 | 4 | Speaking and handwriting | Formal and informal language | queued | No — not in Part I |
+| s3-mat-y6-w35-l1 | 6 | Mathematics | 35 | 1 | Concept | Properties of 3D objects | queued | No — not in Part I |
+| s3-mat-y6-w35-l2 | 6 | Mathematics | 35 | 2 | Strategies | Nets of prisms and pyramids | queued | No — not in Part I |
+| s3-mat-y6-w35-l3 | 6 | Mathematics | 35 | 3 | Problem solving | Views of 3D objects | queued | No — not in Part I |
+| s3-mat-y6-w35-l4 | 6 | Mathematics | 35 | 4 | Fluency and review | Fluency: 3D objects | queued | No — not in Part I |
+| s3-sci-y6-w35-l1 | 6 | Science and Technology | 35 | 1 | Investigate | Investigation: sustainability | queued | No — not in Part I |
+| s3-sci-y6-w35-l2 | 6 | Science and Technology | 35 | 2 | Apply and make | Investigation: sustainability | queued | No — not in Part I |
+| s3-hsie-y6-w35-l1 | 6 | HSIE | 35 | 1 | Investigate | Investigation: enterprise | queued | No — not in Part I |
+| s3-hsie-y6-w35-l2 | 6 | HSIE | 35 | 2 | Apply and respond | Investigation: enterprise | queued | No — not in Part I |
+| s3-pdh-y6-w35-l1 | 6 | PDHPE | 35 | 1 | Learn and discuss | Investigation: movement composition | queued | No — not in Part I |
+| s3-pdh-y6-w35-l2 | 6 | PDHPE | 35 | 2 | Practise and apply | Investigation: movement composition | queued | No — not in Part I |
+| s3-arts-y6-w35-l1 | 6 | Creative Arts | 35 | 1 | Explore and learn | Investigation: a production | queued | No — not in Part I |
+| s3-arts-y6-w35-l2 | 6 | Creative Arts | 35 | 2 | Create and perform | Investigation: a production | queued | No — not in Part I |
+| s3-eng-y6-w36-l1 | 6 | English | 36 | 1 | Reading | Preparing for high school English | queued | No — not in Part I |
+| s3-eng-y6-w36-l2 | 6 | English | 36 | 2 | Writing | Preparing for high school English | queued | No — not in Part I |
+| s3-eng-y6-w36-l3 | 6 | English | 36 | 3 | Language and spelling | Preparing for high school English | queued | No — not in Part I |
+| s3-eng-y6-w36-l4 | 6 | English | 36 | 4 | Speaking and handwriting | Preparing for high school English | queued | No — not in Part I |
+| s3-mat-y6-w36-l1 | 6 | Mathematics | 36 | 1 | Concept | Coordinates on a grid | queued | No — not in Part I |
+| s3-mat-y6-w36-l2 | 6 | Mathematics | 36 | 2 | Strategies | Transformations on a grid | queued | No — not in Part I |
+| s3-mat-y6-w36-l3 | 6 | Mathematics | 36 | 3 | Problem solving | Investigation: design with transformations | queued | No — not in Part I |
+| s3-mat-y6-w36-l4 | 6 | Mathematics | 36 | 4 | Fluency and review | Unit review and check-in | queued | No — not in Part I |
+| s3-sci-y6-w36-l1 | 6 | Science and Technology | 36 | 1 | Investigate | Asking investigable questions | queued | No — not in Part I |
+| s3-sci-y6-w36-l2 | 6 | Science and Technology | 36 | 2 | Apply and make | Asking investigable questions | queued | No — not in Part I |
+| s3-hsie-y6-w36-l1 | 6 | HSIE | 36 | 1 | Investigate | Developing an inquiry | queued | No — not in Part I |
+| s3-hsie-y6-w36-l2 | 6 | HSIE | 36 | 2 | Apply and respond | Developing an inquiry | queued | No — not in Part I |
+| s3-pdh-y6-w36-l1 | 6 | PDHPE | 36 | 1 | Learn and discuss | Preparing for high school | queued | No — not in Part I |
+| s3-pdh-y6-w36-l2 | 6 | PDHPE | 36 | 2 | Practise and apply | Preparing for high school | queued | No — not in Part I |
+| s3-arts-y6-w36-l1 | 6 | Creative Arts | 36 | 1 | Explore and learn | Planning a showcase | queued | No — not in Part I |
+| s3-arts-y6-w36-l2 | 6 | Creative Arts | 36 | 2 | Create and perform | Planning a showcase | queued | No — not in Part I |
+| s3-eng-y6-w37-l1 | 6 | English | 37 | 1 | Reading | Reading and comprehension review | queued | No — not in Part I |
+| s3-eng-y6-w37-l2 | 6 | English | 37 | 2 | Writing | Reading and comprehension review | queued | No — not in Part I |
+| s3-eng-y6-w37-l3 | 6 | English | 37 | 3 | Language and spelling | Reading and comprehension review | queued | No — not in Part I |
+| s3-eng-y6-w37-l4 | 6 | English | 37 | 4 | Speaking and handwriting | Reading and comprehension review | queued | No — not in Part I |
+| s3-mat-y6-w37-l1 | 6 | Mathematics | 37 | 1 | Concept | Collecting and organising data | queued | No — not in Part I |
+| s3-mat-y6-w37-l2 | 6 | Mathematics | 37 | 2 | Strategies | Column graphs and line graphs | queued | No — not in Part I |
+| s3-mat-y6-w37-l3 | 6 | Mathematics | 37 | 3 | Problem solving | Interpreting graphs | queued | No — not in Part I |
+| s3-mat-y6-w37-l4 | 6 | Mathematics | 37 | 4 | Fluency and review | Fluency: reading graphs | queued | No — not in Part I |
+| s3-sci-y6-w37-l1 | 6 | Science and Technology | 37 | 1 | Investigate | Controlling variables | queued | No — not in Part I |
+| s3-sci-y6-w37-l2 | 6 | Science and Technology | 37 | 2 | Apply and make | Controlling variables | queued | No — not in Part I |
+| s3-hsie-y6-w37-l1 | 6 | HSIE | 37 | 1 | Investigate | Researching and referencing | queued | No — not in Part I |
+| s3-hsie-y6-w37-l2 | 6 | HSIE | 37 | 2 | Apply and respond | Researching and referencing | queued | No — not in Part I |
+| s3-pdh-y6-w37-l1 | 6 | PDHPE | 37 | 1 | Learn and discuss | Managing change | queued | No — not in Part I |
+| s3-pdh-y6-w37-l2 | 6 | PDHPE | 37 | 2 | Practise and apply | Managing change | queued | No — not in Part I |
+| s3-arts-y6-w37-l1 | 6 | Creative Arts | 37 | 1 | Explore and learn | Curating and presenting | queued | No — not in Part I |
+| s3-arts-y6-w37-l2 | 6 | Creative Arts | 37 | 2 | Create and perform | Curating and presenting | queued | No — not in Part I |
+| s3-eng-y6-w38-l1 | 6 | English | 38 | 1 | Reading | Writing portfolio | queued | No — not in Part I |
+| s3-eng-y6-w38-l2 | 6 | English | 38 | 2 | Writing | Writing portfolio | queued | No — not in Part I |
+| s3-eng-y6-w38-l3 | 6 | English | 38 | 3 | Language and spelling | Writing portfolio | queued | No — not in Part I |
+| s3-eng-y6-w38-l4 | 6 | English | 38 | 4 | Speaking and handwriting | Writing portfolio | queued | No — not in Part I |
+| s3-mat-y6-w38-l1 | 6 | Mathematics | 38 | 1 | Concept | Describing and comparing data sets | queued | No — not in Part I |
+| s3-mat-y6-w38-l2 | 6 | Mathematics | 38 | 2 | Strategies | Spotting misleading graphs | queued | No — not in Part I |
+| s3-mat-y6-w38-l3 | 6 | Mathematics | 38 | 3 | Problem solving | Planning a data investigation | queued | No — not in Part I |
+| s3-mat-y6-w38-l4 | 6 | Mathematics | 38 | 4 | Fluency and review | Fluency: data practice | queued | No — not in Part I |
+| s3-sci-y6-w38-l1 | 6 | Science and Technology | 38 | 1 | Investigate | Analysing evidence | queued | No — not in Part I |
+| s3-sci-y6-w38-l2 | 6 | Science and Technology | 38 | 2 | Apply and make | Analysing evidence | queued | No — not in Part I |
+| s3-hsie-y6-w38-l1 | 6 | HSIE | 38 | 1 | Investigate | Analysing evidence | queued | No — not in Part I |
+| s3-hsie-y6-w38-l2 | 6 | HSIE | 38 | 2 | Apply and respond | Analysing evidence | queued | No — not in Part I |
+| s3-pdh-y6-w38-l1 | 6 | PDHPE | 38 | 1 | Learn and discuss | Puberty and health | queued | No — not in Part I |
+| s3-pdh-y6-w38-l2 | 6 | PDHPE | 38 | 2 | Practise and apply | Puberty and health | queued | No — not in Part I |
+| s3-arts-y6-w38-l1 | 6 | Creative Arts | 38 | 1 | Explore and learn | Final rehearsals | queued | No — not in Part I |
+| s3-arts-y6-w38-l2 | 6 | Creative Arts | 38 | 2 | Create and perform | Final rehearsals | queued | No — not in Part I |
+| s3-eng-y6-w39-l1 | 6 | English | 39 | 1 | Reading | Grammar and spelling review | queued | No — not in Part I |
+| s3-eng-y6-w39-l2 | 6 | English | 39 | 2 | Writing | Grammar and spelling review | queued | No — not in Part I |
+| s3-eng-y6-w39-l3 | 6 | English | 39 | 3 | Language and spelling | Grammar and spelling review | queued | No — not in Part I |
+| s3-eng-y6-w39-l4 | 6 | English | 39 | 4 | Speaking and handwriting | Grammar and spelling review | queued | No — not in Part I |
+| s3-mat-y6-w39-l1 | 6 | Mathematics | 39 | 1 | Concept | Chance and probability language | queued | No — not in Part I |
+| s3-mat-y6-w39-l2 | 6 | Mathematics | 39 | 2 | Strategies | Probability as a fraction | queued | No — not in Part I |
+| s3-mat-y6-w39-l3 | 6 | Mathematics | 39 | 3 | Problem solving | Chance experiments and predictions | queued | No — not in Part I |
+| s3-mat-y6-w39-l4 | 6 | Mathematics | 39 | 4 | Fluency and review | Fluency: chance | queued | No — not in Part I |
+| s3-sci-y6-w39-l1 | 6 | Science and Technology | 39 | 1 | Investigate | Presenting a STEM project | queued | No — not in Part I |
+| s3-sci-y6-w39-l2 | 6 | Science and Technology | 39 | 2 | Apply and make | Presenting a STEM project | queued | No — not in Part I |
+| s3-hsie-y6-w39-l1 | 6 | HSIE | 39 | 1 | Investigate | Presenting a Stage 3 project | queued | No — not in Part I |
+| s3-hsie-y6-w39-l2 | 6 | HSIE | 39 | 2 | Apply and respond | Presenting a Stage 3 project | queued | No — not in Part I |
+| s3-pdh-y6-w39-l1 | 6 | PDHPE | 39 | 1 | Learn and discuss | Looking ahead | queued | No — not in Part I |
+| s3-pdh-y6-w39-l2 | 6 | PDHPE | 39 | 2 | Practise and apply | Looking ahead | queued | No — not in Part I |
+| s3-arts-y6-w39-l1 | 6 | Creative Arts | 39 | 1 | Explore and learn | Stage 3 showcase | queued | No — not in Part I |
+| s3-arts-y6-w39-l2 | 6 | Creative Arts | 39 | 2 | Create and perform | Stage 3 showcase | queued | No — not in Part I |
+| s3-eng-y6-w40-l1 | 6 | English | 40 | 1 | Reading | Year 6 English celebration | queued | No — not in Part I |
+| s3-eng-y6-w40-l2 | 6 | English | 40 | 2 | Writing | Year 6 English celebration | queued | No — not in Part I |
+| s3-eng-y6-w40-l3 | 6 | English | 40 | 3 | Language and spelling | Year 6 English celebration | queued | No — not in Part I |
+| s3-eng-y6-w40-l4 | 6 | English | 40 | 4 | Speaking and handwriting | Year 6 English celebration | queued | No — not in Part I |
+| s3-mat-y6-w40-l1 | 6 | Mathematics | 40 | 1 | Concept | Stage 3 investigation: planning | queued | No — not in Part I |
+| s3-mat-y6-w40-l2 | 6 | Mathematics | 40 | 2 | Strategies | Stage 3 investigation: presenting | queued | No — not in Part I |
+| s3-mat-y6-w40-l3 | 6 | Mathematics | 40 | 3 | Problem solving | Stage 3 skills check | queued | No — not in Part I |
+| s3-mat-y6-w40-l4 | 6 | Mathematics | 40 | 4 | Fluency and review | Reflection and celebration | queued | No — not in Part I |
+| s3-sci-y6-w40-l1 | 6 | Science and Technology | 40 | 1 | Investigate | Stage 3 science and technology reflection | queued | No — not in Part I |
+| s3-sci-y6-w40-l2 | 6 | Science and Technology | 40 | 2 | Apply and make | Stage 3 science and technology reflection | queued | No — not in Part I |
+| s3-hsie-y6-w40-l1 | 6 | HSIE | 40 | 1 | Investigate | Year 6 HSIE reflection | queued | No — not in Part I |
+| s3-hsie-y6-w40-l2 | 6 | HSIE | 40 | 2 | Apply and respond | Year 6 HSIE reflection | queued | No — not in Part I |
+| s3-pdh-y6-w40-l1 | 6 | PDHPE | 40 | 1 | Learn and discuss | Year 6 PDHPE reflection | queued | No — not in Part I |
+| s3-pdh-y6-w40-l2 | 6 | PDHPE | 40 | 2 | Practise and apply | Year 6 PDHPE reflection | queued | No — not in Part I |
+| s3-arts-y6-w40-l1 | 6 | Creative Arts | 40 | 1 | Explore and learn | Year 6 creative arts reflection | queued | No — not in Part I |
+| s3-arts-y6-w40-l2 | 6 | Creative Arts | 40 | 2 | Create and perform | Year 6 creative arts reflection | queued | No — not in Part I |
+
+---
+
+## What remains unwritten
+
+The presence of an entry in Part II **does not** turn a lesson focus into full student-facing instruction. Each missing lesson still needs its own age-appropriate explanations, narrated worked examples, guided and independent practice, assessment and targeted feedback. There is no honest shortcut that can label every one of the 19,202 planned lessons complete when only 22 manuscripts have been fully compiled.
+
+**Source preservation:** This compilation changes neither the app's lesson records nor their attached outcome metadata. Older rejected manuscripts remain separate and are not presented as teaching in Part I. Existing inventory titles containing “reflection” are listed verbatim for traceability; no reflection activities were added here.
