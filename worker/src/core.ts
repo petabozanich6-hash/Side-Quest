@@ -2,6 +2,7 @@ import type { Hono, MiddlewareHandler } from "hono";
 import { applySpelling } from "./data/spelling";
 import * as lb from "./lessonBuilder";
 import * as aid from "./aiDraft";
+import * as help from "./aiHelp";
 import * as pl from "./planning";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
@@ -393,6 +394,23 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const r = await lb.saveDraft(c.env.DB, u, c.req.param("id"), b);
     return r.ok ? c.json({ ok: true, saved_at: r.saved_at }) : send(c, r);
   });
+
+  app.get("/api/help/status", auth, async (c) => {
+    const u = c.get("user");
+    if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
+    return c.json(await help.helpStatus(c.env.DB, c.env.AI, u, help.helpLimits(c.env)));
+  });
+
+  app.post("/api/assignments/:id/help", auth, async (c) => {
+    const u = c.get("user");
+    if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await help.helpForChild(c.env.DB, c.env.AI, { user: u, assignmentId: c.req.param("id"), kind: b.kind, target: b.target, level: b.level, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, limits: help.helpLimits(c.env) });
+    if (!r.ok) return send(c, r);
+    return c.json({ text: r.text, source: r.source, remaining_today: r.remaining_today });
+  });
+
+  app.get("/api/ai/help-usage", auth, parent, async (c) => c.json(await help.helpUsageForFamily(c.env.DB, c.get("user").family_id, help.helpLimits(c.env))));
 
   app.post("/api/assignments/:id/quiz-check", auth, async (c) => {
     const u = c.get("user");

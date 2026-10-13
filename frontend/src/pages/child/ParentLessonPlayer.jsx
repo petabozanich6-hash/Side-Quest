@@ -8,6 +8,54 @@ const BTN = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
 const ACCENT = { backgroundColor: "#C77B5B", color: "#FBF7EC" };
 const INK = { color: "#1F3B2D" };
 
+
+// "I'm stuck! Help me understand." A small inline panel under the part of the lesson the child is on.
+// The server knows the lesson; this only says which part and what kind of help. Nothing here touches the child's answers.
+const HELP_KINDS = [["explain", "Explain it differently"], ["example", "Show me another example"], ["hint", "Give me a hint"]];
+function Stuck({ assignmentId, target, enabled, locked }) {
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState("");
+  const [res, setRes] = useState({}); // kind -> text, kept while the lesson is open
+  const [err, setErr] = useState("");
+  const [shown, setShown] = useState("");
+  const levels = useRef(0);
+  if (!enabled || locked) return null;
+  const ask = async (kind) => {
+    setErr(""); setShown(kind);
+    if (kind !== "hint" && res[kind]) return;
+    setBusy(kind);
+    try {
+      const level = kind === "hint" ? levels.current + 1 : 1;
+      const { data } = await api.post(`/assignments/${assignmentId}/help`, { kind, target, level });
+      if (kind === "hint") levels.current = level;
+      setRes((r) => ({ ...r, [kind]: data.text }));
+    } catch (e) { setErr(e.response?.data?.detail || "The helper isn't available right now. Ask your grown-up."); }
+    finally { setBusy(""); }
+  };
+  const border = { borderColor: "#D4C8A8" };
+  if (!open) return <button type="button" onClick={() => setOpen(true)} className="text-sm font-bold rounded-full border-2 px-4 py-2" style={{ borderColor: "#C77B5B", color: "#8A4B30" }} data-testid="stuck-btn">🤔 I'm stuck! Help me understand.</button>;
+  return (
+    <div className="rounded-2xl border-2 p-4 space-y-3 bg-[#FBF7EC]" style={{ borderColor: "#C77B5B" }} data-testid="stuck-panel" role="region" aria-label="Help">
+      <div className="flex items-start justify-between gap-3">
+        <p className="font-display text-lg font-semibold" style={INK}>What would help?</p>
+        <button type="button" onClick={() => setOpen(false)} className="text-sm font-bold underline shrink-0" data-testid="stuck-close">Close and keep going</button>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {HELP_KINDS.map(([k, label]) => (
+          <button key={k} type="button" disabled={!!busy} onClick={() => ask(k)} className={`rounded-full border-2 px-4 py-2 text-sm font-bold disabled:opacity-50 ${shown === k ? "bg-white" : ""}`} style={border} data-testid={`stuck-${k}`}>{label}</button>
+        ))}
+      </div>
+      {busy && <p className="text-sm text-stone-600" role="status">Thinking about the best way to help…</p>}
+      {err && <p className="text-sm text-rose-800" role="alert" data-testid="stuck-error">{err}</p>}
+      {shown && res[shown] && !busy && (
+        <div className="rounded-xl border bg-white p-4 text-base leading-relaxed whitespace-pre-wrap" style={border} data-testid="stuck-answer">{res[shown]}</div>
+      )}
+      {shown === "hint" && res.hint && !busy && <button type="button" onClick={() => ask("hint")} className="text-sm font-bold underline" data-testid="stuck-more-hint">Still stuck? Give me a bigger hint</button>}
+      <p className="text-xs text-stone-500">This helper only talks about this lesson. It can make mistakes, so check with your grown-up if something seems odd.</p>
+    </div>
+  );
+}
+
 // Plays a lesson built by a parent: read, watch, do, answer, quiz, hand in.
 export default function ParentLessonPlayer({ assignment, onChanged, preview = false }) {
   const a = assignment;
@@ -44,6 +92,9 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const fileRef = useRef(null);
   const first = useRef(true);
 
+  const [helpOn, setHelpOn] = useState(false);
+  useEffect(() => { if (preview) return; api.get("/help/status").then(r => setHelpOn(!!r.data.available && r.data.reason !== "limit")).catch(() => {}); }, [preview]);
+  const S = (target) => <Stuck assignmentId={a.id} target={target} enabled={helpOn} locked={locked} />;
   useEffect(() => { if (preview) return; api.get("/features").then(r => setUploadsOn(!!r.data.uploads)).catch(() => {}); }, [preview]);
 
   const upload = async (file) => {
@@ -175,6 +226,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
         <section key={i} className={card} data-testid={`section-${i}`}>
           {s.heading && <h2 className="font-display text-xl font-semibold" style={INK}>{s.heading}</h2>}
           <p className="text-base leading-relaxed whitespace-pre-wrap">{s.body}</p>
+          {S({ part: "section", i })}
         </section>
       ))}
 
@@ -186,6 +238,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
               <p className="font-bold">{w.title ? `${w.title}: ` : `Example ${i + 1}: `}{w.problem}</p>
               <ol className="list-decimal pl-5 space-y-1 text-base">{(w.steps || []).map((st, j) => <li key={j}>{st}</li>)}</ol>
               {w.answer && <p className="font-bold" style={INK}>Answer: {w.answer}</p>}
+              {S({ part: "worked", i })}
             </div>
           ))}
         </section>
@@ -212,6 +265,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
               <label htmlFor={`gp-${i}`} className="font-bold block">{i + 1}. {g.prompt}</label>
               <textarea id={`gp-${i}`} rows={2} disabled={locked} value={gp[i] || ""} onChange={(e) => setGp({ ...gp, [i]: e.target.value })} className={area} style={border} placeholder="Show your working here" data-testid={`guided-${i}`} />
               {g.hint && (hints[i] ? <p className="text-sm text-stone-700">💡 {g.hint}</p> : <button type="button" onClick={() => setHints({ ...hints, [i]: true })} className="text-sm font-bold underline" style={{ color: "#4A5D3A" }}>Need a hint?</button>)}
+              {S({ part: "guided", i })}
             </div>
           ))}
         </section>
@@ -239,7 +293,8 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
         <section className={card} data-testid="activities">
           <h2 className="font-display text-xl font-semibold" style={INK}>Things to do</h2>
           {activities.map((x, i) => (
-            <label key={i} className="flex items-start gap-3 rounded-xl border p-3 bg-white" style={border}>
+            <div key={i} className="rounded-xl border p-3 bg-white space-y-2" style={border}>
+            <label className="flex items-start gap-3">
               <input type="checkbox" disabled={locked} checked={!!checks[i]} onChange={(e) => setChecks({ ...checks, [i]: e.target.checked })} className="mt-1 h-5 w-5" data-testid={`activity-${i}`} />
               <span>
                 <span className="block font-bold">{x.title}{x.offline ? " (off the screen)" : ""}</span>
@@ -247,6 +302,8 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
                 {(x.tasks || []).length > 0 && <ol className="mt-2 list-decimal pl-5 space-y-1 text-sm text-stone-800">{x.tasks.map((t, j) => <li key={j}>{t.prompt}</li>)}</ol>}
               </span>
             </label>
+            {(x.tasks || []).length > 0 && S({ part: "task", i, j: 0 })}
+            </div>
           ))}
           <p className="text-xs text-stone-500">Tick each one when you have done it.</p>
         </section>
@@ -266,6 +323,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
             <div key={i}>
               <label htmlFor={`ans-${i}`} className="font-bold">{i + 1}. {q.prompt}</label>
               <textarea id={`ans-${i}`} rows={q.type === "long" ? 5 : 2} disabled={locked} value={answers[i] || ""} onChange={(e) => setAnswers({ ...answers, [i]: e.target.value })} className={`mt-1 ${area}`} style={border} data-testid={`answer-${i}`} />
+              <div className="mt-2">{S({ part: "question", i })}</div>
             </div>
           ))}
         </section>
@@ -281,7 +339,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
           ) : locked ? (
             <p className="text-sm text-stone-600">The quiz is closed.</p>
           ) : (
-            <QuestQuiz quiz={quiz} passMark={l.pass_mark || 0.7} assignmentId={a.id} onResult={(r) => setQuizOk(!!r?.passed)} />
+            <QuestQuiz quiz={quiz} passMark={l.pass_mark || 0.7} assignmentId={a.id} onResult={(r) => setQuizOk(!!r?.passed)} help={(qi) => S({ part: "quiz", i: qi })} />
           )}
         </section>
       )}

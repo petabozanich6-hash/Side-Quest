@@ -51,6 +51,7 @@ type StudentExtra = {
   stage_name?: string;
   band?: string;
   prefs?: LearningPrefs;
+  ai_help?: boolean;
 };
 
 type StudentRow = {
@@ -106,6 +107,7 @@ export function studentExtraFromBody(body: Record<string, unknown>, stage: strin
   if ("subject_levels" in body) next.subject_levels = isRecord(body.subject_levels) ? (body.subject_levels as Record<string, string>) : {};
   if ("electives" in body) next.electives = Array.isArray(body.electives) ? (body.electives as Array<Record<string, unknown>>) : [];
   if ("prefs" in body) next.prefs = cleanPrefs(body.prefs);
+  if ("ai_help" in body) next.ai_help = body.ai_help !== false;
   next.subject_levels ??= existing?.subject_levels ?? {};
   next.electives ??= existing?.electives ?? [];
   next.stage_name = meta?.name ?? existing?.stage_name ?? stage;
@@ -132,7 +134,7 @@ export function studentOut(row: StudentRow | null, withPrefs = false) {
     interests: parseJson(row.interests, [] as string[]),
     notes: row.notes,
     electives: extra.electives ?? [],
-    ...(withPrefs ? { prefs: extra.prefs ?? {} } : {}),
+    ...(withPrefs ? { prefs: extra.prefs ?? {}, ai_help: extra.ai_help !== false } : {}),
     created_at: row.created_at,
   };
 }

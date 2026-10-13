@@ -160,6 +160,9 @@ function EditDialog({ student, onClose, onSaved }) {
   const [interests, setInterests] = useState((student.interests || []).join(", "));
   const [prefs, setPrefs] = useState({ duration_minutes: sp.duration_minutes || "", delivery: sp.delivery || "", reading: sp.reading || "", complexity: sp.complexity || "", activity_types: (sp.activity_types || []).join(", "), support_areas: sp.support_areas || "", extension_areas: sp.extension_areas || "", equipment: sp.equipment || "", other: sp.other || "" });
   const setP = (k, v) => setPrefs(p => ({ ...p, [k]: v }));
+  const [aiHelp, setAiHelp] = useState(student.ai_help !== false);
+  const [helpUse, setHelpUse] = useState(null);
+  useEffect(() => { api.get("/ai/help-usage").then(r => setHelpUse(r.data)).catch(() => {}); }, []);
   const [busy, setBusy] = useState(false);
   const stage = STAGES.find(s => s.code === f.stage);
 
@@ -179,6 +182,7 @@ function EditDialog({ student, onClose, onSaved }) {
         stage: f.stage,
         year_level: f.year_level || null,
         birth_year: f.birth_year === "" ? null : Number(f.birth_year),
+        ai_help: aiHelp,
         interests: interests.split(",").map(x => x.trim()).filter(Boolean).slice(0, 12),
         prefs: { ...prefs, duration_minutes: prefs.duration_minutes ? Number(prefs.duration_minutes) : undefined, activity_types: prefs.activity_types.split(",").map(x => x.trim()).filter(Boolean) },
       });
@@ -213,6 +217,12 @@ function EditDialog({ student, onClose, onSaved }) {
           </div>
           <F label="Birth year (optional)"><input type="number" value={f.birth_year} onChange={e=>setF({...f, birth_year: e.target.value})} className="input" data-testid="e-birth"/></F>
           <F label="New PIN (leave blank to keep the current one)"><input type="password" minLength={4} autoComplete="new-password" value={f.pin} onChange={e=>setF({...f, pin: e.target.value})} className="input" data-testid="e-pin"/></F>
+          <label className="flex items-start gap-3 rounded-xl border border-stone-300 p-3 text-sm" data-testid="help-toggle-row">
+            <input type="checkbox" checked={aiHelp} onChange={e=>setAiHelp(e.target.checked)} className="mt-1 h-5 w-5" data-testid="help-toggle"/>
+            <span><b>"I'm stuck! Help me understand" for {student.name}</b><br/>
+              <span className="text-stone-600">Lets {student.name} ask for a simpler explanation, another example or a hint while doing a lesson. It only talks about the lesson, never gives answers to quizzes, and is part of the paid membership with daily limits.
+              {helpUse?.children?.[student.id] ? ` Used ${helpUse.children[student.id].month} times this month (${helpUse.children[student.id].today} today).` : ""}</span></span>
+          </label>
           <details className="rounded-xl border border-stone-300 p-3" data-testid="prefs-details">
             <summary className="cursor-pointer text-sm font-bold" style={{color:"#1F3B2D"}}>Learning preferences (optional)</summary>
             <p className="text-xs text-stone-500 mt-2">Only what you choose to enter. Side-Quest uses this to make lessons that suit {student.name}. It is private to your family and never shown to your child.</p>

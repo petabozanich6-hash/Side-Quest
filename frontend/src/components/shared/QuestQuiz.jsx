@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { api } from "../../lib/api";
 
-export default function QuestQuiz({ quiz = [], passMark = 0.9, assignmentId, onResult, shortAnswers = {}, onShortAnswers = () => {} }) {
+export default function QuestQuiz({ quiz = [], passMark = 0.9, assignmentId, onResult, shortAnswers = {}, onShortAnswers = () => {}, help = null }) {
   const questions = quiz.filter((q) => q.type !== "short_answer");
   const [answers, setAnswers] = useState({});
   const [checked, setChecked] = useState(false);
@@ -101,6 +101,8 @@ export default function QuestQuiz({ quiz = [], passMark = 0.9, assignmentId, onR
                   );
                 })}
               </div>
+
+              {help && !checked && <div className="mt-3">{help(quiz.indexOf(question))}</div>}
 
               {checked && !okAt(qi) && (
                 <p className="mt-2 text-sm text-stone-700">

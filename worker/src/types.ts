@@ -25,6 +25,9 @@ export type Env = {
   /** Optional AI Gateway id and model override for Workers AI calls. */
   AI_GATEWAY_ID?: string;
   AI_MODEL?: string;
+  HELP_PER_CHILD_DAY?: string;
+  HELP_PER_FAMILY_DAY?: string;
+  HELP_PER_FAMILY_MONTH?: string;
   /** Optional sender address override (defaults to no-reply@sidequestlearning.app). */
   EMAIL_FROM?: string;
   /** Verified Email Routing destination that incoming support mail is forwarded to. */

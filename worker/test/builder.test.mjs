@@ -520,3 +520,103 @@ test("series planning checks the allowance up front and returns the right number
   await aid.draftLessonWithAi(db, ai, { familyId: seed(db, { plan: "ACTIVE_MONTHLY" }), userId: "u", request: { request: "four science lessons about the solar system", series: { index: 1, titles: ["The Sun", "The planets", "Moons", "Orbits"], goals: [] } } }, NOW);
   assert.match(ai.calls[0][1].messages.at(-1).content, /Topic: The planets[\s\S]*lesson 2 of 4[\s\S]*Earlier lessons: The Sun/);
 });
+
+// ---------------------------------------------------------------- "I'm stuck!" help for children
+import * as hp from "../src/aiHelp.ts";
+const Y7 = JSON.parse(readFileSync(new URL("../../frontend/src/data/referenceYear7Integers.json", import.meta.url), "utf8"));
+const helpAi = (text = "Picture a number line. Numbers further left are smaller.\n-7 is 7 steps left of zero, -3 is only 3 steps left.") => stub(() => ({ response: text }));
+async function helpSetup(plan = "ACTIVE_MONTHLY") {
+  const db = makeDb();
+  const fam = seed(db, { plan });
+  const kid = child(db, fam);
+  db.raw.prepare("UPDATE students SET year_level='7', interests=?, extra=? WHERE id=?").run(JSON.stringify(["fantasy"]), JSON.stringify({ prefs: { reading: "supported" } }), kid);
+  const les = await lb.createLesson(db, fam, { ...Y7, status: "ready" }, NOW);
+  const asg = await lb.assignLesson(db, fam, { student_id: kid, lesson_id: les.lesson.id }, NOW);
+  return { db, fam, kid, asg: asg.assignment.id, les: les.lesson };
+}
+
+test("help: paid only, child only, own assignment only, and the parent can switch it off", async () => {
+  const { db, fam, kid, asg } = await helpSetup();
+  const ai = helpAi();
+  const u = { id: kid, family_id: fam };
+  const r = await hp.helpForChild(db, ai, { user: u, assignmentId: asg, kind: "explain", target: { part: "section", i: 0 } }, NOW);
+  assert.ok(r.ok, JSON.stringify(r));
+  assert.match(r.text, /number line/);
+  // free and expired families are refused before any AI call
+  const f = await helpSetup("FREE_PREVIEW");
+  const fai = helpAi();
+  const fr = await hp.helpForChild(f.db, fai, { user: { id: f.kid, family_id: f.fam }, assignmentId: f.asg, kind: "explain", target: { part: "section", i: 0 } }, NOW);
+  assert.equal(fr.status, 402); assert.equal(fai.calls.length, 0);
+  // someone else's assignment
+  const other = child(db, fam);
+  assert.equal((await hp.helpForChild(db, ai, { user: { id: other, family_id: fam }, assignmentId: asg, kind: "hint", target: { part: "section", i: 0 } }, NOW)).status, 404);
+  // parent switches it off for this child
+  db.raw.prepare("UPDATE students SET extra=? WHERE id=?").run(JSON.stringify({ ai_help: false }), kid);
+  const before = ai.calls.length;
+  const off = await hp.helpForChild(db, ai, { user: u, assignmentId: asg, kind: "explain", target: { part: "section", i: 0 } }, NOW);
+  assert.equal(off.code, "HELP_OFF"); assert.equal(ai.calls.length, before);
+  assert.deepEqual(await hp.helpStatus(db, ai, u, hp.HELP_DEFAULTS, NOW), { available: false, reason: "parent_off" });
+  // no AI connected
+  assert.equal((await hp.helpForChild(db, undefined, { user: { id: other, family_id: fam }, assignmentId: asg, kind: "explain", target: { part: "general" } }, NOW)).status, 503);
+});
+
+test("help: context comes from the server, never includes answer keys or names, and answer-leaking replies are replaced", async () => {
+  const { db, fam, kid, asg, les } = await helpSetup();
+  const u = { id: kid, family_id: fam };
+  const q = les.quiz[0];
+  const right = q.options[q.correct_index];
+  const ai = helpAi(`Think about the number line.\nThe answer is ${right}.`);
+  const r = await hp.helpForChild(db, ai, { user: u, assignmentId: asg, kind: "hint", target: { part: "quiz", i: 0 } }, NOW);
+  assert.ok(r.ok);
+  assert.equal(r.source, "fallback"); // the reply stated the correct option, so a safe nudge is shown instead
+  assert.ok(!r.text.includes(right));
+  const sent = JSON.stringify(ai.calls[0][1].messages);
+  assert.ok(!sent.includes('"correct_index"'));
+  assert.ok(!sent.includes(les.answer_key.slice(0, 40)));
+  assert.ok(!sent.includes("Kid"));
+  assert.match(sent, /Year 7/); assert.match(sent, /reading support/);
+  assert.ok(ai.calls[0][1].max_tokens <= 500);
+  assert.equal(ai.calls.length, 1);
+  // a leak is free: it did not use the family's allowance
+  const st = await hp.helpStatus(db, ai, u, hp.HELP_DEFAULTS, NOW);
+  assert.equal(st.remaining_today, hp.HELP_DEFAULTS.perChildDay);
+  // the answer to a guided question is never in the prompt either
+  const g = les.guided_practice[0];
+  const ai2 = helpAi();
+  await hp.helpForChild(db, ai2, { user: u, assignmentId: asg, kind: "example", target: { part: "guided", i: 0 } }, NOW);
+  assert.ok(!JSON.stringify(ai2.calls[0][1].messages).includes(`Answer: ${g.answer}`));
+});
+
+test("help: a stored hint answers a first hint request for free; limits apply per child and per family; failures cost nothing", async () => {
+  const { db, fam, kid, asg, les } = await helpSetup();
+  const u = { id: kid, family_id: fam };
+  const ai = helpAi();
+  const free = await hp.helpForChild(db, ai, { user: u, assignmentId: asg, kind: "hint", level: 1, target: { part: "guided", i: 0 } }, NOW);
+  assert.equal(free.source, "stored"); assert.equal(free.text, les.guided_practice[0].hint); assert.equal(ai.calls.length, 0);
+  const second = await hp.helpForChild(db, ai, { user: u, assignmentId: asg, kind: "hint", level: 2, target: { part: "guided", i: 0 } }, NOW);
+  assert.equal(second.source, "ai"); assert.equal(ai.calls.length, 1);
+  const lim = { perChildDay: 3, perFamilyDay: 10, perFamilyMonth: 50 };
+  for (let i = 0; i < 2; i++) assert.ok((await hp.helpForChild(db, ai, { user: u, assignmentId: asg, kind: "explain", target: { part: "section", i: 0 }, limits: lim }, NOW)).ok);
+  const over = await hp.helpForChild(db, ai, { user: u, assignmentId: asg, kind: "explain", target: { part: "section", i: 0 }, limits: lim }, NOW);
+  assert.equal(over.code, "HELP_LIMIT");
+  // a sibling still has their own allowance, but the family cap applies to everyone
+  const sib = child(db, fam);
+  const sibAsg = (await lb.assignLesson(db, fam, { student_id: sib, lesson_id: les.id }, NOW)).assignment.id;
+  assert.ok((await hp.helpForChild(db, ai, { user: { id: sib, family_id: fam }, assignmentId: sibAsg, kind: "explain", target: { part: "section", i: 0 }, limits: { ...lim, perFamilyDay: 3 } }, NOW)).code === "HELP_LIMIT");
+  assert.ok((await hp.helpForChild(db, ai, { user: { id: sib, family_id: fam }, assignmentId: sibAsg, kind: "explain", target: { part: "section", i: 0 }, limits: lim }, NOW)).ok);
+  // an AI failure frees the allowance
+  const bad = stub(() => { throw new Error("x"); });
+  const used = (await hp.helpUsageForFamily(db, fam, lim, NOW)).children[sib].today;
+  assert.equal((await hp.helpForChild(db, bad, { user: { id: sib, family_id: fam }, assignmentId: sibAsg, kind: "example", target: { part: "worked", i: 0 }, limits: lim }, NOW)).code, "AI_FAILED");
+  assert.equal((await hp.helpUsageForFamily(db, fam, lim, NOW)).children[sib].today, used);
+  // lesson help is tracked apart from lesson drafting
+  assert.equal((await aid.aiUsage(db, fam, NOW)).today, 0);
+});
+
+test("leak detector: numbers match whole values only", () => {
+  assert.equal(hp.leaksAnswer("so 34 + 28 = 62", ["62"]), true);
+  assert.equal(hp.leaksAnswer("try 162 and 6.25", ["62"]), false);
+  assert.equal(hp.leaksAnswer("it is minus seven", ["-7"]), false);
+  assert.equal(hp.leaksAnswer("the answer is -7", ["-7"]), true);
+  assert.equal(hp.leaksAnswer("a half is bigger", ["A half"]), true);
+});

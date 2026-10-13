@@ -481,6 +481,18 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   ok(putP.status === 200 && putP.json.prefs.delivery === "independent" && putP.json.prefs.duration_minutes === 30 && !("bogus" in putP.json.prefs), "prefs not saved: " + JSON.stringify(putP.json));
   ok((await api("GET", "/students", pt)).json.find(x => x.id === ch.json.id).prefs.support_areas === "long passages", "parent list lacks prefs");
   ok(!JSON.stringify((await api("GET", `/students/${ch.json.id}`, tok)).json).includes("prefs"), "child can see learning preferences");
+  // "I'm stuck" helper: server-side access rules (AI is not connected in this run, so it must say so honestly)
+  const hs = await api("GET", "/help/status", tok);
+  ok(hs.status === 200 && hs.json.available === false && hs.json.reason === "unavailable", "help status: " + JSON.stringify(hs.json));
+  const hh = await api("POST", `/assignments/${asg.json.id}/help`, tok, { kind: "hint", level: 2, target: { part: "guided", i: 0 } });
+  ok(hh.status === 503 && hh.json.code === "AI_UNAVAILABLE", "child help without AI: " + hh.status);
+  ok((await api("POST", `/assignments/${asg.json.id}/help`, pt, { kind: "hint", target: { part: "general" } })).status === 403, "parent used the child helper");
+  ok((await api("GET", "/help/status", pt)).status === 403, "parent read child help status");
+  ok((await api("GET", "/ai/help-usage", tok)).status === 403, "child read help usage");
+  ok((await api("GET", "/ai/help-usage", pt)).json.children[ch.json.id].month === 0, "help usage not reported to parent");
+  ok((await api("PUT", `/students/${ch.json.id}`, pt, { ai_help: false })).json.ai_help === false, "parent could not switch help off");
+  ok((await api("PUT", `/students/${ch.json.id}`, pt, { ai_help: true })).json.ai_help === true, "parent could not switch help on");
+  ok(await cp.locator("[data-testid=stuck-btn]").count() === 0, "help button shown although the helper is unavailable");
   // Year 7 independent reference lesson: same pipeline, written straight to the student
   const Y7 = JSON.parse(readFileSync(resolve(ROOT, "frontend/src/data/referenceYear7Integers.json"), "utf8"));
   const les7 = await api("POST", "/lessons", pt, { ...Y7, status: "ready" });
