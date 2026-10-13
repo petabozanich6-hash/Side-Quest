@@ -1,0 +1,78 @@
+name: CI
+on:
+  push:
+    branches: [dev/sidequest-execution]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prepare logs
+        run: mkdir -p ci-logs
+      - name: Install (root, worker, frontend)
+        id: install
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          (npm ci && npm --prefix worker ci && npm --prefix frontend ci --legacy-peer-deps) 2>&1 | tee ci-logs/install.log
+      - name: Worker tests
+        id: test
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          (npm run test:worker && npm run lessons:test) 2>&1 | tee ci-logs/test.log
+      - name: Worker TypeScript check
+        id: typecheck
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm --prefix worker run typecheck 2>&1 | tee ci-logs/typecheck.log
+      - name: Frontend build
+        id: build
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          CI=false npm --prefix frontend run build 2>&1 | tee ci-logs/build.log
+      - name: End-to-end workflow (local Worker + local D1)
+        id: e2e
+        continue-on-error: true
+        if: steps.build.outcome == 'success'
+        run: |
+          set -o pipefail
+          node worker/test/e2e/run.mjs 2>&1 | tee ci-logs/e2e.log
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "install=${{ steps.install.outcome }}"
+            echo "test=${{ steps.test.outcome }}"
+            echo "typecheck=${{ steps.typecheck.outcome }}"
+            echo "build=${{ steps.build.outcome }}"
+            echo "e2e=${{ steps.e2e.outcome }}"
+          } | tee ci-logs/summary.txt
+      - name: Publish logs to branch ci-results (logs only, no code)
+        if: always() && github.event_name != 'pull_request'
+        run: |
+          set -e
+          SHA=$(git rev-parse --short HEAD)
+          mkdir -p /tmp/res && cp -r ci-logs/. /tmp/res/ && [ -d e2e-shots ] && cp -r e2e-shots /tmp/res/ || true
+          # keep log files bounded
+          for f in /tmp/res/*.log; do tail -c 200000 "$f" > "$f.tmp" && mv "$f.tmp" "$f"; done
+          cd /tmp/res && git init -q && git checkout -q -b ci-results
+          git config user.name "ci" && git config user.email "ci@users.noreply.github.com"
+          echo "commit $SHA" > commit.txt
+          git add -A && git commit -q -m "CI logs for $SHA"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ci-results
+      - name: Fail if any step failed
+        if: always()
+        run: |
+          grep -q "failure" ci-logs/summary.txt && exit 1 || exit 0
