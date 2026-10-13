@@ -1,0 +1,5 @@
+{
+  "gold-y3-english-nouns-concept": { "conceptual_accuracy": 4 },
+  "gold-y4-maths-column-addition-procedural": { "conceptual_accuracy": 4 },
+  "gold-y6-maths-multi-step-problem-solving": { "conceptual_accuracy": 4 }
+}

@@ -19,3 +19,7 @@ npm-debug.log*
 .DS_Store
 .idea/
 .vscode/
+
+# lesson-excellence pipeline scratch
+lesson-excellence/.work/
+.work/

@@ -9,6 +9,11 @@ A homeschool planning and learning platform (NSW curriculum aware).
 
 The frontend always talks to the API on the same origin (`/api`), so no API URL env var is needed.
 
+## Lesson content quality framework
+
+`lesson-excellence/` holds the content-only lesson schema, rubric, templates, validation/scoring scripts and the batch
+migration pipeline (no UI). Start with [`lesson-excellence/README.md`](lesson-excellence/README.md); run `npm run lessons:test`.
+
 ## Deploy to Cloudflare (sidequestlearning.app)
 
 Prerequisites: Node 20+, a Cloudflare account, and `npm install` run once at the repo root
