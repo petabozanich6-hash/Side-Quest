@@ -29,7 +29,7 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          (npm run test:worker && npm run lessons:test) 2>&1 | tee ci-logs/test.log
+          npm run test:worker 2>&1 | tee ci-logs/test.log
       - name: Worker TypeScript check
         id: typecheck
         continue-on-error: true
@@ -65,7 +65,6 @@ jobs:
           set -e
           SHA=$(git rev-parse --short HEAD)
           mkdir -p /tmp/res && cp -r ci-logs/. /tmp/res/ && [ -d e2e-shots ] && cp -r e2e-shots /tmp/res/ || true
-          # keep log files bounded
           for f in /tmp/res/*.log; do tail -c 200000 "$f" > "$f.tmp" && mv "$f.tmp" "$f"; done
           cd /tmp/res && git init -q && git checkout -q -b ci-results
           git config user.name "ci" && git config user.email "ci@users.noreply.github.com"

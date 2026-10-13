@@ -1,102 +1,59 @@
-# Side Quest Learning
+# Side-Quest Learning
 
-A homeschool planning and learning platform (NSW curriculum aware).
+Side-Quest is an **Australia-wide homeschool planning and learning-management platform**. Families build or bring their own lessons and resources, assign work to children, review submissions, and keep progress and learning evidence. It is **not** marketed as a complete proprietary curriculum.
 
-- `frontend/` – React (Create React App + craco) single page app.
-- `worker/` – Cloudflare Worker API (Hono + D1, TypeScript). Serves everything under `/api/*`.
-- `wrangler.jsonc` (repo root) – the **single** deployment config. The Worker serves the built
-  frontend (`frontend/build`) as static assets with SPA fallback, and handles `/api/*` itself.
+## Current architecture
 
-The frontend always talks to the API on the same origin (`/api`), so no API URL env var is needed.
+- `frontend/`: React, Create React App and CRACO. Separate parent and child experiences.
+- `worker/`: Cloudflare Worker API (Hono, D1, TypeScript); all API routes are under `/api/*`.
+- `worker/src/lessonBuilder.ts`: family-owned lesson creation, assignments, review, entitlements and child-safe lesson views (alongside `worker/src/core.ts`).
+- `worker/migrations/`: historical migration chain **required for existing databases**, including past curriculum seed data. Do not delete or rewrite applied migrations.
+- `wrangler.jsonc`: single deployment configuration; the Worker also serves the built frontend.
 
-Project status, decisions and the next task: [`docs/SIDEQUEST-EXECUTION.md`](docs/SIDEQUEST-EXECUTION.md).
+The frontend accesses the API on the same origin (`/api`). Authentication, data separation and entitlement enforcement belong on the server.
 
-## Lesson content quality framework
+**Current decisions, verified status, launch blockers and next action:** [`docs/SIDEQUEST-EXECUTION.md`](docs/SIDEQUEST-EXECUTION.md).
 
-`lesson-excellence/` holds the content-only lesson schema, rubric, templates, validation/scoring scripts and the batch
-migration pipeline (no UI). Start with [`lesson-excellence/README.md`](lesson-excellence/README.md); run `npm run lessons:test`.
+## Product scope
 
-## Deploy to Cloudflare (sidequestlearning.app)
+A parent can create and reuse lessons, assign them to children, and review submitted work. Children see a separate lesson and quest experience; submissions connect to progress and evidence. State-specific regulatory compliance and curriculum alignment are not automatically guaranteed.
 
-Prerequisites: Node 20+, a Cloudflare account, and `npm install` run once at the repo root
-(installs `wrangler`).
-
-1. **Log in**
-
-   ```bash
-   npx wrangler login
-   ```
-
-2. **Create the D1 database** (skip if `sidequest-db1` already exists – the ID in `wrangler.jsonc`
-   must match your database; if you create a new one, paste the new `database_id` into `wrangler.jsonc`).
-
-   ```bash
-   npx wrangler d1 create sidequest-db1
-   ```
-
-3. **Apply the migrations** (creates every table and seeds the lesson library). Safe to re-run.
-
-   ```bash
-   npm run db:migrate          # = wrangler d1 migrations apply DB --remote
-   ```
-
-4. **Set secrets**
-
-   ```bash
-   npx wrangler secret put JWT_SECRET            # any long random string, e.g. `openssl rand -hex 32`
-   # optional – Google sign-in API (the UI does not currently show a Google button):
-   npx wrangler secret put GOOGLE_OAUTH_CLIENT_ID
-   npx wrangler secret put GOOGLE_OAUTH_CLIENT_SECRET
-   ```
-
-5. **(Optional) R2 bucket for file uploads** (evidence photos, work samples). Until enabled,
-   `POST /api/files/upload` returns 501. Create the bucket, then uncomment the `r2_buckets` block in
-   `wrangler.jsonc`:
-
-   ```bash
-   npx wrangler r2 bucket create sidequest-files
-   ```
-
-6. **Deploy** – builds the frontend (`frontend/build`) and uploads the Worker + assets:
-
-   ```bash
-   npm run deploy              # = wrangler deploy
-   ```
-
-7. **Attach the custom domain**: Cloudflare dashboard → *Workers & Pages* → `side-quest` →
-   *Settings* → *Domains & Routes* → *Add* → *Custom domain* → `sidequestlearning.app`
-   (and `www.sidequestlearning.app` if wanted). The zone must be on your Cloudflare account.
-
-### Deploying from GitHub (Workers Builds)
-
-Connect the repo in the dashboard, with root directory `/`, build command `npm install` (the
-`build` step in `wrangler.jsonc` installs and builds the frontend) and deploy command
-`npx wrangler deploy`. Run the D1 migrations (step 3) whenever a new file is added to
-`worker/migrations/`.
-
-### First use
-
-Open the site, **Register** a parent account and add children under *Children*; the dashboard, lessons,
-word hoard, pets, achievements, etc. are ready. Nothing is imported from any earlier database.
+An old curriculum-production effort and its offline authoring assets were discontinued in October 2026. Its source archives, inventory files, validators and lesson-production scripts were removed from the active tree on a dedicated cleanup branch. They remain recoverable in previous Git commits. Historical lesson records embedded in the D1 migration chain are **intentionally preserved** and are hidden from the family lesson library in current application code.
 
 ## Local development
 
+Requires Node 20+ and the dependencies defined in the lockfiles.
+
 ```bash
-npm install && npm --prefix worker install && npm --prefix frontend install --legacy-peer-deps
+npm ci
+npm --prefix worker ci
+npm --prefix frontend ci --legacy-peer-deps
 echo 'JWT_SECRET=dev-secret-change-me' > .dev.vars
-npm run db:migrate:local            # local D1 (stored in .wrangler/)
-npm --prefix frontend run build     # the Worker serves frontend/build
-npm run dev                         # http://localhost:8787
+npm run db:migrate:local
+npm --prefix frontend run build
+npm run dev
 ```
 
-For frontend hot reload run `npm --prefix frontend start` (port 3000) and add a `"proxy":
-"http://localhost:8787"` entry to `frontend/package.json` temporarily.
+Then open `http://localhost:8787`. Use `npm --prefix frontend start` for React hot reload with an appropriate local API proxy.
 
 ## Checks
 
 ```bash
-npm run typecheck                              # TypeScript check of the Worker
-CI=false npm --prefix frontend run build       # frontend production build
-npx wrangler deploy --dry-run                  # validates config + bundle without deploying
-BASE_URL=http://localhost:8787 npm run smoke   # end-to-end API smoke test against a running dev server
+npm run test:worker
+npm run typecheck
+CI=false npm --prefix frontend run build
+npx wrangler deploy --dry-run
+BASE_URL=http://localhost:8787 npm run smoke
 ```
+
+The GitHub Actions workflow also exercises tests, build and local end-to-end checks. Passing tests do not replace a real browser walkthrough, mobile check or security review.
+
+## Production safeguards
+
+**Never automatically deploy or migrate the live database as part of ordinary cleanup.** Before applying new migrations, export and back up remote D1 data, confirm migration status, test against staging and obtain explicit approval.
+
+```bash
+npx wrangler d1 export sidequest-db1 --remote --output backup.sql
+```
+
+Do not publish this backup. Cloudflare R2 is required for real file uploads; a placeholder or link field is not an upload service. Billing is not live until separately integrated and tested. For domain/deployment setup, use the Cloudflare Worker settings and the existing `wrangler.jsonc`; do not assume a build implies a safe launch.
