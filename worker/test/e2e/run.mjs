@@ -379,6 +379,8 @@ await step("N. mobile layouts of the main parent pages do not overflow", async (
   for (const path of ["/parent", "/parent/lessons", "/parent/lessons/new", "/parent/children"]) {
     await mp.goto(BASE + path); await mp.waitForLoadState("networkidle");
     await noOverflow(mp, path);
+    const mw = await mp.evaluate(() => document.querySelector("main").getBoundingClientRect().width);
+    ok(mw >= 340, `${path}: main content is only ${Math.round(mw)}px wide on a phone`);
     await mp.screenshot({ path: `${SHOTS}/mobile-${path.replace(/\W+/g, "_")}.png`, fullPage: true });
   }
 });
