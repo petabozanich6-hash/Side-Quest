@@ -1,0 +1,9 @@
+{
+  "created_at": "2026-10-13T00:54:57.833397+00:00",
+  "id": "builder-s4-ist",
+  "label": "S4 Information and Software Technology Y7–Y8",
+  "seed_patterns": [
+    "s5-information-software-*"
+  ],
+  "state": "workers/builder-s4-ist"
+}

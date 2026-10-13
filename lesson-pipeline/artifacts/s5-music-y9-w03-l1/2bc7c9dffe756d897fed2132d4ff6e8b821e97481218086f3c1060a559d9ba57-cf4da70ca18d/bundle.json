@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "MU4-LIS-01",
+      "lesson_evidence": "Timbre is the tone colour that lets you tell sound-makers apart when pitch and duration match. This lesson uses four families you can hear in a house: voice, wood, metal, and skin. Voice carries breath and a vowel or hum. Wood often gives a dry knock that stops quickly. Metal often rings after the hit. Skin, meaning a stretched surface such as a balloon or your own thigh, gives a dull thud. Identify the family from the sound description. Do not use brand names, logos, or a picture of a shop instrument. Timbre matters because two notes can share a pitch and still be different music.",
+      "scope_limit": "Single Stage 4 lesson: partial contribution only. Content-point mapping is pending human review. This authoring pass does not certify NESA alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-7-10-2024/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Timbre is the tone colour that lets you tell sound-makers apart when pitch and duration match. This lesson uses four families you can hear in a house: voice, wood, metal, and skin. Voice carries breath and a vowel or hum. Wood often gives a dry knock that stops quickly. Metal often rings after the hit. Skin, meaning a stretched surface such as a balloon or your own thigh, gives a dull thud. Identify the family from the sound description. Do not use brand names, logos, or a picture of a shop instrument. Timbre matters because two notes can share a pitch and still be different music.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same arts idea to a new artwork or performance, then compare two choices for clarity of effect.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nSort these described sounds into voice, wood, metal, or skin, and name one clue for each: a whispered \"mmm\", two pencils tapped together, a bunch of keys shaken once, and a palm pat on your thigh. What family is each sound?\n\nFEEDBACK\nA strong answer matches whisper to voice, pencils to wood, keys to metal, and the thigh pat to skin, with a clue that is about the sound rather than a product name. The whisper has breath and no ring. The pencils knock and stop. The keys jangle and shimmer. The thigh thud is soft and dull. If two answers share a family, the clues must still explain why. A brand or a shop label is not a clue you can hear.\n\nWATCH FOR\nIf two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family. That fails because a wooden knock usually stops dead while a metal knock leaves a ring. The length of the ring is a timbre clue even when the hits are equally short. Listen past the attack and describe what remains.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nName the family and one heard clue for each new sound: you sing the word \"noon\", you knock a wooden door, you tap a metal lid with a fork, and you drum two fingers on a balloon. Do not reuse the chair, the pot, the pencils, or the keys. Write four lines, with no brand names. If a lid does not ring, say what you actually heard and choose the family that matches that sound.\n\nWrite a short reflection naming one artistic choice you changed and why. Movement or instrument work is optional, adult-supervised and can be described instead.",
+    "interactive_activities": null,
+    "learning_area": "Music",
+    "learning_intention": "Timbre is the tone colour that lets you tell sound-makers apart when pitch and duration match. This lesson uses four families you can hear in a house: voice, wood, metal, and skin. Voice carries breath and a vowel or hum. Wood often gives a dry knock that stops quickly. Metal often rings after the hit. Skin, meaning a stretched surface such as a balloon or your own thigh, gives a dull thud. Identify the family from the sound description. Do not use brand names, logos, or a picture of a shop instrument. Timbre matters because two notes can share a pitch and still be different music.",
+    "lesson_number": 5,
+    "lesson_role": "Learn",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: scrap paper, crayons, safe classroom instruments or clear movement space with an adult nearby"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "MU4-LIS-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Name the family and one heard clue for each new sound: you sing the word \"noon\", you knock a wooden door, you tap a metal lid with a fork, and you drum two fingers on a balloon. Do not reuse the chair, the pot, the penci Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using timbre on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family.. Correction: A strong answer matches whisper to voice, pencils to wood, keys to metal, and the thigh pat to skin, with a clue that. Why it helps the audience is stated.\n\nParent: Likely misconception: If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family. That fails because a wooden knock usually stops dead while a metal knock leaves a ring. The length of the ring is a timbre clue even when the hits are equally short. Listen past the attack and describe what remains. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating timbre on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with timbre, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about timbre with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for timbre. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 1,
+        "explanation": "This matches the taught method for timbre. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Copy the example artwork or script and call that independent work",
+          "A strong answer matches whisper to voice, pencils to wood, keys to metal, and the thigh pat to skin, with a clue that",
+          "If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family",
+          "Say it looks nice with no element or technique named"
+        ],
+        "question": "Sort these described sounds into voice, wood, metal, or skin, and name one clue for each: a whispered \"mmm\", two pencils tapped together, a bunch of keys shaken once, and a palm pat on your thigh. What family is each sound?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "This is the misconception to avoid for timbre; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family",
+          "Timbre is the tone colour that lets you tell sound-makers apart when pitch and duration match",
+          "A strong answer matches whisper to voice, pencils to wood, keys to metal, and the thigh pat to skin, with a clue that",
+          "Careful use of voice with clear evidence"
+        ],
+        "question": "Which statement is a common mistake when working with timbre?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Understanding is shown by new evidence and a named voice, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Repeat the worked example wording with no new evidence",
+          "If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family",
+          "Name voice only, without linking it to timbre",
+          "Apply timbre to new material and name the voice used"
+        ],
+        "question": "Which response best applies timbre with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on timbre. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family",
+          "A strong answer matches whisper to voice, pencils to wood, keys to metal, and the thigh pat to skin, with a clue that",
+          "Say it looks nice with no element or technique named",
+          "Copy another artwork’s sacred design without permission or guidance"
+        ],
+        "question": "Which response best evaluates elements, techniques and audience effect when analysing timbre?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Say it looks nice with no element or technique named",
+          "Copy another artwork’s sacred design without permission or guidance",
+          "If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family",
+          "Name a specific element or technique and say what effect it creates for timbre"
+        ],
+        "question": "Which evidence move best supports a claim about timbre?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The stronger choice matches the taught idea (Timbre is the tone colour that lets you tell sound-makers apart when) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Say it looks nice with no element or technique named",
+          "Copy another artwork’s sacred design without permission or guidance",
+          "Four short sounds, each about one count long: a person sings \"ooh\" on one note, a wooden spoon knocks a wooden chair, a",
+          "If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family"
+        ],
+        "question": "Which choice best applies this lesson idea about timbre?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful",
+          "Invent missing details to make the answer sound complete"
+        ],
+        "question": "Which action keeps elements, techniques and audience effect accurate for timbre?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family",
+          "Name voice only, with no linked example",
+          "Name the family and one heard clue for each new sound: you sing the word \"noon\", you knock a wooden door, you tap a",
+          "Retype the worked example with no new example"
+        ],
+        "question": "Which independent response best applies timbre to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about timbre with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating timbre on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using timbre on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for timbre. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with timbre, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family.. Correction: A strong answer matches whisper to voice, pencils to wood, keys to metal, and the thigh pat to skin, with a clue that. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent artwork or performance notes and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s5-music-y9-w03-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 4 alignment to Music 7–10 (2024) outcome MU4-LIS-01. Content-point mapping is pending. Not NESA verified. No copyrighted recordings are required; examples are original descriptions or student-made sounds.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S4",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise timbre.",
+        "Read the mission before you start making or performing.",
+        "Keep the audience effect of your choice in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not name an effect clearly."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the element or technique that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore elements, safety or respectful practice.",
+        "Prefer a named artistic reason over a guess that merely looks colourful."
+      ],
+      "submit": [
+        "Confirm that your choice and reason are both present.",
+        "Proofread element names and safety notes.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact element, technique or cue before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key artistic choices.",
+        "Say what each choice does for the artwork or audience.",
+        "A final praise word alone is weaker than a named effect."
+      ],
+      "teach2": [
+        "Compare a weak choice with a stronger one.",
+        "Change the element or technique, not only the decoration.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh subject or piece that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original work notes and a short reflection.",
+        "Save work that shows the skill on new material."
+      ]
+    },
+    "subject": "Music",
+    "success_criteria": [
+      "I can use timbre with a specific example from this lesson.",
+      "I can identify voice and explain why it matters.",
+      "I can practise wood independently on a new prompt.",
+      "I can notice skin needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Timbre is the tone colour that lets you tell sound-makers apart when pitch and duration match.",
+          "options": [
+            "An answer copied without understanding",
+            "A guess with no artistic reason",
+            "Timbre is the tone colour that lets you tell sound-makers apart when pitch and duration match",
+            "A comment that only says it looks nice with no element named"
+          ],
+          "question": "Which choice best shows accurate use of this idea about timbre?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nFour short sounds, each about one count long: a person sings \"ooh\" on one note, a wooden spoon knocks a wooden chair, a metal spoon taps a metal pot lid, and an open palm strikes a balloon. The sung \"ooh\" is voice because you hear breath and a vowel with a clear pitch. The chair knock is wood because the sound is dry and dies at once. The pot lid is metal because a bright ring continues after the spoon leaves. The balloon is skin because the thud is dull and does not ring. Same duration, four timbres.\n\nTRY FIRST\nSort these described sounds into voice, wood, metal, or skin, and name one clue for each: a whispered \"mmm\", two pencils tapped together, a bunch of keys shaken once, and a palm pat on your thigh. What family is each sound?\n\nFEEDBACK\nA strong answer matches whisper to voice, pencils to wood, keys to metal, and the thigh pat to skin, with a clue that is about the sound rather than a product name. The whisper has breath and no ring. The pencils knock and stop. The keys jangle and shimmer. The thigh thud is soft and dull. If two answers share a family, the clues must still explain why. A brand or a shop label is not a clue you can hear.",
+        "explain": "Timbre is the tone colour that lets you tell sound-makers apart when pitch and duration match. This lesson uses four families you can hear in a house: voice, wood, metal, and skin. Voice carries breath and a vowel or hum. Wood often gives a dry knock that stops quickly. Metal often rings after the hit. Skin, meaning a stretched surface such as a balloon or your own thigh, gives a dull thud. Identify the family from the sound description. Do not use brand names, logos, or a picture of a shop instrument. Timbre matters because two notes can share a pitch and still be different music.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family. That fails because a wooden knock usually stops dead while a metal knock leaves a ring. The length of the ring is a timbre clue even when the hits are equally short. Listen past the attack and describe what remains. Name the element or technique and its effect, not just decoration.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "Two boxes contrast a voice timbre with a dry wooden knock.",
+            "caption": "Identify voice and wood from the sound, not a brand.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Voice</text><text x=\"28\" y=\"78\">Breath and a vowel or hum</text><text x=\"358\" y=\"42\">Wood</text><text x=\"358\" y=\"78\">Dry knock that stops fast</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which artistic choice matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the element, technique or performance choice and the effect it creates before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Four short sounds, each about one count long: a person sings \"ooh\" on one note, a wooden spoon knocks a wooden chair, a  Then write your own artistic reason.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which artistic choice matters most.\nJuno: Name the element, technique or performance choice and the effect it creates before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Four short sounds, each about one count long: a person sings \"ooh\" on one note, a wooden spoon knocks a wooden chair, a  Then write your own artistic reason."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A comment that only says it looks nice with no element named",
+            "An answer copied without understanding",
+            "A guess with no artistic reason",
+            "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates"
+          ],
+          "question": "Which choice best shows accurate use of this idea about timbre?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nFour short sounds, each about one count long: a person sings \"ooh\" on one note, a wooden spoon knocks a wooden chair, a metal spoon taps a metal pot lid, and an open palm strikes a balloon. The sung \"ooh\" is voice because you hear breath and a vowel with a clear pitch. The chair knock is wood because the sound is dry and dies at once. The pot lid is metal because a bright ring continues after the spoon leaves. The balloon is skin because the thud is dull and does not ring. Same duration, four timbres. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
+        "explain": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "Writing only a final praise word without naming a choice does not show arts thinking. Name the element or technique and its effect, not just decoration.",
+        "title": "Show the artistic choice",
+        "visual": [
+          {
+            "alt": "Two boxes contrast a ringing metal hit with a dull skin thud.",
+            "caption": "Metal often rings and skin usually thuds.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Metal</text><text x=\"28\" y=\"78\">A hit that leaves a ring</text><text x=\"358\" y=\"42\">Skin</text><text x=\"358\" y=\"78\">Dull thud on a stretched surface</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A guess with no artistic reason",
+            "Use an intentionally weak or disrespectful arts choice as a comparison",
+            "A comment that only says it looks nice with no element named",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best shows accurate use of this idea about timbre?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nIf two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family. That fails because a wooden knock usually stops dead while a metal knock leaves a ring. The length of the ring is a timbre clue even when the hits are equally short. Listen past the attack and describe what remains. Here is a more helpful example: Four short sounds, each about one count long: a person sings \"ooh\" on one note, a wooden spoon knocks a wooden chair, a metal spoon taps a metal pot lid, and an open palm strikes a balloon. The sung \"ooh\" is voice because you hear breath and a vowel with a clear pitch. The chair knock is wood because the sound is dry and dies at once. The pot lid is metal because a bright ring continues after the spoon leaves. The balloon is skin because the thud is dull and does not ring. Same duration, four timbres.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nA strong answer matches whisper to voice, pencils to wood, keys to metal, and the thigh pat to skin, with a clue that is about the sound rather than a product name. The whisper has breath and no ring. The pencils knock and stop. The keys jangle and shimmer. The thigh thud is soft and dull. If two answers share a family, the clues must still explain why. A brand or a shop label is not a clue you can hear.",
+        "explain": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "Changing the decoration without changing the artistic idea does not fix the error. If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family. That fails because a wooden knock usually stops dead while a metal knock leaves a ring. The length of the ring is a timbre clue even when the hits are equally short. Listen past the attack and describe what remains. Name the element or technique and its effect, not just decoration.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding",
+            "A guess with no artistic reason",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example",
+            "A comment that only says it looks nice with no element named"
+          ],
+          "question": "Which choice best shows accurate use of this idea about timbre?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nTimbre is the tone colour that lets you tell sound-makers apart when pitch and duration match. This lesson uses four families you can hear in a house: voice, wood, metal, and skin. Voice carries breath and a vowel or hum. Wood often gives a dry knock that stops quickly. Metal often rings after the hit. Skin, meaning a stretched surface such as a balloon or your own thigh, gives a dull thud. Identify the family from the sound description. Do not use brand names, logos, or a picture of a shop instrument. Timbre matters because two notes can share a pitch and still be different music. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",
+        "explain": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new artwork or performance. Name the element or technique and its effect, not just decoration.",
+        "title": "Transfer to a new artwork or performance"
+      }
+    ],
+    "title": "Year 7, Lesson 5: Aural skills and listening",
+    "unit_number": 1,
+    "unit_title": "Aural skills and listening",
+    "week": 4,
+    "week_in_unit": 3,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nFour short sounds, each about one count long: a person sings \"ooh\" on one note, a wooden spoon knocks a wooden chair, a metal spoon taps a metal pot lid, and an open palm strikes a balloon. The sung \"ooh\" is voice because you hear breath and a vowel with a clear pitch. The chair knock is wood because the sound is dry and dies at once. The pot lid is metal because a bright ring continues after the spoon leaves. The balloon is skin because the thud is dull and does not ring. Same duration, four timbres.\n\nWrite what makes this example effective, naming the element, technique or performance choice and its effect.",
+    "worked_visuals": [
+      {
+        "alt": "Two boxes contrast a voice timbre with a dry wooden knock.",
+        "caption": "Identify voice and wood from the sound, not a brand.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Voice</text><text x=\"28\" y=\"78\">Breath and a vowel or hum</text><text x=\"358\" y=\"42\">Wood</text><text x=\"358\" y=\"78\">Dry knock that stops fast</text></g></svg>"
+      },
+      {
+        "alt": "Two boxes contrast a ringing metal hit with a dull skin thud.",
+        "caption": "Metal often rings and skin usually thuds.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Metal</text><text x=\"28\" y=\"78\">A hit that leaves a ring</text><text x=\"358\" y=\"42\">Skin</text><text x=\"358\" y=\"78\">Dull thud on a stretched surface</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 7"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Sort these described sounds into voice, wood, metal, or skin, and name one clue for each: a whispered \"mmm\", two pencils tapped together, a bunch of keys shaken once, and a palm pat on your thigh. What family is each sound?"
+      ],
+      "independent_inputs": [
+        "Name the family and one heard clue for each new sound: you sing the word \"noon\", you knock a wooden door, you tap a metal lid with a fork, and you drum two fingers on a balloon. Do not reuse the chair, the pot, the pencils, or the keys. Write four lines, with no brand names. If a lid does not ring, say what you actually heard and choose the family that matches that sound."
+      ],
+      "model_inputs": [
+        "Four short sounds, each about one count long: a person sings \"ooh\" on one note, a wooden spoon knocks a wooden chair, a metal spoon taps a metal pot lid, and an open palm strikes a balloon. The sung \"ooh\" is voice because you hear breath and a vowel with a clear pitch. The chair knock is wood because the sound is dry and dies at once. The pot lid is metal because a bright ring continues after the spoon leaves. The balloon is skin because the thud is dull and does not ring. Same duration, four timbres."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "A strong answer matches whisper to voice, pencils to wood, keys to metal, and the thigh pat to skin, with a clue that is about the sound rather than a product name. The whisper has breath and no ring. The pencils knock and stop. The keys jangle and shimmer. The thigh thud is soft and dull. If two answers share a family, the clues must still explain why. A brand or a shop label is not a clue you can hear.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "Sort these described sounds into voice, wood, metal, or skin, and name one clue for each: a whispered \"mmm\", two pencils tapped together, a bunch of keys shaken once, and a palm pat on your thigh. What family is each sound?",
+        "misconception": "If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family. That fails because a wooden knock usually stops dead while a metal knock leaves a ring. The length of the ring is a timbre clue even when the hits are equally short. Listen past the attack and describe what remains.",
+        "model": "Four short sounds, each about one count long: a person sings \"ooh\" on one note, a wooden spoon knocks a wooden chair, a metal spoon taps a metal pot lid, and an open palm strikes a balloon. The sung \"ooh\" is voice because you hear breath and a vowel with a clear pitch. The chair knock is wood because the sound is dry and dies at once. The pot lid is metal because a bright ring continues after the spoon leaves. The balloon is skin because the thud is dull and does not ring. Same duration, four timbres.",
+        "rule": "Timbre is the tone colour that lets you tell sound-makers apart when pitch and duration match. This lesson uses four families you can hear in a house: voice, wood, metal, and skin. Voice carries breath and a vowel or hum. Wood often gives a dry knock that stops quickly. Metal often rings after the hit. Skin, meaning a stretched surface such as a balloon or your own thigh, gives a dull thud. Identify the family from the sound description. Do not use brand names, logos, or a picture of a shop instrument. Timbre matters because two notes can share a pitch and still be different music.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      },
+      {
+        "feedback": "The most useful response names the element or technique and its effect, not only “it looks nice”.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "List the key artistic choices from the example and say what each one does for the audience or artwork.",
+        "misconception": "Writing only a final praise word without naming a choice does not show arts thinking.",
+        "model": "Four short sounds, each about one count long: a person sings \"ooh\" on one note, a wooden spoon knocks a wooden chair, a metal spoon taps a metal pot lid, and an open palm strikes a balloon. The sung \"ooh\" is voice because you hear breath and a vowel with a clear pitch. The chair knock is wood because the sound is dry and dies at once. The pot lid is metal because a bright ring continues after the spoon leaves. The balloon is skin because the thud is dull and does not ring. Same duration, four timbres. Look at each line, sound, movement or role choice that carries the idea.",
+        "rule": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      },
+      {
+        "feedback": "A strong answer matches whisper to voice, pencils to wood, keys to metal, and the thigh pat to skin, with a clue that is about the sound rather than a product name. The whisper has breath and no ring. The pencils knock and stop. The keys jangle and shimmer. The thigh thud is soft and dull. If two answers share a family, the clues must still explain why. A brand or a shop label is not a clue you can hear.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "Describe why the warned-against choice weakens the work, then write a stronger choice with a reason.",
+        "misconception": "Changing the decoration without changing the artistic idea does not fix the error. If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family. That fails because a wooden knock usually stops dead while a metal knock leaves a ring. The length of the ring is a timbre clue even when the hits are equally short. Listen past the attack and describe what remains.",
+        "model": "If two sounds are both short knocks, they have the same timbre, so wood and metal belong in one family. That fails because a wooden knock usually stops dead while a metal knock leaves a ring. The length of the ring is a timbre clue even when the hits are equally short. Listen past the attack and describe what remains. Here is a more helpful example: Four short sounds, each about one count long: a person sings \"ooh\" on one note, a wooden spoon knocks a wooden chair, a metal spoon taps a metal pot lid, and an open palm strikes a balloon. The sung \"ooh\" is voice because you hear breath and a vowel with a clear pitch. The chair knock is wood because the sound is dry and dies at once. The pot lid is metal because a bright ring continues after the spoon leaves. The balloon is skin because the thud is dull and does not ring. Same duration, four timbres.",
+        "rule": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      },
+      {
+        "feedback": "The new example should use the same arts idea as the model, but with different content or material.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "Make or describe one fresh example that uses the same skill and write a short reason for your main choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new artwork or performance.",
+        "model": "Timbre is the tone colour that lets you tell sound-makers apart when pitch and duration match. This lesson uses four families you can hear in a house: voice, wood, metal, and skin. Voice carries breath and a vowel or hum. Wood often gives a dry knock that stops quickly. Metal often rings after the hit. Skin, meaning a stretched surface such as a balloon or your own thigh, gives a dull thud. Identify the family from the sound description. Do not use brand names, logos, or a picture of a shop instrument. Timbre matters because two notes can share a pitch and still be different music. Now choose a different subject or piece to show you can transfer the idea.",
+        "rule": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Two boxes contrast a voice timbre with a dry wooden knock.",
+        "teaches": "Identify voice and wood from the sound, not a brand."
+      },
+      {
+        "alt": "Two boxes contrast a ringing metal hit with a dull skin thud.",
+        "teaches": "Metal often rings and skin usually thuds."
+      }
+    ]
+  }
+}

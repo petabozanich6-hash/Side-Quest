@@ -1,18 +1,110 @@
 {
   "last_reconcile": {
-    "merged_count": 21,
-    "skipped_count": 24,
+    "merged_count": 48,
+    "skipped_count": 882,
     "workers": [
+      "builder-s4-commerce",
+      "builder-s4-dance",
+      "builder-s4-design",
+      "builder-s4-drama",
+      "builder-s4-food",
+      "builder-s4-ist",
+      "builder-s4-music",
+      "builder-s4-visual",
+      "builder-tech-01",
+      "builder-tech-02",
+      "builder-tech-03",
+      "builder-tech-04",
       "builder-tech-05",
       "builder-tech-06",
       "builder-tech-07",
-      "builder-tech-08"
+      "builder-tech-08",
+      "builder-y3",
+      "builder-y4",
+      "builder-y7-hsie",
+      "builder-y8-eng"
     ]
   },
-  "last_reconcile_at": "2026-10-13T00:23:21.043185+00:00",
+  "last_reconcile_at": "2026-10-13T01:07:47.161224+00:00",
   "schema": 1,
-  "updated_at": "2026-10-13T00:22:23.172592+00:00",
+  "updated_at": "2026-10-13T00:54:57.833867+00:00",
   "workers": {
+    "builder-s4-commerce": {
+      "created_at": "2026-10-13T00:54:57.583810+00:00",
+      "id": "builder-s4-commerce",
+      "label": "S4 Commerce Y7–Y8",
+      "seed_patterns": [
+        "s5-commerce-y9-*",
+        "s5-commerce-y10-*"
+      ],
+      "state": "workers/builder-s4-commerce"
+    },
+    "builder-s4-dance": {
+      "created_at": "2026-10-13T00:54:56.645762+00:00",
+      "id": "builder-s4-dance",
+      "label": "S4 Dance Y7–Y8",
+      "seed_patterns": [
+        "s5-dance-y9-*",
+        "s5-dance-y10-*"
+      ],
+      "state": "workers/builder-s4-dance"
+    },
+    "builder-s4-design": {
+      "created_at": "2026-10-13T00:54:57.297419+00:00",
+      "id": "builder-s4-design",
+      "label": "S4 Design and Technology Y7–Y8",
+      "seed_patterns": [
+        "s5-design-technology-*"
+      ],
+      "state": "workers/builder-s4-design"
+    },
+    "builder-s4-drama": {
+      "created_at": "2026-10-13T00:54:56.443118+00:00",
+      "id": "builder-s4-drama",
+      "label": "S4 Drama Y7–Y8",
+      "seed_patterns": [
+        "s5-drama-y9-*",
+        "s5-drama-y10-*"
+      ],
+      "state": "workers/builder-s4-drama"
+    },
+    "builder-s4-food": {
+      "created_at": "2026-10-13T00:54:57.086399+00:00",
+      "id": "builder-s4-food",
+      "label": "S4 Food Technology Y7–Y8",
+      "seed_patterns": [
+        "s5-food-technology-*"
+      ],
+      "state": "workers/builder-s4-food"
+    },
+    "builder-s4-ist": {
+      "created_at": "2026-10-13T00:54:57.833397+00:00",
+      "id": "builder-s4-ist",
+      "label": "S4 Information and Software Technology Y7–Y8",
+      "seed_patterns": [
+        "s5-information-software-*"
+      ],
+      "state": "workers/builder-s4-ist"
+    },
+    "builder-s4-music": {
+      "created_at": "2026-10-13T00:54:56.230359+00:00",
+      "id": "builder-s4-music",
+      "label": "S4 Music Y7–Y8",
+      "seed_patterns": [
+        "s5-music-y9-*",
+        "s5-music-y10-*"
+      ],
+      "state": "workers/builder-s4-music"
+    },
+    "builder-s4-visual": {
+      "created_at": "2026-10-13T00:54:56.856637+00:00",
+      "id": "builder-s4-visual",
+      "label": "S4 Visual Arts Y7–Y8",
+      "seed_patterns": [
+        "s5-visual-arts-*"
+      ],
+      "state": "workers/builder-s4-visual"
+    },
     "builder-tech-01": {
       "branch": "feature/gold-v2-builder-tech-01",
       "created_at": "2026-10-13T00:22:05.254076+00:00",

@@ -1,0 +1,11 @@
+{
+  "generation": 0,
+  "history": [],
+  "lessons": {},
+  "manifest_sha256": "f843560b163acfe6b1a703118a2d60e5bc0ac4841006bcd54f8df48a313c7e3f",
+  "schema": 1,
+  "worker": {
+    "hub": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline",
+    "id": "builder-s4-ist"
+  }
+}

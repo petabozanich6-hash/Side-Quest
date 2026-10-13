@@ -1,0 +1,438 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "DA4-PER-01",
+      "lesson_evidence": "Safe practice means plain alignment, a stop at pain, and a check of footwear and the floor before any movement. In standing, think of ears, shoulders, ribs and hips stacked, with knees softly bent in the direction of the toes rather than collapsing inward. Pain is a stop signal, not a target and not proof of effort. This lesson does not diagnose soreness and does not promise that any exercise is medically safe. A written safety check is complete evidence. An adult stays nearby if anyone moves.",
+      "scope_limit": "Single Stage 4 lesson: partial contribution only. Content-point mapping is pending human review. This authoring pass does not certify NESA alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-7-10-2023/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Safe practice means plain alignment, a stop at pain, and a check of footwear and the floor before any movement. In standing, think of ears, shoulders, ribs and hips stacked, with knees softly bent in the direction of the toes rather than collapsing inward. Pain is a stop signal, not a target and not proof of effort. This lesson does not diagnose soreness and does not promise that any exercise is medically safe. A written safety check is complete evidence. An adult stays nearby if anyone moves.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same arts idea to a new artwork or performance, then compare two choices for clarity of effect.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nA student locks the knees, lets the ribs sag, wears slippery socks on a dusty floor, and says a sharp knee pain means they should continue. Which safe-practice repairs should they make, without offering a medical diagnosis?\n\nFEEDBACK\nSoften the knees over the toes, stack the ribs over the hips, and stop if the knee hurts. Also change slippery socks for agreed shoes, and use a dry, clear floor. Stop at the sharp knee pain and tell an adult. Do not treat pain as training. These are practice rules, not a diagnosis or a treatment. Writing the repairs is the task.\n\nWATCH FOR\nPain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals. Pain is a reason to stop and tell an adult, not a badge. Plain alignment helps everyday standing and bending stay organised. This lesson still does not claim to treat soreness.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nWrite a lounge-room check for alignment, a pain stop, footwear, and three floor hazards. Name the hazards you would remove. Do not copy Sam's studio list, and state that the check is not medical advice. Movement stays optional.\n\nWrite a short reflection naming one artistic choice you changed and why. Movement or instrument work is optional, adult-supervised and can be described instead.",
+    "interactive_activities": null,
+    "learning_area": "Dance",
+    "learning_intention": "Safe practice means plain alignment, a stop at pain, and a check of footwear and the floor before any movement. In standing, think of ears, shoulders, ribs and hips stacked, with knees softly bent in the direction of the toes rather than collapsing inward. Pain is a stop signal, not a target and not proof of effort. This lesson does not diagnose soreness and does not promise that any exercise is medically safe. A written safety check is complete evidence. An adult stays nearby if anyone moves.",
+    "lesson_number": 10,
+    "lesson_role": "Apply",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: scrap paper, crayons, safe classroom instruments or clear movement space with an adult nearby"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "DA4-PER-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Write a lounge-room check for alignment, a pain stop, footwear, and three floor hazards. Name the hazards you would remove. Do not copy Sam's studio list, and state that the check is not medical advice. Movement stays op Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using alignment on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals.. Correction: Soften the knees over the toes, stack the ribs over the hips, and stop if the knee hurts.. Why it helps the audience is stated.\n\nParent: Likely misconception: Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals. Pain is a reason to stop and tell an adult, not a badge. Plain alignment helps everyday standing and bending stay organised. This lesson still does not claim to treat soreness. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating alignment on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with alignment, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about alignment with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for alignment. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 1,
+        "explanation": "This matches the taught method for alignment. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Copy the example artwork or script and call that independent work",
+          "Soften the knees over the toes, stack the ribs over the hips, and stop if the knee hurts",
+          "Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals",
+          "Say it looks nice with no element or technique named"
+        ],
+        "question": "A student locks the knees, lets the ribs sag, wears slippery socks on a dusty floor, and says a sharp knee pain means they should continue. Which safe-practice repairs should they make, without offering a medical diagnosis?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "This is the misconception to avoid for alignment; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Safe practice means plain alignment, a stop at pain, and a check of footwear and the floor before any movement",
+          "Soften the knees over the toes, stack the ribs over the hips, and stop if the knee hurts",
+          "Careful use of a pain signal with clear evidence",
+          "Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals"
+        ],
+        "question": "Which statement is a common mistake when working with alignment?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and a named a pain signal, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name a pain signal only, without linking it to alignment",
+          "Apply alignment to new material and name the a pain signal used",
+          "Repeat the worked example wording with no new evidence",
+          "Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals"
+        ],
+        "question": "Which response best applies alignment with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice uses elements, techniques and audience effect appropriately for this lesson on alignment. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Soften the knees over the toes, stack the ribs over the hips, and stop if the knee hurts",
+          "Say it looks nice with no element or technique named",
+          "Copy another artwork’s sacred design without permission or guidance",
+          "Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals"
+        ],
+        "question": "Which response best evaluates elements, techniques and audience effect when analysing alignment?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Copy another artwork’s sacred design without permission or guidance",
+          "Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals",
+          "Name a specific element or technique and say what effect it creates for alignment",
+          "Say it looks nice with no element or technique named"
+        ],
+        "question": "Which evidence move best supports a claim about alignment?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The stronger choice matches the taught idea (Safe practice means plain alignment, a stop at pain, and a check of) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Say it looks nice with no element or technique named",
+          "Copy another artwork’s sacred design without permission or guidance",
+          "Sam stacks ribs over hips, keeps knees soft over the toes, and rolls the shoulders gently",
+          "Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals"
+        ],
+        "question": "Which choice best applies this lesson idea about alignment?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Name the artistic choice, its effect, and keep cultural protocols respectful",
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster"
+        ],
+        "question": "Which action keeps elements, techniques and audience effect accurate for alignment?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals",
+          "Name a pain signal only, with no linked example",
+          "Write a lounge-room check for alignment, a pain stop, footwear, and three floor hazards",
+          "Retype the worked example with no new example"
+        ],
+        "question": "Which independent response best applies alignment to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about alignment with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating alignment on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using alignment on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for alignment. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with alignment, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals.. Correction: Soften the knees over the toes, stack the ribs over the hips, and stop if the knee hurts.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent artwork or performance notes and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s5-dance-y9-w05-l2",
+    "sort_activity": null,
+    "source_note": "Proposed Stage 4 alignment to Dance 7–10 (2023) outcome DA4-PER-01. Content-point mapping pending. Not NESA verified. Movement is optional, pain-free, and adult-supervised. Written plans are acceptable evidence.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S4",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise alignment.",
+        "Read the mission before you start making or performing.",
+        "Keep the audience effect of your choice in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your reasons with the feedback.",
+        "Adjust anything that does not name an effect clearly."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the element or technique that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore elements, safety or respectful practice.",
+        "Prefer a named artistic reason over a guess that merely looks colourful."
+      ],
+      "submit": [
+        "Confirm that your choice and reason are both present.",
+        "Proofread element names and safety notes.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked example.",
+        "Name one exact element, technique or cue before you decide.",
+        "Think through the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the example and list the key artistic choices.",
+        "Say what each choice does for the artwork or audience.",
+        "A final praise word alone is weaker than a named effect."
+      ],
+      "teach2": [
+        "Compare a weak choice with a stronger one.",
+        "Change the element or technique, not only the decoration.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh subject or piece that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked example as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original work notes and a short reflection.",
+        "Save work that shows the skill on new material."
+      ]
+    },
+    "subject": "Dance",
+    "success_criteria": [
+      "I can use alignment with a specific example from this lesson.",
+      "I can identify a pain signal and explain why it matters.",
+      "I can practise a footwear check independently on a new prompt.",
+      "I can notice safe setup needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Safe practice means plain alignment, a stop at pain, and a check of footwear and the floor before any movement.",
+          "options": [
+            "An answer copied without understanding",
+            "A guess with no artistic reason",
+            "Safe practice means plain alignment, a stop at pain, and a check of footwear and the floor before any movement",
+            "A comment that only says it looks nice with no element named"
+          ],
+          "question": "Which choice best shows accurate use of this idea about alignment?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSam stacks ribs over hips, keeps knees soft over the toes, and rolls the shoulders gently. Sam then checks that the floor is dry and clear, and that the shoes are the ones an adult agreed, or bare feet only if that was the plan. When a knee twinges, Sam stops, sits, and writes the rest of the phrase instead of pushing on. Nobody in this example claims the warm-up cured anything.\n\nTRY FIRST\nA student locks the knees, lets the ribs sag, wears slippery socks on a dusty floor, and says a sharp knee pain means they should continue. Which safe-practice repairs should they make, without offering a medical diagnosis?\n\nFEEDBACK\nSoften the knees over the toes, stack the ribs over the hips, and stop if the knee hurts. Also change slippery socks for agreed shoes, and use a dry, clear floor. Stop at the sharp knee pain and tell an adult. Do not treat pain as training. These are practice rules, not a diagnosis or a treatment. Writing the repairs is the task.",
+        "explain": "Safe practice means plain alignment, a stop at pain, and a check of footwear and the floor before any movement. In standing, think of ears, shoulders, ribs and hips stacked, with knees softly bent in the direction of the toes rather than collapsing inward. Pain is a stop signal, not a target and not proof of effort. This lesson does not diagnose soreness and does not promise that any exercise is medically safe. A written safety check is complete evidence. An adult stays nearby if anyone moves.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals. Pain is a reason to stop and tell an adult, not a badge. Plain alignment helps everyday standing and bending stay organised. This lesson still does not claim to treat soreness. Name the element or technique and its effect, not just decoration.",
+        "title": "Understand and demonstrate",
+        "visual": [
+          {
+            "alt": "Two panels contrast continuing through pain with stopping, sitting and telling an adult.",
+            "caption": "Pain is a stop signal. This diagram is a practice rule, not a medical diagnosis or a treatment.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Pain as a target</text><text x=\"28\" y=\"78\">Keep going when it hurts</text><text x=\"358\" y=\"42\">Pain as a stop</text><text x=\"358\" y=\"78\">Stop, sit, and tell an adult</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which artistic choice matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the element, technique or performance choice and the effect it creates before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this example: Sam stacks ribs over hips, keeps knees soft over the toes, and rolls the shoulders gently. Sam then checks that the floo Then write your own artistic reason.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which artistic choice matters most.\nJuno: Name the element, technique or performance choice and the effect it creates before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this example: Sam stacks ribs over hips, keeps knees soft over the toes, and rolls the shoulders gently. Sam then checks that the floo Then write your own artistic reason."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates. Supported responses name the element or technique and its effect. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding",
+            "A guess with no artistic reason",
+            "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates",
+            "A comment that only says it looks nice with no element named"
+          ],
+          "question": "Which choice best shows accurate use of this idea about alignment?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSam stacks ribs over hips, keeps knees soft over the toes, and rolls the shoulders gently. Sam then checks that the floor is dry and clear, and that the shoes are the ones an adult agreed, or bare feet only if that was the plan. When a knee twinges, Sam stops, sits, and writes the rest of the phrase instead of pushing on. Nobody in this example claims the warm-up cured anything. Look at each line, sound, movement or role choice that carries the idea.\n\nTRY FIRST\nList the key artistic choices from the example and say what each one does for the audience or artwork.\n\nFEEDBACK\nThe most useful response names the element or technique and its effect, not only “it looks nice”.",
+        "explain": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "Writing only a final praise word without naming a choice does not show arts thinking. Name the element or technique and its effect, not just decoration.",
+        "title": "Show the artistic choice",
+        "visual": [
+          {
+            "alt": "Two panels contrast a dusty floor with loose socks and a dry clear floor with agreed footwear.",
+            "caption": "Before movement, check that the floor is dry and clear and that footwear matches the adult's plan.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Unchecked setup</text><text x=\"28\" y=\"78\">Dusty floor and loose socks</text><text x=\"358\" y=\"42\">Checked setup</text><text x=\"358\" y=\"78\">Dry floor and agreed shoes</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice. Supported responses name the element or technique and its effect. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A guess with no artistic reason",
+            "Use an intentionally weak or disrespectful arts choice as a comparison",
+            "A comment that only says it looks nice with no element named",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best shows accurate use of this idea about alignment?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nPain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals. Pain is a reason to stop and tell an adult, not a badge. Plain alignment helps everyday standing and bending stay organised. This lesson still does not claim to treat soreness. Here is a more helpful example: Sam stacks ribs over hips, keeps knees soft over the toes, and rolls the shoulders gently. Sam then checks that the floor is dry and clear, and that the shoes are the ones an adult agreed, or bare feet only if that was the plan. When a knee twinges, Sam stops, sits, and writes the rest of the phrase instead of pushing on. Nobody in this example claims the warm-up cured anything.\n\nTRY FIRST\nDescribe why the warned-against choice weakens the work, then write a stronger choice with a reason.\n\nFEEDBACK\nSoften the knees over the toes, stack the ribs over the hips, and stop if the knee hurts. Also change slippery socks for agreed shoes, and use a dry, clear floor. Stop at the sharp knee pain and tell an adult. Do not treat pain as training. These are practice rules, not a diagnosis or a treatment. Writing the repairs is the task.",
+        "explain": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "Changing the decoration without changing the artistic idea does not fix the error. Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals. Pain is a reason to stop and tell an adult, not a badge. Plain alignment helps everyday standing and bending stay organised. This lesson still does not claim to treat soreness. Name the element or technique and its effect, not just decoration.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice. Supported responses name the element or technique and its effect. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A comment that only says it looks nice with no element named",
+            "An answer copied without understanding",
+            "A guess with no artistic reason",
+            "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example"
+          ],
+          "question": "Which choice best shows accurate use of this idea about alignment?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nSafe practice means plain alignment, a stop at pain, and a check of footwear and the floor before any movement. In standing, think of ears, shoulders, ribs and hips stacked, with knees softly bent in the direction of the toes rather than collapsing inward. Pain is a stop signal, not a target and not proof of effort. This lesson does not diagnose soreness and does not promise that any exercise is medically safe. A written safety check is complete evidence. An adult stays nearby if anyone moves. Now choose a different subject or piece to show you can transfer the idea.\n\nTRY FIRST\nMake or describe one fresh example that uses the same skill and write a short reason for your main choice.\n\nFEEDBACK\nThe new example should use the same arts idea as the model, but with different content or material.",
+        "explain": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.\n\nWHY IT MATTERS\nThis helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique.\n\nHOW TO WORK\nRead the worked example and name the elements, techniques or performance choices that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. For movement or instruments, use a clear space, ask an adult to be nearby and stop if anything feels unsafe. You may always describe a choice instead of performing it. One deliberate artistic choice with a named effect is more useful than a longer praise sentence.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to a new artwork or performance. Name the element or technique and its effect, not just decoration.",
+        "title": "Transfer to a new artwork or performance"
+      }
+    ],
+    "title": "Year 7, Lesson 10: Dance elements and technique",
+    "unit_number": 1,
+    "unit_title": "Dance elements and technique",
+    "week": 8,
+    "week_in_unit": 5,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nSam stacks ribs over hips, keeps knees soft over the toes, and rolls the shoulders gently. Sam then checks that the floor is dry and clear, and that the shoes are the ones an adult agreed, or bare feet only if that was the plan. When a knee twinges, Sam stops, sits, and writes the rest of the phrase instead of pushing on. Nobody in this example claims the warm-up cured anything.\n\nWrite what makes this example effective, naming the element, technique or performance choice and its effect.",
+    "worked_visuals": [
+      {
+        "alt": "Two panels contrast continuing through pain with stopping, sitting and telling an adult.",
+        "caption": "Pain is a stop signal. This diagram is a practice rule, not a medical diagnosis or a treatment.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Pain as a target</text><text x=\"28\" y=\"78\">Keep going when it hurts</text><text x=\"358\" y=\"42\">Pain as a stop</text><text x=\"358\" y=\"78\">Stop, sit, and tell an adult</text></g></svg>"
+      },
+      {
+        "alt": "Two panels contrast a dusty floor with loose socks and a dry clear floor with agreed footwear.",
+        "caption": "Before movement, check that the floor is dry and clear and that footwear matches the adult's plan.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Unchecked setup</text><text x=\"28\" y=\"78\">Dusty floor and loose socks</text><text x=\"358\" y=\"42\">Checked setup</text><text x=\"358\" y=\"78\">Dry floor and agreed shoes</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 7"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "A student locks the knees, lets the ribs sag, wears slippery socks on a dusty floor, and says a sharp knee pain means they should continue. Which safe-practice repairs should they make, without offering a medical diagnosis?"
+      ],
+      "independent_inputs": [
+        "Write a lounge-room check for alignment, a pain stop, footwear, and three floor hazards. Name the hazards you would remove. Do not copy Sam's studio list, and state that the check is not medical advice. Movement stays optional."
+      ],
+      "model_inputs": [
+        "Sam stacks ribs over hips, keeps knees soft over the toes, and rolls the shoulders gently. Sam then checks that the floor is dry and clear, and that the shoes are the ones an adult agreed, or bare feet only if that was the plan. When a knee twinges, Sam stops, sits, and writes the rest of the phrase instead of pushing on. Nobody in this example claims the warm-up cured anything."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Soften the knees over the toes, stack the ribs over the hips, and stop if the knee hurts. Also change slippery socks for agreed shoes, and use a dry, clear floor. Stop at the sharp knee pain and tell an adult. Do not treat pain as training. These are practice rules, not a diagnosis or a treatment. Writing the repairs is the task.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "A student locks the knees, lets the ribs sag, wears slippery socks on a dusty floor, and says a sharp knee pain means they should continue. Which safe-practice repairs should they make, without offering a medical diagnosis?",
+        "misconception": "Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals. Pain is a reason to stop and tell an adult, not a badge. Plain alignment helps everyday standing and bending stay organised. This lesson still does not claim to treat soreness.",
+        "model": "Sam stacks ribs over hips, keeps knees soft over the toes, and rolls the shoulders gently. Sam then checks that the floor is dry and clear, and that the shoes are the ones an adult agreed, or bare feet only if that was the plan. When a knee twinges, Sam stops, sits, and writes the rest of the phrase instead of pushing on. Nobody in this example claims the warm-up cured anything.",
+        "rule": "Safe practice means plain alignment, a stop at pain, and a check of footwear and the floor before any movement. In standing, think of ears, shoulders, ribs and hips stacked, with knees softly bent in the direction of the toes rather than collapsing inward. Pain is a stop signal, not a target and not proof of effort. This lesson does not diagnose soreness and does not promise that any exercise is medically safe. A written safety check is complete evidence. An adult stays nearby if anyone moves.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      },
+      {
+        "feedback": "The most useful response names the element or technique and its effect, not only “it looks nice”.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "List the key artistic choices from the example and say what each one does for the audience or artwork.",
+        "misconception": "Writing only a final praise word without naming a choice does not show arts thinking.",
+        "model": "Sam stacks ribs over hips, keeps knees soft over the toes, and rolls the shoulders gently. Sam then checks that the floor is dry and clear, and that the shoes are the ones an adult agreed, or bare feet only if that was the plan. When a knee twinges, Sam stops, sits, and writes the rest of the phrase instead of pushing on. Nobody in this example claims the warm-up cured anything. Look at each line, sound, movement or role choice that carries the idea.",
+        "rule": "Make the arts idea visible: name the element, technique or performance choice you used and say what effect it creates.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      },
+      {
+        "feedback": "Soften the knees over the toes, stack the ribs over the hips, and stop if the knee hurts. Also change slippery socks for agreed shoes, and use a dry, clear floor. Stop at the sharp knee pain and tell an adult. Do not treat pain as training. These are practice rules, not a diagnosis or a treatment. Writing the repairs is the task.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "Describe why the warned-against choice weakens the work, then write a stronger choice with a reason.",
+        "misconception": "Changing the decoration without changing the artistic idea does not fix the error. Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals. Pain is a reason to stop and tell an adult, not a badge. Plain alignment helps everyday standing and bending stay organised. This lesson still does not claim to treat soreness.",
+        "model": "Pain is taken as proof that you are working hard enough, and alignment is treated as a concern only for professionals. Pain is a reason to stop and tell an adult, not a badge. Plain alignment helps everyday standing and bending stay organised. This lesson still does not claim to treat soreness. Here is a more helpful example: Sam stacks ribs over hips, keeps knees soft over the toes, and rolls the shoulders gently. Sam then checks that the floor is dry and clear, and that the shoes are the ones an adult agreed, or bare feet only if that was the plan. When a knee twinges, Sam stops, sits, and writes the rest of the phrase instead of pushing on. Nobody in this example claims the warm-up cured anything.",
+        "rule": "Use an intentionally weak or disrespectful arts choice as a comparison. Name the specific error, then show a clearer or more respectful choice.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      },
+      {
+        "feedback": "The new example should use the same arts idea as the model, but with different content or material.",
+        "fix": "Name the element or technique and its effect, not just decoration.",
+        "guided_attempt": "Make or describe one fresh example that uses the same skill and write a short reason for your main choice.",
+        "misconception": "Repeating the worked example cannot show transfer to a new artwork or performance.",
+        "model": "Safe practice means plain alignment, a stop at pain, and a check of footwear and the floor before any movement. In standing, think of ears, shoulders, ribs and hips stacked, with knees softly bent in the direction of the toes rather than collapsing inward. Pain is a stop signal, not a target and not proof of effort. This lesson does not diagnose soreness and does not promise that any exercise is medically safe. A written safety check is complete evidence. An adult stays nearby if anyone moves. Now choose a different subject or piece to show you can transfer the idea.",
+        "rule": "Use the same arts idea in a new artwork, song, drama or dance, not a copy of the example. Review clarity, safety and respectful practice.",
+        "why": "This helps the learner make intentional visual, music, drama or dance choices and name their effect, rather than saying an artwork is simply “nice”. Keep every claim linked to an element or technique."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Two panels contrast continuing through pain with stopping, sitting and telling an adult.",
+        "teaches": "Pain is a stop signal. This diagram is a practice rule, not a medical diagnosis or a treatment."
+      },
+      {
+        "alt": "Two panels contrast a dusty floor with loose socks and a dry clear floor with agreed footwear.",
+        "teaches": "Before movement, check that the floor is dry and clear and that footwear matches the adult's plan."
+      }
+    ]
+  }
+}

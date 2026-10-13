@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "DIT5-EVL-01",
+      "lesson_evidence": "Evaluation matches each criterion to the test evidence, then names one improvement. It is more precise than “I like my organiser” or a single score out of ten. For each criterion, write met or not met, and the result that proves it. An improvement targets a criterion that was not met. If the corner and the edges passed but the pencil count did not, the next change is about holding pencils, not about colour. Two criteria can pass while one fails. That is a mixed result, not a total success or a total failure.",
+      "scope_limit": "Single Stage 4 lesson: partial contribution only. Content-point mapping is pending human review. This authoring pass does not certify NESA alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/tas/design-innovation-technology-7-10-2025/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Evaluation matches each criterion to the test evidence, then names one improvement. It is more precise than “I like my organiser” or a single score out of ten. For each criterion, write met or not met, and the result that proves it. An improvement targets a criterion that was not met. If the corner and the edges passed but the pencil count did not, the next change is about holding pencils, not about colour. Two criteria can pass while one fails. That is a mixed result, not a total success or a total failure.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same technology/design idea to a new object or material, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nEvaluate a prototype that fits the 15 cm corner and has smooth edges, but holds only four pencils before they spill. State which criteria are met, which is not met, and one change aimed at the unmet criterion.\n\nFEEDBACK\nCorner fit and smooth edges are met; holding eight pencils is not met, because only four stayed in. The change is to deepen or heighten the holder, then repeat the pencil count. Do not call the whole prototype a failure, and do not call it finished. A score such as 8/10 without the three criteria hides which check failed. Colour is not the missing evidence.\n\nWATCH FOR\nGiving the project one overall score, such as 8/10, because the organiser looks good. A single score skips which criterion passed and which failed. Judge each criterion with its result, then write one improvement for a criterion that was not met.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nEvaluate a cardboard door wedge that stops a bedroom door, still scratches, and slides on a smooth floor. Say what is met, what is not, and one change aimed at an unmet check. Do not evaluate Jordan’s pencil organiser, and do not give only a score out of ten.\n\nWrite a short reflection naming one observation, criterion or step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Design and Technology",
+    "learning_intention": "Evaluation matches each criterion to the test evidence, then names one improvement. It is more precise than “I like my organiser” or a single score out of ten. For each criterion, write met or not met, and the result that proves it. An improvement targets a criterion that was not met. If the corner and the edges passed but the pencil count did not, the next change is about holding pencils, not about colour. Two criteria can pass while one fails. That is a mixed result, not a total success or a total failure.",
+    "lesson_number": 11,
+    "lesson_role": "Learn",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: safe classroom tools/materials under teacher supervision",
+      "Device only when the lesson requires digital work"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "DIT5-EVL-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Evaluate a cardboard door wedge that stops a bedroom door, still scratches, and slides on a smooth floor. Say what is met, what is not, and one change aimed at an unmet check. Do not evaluate Jordan’s pencil organiser, a Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using evaluation on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Giving the project one overall score, such as 8/10, because the organiser looks good.. Correction: Corner fit and smooth edges are met; holding eight pencils is not met, because only four stayed in.. Why it helps the audience is stated.\n\nParent: Likely misconception: Giving the project one overall score, such as 8/10, because the organiser looks good. A single score skips which criterion passed and which failed. Judge each criterion with its result, then write one improvement for a criterion that was not met. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating evaluation on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with evaluation, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about evaluation with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for evaluation. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "This matches the taught method for evaluation. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Corner fit and smooth edges are met",
+          "Giving the project one overall score, such as 8/10, because the organiser looks good",
+          "Ignore the observation or criteria and invent a more exciting result",
+          "Copy the model objects and call that independent work"
+        ],
+        "question": "Evaluate a prototype that fits the 15 cm corner and has smooth edges, but holds only four pencils before they spill. State which criteria are met, which is not met, and one change aimed at the unmet criterion. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "This is the misconception to avoid for evaluation; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Corner fit and smooth edges are met",
+          "Careful use of improvement with clear evidence",
+          "Giving the project one overall score, such as 8/10, because the organiser looks good",
+          "Evaluation matches each criterion to the test evidence, then names one improvement"
+        ],
+        "question": "Which statement is a common mistake when working with evaluation?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Understanding is shown by new evidence and a named improvement, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name improvement only, without linking it to evaluation",
+          "Apply evaluation to new material and name the improvement used",
+          "Repeat the worked example wording with no new evidence",
+          "Giving the project one overall score, such as 8/10, because the organiser looks good"
+        ],
+        "question": "Which response best applies evaluation with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The stronger choice uses design criteria, safe making steps or test evidence appropriately for this lesson on evaluation. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Call the first attempt finished without testing",
+          "Giving the project one overall score, such as 8/10, because the organiser looks good",
+          "Corner fit and smooth edges are met",
+          "Start making with no criteria or safety check"
+        ],
+        "question": "Which response best evaluates design criteria, safe making steps or test evidence when analysing evaluation?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Call the first attempt finished without testing",
+          "Giving the project one overall score, such as 8/10, because the organiser looks good",
+          "Name a criterion, safety step or test result and say how it improves evaluation",
+          "Start making with no criteria or safety check"
+        ],
+        "question": "Which evidence move best supports a claim about evaluation?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "The stronger choice matches the taught idea (Evaluation matches each criterion to the test evidence, then names one) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Evaluation of Jordan’s later prototype: corner and edges are met, but only six of eight pencils stayed in",
+          "Giving the project one overall score, such as 8/10, because the organiser looks good",
+          "Start making with no criteria or safety check",
+          "Call the first attempt finished without testing"
+        ],
+        "question": "Which choice best applies this lesson idea about evaluation?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Invent missing details to make the answer sound complete",
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check criteria and safety, record a test result, and note one honest improvement"
+        ],
+        "question": "Which action keeps design criteria, safe making steps or test evidence accurate for evaluation?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Name improvement only, with no linked example",
+          "Evaluate a cardboard door wedge that stops a bedroom door, still scratches, and slides on a smooth floor",
+          "Retype the worked example with no new example",
+          "Giving the project one overall score, such as 8/10, because the organiser looks good"
+        ],
+        "question": "Which independent response best applies evaluation to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about evaluation with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating evaluation on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using evaluation on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for evaluation. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with evaluation, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Giving the project one overall score, such as 8/10, because the organiser looks good.. Correction: Corner fit and smooth edges are met; holding eight pencils is not met, because only four stayed in.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s5-design-technology-y9-w06-l1",
+    "sort_activity": null,
+    "source_note": "Catalogue subject is Design and Technology. Proposed Year 7 alignment uses Design Innovation Technology 7–10 (2025) outcome DIT5-EVL-01, which the syllabus says may be adjusted for Stage 4 (DIT4-ADJ-01). The 2019 Design and Technology syllabus is in teach-out until 2029. Content-point mapping pending. Not NESA verified. Practical work is paper or cardboard only.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S4",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise evaluation.",
+        "Read the mission before you start observing, designing or testing.",
+        "Keep the property, criterion or variable you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the observation, criterion or step that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore observations, criteria or fair tests.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread labels, measurements and sequence of steps.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact observation, criterion or test step before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key observations or criteria.",
+        "Say what each observation or criterion shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or method, not only how neat the drawing looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh object or context that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new objects or data."
+      ]
+    },
+    "subject": "Design and Technology",
+    "success_criteria": [
+      "I can use evaluation with a specific example from this lesson.",
+      "I can identify improvement and explain why it matters.",
+      "I can practise evidence independently on a new prompt.",
+      "I can notice judgement needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Evaluation matches each criterion to the test evidence, then names one improvement.",
+          "options": [
+            "A guess with no evidence",
+            "Evaluation matches each criterion to the test evidence, then names one improvement",
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best shows accurate use of this idea about evaluation?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nEvaluation of Jordan’s later prototype: corner and edges are met, but only six of eight pencils stayed in. Holds 8: not met, because six pencils stayed in after one gentle nudge and two fell out. Fits the corner: met, because the base measured 13 cm by 13 cm and the marked corner was 15 cm by 15 cm. No sharp edges: met, because a fingertip trace found only folded seams and no scratching point. Improvement: add a 3 cm cardboard collar to raise the tube, then repeat only the pencil-count nudge. The design is not “bad”; two checks passed and one still needs work.\n\nTRY FIRST\nEvaluate a prototype that fits the 15 cm corner and has smooth edges, but holds only four pencils before they spill. State which criteria are met, which is not met, and one change aimed at the unmet criterion.\n\nFEEDBACK\nCorner fit and smooth edges are met; holding eight pencils is not met, because only four stayed in. The change is to deepen or heighten the holder, then repeat the pencil count. Do not call the whole prototype a failure, and do not call it finished. A score such as 8/10 without the three criteria hides which check failed. Colour is not the missing evidence.",
+        "explain": "Evaluation matches each criterion to the test evidence, then names one improvement. It is more precise than “I like my organiser” or a single score out of ten. For each criterion, write met or not met, and the result that proves it. An improvement targets a criterion that was not met. If the corner and the edges passed but the pencil count did not, the next change is about holding pencils, not about colour. Two criteria can pass while one fails. That is a mixed result, not a total success or a total failure.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Giving the project one overall score, such as 8/10, because the organiser looks good. A single score skips which criterion passed and which failed. Judge each criterion with its result, then write one improvement for a criterion that was not met. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "A met corner measurement beside an unmet pencil count of six out of eight.",
+            "caption": "Evaluation judges each criterion with its own result.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Met</text><text x=\"28\" y=\"78\">13 cm base inside 15 cm</text><text x=\"358\" y=\"42\">Not met</text><text x=\"358\" y=\"78\">6 of 8 pencils stayed</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which observation or criterion matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the observations, criteria or test steps that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Evaluation of Jordan’s later prototype: corner and edges are met, but only six of eight pencils stayed in. Holds 8: not  Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which observation or criterion matters most.\nJuno: Name the observations, criteria or test steps that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Evaluation of Jordan’s later prototype: corner and edges are met, but only six of eight pencils stayed in. Holds 8: not  Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A guess with no evidence",
+            "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best shows accurate use of this idea about evaluation?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nEvaluation of Jordan’s later prototype: corner and edges are met, but only six of eight pencils stayed in. Holds 8: not met, because six pencils stayed in after one gentle nudge and two fell out. Fits the corner: met, because the base measured 13 cm by 13 cm and the marked corner was 15 cm by 15 cm. No sharp edges: met, because a fingertip trace found only folded seams and no scratching point. Improvement: add a 3 cm cardboard collar to raise the tube, then repeat only the pencil-count nudge. The design is not “bad”; two checks passed and one still needs work. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show technology thinking. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "A collar aimed at the pencil count beside a single score that hides which check failed.",
+            "caption": "The next change targets the criterion that was not met.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Improvement</text><text x=\"28\" y=\"78\">Raise tube; retest count</text><text x=\"358\" y=\"42\">Hidden result</text><text x=\"358\" y=\"78\">Score 8/10; looks good</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A guess with no evidence",
+            "Use an intentionally incorrect claim as a comparison",
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best shows accurate use of this idea about evaluation?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nGiving the project one overall score, such as 8/10, because the organiser looks good. A single score skips which criterion passed and which failed. Judge each criterion with its result, then write one improvement for a criterion that was not met. Here is a more productive model: Evaluation of Jordan’s later prototype: corner and edges are met, but only six of eight pencils stayed in. Holds 8: not met, because six pencils stayed in after one gentle nudge and two fell out. Fits the corner: met, because the base measured 13 cm by 13 cm and the marked corner was 15 cm by 15 cm. No sharp edges: met, because a fingertip trace found only folded seams and no scratching point. Improvement: add a 3 cm cardboard collar to raise the tube, then repeat only the pencil-count nudge. The design is not “bad”; two checks passed and one still needs work.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nCorner fit and smooth edges are met; holding eight pencils is not met, because only four stayed in. The change is to deepen or heighten the holder, then repeat the pencil count. Do not call the whole prototype a failure, and do not call it finished. A score such as 8/10 without the three criteria hides which check failed. Colour is not the missing evidence.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. Giving the project one overall score, such as 8/10, because the organiser looks good. A single score skips which criterion passed and which failed. Judge each criterion with its result, then write one improvement for a criterion that was not met. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A guess with no evidence",
+            "Use the same technology idea on a new place, person, source or context, not a copy of the worked example",
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best shows accurate use of this idea about evaluation?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nEvaluation matches each criterion to the test evidence, then names one improvement. It is more precise than “I like my organiser” or a single score out of ten. For each criterion, write met or not met, and the result that proves it. An improvement targets a criterion that was not met. If the corner and the edges passed but the pencil count did not, the next change is about holding pencils, not about colour. Two criteria can pass while one fails. That is a mixed result, not a total success or a total failure. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same technology idea as the model, but contain different evidence.",
+        "explain": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Transfer to a new investigation"
+      }
+    ],
+    "title": "Year 7, Lesson 11: The design process",
+    "unit_number": 1,
+    "unit_title": "The design process",
+    "week": 9,
+    "week_in_unit": 6,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nEvaluation of Jordan’s later prototype: corner and edges are met, but only six of eight pencils stayed in. Holds 8: not met, because six pencils stayed in after one gentle nudge and two fell out. Fits the corner: met, because the base measured 13 cm by 13 cm and the marked corner was 15 cm by 15 cm. No sharp edges: met, because a fingertip trace found only folded seams and no scratching point. Improvement: add a 3 cm cardboard collar to raise the tube, then repeat only the pencil-count nudge. The design is not “bad”; two checks passed and one still needs work.\n\nWrite what makes this example accurate, naming the observations, criteria, properties or test steps used.",
+    "worked_visuals": [
+      {
+        "alt": "A met corner measurement beside an unmet pencil count of six out of eight.",
+        "caption": "Evaluation judges each criterion with its own result.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Met</text><text x=\"28\" y=\"78\">13 cm base inside 15 cm</text><text x=\"358\" y=\"42\">Not met</text><text x=\"358\" y=\"78\">6 of 8 pencils stayed</text></g></svg>"
+      },
+      {
+        "alt": "A collar aimed at the pencil count beside a single score that hides which check failed.",
+        "caption": "The next change targets the criterion that was not met.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Improvement</text><text x=\"28\" y=\"78\">Raise tube; retest count</text><text x=\"358\" y=\"42\">Hidden result</text><text x=\"358\" y=\"78\">Score 8/10; looks good</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 7"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "Evaluate a prototype that fits the 15 cm corner and has smooth edges, but holds only four pencils before they spill. State which criteria are met, which is not met, and one change aimed at the unmet criterion."
+      ],
+      "independent_inputs": [
+        "Evaluate a cardboard door wedge that stops a bedroom door, still scratches, and slides on a smooth floor. Say what is met, what is not, and one change aimed at an unmet check. Do not evaluate Jordan’s pencil organiser, and do not give only a score out of ten."
+      ],
+      "model_inputs": [
+        "Evaluation of Jordan’s later prototype: corner and edges are met, but only six of eight pencils stayed in. Holds 8: not met, because six pencils stayed in after one gentle nudge and two fell out. Fits the corner: met, because the base measured 13 cm by 13 cm and the marked corner was 15 cm by 15 cm. No sharp edges: met, because a fingertip trace found only folded seams and no scratching point. Improvement: add a 3 cm cardboard collar to raise the tube, then repeat only the pencil-count nudge. The design is not “bad”; two checks passed and one still needs work."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Corner fit and smooth edges are met; holding eight pencils is not met, because only four stayed in. The change is to deepen or heighten the holder, then repeat the pencil count. Do not call the whole prototype a failure, and do not call it finished. A score such as 8/10 without the three criteria hides which check failed. Colour is not the missing evidence.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "Evaluate a prototype that fits the 15 cm corner and has smooth edges, but holds only four pencils before they spill. State which criteria are met, which is not met, and one change aimed at the unmet criterion.",
+        "misconception": "Giving the project one overall score, such as 8/10, because the organiser looks good. A single score skips which criterion passed and which failed. Judge each criterion with its result, then write one improvement for a criterion that was not met.",
+        "model": "Evaluation of Jordan’s later prototype: corner and edges are met, but only six of eight pencils stayed in. Holds 8: not met, because six pencils stayed in after one gentle nudge and two fell out. Fits the corner: met, because the base measured 13 cm by 13 cm and the marked corner was 15 cm by 15 cm. No sharp edges: met, because a fingertip trace found only folded seams and no scratching point. Improvement: add a 3 cm cardboard collar to raise the tube, then repeat only the pencil-count nudge. The design is not “bad”; two checks passed and one still needs work.",
+        "rule": "Evaluation matches each criterion to the test evidence, then names one improvement. It is more precise than “I like my organiser” or a single score out of ten. For each criterion, write met or not met, and the result that proves it. An improvement targets a criterion that was not met. If the corner and the edges passed but the pencil count did not, the next change is about holding pencils, not about colour. Two criteria can pass while one fails. That is a mixed result, not a total success or a total failure.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "List the key observations, sources or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show technology thinking.",
+        "model": "Evaluation of Jordan’s later prototype: corner and edges are met, but only six of eight pencils stayed in. Holds 8: not met, because six pencils stayed in after one gentle nudge and two fell out. Fits the corner: met, because the base measured 13 cm by 13 cm and the marked corner was 15 cm by 15 cm. No sharp edges: met, because a fingertip trace found only folded seams and no scratching point. Improvement: add a 3 cm cardboard collar to raise the tube, then repeat only the pencil-count nudge. The design is not “bad”; two checks passed and one still needs work. Look at each observation, source detail or example that carries the idea.",
+        "rule": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "Corner fit and smooth edges are met; holding eight pencils is not met, because only four stayed in. The change is to deepen or heighten the holder, then repeat the pencil count. Do not call the whole prototype a failure, and do not call it finished. A score such as 8/10 without the three criteria hides which check failed. Colour is not the missing evidence.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. Giving the project one overall score, such as 8/10, because the organiser looks good. A single score skips which criterion passed and which failed. Judge each criterion with its result, then write one improvement for a criterion that was not met.",
+        "model": "Giving the project one overall score, such as 8/10, because the organiser looks good. A single score skips which criterion passed and which failed. Judge each criterion with its result, then write one improvement for a criterion that was not met. Here is a more productive model: Evaluation of Jordan’s later prototype: corner and edges are met, but only six of eight pencils stayed in. Holds 8: not met, because six pencils stayed in after one gentle nudge and two fell out. Fits the corner: met, because the base measured 13 cm by 13 cm and the marked corner was 15 cm by 15 cm. No sharp edges: met, because a fingertip trace found only folded seams and no scratching point. Improvement: add a 3 cm cardboard collar to raise the tube, then repeat only the pencil-count nudge. The design is not “bad”; two checks passed and one still needs work.",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "The new example should use the same technology idea as the model, but contain different evidence.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "Inquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "Evaluation matches each criterion to the test evidence, then names one improvement. It is more precise than “I like my organiser” or a single score out of ten. For each criterion, write met or not met, and the result that proves it. An improvement targets a criterion that was not met. If the corner and the edges passed but the pencil count did not, the next change is about holding pencils, not about colour. Two criteria can pass while one fails. That is a mixed result, not a total success or a total failure. Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "A met corner measurement beside an unmet pencil count of six out of eight.",
+        "teaches": "Evaluation judges each criterion with its own result."
+      },
+      {
+        "alt": "A collar aimed at the pencil count beside a single score that hides which check failed.",
+        "teaches": "The next change targets the criterion that was not met."
+      }
+    ]
+  }
+}

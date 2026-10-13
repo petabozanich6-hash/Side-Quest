@@ -1,0 +1,9 @@
+{
+  "created_at": "2026-10-13T00:54:57.086399+00:00",
+  "id": "builder-s4-food",
+  "label": "S4 Food Technology Y7–Y8",
+  "seed_patterns": [
+    "s5-food-technology-*"
+  ],
+  "state": "workers/builder-s4-food"
+}

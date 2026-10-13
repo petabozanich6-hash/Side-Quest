@@ -5451,39 +5451,6 @@
         "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
       }
     },
-    "s4-hsie-y7-w39-l1": {
-      "artifacts": {
-        "artifacts/s4-hsie-y7-w39-l1/f73f976400c283ecca891bdaee0e30d64f20932b2a386ca6fb5bd9a7501c0d0b-cf4da70ca18d/baseline.json": "a360ec5cc95b4adadb342d450c6657502edcda592089d235e5300ebc22481b39",
-        "artifacts/s4-hsie-y7-w39-l1/f73f976400c283ecca891bdaee0e30d64f20932b2a386ca6fb5bd9a7501c0d0b-cf4da70ca18d/bundle.json": "f73f976400c283ecca891bdaee0e30d64f20932b2a386ca6fb5bd9a7501c0d0b",
-        "artifacts/s4-hsie-y7-w39-l1/f73f976400c283ecca891bdaee0e30d64f20932b2a386ca6fb5bd9a7501c0d0b-cf4da70ca18d/draft.sql": "635483c294bf8c9221125aad3590bbe3fc87301265235e0bab310b7b6ffcce48",
-        "artifacts/s4-hsie-y7-w39-l1/f73f976400c283ecca891bdaee0e30d64f20932b2a386ca6fb5bd9a7501c0d0b-cf4da70ca18d/validation.json": "66b1e4b18dbc5cd153911f7d8a32be9cb23138a68879d519e023a2c93f4594b2"
-      },
-      "attempts": 2,
-      "content_sha256": "4a18a34608749df55ab8467cf3cc398a60b3f3f11953afd77ba0d5aed3754066",
-      "gates": {
-        "automated_validation_passed": true,
-        "browser_verified": false,
-        "drafted": true,
-        "educationally_reviewed": false,
-        "fully_approved": false,
-        "nesa_verified": false
-      },
-      "input_sha256": "f73f976400c283ecca891bdaee0e30d64f20932b2a386ca6fb5bd9a7501c0d0b",
-      "phase": "awaiting_review",
-      "review_blockers": [
-        "Independent educational review",
-        "Authoritative NESA verification",
-        "Rendered browser and role-separation verification",
-        "Owner release approval"
-      ],
-      "source_sha256": "3ec99bc46d355731959eba5af115df6cfa465cd17498fe0fb9afa49a96f110e1",
-      "validator_sha256": {
-        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
-        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
-        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
-        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
-      }
-    },
     "s4-hsie-y7-w39-l2": {
       "artifacts": {
         "artifacts/s4-hsie-y7-w39-l2/872e624c8b5c5f8b814667ee013032ba00349781cb537673d695442819a17414-d0af4dc187a5/baseline.json": "8f7822bec228e3788294b6eebedab9c61d245f28b080696434a765362770a6b1",

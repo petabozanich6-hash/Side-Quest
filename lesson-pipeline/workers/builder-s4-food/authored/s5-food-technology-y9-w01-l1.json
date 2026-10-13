@@ -1,0 +1,439 @@
+{
+  "architecture": "d1-worker",
+  "curriculum": [
+    {
+      "code": "FT5-SAF-01",
+      "lesson_evidence": "Food safety is the set of habits that keep harmful microbes from reaching the food someone eats. A hazard is anything that could make food unsafe, such as dirty hands, a raw-meat drip, or food left warm for hours. A control is the action that reduces that hazard. Year 7 students start by naming the hazard before they choose the control, because a tidy bench is not the same thing as a safe process.",
+      "scope_limit": "Single Stage 4 lesson: partial contribution only. Content-point mapping is pending human review. This authoring pass does not certify NESA alignment.",
+      "source": "https://curriculum.nsw.edu.au/learning-areas/tas/food-technology-7-10-2025/outcomes",
+      "verification_status": "pending"
+    }
+  ],
+  "lesson": {
+    "child_mission": "Food safety is the set of habits that keep harmful microbes from reaching the food someone eats. A hazard is anything that could make food unsafe, such as dirty hands, a raw-meat drip, or food left warm for hours. A control is the action that reduces that hazard. Year 7 students start by naming the hazard before they choose the control, because a tidy bench is not the same thing as a safe process.",
+    "coming_soon": null,
+    "duration_minutes": 55,
+    "evidence_instructions": "Save the independent response, specific revisions and both short-answer explanations; record oral evidence for speaking tasks.",
+    "explicit_teaching": null,
+    "extension": "Apply the same technology/design idea to a new object or material, then compare two pieces of evidence for strength.",
+    "follow_up_challenges": null,
+    "guided_practice": "PRACTISE BEFORE READING THE FEEDBACK\nA student sneezes over a plate of cut fruit, then says the fruit is fine because it looks clean. Name the hazard and one control.\n\nFEEDBACK\nHazard: droplets from the sneeze can land on ready-to-eat fruit. Control: throw that fruit away or compost it, wash hands, and cut a fresh piece. Looking clean does not remove contamination.\n\nWATCH FOR\nThinking food is safe whenever it still looks and smells normal. Many unsafe changes cannot be seen.",
+    "hoard_words": null,
+    "independent_task": "INDEPENDENT EVIDENCE\nWalk through one meal at home on paper. List two hazards and one control for each. Cooking the meal is optional and needs an adult.\n\nWrite a short reflection naming one observation, criterion or step you corrected and why.",
+    "interactive_activities": null,
+    "learning_area": "Food Technology",
+    "learning_intention": "Food safety is the set of habits that keep harmful microbes from reaching the food someone eats. A hazard is anything that could make food unsafe, such as dirty hands, a raw-meat drip, or food left warm for hours. A control is the action that reduces that hazard. Year 7 students start by naming the hazard before they choose the control, because a tidy bench is not the same thing as a safe process.",
+    "lesson_number": 1,
+    "lesson_role": "Learn",
+    "materials": [
+      "Paper or typed answer space",
+      "Pencil",
+      "Optional: safe classroom tools/materials under teacher supervision",
+      "Device only when the lesson requires digital work"
+    ],
+    "offline_alternative": "Use paper and pencil to complete the original task, then retain a photograph or short parent observation as evidence.",
+    "outcome_codes": [
+      "FT5-SAF-01"
+    ],
+    "parent_notes": "Parent: Marking guidance for the independent task: Walk through one meal at home on paper. List two hazards and one control for each. Cooking the meal is optional and needs an adult. Accept equivalent original responses that show the same skill.\n\nParent: Written model 1: Sample: original example using hazard on new material; names a specific word, source or choice and explains its effect.\n\nParent: Written model 2: Sample error: Thinking food is safe whenever it still looks and smells normal.. Correction: Hazard: droplets from the sneeze can land on ready-to-eat fruit.. Why it helps the audience is stated.\n\nParent: Likely misconception: Thinking food is safe whenever it still looks and smells normal. Many unsafe changes cannot be seen. Keep sample answers out of the child role.\n\nParent: Short-answer focus 1: Produce a fresh example demonstrating hazard on new material (not the worked model). Explain the particular words, sources or choices that make it work.\n\nParent: Short-answer focus 2: Name one likely error with hazard, correct it, and explain why the correction helps a reader or audience.\n\nParent: Marking notes: Accept original work about hazard with a specific supporting detail. Reject copied model wording with no new material. / Accept a misconception, a correction, and a purpose-linked reason for hazard. Reject corrections that do not change the inaccurate idea..",
+    "pass": 1,
+    "pass_mark": 0.9,
+    "planner_fields": null,
+    "planner_intro": null,
+    "planner_title": null,
+    "printable_resource": null,
+    "quiz": [
+      {
+        "correct_index": 0,
+        "explanation": "This matches the taught method for hazard. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Hazard: droplets from the sneeze can land on ready-to-eat fruit",
+          "Thinking food is safe whenever it still looks and smells normal",
+          "Ignore the observation or criteria and invent a more exciting result",
+          "Copy the model objects and call that independent work"
+        ],
+        "question": "A student sneezes over a plate of cut fruit, then says the fruit is fine because it looks clean. Name the hazard and one control. Which response is most accurate?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 1,
+        "explanation": "This is the misconception to avoid for hazard; the other choices align with the lesson method. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Careful use of contamination with clear evidence",
+          "Thinking food is safe whenever it still looks and smells normal",
+          "Food safety is the set of habits that keep harmful microbes from reaching the food someone eats",
+          "Hazard: droplets from the sneeze can land on ready-to-eat fruit"
+        ],
+        "question": "Which statement is a common mistake when working with hazard?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 0,
+        "explanation": "Understanding is shown by new evidence and a named contamination, not by copying the model. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Apply hazard to new material and name the contamination used",
+          "Repeat the worked example wording with no new evidence",
+          "Thinking food is safe whenever it still looks and smells normal",
+          "Name contamination only, without linking it to hazard"
+        ],
+        "question": "Which response best applies hazard with new evidence?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "The stronger choice uses design criteria, safe making steps or test evidence appropriately for this lesson on hazard. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Start making with no criteria or safety check",
+          "Call the first attempt finished without testing",
+          "Thinking food is safe whenever it still looks and smells normal",
+          "Hazard: droplets from the sneeze can land on ready-to-eat fruit"
+        ],
+        "question": "Which response best evaluates design criteria, safe making steps or test evidence when analysing hazard?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Strong answers name specific evidence and what it shows. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Start making with no criteria or safety check",
+          "Call the first attempt finished without testing",
+          "Thinking food is safe whenever it still looks and smells normal",
+          "Name a criterion, safety step or test result and say how it improves hazard"
+        ],
+        "question": "Which evidence move best supports a claim about hazard?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "The stronger choice matches the taught idea (Food safety is the set of habits that keep harmful microbes from) with concrete detail. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Start making with no criteria or safety check",
+          "Call the first attempt finished without testing",
+          "Hazard: raw chicken juice on a board that will next hold salad",
+          "Thinking food is safe whenever it still looks and smells normal"
+        ],
+        "question": "Which choice best applies this lesson idea about hazard?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 2,
+        "explanation": "Accuracy means checking evidence and honouring limits or protocols. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Ignore safety or cultural protocols to finish faster",
+          "Treat every claim as equally reliable without checking a source or cue",
+          "Check criteria and safety, record a test result, and note one honest improvement",
+          "Invent missing details to make the answer sound complete"
+        ],
+        "question": "Which action keeps design criteria, safe making steps or test evidence accurate for hazard?",
+        "type": "multiple_choice"
+      },
+      {
+        "correct_index": 3,
+        "explanation": "Independence requires a new example that still uses the taught skill. The other choices miss a key step or use a common mistake.",
+        "options": [
+          "Retype the worked example with no new example",
+          "Thinking food is safe whenever it still looks and smells normal",
+          "Name contamination only, with no linked example",
+          "Walk through one meal at home on paper"
+        ],
+        "question": "Which independent response best applies hazard to new material?",
+        "type": "multiple_choice"
+      },
+      {
+        "explanation": "Independent evidence on new material demonstrates the skill; copying the model does not.",
+        "marking_guide": "Accept original work about hazard with a specific supporting detail. Reject copied model wording with no new material.",
+        "question": "Produce a fresh example demonstrating hazard on new material (not the worked model). Explain the particular words, sources or choices that make it work.",
+        "sample_answer": "Sample: original example using hazard on new material; names a specific word, source or choice and explains its effect.",
+        "type": "short_answer"
+      },
+      {
+        "explanation": "A useful correction changes the inaccurate idea or method and explains why.",
+        "marking_guide": "Accept a misconception, a correction, and a purpose-linked reason for hazard. Reject corrections that do not change the inaccurate idea.",
+        "question": "Name one likely error with hazard, correct it, and explain why the correction helps a reader or audience.",
+        "sample_answer": "Sample error: Thinking food is safe whenever it still looks and smells normal.. Correction: Hazard: droplets from the sneeze can land on ready-to-eat fruit.. Why it helps the audience is stated.",
+        "type": "short_answer"
+      }
+    ],
+    "resources": null,
+    "response_prompt": "Include your independent evidence and reflection, with reasons where requested.",
+    "review_status": "unreviewed",
+    "seed_key": "s5-food-technology-y9-w01-l1",
+    "sort_activity": null,
+    "source_note": "Proposed Year 7 alignment. Food Technology 7–10 (2025) says Stage 4 teachers may adjust Stage 5 outcomes (FT4-ADJ-01). This lesson uses FT5-SAF-01 as a pending proposal. The 2019 syllabus remains in teach-out. Not NESA verified. Practical cooking is optional and adult-supervised.",
+    "spelling": null,
+    "spelling_focus": null,
+    "stage": "S4",
+    "stage_hints": {
+      "accept": [
+        "Today you will practise hazard.",
+        "Read the mission before you start observing, designing or testing.",
+        "Keep the property, criterion or variable you are studying in view."
+      ],
+      "guided": [
+        "Attempt the guided prompt without looking ahead.",
+        "Afterwards, compare your evidence with the feedback.",
+        "Adjust anything that does not match the method."
+      ],
+      "learn": [
+        "Study how the first demonstration is built.",
+        "Point to the observation, criterion or step that carries the idea.",
+        "Then write the reason without copying every sentence."
+      ],
+      "quiz": [
+        "Read every option before you choose.",
+        "Eliminate answers that ignore observations, criteria or fair tests.",
+        "Prefer accurate evidence over a guess that merely looks neat."
+      ],
+      "submit": [
+        "Confirm that your evidence and reason are both present.",
+        "Proofread labels, measurements and sequence of steps.",
+        "Make sure the final evidence matches the lesson purpose."
+      ],
+      "teach0": [
+        "Read the stage title and find the worked model.",
+        "Name one exact observation, criterion or test step before you decide.",
+        "Try the small prompt before opening the comparison."
+      ],
+      "teach1": [
+        "Return to the model and list the key observations or criteria.",
+        "Say what each observation or criterion shows about the idea.",
+        "A final label alone is weaker than recorded evidence."
+      ],
+      "teach2": [
+        "Compare a weak claim with stronger evidence.",
+        "Change the claim or method, not only how neat the drawing looks.",
+        "Name the mistake you are repairing."
+      ],
+      "teach3": [
+        "Choose a fresh object or context that still uses the same skill.",
+        "Write one reason in your own words.",
+        "Do not retype the worked model as your answer."
+      ],
+      "write": [
+        "Follow every part of the independent instructions.",
+        "Include original evidence and a short reason.",
+        "Save work that shows the skill on new objects or data."
+      ]
+    },
+    "subject": "Food Technology",
+    "success_criteria": [
+      "I can use hazard with a specific example from this lesson.",
+      "I can identify contamination and explain why it matters.",
+      "I can practise illness independently on a new prompt.",
+      "I can notice control needs and correct a likely mistake."
+    ],
+    "suspense_builder": null,
+    "teach_steps": [
+      {
+        "check": {
+          "correct_index": 1,
+          "explanation": "Food safety is the set of habits that keep harmful microbes from reaching the food someone eats.",
+          "options": [
+            "A guess with no evidence",
+            "Food safety is the set of habits that keep harmful microbes from reaching the food someone eats",
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding"
+          ],
+          "question": "Which choice best shows accurate use of this idea about hazard?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nHazard: raw chicken juice on a board that will next hold salad. Control: wash the board with hot soapy water, or use a separate board, before the salad touches it. The hazard is the juice, not the fact that chicken is a normal food.\n\nTRY FIRST\nA student sneezes over a plate of cut fruit, then says the fruit is fine because it looks clean. Name the hazard and one control.\n\nFEEDBACK\nHazard: droplets from the sneeze can land on ready-to-eat fruit. Control: throw that fruit away or compost it, wash hands, and cut a fresh piece. Looking clean does not remove contamination.",
+        "explain": "Food safety is the set of habits that keep harmful microbes from reaching the food someone eats. A hazard is anything that could make food unsafe, such as dirty hands, a raw-meat drip, or food left warm for hours. A control is the action that reduces that hazard. Year 7 students start by naming the hazard before they choose the control, because a tidy bench is not the same thing as a safe process.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Thinking food is safe whenever it still looks and smells normal. Many unsafe changes cannot be seen. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Understand and model",
+        "visual": [
+          {
+            "alt": "Chicken juice on a board is the hazard; washing before salad is the control.",
+            "caption": "Name the hazard, then the action that stops it.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Hazard</text><text x=\"28\" y=\"78\">chicken juice on board</text><text x=\"358\" y=\"42\">Control</text><text x=\"358\" y=\"78\">wash before salad</text></g></svg>"
+          }
+        ],
+        "visual_before": [
+          {
+            "episode": {
+              "scenes": [
+                {
+                  "bg": "room",
+                  "lines": [
+                    {
+                      "text": "I can see the example, but I am not sure which observation or criterion matters most.",
+                      "who": "pip"
+                    },
+                    {
+                      "text": "Name the observations, criteria or test steps that carry the idea before you decide.",
+                      "who": "juno"
+                    },
+                    {
+                      "text": "I will try the prompt myself, then compare with the feedback.",
+                      "who": "pip"
+                    },
+                    {
+                      "pause_after": true,
+                      "text": "Pause here. Use this model: Hazard: raw chicken juice on a board that will next hold salad. Control: wash the board with hot soapy water, or use a s Then write your own evidence.",
+                      "who": "juno"
+                    }
+                  ]
+                }
+              ],
+              "title": "Talk through the first model",
+              "transcript": "Pip: I can see the example, but I am not sure which observation or criterion matters most.\nJuno: Name the observations, criteria or test steps that carry the idea before you decide.\nPip: I will try the prompt myself, then compare with the feedback.\nJuno: Pause here. Use this model: Hazard: raw chicken juice on a board that will next hold salad. Control: wash the board with hot soapy water, or use a s Then write your own evidence."
+            }
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 2,
+          "explanation": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim",
+            "A claim unrelated to the observation, test or criteria"
+          ],
+          "question": "Which choice best shows accurate use of this idea about hazard?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nHazard: raw chicken juice on a board that will next hold salad. Control: wash the board with hot soapy water, or use a separate board, before the salad touches it. The hazard is the juice, not the fact that chicken is a normal food. Look at each observation, source detail or example that carries the idea.\n\nTRY FIRST\nList the key observations, sources or steps from the model and say what each one shows.\n\nFEEDBACK\nThe most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "explain": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Writing only a final label without evidence does not show technology thinking. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Show the evidence",
+        "visual": [
+          {
+            "alt": "Food can be unsafe even when it looks and smells normal.",
+            "caption": "Appearance is not the safety test.",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Looks fine</text><text x=\"28\" y=\"78\">no smell change</text><text x=\"358\" y=\"42\">Still unsafe</text><text x=\"358\" y=\"78\">microbes unseen</text></g></svg>"
+          }
+        ]
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use an intentionally incorrect claim as a comparison"
+          ],
+          "question": "Which choice best shows accurate use of this idea about hazard?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nThinking food is safe whenever it still looks and smells normal. Many unsafe changes cannot be seen. Here is a more productive model: Hazard: raw chicken juice on a board that will next hold salad. Control: wash the board with hot soapy water, or use a separate board, before the salad touches it. The hazard is the juice, not the fact that chicken is a normal food.\n\nTRY FIRST\nDescribe why the warned-against claim fails, then write a corrected claim with evidence.\n\nFEEDBACK\nHazard: droplets from the sneeze can land on ready-to-eat fruit. Control: throw that fruit away or compost it, wash hands, and cut a fresh piece. Looking clean does not remove contamination.",
+        "explain": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Changing the wording without repairing the evidence does not fix the error. Thinking food is safe whenever it still looks and smells normal. Many unsafe changes cannot be seen. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Test a misconception"
+      },
+      {
+        "check": {
+          "correct_index": 3,
+          "explanation": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence. Supported records follow the actual observations, criteria and purpose of the task. The other choices miss a key step or use a common mistake.",
+          "options": [
+            "A claim unrelated to the observation, test or criteria",
+            "An answer copied without understanding",
+            "A guess with no evidence",
+            "Use the same technology idea on a new place, person, source or context, not a copy of the worked example"
+          ],
+          "question": "Which choice best shows accurate use of this idea about hazard?",
+          "type": "multiple_choice"
+        },
+        "example": "WORKED MODEL\nFood safety is the set of habits that keep harmful microbes from reaching the food someone eats. A hazard is anything that could make food unsafe, such as dirty hands, a raw-meat drip, or food left warm for hours. A control is the action that reduces that hazard. Year 7 students start by naming the hazard before they choose the control, because a tidy bench is not the same thing as a safe process. Now choose a different example to show you can transfer the idea.\n\nTRY FIRST\nInquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.\n\nFEEDBACK\nThe new example should use the same technology idea as the model, but contain different evidence.",
+        "explain": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.\n\nWHY IT MATTERS\nThis helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria.\n\nHOW TO WORK\nRead the worked example and name the observations, properties, criteria or test steps that carry the idea. Before looking at the correction, make your own attempt using the exact question provided. Compare your record with the feedback: did you use the same skill and show your evidence? If a result is uncertain, identify what would have to be observed or tested again. One deliberate, evidence-based revision is more useful than writing a longer answer. For practical technology work, follow teacher safety rules for tools, food and devices.",
+        "icon": "📖",
+        "notice": "Repeating the worked example cannot show transfer to new evidence. Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "title": "Transfer to a new investigation"
+      }
+    ],
+    "title": "Year 7, Lesson 1: Food safety and hygiene",
+    "unit_number": 1,
+    "unit_title": "Food safety and hygiene",
+    "week": 1,
+    "week_in_unit": 1,
+    "word_challenges": null,
+    "worked_example": "WORK THROUGH THIS\nHazard: raw chicken juice on a board that will next hold salad. Control: wash the board with hot soapy water, or use a separate board, before the salad touches it. The hazard is the juice, not the fact that chicken is a normal food.\n\nWrite what makes this example accurate, naming the observations, criteria, properties or test steps used.",
+    "worked_visuals": [
+      {
+        "alt": "Chicken juice on a board is the hazard; washing before salad is the control.",
+        "caption": "Name the hazard, then the action that stops it.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Hazard</text><text x=\"28\" y=\"78\">chicken juice on board</text><text x=\"358\" y=\"42\">Control</text><text x=\"358\" y=\"78\">wash before salad</text></g></svg>"
+      },
+      {
+        "alt": "Food can be unsafe even when it looks and smells normal.",
+        "caption": "Appearance is not the safety test.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 660 150\"><rect x=\"10\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#fff4ea\" stroke=\"#b87445\"/><rect x=\"340\" y=\"12\" width=\"310\" height=\"126\" rx=\"14\" fill=\"#e8f5ed\" stroke=\"#297a61\"/><g font-size=\"16\" fill=\"#263948\"><text x=\"28\" y=\"42\">Looks fine</text><text x=\"28\" y=\"78\">no smell change</text><text x=\"358\" y=\"42\">Still unsafe</text><text x=\"358\" y=\"78\">microbes unseen</text></g></svg>"
+      }
+    ],
+    "year_level": "Year 7"
+  },
+  "requirements": {
+    "practice": {
+      "guided_inputs": [
+        "A student sneezes over a plate of cut fruit, then says the fruit is fine because it looks clean. Name the hazard and one control."
+      ],
+      "independent_inputs": [
+        "Walk through one meal at home on paper. List two hazards and one control for each. Cooking the meal is optional and needs an adult."
+      ],
+      "model_inputs": [
+        "Hazard: raw chicken juice on a board that will next hold salad. Control: wash the board with hot soapy water, or use a separate board, before the salad touches it. The hazard is the juice, not the fact that chicken is a normal food."
+      ]
+    },
+    "review_questions": [
+      "Check original Coming Soon outcome mapping against current NESA.",
+      "Educationally review worked example, independent prompts and all 10 quiz answers.",
+      "Verify Stage 2 age suitability and child/parent API answer privacy.",
+      "Verify written learner progress saved and restored.",
+      "Confirm diagrams teach this lesson idea rather than a generic process."
+    ],
+    "teaching": [
+      {
+        "feedback": "Hazard: droplets from the sneeze can land on ready-to-eat fruit. Control: throw that fruit away or compost it, wash hands, and cut a fresh piece. Looking clean does not remove contamination.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "A student sneezes over a plate of cut fruit, then says the fruit is fine because it looks clean. Name the hazard and one control.",
+        "misconception": "Thinking food is safe whenever it still looks and smells normal. Many unsafe changes cannot be seen.",
+        "model": "Hazard: raw chicken juice on a board that will next hold salad. Control: wash the board with hot soapy water, or use a separate board, before the salad touches it. The hazard is the juice, not the fact that chicken is a normal food.",
+        "rule": "Food safety is the set of habits that keep harmful microbes from reaching the food someone eats. A hazard is anything that could make food unsafe, such as dirty hands, a raw-meat drip, or food left warm for hours. A control is the action that reduces that hazard. Year 7 students start by naming the hazard before they choose the control, because a tidy bench is not the same thing as a safe process.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "The most useful record names the evidence and the reason it supports the claim, not only a label.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "List the key observations, sources or steps from the model and say what each one shows.",
+        "misconception": "Writing only a final label without evidence does not show technology thinking.",
+        "model": "Hazard: raw chicken juice on a board that will next hold salad. Control: wash the board with hot soapy water, or use a separate board, before the salad touches it. The hazard is the juice, not the fact that chicken is a normal food. Look at each observation, source detail or example that carries the idea.",
+        "rule": "Make the technology idea visible: name the observation, source or example you used and say why it supports the claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "Hazard: droplets from the sneeze can land on ready-to-eat fruit. Control: throw that fruit away or compost it, wash hands, and cut a fresh piece. Looking clean does not remove contamination.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "Describe why the warned-against claim fails, then write a corrected claim with evidence.",
+        "misconception": "Changing the wording without repairing the evidence does not fix the error. Thinking food is safe whenever it still looks and smells normal. Many unsafe changes cannot be seen.",
+        "model": "Thinking food is safe whenever it still looks and smells normal. Many unsafe changes cannot be seen. Here is a more productive model: Hazard: raw chicken juice on a board that will next hold salad. Control: wash the board with hot soapy water, or use a separate board, before the salad touches it. The hazard is the juice, not the fact that chicken is a normal food.",
+        "rule": "Use an intentionally incorrect claim as a comparison. Name its specific technology error, then show the corrected evidence-based claim.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      },
+      {
+        "feedback": "The new example should use the same technology idea as the model, but contain different evidence.",
+        "fix": "Correct the claim, criteria use or method, not just the neatness of the diagram.",
+        "guided_attempt": "Inquire into or describe one fresh example that uses the same skill and write a short evidence-based reason.",
+        "misconception": "Repeating the worked example cannot show transfer to new evidence.",
+        "model": "Food safety is the set of habits that keep harmful microbes from reaching the food someone eats. A hazard is anything that could make food unsafe, such as dirty hands, a raw-meat drip, or food left warm for hours. A control is the action that reduces that hazard. Year 7 students start by naming the hazard before they choose the control, because a tidy bench is not the same thing as a safe process. Now choose a different example to show you can transfer the idea.",
+        "rule": "Use the same technology idea on a new place, person, source or context, not a copy of the worked example. Review accuracy of evidence.",
+        "why": "This helps the learner base claims on observation, fair tests and design evidence, rather than guessing from a picture alone. Keep every claim linked to what was seen, measured or tested against criteria."
+      }
+    ],
+    "visuals": [
+      {
+        "alt": "Chicken juice on a board is the hazard; washing before salad is the control.",
+        "teaches": "Name the hazard, then the action that stops it."
+      },
+      {
+        "alt": "Food can be unsafe even when it looks and smells normal.",
+        "teaches": "Appearance is not the safety test."
+      }
+    ]
+  }
+}

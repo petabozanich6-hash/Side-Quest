@@ -1,0 +1,10 @@
+{
+  "created_at": "2026-10-13T00:54:56.645762+00:00",
+  "id": "builder-s4-dance",
+  "label": "S4 Dance Y7–Y8",
+  "seed_patterns": [
+    "s5-dance-y9-*",
+    "s5-dance-y10-*"
+  ],
+  "state": "workers/builder-s4-dance"
+}

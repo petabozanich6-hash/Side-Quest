@@ -1,0 +1,553 @@
+{
+  "generation": 24,
+  "history": [
+    {
+      "at": "2026-10-13T01:04:05.328963+00:00",
+      "event": "claimed",
+      "generation": 1,
+      "seed_key": "s5-music-y9-w01-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:05.693281+00:00",
+      "event": "awaiting_review",
+      "generation": 2,
+      "seed_key": "s5-music-y9-w01-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:05.694402+00:00",
+      "event": "claimed",
+      "generation": 3,
+      "seed_key": "s5-music-y9-w01-l2"
+    },
+    {
+      "at": "2026-10-13T01:04:06.093095+00:00",
+      "event": "awaiting_review",
+      "generation": 4,
+      "seed_key": "s5-music-y9-w01-l2"
+    },
+    {
+      "at": "2026-10-13T01:04:06.094315+00:00",
+      "event": "claimed",
+      "generation": 5,
+      "seed_key": "s5-music-y9-w02-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:06.485802+00:00",
+      "event": "awaiting_review",
+      "generation": 6,
+      "seed_key": "s5-music-y9-w02-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:06.486808+00:00",
+      "event": "claimed",
+      "generation": 7,
+      "seed_key": "s5-music-y9-w02-l2"
+    },
+    {
+      "at": "2026-10-13T01:04:06.813352+00:00",
+      "event": "awaiting_review",
+      "generation": 8,
+      "seed_key": "s5-music-y9-w02-l2"
+    },
+    {
+      "at": "2026-10-13T01:04:06.814604+00:00",
+      "event": "claimed",
+      "generation": 9,
+      "seed_key": "s5-music-y9-w03-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:07.142619+00:00",
+      "event": "awaiting_review",
+      "generation": 10,
+      "seed_key": "s5-music-y9-w03-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:07.143819+00:00",
+      "event": "claimed",
+      "generation": 11,
+      "seed_key": "s5-music-y9-w03-l2"
+    },
+    {
+      "at": "2026-10-13T01:04:07.499378+00:00",
+      "event": "awaiting_review",
+      "generation": 12,
+      "seed_key": "s5-music-y9-w03-l2"
+    },
+    {
+      "at": "2026-10-13T01:04:07.500601+00:00",
+      "event": "claimed",
+      "generation": 13,
+      "seed_key": "s5-music-y9-w04-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:07.849792+00:00",
+      "event": "awaiting_review",
+      "generation": 14,
+      "seed_key": "s5-music-y9-w04-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:07.851355+00:00",
+      "event": "claimed",
+      "generation": 15,
+      "seed_key": "s5-music-y9-w04-l2"
+    },
+    {
+      "at": "2026-10-13T01:04:08.591107+00:00",
+      "event": "awaiting_review",
+      "generation": 16,
+      "seed_key": "s5-music-y9-w04-l2"
+    },
+    {
+      "at": "2026-10-13T01:04:08.592741+00:00",
+      "event": "claimed",
+      "generation": 17,
+      "seed_key": "s5-music-y9-w05-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:08.988387+00:00",
+      "event": "awaiting_review",
+      "generation": 18,
+      "seed_key": "s5-music-y9-w05-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:08.990280+00:00",
+      "event": "claimed",
+      "generation": 19,
+      "seed_key": "s5-music-y9-w05-l2"
+    },
+    {
+      "at": "2026-10-13T01:04:09.331319+00:00",
+      "event": "awaiting_review",
+      "generation": 20,
+      "seed_key": "s5-music-y9-w05-l2"
+    },
+    {
+      "at": "2026-10-13T01:04:09.332631+00:00",
+      "event": "claimed",
+      "generation": 21,
+      "seed_key": "s5-music-y9-w06-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:09.652962+00:00",
+      "event": "awaiting_review",
+      "generation": 22,
+      "seed_key": "s5-music-y9-w06-l1"
+    },
+    {
+      "at": "2026-10-13T01:04:09.654794+00:00",
+      "event": "claimed",
+      "generation": 23,
+      "seed_key": "s5-music-y9-w06-l2"
+    },
+    {
+      "at": "2026-10-13T01:04:09.982048+00:00",
+      "event": "awaiting_review",
+      "generation": 24,
+      "seed_key": "s5-music-y9-w06-l2"
+    }
+  ],
+  "lessons": {
+    "s5-music-y9-w01-l1": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w01-l1/753325c79a9bace581f25d56bf8bc13b964a44107937d94fb2226b6d10472324-cf4da70ca18d/baseline.json": "5404a3b960336a6003e2eddce6a3751a6cc240e6aa7064e0cde2ef6447718e84",
+        "artifacts/s5-music-y9-w01-l1/753325c79a9bace581f25d56bf8bc13b964a44107937d94fb2226b6d10472324-cf4da70ca18d/bundle.json": "753325c79a9bace581f25d56bf8bc13b964a44107937d94fb2226b6d10472324",
+        "artifacts/s5-music-y9-w01-l1/753325c79a9bace581f25d56bf8bc13b964a44107937d94fb2226b6d10472324-cf4da70ca18d/draft.sql": "89f00c0787549c163608d081f50934ed6d2b4a1aa879be6047d628cd3dce771f",
+        "artifacts/s5-music-y9-w01-l1/753325c79a9bace581f25d56bf8bc13b964a44107937d94fb2226b6d10472324-cf4da70ca18d/validation.json": "4b8a4560abbe12eb1fd99f47285006fb270e784ac78a4f94cfd6d4bbc6b5bd9c"
+      },
+      "attempts": 1,
+      "content_sha256": "bafaa45be3015dd1f0f2ad5128bc1a0c4baa232fdd301054b8f5d78d70749fdc",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "753325c79a9bace581f25d56bf8bc13b964a44107937d94fb2226b6d10472324",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "7e4c4bd0a63a59fb59afb3df5907b8c85af170238a143ea83fae56bacfc074ab",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-music-y9-w01-l2": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w01-l2/676fd4cfe16b5713ca9426a9bf6c4e1ccb31696842f9b7c761e8e5628a0cbe49-cf4da70ca18d/baseline.json": "1d6b4bd0231bdb0f42b8507ad62cfa8581d6f3302b96600d4657bec7f776da29",
+        "artifacts/s5-music-y9-w01-l2/676fd4cfe16b5713ca9426a9bf6c4e1ccb31696842f9b7c761e8e5628a0cbe49-cf4da70ca18d/bundle.json": "676fd4cfe16b5713ca9426a9bf6c4e1ccb31696842f9b7c761e8e5628a0cbe49",
+        "artifacts/s5-music-y9-w01-l2/676fd4cfe16b5713ca9426a9bf6c4e1ccb31696842f9b7c761e8e5628a0cbe49-cf4da70ca18d/draft.sql": "4b3dca1e8934f7c88c4861f95efbd63b20a3a687dd89d24ea8be585948160ea4",
+        "artifacts/s5-music-y9-w01-l2/676fd4cfe16b5713ca9426a9bf6c4e1ccb31696842f9b7c761e8e5628a0cbe49-cf4da70ca18d/validation.json": "4a5a8a84455bb33b234827d830ffb275856d8977ec2abca9c52ddd4c6853f01f"
+      },
+      "attempts": 1,
+      "content_sha256": "30578c8b203fb0e851fc7022da07af19078607c9ea8d1a421858a110af889b8f",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "676fd4cfe16b5713ca9426a9bf6c4e1ccb31696842f9b7c761e8e5628a0cbe49",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "d94ea23cad0f760139b1911e544c007f4332582d589b089711ab86f9e61a024b",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-music-y9-w02-l1": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w02-l1/f9bcdf15b2a52937a82d50426c14dcfed21ff25158eb012b24eb9dac74fbcf3a-cf4da70ca18d/baseline.json": "57a4ada785ee341381ea45ba4e0b455b35f03394bd89c4d377d98d4092aa317b",
+        "artifacts/s5-music-y9-w02-l1/f9bcdf15b2a52937a82d50426c14dcfed21ff25158eb012b24eb9dac74fbcf3a-cf4da70ca18d/bundle.json": "f9bcdf15b2a52937a82d50426c14dcfed21ff25158eb012b24eb9dac74fbcf3a",
+        "artifacts/s5-music-y9-w02-l1/f9bcdf15b2a52937a82d50426c14dcfed21ff25158eb012b24eb9dac74fbcf3a-cf4da70ca18d/draft.sql": "11fe86a58df0fc7a578d704972bfe98e232750ed505b17c0d28f76f7055dba2a",
+        "artifacts/s5-music-y9-w02-l1/f9bcdf15b2a52937a82d50426c14dcfed21ff25158eb012b24eb9dac74fbcf3a-cf4da70ca18d/validation.json": "f5573b1f14324554671c5a420b0a1221b740aba7a5054c23f08d520c5e3bca39"
+      },
+      "attempts": 1,
+      "content_sha256": "ce79095cf8ff33027cae1c7049b20374ef34a8f6d5ba6b1d134bea14eefbe2f6",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "f9bcdf15b2a52937a82d50426c14dcfed21ff25158eb012b24eb9dac74fbcf3a",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "13480b22707a000910e746e01f10517d4d560417c85d48dc9a91954b2ad1b325",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-music-y9-w02-l2": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w02-l2/6db6bb8f5922710407a6b108397624652f2a48a0fc16c0c582ac8c700f837b27-cf4da70ca18d/baseline.json": "508123e76a6f74ba74b74e4b69d7ec81c04e7c2d1e0e9e0d116bb69e6d1ac37d",
+        "artifacts/s5-music-y9-w02-l2/6db6bb8f5922710407a6b108397624652f2a48a0fc16c0c582ac8c700f837b27-cf4da70ca18d/bundle.json": "6db6bb8f5922710407a6b108397624652f2a48a0fc16c0c582ac8c700f837b27",
+        "artifacts/s5-music-y9-w02-l2/6db6bb8f5922710407a6b108397624652f2a48a0fc16c0c582ac8c700f837b27-cf4da70ca18d/draft.sql": "bef8c3b9c001b8c4bb1a13790589db84ea78b569a0586016a4b9450819361c03",
+        "artifacts/s5-music-y9-w02-l2/6db6bb8f5922710407a6b108397624652f2a48a0fc16c0c582ac8c700f837b27-cf4da70ca18d/validation.json": "dddc5ad3ead116f427a836b5764cbff50f00404dbd945c076ba3996f3313b2b2"
+      },
+      "attempts": 1,
+      "content_sha256": "ec3dc1cdcc9b2645783de26a8706ceba26afcc4e48143b660fb01c336f8b0ecd",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "6db6bb8f5922710407a6b108397624652f2a48a0fc16c0c582ac8c700f837b27",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "7672d7dfd3666cead207c3558006d1b3b9cf3b43159af573a305db5c93e95568",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-music-y9-w03-l1": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w03-l1/2bc7c9dffe756d897fed2132d4ff6e8b821e97481218086f3c1060a559d9ba57-cf4da70ca18d/baseline.json": "62c5eec55c3d1b8b300d7a64ccb4c24f82e7627d6e3ffaf277756a58b6f6f3b8",
+        "artifacts/s5-music-y9-w03-l1/2bc7c9dffe756d897fed2132d4ff6e8b821e97481218086f3c1060a559d9ba57-cf4da70ca18d/bundle.json": "2bc7c9dffe756d897fed2132d4ff6e8b821e97481218086f3c1060a559d9ba57",
+        "artifacts/s5-music-y9-w03-l1/2bc7c9dffe756d897fed2132d4ff6e8b821e97481218086f3c1060a559d9ba57-cf4da70ca18d/draft.sql": "48420f55a783f05235d08a07ee199a35e3198835e1ead6913fef008162643c01",
+        "artifacts/s5-music-y9-w03-l1/2bc7c9dffe756d897fed2132d4ff6e8b821e97481218086f3c1060a559d9ba57-cf4da70ca18d/validation.json": "be5bfc217b1f5649ce79e8773cbcd2b49e83387db532198a659e11f6d03282ba"
+      },
+      "attempts": 1,
+      "content_sha256": "44e321595a378483d3415316f09121ea0b40bc7d99154fb655d824e9154b6697",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "2bc7c9dffe756d897fed2132d4ff6e8b821e97481218086f3c1060a559d9ba57",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "470695066e154568f619569bbb56de19b6b64290f357ed7d09741cfd07364508",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-music-y9-w03-l2": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w03-l2/39695dcece6a51165ee3f5598792c55c6457890245a93541fb5cbe3ab4b36a98-cf4da70ca18d/baseline.json": "3076063c23cee12e046dac1d44f64c7fddbe8e172576dd805334cc3dc5a69f82",
+        "artifacts/s5-music-y9-w03-l2/39695dcece6a51165ee3f5598792c55c6457890245a93541fb5cbe3ab4b36a98-cf4da70ca18d/bundle.json": "39695dcece6a51165ee3f5598792c55c6457890245a93541fb5cbe3ab4b36a98",
+        "artifacts/s5-music-y9-w03-l2/39695dcece6a51165ee3f5598792c55c6457890245a93541fb5cbe3ab4b36a98-cf4da70ca18d/draft.sql": "4da9a54bd43a6d245f076d10d47f67bd739cc737182a00f8ecccd2d75f5a224a",
+        "artifacts/s5-music-y9-w03-l2/39695dcece6a51165ee3f5598792c55c6457890245a93541fb5cbe3ab4b36a98-cf4da70ca18d/validation.json": "fffefffd4241f3248aa68d8d1eaa619d086647dfcd0670e6b0d57b46546e95f0"
+      },
+      "attempts": 1,
+      "content_sha256": "684fa99396bc7dcf55c611c9a63227eda47eb6ea5b6374fed07f81d5e83cbb24",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "39695dcece6a51165ee3f5598792c55c6457890245a93541fb5cbe3ab4b36a98",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "59933aab144f5d2944df14ec3eb632b0238f3b4e474550bb25bb3ffd61bc1564",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-music-y9-w04-l1": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w04-l1/aed03d3f442e700743bb21a02b0f136fb607dcda33c2817a12fd826a85cb9157-cf4da70ca18d/baseline.json": "e7132e028da944150573aa7e84e186c7dddecd8412a380b5173a75d82aa83fae",
+        "artifacts/s5-music-y9-w04-l1/aed03d3f442e700743bb21a02b0f136fb607dcda33c2817a12fd826a85cb9157-cf4da70ca18d/bundle.json": "aed03d3f442e700743bb21a02b0f136fb607dcda33c2817a12fd826a85cb9157",
+        "artifacts/s5-music-y9-w04-l1/aed03d3f442e700743bb21a02b0f136fb607dcda33c2817a12fd826a85cb9157-cf4da70ca18d/draft.sql": "d33cc2a0feea4a37d131c0a859ad0d79dce47e13fca489fbae800a3a2ae6d515",
+        "artifacts/s5-music-y9-w04-l1/aed03d3f442e700743bb21a02b0f136fb607dcda33c2817a12fd826a85cb9157-cf4da70ca18d/validation.json": "a366003e000fad0939bc7d83e0d30c73ba7029a08728555b9e61623229d769f4"
+      },
+      "attempts": 1,
+      "content_sha256": "193313c0268fcbe86fa37ba60aa6ab8c0acb4f6a53364d88857a86ab7014d340",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "aed03d3f442e700743bb21a02b0f136fb607dcda33c2817a12fd826a85cb9157",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "16631c2cd35d3f4c3719758b0199dcc700e34e8b8c9168f5f2c922f27ad83640",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-music-y9-w04-l2": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w04-l2/b1b195f036840d12dade8ce9b9f6f6ed388db48c1a6a77c6cee0ec6841b800a8-cf4da70ca18d/baseline.json": "5b453d2f37e18b69e53c2530e3e92e14834f86c176932872f3f744a402827b37",
+        "artifacts/s5-music-y9-w04-l2/b1b195f036840d12dade8ce9b9f6f6ed388db48c1a6a77c6cee0ec6841b800a8-cf4da70ca18d/bundle.json": "b1b195f036840d12dade8ce9b9f6f6ed388db48c1a6a77c6cee0ec6841b800a8",
+        "artifacts/s5-music-y9-w04-l2/b1b195f036840d12dade8ce9b9f6f6ed388db48c1a6a77c6cee0ec6841b800a8-cf4da70ca18d/draft.sql": "781b78889ad4d76f1ab0f5cc04ea9c9c95f49ccb9cf5efef3a3ba584e14fddb0",
+        "artifacts/s5-music-y9-w04-l2/b1b195f036840d12dade8ce9b9f6f6ed388db48c1a6a77c6cee0ec6841b800a8-cf4da70ca18d/validation.json": "b9ea7f4061c2ee2f1a43c8a54787ded7bbd5189cc9bf39dace3694f2fa1fd028"
+      },
+      "attempts": 1,
+      "content_sha256": "cfccaf29b838b83be0d86d5679e4d10efa02ed1c12a8411784d1e3347282489c",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "b1b195f036840d12dade8ce9b9f6f6ed388db48c1a6a77c6cee0ec6841b800a8",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "84c7fca52f34435028577d188d28ddd5aac613630f8167fb8b199f9a89af4742",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-music-y9-w05-l1": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w05-l1/2a539fed4ea22f9666079d7ae085a9d9b8c549ff080c5ce713836cd3c47c705c-cf4da70ca18d/baseline.json": "8678265cf0d24b793452ffce40c787b81748f1b8e051fca0d10b826fc5840597",
+        "artifacts/s5-music-y9-w05-l1/2a539fed4ea22f9666079d7ae085a9d9b8c549ff080c5ce713836cd3c47c705c-cf4da70ca18d/bundle.json": "2a539fed4ea22f9666079d7ae085a9d9b8c549ff080c5ce713836cd3c47c705c",
+        "artifacts/s5-music-y9-w05-l1/2a539fed4ea22f9666079d7ae085a9d9b8c549ff080c5ce713836cd3c47c705c-cf4da70ca18d/draft.sql": "212f64db2098c0621c44e847f658a2faac5d6eb7cf06adedbb5999015ec19f5a",
+        "artifacts/s5-music-y9-w05-l1/2a539fed4ea22f9666079d7ae085a9d9b8c549ff080c5ce713836cd3c47c705c-cf4da70ca18d/validation.json": "21f1873ccb8fd8a94a01f5a3aedb9ecadcd5e02a9874fa8fc0c795e862d72630"
+      },
+      "attempts": 1,
+      "content_sha256": "a69e1e5aa730c157d4043aa050c84805c22a7e535ae5b021a78d2023eba3fc8a",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "2a539fed4ea22f9666079d7ae085a9d9b8c549ff080c5ce713836cd3c47c705c",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "1ef883538b2a92db82d2ba80cf5221fe1179609727980cfde9ebba8aeeb10850",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-music-y9-w05-l2": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w05-l2/ec52ba5dfdcb6b2ac23a16fa8dfee279f60be5691d7b6366a215b6b506101995-cf4da70ca18d/baseline.json": "f1db8599091b065a24314ddeef44efa871ef4218666e4938c53b387c2d73b3cc",
+        "artifacts/s5-music-y9-w05-l2/ec52ba5dfdcb6b2ac23a16fa8dfee279f60be5691d7b6366a215b6b506101995-cf4da70ca18d/bundle.json": "ec52ba5dfdcb6b2ac23a16fa8dfee279f60be5691d7b6366a215b6b506101995",
+        "artifacts/s5-music-y9-w05-l2/ec52ba5dfdcb6b2ac23a16fa8dfee279f60be5691d7b6366a215b6b506101995-cf4da70ca18d/draft.sql": "b470a01778d8414c0fbd74cfd90fea103deeb327f678bd006ed439c0c5e8a329",
+        "artifacts/s5-music-y9-w05-l2/ec52ba5dfdcb6b2ac23a16fa8dfee279f60be5691d7b6366a215b6b506101995-cf4da70ca18d/validation.json": "12a1b3cd8b8c0d3cd2d5bcc4c07d5ddf9921fd9de5c98c367cfbdeeb3d94edd6"
+      },
+      "attempts": 1,
+      "content_sha256": "772de41a0d1ac415799605dbdfcdc57585d7faf0709a3929f99d1bbb78683c57",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "ec52ba5dfdcb6b2ac23a16fa8dfee279f60be5691d7b6366a215b6b506101995",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "a52fd028a8d777a00a45584dda969d2b7fbb869647afca562f420e9ed4340b55",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-music-y9-w06-l1": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w06-l1/a30b8322250a4ed1e5986fda35c5d8a70ad693b0eeed6b4e05343b5800d36ee1-cf4da70ca18d/baseline.json": "23d1662f07b06635a98a5531167d8c1d2173b20b83d8793429a190462a57a156",
+        "artifacts/s5-music-y9-w06-l1/a30b8322250a4ed1e5986fda35c5d8a70ad693b0eeed6b4e05343b5800d36ee1-cf4da70ca18d/bundle.json": "a30b8322250a4ed1e5986fda35c5d8a70ad693b0eeed6b4e05343b5800d36ee1",
+        "artifacts/s5-music-y9-w06-l1/a30b8322250a4ed1e5986fda35c5d8a70ad693b0eeed6b4e05343b5800d36ee1-cf4da70ca18d/draft.sql": "be5aaa21d7f1589d8b6d29fffadd3472ef01617fe9fa589664c08f3e708ce273",
+        "artifacts/s5-music-y9-w06-l1/a30b8322250a4ed1e5986fda35c5d8a70ad693b0eeed6b4e05343b5800d36ee1-cf4da70ca18d/validation.json": "e1ecc802c2f3785c10278e103075842b01e6a04b4eb69000a035ea1af77bd3f3"
+      },
+      "attempts": 1,
+      "content_sha256": "7701c935ed94f73d101dfea5e5d20fe0f6b9066ae741fcdd35ed1bcd384c7bfd",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "a30b8322250a4ed1e5986fda35c5d8a70ad693b0eeed6b4e05343b5800d36ee1",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "2ff3d222cc8e1b155dfd1270f57df07a8dc450e345366f24e4df6ff825c22e6b",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-music-y9-w06-l2": {
+      "artifacts": {
+        "artifacts/s5-music-y9-w06-l2/0176bdd2c78b1e17c39c6794642766ebd340da16c94ff0339a552502c1d564d5-cf4da70ca18d/baseline.json": "5da8f37da74a2b01e9d483e4ce293df9425ffffddd31b3804389cc6f172cddc7",
+        "artifacts/s5-music-y9-w06-l2/0176bdd2c78b1e17c39c6794642766ebd340da16c94ff0339a552502c1d564d5-cf4da70ca18d/bundle.json": "0176bdd2c78b1e17c39c6794642766ebd340da16c94ff0339a552502c1d564d5",
+        "artifacts/s5-music-y9-w06-l2/0176bdd2c78b1e17c39c6794642766ebd340da16c94ff0339a552502c1d564d5-cf4da70ca18d/draft.sql": "d4dd1dc060ce506f12bf84fdc7e9e2cff82af9d807e0e4929d86f0d0ae7610d7",
+        "artifacts/s5-music-y9-w06-l2/0176bdd2c78b1e17c39c6794642766ebd340da16c94ff0339a552502c1d564d5-cf4da70ca18d/validation.json": "69edc0e2ab8d0a6e691acb07c3fe37875b8eb0dbfdad7a8be1a80ea40d7d6bd7"
+      },
+      "attempts": 1,
+      "content_sha256": "dd440085c3a600ec0f501b396acae057d6f57b14a4091ec255a1b5f103c561e1",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "0176bdd2c78b1e17c39c6794642766ebd340da16c94ff0339a552502c1d564d5",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "2ec5fa6de7e7c49212914d0105cbc711f2868cc02ed314152db4552f28d6dd12",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    }
+  },
+  "manifest_sha256": "f843560b163acfe6b1a703118a2d60e5bc0ac4841006bcd54f8df48a313c7e3f",
+  "schema": 1,
+  "worker": {
+    "hub": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline",
+    "id": "builder-s4-music"
+  }
+}

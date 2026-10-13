@@ -1,0 +1,553 @@
+{
+  "generation": 24,
+  "history": [
+    {
+      "at": "2026-10-13T01:06:42.807926+00:00",
+      "event": "claimed",
+      "generation": 1,
+      "seed_key": "s5-design-technology-y9-w01-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:43.088978+00:00",
+      "event": "awaiting_review",
+      "generation": 2,
+      "seed_key": "s5-design-technology-y9-w01-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:43.089626+00:00",
+      "event": "claimed",
+      "generation": 3,
+      "seed_key": "s5-design-technology-y9-w01-l2"
+    },
+    {
+      "at": "2026-10-13T01:06:43.367501+00:00",
+      "event": "awaiting_review",
+      "generation": 4,
+      "seed_key": "s5-design-technology-y9-w01-l2"
+    },
+    {
+      "at": "2026-10-13T01:06:43.368287+00:00",
+      "event": "claimed",
+      "generation": 5,
+      "seed_key": "s5-design-technology-y9-w02-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:43.625476+00:00",
+      "event": "awaiting_review",
+      "generation": 6,
+      "seed_key": "s5-design-technology-y9-w02-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:43.626376+00:00",
+      "event": "claimed",
+      "generation": 7,
+      "seed_key": "s5-design-technology-y9-w02-l2"
+    },
+    {
+      "at": "2026-10-13T01:06:43.903948+00:00",
+      "event": "awaiting_review",
+      "generation": 8,
+      "seed_key": "s5-design-technology-y9-w02-l2"
+    },
+    {
+      "at": "2026-10-13T01:06:43.904789+00:00",
+      "event": "claimed",
+      "generation": 9,
+      "seed_key": "s5-design-technology-y9-w03-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:44.282047+00:00",
+      "event": "awaiting_review",
+      "generation": 10,
+      "seed_key": "s5-design-technology-y9-w03-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:44.283208+00:00",
+      "event": "claimed",
+      "generation": 11,
+      "seed_key": "s5-design-technology-y9-w03-l2"
+    },
+    {
+      "at": "2026-10-13T01:06:44.660152+00:00",
+      "event": "awaiting_review",
+      "generation": 12,
+      "seed_key": "s5-design-technology-y9-w03-l2"
+    },
+    {
+      "at": "2026-10-13T01:06:44.661941+00:00",
+      "event": "claimed",
+      "generation": 13,
+      "seed_key": "s5-design-technology-y9-w04-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:45.904329+00:00",
+      "event": "awaiting_review",
+      "generation": 14,
+      "seed_key": "s5-design-technology-y9-w04-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:45.906589+00:00",
+      "event": "claimed",
+      "generation": 15,
+      "seed_key": "s5-design-technology-y9-w04-l2"
+    },
+    {
+      "at": "2026-10-13T01:06:46.218280+00:00",
+      "event": "awaiting_review",
+      "generation": 16,
+      "seed_key": "s5-design-technology-y9-w04-l2"
+    },
+    {
+      "at": "2026-10-13T01:06:46.219484+00:00",
+      "event": "claimed",
+      "generation": 17,
+      "seed_key": "s5-design-technology-y9-w05-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:46.471827+00:00",
+      "event": "awaiting_review",
+      "generation": 18,
+      "seed_key": "s5-design-technology-y9-w05-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:46.472815+00:00",
+      "event": "claimed",
+      "generation": 19,
+      "seed_key": "s5-design-technology-y9-w05-l2"
+    },
+    {
+      "at": "2026-10-13T01:06:46.732684+00:00",
+      "event": "awaiting_review",
+      "generation": 20,
+      "seed_key": "s5-design-technology-y9-w05-l2"
+    },
+    {
+      "at": "2026-10-13T01:06:46.734140+00:00",
+      "event": "claimed",
+      "generation": 21,
+      "seed_key": "s5-design-technology-y9-w06-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:47.045777+00:00",
+      "event": "awaiting_review",
+      "generation": 22,
+      "seed_key": "s5-design-technology-y9-w06-l1"
+    },
+    {
+      "at": "2026-10-13T01:06:47.047010+00:00",
+      "event": "claimed",
+      "generation": 23,
+      "seed_key": "s5-design-technology-y9-w06-l2"
+    },
+    {
+      "at": "2026-10-13T01:06:47.302456+00:00",
+      "event": "awaiting_review",
+      "generation": 24,
+      "seed_key": "s5-design-technology-y9-w06-l2"
+    }
+  ],
+  "lessons": {
+    "s5-design-technology-y9-w01-l1": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w01-l1/6296589b9e7f605cb15ae5e32ff1da54137ceb1585a5a4b04ee1f3c3f19bef89-cf4da70ca18d/baseline.json": "77bd2571cb69137314b265cf1743acabae0ddb448cebfae230a7f85af5512b0f",
+        "artifacts/s5-design-technology-y9-w01-l1/6296589b9e7f605cb15ae5e32ff1da54137ceb1585a5a4b04ee1f3c3f19bef89-cf4da70ca18d/bundle.json": "6296589b9e7f605cb15ae5e32ff1da54137ceb1585a5a4b04ee1f3c3f19bef89",
+        "artifacts/s5-design-technology-y9-w01-l1/6296589b9e7f605cb15ae5e32ff1da54137ceb1585a5a4b04ee1f3c3f19bef89-cf4da70ca18d/draft.sql": "cff902c853ea140363e6a932b7b61b5d49ffa37fc564e7ebf841bbae9bddc131",
+        "artifacts/s5-design-technology-y9-w01-l1/6296589b9e7f605cb15ae5e32ff1da54137ceb1585a5a4b04ee1f3c3f19bef89-cf4da70ca18d/validation.json": "b4d9d32c0091129d45362fca5ac200965e5cb8c6470563e4e7af1cc6dee2f7eb"
+      },
+      "attempts": 1,
+      "content_sha256": "be96bb07f3b108cfe549f648f1cd4fd320c6e72451ac2d81344a0ddbf35c3d70",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "6296589b9e7f605cb15ae5e32ff1da54137ceb1585a5a4b04ee1f3c3f19bef89",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "4215bf0b5c9f5f66d1cc2077c715d89f651b7f4969a26cb4c79994ec07aa057b",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-design-technology-y9-w01-l2": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w01-l2/5b6c69ad2cddf6b7036449138886732f2febd4a2843e6a106d97c6dafc440fd9-cf4da70ca18d/baseline.json": "6b5a289c4f5e9aa303fd8dec3340c763cd785fb5ae4047e55e696b82fa1feddc",
+        "artifacts/s5-design-technology-y9-w01-l2/5b6c69ad2cddf6b7036449138886732f2febd4a2843e6a106d97c6dafc440fd9-cf4da70ca18d/bundle.json": "5b6c69ad2cddf6b7036449138886732f2febd4a2843e6a106d97c6dafc440fd9",
+        "artifacts/s5-design-technology-y9-w01-l2/5b6c69ad2cddf6b7036449138886732f2febd4a2843e6a106d97c6dafc440fd9-cf4da70ca18d/draft.sql": "5bd979bc9e2e2324e1e0d227bfd61213ebe98aee61c64aaa5d0056b5f6020057",
+        "artifacts/s5-design-technology-y9-w01-l2/5b6c69ad2cddf6b7036449138886732f2febd4a2843e6a106d97c6dafc440fd9-cf4da70ca18d/validation.json": "168f1ba7ba234f634194734aeef382a16066d8edfd6fe4b977acc11b027ce593"
+      },
+      "attempts": 1,
+      "content_sha256": "1e2e5e23c86dabf9cbd4fd9745086aa305573e0a2097bdb66f7fe99ed0650c41",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "5b6c69ad2cddf6b7036449138886732f2febd4a2843e6a106d97c6dafc440fd9",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "e464df33431f0cf5f2c766b3f320baf0a6fe99e1e3b63c115b5b4730190b7c00",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-design-technology-y9-w02-l1": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w02-l1/da0d5b906728fff4b51e69d3fc20378b951db3d3e110aa00b06770e8434262e5-cf4da70ca18d/baseline.json": "6a762cd84aeacbeb9b870fe63cef657ba9260524c2da7bfde04109a94c5e4865",
+        "artifacts/s5-design-technology-y9-w02-l1/da0d5b906728fff4b51e69d3fc20378b951db3d3e110aa00b06770e8434262e5-cf4da70ca18d/bundle.json": "da0d5b906728fff4b51e69d3fc20378b951db3d3e110aa00b06770e8434262e5",
+        "artifacts/s5-design-technology-y9-w02-l1/da0d5b906728fff4b51e69d3fc20378b951db3d3e110aa00b06770e8434262e5-cf4da70ca18d/draft.sql": "3241befaa1da405b901f123a44f84dc6c3b9caf524b43be35b7313e46ee8bfe7",
+        "artifacts/s5-design-technology-y9-w02-l1/da0d5b906728fff4b51e69d3fc20378b951db3d3e110aa00b06770e8434262e5-cf4da70ca18d/validation.json": "dcfc6d209637bb35864e03667180bb51e6de0666290eef510ee18e05d1abd276"
+      },
+      "attempts": 1,
+      "content_sha256": "41d72cff16bec2bd1e387bf65a791421dbfbd8dc7ed13917338ed843e6a7ea54",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "da0d5b906728fff4b51e69d3fc20378b951db3d3e110aa00b06770e8434262e5",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "698a9ed52d56549959b5d52fe09b59f62bb10120178bea4d6e5d5a0abf2b4da6",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-design-technology-y9-w02-l2": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w02-l2/8a9f68eae7897bd80e96000713692bc9386d3cd00bdac84e9bd9204e7f84516c-cf4da70ca18d/baseline.json": "bc6b3363bf22c4cb56b23c4706135308487adc5eec43864e4fcdf01ccf0af7ca",
+        "artifacts/s5-design-technology-y9-w02-l2/8a9f68eae7897bd80e96000713692bc9386d3cd00bdac84e9bd9204e7f84516c-cf4da70ca18d/bundle.json": "8a9f68eae7897bd80e96000713692bc9386d3cd00bdac84e9bd9204e7f84516c",
+        "artifacts/s5-design-technology-y9-w02-l2/8a9f68eae7897bd80e96000713692bc9386d3cd00bdac84e9bd9204e7f84516c-cf4da70ca18d/draft.sql": "c674952c6c59a34e6c36822f2bade2375d478c6cb9a5a9d71413022f181dae3c",
+        "artifacts/s5-design-technology-y9-w02-l2/8a9f68eae7897bd80e96000713692bc9386d3cd00bdac84e9bd9204e7f84516c-cf4da70ca18d/validation.json": "f113707387355b43ab81974580348708510553ae68b80d3d944e18d2eeceea29"
+      },
+      "attempts": 1,
+      "content_sha256": "678d3e9e182fe9db19b5b3faaf054b1ec922327286b2aac93c7f0f681a52b9dd",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "8a9f68eae7897bd80e96000713692bc9386d3cd00bdac84e9bd9204e7f84516c",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "f9972c03c8e10c22cc9d3ad5cebda7424d2bf7f0755e412e26cdb96250aa8dc7",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-design-technology-y9-w03-l1": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w03-l1/186d0407c10841951f9fbd026d18b0a5e0f23fcd02c21042e5345cd0b98c196e-cf4da70ca18d/baseline.json": "ab1bce73eb701ed38d99a2321cb7ef94c31a6d00fb51667da19d1d538307a0bc",
+        "artifacts/s5-design-technology-y9-w03-l1/186d0407c10841951f9fbd026d18b0a5e0f23fcd02c21042e5345cd0b98c196e-cf4da70ca18d/bundle.json": "186d0407c10841951f9fbd026d18b0a5e0f23fcd02c21042e5345cd0b98c196e",
+        "artifacts/s5-design-technology-y9-w03-l1/186d0407c10841951f9fbd026d18b0a5e0f23fcd02c21042e5345cd0b98c196e-cf4da70ca18d/draft.sql": "dcdd2952924943a54df61881f1aaab047b0d2c995907d39e385bd470e421c73a",
+        "artifacts/s5-design-technology-y9-w03-l1/186d0407c10841951f9fbd026d18b0a5e0f23fcd02c21042e5345cd0b98c196e-cf4da70ca18d/validation.json": "2272f1c516d3563a3df93b813069ca23fab9b5c3d0d8273b1cf8275301eb0f02"
+      },
+      "attempts": 1,
+      "content_sha256": "6c000efd293a44d771033c0d4b182939ab7d933cd6947b5cdd74584b7429c709",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "186d0407c10841951f9fbd026d18b0a5e0f23fcd02c21042e5345cd0b98c196e",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "58e8f359342327d6f3a8359478ce06a3a7f38e4c8bd592a58638e310b3d33748",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-design-technology-y9-w03-l2": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w03-l2/2e5baa3a8c970dbd939c666a5101640b4613bfb4db00938665acd91b195b12f0-cf4da70ca18d/baseline.json": "a0cb5efab89d3c27db5cabf7a9d17c32ab7dc7093b88ccedff7257c40eb6e3fe",
+        "artifacts/s5-design-technology-y9-w03-l2/2e5baa3a8c970dbd939c666a5101640b4613bfb4db00938665acd91b195b12f0-cf4da70ca18d/bundle.json": "2e5baa3a8c970dbd939c666a5101640b4613bfb4db00938665acd91b195b12f0",
+        "artifacts/s5-design-technology-y9-w03-l2/2e5baa3a8c970dbd939c666a5101640b4613bfb4db00938665acd91b195b12f0-cf4da70ca18d/draft.sql": "4a0b4f036961879deae3af1bcf7c4724c5551f3d2ee7fdf5f8836fc2e5d138c6",
+        "artifacts/s5-design-technology-y9-w03-l2/2e5baa3a8c970dbd939c666a5101640b4613bfb4db00938665acd91b195b12f0-cf4da70ca18d/validation.json": "3bac1bafcbc1d9681e9e02a2527f5303a9af41fd1dc8362f000aa0ae93b26e45"
+      },
+      "attempts": 1,
+      "content_sha256": "527b5a370cc7bfa1967d05c102e2c5eae267f08671c092f7d59238f04b4ac8d6",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "2e5baa3a8c970dbd939c666a5101640b4613bfb4db00938665acd91b195b12f0",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "bb3146d8659b091a36af0ea31e1bb62d528ae69c4985bf7349e1c9169340731b",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-design-technology-y9-w04-l1": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w04-l1/feb5f21699171fe47c35aa3c98f7bda826c384641a39c6009d98ba64dfc71155-cf4da70ca18d/baseline.json": "8a35702b6287c94ec76742242dfa71e3249135a6083365425e5230b9e6e6bd18",
+        "artifacts/s5-design-technology-y9-w04-l1/feb5f21699171fe47c35aa3c98f7bda826c384641a39c6009d98ba64dfc71155-cf4da70ca18d/bundle.json": "feb5f21699171fe47c35aa3c98f7bda826c384641a39c6009d98ba64dfc71155",
+        "artifacts/s5-design-technology-y9-w04-l1/feb5f21699171fe47c35aa3c98f7bda826c384641a39c6009d98ba64dfc71155-cf4da70ca18d/draft.sql": "04d40d3dfb35e09a04086bea5a492a8b3acf4c139dea8d8e16d10b39bd0728d2",
+        "artifacts/s5-design-technology-y9-w04-l1/feb5f21699171fe47c35aa3c98f7bda826c384641a39c6009d98ba64dfc71155-cf4da70ca18d/validation.json": "d68aa8fe8e53e0fcb3f9ad867c686123e6cb06080283d881b99d154492a8e1a0"
+      },
+      "attempts": 1,
+      "content_sha256": "00b0ad7ded4a127deceeb166986af5fe5e18fc350d80afcb5cb94c8dc429692c",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "feb5f21699171fe47c35aa3c98f7bda826c384641a39c6009d98ba64dfc71155",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "d8096e3cce8d13b7922f979efce11cb3eb45bdbbfa882b97c4c0d6b4db8fdaff",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-design-technology-y9-w04-l2": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w04-l2/6a75e9138572d8f26395f38029ef7c86716ebf613ff2dd03524322bf6a1d937b-cf4da70ca18d/baseline.json": "43d005a92647920bcbeb9b3e2106a2b0f7c24251106c101c6c7bbfec231ac47c",
+        "artifacts/s5-design-technology-y9-w04-l2/6a75e9138572d8f26395f38029ef7c86716ebf613ff2dd03524322bf6a1d937b-cf4da70ca18d/bundle.json": "6a75e9138572d8f26395f38029ef7c86716ebf613ff2dd03524322bf6a1d937b",
+        "artifacts/s5-design-technology-y9-w04-l2/6a75e9138572d8f26395f38029ef7c86716ebf613ff2dd03524322bf6a1d937b-cf4da70ca18d/draft.sql": "dbd7812e6845cb7117f81b742bc3b017e72d12c90440ce379a946d36b2fb7e4d",
+        "artifacts/s5-design-technology-y9-w04-l2/6a75e9138572d8f26395f38029ef7c86716ebf613ff2dd03524322bf6a1d937b-cf4da70ca18d/validation.json": "1b2772cccade6d75d9c3f89fe7749110bb9820e3d091407aae926a5e3bf7e82b"
+      },
+      "attempts": 1,
+      "content_sha256": "e50a227ca1f487d1b3850117ea336a57c05fe5953e64dfa0e849a240ee77f0cc",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "6a75e9138572d8f26395f38029ef7c86716ebf613ff2dd03524322bf6a1d937b",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "84b9c79a725c9b4d124c037ec2d2a9f2bb59f0d95126f38f73e7826483c40146",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-design-technology-y9-w05-l1": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w05-l1/0203006c91ea38e2ab449ec24b892c908c115044e69291fc02d53ba5f889f1f6-cf4da70ca18d/baseline.json": "3282c748e1696968a2e14494875952b7eb18f17cf8f408c46c98ff506b3ef52b",
+        "artifacts/s5-design-technology-y9-w05-l1/0203006c91ea38e2ab449ec24b892c908c115044e69291fc02d53ba5f889f1f6-cf4da70ca18d/bundle.json": "0203006c91ea38e2ab449ec24b892c908c115044e69291fc02d53ba5f889f1f6",
+        "artifacts/s5-design-technology-y9-w05-l1/0203006c91ea38e2ab449ec24b892c908c115044e69291fc02d53ba5f889f1f6-cf4da70ca18d/draft.sql": "5ba49382cf1956ac9184c5ab1f43c2fdcccb91a201f8c2b227f9be69331526af",
+        "artifacts/s5-design-technology-y9-w05-l1/0203006c91ea38e2ab449ec24b892c908c115044e69291fc02d53ba5f889f1f6-cf4da70ca18d/validation.json": "28eb71135bc4dbff0394591aa2d4d1288e04605755c0c4403262baf0c6a4a474"
+      },
+      "attempts": 1,
+      "content_sha256": "32acbfb89e1ed4d42aeb356019ce019baaf8e074f69e564748cde03543261456",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "0203006c91ea38e2ab449ec24b892c908c115044e69291fc02d53ba5f889f1f6",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "d7da43c49b20ab5e1ee73238d0aafa484913ad7e405e233b805782a1dad66841",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-design-technology-y9-w05-l2": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w05-l2/07bbff0a00c9b039f772ac86d4fa78d5e5e10321381e6a1ae4fbb053ccd453e5-cf4da70ca18d/baseline.json": "0c7a645062e97090db6dffe9188b607412984842cafb920d4f4dcd95402874ed",
+        "artifacts/s5-design-technology-y9-w05-l2/07bbff0a00c9b039f772ac86d4fa78d5e5e10321381e6a1ae4fbb053ccd453e5-cf4da70ca18d/bundle.json": "07bbff0a00c9b039f772ac86d4fa78d5e5e10321381e6a1ae4fbb053ccd453e5",
+        "artifacts/s5-design-technology-y9-w05-l2/07bbff0a00c9b039f772ac86d4fa78d5e5e10321381e6a1ae4fbb053ccd453e5-cf4da70ca18d/draft.sql": "69ee7cfc18410e80d98f33721a9c46e370235045e46fd1d1da8b191d61ee17a9",
+        "artifacts/s5-design-technology-y9-w05-l2/07bbff0a00c9b039f772ac86d4fa78d5e5e10321381e6a1ae4fbb053ccd453e5-cf4da70ca18d/validation.json": "8f841623eba230eef9c8bae9ca4d1517f41763c12a7674aa68f6869915284296"
+      },
+      "attempts": 1,
+      "content_sha256": "2e7d60420958f807b2e9940181793f279f31c00c298ca38b0205a24b3c8fd3c4",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "07bbff0a00c9b039f772ac86d4fa78d5e5e10321381e6a1ae4fbb053ccd453e5",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "ec57baa250e67d58b406562a57486cecfaa596de11fc87672793f1bcb2596b52",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-design-technology-y9-w06-l1": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w06-l1/4d7aff2b26ba7e9b88dc8f1f7758173f2cf940be1482623f3a81c08be0d99695-cf4da70ca18d/baseline.json": "710161bbb40918b7b028a37143c124246083e021a6d6a191b82cd6cdd155e189",
+        "artifacts/s5-design-technology-y9-w06-l1/4d7aff2b26ba7e9b88dc8f1f7758173f2cf940be1482623f3a81c08be0d99695-cf4da70ca18d/bundle.json": "4d7aff2b26ba7e9b88dc8f1f7758173f2cf940be1482623f3a81c08be0d99695",
+        "artifacts/s5-design-technology-y9-w06-l1/4d7aff2b26ba7e9b88dc8f1f7758173f2cf940be1482623f3a81c08be0d99695-cf4da70ca18d/draft.sql": "0a42537b545c9f4b59d2b8c869aca74c76427daa4811d8e1e477be3a5f6dc2aa",
+        "artifacts/s5-design-technology-y9-w06-l1/4d7aff2b26ba7e9b88dc8f1f7758173f2cf940be1482623f3a81c08be0d99695-cf4da70ca18d/validation.json": "27eb9debd32eda8fca37a89be9ad19bb54705e2cdd60656a1a11255508c02678"
+      },
+      "attempts": 1,
+      "content_sha256": "a08906988753ccd42ec4747e01891dfbaa5ce5b084aaa2a9e4765cb044d3980c",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "4d7aff2b26ba7e9b88dc8f1f7758173f2cf940be1482623f3a81c08be0d99695",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "720f930d9d6c929e1b87bc90007ca2b2bf186e29d71a845bcec50a53c97de7c9",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    },
+    "s5-design-technology-y9-w06-l2": {
+      "artifacts": {
+        "artifacts/s5-design-technology-y9-w06-l2/2dcf011c1a1e25c67394b458284415de53ffbfc69526a9e6fff527d20a74adc9-cf4da70ca18d/baseline.json": "931bed2f948851f8e95cd13b6ced82262e824b606eb65551440819f3f65bb503",
+        "artifacts/s5-design-technology-y9-w06-l2/2dcf011c1a1e25c67394b458284415de53ffbfc69526a9e6fff527d20a74adc9-cf4da70ca18d/bundle.json": "2dcf011c1a1e25c67394b458284415de53ffbfc69526a9e6fff527d20a74adc9",
+        "artifacts/s5-design-technology-y9-w06-l2/2dcf011c1a1e25c67394b458284415de53ffbfc69526a9e6fff527d20a74adc9-cf4da70ca18d/draft.sql": "e03e65bb749c8557be9e2a64f986d6d5566129cbd3d8a0394e7ff47752595f2d",
+        "artifacts/s5-design-technology-y9-w06-l2/2dcf011c1a1e25c67394b458284415de53ffbfc69526a9e6fff527d20a74adc9-cf4da70ca18d/validation.json": "f59ad564cff1f0dff7e83aebafe8973cfcdfcd8c56a6bec69950a42781e7f265"
+      },
+      "attempts": 1,
+      "content_sha256": "622afca4eb8e55550a227c827c7151a7cbc71e1bbcbe9335a9b33c5669e9453e",
+      "gates": {
+        "automated_validation_passed": true,
+        "browser_verified": false,
+        "drafted": true,
+        "educationally_reviewed": false,
+        "fully_approved": false,
+        "nesa_verified": false
+      },
+      "input_sha256": "2dcf011c1a1e25c67394b458284415de53ffbfc69526a9e6fff527d20a74adc9",
+      "phase": "awaiting_review",
+      "review_blockers": [
+        "Independent educational review",
+        "Authoritative NESA verification",
+        "Rendered browser and role-separation verification",
+        "Owner release approval"
+      ],
+      "source_sha256": "0b56ecd3dfe70bba46a9b93e82b8a180a292dea6e66a3a47064c7c558d1cc275",
+      "validator_sha256": {
+        "scripts/audit-y3-d1-quality.mjs": "39cc3aefecde7e86b423e0ae1ef3977f6ffba7da6a5182507bba6a312a630d92",
+        "scripts/gold-pipeline/pipeline.py": "96658f3fb3fb55c7ec39c1713604df1ef665fb52193c7a7ebbaeacee0bbf80cd",
+        "scripts/gold-pipeline/validate.mjs": "752380ca8961cc8931d201bd4b02583bcbc59ef8adfd1a9263ef97b035803342",
+        "scripts/validate-lessons.mjs": "42a5f0e0da3d505b1fd8fd22c9a44e4d23016401e9dad7e199a455799ea913da"
+      }
+    }
+  },
+  "manifest_sha256": "f843560b163acfe6b1a703118a2d60e5bc0ac4841006bcd54f8df48a313c7e3f",
+  "schema": 1,
+  "worker": {
+    "hub": "/Users/petab/Side-Quest/.worktrees/parallel-workers/lesson-pipeline",
+    "id": "builder-s4-design"
+  }
+}

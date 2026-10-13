@@ -1,0 +1,10 @@
+{
+  "created_at": "2026-10-13T00:54:56.443118+00:00",
+  "id": "builder-s4-drama",
+  "label": "S4 Drama Y7–Y8",
+  "seed_patterns": [
+    "s5-drama-y9-*",
+    "s5-drama-y10-*"
+  ],
+  "state": "workers/builder-s4-drama"
+}
