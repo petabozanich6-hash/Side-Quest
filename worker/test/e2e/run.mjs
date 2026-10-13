@@ -403,7 +403,7 @@ await step("assignments page: change dates and cancel an unstarted assignment", 
   await page.waitForFunction(async ([i]) => { const t = localStorage.getItem("sq_token"); const r = await fetch("/api/assignments/" + i, { headers: { Authorization: "Bearer " + t } }); return (await r.json()).scheduled_date === "2026-11-03"; }, [id]);
   page.once("dialog", (d) => d.accept());
   await page.click(`[data-testid=asg-cancel-${id}]`);
-  await page.waitForSelector(`[data-testid=asg-${id}]`, { state: "detach" });
+  await page.waitForSelector(`[data-testid=asg-${id}]`, { state: "detached" });
   ok((await api("GET", "/assignments/" + id, parentToken)).status === 404, "cancelled assignment still exists");
   // the finished one cannot be cancelled
   ok((await api("DELETE", "/assignments/" + assignmentId, parentToken)).status === 409, "started work could be cancelled");
