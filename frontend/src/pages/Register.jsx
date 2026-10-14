@@ -83,7 +83,7 @@ export default function Register() {
             <F label="Password"><input value={form.password} onChange={upd("password")} type="password" minLength={6} required className="input" data-testid="reg-password"/></F>
           </div>
           <div className="mt-4 rounded-xl p-3 text-xs leading-relaxed" style={{backgroundColor:"#F5EFE0", borderLeft:"4px solid #D4A574", color:"#1F3B2D"}} data-testid="reg-spam-note">
-            <strong>Heads up:</strong> we'll email you from <span className="font-mono">support@sidequestlearning.app</span> with your welcome note, password resets, and alerts when a child asks for help. New senders often land in spam, so please check your spam folder and mark us "Not spam".
+            <strong>Heads up:</strong> your welcome note and account emails come from a <span className="font-mono">@sidequestlearning.app</span> address. You can reply for help at <span className="font-mono">support@sidequestlearning.app</span>. If you don't see an email, check your spam folder and mark it "Not spam" so important account messages can reach you.
           </div>
           <button disabled={loading} className="mt-6 w-full rounded-full py-3 text-sm font-bold hover:translate-y-[-1px] transition disabled:opacity-50" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="reg-submit">{loading ? "Creating…" : "Create account"}</button>
           <p className="mt-5 text-center text-xs text-stone-500">Already have an account? <Link to="/login" className="font-bold" style={{color:"#4A5D3A"}} data-testid="reg-to-login">Sign in</Link></p>
