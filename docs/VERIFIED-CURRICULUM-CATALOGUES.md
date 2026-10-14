@@ -33,3 +33,9 @@ Publishing a catalogue requires all of:
 4. Wire verified catalogues into jurisdiction-specific tracking, planning, lesson generation and auto-assignment with per-framework validation, versioning and regression tests.
 
 No live database migration, deployment or production settings are changed in this PR.
+
+## Current public curriculum hub audit
+Inspected `frontend/src/pages/parent/Curriculum.jsx`: the curriculum resource tiles use ordinary external hyperlinks (`<a href>` with `target="_blank"` and `rel="noopener noreferrer"`) and original link descriptions. Such links do not, by themselves, reproduce the linked syllabus. This does **not** certify every other page/lesson in the application; audit stored NSW outcome seed wording and lesson outputs separately before claiming whole-site clearance.
+
+## Fail-closed catalogue publication helper
+`canPublishRecord(record)` rejects every current source: no source is yet marked `verified` and permission-only sources stay blocked even if metadata exists. Do not change any status to `verified` without documented review of source licences, complete coverage, specific records and attribution. This helper is only a foundation, **not** a site-wide runtime publishing guard: future catalogue-serving routes must invoke it and tests must confirm they cannot bypass it. No imported curriculum text is added to the live website by this PR.
