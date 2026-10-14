@@ -5,20 +5,14 @@ import { Pet, Fern, Flower, Branch } from "../../components/shared/Botanical";
 import PetArt, { ART_SPECIES } from "../../components/shared/PetArt";
 import HalloweenOverlay from "../../components/shared/HalloweenOverlay";
 import SeasonalWorn from "../../components/shared/SeasonalWorn";
+import SeasonalWornArt from "../../components/shared/SeasonalWornArt";
 import SeasonalWardrobeItems from "../../components/shared/SeasonalWardrobeItems";
 import { toast } from "sonner";
-import PetQuests, { ROOM_EMOJI } from "../../components/pet/PetQuests";
+import PetQuests from "../../components/pet/PetQuests";
 import { playSfx, setSfx, sfxOn } from "../../lib/sfx";
-import { ArrowLeft, Apple, Gamepad2, Palette, Sparkles, Loader2, Droplets } from "lucide-react";
+import { ArrowLeft, Apple, Gamepad2, Sparkles, Loader2, Droplets } from "lucide-react";
 
-const BG_OPTIONS = [
-  { id: "cozy", label: "Cosy room", bg: "#C98B4B", image: "/pet-room/cozy-room.webp", fallback: "/pet-room/cozy-room.jpg" },
-  { id: "meadow", label: "Meadow", bg: "linear-gradient(180deg, #F0FDF4 0%, #D1FAE5 100%)" },
-  { id: "sunset", label: "Sunset", bg: "linear-gradient(180deg, #FEF3C7 0%, #FED7AA 100%)" },
-  { id: "woodland", label: "Woodland", bg: "linear-gradient(180deg, #ECFCCB 0%, #BBF7D0 100%)" },
-  { id: "rose", label: "Rose", bg: "linear-gradient(180deg, #FFE4E6 0%, #FBCFE8 100%)" },
-  { id: "sky", label: "Sky", bg: "linear-gradient(180deg, #E0F2FE 0%, #BAE6FD 100%)" },
-];
+const SCENE = { id: "cozy", label: "Cosy room", bg: "#C98B4B", image: "/pet-room/cozy-room.webp", fallback: "/pet-room/cozy-room.jpg" };
 
 const ACC_EMOJI = {
   scarf: "🧣", bow: "🎀", flower_crown: "🌸", party_hat: "🎉", bookworm_specs: "👓",
@@ -146,22 +140,18 @@ export default function PetRoom() {
   const nav = useNavigate();
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [bg, setBg] = useState("cozy");
-  const [renaming, setRenaming] = useState(false);
+    const [renaming, setRenaming] = useState(false);
   const [newName, setNewName] = useState("");
   const [reaction, setReaction] = useState(null);
   const [quests, setQuests] = useState(null);
   const [fx, setFx] = useState([]);
   const [actFx, setActFx] = useState("");
   const [sound, setSound] = useState(sfxOn());
-  const [arranging, setArranging] = useState(false);
-  const [pos, setPos] = useState({});
   const stageRef = useRef(null);
 
   const apply = (data) => {
     if (!data || data.needs_pet) return;
     setPet(data);
-    if (data.background) setBg(data.background);
     setNewName(data.name || "");
   };
 
@@ -194,26 +184,6 @@ export default function PetRoom() {
     if (move) { setActFx(move); setTimeout(() => setActFx(""), 1100); }
   };
   const toggleSound = () => { const next = !sound; setSound(next); setSfx(next); if (next) playSfx("pop"); };
-  const questsKey = JSON.stringify(quests?.room_pos || {}) + (quests?.room || []).join(",");
-  useEffect(() => { setPos(quests?.room_pos || {}); }, [questsKey]); // eslint-disable-line
-  const spot = (id, i) => pos[id] || { x: 8 + i * 14, y: 2 + (i % 2) * 11 };
-  const drag = (id) => (e) => {
-    if (!arranging || !stageRef.current) return;
-    e.preventDefault();
-    const el = e.currentTarget; el.setPointerCapture?.(e.pointerId);
-    const move = (ev) => {
-      const r = stageRef.current.getBoundingClientRect();
-      const x = Math.min(92, Math.max(2, ((ev.clientX - r.left) / r.width) * 100 - 3));
-      const y = Math.min(60, Math.max(0, ((r.bottom - ev.clientY) / r.height) * 100 - 6));
-      setPos((p) => ({ ...p, [id]: { x: Math.round(x), y: Math.round(y) } }));
-    };
-    const up = () => {
-      el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
-      setPos((p) => { api.put("/pet/room", { placed: quests.room, positions: p }).catch(() => toast.error("Could not save the room")); return p; });
-    };
-    el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
-  };
-
   const act = async (path, legacy, success, kind) => {
     setLoading(true);
     try {
@@ -231,11 +201,6 @@ export default function PetRoom() {
     } catch (e) {
       toast.error(e?.response?.data?.detail || "Try again shortly");
     } finally { setLoading(false); }
-  };
-
-  const chooseBg = async (id) => {
-    setBg(id);
-    try { await api.put("/pet/customize", { background: id }); toast.success("Room decorated"); } catch {}
   };
 
   const saveName = async () => {
@@ -256,7 +221,7 @@ export default function PetRoom() {
 
   if (!pet) return <div className="text-stone-500">Loading your room…</div>;
 
-  const bgOpt = BG_OPTIONS.find(b => b.id === bg) || BG_OPTIONS[0];
+  const bgOpt = SCENE;
   const bgStyle = bgOpt.image
     ? { background: `url(${bgOpt.image}) center bottom / cover no-repeat, url(${bgOpt.fallback}) center bottom / cover no-repeat, ${bgOpt.bg}` }
     : { background: bgOpt.bg };
@@ -301,7 +266,6 @@ export default function PetRoom() {
       <div className="paper-card overflow-hidden relative" data-testid="pet-stage">
         <div ref={stageRef} className={`relative flex items-end justify-center overflow-hidden ${illustrated ? "h-[22rem] md:h-[30rem]" : "h-80"}`} style={bgStyle} data-testid="pet-scene" data-scene={bgOpt.id}>
           <button type="button" onClick={toggleSound} className="absolute right-3 top-3 z-20 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} aria-pressed={sound} data-testid="sound-toggle">{sound ? "🔊 Sounds on" : "🔇 Sounds off"}</button>
-          {(quests?.room || []).length > 0 && <button type="button" onClick={() => setArranging((a) => !a)} className="absolute left-3 top-3 z-20 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} aria-pressed={arranging} data-testid="arrange-toggle">{arranging ? "✅ Done arranging" : "✋ Arrange room"}</button>}
           {fx.map((f) => <span key={f.key} className="fx absolute z-20 text-3xl" style={{ left: `${f.left}%`, bottom: "35%" }} aria-hidden>{f.emoji}</span>)}
           <HalloweenOverlay />
           {!illustrated && <Fern className="absolute left-4 bottom-0" size={160} color="#4A5D3A" />}
@@ -309,9 +273,6 @@ export default function PetRoom() {
           {!illustrated && <Flower className="absolute left-28 bottom-6" size={28} color="#D4857A" />}
           {!illustrated && <Flower className="absolute right-32 bottom-10" size={24} color="#C77B5B" />}
           {!illustrated && <Branch className="absolute right-10 top-4" size={120} color="#4A5D3A" />}
-          {(quests?.room || []).map((id, i) => (
-            <span key={id} onPointerDown={drag(id)} className={`absolute text-4xl select-none ${arranging ? "arranging" : ""}`} style={{ bottom: `${spot(id, i).y}%`, left: `${spot(id, i).x}%`, zIndex: arranging ? 15 : 5 }} data-testid={`room-${id}`} aria-hidden={!arranging}>{ROOM_EMOJI[id]}</span>
-          ))}
           <div className="relative z-10 mb-2 flex flex-col items-center">
             {hatched && quests?.mood && <div className="mb-2 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} data-testid="pet-mood">{quests.mood.text}</div>}
             <div className={`relative ${actFx ? `act-${actFx}` : hatched && quests ? `mood-${quests.mood.mood}` : ""}`} onClick={() => react(hatched ? "hop" : "wobble")} data-testid="pet-body"
@@ -319,8 +280,10 @@ export default function PetRoom() {
               style={{ filter: sick ? "grayscale(0.7)" : asleep ? "brightness(0.75)" : "none", cursor: "pointer" }}>
               {hatched && AURA[pet.level_name] && <span className={`aura ${pet.level_name === "Legend" ? "aura-ring" : ""}`} style={{ background: AURA[pet.level_name] }} aria-hidden />}
               {hatched
-                ? <PetArt species={pet.species} stage={pet.level_name} size={220} happy={!sad && pet.happiness > 40}><SeasonalWorn /></PetArt>
-                : ART_SPECIES.includes(pet.species) ? <PetArt species={pet.species} stage="egg" size={150}><SeasonalWorn layout="egg" /></PetArt>
+                ? (ART_SPECIES.includes(pet.species)
+                  ? <PetArt species={pet.species} stage={pet.level_name} size={220}><SeasonalWornArt size={220} /></PetArt>
+                  : <Pet species={pet.species} size={200} happy={!sad && pet.happiness > 40}><SeasonalWorn /></Pet>)
+                : ART_SPECIES.includes(pet.species) ? <PetArt species={pet.species} stage="egg" size={150}><SeasonalWornArt size={150} /></PetArt>
                 : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"}><SeasonalWorn layout="egg" /></SpeciesEgg>}
               {hatched && worn.length > 0 && (
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2 flex gap-1 text-2xl" data-testid="worn-accessories">
@@ -371,19 +334,6 @@ export default function PetRoom() {
           <ActionCard title="Clean up" subtitle={care.needs_cleaning ? "There's a mess to clear!" : "All tidy for now"} icon={Droplets} tint="#3B82F6"
             onClick={() => act("/pet/care/clean", null, "All clean!", "hop")} loading={loading || !care.needs_cleaning} testid="clean-btn" />
         )}
-        <div className="paper-card p-5" data-testid="customize-card">
-          <div className="h-11 w-11 rounded-xl grid place-items-center mb-3" style={{ backgroundColor: "#D4A57422", color: "#C8893B" }}><Palette size={20} /></div>
-          <div className="font-display text-lg font-bold" style={{ color: "#1F3B2D" }}>Decorate the room</div>
-          <p className="text-xs text-stone-600 mt-1 mb-3">Pick a scene — it's saved automatically.</p>
-          <div className="flex flex-wrap gap-2">
-            {BG_OPTIONS.map(b => (
-              <button key={b.id} onClick={() => chooseBg(b.id)}
-                className={`h-10 w-10 rounded-xl border-2 overflow-hidden ${bg === b.id ? "ring-2" : ""}`}
-                style={{ background: b.image ? `url(${b.image}) center / cover` : b.bg, borderColor: bg === b.id ? "#1F3B2D" : "#D4C8A8" }}
-                aria-label={b.label} data-testid={`bg-${b.id}`} />
-            ))}
-          </div>
-        </div>
       </section>
 
       <PetQuests pet={pet} quests={quests} onChange={questChanged} onFx={burst} />

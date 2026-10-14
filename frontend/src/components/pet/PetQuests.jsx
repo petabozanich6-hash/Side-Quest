@@ -9,8 +9,6 @@ const OUT = { borderColor: "#1F3B2D", color: "#1F3B2D" };
 const BORDER = { borderColor: "#D4C8A8" };
 const RARE_EMOJI = { top_hat: "🎩", rainbow: "🌈", magic_wand: "🪄", headphones: "🎧", shades: "🕶️", butterfly: "🦋" };
 
-export const ROOM_EMOJI = { plant: "🪴", lamp: "🕯️", rug: "🧶", bookshelf: "📚", fishtank: "🐠", telescope: "🔭", globe: "🌏", piano: "🎹" };
-
 // Daily goals, weekly chest, spelling trophies, the shop, and extra pets. Everything is earned by learning and gentle care.
 export default function PetQuests({ pet, quests, onChange, onFx }) {
   const [busy, setBusy] = useState("");
@@ -25,10 +23,8 @@ export default function PetQuests({ pet, quests, onChange, onFx }) {
     finally { setBusy(""); }
   };
 
-  const claim = (g) => call(`g${g.id}`, () => api.post("/pet/quests/claim", { id: g.id }), `+${g.reward} coins!`, "coin", "coin");
-  const chest = () => call("chest", () => api.post("/pet/quests/chest"), (d) => (d.prize ? `You got a rare accessory: ${d.prize.replace("_", " ")}!` : "Chest opened! +50 coins"), "cheer", "party");
-  const buy = (s) => call(`b${s.id}`, () => api.post("/pet/shop/buy", { item: s.id }), `${s.label} is in your room!`, "buy", "sparkle");
-  const place = (id) => call(`p${id}`, () => api.put("/pet/room", { placed: q.room.includes(id) ? q.room.filter((x) => x !== id) : [...q.room, id] }));
+  const claim = (g) => call(`g${g.id}`, () => api.post("/pet/quests/claim", { id: g.id }), "Goal complete! That counts towards your weekly chest.", "cheer", "party");
+  const chest = () => call("chest", () => api.post("/pet/quests/chest"), (d) => (d.prize ? `You got a rare accessory: ${d.prize.replace("_", " ")}!` : "Chest opened! Nothing rare this time. Come back next week."), "cheer", "party");
   const swap = (i) => call(`s${i}`, () => api.post("/pet/stable/swap", { index: i }), "Switched pets", "pop", "sparkle");
   const adoptNew = (e) => { e.preventDefault(); call("new", () => api.post("/pet/stable/new", adopt), "A new egg has arrived!", "cheer", "party").then(() => setAdopt({ species: "", name: "" })); };
 
@@ -39,7 +35,7 @@ export default function PetQuests({ pet, quests, onChange, onFx }) {
       <section className="paper-card p-5" data-testid="daily-goals">
         <div className="flex items-center justify-between gap-3">
           <h2 className="font-display text-lg font-bold" style={INK}>Today's goals</h2>
-          <span className="rounded-full px-3 py-1 text-sm font-bold bg-amber-100 text-amber-900" data-testid="coins">🪙 {q.coins} coins</span>
+          <span className="rounded-full px-3 py-1 text-sm font-bold bg-amber-100 text-amber-900" data-testid="goal-days">⭐ {q.chest.days_done} of {q.chest.days_needed} days this week</span>
         </div>
         <ul className="mt-3 space-y-3">
           {q.goals.map((g) => (
@@ -47,7 +43,7 @@ export default function PetQuests({ pet, quests, onChange, onFx }) {
               <div className="flex items-center justify-between gap-3 flex-wrap">
                 <div>
                   <p className="font-bold text-sm">{g.claimed ? "✅ " : ""}{g.title}</p>
-                  <p className="text-xs text-stone-600">{g.progress} of {g.target} · reward {g.reward} coins</p>
+                  <p className="text-xs text-stone-600">{g.progress} of {g.target}</p>
                 </div>
                 {g.ready && <button type="button" disabled={!!busy} onClick={() => claim(g)} className="rounded-full px-4 py-1.5 text-sm font-bold" style={BTN} data-testid={`claim-${g.id}`}>Collect</button>}
               </div>
@@ -73,22 +69,6 @@ export default function PetQuests({ pet, quests, onChange, onFx }) {
         {q.trophies.length === 0 ? <p className="text-sm text-stone-500">No trophies yet. Master a word in the Word Hoard to win the first one.</p> : (
           <div className="flex flex-wrap gap-2">{q.trophies.map((t) => <span key={t.word} className="rounded-full border px-3 py-1 text-sm bg-white" style={BORDER}>🏆 {t.word}</span>)}</div>
         )}
-      </section>
-
-      <section className="paper-card p-5" data-testid="pet-shop">
-        <h2 className="font-display text-lg font-bold" style={INK}>Room shop</h2>
-        <p className="text-xs text-stone-600 mb-3">Spend your coins on things for {pet.name}'s room. Tap a thing you own to put it in the room or take it out (up to 6).</p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {q.shop.map((s) => (
-            <div key={s.id} className="rounded-xl border p-3 text-center bg-white" style={{ ...BORDER, borderColor: q.room.includes(s.id) ? "#1F3B2D" : "#D4C8A8" }} data-testid={`shop-${s.id}`}>
-              <div className="text-3xl">{s.emoji}</div>
-              <div className="text-xs font-bold mt-1">{s.label}</div>
-              {s.owned
-                ? <button type="button" disabled={!!busy} onClick={() => place(s.id)} className="mt-2 rounded-full border px-3 py-1 text-xs font-bold" style={OUT}>{q.room.includes(s.id) ? "In the room" : "Put in room"}</button>
-                : <button type="button" disabled={!!busy || q.coins < s.price} onClick={() => buy(s)} className="mt-2 rounded-full px-3 py-1 text-xs font-bold disabled:opacity-40" style={BTN}>🪙 {s.price}</button>}
-            </div>
-          ))}
-        </div>
       </section>
 
       <section className="paper-card p-5" data-testid="my-pets">

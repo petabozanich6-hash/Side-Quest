@@ -387,7 +387,7 @@ await step("Pet goals, shop and parent weekly summary work end to end", async ()
   ok((await api("GET", `/pet/week/${kids.json[0].id}`, childToken)).status === 403, "child read parent summary");
 });
 
-await step("Pet room shows goals, sound toggle and the shop, and sounds can be muted", async () => {
+await step("Pet room shows goals (no shop or decorating) and sound toggle, and sounds can be muted", async () => {
   const pp = await cpage.context().newPage();
   const errs = [];
   pp.on("pageerror", (e) => errs.push(String(e.message || e)));
@@ -401,7 +401,7 @@ await step("Pet room shows goals, sound toggle and the shop, and sounds can be m
     ok((await pp.locator("[data-testid=daily-goals] li").count()) === 3, "three goals expected");
     await pp.click("[data-testid=sound-toggle]");
     ok(/off/i.test(await pp.innerText("[data-testid=sound-toggle]")), "sound did not mute");
-    await pp.waitForSelector("[data-testid=pet-shop]");
+    ok((await pp.locator("[data-testid=pet-shop], [data-testid=customize-card], [data-testid=coins]").count()) === 0, "shop, decorate card or coin counter still showing");
     ok(errs.length === 0, "page errors: " + errs.join("; "));
   } finally { await pp.close(); }
 });
