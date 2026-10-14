@@ -873,16 +873,16 @@ await step("AI lesson set: open, edit, assign, move around and refresh without l
   await pctx.close();
 });
 
-await step("O. outcome tracker: QLD family sees the honest gap, not invented outcomes", async () => {
-  // Use a separate QLD family: the primary e2e account was deliberately switched back to NSW earlier.
-  // Otherwise this test asks a NSW family's tracker to show the QLD-only unavailable message.
-  const email = `outcomes-qld-${stamp}@example.com`;
-  const reg = await api("POST", "/auth/register", null, { name: "Queensland Family", email, password: pw, jurisdiction: "QLD" });
-  ok(reg.status === 200 && reg.json?.token, "QLD registration failed: " + JSON.stringify(reg.json));
+await step("O. outcome tracker: VIC family sees the honest gap, not invented outcomes", async () => {
+  // Use a separate VIC family: the primary e2e account was deliberately switched back to NSW earlier.
+  // Otherwise this test asks a NSW family's tracker to show the VIC-only unavailable message.
+  const email = `outcomes-vic-${stamp}@example.com`;
+  const reg = await api("POST", "/auth/register", null, { name: "Victorian Family", email, password: pw, jurisdiction: "VIC" });
+  ok(reg.status === 200 && reg.json?.token, "VIC registration failed: " + JSON.stringify(reg.json));
   const child = await api("POST", "/students", reg.json.token, {
-    name: "Queensland Learner", username: `qld${stamp}`.slice(0, 16), pin: "4321", stage: "S2"
+    name: "Victorian Learner", username: `vic${stamp}`.slice(0, 16), pin: "4321", stage: "S2"
   });
-  ok(child.status === 200 && child.json?.id, "QLD child creation failed: " + JSON.stringify(child.json));
+  ok(child.status === 200 && child.json?.id, "VIC child creation failed: " + JSON.stringify(child.json));
   const qctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   try {
     const qpage = await qctx.newPage();

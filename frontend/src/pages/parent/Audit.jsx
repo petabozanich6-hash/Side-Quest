@@ -51,7 +51,8 @@ function PackTab() {
       safe(api.get("/life-evidence")),
       safe(api.get(`/reading-log?student_id=${sid}`)),
       safe(api.get(`/learning-plans?student_id=${sid}`)),
-    ]).then(([sub, life, read, plans]) => setRaw({ sub: sub.data || [], life: life.data || [], read: read.data || [], plans: plans.data || [] }))
+      api.get(`/outcomes/students/${sid}`).catch(() => ({ data: { available: false, note: "Tracker not available" } })),
+    ]).then(([sub, life, read, plans, tracker]) => setRaw({ sub: sub.data || [], life: life.data || [], read: read.data || [], plans: plans.data || [], tracker: tracker.data }))
       .finally(() => setLoading(false));
   }, [sid]);
 
@@ -95,7 +96,7 @@ function PackTab() {
     });
 
     const lessonTitles = [...new Set(samples.filter((s) => s.kind === "Lesson").map((s) => s.title))];
-    return { samples, reading, readMinutes, lifeMinutes, plan, coverage, lessonTitles };
+    return { samples, reading, readMinutes, lifeMinutes, plan, coverage, lessonTitles, tracker: raw.tracker };
   }, [raw, sid, start, end]);
 
   const printPack = () => {
@@ -106,17 +107,27 @@ function PackTab() {
     const logRows = pack.samples.map((s) => `<tr><td>${esc(s.date)}</td><td>${esc(s.kind)}</td><td>${esc(s.title)}${s.location ? ` (${esc(s.location)})` : ""}</td><td>${esc(s.areas.join(", "))}</td><td>${esc(s.codes.join(", ") || "-")}</td></tr>`).join("");
     const readRows = pack.reading.map((r) => `<tr><td>${esc(r.read_date)}</td><td>${esc(r.title)}${r.author ? ` - ${esc(r.author)}` : ""}${r.verified_by_parent ? " (verified by parent)" : ""}</td><td>${esc(r.book_type)}</td><td>${esc((r.reading_mode || "").replace(/_/g, " "))}</td><td>${esc(r.duration_minutes || "")}</td></tr>`).join("");
     const reflection = pack.coverage.map((c) => `<p><strong>${esc(c.area)}:</strong> ${c.samples} dated sample${c.samples === 1 ? "" : "s"} (${c.lessons} lesson${c.lessons === 1 ? "" : "s"}, ${c.life} life-learning). ${c.evidenced.length ? `Outcomes evidenced: ${esc(c.evidenced.join(", "))}.` : "No outcomes evidenced in this period."} ${c.status !== "Good" ? "More evidence is planned for the next period." : ""}</p>`).join("");
+    const tracker = pack.tracker;
+    const statuses = ["not_started", "introduced", "developing", "demonstrated", "achieved"];
+    const tracked = tracker?.available ? (tracker.outcomes || []).filter(x => x.in_stage) : [];
+    const trackerCounts = Object.fromEntries(statuses.map(status => [status, tracked.filter(x => x.status === status).length]));
+    const progressBar = tracked.length ? '<div style="display:flex;height:18px;width:100%;border:1px solid #ccc;margin:8px 0">'+ statuses.map((status, i) => '<span style="display:block;width:'+(100*trackerCounts[status]/tracked.length).toFixed(2)+'%;background:'+["#e5e7eb","#a7c7e7","#f0d28d","#8fc7ae","#43966b"][i]+'""></span>').join("")+'</div>' : "";
+    const stateLabel = tracker?.jurisdiction || "Not selected";
+    const trackerRows = tracked.filter(x => x.status !== "not_started").map(x => '<tr><td>'+esc(x.code)+'</td><td>'+esc(x.learning_area)+'</td><td>'+esc(x.status.replaceAll("_", " "))+'</td><td>'+esc(x.evidence_count ?? 0)+'</td></tr>').join("");
+    const trackerSection = '<h2>3. Curriculum progress and linked evidence (current snapshot)</h2><p><strong>Family home state:</strong> '+esc(stateLabel)+' · <strong>Framework:</strong> '+esc(tracker?.framework?.name || "Not available")+'</p>' + (tracker?.available
+      ? '<p>'+tracked.length+' requirements shown for the child’s stage. '+ statuses.map(status => esc(status.replaceAll("_", " "))+': '+trackerCounts[status]).join(' · ')+'</p>'+progressBar+'<table><tr><th>Curriculum code</th><th>Learning area</th><th>Progress</th><th>Linked evidence count</th></tr>'+(trackerRows || '<tr><td colspan="4">No progress recorded yet.</td></tr>')+'</table><p class="meta">Snapshot across all recorded learning, not restricted to the evidence-pack date range. Progress is not a certification of compliance; only parents can confirm Achieved. Official descriptions are available from your curriculum authority.</p>'
+      : '<p>Outcome tracking unavailable for this family’s selected jurisdiction. '+esc(tracker?.note || "")+'</p>');
     const planLine = pack.plan ? `${esc(pack.plan.title)} (${esc(pack.plan.period_start)} to ${esc(pack.plan.period_end)})` : "No learning plan recorded for this period";
     const html = `<html><head><title>Evidence Review Pack - ${esc(student.name)}</title><style>${css}</style></head><body>
 <h1>Home Education Evidence Pack</h1><p class="meta">For parent review and record-keeping. Check your local authority's reporting requirements.</p>
 <table><tr><th>Student</th><td>${esc(student.name)}</td><th>Stage</th><td>${esc(student.stage || "")}</td></tr><tr><th>Period covered</th><td>${esc(start)} to ${esc(end)}</td><th>Learning plan</th><td>${planLine}</td></tr></table>
 <h2>1. Summary</h2><p>${pack.samples.length} dated work samples and activities, ${pack.reading.length} reading entries (${pack.readMinutes} minutes) and ${pack.lifeMinutes} minutes of recorded life learning in this period.</p>
 <h2>2. Planned versus evidenced by learning area</h2><table><tr><th>Learning area</th><th>Lessons</th><th>Life learning</th><th>Planned outcomes</th><th>Outcomes evidenced</th><th>Not yet evidenced</th></tr>${covRows}</table>
-<h2>3. Learning log</h2><table><tr><th>Date</th><th>Type</th><th>Activity</th><th>Learning area</th><th>Outcomes</th></tr>${logRows || "<tr><td colspan=5>No entries in this period.</td></tr>"}</table>
-<h2 class="pb">4. Reading log</h2><table><tr><th>Date</th><th>Book</th><th>Type</th><th>Mode</th><th>Minutes</th></tr>${readRows || "<tr><td colspan=5>No reading entries in this period.</td></tr>"}</table>
-<h2>5. Resources used</h2><p>${pack.lessonTitles.length ? `Platform lessons completed: ${esc(pack.lessonTitles.join("; "))}. ` : ""}${pack.plan?.ai_content?.resources_overview ? esc(pack.plan.ai_content.resources_overview) : ""}</p>
-<h2>6. Period reflection</h2>${reflection}${notes ? `<p><strong>Parent notes:</strong> ${esc(notes).replace(/\n/g, "<br/>")}</p>` : ""}
-<h2>7. Parent declaration</h2><p>I declare that this pack is a true record of the educational program provided to ${esc(student.name)} during the period above.</p>
+${trackerSection}<h2>4. Learning log</h2><table><tr><th>Date</th><th>Type</th><th>Activity</th><th>Learning area</th><th>Outcomes</th></tr>${logRows || "<tr><td colspan=5>No entries in this period.</td></tr>"}</table>
+<h2 class="pb">5. Reading log</h2><table><tr><th>Date</th><th>Book</th><th>Type</th><th>Mode</th><th>Minutes</th></tr>${readRows || "<tr><td colspan=5>No reading entries in this period.</td></tr>"}</table>
+<h2>6. Resources used</h2><p>${pack.lessonTitles.length ? `Platform lessons completed: ${esc(pack.lessonTitles.join("; "))}. ` : ""}${pack.plan?.ai_content?.resources_overview ? esc(pack.plan.ai_content.resources_overview) : ""}</p>
+<h2>7. Period reflection</h2>${reflection}${notes ? `<p><strong>Parent notes:</strong> ${esc(notes).replace(/\n/g, "<br/>")}</p>` : ""}
+<h2>8. Parent declaration</h2><p>I declare that this pack is a true record of the educational program provided to ${esc(student.name)} during the period above.</p>
 <div class="sig"><div>Parent / guardian signature</div><div>Date</div></div>
 <p style="margin-top:30px;font-size:10px;color:#666">Generated from records kept in Side-Quest. Any outcome codes and learning-area categories must be checked against the family's own curriculum and review requirements.</p>
 </body></html>`;

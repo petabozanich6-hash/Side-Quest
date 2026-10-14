@@ -92,6 +92,10 @@ export default function OutcomeTracker() {
           Every curriculum outcome for your child's stage, and how far along the trail they are. It updates itself from reviewed lesson work, quizzes,
           life learning and your own observations. Finishing a lesson never marks an outcome Achieved: only you can, once the evidence is there.
         </p>
+        {data?.framework?.key === "AC9" && <div className="rounded-xl border border-stone-300 bg-stone-50 p-3 text-xs leading-relaxed" data-testid="ac9-attribution">
+          <strong>Australian Curriculum v9 reference — partial coverage.</strong> Includes 1,395 content descriptions across seven learning areas; Languages and achievement standards are not loaded. This is a planning reference, not a declaration that your state or territory's homeschool requirements are met. Check your local authority's current implementation.
+          <span className="block mt-2">© Australian Curriculum, Assessment and Reporting Authority (ACARA) 2010 to present, unless otherwise indicated. Downloaded from the <a className="underline" href="https://www.australiancurriculum.edu.au/" target="_blank" rel="noopener noreferrer">Australian Curriculum website</a> (accessed 14 October 2026). Modified to remove markup and organise records by school stage. Licensed under <a className="underline" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>. ACARA does not endorse or approve Side-Quest.</span>
+        </div>}
         <div className="flex flex-wrap items-center gap-3 pt-1">
           {(students || []).length > 1 && (
             <select value={sid || ""} onChange={(e) => nav(`/parent/outcomes/${e.target.value}`)} className="rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-semibold" data-testid="tracker-child" aria-label="Child">
