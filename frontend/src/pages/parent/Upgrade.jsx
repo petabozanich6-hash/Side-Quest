@@ -6,7 +6,7 @@ const LABEL = {
   FREE_PREVIEW: "Free preview", PREVIEW_EXPIRED: "Free preview ended",
   ACTIVE_WEEKLY: "Family Membership (weekly)", ACTIVE_FORTNIGHTLY: "Family Membership (fortnightly)",
   ACTIVE_MONTHLY: "Family Membership (monthly)", ACTIVE_ANNUAL: "Family Membership (yearly)",
-  PAST_DUE: "Family Membership (payment needed)", CANCELLED: "Membership ended", INTERNAL: "Early-access family",
+  PAST_DUE: "Family Membership (payment needed)", CANCELLED: "Membership ended", INTERNAL: "Owner account",
 };
 const PAID = ["ACTIVE_WEEKLY", "ACTIVE_FORTNIGHTLY", "ACTIVE_MONTHLY", "ACTIVE_ANNUAL", "PAST_DUE"];
 const money = (cents) => `$${(cents / 100).toFixed(cents % 100 ? 2 : 0)}`;
@@ -109,7 +109,7 @@ export default function UpgradePage() {
           <p className="text-sm text-stone-700 mt-1">We are in early access and are not taking payments. Nothing will be charged.</p>
         </div>
       )}
-      {eff === "INTERNAL" && <p className="text-sm text-stone-600">This early-access family already has full access.</p>}
+      {eff === "INTERNAL" && <p className="text-sm text-stone-600">Your owner account includes complimentary access to all Side-Quest features.</p>}
 
       <div className="paper-card overflow-x-auto">
         <table className="w-full text-sm">
