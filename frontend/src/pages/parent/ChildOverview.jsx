@@ -4,6 +4,7 @@ import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { ArrowLeft, Send, BookOpen, Camera, Heart } from "lucide-react";
 import PetArt from "../../components/shared/PetArt";
+import OutcomeProgressPanel from "../../components/parent/OutcomeProgressPanel";
 
 const EMOJIS = ["🙌", "⭐", "🌟", "💛", "🌱", "🎉", "✨", "💪", "🦊", "📚"];
 
@@ -57,6 +58,8 @@ export default function ChildOverview() {
           </div>
         </div>
       </header>
+
+      <OutcomeProgressPanel studentId={sid} />
 
       {data.pet && (
         <section className="paper-card p-6 flex flex-wrap items-center justify-between gap-4" data-testid="pet-care-panel">

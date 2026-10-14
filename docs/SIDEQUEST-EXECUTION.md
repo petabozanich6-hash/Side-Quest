@@ -138,3 +138,15 @@ On branch `cleanup/remove-legacy-lesson-history-2026-10-14` (PR into `dev/sidequ
 ## Comprehensive teaching (per-section generation)
 
 Teaching was thin because a whole 60-minute lesson's explanations competed for one reply. Generation is now: design → frame (introduction, readings, wrap-up) → one request per teaching section (250–380 words: prior knowledge, plain idea, worked detail, why it works, common slip) and one per worked example (5–9 reasoned steps, with a check), run four at a time → practice and assessment (two requests). The parent answer key is built in code from the items' own answers. About 13 requests for a 60-minute lesson (estimated ~4–5 US cents on the default model; the exact figure is shown on the review page). The quality floor is now 14 words of teaching per minute (sections plus worked-example steps). A section or example that fails twice fails the whole draft and uses no allowance. Quality of real output is for the owner to judge; if the default model is the limit, `AI_MODEL` can be changed only with owner approval.
+
+## Outcome progress (shared by the Outcome & Mastery Tracker and Auto-Quest)
+
+Migration 0057 adds `outcome_progress` (one row per child and outcome) and `outcome_progress_events` (every change). Code: `worker/src/outcomeProgress.ts`; API `GET /api/students/:sid/outcome-progress`, `PUT /api/students/:sid/outcome-progress/:code`, `GET …/:code/history`; panel on the child page.
+
+- Levels: Not Started, Introduced, Developing, Demonstrated, Achieved.
+- A parent can set any level, up or down; that level is marked "set by you" (parent confirmed).
+- Automatic updates come only from a parent's review of submitted work, and only ever raise a level, capped at Demonstrated: outcome ticked on approved work -> Demonstrated; marked "not yet" or sent back for practice -> Developing; targeted by the lesson but not marked -> Introduced. Completing or passing a lesson is never treated as mastery, and a parent-confirmed level is never lowered.
+- Reviews made before tracking existed are replayed once the first time a child's progress is opened.
+- Only outcomes on a verified list are stored (today the NSW syllabus). Other states and territories see that their list is not loaded yet; nothing is invented.
+- **Migration 0057 must be applied (after backup) before deploying.**
+

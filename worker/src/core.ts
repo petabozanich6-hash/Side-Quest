@@ -3,6 +3,7 @@ import { applySpelling } from "./data/spelling";
 import * as lb from "./lessonBuilder";
 import * as aid from "./aiDraft";
 import * as bat from "./lessonBatches";
+import * as op from "./outcomeProgress";
 import * as help from "./aiHelp";
 import * as res from "./resources";
 import * as pl from "./planning";
@@ -490,7 +491,27 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const u = c.get("user");
     const b: any = await c.req.json().catch(() => ({}));
     const r = await lb.reviewSubmission(c.env.DB, u.family_id, u.id, c.req.param("id"), b);
-    return r.ok ? c.json({ ok: true, xp_awarded: r.xp_awarded }) : send(c, r);
+    if (!r.ok) return send(c, r);
+    // The review is the evidence for the child's outcome progress. Tracking must never block a review.
+    try { await op.recordReview(c.env.DB, u.family_id, u.id, c.req.param("id")); } catch { /* progress can be replayed later */ }
+    return c.json({ ok: true, xp_awarded: r.xp_awarded });
+  });
+
+  // ---------- Outcome progress (shared by the Outcome & Mastery Tracker and Auto-Quest) ----------
+  app.get("/api/students/:sid/outcome-progress", auth, parent, async (c) => {
+    const r = await op.getProgress(c.env.DB, c.get("user").family_id, c.req.param("sid"));
+    return r.ok ? c.json(r.progress) : send(c, r);
+  });
+  app.put("/api/students/:sid/outcome-progress/:code", auth, parent, async (c) => {
+    const u = c.get("user");
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await op.setLevel(c.env.DB, u.family_id, u.id, c.req.param("sid"), c.req.param("code"), b);
+    return r.ok ? c.json(r.outcome) : send(c, r);
+  });
+  app.get("/api/students/:sid/outcome-progress/:code/history", auth, parent, async (c) => {
+    const u = c.get("user");
+    if (!(await op.studentFor(c.env.DB, u.family_id, c.req.param("sid")))) return c.json({ detail: "Child not found" }, 404);
+    return c.json(await op.history(c.env.DB, u.family_id, c.req.param("sid"), c.req.param("code")));
   });
 
   // ---------- Resources ----------

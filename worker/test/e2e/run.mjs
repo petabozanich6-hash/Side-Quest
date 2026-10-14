@@ -873,6 +873,31 @@ await step("AI lesson set: open, edit, assign, move around and refresh without l
   await pctx.close();
 });
 
+await step("outcome progress: the child page lists stage outcomes and a parent can confirm a level", async () => {
+  const email = `op-${stamp}@example.com`;
+  const reg = await api("POST", "/auth/register", null, { name: "OP Fam", email, password: pw, jurisdiction: "NSW" });
+  const pt = reg.json.token;
+  const ch = await api("POST", "/students", pt, { name: "Oliver", username: `ol${stamp}`.slice(0, 14), pin: "4321", stage: "S2" });
+  ok(ch.status === 200, "child " + ch.status);
+  const pctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const page = await pctx.newPage();
+  await page.goto(BASE + "/login");
+  await page.fill('[data-testid=login-email]', email); await page.fill('[data-testid=login-password]', pw);
+  await page.click('[data-testid=login-submit]'); await page.waitForURL("**/parent");
+  await page.goto(BASE + `/parent/children/${ch.json.id}`);
+  await page.waitForSelector("[data-testid=outcome-progress-counts]");
+  await page.click("[data-testid=outcome-progress] details summary >> nth=0");
+  const sel = page.locator("[data-testid^=outcome-level-]").first();
+  const code = (await sel.getAttribute("data-testid")).replace("outcome-level-", "");
+  await sel.selectOption("achieved");
+  await page.waitForFunction((c) => document.querySelector(`[data-testid="outcome-${c}"]`)?.textContent.includes("set by you"), code);
+  const p = await api("GET", `/students/${ch.json.id}/outcome-progress`, pt);
+  const o = p.json.outcomes.find(x => x.code === code);
+  ok(o.level === "achieved" && o.parent_confirmed, "level not saved: " + JSON.stringify(o));
+  await shot("outcome-progress", page);
+  await pctx.close();
+});
+
 await step("L. users cannot grant themselves a paid plan", async () => {
   const r = await api("PUT", "/account/plan", parentToken, { plan: "ACTIVE_MONTHLY" });
   ok(r.status === 404 || r.status === 405, "plan update route exists: " + r.status);
