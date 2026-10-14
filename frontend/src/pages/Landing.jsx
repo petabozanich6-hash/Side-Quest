@@ -27,7 +27,7 @@ export default function Landing() {
           <div className="flex items-center gap-2.5">
             <div className="h-10 w-10 rounded-xl grid place-items-center" style={{backgroundColor:"#1F3B2D"}}><Compass className="text-cream" size={22} style={{color:"#F5EFE0"}}/></div>
             <div>
-              <div className="font-display text-xl font-bold" style={{color:"#1F3B2D"}}>Side Quest</div>
+              <div className="font-display text-xl font-bold" style={{color:"#1F3B2D"}}>Side-Quest</div>
               <div className="text-[10px] uppercase tracking-widest text-stone-500 font-semibold -mt-0.5">Learning</div>
             </div>
           </div>
@@ -41,7 +41,7 @@ export default function Landing() {
 
       <section className="relative z-10 mx-auto max-w-7xl px-6 pt-10 pb-16 grid lg:grid-cols-5 gap-10 items-center">
         <div className="lg:col-span-3">
-          <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest" style={{backgroundColor:"#E8E2D1", color:"#4A5D3A"}}>
+          <span className="inline-flex max-w-full items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wide sm:tracking-widest" style={{backgroundColor:"#E8E2D1", color:"#4A5D3A"}}>
             <Sparkles size={13}/> Made for homeschool families across Australia
           </span>
           <h1 className="mt-6 font-display font-bold tracking-tight leading-[1.02]" style={{color:"#1F3B2D"}}>
