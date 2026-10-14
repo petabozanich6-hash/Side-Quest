@@ -104,7 +104,7 @@ export default function ReadingLog() {
         <div className="font-script text-2xl" style={{color:"#C77B5B"}}>Every page counts</div>
         <h1 className="font-display text-4xl font-bold" style={{color:"#1F3B2D"}}>Reading Log</h1>
         <p className="mt-2 text-sm text-stone-600 max-w-3xl leading-relaxed">
-          A proper reading record for NESA. Capture every book, chapter, picture book, audiobook or
+          A reading record for your family's home education portfolio. Capture every book, chapter, picture book, audiobook or
           graphic novel. Track independent reading, read-aloud time, and comprehension notes — then export a
           clean printable log for your inspection folder.
         </p>
