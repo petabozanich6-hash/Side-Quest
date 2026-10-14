@@ -35,30 +35,34 @@ function replySubject(original: string | null): string {
 }
 
 export function autoReplyContent() {
-  const text = `Thanks for contacting Side-Quest Learning!
+  const text = `Hi there,
 
-We've received your message and will get back to you as soon as we can. There's no need to send it again.
+Thanks for reaching out to Side-Quest Learning! Your message has made it safely to our inbox.
 
-If you're reporting a problem, including the page you were on and what happened can help us investigate. Please don't send passwords, payment card details or other sensitive information.
+Whether you've got a question, spotted something that isn't quite right or just have an idea to share, we're glad you got in touch. We'll reply as soon as we can.
 
-Thanks for helping us make Side-Quest better.
+There's no need to send your message again. If you're reporting a technical issue, it helps to know which page you were on and what happened. Please don't send passwords or payment card details.
 
-The Side-Quest Learning team
+Thanks for being part of the Side-Quest family. We're happy you're here.
+
+Talk soon,
+Side-Quest Learning
 
 --
-This is an automatic acknowledgement of your message to ${SUPPORT_EMAIL}.`;
+This is an automatic acknowledgement of the message you sent to ${SUPPORT_EMAIL}.`;
 
   const body = [
-    p("Thanks for getting in touch with Side-Quest Learning! We've received your message and will reply as soon as we can."),
-    note("<strong>No need to send it again.</strong> Your message has reached our support inbox."),
-    p("If you're reporting a problem, the page you were on and a short description of what happened are helpful. Please don't share passwords or payment card details."),
-    p("Thanks for helping us make Side-Quest better.<br/><strong>The Side-Quest Learning team</strong>"),
+    p("Hi there! Thanks for getting in touch with Side-Quest Learning. Your message has made it safely to our inbox."),
+    p("Whether you've got a question, spotted something that isn't quite right or have an idea to share, we're glad you reached out. We'll reply as soon as we can."),
+    note("<strong>No need to send it again.</strong> If you're reporting a technical issue, mentioning the page you were on and what happened is helpful. Please don't include passwords or card details."),
+    p("Thanks for being part of the Side-Quest family. We're happy you're here."),
+    p("Talk soon,<br/><strong>Side-Quest Learning</strong>"),
   ].join("\n");
 
   const html = layout({
-    preheader: "We've received your message and will be in touch.",
-    kicker: "Message received.",
-    heading: "We're on it!",
+    preheader: "Thanks for reaching out! Your message has reached us.",
+    kicker: "We're listening.",
+    heading: "Your message is with us",
     body,
     reason: `This automatic acknowledgement was sent because you contacted ${esc(SUPPORT_EMAIL)}.`,
   });
