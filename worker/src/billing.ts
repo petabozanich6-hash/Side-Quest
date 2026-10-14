@@ -10,6 +10,7 @@
 //   price list below; a live key is refused unless STRIPE_LIVE_ENABLED=true AND live prices are filled in.
 import { ACTIVE_PLANS, PAST_DUE_GRACE_DAYS } from "./entitlements";
 import { membershipActivatedEmail, sendEmail } from "./email";
+import { sendOwnerNewMemberAlert } from "./ownerNotifications";
 import type { Plan } from "./entitlements";
 import type { App, Env, Guards } from "./types";
 
@@ -274,6 +275,7 @@ export type MembershipActivatedInfo = {
   periodEnd: string;
 };
 export type MembershipNotifier = (details: MembershipActivatedInfo) => Promise<void>;
+export type OwnerMembershipNotifier = (details: MembershipActivatedInfo) => Promise<void>;
 
 /** Handles one verified event. Returns an outcome string; throws to make Stripe retry. */
 export async function handleEvent(
@@ -283,6 +285,7 @@ export async function handleEvent(
   fetchImpl?: Fetch,
   now: Date = new Date(),
   notifyMembership?: MembershipNotifier,
+  notifyOwner?: OwnerMembershipNotifier,
 ): Promise<string> {
   const eventId = String(event?.id || "");
   if (!eventId) return "no event id";
@@ -317,7 +320,14 @@ export async function handleEvent(
     && obj?.payment_status !== "unpaid";
   const isAsyncPaid = event.type === "checkout.session.async_payment_succeeded"
     && obj?.object === "checkout.session";
-  if (notifyMembership && subId && (isCompletedCheckout || isAsyncPaid) && outcome.startsWith("synced ")) {
+  // The owner alert is stricter than member confirmation: a verified checkout
+  // must show an actual positive payment, not a card-free preview, zero-dollar
+  // coupon, unpaid checkout or a subscription renewal invoice.
+  const paidCheckout = (isCompletedCheckout || isAsyncPaid)
+    && obj?.mode === "subscription"
+    && obj?.payment_status === "paid"
+    && Number(obj?.amount_total) > 0;
+  if ((notifyMembership || notifyOwner) && subId && (isCompletedCheckout || isAsyncPaid) && outcome.startsWith("synced ")) {
     const row = await db.prepare(
       "SELECT id, plan, billing_interval, plan_period_end, stripe_subscription_id, subscription_status FROM families WHERE stripe_subscription_id = ?"
     ).bind(subId).first<{
@@ -327,10 +337,21 @@ export async function handleEvent(
     }>();
     if (row && ACTIVE_PLANS.includes(row.plan as Plan) && row.subscription_status === "active"
       && row.plan_period_end && INTERVALS.includes(row.billing_interval as Interval)) {
-      await notifyMembership({
+      const info: MembershipActivatedInfo = {
         familyId: row.id, subscriptionId: subId,
         interval: row.billing_interval as Interval, periodEnd: row.plan_period_end,
-      });
+      };
+      // Keep the existing customer confirmation independent and higher priority.
+      if (notifyMembership) await notifyMembership(info);
+      if (notifyOwner && cfg.mode === "live" && paidCheckout) {
+        try {
+          await notifyOwner(info);
+        } catch (error) {
+          // A celebration email must never interrupt a paid family's activation,
+          // or cause duplicate customer confirmations through webhook retries.
+          console.error("owner new-member alert failed", error instanceof Error ? error.message : "unknown error");
+        }
+      }
     }
   }
 
@@ -474,6 +495,13 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
           testMode: cfg.mode === "test",
         }));
         if (!sent) throw new Error("Membership confirmation delivery failed; Stripe will retry");
+      }, async ({ familyId, subscriptionId, interval }) => {
+        const price = cfg.prices[interval];
+        if (!price) return;
+        const result = await sendOwnerNewMemberAlert(c.env.DB, c.env, cfg.mode, {
+          familyId, subscriptionId, interval, amountCents: price.amount_cents,
+        });
+        if (result === "failed") console.warn("owner new-member alert is pending; membership remains active");
       });
       console.log("stripe webhook", event.type, event.id, outcome);
       return c.json({ received: true });
