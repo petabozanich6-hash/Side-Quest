@@ -28,7 +28,7 @@ export async function sendEmail(env: Env, msg: OutgoingEmail): Promise<boolean> 
   try {
     await env.EMAIL.send({
       to: msg.to,
-      from: { email: msg.from || env.EMAIL_FROM || DEFAULT_FROM, name: "Side Quest" },
+      from: { email: msg.from || env.EMAIL_FROM || DEFAULT_FROM, name: "Side-Quest Learning" },
       replyTo: SUPPORT_EMAIL,
       subject: msg.subject,
       text: msg.text,
@@ -57,7 +57,7 @@ const C = {
   stone: "#7A7461",
   ink: "#2B2B26",
 };
-const SERIF = "Georgia,'Times New Roman',Times,serif";
+const SERIF = "-apple-system,'Segoe UI',Helvetica,Arial,sans-serif";
 const SANS = "-apple-system,'Segoe UI',Helvetica,Arial,sans-serif";
 
 export const esc = (s: string) =>
@@ -126,8 +126,8 @@ export function layout(o: LayoutOpts) {
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:580px;">
 
 <tr><td bgcolor="${C.forest}" style="background:${C.forest};border-radius:18px 18px 0 0;padding:26px 30px 22px;">
-<div style="font-family:${SERIF};font-size:13px;letter-spacing:3px;text-transform:uppercase;color:${C.tan};">&#129517;&nbsp; Side Quest Learning</div>
-<div style="font-family:${SERIF};font-style:italic;font-size:26px;line-height:1.2;color:${C.tan};margin-top:14px;">${esc(o.kicker || "Welcome home.")}</div>
+<div style="font-family:${SERIF};font-size:13px;letter-spacing:3px;text-transform:uppercase;color:${C.tan};">&#128009;&nbsp; Side-Quest Learning</div>
+<div style="font-family:${SERIF};font-style:italic;font-size:26px;line-height:1.2;color:${C.tan};margin-top:14px;">${esc(o.kicker || "Your next quest starts here.")}</div>
 </td></tr>
 <tr><td bgcolor="${C.moss}" style="background:${C.moss};font-size:0;line-height:0;height:4px;">&nbsp;</td></tr>
 
@@ -138,11 +138,11 @@ ${o.body}
 
 <tr><td bgcolor="${C.paper}" style="background:${C.paper};border-left:1px solid ${C.line};border-right:1px solid ${C.line};padding:0 30px 26px;">
 ${divider}
-<p style="margin:0;font-family:${SANS};font-size:12px;line-height:1.6;color:${C.stone};">${o.reason} Side Quest is a small personal project run by one parent in Australia. Just reply to this email, or write to <a href="mailto:${SUPPORT_EMAIL}" style="color:${C.moss};">${SUPPORT_EMAIL}</a>, and a real person will read it.</p>
+<p style="margin:0;font-family:${SANS};font-size:12px;line-height:1.6;color:${C.stone};">${o.reason} Need help? Reply to this email or write to <a href="mailto:${SUPPORT_EMAIL}" style="color:${C.moss};">${SUPPORT_EMAIL}</a>.</p>
 </td></tr>
 
 <tr><td bgcolor="${C.forest}" style="background:${C.forest};border-radius:0 0 18px 18px;padding:18px 30px;">
-<p style="margin:0;font-family:${SERIF};font-size:12px;line-height:1.6;color:${C.sage};">Side Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
+<p style="margin:0;font-family:${SERIF};font-size:12px;line-height:1.6;color:${C.sage};">Side-Quest Learning acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
 </td></tr>
 
 </table>
@@ -152,63 +152,143 @@ ${divider}
 </html>`;
 }
 
-/* ---------- Emails ---------- */
+
+/* ---------- Account & membership emails ---------- */
 
 export function welcomeEmail(to: string, name: string): OutgoingEmail {
   const n = firstName(name);
-  const subject = "Welcome to Side Quest";
+  const subject = "Welcome to the Side-Quest family! 🐉";
   const text = `Hi ${n},
 
-Welcome to Side Quest, and thank you for joining.
+We're so glad you're here. Welcome to the Side-Quest family!
 
-Side Quest is a home learning hub I built for my own children and now share with other homeschooling families. You plan the learning, your children get their own space with lessons and a learning pet, and you keep the records in one place.
+Every homeschooling family has its own way of doing things. Some days run like clockwork; others take an unexpected detour (or three). Side-Quest is here to make the planning, lessons and record-keeping a little easier, whatever your days look like.
 
-A good way to start:
-1. Sign in at ${SITE_URL}/login
-2. Add a child profile (a first name or nickname is plenty) and choose a username and a PIN that isn't used anywhere else.
-3. Your child signs in separately with that username and PIN.
+Your seven-day free preview is ready, with no payment card required.
 
-A few things to know:
-- You are in charge. You can edit or delete a child profile, or your whole account, at any time.
-- There are no ads, no public profiles and no messaging between users.
-- Side Quest is built around the NSW curriculum and is a planning and record-keeping tool. It supports your teaching and does not replace it.
-- I'm one person, so replies can take a few days.
+Here's an easy place to start:
+1. Sign in to your parent dashboard: ${SITE_URL}/login
+2. Add your child's profile.
+3. Create and assign your first lesson.
+4. Explore the child dashboard and see how progress is recorded.
 
-Questions, ideas or something not working? Just reply to this email.
+During your preview you can add one child, create up to two lessons and have two active assignments. A Family Membership unlocks more room for your family to learn, including AI lesson drafting and full portfolio access.
 
-Happy questing,
-The Side Quest parent
+And please don't feel you need to set everything up on day one. One child, one lesson, one little win. That's a perfectly good beginning.
+
+If you have a question, an idea or something isn't working, just reply to this email or write to ${SUPPORT_EMAIL}. We'd love to hear from you.
+
+We're glad you've joined us. Happy questing!
+Side-Quest Learning
 
 --
-You are getting this because an account was created at sidequestlearning.app with this email address. Side Quest is a small personal project run by one parent in Australia. Write to ${SUPPORT_EMAIL} any time.
-Side Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.`;
+You received this because a Side-Quest Learning account was created using this email address. If this wasn't you, contact ${SUPPORT_EMAIL}.`;
 
   const body = [
-    p(`Thank you for joining, ${esc(n)}. Side Quest is a home learning hub I built for my own children and now share with other homeschooling families. You plan the learning, your children get their own space with lessons and a learning pet, and you keep the records in one place.`),
-    h2("Your first quest"),
+    p(`Hi ${esc(n)}, <strong>we're so glad you're here!</strong> Welcome to the Side-Quest family.`),
+    p("Every homeschooling family has its own rhythm. Some days run like clockwork; others take an unexpected detour (or three). Side-Quest is here to make planning, lessons and record-keeping a little easier, whatever your days look like."),
+    note("<strong>Your seven-day free preview is ready.</strong> No payment card required."),
+    h2("Your first little quest"),
     steps([
-      `Sign in to your parent hub.`,
-      `Add a child profile. A first name or nickname is plenty. Choose a username and a PIN that isn't used anywhere else.`,
-      `Your child signs in separately with that username and PIN, and meets their learning pet.`,
+      "Sign in to your parent dashboard.",
+      "Add your child's profile.",
+      "Create and assign your first lesson.",
+      "Explore the child dashboard and see how progress is recorded.",
     ]),
-    button("Open Side Quest", `${SITE_URL}/login`),
-    h2("A few things to know"),
-    ul([
-      `You are in charge. You can edit or delete a child profile, or your whole account, at any time.`,
-      `There are no ads, no public profiles and no messaging between users.`,
-      `Side Quest is built around the NSW curriculum. It's a planning and record-keeping tool that supports your teaching and doesn't replace it.`,
-      `I'm one person, so replies can take a few days.`,
-    ]),
-    note(`Questions, ideas or something not working? Just reply to this email. I read every message.`),
-    p(`Happy questing,<br/><em>The Side Quest parent</em>`),
+    button("Let's get started", `${SITE_URL}/login`),
+    p("No need to set everything up on day one. <strong>One child, one lesson, one little win</strong> is a perfectly good beginning."),
+    note("<strong>While you're exploring:</strong> Your preview includes one child, up to two lessons and two active assignments. A Family Membership adds more room for your family, including AI lesson drafting and full portfolio access."),
+    p(`Have a question, an idea or something that isn't working? Just reply or email <a href="mailto:${SUPPORT_EMAIL}" style="color:#4A5D3A;">${SUPPORT_EMAIL}</a>. We'd love to hear from you.`),
+    p("We're glad you've joined us. Happy questing!<br/><strong>Side-Quest Learning</strong>"),
   ].join("\n");
 
-  const html = layout({
-    preheader: "Your parent account is ready. Here's how to start your first quest.",
-    kicker: "Welcome home.",
-    heading: `Welcome to Side Quest, ${n}`,
-    body,
-    reason: "You are getting this because an account was created at sidequestlearning.app with this email address.",
+  return {
+    to, subject, text,
+    html: layout({
+      preheader: "We're glad you're here! Your seven-day preview is ready, no card needed.",
+      kicker: "Come on in.",
+      heading: `Welcome to the family, ${n}!`,
+      body,
+      reason: "This email was sent because a Side-Quest Learning account was created using your address.",
+    }),
+  };
+}
+
+export type MembershipInterval = "weekly" | "fortnightly" | "monthly" | "yearly";
+export type MembershipEmailDetails = {
+  interval: MembershipInterval;
+  amountCents: number;
+  nextBillingAt: string;
+  testMode?: boolean;
+};
+
+/** Confirmation sent only after Stripe's verified webhook activates the membership. */
+export function membershipActivatedEmail(to: string, name: string, details: MembershipEmailDetails): OutgoingEmail {
+  const n = firstName(name);
+  const cadence: Record<MembershipInterval, string> = {
+    weekly: "per week",
+    fortnightly: "every two weeks",
+    monthly: "per month",
+    yearly: "per year",
+  };
+  const amount = `A$${(details.amountCents / 100).toFixed(2)}`;
+  const frequency = cadence[details.interval];
+  const next = new Date(details.nextBillingAt).toLocaleDateString("en-AU", {
+    day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Sydney",
   });
-  return { to, subject, text, html };
+  const sandbox = !!details.testMode;
+  const subject = `${sandbox ? "[TEST] " : ""}Your Side-Quest Family Membership is active!`;
+
+  const text = `Hi ${n},
+
+Great news — your Side-Quest Family Membership is active!
+
+We're really glad you've chosen to keep learning with us. Whether your homeschool days are carefully planned or occasionally powered by snacks and improvisation, there's a place for your family here.
+
+Here are your membership details:
+
+Membership: Family Membership (${details.interval})
+Price: ${amount} ${frequency}
+Next scheduled billing date: ${next}
+
+Your membership renews automatically at the price and frequency above until you cancel.
+
+You can update your payment details, view invoices or cancel any time from Your Plan > Manage billing:
+${SITE_URL}/parent/plan
+
+If you cancel, your full access continues until the end of your current paid period.
+${sandbox ? "\nThis is a Stripe sandbox test. No real payment was taken.\n" : ""}
+We're looking forward to all the learning adventures and little wins ahead. Thanks for being part of the Side-Quest family!
+
+Need a hand? Reply to this email or contact ${SUPPORT_EMAIL}.
+
+Happy questing,
+Side-Quest Learning
+
+--
+This is your membership confirmation, not a tax invoice. Payment documents are available separately through Stripe where configured.`;
+
+  const body = [
+    p(`Hi ${esc(n)}, <strong>great news — your Family Membership is active!</strong>`),
+    p("We're really glad you've chosen to keep learning with us. Whether your homeschool days are carefully planned or occasionally powered by snacks and improvisation, there's a place for your family here."),
+    h2("Your membership at a glance"),
+    note(`<strong>Membership:</strong> Family Membership (${esc(details.interval)})<br/><strong>Price:</strong> ${amount} ${esc(frequency)}<br/><strong>Next billing:</strong> ${esc(next)}`),
+    p(`Your membership renews automatically at the price and frequency above until you cancel. To update your payment details, view invoices or cancel, visit <strong>Your Plan → Manage billing</strong>. Cancelling keeps your full access until the end of your paid period.`),
+    button("Manage your membership", `${SITE_URL}/parent/plan`),
+    ...(sandbox ? [note("<strong>Stripe sandbox test:</strong> No real payment was taken.")] : []),
+    p("We're looking forward to all the learning adventures and little wins ahead. Thanks for being part of the Side-Quest family!"),
+    p(`Need a hand? Reply to this email or contact <a href="mailto:${SUPPORT_EMAIL}" style="color:#4A5D3A;">${SUPPORT_EMAIL}</a>.`),
+    p("Happy questing,<br/><strong>Side-Quest Learning</strong>"),
+  ].join("\n");
+
+  return {
+    to, subject, text,
+    html: layout({
+      preheader: `Your membership is active! ${amount} ${frequency}; next billing ${next}.`,
+      kicker: "Here's to what's next.",
+      heading: "Your membership is active!",
+      body,
+      reason: "You received this because your Side-Quest Family Membership was activated.",
+    }),
+  };
 }

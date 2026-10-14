@@ -119,6 +119,70 @@ test("checkout success alone (no webhook) grants nothing; checkout.session.compl
   assert.equal(row.plan, "ACTIVE_ANNUAL");
 });
 
+test("checkout confirmation runs after paid membership activation, only once per event", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1");
+  const state = { sub_1: sub({ price: P.weekly.price, end: new Date(NOW.getTime() + 7 * DAY) }) };
+  const session = {
+    object: "checkout.session", mode: "subscription", customer: "cus_1", subscription: "sub_1",
+    client_reference_id: "f1", metadata: { family_id: "f1" }, payment_status: "paid",
+  };
+  const confirmed = [];
+  const notify = async (info) => confirmed.push(info);
+  const first = ev("evt_confirmed", "checkout.session.completed", session);
+  await b.handleEvent(db, TEST_CFG, first, fakeStripe(state), NOW, notify);
+  assert.equal(fam(db, "f1").plan, "ACTIVE_WEEKLY");
+  assert.equal(confirmed.length, 1);
+  assert.equal(confirmed[0].familyId, "f1");
+  assert.equal(confirmed[0].interval, "weekly");
+  await b.handleEvent(db, TEST_CFG, first, fakeStripe(state), NOW, notify);
+  assert.equal(confirmed.length, 1, "duplicate Stripe event must not send another email");
+
+  await b.handleEvent(db, TEST_CFG, ev("evt_unpaid", "checkout.session.completed",
+    { ...session, payment_status: "unpaid" }), fakeStripe(state), NOW, notify);
+  assert.equal(confirmed.length, 1, "unpaid checkout must not notify");
+
+  await b.handleEvent(db, TEST_CFG, ev("evt_invoice", "invoice.paid",
+    { object: "invoice", subscription: "sub_1" }), fakeStripe(state), NOW, notify);
+  assert.equal(confirmed.length, 1, "renewal invoice must not send a welcome email");
+});
+
+test("temporary membership email failure leaves the event retryable without removing access", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1");
+  const state = { sub_1: sub() };
+  const session = {
+    object: "checkout.session", mode: "subscription", customer: "cus_1", subscription: "sub_1",
+    client_reference_id: "f1", metadata: { family_id: "f1" }, payment_status: "paid",
+  };
+  const event = ev("evt_retry_email", "checkout.session.completed", session);
+  await assert.rejects(() => b.handleEvent(db, TEST_CFG, event, fakeStripe(state), NOW,
+    async () => { throw new Error("email provider unavailable"); }));
+  assert.equal(fam(db, "f1").plan, "ACTIVE_MONTHLY", "membership remains active");
+  assert.equal(db.raw.prepare("SELECT processed_at FROM stripe_events WHERE id = ?").get(event.id).processed_at, null);
+  let delivered = 0;
+  await b.handleEvent(db, TEST_CFG, event, fakeStripe(state), NOW, async () => { delivered += 1; });
+  assert.equal(delivered, 1);
+  assert.ok(db.raw.prepare("SELECT processed_at FROM stripe_events WHERE id = ?").get(event.id).processed_at);
+});
+
+test("subscription and account emails contain current terms and no obsolete personal-project copy", async () => {
+  const { membershipActivatedEmail, welcomeEmail } = await import("../src/email.ts");
+  const confirmation = membershipActivatedEmail("test@example.org", "Sam", {
+    interval: "fortnightly", amountCents: 600,
+    nextBillingAt: "2026-10-28T00:00:00Z", testMode: true,
+  });
+  assert.match(confirmation.subject, /\[TEST\]/);
+  assert.match(confirmation.text, /A\$6\.00 every two weeks/);
+  assert.match(confirmation.text, /28 October 2026/);
+  assert.match(confirmation.text, /renew.*automatically/i);
+  assert.match(confirmation.text, /Manage billing/i);
+  const welcome = welcomeEmail("new@example.org", "Taylor");
+  assert.match(welcome.text, /seven-day free preview/i);
+  assert.match(welcome.text, /no payment card required/i);
+  assert.doesNotMatch(welcome.html, /small personal project/i);
+});
+
 test("out-of-order: a stale 'created/incomplete' event arriving after activation does not revoke access", async () => {
   const db = makeDb();
   seedFamily(db, "f1");
