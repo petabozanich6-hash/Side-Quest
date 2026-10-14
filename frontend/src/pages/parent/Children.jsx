@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { api } from "../../lib/api";
+import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
 import { Plus, Trash2, X, Check, Pencil, Eye, EyeOff, Lock } from "lucide-react";
 import HelpRequests from "./HelpRequests";
@@ -189,7 +189,7 @@ function EditDialog({ student, onClose, onSaved }) {
       if (f.pin) await api.put(`/students/${student.id}/pin`, { pin: f.pin });
       toast.success("Saved");
       onSaved();
-    } catch (err) { toast.error(err.response?.data?.detail || "Could not save"); }
+    } catch (err) { toast.error(apiErrorMessage(err)); }
     finally { setBusy(false); }
   };
 
@@ -300,7 +300,7 @@ export default function ChildrenPage() {
       setForm({ name: "", username: "", pin: "", stage: "S2", year_level: "3", birth_year: "", calendar_colour: "#0F766E" });
       setElectives([]); setPathway("");
       load();
-    } catch (err) { toast.error(err.response?.data?.detail || "Failed"); }
+    } catch (err) { toast.error(apiErrorMessage(err)); }
   };
 
   const del = async (id) => {
