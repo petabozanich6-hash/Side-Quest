@@ -478,8 +478,6 @@ export function registerFamily(app: App, g: Guards) {
     const nextExtra = studentExtraFromBody(body, nextStage, parseJson(existing.extra || null, {} as StudentExtra));
     const updates: Record<string, unknown> = {
       extra: JSON.stringify(nextExtra),
-      electives: JSON.stringify(nextExtra.electives ?? []),
-      subject_levels: JSON.stringify(nextExtra.subject_levels ?? {}),
     };
     if ("name" in body) updates.name = String(body.name || "").trim();
     if ("username" in body) updates.username = String(body.username || "").trim().toLowerCase();
