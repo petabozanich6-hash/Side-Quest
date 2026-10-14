@@ -1,0 +1,111 @@
+# Curriculum Outcome & Mastery Tracker
+
+Status: built on branch `feat/outcome-mastery-tracker`, **not merged or deployed**. Needs migration `0057` (see "Deploying").
+
+## What it does
+
+Each child has one record per curriculum outcome showing how far along they are (**Not Started, Introduced, Developing, Demonstrated, Achieved**), the evidence behind it, and why it last changed. It updates itself as children hand in work and parents review it. Parents never have to fill it in, and finishing a lesson never marks anything Achieved.
+
+## Audit findings it is built on
+
+| Area | What exists | How the tracker uses it |
+|---|---|---|
+| Curriculum data | `NSW_OUTCOMES` (NSW syllabuses, seed v3) is the only verified outcome list. Every other state/territory has `codes: "none"` in `data/jurisdictions.ts`. An AC9 import exists on the unmerged `data/ac9-import` branch. | NSW is the only catalogue. Other jurisdictions get an explicit "not available yet" explanation, never NSW outcomes and never invented ones. |
+| Jurisdiction | `families.jurisdiction` (migration 0054), chosen at sign-up. | Decides which catalogue a family sees. Records are keyed by framework, so moving interstate hides but keeps them. |
+| Lesson mapping | `outcome_codes` on lessons (manual builder and AI drafts, validated against the NSW list). Assignments keep a `lesson_snapshot`. | The snapshot's codes say which outcomes a piece of work addresses. |
+| Completion and review | Quiz marked on the server (`quiz_results`), hand-in (`submissions`), parent review with per-outcome `outcome_mappings`. | Each is an evidence source. Review marks became "Shown it / Practising / Not yet" plus support. |
+| Life Learning | `life_evidence.accepted_mappings` after parent review (NSW codes only; other states store plain-language mappings). | Reviewed NSW mappings count. Unreviewed AI suggestions never do. |
+| Evidence Backpack | `portfolio.ts` builds the record from reviewed work, life learning, `evidence_notes` and reading. | Tracker links to these rows rather than copying them. The Backpack shows the tracker status beside its own per-work marks. |
+| Learning plans | `learning_plans.ai_content` lists indicative outcome codes. No completion records exist for plan activities. | Shown as "Planned in…" on an outcome. Not counted as evidence. Lessons made from a plan count as lessons. |
+| Existing tracking | Portfolio summary counted an outcome "achieved" whenever a review marked it so; the review screen pre-selected "Achieved". | Replaced by the tracker as the single record of mastery. The review no longer pre-selects anything. |
+
+## Architecture
+
+```
+child hands in / passes quiz ─┐
+parent reviews lesson work ───┤                      ┌─> outcome_evidence (one row per source per outcome, links only)
+parent reviews life learning ─┼─> outcomeTracker.ts ─┼─> outcome_progress (current status + wording snapshot)
+parent adds / links evidence ─┤   (hooks, safely())  └─> outcome_status_history (append-only, every change + reason)
+Backpack note deleted ────────┘
+```
+
+* `worker/src/outcomeTracker.ts`: catalogue, rules, evidence sync, recompute, parent actions and `/api/outcomes/*` routes.
+* Hooks are called from `lessonBuilder.submitWork`, `checkQuiz`, `reviewSubmission`, the life-learning review route and `planning.deleteEvidenceNote`. They run inside `safely()`, so a tracker problem can never fail a hand-in or review.
+* `syncStudent()` rebuilds a child's evidence from existing records. It runs automatically the first time a child's tracker is opened (so families with history get a populated tracker), and from the "Recheck all records" button. It is idempotent.
+* Frontend: `/parent/outcomes/:sid` (browse by subject, status, gap, search), `/parent/outcomes/:sid/:code` (evidence, criteria, confirm, history, suggestions), a "Curriculum progress" card on the Parent Hub and child overview, and a nav entry.
+
+### API
+
+| Method | Path | Purpose |
+|---|---|---|
+| GET | `/api/outcomes/summary` | Per-child counts for the Parent Hub |
+| GET | `/api/outcomes/students/:sid` | Tracker for one child (`?refresh=1` resyncs) |
+| POST | `/api/outcomes/students/:sid/rebuild` | Resync from all records |
+| PUT | `/api/outcomes/students/:sid/support` | Documented adjustments on/off |
+| GET | `/api/outcomes/students/:sid/outcomes/:code` | Outcome detail |
+| POST | `…/outcomes/:code/confirm` · `…/unconfirm` | Parent confirmation (note required to override or withdraw) |
+| POST | `…/outcomes/:code/evidence` | New observation, or link an Evidence Backpack note |
+| PUT | `/api/outcomes/evidence/:eid` | Edit, remove or move parent-added evidence |
+| POST | `/api/outcomes/evidence/:eid/exclude` · `/include` | Stop or resume counting any evidence (reason required) |
+
+All routes are parent-only and scoped to the signed-in family.
+
+## Mastery rules (platform guidelines, not curriculum-authority thresholds)
+
+Each piece of evidence has a **level** and a **support** value.
+
+| Source | Level |
+|---|---|
+| Handed in, not reviewed | Took part |
+| Quiz attempted but not passed | Took part (needs more practice) |
+| Quiz passed (auto-marked) | Practised. Never "understanding" on its own |
+| Review: Shown it | Showed understanding |
+| Review: Practising, or approved but not judged | Practised |
+| Review: Not yet / Needs more practice | Practised (needs more practice) |
+| Returned for revision | Took part (needs more practice) |
+| Life learning: Demonstrated / Accepted / Needs more evidence | Showed understanding / Practised / Took part |
+| Parent observation or linked Backpack note | Whatever the parent chooses |
+
+Support comes from the review (per outcome), else the assignment's support level (green = independently, yellow/amber = some help, red = a lot of help), and "asked for help" means a lot of help.
+
+| Status | Rule |
+|---|---|
+| Not Started | No counted evidence |
+| Introduced | Evidence of taking part only |
+| Developing | Any practice, or more than one experience |
+| Demonstrated | At least **2** pieces showing understanding on at least **2** different days, done independently or with some help. One parent-flagged comprehensive assessment can stand in for both counts. Help-heavy work counts only when the child has documented adjustments. |
+| Achieved | **Only** by parent confirmation. Below the guideline, the parent can still confirm with an explicit override and a note. |
+
+Refinement: `DEFAULT_RULES` and `RULE_OVERRIDES` (by framework, learning area or outcome code prefix) in `outcomeTracker.ts`, plus per-child documented adjustments. No overrides are set today.
+
+Gaps flagged per outcome: not introduced, introduced but not revisited (one occasion, 28+ days ago), limited evidence, needs consolidation (latest evidence says so), ready for confirmation, and confirmed but its evidence changed. Gap suggestions link to an AI lesson draft (paid plans; prompt pre-filled), a manual lesson pre-linked to the outcome, or an everyday Life Learning idea for that learning area. All only for outcomes in the family's catalogue.
+
+## Data integrity
+
+* **No duplicates**: unique key per child, outcome, source type and source id. Re-reviews, repeated quiz attempts and resyncs update the same row.
+* **History preserved**: status changes are appended to `outcome_status_history`; removed or excluded evidence is kept with its reason.
+* **Edits, deletions and reassignment**: re-reviewing, changing life learning mappings, deleting a Backpack note, moving or removing a parent observation all recalculate the affected outcomes. Assignments can only be reassigned before work starts, so no evidence moves with them.
+* **Parent judgement wins**: confirmations are never removed automatically. If the evidence drops below the guideline, the outcome stays Achieved and is flagged. A resync never undoes a parent's "don't count this".
+* **Separation**: every query is scoped by family and child; another family gets 404. Deleting a child deletes their tracker rows; account deletion sweeps the new tables automatically.
+* **Curriculum updates**: each record stores the outcome wording and catalogue version it was recorded against. If the catalogue wording changes, the detail page shows both.
+* **Relevance**: families only see outcomes from their own jurisdiction's catalogue and their child's stage (outcomes from other stages appear only if the child has evidence for them, behind a toggle).
+* **No fabrication**: AI suggestions (life learning, outcome matching) are never evidence. Only parent-reviewed work can show understanding.
+
+## Limitations
+
+1. **Only NSW is tracked.** VIC, QLD, WA, SA, TAS, ACT and NT families see a clear "not available yet" message. Loading the AC9 list (used by QLD, SA, TAS, ACT, NT) needs the `data/ac9-import` branch reviewed and a code-mapping for lessons and life learning; VIC and WA need their own verified lists.
+2. The NSW list is the platform's seed (v3), not a complete set of every syllabus outcome for every course, and Stage 6 is partial.
+3. Learning plan activities have no completion records, so plans show as "planned" only.
+4. Reading log entries are not mapped to outcomes (unchanged policy: reading shows engagement, it never awards outcomes). Parents can link a reading note as an observation.
+5. Life learning reviews don't capture support yet, so it is recorded as "not stated" and counts like independent work.
+6. The first open of a child's tracker runs a full sync of their records (bounded at 1,000 submissions and life entries). Fine at current scale; a background job would be better later.
+
+## Deploying (needs approval)
+
+1. Back up: `npx wrangler d1 export sidequest-db1 --remote --output backup.sql`
+2. Apply on staging first, then production: `npm run db:migrate` (adds `0057_outcome_tracker.sql`; additive only). The Worker also creates the tables itself if the migration hasn't run.
+3. Existing families' trackers fill from their records the first time they're opened.
+
+## Tests
+
+`worker/test/outcomes.test.mjs` (12 tests, real migrations on SQLite) covers the full journey (five lessons, hand-ins, mixed support, reviews, linked evidence, confirmation, new evidence with history kept), manual vs AI origin, life learning, duplicates and resyncs, deleted / excluded / moved evidence, multiple children and families, non-NSW families and moving interstate, curriculum wording updates, documented adjustments, the pure rules, hook failure safety, and runtime-vs-migration schema parity. The browser end-to-end run (`worker/test/e2e/run.mjs`, steps O and P) checks the QLD gap message, the API flow, the tracker pages and confirming through the UI.

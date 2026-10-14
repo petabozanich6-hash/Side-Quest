@@ -3,6 +3,7 @@
 // Every function that touches family data takes the family id from the authenticated user, never from the request body.
 import { recordPetEvent } from "./data/petQuests";
 import { knownOutcomeCodes } from "./outcomeMatch";
+import { safely, trackSubmission, trackAssignmentQuiz } from "./outcomeTracker";
 import { cleanItemKind, cleanVisual, cleanKeyWords, childItem, markItem, modelAnswer, estimateMinutes } from "./items";
 import { effectivePlan, limitsFor, trialEndFrom, UPGRADE_MESSAGE } from "./entitlements";
 import type { Plan, Limits } from "./entitlements";
@@ -593,6 +594,7 @@ export async function checkQuiz(
     .prepare("INSERT INTO quiz_results (id, family_id, lesson_id, child_id, assignment_id, score, total, results, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
     .bind(newId(), user.family_id, a.lesson_id, user.id, a.id, score, total, JSON.stringify(results.map((r) => ({ question_index: r.question_index, is_correct: r.is_correct }))), nowIso(now))
     .run();
+  await safely("quiz", () => trackAssignmentQuiz(db, user.family_id, a.id, now));
   return { ok: true, score, total, needed, passed: score >= needed, attempt, results };
 }
 
@@ -686,6 +688,7 @@ export async function submitWork(
     db.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ?").bind(status, ts, a.id),
   ]);
   if (!needsHelp) await recordPetEvent(db as any, user.id, { kind: "lesson_done" }, now);
+  await safely("hand-in", () => trackSubmission(db, user.family_id, id, now));
   return { ok: true, id, status, assignment_id: a.id, submitted_at: ts, xp_gained: 0 };
 }
 
@@ -736,5 +739,6 @@ export async function reviewSubmission(
       .bind(newId(), familyId, sub.lesson_id, sub.student_id, `${status}${body.feedback_text ? `: ${String(body.feedback_text).slice(0, 500)}` : ""}`, sub.file_ids || "[]", ts)
       .run();
   }
+  await safely("review", () => trackSubmission(db, familyId, sub.id, now));
   return { ok: true, xp_awarded: xp };
 }

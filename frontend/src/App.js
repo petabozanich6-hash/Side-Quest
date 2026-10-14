@@ -32,6 +32,8 @@ import LifeLearningPage from "./pages/parent/LifeLearning";
 import LearningPlansPage from "./pages/parent/LearningPlans";
 import ReadingLogPage from "./pages/parent/ReadingLog";
 import ChildOverviewPage from "./pages/parent/ChildOverview";
+import OutcomeTrackerPage from "./pages/parent/OutcomeTracker";
+import OutcomeDetailPage from "./pages/parent/OutcomeDetail";
 import ParentWordHoard from "./pages/parent/WordHoard";
 import TrustSupport from "./pages/parent/TrustSupport";
 import LegalPage from "./pages/legal/LegalPage";
@@ -73,6 +75,9 @@ function Router() {
         <Route path="children" element={<ChildrenPage />} />
         <Route path="children/:sid" element={<ChildOverviewPage />} />
         <Route path="curriculum" element={<CurriculumPage />} />
+        <Route path="outcomes" element={<OutcomeTrackerPage />} />
+        <Route path="outcomes/:sid" element={<OutcomeTrackerPage />} />
+        <Route path="outcomes/:sid/:code" element={<OutcomeDetailPage />} />
         <Route path="lessons" element={<LessonsPage />} />
         <Route path="plan" element={<UpgradePage />} />
         <Route path="assignments" element={<AssignmentsPage />} />

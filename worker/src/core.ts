@@ -477,6 +477,8 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const sl = lessonOut(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first());
     s.lesson = u.role === "child" ? lb.childSafeLesson(sl) : sl;
     s.student = await c.env.DB.prepare("SELECT id, name, username, stage, year_level, theme FROM students WHERE id = ?").bind(r.student_id).first();
+    // The support level the parent set when assigning: the default for the review's per-outcome support.
+    if (u.role === "parent") s.support_level = (await c.env.DB.prepare("SELECT support_level FROM assignments WHERE id = ? AND family_id = ?").bind(r.assignment_id, u.family_id).first<{ support_level: string }>())?.support_level || "green";
     const ids: string[] = Array.isArray(s.file_ids) ? s.file_ids.slice(0, 20) : [];
     s.files = [];
     for (const fid of ids) {

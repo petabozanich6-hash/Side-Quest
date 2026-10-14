@@ -13,7 +13,6 @@ const iconFor = (ct) => {
 
 export default function ReviewModal({ submissionId, onClose, onDone, readOnly = false }) {
   const [sub, setSub] = useState(null);
-  const [descs, setDescs] = useState({});
   const [marks, setMarks] = useState({});
   const [comment, setComment] = useState("");
   const [nextStep, setNextStep] = useState("");
@@ -27,19 +26,15 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
         if (!alive) return;
         setSub(data);
         const codes = data.lesson?.outcome_codes || [];
+        // Nothing is pre-marked: the parent judges each outcome. Older reviews only stored accepted true/false.
+        const defSupport = data.needs_help ? "significant" : ({ yellow: "some", amber: "some", red: "significant" })[data.support_level] || "independent";
         const existing = {};
-        (data.outcome_mappings || []).forEach(m => { existing[m.code] = m.accepted ? "achieved" : "not_yet"; });
+        (data.outcome_mappings || []).forEach(m => { existing[m.code] = { mark: m.mark || "", support: m.support || defSupport }; });
         const initial = {};
-        codes.forEach(c => { initial[c] = existing[c] || "achieved"; });
+        codes.forEach(c => { initial[c] = existing[c] || { mark: "", support: defSupport }; });
         setMarks(initial);
         setComment(data.parent_feedback || "");
         setNextStep(data.next_step || "");
-        try {
-          const r = await api.get("/curriculum/outcomes", { params: { stage: data.lesson?.stage, learning_area: data.lesson?.learning_area } });
-          const map = {};
-          (r.data || []).forEach(o => { map[o.code] = o.description || o.text || o.title || ""; });
-          if (alive) setDescs(map);
-        } catch {}
       } catch { toast.error("Could not open this submission"); onClose(); }
     })();
     return () => { alive = false; };
@@ -48,11 +43,16 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
   if (!sub) return null;
   const codes = sub.lesson?.outcome_codes || [];
 
+  const mark = (code) => marks[code]?.mark || "";
+  const setMark = (code, patch) => setMarks({ ...marks, [code]: { ...(marks[code] || {}), ...patch } });
+  // "shown" in this piece of work is evidence; the outcome itself only becomes Achieved when confirmed in the Outcome tracker.
   const mappings = (forceNone) => codes.map(code => ({
     code,
     learning_area: sub.lesson?.learning_area,
-    accepted: forceNone ? false : marks[code] === "achieved",
-    status: !forceNone && marks[code] === "achieved" ? "achieved" : "not_yet",
+    mark: forceNone ? "not_yet" : mark(code) || undefined,
+    support: marks[code]?.support || undefined,
+    accepted: !forceNone && mark(code) === "shown",
+    status: !forceNone && mark(code) === "shown" ? "achieved" : "not_yet",
   }));
 
   const send = async (status, forceNone) => {
@@ -129,17 +129,25 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
           {codes.length === 0 ? <p className="text-sm text-slate-500">This lesson has no linked outcomes.</p> : (
             <ul className="space-y-2">
               {codes.map(code => (
-                <li key={code} className="flex items-start justify-between gap-3 rounded-lg border border-slate-200 p-3">
-                  <div className="text-sm"><span className="font-mono text-xs font-bold">{code}</span>{descs[code] ? <span className="text-slate-600"> · {descs[code]}</span> : null}</div>
-                  <div className="flex shrink-0 rounded-full border border-slate-300 overflow-hidden text-xs font-semibold">
-                    <button disabled={readOnly} onClick={() => setMarks({ ...marks, [code]: "achieved" })} className={`px-3 py-1 ${marks[code] === "achieved" ? "bg-emerald-600 text-white" : "bg-white text-slate-600"}`} data-testid={`achieved-${code}`}>Achieved</button>
-                    <button disabled={readOnly} onClick={() => setMarks({ ...marks, [code]: "not_yet" })} className={`px-3 py-1 ${marks[code] === "not_yet" ? "bg-amber-600 text-white" : "bg-white text-slate-600"}`} data-testid={`notyet-${code}`}>Not yet</button>
+                <li key={code} className="rounded-lg border border-slate-200 p-3 space-y-2" data-testid={`outcome-mark-${code}`}>
+                  <div className="text-sm"><span className="font-mono text-xs font-bold">{code}</span></div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex shrink-0 rounded-full border border-slate-300 overflow-hidden text-xs font-semibold" role="group" aria-label={`What this work shows for ${code}`}>
+                      {[["shown", "Shown it", "bg-emerald-600"], ["practising", "Practising", "bg-sky-600"], ["not_yet", "Not yet", "bg-amber-600"]].map(([k, l, on]) => (
+                        <button key={k} type="button" disabled={readOnly} aria-pressed={mark(code) === k} onClick={() => setMark(code, { mark: k })} className={`px-3 py-1 ${mark(code) === k ? `${on} text-white` : "bg-white text-slate-600"}`} data-testid={`mark-${k}-${code}`}>{l}</button>
+                      ))}
+                    </div>
+                    <select disabled={readOnly} value={marks[code]?.support || "independent"} onChange={e => setMark(code, { support: e.target.value })} className="rounded-full border border-slate-300 px-2 py-1 text-xs" aria-label={`Help needed for ${code}`} data-testid={`support-${code}`}>
+                      <option value="independent">Independently</option>
+                      <option value="some">With some help</option>
+                      <option value="significant">With a lot of help</option>
+                    </select>
                   </div>
                 </li>
               ))}
             </ul>
           )}
-          {!readOnly && <p className="text-xs text-slate-500 mt-2">Approving saves the outcomes marked Achieved. Returning to your child marks none as achieved.</p>}
+          {!readOnly && codes.length > 0 && <p className="text-xs text-slate-500 mt-2">Your judgement of this piece of work feeds the <b>Outcome tracker</b>. One piece of work never makes an outcome Achieved on its own; you confirm that in the tracker once there's enough evidence. Approving a lesson does not automatically mark any outcome as demonstrated. Outcomes you leave unmarked count as practised.</p>}
         </section>
 
         <section className="mb-2">

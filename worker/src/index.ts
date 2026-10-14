@@ -16,6 +16,7 @@ import { registerPasswordReset } from "./passwordReset";
 import { registerStudentCredentials } from "./studentCredentials";
 import { registerHelpRequests } from "./helpRequests";
 import { registerBilling } from "./billing";
+import { registerOutcomes } from "./outcomeTracker";
 import { sendEmail, welcomeEmail } from "./email";
 import { handleInbound } from "./inbound";
 import type { InboundMessage } from "./inbound";
@@ -217,6 +218,7 @@ registerPasswordReset(app);
 registerStudentCredentials(app, guards);
 registerHelpRequests(app, guards);
 registerBilling(app, guards);
+registerOutcomes(app, guards);
 
 app.notFound((c) => c.json({ detail: "Not found" }, 404));
 
