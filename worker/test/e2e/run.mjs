@@ -553,6 +553,14 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   }
   const link = await api("POST", "/ai/lesson-draft", pt, { request: "https://example.com/some-page" });
   ok(link.status === 400 && link.json.code === "LINK_NOT_READ", "links are not pretended to be read: " + link.status);
+  // Video suggestions: honest without a YouTube key; parent-only; a bad link is refused; the lesson never depends on it.
+  const rst = await api("GET", "/resources/status", pt);
+  ok(rst.status === 200 && rst.json.configured === false, "resource status: " + JSON.stringify(rst.json));
+  const rsg = await api("POST", "/resources/suggest", pt, { lesson_id: les.json.id });
+  ok(rsg.status === 503 && rsg.json.code === "YT_UNAVAILABLE", "suggest without key: " + rsg.status);
+  ok((await api("POST", "/resources/verify-link", pt, { url: "https://example.com/x" })).status === 400, "non-YouTube link accepted");
+  ok((await api("POST", "/resources/suggest", tok, { lesson_id: les.json.id })).status === 403, "child can search videos");
+  ok((await api("GET", "/resources/status", tok)).status === 403, "child read resource status");
   await page.goto(BASE + "/parent/lessons/make");
   await page.waitForSelector("[data-testid=make-for-me]");
   await page.click("[data-testid=mk-example] >> nth=0");
