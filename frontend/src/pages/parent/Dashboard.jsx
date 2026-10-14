@@ -129,6 +129,7 @@ export default function ParentDashboard() {
           <Quick to="/parent/life-learning" icon={Trees} label="Log life learning" desc="Baking, bushwalks, projects — map them to outcomes" tint="#6B8A5B" testid="quick-life"/>
           <Quick to="/parent/learning-plans" icon={FileCheck} label="Build a learning plan" desc="Organise what you plan to teach and keep it alongside your records" tint="#1F3B2D" testid="quick-plan"/>
           <Quick to="/parent/reading-log" icon={BookOpen} label="Add to reading log" desc="Track every book, chapter and audiobook for records" tint="#C8893B" testid="quick-reading"/>
+          <Quick to="/parent/evidence" icon={Camera} label="Evidence Backpack" desc="See reviewed work, life learning and portfolio records for each child" tint="#4A5D3A" testid="quick-evidence"/>
         </div>
       </section>
 
