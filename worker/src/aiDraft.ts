@@ -27,6 +27,10 @@ export type AiRequest = {
 
 export const REFINE_LIMITS = { perDay: 20, perMonth: 120 };
 export async function aiUsage(db: DB, familyId: string, now: Date = new Date()) {
+  // Only the pre-launch owner account (server-side INTERNAL entitlement) is
+  // exempt while testing lesson quality. Paid families keep all fair-use caps.
+  const { plan } = await lb.getEntitlement(db, familyId, now);
+  const unlimited = plan === "INTERNAL";
   const day = new Date(now.getTime() - 86400000).toISOString();
   const month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString();
   const q = async (since: string, kind: string) =>
@@ -34,6 +38,7 @@ export async function aiUsage(db: DB, familyId: string, now: Date = new Date()) 
   const [d, m] = [await q(day, "lesson_draft"), await q(month, "lesson_draft")];
   const [rd, rm] = [await q(day, "lesson_refine"), await q(month, "lesson_refine")];
   return {
+    unlimited,
     today: d, month: m, limit_per_day: AI_LIMITS.perDay, limit_per_month: AI_LIMITS.perMonth,
     changes_today: rd, changes_month: rm, changes_limit_per_day: REFINE_LIMITS.perDay, changes_limit_per_month: REFINE_LIMITS.perMonth,
   };
@@ -760,8 +765,8 @@ export async function draftLessonWithAi(
   };
 
   const usage = await aiUsage(db, familyId, now);
-  if (usage.today >= AI_LIMITS.perDay) return lb.fail(429, `You have used today's ${AI_LIMITS.perDay} AI drafts. Try again tomorrow, or build by hand.`, "AI_QUOTA");
-  if (usage.month >= AI_LIMITS.perMonth) return lb.fail(429, `You have used this month's ${AI_LIMITS.perMonth} AI drafts. The allowance resets next month.`, "AI_QUOTA");
+  if (!usage.unlimited && usage.today >= AI_LIMITS.perDay) return lb.fail(429, `You have used today's ${AI_LIMITS.perDay} AI drafts. Try again tomorrow, or build by hand.`, "AI_QUOTA");
+  if (!usage.unlimited && usage.month >= AI_LIMITS.perMonth) return lb.fail(429, `You have used this month's ${AI_LIMITS.perMonth} AI drafts. The allowance resets next month.`, "AI_QUOTA");
 
   // Reserve the slot first so parallel requests cannot exceed the limit by much; free it if the call fails.
   const usageId = crypto.randomUUID();
@@ -866,8 +871,8 @@ export async function refineLessonWithAi(
   const lesson: any = lb.lessonOut(row);
 
   const usage = await aiUsage(db, familyId, now);
-  if (usage.changes_today >= REFINE_LIMITS.perDay) return lb.fail(429, `You have used today's ${REFINE_LIMITS.perDay} AI changes. Try again tomorrow, or edit by hand.`, "AI_QUOTA");
-  if (usage.changes_month >= REFINE_LIMITS.perMonth) return lb.fail(429, `You have used this month's ${REFINE_LIMITS.perMonth} AI changes. The allowance resets next month.`, "AI_QUOTA");
+  if (!usage.unlimited && usage.changes_today >= REFINE_LIMITS.perDay) return lb.fail(429, `You have used today's ${REFINE_LIMITS.perDay} AI changes. Try again tomorrow, or edit by hand.`, "AI_QUOTA");
+  if (!usage.unlimited && usage.changes_month >= REFINE_LIMITS.perMonth) return lb.fail(429, `You have used this month's ${REFINE_LIMITS.perMonth} AI changes. The allowance resets next month.`, "AI_QUOTA");
 
   const spec: Spec = {
     topic: String(lesson.title || "Lesson"), area: String(lesson.learning_area || ""), year: String(lesson.year_level || ""), goal: "",
@@ -959,10 +964,10 @@ export async function planSeriesWithAi(
   if (!ai) return lb.fail(503, "AI lesson drafting is not switched on yet. You can still build lessons by hand.", "AI_UNAVAILABLE");
 
   const usage = await aiUsage(db, familyId, now);
-  if (usage.today + count > AI_LIMITS.perDay) return lb.fail(429, `${count} lessons would go over today's AI limit (you have ${Math.max(0, AI_LIMITS.perDay - usage.today)} left today). Ask for fewer lessons, or try again tomorrow.`, "AI_QUOTA");
-  if (usage.month + count > AI_LIMITS.perMonth) return lb.fail(429, `${count} lessons would go over this month's AI limit (you have ${Math.max(0, AI_LIMITS.perMonth - usage.month)} left). Ask for fewer lessons.`, "AI_QUOTA");
+  if (!usage.unlimited && usage.today + count > AI_LIMITS.perDay) return lb.fail(429, `${count} lessons would go over today's AI limit (you have ${Math.max(0, AI_LIMITS.perDay - usage.today)} left today). Ask for fewer lessons, or try again tomorrow.`, "AI_QUOTA");
+  if (!usage.unlimited && usage.month + count > AI_LIMITS.perMonth) return lb.fail(429, `${count} lessons would go over this month's AI limit (you have ${Math.max(0, AI_LIMITS.perMonth - usage.month)} left). Ask for fewer lessons.`, "AI_QUOTA");
   const planned = Number((await db.prepare("SELECT COUNT(*) n FROM ai_usage WHERE family_id = ? AND kind = 'series_plan' AND created_at >= ?").bind(familyId, new Date(now.getTime() - 86400000).toISOString()).first<{ n: number }>())?.n ?? 0);
-  if (planned >= 20) return lb.fail(429, "You have planned a lot of lesson sets today. Try again tomorrow.", "AI_QUOTA");
+  if (!usage.unlimited && planned >= 20) return lb.fail(429, "You have planned a lot of lesson sets today. Try again tomorrow.", "AI_QUOTA");
 
   const done = await reserve(db, familyId, userId, "series_plan", now);
   let plan: any = null;

@@ -306,6 +306,54 @@ test("AI drafting: unavailable binding, bad output and quota", async () => {
   assert.ok((await aid.draftLessonWithAi(db, stub(), req(fam2), NOW)).ok);
 });
 
+test("owner can keep building and refining AI lessons beyond customer fair-use limits", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "INTERNAL" });
+  const insert = db.raw.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, 'owner', ?, 'ok', ?)");
+  for (let i = 0; i < 65; i++) insert.run(`owner-draft-${i}`, fam, "lesson_draft", NOW.toISOString());
+  for (let i = 0; i < 125; i++) insert.run(`owner-refine-${i}`, fam, "lesson_refine", NOW.toISOString());
+  for (let i = 0; i < 21; i++) insert.run(`owner-series-${i}`, fam, "series_plan", NOW.toISOString());
+
+  const before = await aid.aiUsage(db, fam, NOW);
+  assert.equal(before.unlimited, true);
+  assert.equal(before.today, 65);
+  assert.equal(before.changes_today, 125);
+
+  const draft = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  assert.ok(draft.ok, JSON.stringify(draft));
+  assert.equal(draft.usage.unlimited, true);
+  assert.equal(draft.usage.today, 66); // still recorded, just not capped
+
+  const reply = { response: JSON.stringify({
+    worked_examples: [...GARDEN.worked_examples, {
+      title: "Extra", problem: "What is 10 + 5?",
+      steps: ["Start at 10.", "Count on 5 to reach 15."], answer: "15",
+    }],
+  }) };
+  const refined = await aid.refineLessonWithAi(db, stub(() => reply), {
+    familyId: fam, userId: "owner", lessonId: draft.lesson.id,
+    instruction: "Add more worked examples",
+  }, NOW);
+  assert.ok(refined.ok, JSON.stringify(refined));
+  assert.equal(refined.usage.unlimited, true);
+  assert.equal(refined.usage.changes_today, 126);
+
+  const planReply = { response: JSON.stringify({
+    series_title: "Our Solar System",
+    lessons: [1, 2, 3, 4].map((i) => ({ title: `Lesson ${i}`, goal: `Goal ${i}` })),
+  }) };
+  const series = await aid.planSeriesWithAi(db, stub(() => planReply), {
+    familyId: fam, userId: "owner",
+    request: { request: "Create four science lessons about our solar system" },
+  }, NOW);
+  assert.ok(series.ok, JSON.stringify(series));
+  assert.equal(series.usage.unlimited, true);
+  assert.equal(series.lessons.length, 4);
+
+  const customer = seed(db, { plan: "ACTIVE_MONTHLY" });
+  assert.equal((await aid.aiUsage(db, customer, NOW)).unlimited, false);
+});
+
 // ---------------------------------------------------------------- assignment management + evidence notes
 import * as pl from "../src/planning.ts";
 

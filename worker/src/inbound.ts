@@ -30,39 +30,41 @@ function looksAutomated(h: Headers, from: string): boolean {
 
 function replySubject(original: string | null): string {
   const clean = (original || "").replace(/[\r\n]+/g, " ").trim().slice(0, 120);
-  if (!clean) return "Your message to Side Quest";
+  if (!clean) return "Your message to Side-Quest Learning";
   return /^re:/i.test(clean) ? clean : `Re: ${clean}`;
 }
 
 export function autoReplyContent() {
-  const text = `Your message has reached camp.
+  const text = `Hi there,
 
-Thanks for writing to Side Quest. There is one adventurer behind this whole world, so every message is read by a real person, just not always right away. You can expect a reply within a few days.
+Thanks for reaching out to Side-Quest Learning! Your message has made it safely to our inbox.
 
-No need to send it again. Your note is safely tucked in the satchel.
+Whether you've got a question, spotted something that isn't quite right or just have an idea to share, we're glad you got in touch. We'll reply as soon as we can.
 
-If you are writing about something urgent that involves someone's safety, please call 000.
+There's no need to send your message again. If you're reporting a technical issue, it helps to know which page you were on and what happened. Please don't send passwords or payment card details.
 
-Until then, happy questing,
-The Side Quest parent
+Thanks for being part of the Side-Quest family. We're happy you're here.
+
+Talk soon,
+Side-Quest Learning
 
 --
-This is a one-time automatic reply because you emailed ${SUPPORT_EMAIL}. Side Quest is a small personal project run by one parent in Australia.
-Side Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.`;
+This is an automatic acknowledgement of the message you sent to ${SUPPORT_EMAIL}.`;
 
   const body = [
-    p(`Thanks for writing to Side Quest. There is one adventurer behind this whole world, so every message is read by a real person, just not always right away. You can expect a reply within a few days.`),
-    note(`<strong>No need to send it again.</strong> Your note is safely tucked in the satchel.`),
-    p(`If you are writing about something urgent that involves someone's safety, please call <strong>000</strong>.`),
-    p(`Until then, happy questing,<br/><em>The Side Quest parent</em>`),
+    p("Hi there! Thanks for getting in touch with Side-Quest Learning. Your message has made it safely to our inbox."),
+    p("Whether you've got a question, spotted something that isn't quite right or have an idea to share, we're glad you reached out. We'll reply as soon as we can."),
+    note("<strong>No need to send it again.</strong> If you're reporting a technical issue, mentioning the page you were on and what happened is helpful. Please don't include passwords or card details."),
+    p("Thanks for being part of the Side-Quest family. We're happy you're here."),
+    p("Talk soon,<br/><strong>Side-Quest Learning</strong>"),
   ].join("\n");
 
   const html = layout({
-    preheader: "Your message is safe. A real person will get back to you within a few days.",
-    kicker: "Message received.",
-    heading: "Your message has reached camp",
+    preheader: "Thanks for reaching out! Your message has reached us.",
+    kicker: "We're listening.",
+    heading: "Your message is with us",
     body,
-    reason: `This is a one-time automatic reply because you emailed ${esc(SUPPORT_EMAIL)}.`,
+    reason: `This automatic acknowledgement was sent because you contacted ${esc(SUPPORT_EMAIL)}.`,
   });
   return { text, html };
 }

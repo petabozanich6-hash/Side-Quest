@@ -9,6 +9,7 @@
 // - Sandbox and live are separated by the secret key itself: an sk_test_/rk_test_ key uses the sandbox
 //   price list below; a live key is refused unless STRIPE_LIVE_ENABLED=true AND live prices are filled in.
 import { ACTIVE_PLANS, PAST_DUE_GRACE_DAYS } from "./entitlements";
+import { membershipActivatedEmail, sendEmail } from "./email";
 import type { Plan } from "./entitlements";
 import type { App, Env, Guards } from "./types";
 
@@ -265,8 +266,24 @@ export const HANDLED_EVENTS = new Set([
   "invoice.payment_failed",
 ]);
 
+/** Membership notification is sent only after an authenticated checkout event activates paid access. */
+export type MembershipActivatedInfo = {
+  familyId: string;
+  subscriptionId: string;
+  interval: Interval;
+  periodEnd: string;
+};
+export type MembershipNotifier = (details: MembershipActivatedInfo) => Promise<void>;
+
 /** Handles one verified event. Returns an outcome string; throws to make Stripe retry. */
-export async function handleEvent(db: DB, cfg: Extract<BillingConfig, { ok: true }>, event: any, fetchImpl?: Fetch, now: Date = new Date()): Promise<string> {
+export async function handleEvent(
+  db: DB,
+  cfg: Extract<BillingConfig, { ok: true }>,
+  event: any,
+  fetchImpl?: Fetch,
+  now: Date = new Date(),
+  notifyMembership?: MembershipNotifier,
+): Promise<string> {
   const eventId = String(event?.id || "");
   if (!eventId) return "no event id";
   if (Boolean(event.livemode) !== (cfg.mode === "live")) return `ignored: ${event.livemode ? "live" : "test"} event for ${cfg.mode} configuration`;
@@ -291,6 +308,31 @@ export async function handleEvent(db: DB, cfg: Extract<BillingConfig, { ok: true
   }
   const subId = subscriptionIdFromEvent(event);
   if (subId) outcome = await syncSubscription(db, cfg, subId, fetchImpl, now);
+
+  // Only a genuine completed checkout (or its delayed-payment success) sends the
+  // first-membership email. A redirect alone never sends it. The event is marked
+  // processed AFTER delivery, so a transient email failure can be retried by Stripe.
+  const isCompletedCheckout = event.type === "checkout.session.completed"
+    && obj?.object === "checkout.session"
+    && obj?.payment_status !== "unpaid";
+  const isAsyncPaid = event.type === "checkout.session.async_payment_succeeded"
+    && obj?.object === "checkout.session";
+  if (notifyMembership && subId && (isCompletedCheckout || isAsyncPaid) && outcome.startsWith("synced ")) {
+    const row = await db.prepare(
+      "SELECT id, plan, billing_interval, plan_period_end, stripe_subscription_id, subscription_status FROM families WHERE stripe_subscription_id = ?"
+    ).bind(subId).first<{
+      id: string; plan: string; billing_interval: string | null;
+      plan_period_end: string | null; stripe_subscription_id: string;
+      subscription_status: string | null;
+    }>();
+    if (row && ACTIVE_PLANS.includes(row.plan as Plan) && row.subscription_status === "active"
+      && row.plan_period_end && INTERVALS.includes(row.billing_interval as Interval)) {
+      await notifyMembership({
+        familyId: row.id, subscriptionId: subId,
+        interval: row.billing_interval as Interval, periodEnd: row.plan_period_end,
+      });
+    }
+  }
 
   await db.prepare("UPDATE stripe_events SET processed_at = ?, outcome = ? WHERE id = ?").bind(now.toISOString(), outcome.slice(0, 300), eventId).run();
   return outcome;
@@ -420,7 +462,19 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
       return c.json({ detail: "Invalid payload" }, 400);
     }
     try {
-      const outcome = await handleEvent(c.env.DB, cfg, event, fetchImpl);
+      const outcome = await handleEvent(c.env.DB, cfg, event, fetchImpl, new Date(), async ({ familyId, interval, periodEnd }) => {
+        const owner = await c.env.DB.prepare(
+          "SELECT email, name FROM users WHERE family_id = ? AND is_owner = 1 LIMIT 1"
+        ).bind(familyId).first<{ email: string; name: string }>();
+        if (!owner?.email) throw new Error("Membership confirmation: no parent email for family");
+        const price = cfg.prices[interval];
+        if (!price) throw new Error("Membership confirmation: unknown billing interval");
+        const sent = await sendEmail(c.env, membershipActivatedEmail(owner.email, owner.name, {
+          interval, amountCents: price.amount_cents, nextBillingAt: periodEnd,
+          testMode: cfg.mode === "test",
+        }));
+        if (!sent) throw new Error("Membership confirmation delivery failed; Stripe will retry");
+      });
       console.log("stripe webhook", event.type, event.id, outcome);
       return c.json({ received: true });
     } catch (e: any) {

@@ -1,75 +1,87 @@
 import { SITE_URL, SUPPORT_EMAIL, button, esc, firstName, layout, note, p } from "./email";
 import type { OutgoingEmail } from "./email";
 
+/** Single-use one-hour reset link; keep the security instructions plain and reassuring. */
 export function passwordResetEmail(to: string, name: string, link: string): OutgoingEmail {
   const n = firstName(name);
-  const subject = "Reset your Side Quest password";
+  const subject = "Reset your Side-Quest Learning password";
   const text = `Hi ${n},
 
-We got a request to reset the password for your Side Quest parent account.
+Need to reset your Side-Quest password? No problem.
 
-Choose a new password here (the link works once and expires in 1 hour):
+We received a request to reset the password for your parent account. You can choose a new one using this link:
 ${link}
 
-Didn't ask for this? You can ignore this email and your password will stay the same.
+The link can only be used once and expires in one hour.
 
-Happy questing,
-The Side Quest parent
+If you didn't request this, you don't need to do anything — your password won't change.
+
+If you need a hand, reply to this email or contact ${SUPPORT_EMAIL}.
+
+Take care,
+Side-Quest Learning
 
 --
-You are getting this because someone asked to reset the password for this email address at sidequestlearning.app. Write to ${SUPPORT_EMAIL} any time.
-Side Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.`;
+This security email was sent because a password reset was requested for your account at sidequestlearning.app.`;
 
   const body = [
-    p(`Hi ${esc(n)}, we got a request to reset the password for your Side Quest parent account. Use the button below to choose a new one.`),
+    p(`Hi ${esc(n)}, need to reset your Side-Quest password? No problem.`),
+    p("We received a request to reset the password for your parent account. Use the button below to choose a new one."),
     button("Choose a new password", link),
-    note(`This link works once and expires in <strong>1 hour</strong>. Didn't ask for this? You can ignore this email and your password will stay the same.`),
-    p(`If the button doesn't work, copy this link into your browser:<br/><span style="font-size:13px;word-break:break-all;color:#4A5D3A;">${esc(link)}</span>`),
-    p(`Happy questing,<br/><em>The Side Quest parent</em>`),
+    note("<strong>A quick security note:</strong> This link works once and expires in one hour. If you didn't request it, there's nothing you need to do — your password won't change."),
+    p(`If the button isn't working, copy this link into your browser:<br/><span style="font-size:13px;word-break:break-all;color:#4A5D3A;">${esc(link)}</span>`),
+    p(`Need a hand? Reply or email <a href="mailto:${SUPPORT_EMAIL}" style="color:#4A5D3A;">${SUPPORT_EMAIL}</a>.`),
+    p("Take care,<br/><strong>Side-Quest Learning</strong>"),
   ].join("\n");
 
-  const html = layout({
-    preheader: "Choose a new password. This link works once and expires in 1 hour.",
-    kicker: "Lost your way?",
-    heading: "Reset your password",
-    body,
-    reason: "You are getting this because someone asked to reset the password for this email address at sidequestlearning.app.",
-  });
-  return { to, subject, text, html };
+  return {
+    to, subject, text,
+    html: layout({
+      preheader: "Here is your secure, one-time link to reset your password.",
+      kicker: "A little help getting back in.",
+      heading: "Reset your password",
+      body,
+      reason: "You received this because someone requested a password reset for your account.",
+    }),
+  };
 }
 
 export function passwordChangedEmail(to: string, name: string): OutgoingEmail {
   const n = firstName(name);
-  const subject = "Your Side Quest password was changed";
+  const subject = "Your Side-Quest Learning password was changed";
   const text = `Hi ${n},
 
-The password for your Side Quest parent account was just changed.
+Just a quick note to let you know that the password for your Side-Quest parent account has been changed.
 
-If that was you, there is nothing more to do.
+If that was you, you're all set.
 
-If it wasn't you, reset your password again right away at ${SITE_URL}/forgot-password and reply to this email so I can help.
+If you didn't make this change, please reset your password straight away:
+${SITE_URL}/forgot-password
 
-Happy questing,
-The Side Quest parent
+Then contact us at ${SUPPORT_EMAIL} so we can help.
+
+Take care,
+Side-Quest Learning
 
 --
-This is a security notice about your account at sidequestlearning.app. Write to ${SUPPORT_EMAIL} any time.
-Side Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.`;
+This is a security notification for your account at sidequestlearning.app.`;
 
   const body = [
-    p(`Hi ${esc(n)}, the password for your Side Quest parent account was just changed.`),
-    p(`If that was you, there is nothing more to do.`),
-    note(`<strong>Wasn't you?</strong> Reset your password again right away and reply to this email so I can help.`),
-    button("Reset password again", `${SITE_URL}/forgot-password`),
-    p(`Happy questing,<br/><em>The Side Quest parent</em>`),
+    p(`Hi ${esc(n)}, just a quick note to let you know your Side-Quest parent account password has been changed.`),
+    p("If that was you, you're all set."),
+    note(`<strong>Didn't make this change?</strong> Please reset your password straight away, then contact us at <a href="mailto:${SUPPORT_EMAIL}" style="color:#4A5D3A;">${SUPPORT_EMAIL}</a> so we can help.`),
+    button("Secure my account", `${SITE_URL}/forgot-password`),
+    p("Take care,<br/><strong>Side-Quest Learning</strong>"),
   ].join("\n");
 
-  const html = layout({
-    preheader: "The password for your Side Quest account was just changed.",
-    kicker: "All safe.",
-    heading: "Your password was changed",
-    body,
-    reason: "This is a security notice about your account at sidequestlearning.app.",
-  });
-  return { to, subject, text, html };
+  return {
+    to, subject, text,
+    html: layout({
+      preheader: "A quick security note about your Side-Quest parent account.",
+      kicker: "Keeping your account safe.",
+      heading: "Your password was changed",
+      body,
+      reason: "This is a security notification about your Side-Quest Learning account.",
+    }),
+  };
 }

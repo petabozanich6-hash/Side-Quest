@@ -152,7 +152,7 @@ export default function MakeLesson() {
           </ol>
           {busy === "series" && <Progress label={`Writing lesson ${Math.min(made.length + 1, outline.count)} of ${outline.count}…`} />}
           {err && <p role="alert" className="text-sm text-rose-700">{err}</p>}
-          <p className="text-xs text-slate-500">This uses {outline.count} of your {outline.usage.limit_per_day - outline.usage.today} lesson drafts left today ({outline.usage.limit_per_month - outline.usage.month} left this month). It is the same as writing {outline.count} single lessons.</p>
+          <p className="text-xs text-slate-500">{outline.usage.unlimited ? "Owner testing: AI lesson drafts are unlimited. Each generated lesson is still recorded for usage tracking." : `This uses ${outline.count} of your ${outline.usage.limit_per_day - outline.usage.today} lesson drafts left today (${outline.usage.limit_per_month - outline.usage.month} left this month). It is the same as writing ${outline.count} single lessons.`}</p>
           {made.length === 0 && busy !== "series" && (
             <div className="flex gap-2 flex-wrap">
               <button onClick={createAll} className="rounded-full bg-violet-700 text-white px-5 py-2.5 text-sm font-semibold" data-testid="series-go">Write all {outline.count} lessons</button>
