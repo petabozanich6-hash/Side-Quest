@@ -42,7 +42,7 @@ function entryHtml(e, images) {
     <div class="muted">${esc([KIND[e.kind], e.subject && e.subject !== e.learning_area ? e.subject : "", e.year_level, e.result, e.duration_minutes ? `${e.duration_minutes} min` : "", e.location].filter(Boolean).join(" · "))}</div>
     ${outcomeTags(e.outcomes)}
     ${(e.outcomes || []).length ? `<div class="muted" style="margin-top:4px">${e.outcomes.map((o) => `${esc(o.code)}${o.code ? ": " : ""}${esc(o.description)}`).join("<br>")}</div>` : ""}
-    ${block(e.kind === "lesson" ? "Child's work" : e.kind === "life" ? "What happened" : "Parent's notes", e.work)}
+    ${block(e.kind === "lesson" ? "Child's work" : e.kind === "life" ? "What happened" : e.kind === "reading" ? "Reading details" : "Parent's notes", e.work)}
     ${block("Child's reflection", e.reflection)}
     ${block("Parent annotation", e.parent_comment)}
     ${e.next_step ? `<p style="margin:6px 0 0"><strong>Next step:</strong> ${esc(e.next_step)}</p>` : ""}
