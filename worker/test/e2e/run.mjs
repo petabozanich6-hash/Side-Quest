@@ -468,7 +468,11 @@ await step("J. XP, progress and evidence update; XP is awarded exactly once", as
   ok(again.status === 200 && again.json.xp_awarded === 0, "XP awarded twice");
   const dash2 = await api("GET", "/dashboard/child", childToken);
   ok(dash2.json.xp < dash.json.xp + 45, "XP was awarded again on re-review");
-  await cpage.goto(BASE + "/child"); await cpage.waitForSelector('[data-testid=completed-section]');
+  await cpage.goto(BASE + "/child"); await cpage.waitForSelector('[data-testid=completed-portfolio-link]');
+  ok(await cpage.locator('[data-testid=completed-section]').count() === 0, "completed lessons should not stay on child home");
+  await cpage.click('[data-testid=completed-portfolio-link]');
+  await cpage.waitForURL("**/child/portfolio");
+  ok((await cpage.locator('[data-testid^=port-]').count()) >= 1, "approved work is missing from the child's portfolio");
   const shown = Number((await cpage.textContent('[data-testid=stat-xp]')).trim());
   const nowXp = (await api("GET", "/dashboard/child", childToken)).json.xp;
   ok(shown >= xp0 + 45 && shown <= nowXp, `XP shown to child (${shown}) should include the 45 awarded (before ${xp0}, now ${nowXp})`);
