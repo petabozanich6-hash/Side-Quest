@@ -41,7 +41,7 @@ export default function ParentLayout() {
         <div className="p-6 flex items-center gap-2.5 border-b relative z-10" style={{borderColor:"#D4C8A8"}}>
           <div className="h-10 w-10 rounded-xl grid place-items-center" style={{backgroundColor:"#1F3B2D"}}><Compass size={20} style={{color:"#F5EFE0"}}/></div>
           <div className="leading-tight">
-            <div className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>Side Quest</div>
+            <div className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>Side-Quest</div>
             <div className="text-[10px] uppercase tracking-widest font-bold text-stone-500">Parent Hub</div>
           </div>
         </div>
@@ -71,7 +71,7 @@ export default function ParentLayout() {
       <main className="flex-1 min-w-0 relative">
         <div className="lg:hidden sticky top-0 z-20 flex items-center gap-3 px-4 py-3 border-b" style={{backgroundColor:"#F5EFE0", borderColor:"#D4C8A8"}}>
           <button onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} className="p-1" data-testid="menu-toggle">{menuOpen ? <X size={22}/> : <Menu size={22}/>}</button>
-          <span className="font-display font-bold" style={{color:"#1F3B2D"}}>Side Quest</span>
+          <span className="font-display font-bold" style={{color:"#1F3B2D"}}>Side-Quest</span>
         </div>
         <HelpAlertBar />
         <Outlet />
