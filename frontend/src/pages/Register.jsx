@@ -49,7 +49,7 @@ export default function Register() {
           <h2 className="font-display text-4xl font-bold leading-tight">A little more joy, a little less juggling.</h2>
           <ul className="mt-6 space-y-2.5 text-sm" style={{color:"#E8E2D1"}}>
             <li className="flex gap-2"><span>·</span>Build your own lessons, or let AI draft them for your review</li>
-            <li className="flex gap-2"><span>·</span>For Australian families; NSW outcome mapping is available first</li>
+            <li className="flex gap-2"><span>·</span>Made for Australian families, with curriculum guidance for all eight jurisdictions</li>
             <li className="flex gap-2"><span>·</span>Keep approved learning records together in the Evidence Backpack</li>
             <li className="flex gap-2"><span>·</span>Offline activities and answer keys, just for you</li>
             <li className="flex gap-2"><span>·</span>Each child gets a pocket pet that grows with them</li>
