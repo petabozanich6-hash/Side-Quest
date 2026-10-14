@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { api } from "../../lib/api";
+import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
 import { Plus, X, BookOpen, Trash2, Printer, Check } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
@@ -79,7 +79,7 @@ export default function ReadingLog() {
       setOpen(false);
       setForm(f => ({...f, title:"", author:"", pages:"", pages_read:"", duration_minutes:20, comprehension_notes:"", favourite_part:"", parent_note:""}));
       load();
-    } catch { toast.error("Failed"); }
+    } catch (err) { toast.error(apiErrorMessage(err, "Could not save reading log")); }
   };
 
   const del = async (id) => {
