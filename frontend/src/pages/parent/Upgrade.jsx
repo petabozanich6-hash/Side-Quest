@@ -80,7 +80,7 @@ export default function UpgradePage() {
             <p className="text-sm text-stone-700">{billing.cancel_at_period_end ? `Cancelled. Full access continues until ${day(plan.period_end)}.` : `Renews on ${day(plan.period_end)}.`}</p>
           )}
           {billing.can_manage && <button type="button" className={BTN} style={BTN_STYLE} disabled={!!busy} onClick={() => go("/billing/portal", {}, "portal")} data-testid="manage-billing">{busy === "portal" ? "Opening…" : "Manage billing"}</button>}
-          <p className="text-xs text-stone-500">Update your card, see invoices or cancel. Cancelling keeps access until the end of the period you have paid for.</p>
+          <p className="text-xs text-stone-500">Update your card, see invoices or cancel. Cancelling keeps access until the end of the period you have paid for. <Link to="/parent/trust/refunds" className="underline font-semibold">Refunds &amp; Consumer Rights</Link>.</p>
         </div>
       )}
 
@@ -100,7 +100,7 @@ export default function UpgradePage() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-stone-500 mt-2">Payments are handled securely by Stripe. No trial is added at checkout; the 7-day free preview needs no card.</p>
+          <p className="text-xs text-stone-500 mt-2">Payments are handled securely by Stripe. No trial is added at checkout; the 7-day free preview needs no card. <Link to="/parent/trust/refunds" className="underline font-semibold">Refunds &amp; Consumer Rights</Link>.</p>
         </section>
       )}
 
