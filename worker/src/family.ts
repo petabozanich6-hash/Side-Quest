@@ -501,7 +501,6 @@ export function registerFamily(app: App, g: Guards) {
       const pin = String(body.pin);
       if (pin.length < 4 || pin.length > 32) return c.json({ detail: "PIN must contain 4–32 characters" }, 400);
       updates.pin_hash = await hashSecret(pin);
-      updates.pin_enc = null; // Previous recoverable PIN is no longer valid.
       updates.credential_version = Number(existing.credential_version ?? 0) + 1;
     }
     if ("stage" in body && !("theme" in body)) updates.theme = guessTheme(nextStage);
