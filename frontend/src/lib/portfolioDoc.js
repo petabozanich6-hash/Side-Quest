@@ -1,6 +1,6 @@
-// Builds the printable Evidence Backpack record for a home education liaison visit (in NSW, a NESA Authorised
-// Person). It is organised the way a visitor reads it: who the child is and what period is covered, a summary of
-// progress by key learning area, the syllabus outcomes evidenced, then dated and annotated work samples in order
+// Builds the printable Evidence Backpack record for a home education review in any Australian state or territory
+// (a visit, a moderator meeting or a written report). It is organised the way a visitor reads it: who the child is and what period is covered, a summary of
+// progress by learning area, the curriculum outcomes evidenced, then dated and annotated work samples in order
 // within each learning area so progression over time is visible, and finally the parent's summary and declaration.
 
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
@@ -81,14 +81,15 @@ export function portfolioHtml(p, extra = {}) {
 
   const parentBox = (label, text) => `<h4>${label}</h4>${text?.trim() ? `<div class="pre">${esc(text)}</div>` : '<div class="lines"></div><div class="lines"></div><div class="lines"></div>'}`;
   const gaps = s.not_yet_evidenced || [];
-  const ow = !p.jurisdiction || p.jurisdiction === "NSW" ? "syllabus" : "curriculum";
+  const ow = p.jurisdiction === "NSW" ? "syllabus" : "curriculum";
 
   return `<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><title>${esc(p.student.name)} – record of learning and progress</title><style>${CSS}</style></head><body>
   <h1>Record of learning and progress</h1>
   <p class="muted">Home education learning record kept by the parent and generated from Side Quest.</p>
   <table class="meta">
     <tr><td>Child</td><td>${esc(p.student.name)}</td></tr>
-    <tr><td>Stage / year</td><td>${esc([p.student.stage_name, p.student.year_level].filter(Boolean).join(", ")) || "—"}</td></tr>
+    <tr><td>${p.jurisdiction === "NSW" ? "Stage / year" : "Year level"}</td><td>${esc([p.student.stage_name, p.student.year_level].filter(Boolean).join(", ")) || "—"}</td></tr>
+    <tr><td>State or territory</td><td>${esc(p.jurisdiction_name) || "Not set"}</td></tr>
     <tr><td>Period covered</td><td>${period}</td></tr>
     <tr><td>Record kept by</td><td>${esc(p.parent_name) || "—"}</td></tr>
     <tr><td>Curriculum reference</td><td>${esc(p.framework)}</td></tr>
@@ -96,11 +97,11 @@ export function portfolioHtml(p, extra = {}) {
     <tr><td>Generated</td><td>${fmt(p.generated_at)}</td></tr>
   </table>
   ${p.limited ? `<div class="banner">Free preview: the summary covers all ${p.total} entries but only one work sample is shown in full. A Family Membership prints the complete record.</div>` : ""}
-  <p class="muted">How to read this record: every entry is dated and was reviewed by the parent. Work is annotated with the ${ow} outcomes it gives evidence for, marked <em>achieved</em> where the parent judged the outcome demonstrated, or <em>working towards</em> where it is still developing. Work samples are grouped by key learning area and listed earliest first, so progress over time can be followed.</p>
+  <p class="muted">How to read this record: every entry is dated and was reviewed by the parent. Work is annotated with the ${ow} outcomes it gives evidence for, marked <em>achieved</em> where the parent judged the outcome demonstrated, or <em>working towards</em> where it is still developing. Work samples are grouped by learning area and listed earliest first, so progress over time can be followed.</p>
 
-  <h2>1. Summary of progress by key learning area</h2>
-  <table><tr><th>Key learning area</th><th>Entries</th><th>Evidence dated</th><th>Outcomes achieved</th><th>Working towards</th><th>Time recorded</th></tr>${areaRows}</table>
-  ${gaps.length ? `<p class="gap">No evidence recorded in this period for: ${gaps.map(esc).join(", ")}. Add work samples or parent observations for these areas before the visit, or note in section 2 how they are being covered.</p>` : `<p class="muted">Every key learning area for this stage has at least one entry in this period.</p>`}
+  <h2>1. Summary of progress by learning area</h2>
+  <table><tr><th>Learning area</th><th>Entries</th><th>Evidence dated</th><th>Outcomes achieved</th><th>Working towards</th><th>Time recorded</th></tr>${areaRows}</table>
+  ${gaps.length ? `<p class="gap">No evidence recorded in this period for: ${gaps.map(esc).join(", ")}. Add work samples or parent observations for these areas before your review, or note in section 2 how they are being covered.</p>` : `<p class="muted">Every required learning area has at least one entry in this period.</p>`}
 
   <h2>2. Parent's summary of progress</h2>
   ${parentBox("Progress made during this period", extra.summary)}
@@ -123,7 +124,7 @@ export function portfolioHtml(p, extra = {}) {
 
 const csvCell = (v) => { let t = String(v ?? "").replace(/\r?\n/g, " "); if (/^[=+\-@\t]/.test(t)) t = "'" + t; return `"${t.replace(/"/g, '""')}"`; };
 export function portfolioCsv(p) {
-  const head = ["Type", "Date", "Title", "Key learning area", "Subject", "Year level", "Result", "Outcomes achieved", "Outcomes working towards", "Work", "Reflection", "Parent comment", "Next step", "Minutes"];
+  const head = ["Type", "Date", "Title", "Learning area", "Subject", "Year level", "Result", "Outcomes achieved", "Outcomes working towards", "Work", "Reflection", "Parent comment", "Next step", "Minutes"];
   const lines = [head.map(csvCell).join(",")];
   for (const e of p.entries || []) {
     const codes = (st) => e.outcomes.filter((o) => o.status === st).map((o) => o.code || o.description).join("; ");

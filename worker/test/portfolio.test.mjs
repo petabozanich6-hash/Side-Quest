@@ -7,8 +7,8 @@ import { trialEndFrom } from "../src/entitlements.ts";
 const NOW = new Date("2026-10-14T00:00:00Z");
 const T = NOW.toISOString();
 
-function family(db, fam, plan) {
-  db.raw.prepare("INSERT INTO families (id,name,owner_id,created_at,plan,trial_started_at,trial_ends_at) VALUES (?,?,?,?,?,?,?)").run(fam, "Fam", `u-${fam}`, T, plan, T, trialEndFrom(T));
+function family(db, fam, plan, jurisdiction = "NSW") {
+  db.raw.prepare("INSERT INTO families (id,name,owner_id,created_at,plan,trial_started_at,trial_ends_at,jurisdiction) VALUES (?,?,?,?,?,?,?,?)").run(fam, "Fam", `u-${fam}`, T, plan, T, trialEndFrom(T), jurisdiction);
   db.raw.prepare("INSERT INTO users (id,family_id,email,name,created_at) VALUES (?,?,?,?,?)").run(`u-${fam}`, fam, `${fam}@example.com`, "Pat Parent", T);
   db.raw.prepare("INSERT INTO students (id,family_id,name,username,pin_hash,stage,year_level,created_at) VALUES (?,?,?,?,?,?,?,?)").run(`s-${fam}`, fam, "Mia", `mia-${fam}`, "x", "S2", "Year 3", T);
 }
@@ -88,9 +88,8 @@ test("summarise lists areas outside the stage's expected areas after the expecte
 
 test("a Victorian family's record uses Victorian learning areas and invents no codes", async () => {
   const db = makeDb();
-  family(db, "fv", "ACTIVE_MONTHLY");
-  db.raw.prepare("UPDATE families SET jurisdiction = 'VIC' WHERE id = 'fv'").run();
-  lessonWork(db, "fv", 9, "2026-09-01T01:00:00Z", [], "HSIE");
+  family(db, "fv", "ACTIVE_MONTHLY", "VIC");
+  lessonWork(db, "fv", 9, "2026-09-01T01:00:00Z", [{ code: "EN2-OLC-01", accepted: true }], "HSIE");
   db.raw.prepare("INSERT INTO evidence_notes (id,family_id,student_id,title,learning_area,notes,occurred_on,file_ids,created_at) VALUES (?,?,?,?,?,?,?,?,?)")
     .run("nv", "fv", "s-fv", "Swimming", "PDHPE", "", "2026-09-02", "[]", T);
   const p = await buildPortfolio(db, "fv", "s-fv", { now: NOW });
@@ -99,4 +98,19 @@ test("a Victorian family's record uses Victorian learning areas and invents no c
   assert.ok(p.summary.not_yet_evidenced.includes("The Arts"));
   assert.ok(!p.summary.areas.some((a) => a.learning_area === "HSIE"));
   assert.equal(p.student.stage_name, "");
+  assert.equal(p.jurisdiction_name, "Victoria");
+  assert.ok(!JSON.stringify(p.entries).includes("EN2-OLC-01"), "NSW codes shown to a Victorian family");
+  assert.ok(p.entries[0].outcomes[0].description.length > 10, "plain-language outcome kept");
+});
+
+test("a family that hasn't chosen a state gets the Australian Curriculum, not NSW", async () => {
+  const db = makeDb();
+  family(db, "fu", "ACTIVE_MONTHLY", null);
+  lessonWork(db, "fu", 7, "2026-09-01T01:00:00Z", [{ code: "EN2-OLC-01", accepted: true }], "PDHPE");
+  const p = await buildPortfolio(db, "fu", "s-fu", { now: NOW });
+  assert.equal(p.jurisdiction, null);
+  assert.equal(p.framework, "Australian Curriculum Version 9.0");
+  assert.equal(p.entries[0].learning_area, "Health and Physical Education");
+  assert.ok(p.expected_areas.includes("The Arts") && !p.expected_areas.includes("HSIE"));
+  assert.ok(!JSON.stringify(p).includes("EN2-OLC-01"));
 });

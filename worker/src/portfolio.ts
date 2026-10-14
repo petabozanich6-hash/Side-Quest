@@ -1,5 +1,7 @@
-// Evidence Backpack portfolio: one record of learning and progress for a child, built to be handed to a
-// home education liaison (in NSW, a NESA Authorised Person). It pulls together everything the family has
+// Evidence Backpack portfolio: one record of learning and progress for a child, built to be handed to whoever
+// reviews home education in the family's state or territory (an Authorised Person in NSW, a moderator, an
+// education officer or a written report elsewhere). The learning areas and outcome wording follow the
+// family's chosen framework; NSW outcome codes are only shown to NSW families. It pulls together everything the family has
 // approved: reviewed lesson work, reviewed life learning and parent-recorded evidence, lists the syllabus
 // outcomes each entry gives evidence for, and summarises coverage and progress by key learning area.
 // It is a record kept by the parent, not an assessment, and nothing here claims compliance.
@@ -7,7 +9,7 @@ import * as lb from "./lessonBuilder";
 import * as pl from "./planning";
 import { NSW_OUTCOMES } from "./data/curriculum";
 import { normArea } from "./outcomeMatch";
-import { frameworkFor, areasFor, getFamilyJurisdiction, yearLabel, type Framework } from "./data/jurisdictions";
+import { frameworkFor, areasFor, getFamilyJurisdiction, yearLabel, FRAMEWORKS, type Framework } from "./data/jurisdictions";
 
 type DB = any;
 
@@ -146,9 +148,10 @@ export async function buildPortfolio(db: DB, familyId: string, studentId: string
   if (!student) return null;
   const stage = String(student.stage || "");
   const jurisdiction = await getFamilyJurisdiction(db, familyId).catch(() => null);
-  const fw = frameworkFor(jurisdiction);
-  const nsw = !fw || fw.jurisdiction === "NSW";
-  const expectedAreas = nsw ? KLAS_BY_STAGE[stage] || KLAS_BY_STAGE.S2 : areasFor(fw!, stage);
+  // No state chosen yet: use the Australian Curriculum (the national framework), never NSW by default.
+  const fw: Framework = frameworkFor(jurisdiction) || FRAMEWORKS.ACT;
+  const nsw = jurisdiction === "NSW";
+  const expectedAreas = nsw ? KLAS_BY_STAGE[stage] || KLAS_BY_STAGE.S2 : areasFor(fw, stage);
   const { limits } = await lb.getEntitlement(db, familyId, o.now);
   const from = o.from && /^\d{4}-\d{2}-\d{2}$/.test(o.from) ? o.from : "";
   const to = o.to && /^\d{4}-\d{2}-\d{2}$/.test(o.to) ? o.to : "";
@@ -206,7 +209,10 @@ export async function buildPortfolio(db: DB, familyId: string, studentId: string
 
   if (!nsw) for (const e of entries) {
     e.learning_area = toFrameworkArea(e.learning_area === "Other" ? e.subject : e.learning_area, fw, stage);
-    for (const o of e.outcomes) o.learning_area = toFrameworkArea(o.learning_area, fw, stage);
+    for (const o of e.outcomes) {
+      o.learning_area = toFrameworkArea(o.learning_area, fw, stage);
+      o.code = ""; // NSW codes mean nothing to another state's reviewer; the plain-language wording stays.
+    }
   }
   entries.sort((a, b) => a.date.localeCompare(b.date) || a.title.localeCompare(b.title));
   const total = entries.length;
@@ -223,8 +229,9 @@ export async function buildPortfolio(db: DB, familyId: string, studentId: string
   return {
     student: { id: student.id, name: student.name, stage, stage_name: nsw ? extra.stage_name || STAGE_NAMES[stage] || stage : "", year_level: nsw ? student.year_level || "" : yearLabel(student.year_level, stage) },
     parent_name: parentRow?.name || "",
-    jurisdiction: fw?.jurisdiction || null,
-    framework: nsw ? "NSW syllabus outcomes (NESA)" : fw!.name,
+    jurisdiction: jurisdiction || null,
+    jurisdiction_name: jurisdiction ? fw.jurisdiction_name : null,
+    framework: nsw ? "NSW syllabuses (NESA)" : fw.name,
     from: from || null, to: to || null,
     first_entry: dates[0] || null, last_entry: dates[dates.length - 1] || null,
     expected_areas: expectedAreas,

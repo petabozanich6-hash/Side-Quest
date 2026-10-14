@@ -75,8 +75,8 @@ function VisitPrep({ students, range, setRange, bump }) {
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 space-y-4" data-testid="visit-prep">
       <div>
-        <h2 className="font-display text-xl font-bold text-slate-900">Prepare for a home education visit</h2>
-        <p className="text-sm text-slate-600">Print a record of learning and progress to show your liaison or Authorised Person: a summary by key learning area, the syllabus outcomes evidenced, dated and annotated work samples (photos included) in order so progress over time is clear, and your own summary and declaration.</p>
+        <h2 className="font-display text-xl font-bold text-slate-900">Prepare for a home education review</h2>
+        <p className="text-sm text-slate-600">Print a record of learning and progress for your state or territory's home education review, whether that's a visit, a moderator meeting or a written report: a summary by learning area, the curriculum outcomes evidenced, dated and annotated work samples (photos included) in order so progress over time is clear, and your own summary and declaration.</p>
       </div>
       <div className="flex flex-wrap items-end gap-3 text-xs font-semibold text-slate-600">
         <label>Child<select value={sid} onChange={(e) => setSid(e.target.value)} className="block mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal" data-testid="visit-child">{students.map((st) => <option key={st.id} value={st.id}>{st.name}</option>)}</select></label>
@@ -85,10 +85,12 @@ function VisitPrep({ students, range, setRange, bump }) {
         <span className="text-slate-500 font-normal">Usually your current registration period. Leave blank for everything.</span>
       </div>
 
+      {data && !data.jurisdiction && <p className="rounded-lg bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900" data-testid="visit-no-state">Choose your state or territory on the <Link to="/parent/life-learning" className="font-semibold underline">Life Learning</Link> page so this record uses your curriculum's learning areas. Until then it uses the Australian Curriculum.</p>}
+      {data?.framework && <p className="text-xs text-slate-500">Curriculum: {data.framework}{data.jurisdiction_name ? ` (${data.jurisdiction_name})` : ""}</p>}
       {s && (
         <div className="overflow-x-auto" data-testid="visit-coverage">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs uppercase tracking-wider text-slate-500"><tr><th className="p-2">Key learning area</th><th className="p-2">Entries</th><th className="p-2">Outcomes achieved</th><th className="p-2">Working towards</th></tr></thead>
+            <thead className="bg-slate-50 text-left text-xs uppercase tracking-wider text-slate-500"><tr><th className="p-2">Learning area</th><th className="p-2">Entries</th><th className="p-2">Outcomes achieved</th><th className="p-2">Working towards</th></tr></thead>
             <tbody>{s.areas.map((a) => (
               <tr key={a.learning_area} className="border-t border-slate-100">
                 <td className="p-2">{a.learning_area}</td>
