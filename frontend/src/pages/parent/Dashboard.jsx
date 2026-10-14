@@ -47,7 +47,7 @@ export default function ParentDashboard() {
   const pendingTotal = waiting.length + readingPending.length;
 
   return (
-    <div className="p-8 lg:p-10 space-y-8 relative" data-testid="parent-dashboard">
+    <div className="p-4 sm:p-8 lg:p-10 space-y-8 relative" data-testid="parent-dashboard">
       <Leaf className="absolute right-10 top-8 opacity-50" size={70} color="#C8893B"/>
       <Branch className="absolute left-0 bottom-10 opacity-20" size={200} color="#4A5D3A"/>
 
@@ -56,7 +56,7 @@ export default function ParentDashboard() {
           <div className="font-script text-2xl" style={{color:"#C77B5B"}}>Good to see you</div>
           <h1 className="font-display text-4xl font-bold" style={{color:"#1F3B2D"}}>Parent Hub</h1>
           <p className="mt-2 text-sm text-stone-600 max-w-2xl leading-relaxed">
-            Your one-stop homeschool studio. Plan, teach, assign, record, and prepare for inspection — all in one calm place.
+            Welcome to your family’s home base. Plan lessons, see what your children are working on, and keep the learning journey organised in one place.
           </p>
         </div>
       </header>
@@ -67,7 +67,7 @@ export default function ParentDashboard() {
         const assigned = data.students.reduce((n, s) => n + (s.total_assignments || 0), 0);
         const steps = [
           { done: kids > 0, label: "Add your child", to: "/parent/children", cta: "Add a child" },
-          { done: lessons > 0, label: "Create a lesson", to: "/parent/lessons/new", cta: "Create a lesson" },
+          { done: lessons > 0, label: "Create a lesson", to: "/parent/lessons/new", cta: "Build your first lesson" },
           { done: assigned > 0, label: "Assign it to your child", to: "/parent/lessons", cta: "Choose a lesson" },
           { done: data.students.some(s => s.completed > 0), label: "Review their work", to: "#waiting", cta: "See what is waiting" },
         ];
@@ -95,7 +95,7 @@ export default function ParentDashboard() {
       <section id="waiting" data-testid="waiting-list">
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Waiting for you</h2>
         {pendingTotal === 0 ? (
-          <div className="paper-card p-6 text-sm text-stone-500">Nothing to review right now.</div>
+          <div className="paper-card p-6 text-sm text-stone-600">All caught up! When your child submits work, you’ll be able to review it here. <Link to="/parent/assignments" className="font-semibold underline">View assignments</Link></div>
         ) : (
           <div className="space-y-3">
             {readingPending.map(r => (
@@ -125,9 +125,9 @@ export default function ParentDashboard() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           <Quick to="/parent/lessons/make" icon={BookOpen} label="Make a lesson" desc="Describe what to teach and Side-Quest writes it, or build one yourself" tint="#C77B5B" testid="quick-create-lesson"/>
           <Quick to="/parent/children" icon={Plus} label="Add a student" desc="Set up a child with username and PIN" tint="#4A5D3A" testid="quick-add-student"/>
-          <Quick to="/parent/side-quest" icon={Wand2} label="Create a Side Quest" desc="Seasonal or interest-themed lessons mapped to outcomes" tint="#D4A574" testid="quick-sidequest"/>
+          <Quick to="/parent/side-quest" icon={Wand2} label="Seasonal surprises" desc="Choose the optional seasonal touches your family wants in your children’s pet rooms" tint="#D4A574" testid="quick-sidequest"/>
           <Quick to="/parent/life-learning" icon={Trees} label="Log life learning" desc="Baking, bushwalks, projects — map them to outcomes" tint="#6B8A5B" testid="quick-life"/>
-          <Quick to="/parent/learning-plans" icon={FileCheck} label="Build a learning plan" desc="AP-ready learning plan built around your child's interests" tint="#1F3B2D" testid="quick-plan"/>
+          <Quick to="/parent/learning-plans" icon={FileCheck} label="Build a learning plan" desc="Organise what you plan to teach and keep it alongside your records" tint="#1F3B2D" testid="quick-plan"/>
           <Quick to="/parent/reading-log" icon={BookOpen} label="Add to reading log" desc="Track every book, chapter and audiobook for records" tint="#C8893B" testid="quick-reading"/>
         </div>
       </section>
@@ -166,7 +166,7 @@ export default function ParentDashboard() {
       <section className="paper-card-dark p-6 relative overflow-hidden" style={{backgroundColor:"#1F3B2D"}}>
         <div className="relative z-10 text-sm leading-relaxed" style={{color:"#E8E2D1"}}>
           <div className="font-display font-bold text-base mb-1" style={{color:"#F5EFE0"}}>Platform notice</div>
-          <p>Side Quest Learning is a planning, teaching and record-keeping support tool. Parents remain responsible for checking current official requirements, selecting an appropriate educational program, supervising learning and confirming alignment with the relevant curriculum and syllabus requirements. This platform is free. Paid resource options may be added by parents at their discretion.</p>
+          <p>Side-Quest Learning supports homeschool planning, teaching and record-keeping. A limited seven-day preview is available without a card, followed by an optional paid Family Membership. Parents remain responsible for their children’s education and their state or territory requirements. NSW syllabus outcome tracking is supported first; curriculum alignment in other states needs your own review.</p>
         </div>
       </section>
 

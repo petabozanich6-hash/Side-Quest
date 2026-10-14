@@ -9,7 +9,7 @@ const LABEL = {
   PAST_DUE: "Family Membership (payment needed)", CANCELLED: "Membership ended", INTERNAL: "Owner account",
 };
 const PAID = ["ACTIVE_WEEKLY", "ACTIVE_FORTNIGHTLY", "ACTIVE_MONTHLY", "ACTIVE_ANNUAL", "PAST_DUE"];
-const money = (cents) => `$${(cents / 100).toFixed(cents % 100 ? 2 : 0)}`;
+const money = (cents) => `${(cents / 100).toFixed(cents % 100 ? 2 : 0)}`;
 const BTN = "rounded-xl px-4 py-2 text-sm font-bold text-white disabled:opacity-60";
 const BTN_STYLE = { background: "#4A5D3A" };
 const day = (iso) => (iso ? new Date(iso).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }) : "");
@@ -86,7 +86,8 @@ export default function UpgradePage() {
 
       {canBuy && (
         <section data-testid="billing-options">
-          <h2 className="font-display text-lg font-bold mb-3" style={{color:"#1F3B2D"}}>Choose how often to pay</h2>
+          <h2 className="font-display text-lg font-bold mb-1" style={{color:"#1F3B2D"}}>Choose how often to pay</h2>
+          <p className="text-sm text-stone-600 mb-4">Every option includes the same Family Membership. There are no per-child or per-subject charges.</p>
           <div className="grid gap-3 sm:grid-cols-2">
             {billing.options.map((o) => (
               <div key={o.interval} className="paper-card p-4 flex flex-col gap-2" data-testid={`plan-${o.interval}`}>
@@ -103,10 +104,10 @@ export default function UpgradePage() {
         </section>
       )}
 
-      {!billing.enabled && !paid && (
+      {!billing.enabled && !paid && eff !== "INTERNAL" && (
         <div className="paper-card p-5" data-testid="billing-status">
           <h2 className="font-display text-lg font-bold" style={{color:"#1F3B2D"}}>Membership checkout is not open yet</h2>
-          <p className="text-sm text-stone-700 mt-1">We are in early access and are not taking payments. Nothing will be charged.</p>
+          <p className="text-sm text-stone-700 mt-1">Paid checkout is not available right now. You can keep exploring the free preview while subscriptions are being prepared.</p>
         </div>
       )}
       {eff === "INTERNAL" && <p className="text-sm text-stone-600">Your owner account includes complimentary access to all Side-Quest features.</p>}
@@ -115,17 +116,18 @@ export default function UpgradePage() {
         <table className="w-full text-sm">
           <thead><tr className="text-left text-xs uppercase tracking-wider text-stone-500"><th className="p-3"></th><th className="p-3 text-center">Free preview (7 days)</th><th className="p-3 text-center">Family Membership</th></tr></thead>
           <tbody>
-            {row("Children", ["1", "All your children"])}
-            {row("Lessons you create", ["2", "Unlimited*"])}
-            {row("Active assignments", ["2", "Unlimited*"])}
+            {row("Children", ["1", "Up to 20 (no extra fee)"])}
+            {row("Lessons you create", ["2", "Up to 5,000*"])}
+            {row("Active assignments", ["2", "Up to 5,000*"])}
             {row("Child dashboard, XP and pet", ["Yes", "Yes"])}
-            {row("Parent review and evidence", ["Yes", "Yes"])}
+            {row("Parent review and Evidence Backpack", ["Yes", "Yes"])}
             {row("Full portfolio export", ["1 sample entry", "Full"])}
-            {row("AI lesson drafting", ["No", "Yes (fair-use limits)"])}
+            {row("AI lesson drafting", ["No", "10 drafts/day, 60/month"])}
+            {row("AI lesson changes", ["No", "20/day, 120/month"])}
           </tbody>
         </table>
       </div>
-      <p className="text-xs text-stone-500">*Subject to fair-use limits. Prices in AUD.</p>
+      <p className="text-xs text-stone-500">*These are generous family-wide limits. AI drafting and changes have the allowances listed above. Prices are in AUD; all payment options include the same features.</p>
 
       <div className="text-sm text-stone-600">
         Used so far: {usage.children} of {plan.limits.maxChildren} children · {usage.lessons} lessons · {usage.active_assignments ?? usage.activeAssignments} active assignments.

@@ -77,9 +77,24 @@ let parentToken, lessonId, assignmentId, childToken, submissionId, xp0 = 0;
 await step("landing page loads and has no NSW-only marketing", async () => {
   await page.goto(BASE + "/"); await page.waitForLoadState("networkidle");
   const t = await page.textContent("body");
-  ok(/Side Quest/i.test(t), "no brand text");
+  ok(/Side[- ]Quest/i.test(t), "no brand text");
   ok(!/NSW K|Supports NSW initial curriculum/i.test(t), "NSW-only wording still on landing");
   await shot("landing");
+});
+
+await step("landing page remains usable on phone, tablet and desktop", async () => {
+  for (const [label, width, height] of [["phone", 375, 812], ["tablet", 768, 1024], ["desktop", 1440, 900]]) {
+    const context = await browser.newContext({ viewport: { width, height } });
+    const current = await context.newPage();
+    try {
+      await current.goto(BASE + "/"); await current.waitForLoadState("networkidle");
+      const dims = await current.evaluate(() => ({ scroll: document.documentElement.scrollWidth, viewport: window.innerWidth }));
+      ok(dims.scroll <= dims.viewport + 2, `landing ${label}: horizontal overflow (${dims.scroll} > ${dims.viewport})`);
+      ok(await current.locator('[data-testid=nav-register]').isVisible(), `landing ${label}: registration link hidden`);
+      ok(await current.locator('[data-testid=nav-child-login]').isVisible(), `landing ${label}: student login link hidden`);
+      await current.screenshot({ path: `${SHOTS}/landing-${label}.png`, fullPage: true });
+    } finally { await context.close(); }
+  }
 });
 
 await step("A. new family registers through the UI", async () => {
@@ -161,7 +176,7 @@ await step("refreshing the builder keeps the saved lesson (persistence)", async 
 await step("D. library shows the lesson; duplicate and edit-as-draft work", async () => {
   await page.goto(BASE + "/parent/lessons");
   await page.waitForSelector(`[data-testid=lesson-${lessonId}]`);
-  ok((await page.textContent("body")).includes("upgrade coming later"), "legacy-lessons notice missing");
+  ok(!(await page.textContent("body")).includes("upgrade coming later"), "obsolete ready-made lessons notice is still displayed");
   await page.click(`[data-testid=dup-${lessonId}]`);
   await page.waitForURL(/\/parent\/lessons\/[^/]+\/edit/, { timeout: 15000 });
   ok((await page.inputValue('[data-testid=b-title]')).includes("(copy)"), "copy title");

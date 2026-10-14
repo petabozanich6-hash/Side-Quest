@@ -37,7 +37,7 @@ export default function ChildLayout() {
           <div className="flex items-center gap-2.5">
             <div className="h-9 w-9 rounded-xl grid place-items-center" style={{backgroundColor: theme.accent}}><Compass size={18} style={{color:"#F5EFE0"}}/></div>
             <div className="leading-tight">
-              <div className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>Side Quest</div>
+              <div className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>Side-Quest</div>
               <div className="text-[10px] uppercase tracking-widest font-bold" style={{color: theme.accent}}>{theme.title}</div>
             </div>
           </div>

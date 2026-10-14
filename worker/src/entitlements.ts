@@ -111,4 +111,4 @@ export function isPaidPlan(plan: Plan): boolean {
 }
 
 export const UPGRADE_MESSAGE =
-  "This is included with a Family Membership. Upgrade to create unlimited lessons, add all your children and use the full planning and portfolio tools.";
+  "A Family Membership includes more lessons and assignments, child profiles and the full planning and Evidence Backpack tools. AI lesson drafting is included with fair-use limits. See Your Plan for details.";

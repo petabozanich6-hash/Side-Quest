@@ -4,8 +4,8 @@ import { ArrowLeft, Mail, ChevronDown } from "lucide-react";
 import { PAGES, CONTACT_EMAIL, PRIVACY_EMAIL, LAST_UPDATED } from "./legalContent";
 
 const SUBJECTS = {
-  general: [CONTACT_EMAIL, "Side Quest enquiry"],
-  problem: [CONTACT_EMAIL, "Side Quest problem report"],
+  general: [CONTACT_EMAIL, "Side-Quest enquiry"],
+  problem: [CONTACT_EMAIL, "Side-Quest problem report"],
   access: [PRIVACY_EMAIL, "Data access request"],
   correction: [PRIVACY_EMAIL, "Data correction request"],
   complaint: [PRIVACY_EMAIL, "Privacy complaint"],
@@ -102,7 +102,7 @@ export default function LegalPage({ base = "/parent/trust", publicView = false }
     <div className={publicView ? "min-h-screen" : ""} style={publicView ? { backgroundColor: "#FBF7EC" } : {}}>
       <div className="max-w-3xl mx-auto px-6 py-10" data-testid={`legal-${slug}`}>
         <Link to={publicView ? "/" : base} className="inline-flex items-center gap-1.5 text-sm font-semibold mb-6" style={{ color: "#1F3B2D" }}>
-          <ArrowLeft size={14} /> {publicView ? "Back to Side Quest" : "Back to Trust & Support"}
+          <ArrowLeft size={14} /> {publicView ? "Back to Side-Quest" : "Back to Trust & Support"}
         </Link>
         <h1 className="font-display text-3xl font-bold" style={{ color: "#1F3B2D" }}>{page.title}</h1>
         <p className="mt-2 text-stone-600">{page.summary}</p>
