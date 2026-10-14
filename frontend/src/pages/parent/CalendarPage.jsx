@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { api } from "../../lib/api";
+import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
 import { Plus, X, ChevronLeft, ChevronRight, CalendarPlus } from "lucide-react";
 import ScheduleModal, { isoLocal } from "../../components/parent/ScheduleModal";
@@ -77,7 +77,7 @@ export default function CalendarPage() {
       }
       toast.success(targets.length > 1 ? `Scheduled for ${targets.length} children` : "Scheduled");
       setOpen(false); load();
-    } catch (err) { toast.error(err.response?.data?.detail || "Failed. Some entries may already have been added."); load(); }
+    } catch (err) { toast.error(apiErrorMessage(err, "Some entries may already have been added")); load(); }
     finally { setSaving(false); }
   };
 
