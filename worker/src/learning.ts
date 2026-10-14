@@ -1,6 +1,5 @@
 import { buildPlanWithAi, planAiUsage } from "./aiPlan";
-import { JURISDICTIONS as PLAN_JURISDICTIONS, JURISDICTION_CODES, CHECKED_ON } from "./data/planJurisdictions";
-import { setFamilyJurisdiction, normJurisdiction } from "./data/jurisdictions";
+import { JURISDICTIONS as PLAN_JURISDICTIONS, CHECKED_ON } from "./data/planJurisdictions";
 import { analyseLifeEvidence } from "./data/lifeEvidence";
 import { FRAMEWORKS, JURISDICTION_CODES, frameworkFor, getFamilyJurisdiction, normJurisdiction, setFamilyJurisdiction, usesNswOutcomes } from "./data/jurisdictions";
 import { mapLifeEvidenceWithAi, lifeMapLimits } from "./lifeLearningAi";
