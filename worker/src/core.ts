@@ -544,6 +544,14 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
         .bind(String(b.student_id), c.get("user").family_id).first();
       if (!student) return c.json({ detail: "Student not found" }, 404);
     }
+    if (b.linked_lesson_id) {
+      const lesson = await c.env.DB.prepare("SELECT id FROM lessons WHERE id = ? AND (family_id = ? OR family_id IS NULL)").bind(String(b.linked_lesson_id), c.get("user").family_id).first();
+      if (!lesson) return c.json({ detail: "Lesson not found" }, 404);
+    }
+    if (b.linked_assignment_id) {
+      const assignment = await c.env.DB.prepare("SELECT id FROM assignments WHERE id = ? AND family_id = ?").bind(String(b.linked_assignment_id), c.get("user").family_id).first();
+      if (!assignment) return c.json({ detail: "Assignment not found" }, 404);
+    }
     const id = newId();
     await c.env.DB.prepare(
       "INSERT INTO calendar_events (id, family_id, student_id, title, date, start_time, duration_minutes, event_type, linked_lesson_id, linked_assignment_id, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
