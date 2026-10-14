@@ -3,10 +3,11 @@ import { applySpelling } from "./data/spelling";
 import * as lb from "./lessonBuilder";
 import * as aid from "./aiDraft";
 import * as help from "./aiHelp";
+import * as res from "./resources";
 import * as pl from "./planning";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
-type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string; HELP_PER_CHILD_DAY?: string; HELP_PER_FAMILY_DAY?: string; HELP_PER_FAMILY_MONTH?: string };
+type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string; HELP_PER_CHILD_DAY?: string; HELP_PER_FAMILY_DAY?: string; HELP_PER_FAMILY_MONTH?: string; YOUTUBE_API_KEY?: string };
 type App = Hono<{ Bindings: Env; Variables: { user: AuthUser } }>;
 
 const nowIso = () => new Date().toISOString();
@@ -239,6 +240,23 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const b: any = await c.req.json().catch(() => ({}));
     const r = await aid.planSeriesWithAi(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, request: b });
     return r.ok ? c.json(r) : send(c, r);
+  });
+
+  app.get("/api/resources/status", auth, parent, async (c) => c.json(await res.resourceStatus(c.env, c.env.DB, c.get("user").family_id)));
+
+  app.post("/api/resources/suggest", auth, parent, async (c) => {
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await res.suggestForLesson(c.env, c.env.DB, c.get("user"), b);
+    if (!r.ok) return send(c, r);
+    const { ok: _ok, ...out } = r;
+    return c.json(out);
+  });
+
+  app.post("/api/resources/verify-link", auth, parent, async (c) => {
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await res.verifyLink(b.url);
+    if (!r.ok) return send(c, r);
+    return c.json(r.video);
   });
 
   app.post("/api/lessons/:id/apply-patch", auth, parent, async (c) => {

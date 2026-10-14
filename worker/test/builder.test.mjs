@@ -697,3 +697,97 @@ test("practice: lessons keep interactive items; the child never gets answers or 
   assert.equal((await lb.checkPractice(db, u, asg.id, { part: "task", i: 9, j: 0, answer: "4" })).status, 404);
   assert.equal((await lb.checkPractice(db, { id: "someone-else", family_id: fam }, asg.id, { part: "guided", i: 0, answer: "x" })).status, 404);
 });
+
+// ---------------------------------------------------------------- YouTube resource discovery (fake network, no real key)
+import * as rs from "../src/resources.ts";
+
+const ytItem = (id, over = {}) => ({
+  id, snippet: { title: "Negative numbers on a number line", channelTitle: "Khan Academy", description: "Learn about negative integers on the number line.", liveBroadcastContent: "none" },
+  contentDetails: { duration: "PT4M30S" }, status: { embeddable: true, privacyStatus: "public", uploadStatus: "processed" }, ...over,
+});
+function fakeYt(items, calls = []) {
+  return async (url) => {
+    calls.push(url);
+    if (url.includes("/search?")) return { ok: true, status: 200, json: async () => ({ items: items.map((i) => ({ id: { videoId: i.id } })) }) };
+    return { ok: true, status: 200, json: async () => ({ items }) };
+  };
+}
+
+test("youtube: only public, embeddable, not age-restricted, not live videos survive; best matches first; no key means an honest 'unavailable'", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const les = await mk(db, fam, { title: "Negative integers", objectives: ["Order negative numbers on a number line"] });
+  const u = { id: "p1", family_id: fam };
+  assert.equal((await rs.suggestForLesson({}, db, u, { lesson_id: les.id })).status, 503);
+  const items = [
+    ytItem("good_video01"),
+    ytItem("noembed0001", { status: { embeddable: false, privacyStatus: "public" } }),
+    ytItem("private00001", { status: { embeddable: true, privacyStatus: "private" } }),
+    ytItem("agerestrict1", { contentDetails: { duration: "PT4M", contentRating: { ytRating: "ytAgeRestricted" } } }),
+    ytItem("livestream01", { snippet: { title: "Negative numbers live", channelTitle: "X", description: "", liveBroadcastContent: "live" } }),
+    ytItem("prank0000001", { snippet: { title: "Negative numbers PRANK compilation", channelTitle: "Randoms", description: "", liveBroadcastContent: "none" } }),
+    ytItem("tooshort0001", { contentDetails: { duration: "PT20S" } }),
+  ];
+  const calls = [];
+  const r = await rs.suggestForLesson({ YOUTUBE_API_KEY: "test-key-123456" }, db, u, { lesson_id: les.id }, fakeYt(items, calls), NOW);
+  assert.ok(r.ok, JSON.stringify(r));
+  assert.deepEqual(r.videos.map((v) => v.video_id), ["good_video01"]);
+  const v = r.videos[0];
+  assert.match(v.embed_url, /^https:\/\/www\.youtube-nocookie\.com\/embed\/good_video01$/);
+  assert.equal(v.duration_seconds, 270);
+  assert.match(v.thumbnail, /^https:\/\/i\.ytimg\.com\//);
+  assert.ok(calls[0].includes("videoEmbeddable=true") && calls[0].includes("safeSearch=strict"));
+  // cached: a second request does not touch the network or the quota
+  const again = await rs.suggestForLesson({ YOUTUBE_API_KEY: "test-key-123456" }, db, u, { lesson_id: les.id }, async () => { throw new Error("should not search again"); }, NOW);
+  assert.ok(again.ok && again.cached === true);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM ai_usage WHERE kind='yt_search'").get().n, 1);
+  // another family cannot suggest for this lesson
+  assert.equal((await rs.suggestForLesson({ YOUTUBE_API_KEY: "test-key-123456" }, db, { id: "x", family_id: "other" }, { lesson_id: les.id }, fakeYt(items), NOW)).status, 404);
+});
+
+test("youtube: per-family daily limit, failures cost nothing, key is never in a response", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const les = await mk(db, fam, { title: "Photosynthesis" });
+  const u = { id: "p1", family_id: fam };
+  const env = { YOUTUBE_API_KEY: "secret-key-abcdef" };
+  const boom = async () => ({ ok: false, status: 403, json: async () => ({}) });
+  const f = await rs.suggestForLesson(env, db, u, { lesson_id: les.id, query: "photosynthesis kids" }, boom, NOW);
+  assert.equal(f.status, 502); assert.ok(!JSON.stringify(f).includes("secret-key"));
+  assert.equal((await rs.resourceStatus(env, db, fam, NOW)).searches_left_today, rs.YT_LIMITS.familyPerDay);
+  for (let i = 0; i < rs.YT_LIMITS.familyPerDay; i++) {
+    const ok = await rs.suggestForLesson(env, db, u, { lesson_id: les.id, query: `photosynthesis idea ${i}` }, fakeYt([ytItem("vid_" + String(i).padStart(7, "0"), { snippet: { title: "Photosynthesis explained", channelTitle: "Khan Academy", description: "", liveBroadcastContent: "none" } })]), NOW);
+    assert.ok(ok.ok, JSON.stringify(ok));
+  }
+  const over = await rs.suggestForLesson(env, db, u, { lesson_id: les.id, query: "photosynthesis another" }, fakeYt([]), NOW);
+  assert.equal(over.status, 429); assert.equal(over.code, "YT_QUOTA");
+});
+
+test("youtube: a parent's own link is checked (embeddable only) and non-YouTube links are refused", async () => {
+  const ok = await rs.verifyLink("https://youtu.be/dQw4w9WgXcQ", async () => ({ ok: true, status: 200, json: async () => ({ title: "A video", author_name: "A channel" }) }));
+  assert.ok(ok.ok && ok.video.video_id === "dQw4w9WgXcQ" && ok.video.title === "A video" && ok.video.source === "parent");
+  assert.equal((await rs.verifyLink("https://youtu.be/dQw4w9WgXcQ", async () => ({ ok: false, status: 401, json: async () => ({}) }))).code, "NOT_EMBEDDABLE");
+  assert.equal((await rs.verifyLink("https://example.com/watch?v=dQw4w9WgXcQ", async () => ({ ok: true, status: 200, json: async () => ({}) }))).code, "BAD_LINK");
+  assert.equal((await rs.verifyLink("javascript:alert(1)", async () => ({ ok: true, status: 200, json: async () => ({}) }))).ok, false);
+});
+
+test("approved videos are kept with the lesson, survive edit/duplicate/assignment snapshot, and never trust a client-supplied embed or thumbnail host", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const kid = child(db, fam);
+  const res = { type: "video", title: "Negative numbers", url: "https://www.youtube.com/watch?v=good_video01", embed_url: "https://evil.example/x", channel: "Khan Academy", duration_seconds: 270, thumbnail: "https://evil.example/t.jpg", purpose: "explain", concept: "negative numbers", after: "teaching", source: "youtube", verified: true };
+  const les = await mk(db, fam, { resources: [res] });
+  const r0 = les.resources[0];
+  assert.equal(r0.embed_url, "https://www.youtube-nocookie.com/embed/good_video01");
+  assert.equal(r0.video_id, "good_video01"); assert.equal(r0.thumbnail, ""); assert.equal(r0.channel, "Khan Academy"); assert.equal(r0.after, "teaching");
+  const dup = (await lb.duplicateLesson(db, fam, les.id, NOW)).lesson;
+  assert.equal(dup.resources[0].video_id, "good_video01");
+  const asg = (await lb.assignLesson(db, fam, { student_id: kid, lesson_id: les.id }, NOW)).assignment;
+  // the lesson is edited afterwards (video removed): the earlier assignment keeps its snapshot
+  await lb.updateLesson(db, fam, les.id, { ...les, resources: [] }, NOW);
+  const snap = JSON.parse(db.raw.prepare("SELECT lesson_snapshot s FROM assignments WHERE id=?").get(asg.id).s);
+  assert.equal(snap.resources[0].video_id, "good_video01");
+  const row = db.raw.prepare("SELECT * FROM assignments WHERE id=?").get(asg.id);
+  const safe = lb.childSafeLesson(lb.assignmentLesson(row, null));
+  assert.equal(safe.resources[0].embed_url, "https://www.youtube-nocookie.com/embed/good_video01");
+});

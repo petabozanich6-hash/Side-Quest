@@ -28,6 +28,7 @@ export type Env = {
   HELP_PER_CHILD_DAY?: string;
   HELP_PER_FAMILY_DAY?: string;
   HELP_PER_FAMILY_MONTH?: string;
+  YOUTUBE_API_KEY?: string;
   /** Optional sender address override (defaults to no-reply@sidequestlearning.app). */
   EMAIL_FROM?: string;
   /** Verified Email Routing destination that incoming support mail is forwarded to. */
