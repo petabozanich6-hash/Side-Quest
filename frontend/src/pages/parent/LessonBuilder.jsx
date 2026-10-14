@@ -14,7 +14,7 @@ const STAGE_OF = { "Kindergarten / Foundation": "ES1", "Year 1": "S1", "Year 2":
 
 const blank = () => ({
   title: "", learning_area: "", year_level: "", objectives: [""], sections: [{ heading: "", body: "" }],
-  activities: [], questions: [], quiz: [], resources: [], duration_minutes: "", curriculum_refs: "", outcome_codes: [], hoard_words: [],
+  activities: [], questions: [], quiz: [], resources: [], duration_minutes: "", curriculum_refs: "", outcome_codes: [], hoard_words: "",
   offline_alternative: "", answer_key: "", parent_notes: "", status: "draft",
   delivery: "independent", introduction: "", materials: "", worked_examples: [], guided_practice: [],
   support: "", extension: "", parent_script: "", evidence_suggestions: "",
@@ -47,7 +47,7 @@ function fromServer(l) {
     activities: (l.activities || []).map(a => ({ ...a, tasks: a.tasks || [] })), questions: l.questions || [], quiz: l.quiz || [],
     resources: (l.resources || []).map(r => ({ ...r, type: r.type === "video" ? "video" : "link", title: r.title || "", url: r.url || "" })),
     key_words: (l.key_words || []).map(w => `${w.word} = ${w.meaning}`).join("\n"),
-    duration_minutes: l.duration_minutes ?? "", curriculum_refs: (l.curriculum_refs || []).join("\n"), outcome_codes: l.outcome_codes || [], hoard_words: l.hoard_words || [],
+    duration_minutes: l.duration_minutes ?? "", curriculum_refs: (l.curriculum_refs || []).join("\n"), outcome_codes: l.outcome_codes || [], hoard_words: (l.hoard_words || []).map(w => (w.hint ? `${w.word} = ${w.hint}` : w.word)).join("\n"),
     offline_alternative: l.offline_alternative && !l.activities?.some(a => a.offline) ? l.offline_alternative : (l.offline_alternative || ""),
     answer_key: l.answer_key || "", parent_notes: l.parent_notes || "", status: l.status || "draft",
     delivery: l.delivery === "parent_guided" ? "parent_guided" : "independent",
@@ -77,7 +77,7 @@ function toServer(f, status) {
     key_words: lines(f.key_words).map(x => { const i = x.indexOf("="); return i > 0 ? { word: x.slice(0, i).trim(), meaning: x.slice(i + 1).trim() } : null; }).filter(w => w && w.word && w.meaning),
     duration_minutes: f.duration_minutes === "" ? null : Number(f.duration_minutes),
     curriculum_refs: f.curriculum_refs.split("\n").map(s => s.trim()).filter(Boolean),
-    outcome_codes: f.outcome_codes || [], hoard_words: f.hoard_words || [],
+    outcome_codes: f.outcome_codes || [], hoard_words: lines(f.hoard_words).map(x => { const i = x.indexOf("="); return i > 0 ? { word: x.slice(0, i).trim(), hint: x.slice(i + 1).trim() } : { word: x.trim() }; }).filter(w => w.word),
     offline_alternative: f.offline_alternative, answer_key: f.answer_key, parent_notes: f.parent_notes,
     delivery: f.delivery, introduction: f.introduction,
     materials: lines(f.materials),
@@ -357,6 +357,10 @@ export default function LessonBuilder() {
 
           <Card title="Words to know" hint="Vocabulary your child will see at the start. One per line, like: ones = the single units in a number.">
             <textarea className={field} rows={3} value={f.key_words} onChange={e => set("key_words", e.target.value)} placeholder="regroup = swap 10 ones for 1 ten" data-testid="b-keywords" />
+          </Card>
+
+          <Card title="Word Hoard spelling words" hint="These go into your child's Word Hoard the moment they open the lesson. One single word per line, with an optional memory trick, like: because = big elephants can always understand small elephants.">
+            <textarea className={field} rows={4} value={f.hoard_words} onChange={e => set("hoard_words", e.target.value)} placeholder="integer = in-te-ger" data-testid="b-hoard" />
           </Card>
 
           <Card title="Wrap-up" hint="Revisit the key ideas at the end. Your child sees this.">

@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { Film, Search, Trash2, X, Play, Plus } from "lucide-react";
 import { api } from "../../lib/api";
 
+const MAX_VIDEOS = 4;
 const PLACES = [["intro", "Before the lesson starts"], ["teaching", "After the explanations"], ["examples", "After the worked examples"], ["practice", "After the practice"], ["extension", "At the end"]];
 const PURPOSE = { intro: "Introduces the idea", explain: "Explains the idea", demo: "Shows it being done", extension: "Goes a little further" };
 const placeFor = (purpose) => (purpose === "intro" ? "intro" : purpose === "demo" ? "examples" : purpose === "extension" ? "extension" : "teaching");
@@ -92,8 +93,11 @@ export default function VideoSuggestions({ lesson, onSaved, auto = false }) {
       type: "video", title: v.title, url: v.url, channel: v.channel || "", description: v.description || "", duration_seconds: v.duration_seconds || null, thumbnail: v.thumbnail || "",
       purpose: v.purpose || "explain", concept: lesson.title ? `${lesson.title}` : "", after: placeFor(v.purpose), prompt: "", source: v.source === "parent" ? "parent" : "youtube", verified: true,
     };
-    // one useful video per lesson by default: adding replaces the current one
-    if (await save([...others, r], videos.length ? "Video replaced" : "Video added to the lesson")) { setList((l) => l.filter((x) => x.video_id !== v.video_id)); setOwn(null); setLink(""); }
+    // Several videos can be added (up to MAX_VIDEOS); adding the same video again does nothing new.
+    const key = (x) => x.video_id || x.url;
+    if (videos.some((x) => key(x) === key(r) || x.url === r.url)) { toast.info("That video is already in the lesson"); return; }
+    if (videos.length >= MAX_VIDEOS) { toast.error(`A lesson can have up to ${MAX_VIDEOS} videos. Remove one to add another.`); return; }
+    if (await save([...others, ...videos, r], videos.length ? "Video added. The lesson now has " + (videos.length + 1) + " videos" : "Video added to the lesson")) { setList((l) => l.filter((x) => x.video_id !== v.video_id)); setOwn(null); setLink(""); }
   };
   const patch = (i, p) => save([...others, ...videos.map((x, k) => (k === i ? { ...x, ...p } : x))], "Saved");
   const remove = (i) => save([...others, ...videos.filter((_, k) => k !== i)], "Video removed");
@@ -125,7 +129,7 @@ export default function VideoSuggestions({ lesson, onSaved, auto = false }) {
               </label>
             </Card>
           ))}
-          {videos.length > 0 && <p className="text-xs text-emerald-800" data-testid="video-added-note">This video is part of the lesson. To use a different one, add another below and it will replace this one.</p>}
+          {videos.length > 0 && <p className="text-xs text-emerald-800" data-testid="video-added-note">{videos.length === 1 ? "This video is part of the lesson." : `These ${videos.length} videos are part of the lesson.`}{` You can add more below (up to ${MAX_VIDEOS}) or remove any you do not want.`}</p>}
 
           {status.configured ? (
             <div className="space-y-2">

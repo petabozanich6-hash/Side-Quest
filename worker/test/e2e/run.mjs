@@ -119,6 +119,7 @@ await step("preview: a second child is refused by the server (402)", async () =>
 await step("C. parent builds a lesson in the builder, previews it and saves it to the library", async () => {
   await page.goto(BASE + "/parent/lessons/new");
   await page.fill('[data-testid=b-title]', "Halves and quarters");
+  await page.fill('[data-testid=b-hoard]', "fraction = frac-shun\nquarter");
   await page.selectOption('[data-testid=b-subject]', "Mathematics");
   await page.selectOption('[data-testid=b-year]', "Year 3");
   await page.fill('[data-testid=b-obj-0]', "I can split a shape into halves and quarters");
@@ -296,6 +297,15 @@ await step("child answers are saved and survive a refresh", async () => {
   ok((await cpage.inputValue('[data-testid=answer-0]')) === "Four quarters", "written answer lost on refresh");
   await seek(cpage, '[data-testid=activity-0]');
   ok(await cpage.isChecked('[data-testid=activity-0]'), "tick lost on refresh");
+});
+
+await step("Word Hoard: the lesson's spelling words reach the child's hoard when the lesson opens", async () => {
+  await cpage.waitForSelector('[data-testid=hoard-words]', { timeout: 15000 });
+  const wb = await api("GET", "/word-bank", childToken);
+  const all = Object.values(wb.json.words || {}).flat().map((w) => w.word);
+  ok(all.includes("fraction") && all.includes("quarter"), "hoard words missing: " + JSON.stringify(all));
+  const hint = Object.values(wb.json.words || {}).flat().find((w) => w.word === "fraction");
+  ok(/frac-shun/.test(JSON.stringify(hint)), "memory trick lost: " + JSON.stringify(hint));
 });
 
 await step("cannot hand in before passing the quiz (server enforces it)", async () => {

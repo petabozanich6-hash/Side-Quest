@@ -147,7 +147,17 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const videos = (l.resources || []).filter((r) => r.type === "video" && (r.embed_url || r.url));
   const links = (l.resources || []).filter((r) => r.type !== "video" && r.url);
   // Spelling words for the Word Hoard: the lesson's own list, or its single-word key words for lessons made before lists existed.
-  const hoard = (Array.isArray(l.hoard_words) && l.hoard_words.length ? l.hoard_words : keyWords.map((k) => ({ word: k.word }))).map((w) => ({ word: String(w?.word ?? w ?? "").trim(), hint: w?.hint || "" })).filter((w) => /^[A-Za-z][A-Za-z'-]{2,}$/.test(w.word)).slice(0, 12);
+  const STOP = new Set("the and for with that this from into what when where which have has are was were your you can not but all any how why who its their they them then than also each more most some such only over under about between during".split(" "));
+  const derive = () => {
+    const out = [];
+    const take = (t) => String(t || "").split(/[^A-Za-z'-]+/).forEach((w) => { w = w.toLowerCase(); if (w.length >= 5 && !STOP.has(w) && !out.some((x) => x.word === w)) out.push({ word: w }); });
+    keyWords.forEach((k) => take(k.word));
+    take(l.title);
+    return out;
+  };
+  const listed = Array.isArray(l.hoard_words) && l.hoard_words.length ? l.hoard_words : null;
+  // The lesson's own list; for lessons made before lists existed, words taken from its key words and title.
+  const hoard = (listed || derive()).map((w) => ({ word: String(w?.word ?? w ?? "").trim(), hint: w?.hint || "" })).filter((w) => /^[A-Za-z][A-Za-z'-]{2,}$/.test(w.word)).slice(0, 12);
   const hasQuiz = quiz.some((q) => q.type !== "short_answer" && Array.isArray(q.options));
 
   const locked = ["submitted", "accepted", "demonstrated", "completed"].includes(a.status);
@@ -190,14 +200,16 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   };
 
   const [hoardAdded, setHoardAdded] = useState([]);
+  const [hoardChecked, setHoardChecked] = useState(false);
   useEffect(() => {
     // The moment the child opens the lesson, its spelling words go into their Word Hoard (words they already have are skipped).
     if (preview || !hoard.length) return;
     api.post("/word-bank/words", { words: hoard, source: "lesson", lesson_id: l.id || a.lesson_id })
       .then((res) => {
         const added = (res.data?.added || []).map((w) => w.word);
+        setHoardChecked(true);
         if (added.length) { setHoardAdded(added); toast.success(`${added.length} new word${added.length === 1 ? "" : "s"} added to your Word Hoard 🐾`); }
-      }).catch(() => {});
+      }).catch(() => setHoardChecked(false));
     // eslint-disable-next-line
   }, []);
 
@@ -308,6 +320,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
           <div className="rounded-xl border p-3 bg-white" style={border} data-testid="hoard-words">
             <p className="font-bold text-sm">🐾 Spelling words for your Word Hoard</p>
             <ul className="mt-1 space-y-1 text-base">{hoard.map((w, i) => <li key={i}><b>{w.word}</b>{w.hint ? <span className="text-stone-600"> — {w.hint}</span> : null}</li>)}</ul>
+            {!preview && hoardChecked && <p className="text-xs text-stone-600 mt-1" data-testid="hoard-saved">{hoardAdded.length ? `${hoardAdded.length} new in your Word Hoard${hoardAdded.length < hoard.length ? `; you already had ${hoard.length - hoardAdded.length}` : ""}.` : "All of these are already in your Word Hoard."}</p>}
             {!preview && <Link to="/child/word-hoard" className="mt-2 inline-block text-sm font-bold underline" style={{ color: "#4A5D3A" }} data-testid="hoard-link">Practise them in your Word Hoard →</Link>}
           </div>
         )}
