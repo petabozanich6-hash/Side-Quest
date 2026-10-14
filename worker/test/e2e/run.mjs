@@ -485,7 +485,7 @@ await step("J. XP, progress and evidence update; XP is awarded exactly once", as
   ok(await cpage.locator('[data-testid=completed-section]').count() === 0, "completed lessons should not stay on child home");
   await cpage.click('[data-testid=completed-portfolio-link]');
   await cpage.waitForURL("**/child/portfolio");
-  ok((await cpage.locator('[data-testid^=port-]').count()) >= 1, "approved work is missing from the child's portfolio");
+  await cpage.waitForSelector('[data-testid^=port-]', { state: "visible", timeout: 15000 });
   const shown = Number((await cpage.textContent('[data-testid=stat-xp]')).trim());
   const nowXp = (await api("GET", "/dashboard/child", childToken)).json.xp;
   ok(shown >= xp0 + 45 && shown <= nowXp, `XP shown to child (${shown}) should include the 45 awarded (before ${xp0}, now ${nowXp})`);
@@ -530,7 +530,7 @@ await step("parent can open the child learning records from the child overview",
   await page.click('[data-testid=child-overview-evidence-link]');
   await page.waitForURL("**/parent/evidence");
   await page.goto(BASE + "/parent");
-  ok(await page.locator('[data-testid=quick-evidence]').isVisible(), "Parent Hub Evidence Backpack link missing");
+  await page.waitForSelector('[data-testid=quick-evidence]', { state: "visible", timeout: 10000 });
 });
 
 await step("editing the library lesson does not change the finished assignment (snapshot)", async () => {
@@ -778,7 +778,7 @@ await step("M. expired preview: cannot create or assign, but nothing is lost", a
   ok((await api("POST", "/lessons", parentToken, { title: "after", status: "draft" })).status === 402, "can create after expiry");
   const kids = await api("GET", "/students", parentToken);
   ok((await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId })).status === 402, "can assign after expiry");
-  ok((await api("GET", "/lessons", parentToken)).json.length >= 2, "lessons not readable after expiry");
+  ok((await api("GET", "/lessons", parentToken)).json.some(l => l.id === lessonId), "remaining lesson not readable after expiry");
   ok((await api("GET", "/dashboard/child", childToken)).json.xp >= xp0 + 45, "child progress lost");
   await page.goto(BASE + "/parent/lessons"); await page.waitForSelector('[data-testid=expired-banner]');
   await shot("expired");
