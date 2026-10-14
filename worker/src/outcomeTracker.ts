@@ -52,7 +52,7 @@ const ac9Rows: CatalogueOutcome[] = AC9_OUTCOMES.map(o => {
   const stage = stageNumber === 0 ? "ES1" : "S" + stageNumber;
   return {
     code: o.code,
-    description: o.description,
+    description: "",
     learning_area: o.learning_area,
     stage,
     source: "ACARA Australian Curriculum v9.0 content description (CC BY 4.0; MRAC/2024/04)",
@@ -372,10 +372,10 @@ export function levelFromReview(status: string, m: any): { level: Level; consoli
   if (status === "needs_revision") return { level: "participation", consolidate: true };
   if (status === "needs_more_practice") return { level: "practice", consolidate: true };
   if (status === "submitted" || status === "awaiting_help") return { level: "participation", consolidate: false };
-  // accepted / demonstrated
+  // Approval, including legacy accepted=true mappings, is practice unless the parent explicitly marks "shown".
   const mark = String(m?.mark || "");
-  if (mark === "shown" || (!mark && m?.accepted === true)) return { level: "demonstrated", consolidate: false };
-  if (mark === "not_yet" || (!mark && m && m.accepted === false)) return { level: "practice", consolidate: true };
+  if (mark === "shown") return { level: "demonstrated", consolidate: false };
+  if (mark === "not_yet") return { level: "practice", consolidate: true };
   return { level: "practice", consolidate: false }; // completed and approved, outcome not judged
 }
 
@@ -586,7 +586,7 @@ export async function trackerFor(db: DB, familyId: string, studentId: string, o:
     const e = evaluate(evByCode.get(code) || [], rules, { confirmed: !!p?.parent_confirmed_at, now });
     return {
       code,
-      description: p?.description || k?.description || code,
+      description: code,
       learning_area: p?.learning_area || k?.learning_area || "Other",
       stage: p?.stage || k?.stage || "",
       in_stage: (p?.stage || k?.stage) === student.stage,
@@ -666,7 +666,7 @@ export async function outcomeDetail(db: DB, familyId: string, studentId: string,
   // Learning plans that list this outcome are shown as planned, never as evidence.
   const plans = await db.prepare("SELECT id, title, period_start, period_end, ai_content FROM learning_plans WHERE family_id = ? AND student_id = ?").bind(familyId, studentId).all().then((r: any) => r.results || []).catch(() => []);
   const planned = plans.filter((pl: any) => JSON.stringify(json<any>(pl.ai_content, {})).includes(`"${code}"`)).map((pl: any) => ({ id: pl.id, title: pl.title, period_start: pl.period_start, period_end: pl.period_end }));
-  const outcome = { code, description: p?.description || k?.description || code, learning_area: area, stage: p?.stage || k?.stage || "", source: k?.source || "" };
+  const outcome = { code, description: code, learning_area: area, stage: p?.stage || k?.stage || "", source: k?.source || "" };
   return {
     available: true as const,
     student: { id: student.id, name: student.name },
