@@ -36,8 +36,8 @@ const NSW_CATALOGUE: Catalogue = {
   framework: "NSW",
   name: "NSW syllabuses (NESA)",
   version: `nsw-seed-v${NSW_OUTCOMES_SEED_VERSION}`,
-  outcomes: NSW_OUTCOMES.map((o) => ({ code: o.code, description: o.description, learning_area: o.learning_area, stage: o.stage, source: o.source })),
-  byCode: new Map(NSW_OUTCOMES.map((o) => [o.code, { code: o.code, description: o.description, learning_area: o.learning_area, stage: o.stage, source: o.source }])),
+  outcomes: NSW_OUTCOMES.map((o) => ({ code: o.code, description: "", learning_area: o.learning_area, stage: o.stage, source: o.source })),
+  byCode: new Map(NSW_OUTCOMES.map((o) => [o.code, { code: o.code, description: "", learning_area: o.learning_area, stage: o.stage, source: o.source }])),
 };
 
 /** Verified outcome lists by jurisdiction. Add a jurisdiction here only once its official list is loaded and checked. */
