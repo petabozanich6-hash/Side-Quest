@@ -486,6 +486,8 @@ await step("J. XP, progress and evidence update; XP is awarded exactly once", as
   await cpage.click('[data-testid=completed-portfolio-link]');
   await cpage.waitForURL("**/child/portfolio");
   await cpage.waitForSelector('[data-testid^=port-]', { state: "visible", timeout: 15000 });
+  await cpage.goto(BASE + "/child");
+  await cpage.waitForSelector('[data-testid=stat-xp]');
   const shown = Number((await cpage.textContent('[data-testid=stat-xp]')).trim());
   const nowXp = (await api("GET", "/dashboard/child", childToken)).json.xp;
   ok(shown >= xp0 + 45 && shown <= nowXp, `XP shown to child (${shown}) should include the 45 awarded (before ${xp0}, now ${nowXp})`);
