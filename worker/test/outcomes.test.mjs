@@ -52,6 +52,13 @@ const review = (db, fam, sub, d, status, mappings) => lb.reviewSubmission(db, fa
 const statusOf = (t, code) => t.outcomes.find((o) => o.code === code);
 const count = (db, sql, ...b) => db.raw.prepare(sql).get(...b).n;
 
+test("approval alone cannot count as demonstrated understanding", () => {
+  assert.deepEqual(ot.levelFromReview("accepted", { code: RN, accepted: true }), { level: "practice", consolidate: false });
+  assert.deepEqual(ot.levelFromReview("demonstrated", { code: RN, accepted: true }), { level: "practice", consolidate: false });
+  assert.deepEqual(ot.levelFromReview("demonstrated", { code: RN, mark: "shown" }), { level: "demonstrated", consolidate: false });
+  assert.deepEqual(ot.levelFromReview("needs_revision", { code: RN, mark: "shown" }), { level: "participation", consolidate: true });
+});
+
 test("full journey: five lessons, hand-ins, reviews with support, parent confirmation and preserved history", async () => {
   const db = makeDb();
   const fam = family(db);
@@ -89,7 +96,7 @@ test("full journey: five lessons, hand-ins, reviews with support, parent confirm
   assert.ok((await review(db, fam, w2.sub, 10, "demonstrated", [{ code: RN, mark: "shown" }])).ok);
   assert.ok((await review(db, fam, w3.sub, 11, "demonstrated", [{ code: RN, mark: "shown" }, { code: AR, mark: "not_yet" }])).ok);
   assert.ok((await review(db, fam, w4.sub, 12, "demonstrated", [{ code: AR, mark: "shown" }])).ok); // assignment support was red
-  assert.ok((await review(db, fam, w5.sub, 12, "accepted", [{ code: OLC, accepted: true, learning_area: "English" }])).ok); // older review shape
+  assert.ok((await review(db, fam, w5.sub, 12, "accepted", [{ code: OLC, accepted: true, learning_area: "English" }])).ok); // older review shape: approval records practice, never implicit mastery
 
   // 5. The tracker updates: RN demonstrated (awaiting confirmation), AR still developing (help-heavy work doesn't count).
   t = await ot.trackerFor(db, fam, mia, { now: D(12) });
