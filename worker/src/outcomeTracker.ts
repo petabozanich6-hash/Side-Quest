@@ -372,10 +372,10 @@ export function levelFromReview(status: string, m: any): { level: Level; consoli
   if (status === "needs_revision") return { level: "participation", consolidate: true };
   if (status === "needs_more_practice") return { level: "practice", consolidate: true };
   if (status === "submitted" || status === "awaiting_help") return { level: "participation", consolidate: false };
-  // accepted / demonstrated
+  // Approval, including legacy accepted=true mappings, is practice unless the parent explicitly marks "shown".
   const mark = String(m?.mark || "");
-  if (mark === "shown" || (!mark && m?.accepted === true)) return { level: "demonstrated", consolidate: false };
-  if (mark === "not_yet" || (!mark && m && m.accepted === false)) return { level: "practice", consolidate: true };
+  if (mark === "shown") return { level: "demonstrated", consolidate: false };
+  if (mark === "not_yet") return { level: "practice", consolidate: true };
   return { level: "practice", consolidate: false }; // completed and approved, outcome not judged
 }
 
