@@ -211,7 +211,7 @@ export default function LessonBuilder() {
 
       {f.ai_generated && (
         <p className="rounded-lg border border-violet-300 bg-violet-50 px-3 py-2 text-sm text-violet-900" data-testid="ai-banner">
-          <b>AI-generated draft.</b> Check every fact, answer and quiz question before you save it to your library. It is not checked against any curriculum.
+          <b>AI-generated draft.</b> Check every fact, answer and quiz question before you save it to your library. A curriculum reference is a starting point, not verified compliance with the official outcomes; you must review the lesson against your state or territory requirements.
         </p>
       )}
       {(f.ai_flags || []).length > 0 && f.status !== "ready" && (
