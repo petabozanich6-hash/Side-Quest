@@ -526,7 +526,7 @@ export const PAGES = {
     sections: [
       { h: "The short version", items: [
         "Side-Quest uses Cloudflare for hosting and AI, Google for support email and public YouTube video searches, and Stripe for paid memberships."
-        "Cloudflare hosts and stores learning data. Google processes support emails and video-search requests, while Stripe manages authorised membership payments."
+        "Cloudflare hosts and stores learning data. Google processes support emails and video-search requests, while Stripe manages authorised membership payments.",
         "I don't use advertising services, analytics trackers or data brokers.",
         "I don't sell your information to anyone, and providers only get what they need to do their job.",
       ] },
