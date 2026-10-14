@@ -175,7 +175,7 @@ await step("refreshing the builder keeps the saved lesson (persistence)", async 
 await step("D. library shows the lesson; duplicate and edit-as-draft work", async () => {
   await page.goto(BASE + "/parent/lessons");
   await page.waitForSelector(`[data-testid=lesson-${lessonId}]`);
-  ok((await page.textContent("body")).includes("upgrade coming later"), "legacy-lessons notice missing");
+  ok(!(await page.textContent("body")).includes("upgrade coming later"), "obsolete ready-made lessons notice is still displayed");
   await page.click(`[data-testid=dup-${lessonId}]`);
   await page.waitForURL(/\/parent\/lessons\/[^/]+\/edit/, { timeout: 15000 });
   ok((await page.inputValue('[data-testid=b-title]')).includes("(copy)"), "copy title");
