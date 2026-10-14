@@ -56,7 +56,7 @@ export function sizeFor(minutes: number) {
     tasksPerActivity: long ? 5 : 4,
     questions: long ? 6 : 4,
     quiz: long ? 8 : 5,
-    minTeachingWords: Math.round(minutes * 9),
+    minTeachingWords: Math.round(minutes * 14),
   };
 }
 
@@ -339,7 +339,7 @@ export function qualityIssues(d: Draft, spec: Spec): Issue[] {
   const z = sizeFor(minutes);
   const out: Issue[] = [];
   const add = (i: Issue) => out.push(i);
-  const w = d.sections.reduce((n, s) => n + words(s.body), 0);
+  const w = d.sections.reduce((n, s) => n + words(s.body), 0) + d.worked_examples.reduce((n, x) => n + x.steps.reduce((m, t) => m + words(t), 0), 0);
   if (!d.sections.length) add({ keys: ["sections"], msg: "there are no teaching explanations", hard: true, repair: true });
   else if (w < z.minTeachingWords * 0.4) add({ keys: ["sections"], msg: `the explanations total only ${w} words, far too little to teach a ${minutes}-minute lesson`, hard: true, repair: true });
   else if (w < z.minTeachingWords) add({ keys: ["sections"], msg: `the explanations total ${w} words; a ${minutes}-minute lesson needs at least ${z.minTeachingWords} words of real teaching`, repair: true });
@@ -465,7 +465,7 @@ function standardExcerpt(delivery: Spec["delivery"]): string {
 export function designPrompt(sp: Spec): string {
   const z = sizeFor(sp.minutes);
   return [
-    `STAGE 1 OF 3: EDUCATIONAL DESIGN for one lesson of about ${sp.minutes} minutes. Do not write the lesson yet. Decide precisely what will be taught and in what order.`,
+    `STAGE 1: EDUCATIONAL DESIGN for one lesson of about ${sp.minutes} minutes. Do not write the lesson yet. Decide precisely what will be taught and in what order.`,
     ...contextBlock(sp),
     `Narrow the topic if it is too big for ${sp.minutes} minutes and teach the narrower scope properly.`,
     "JSON shape:",
@@ -476,64 +476,104 @@ export function designPrompt(sp: Spec): string {
     ' "prior_knowledge":[2-4 strings: what the student must already know],',
     ' "objectives":[2-4 strings starting "I can ..."],',
     ' "key_words":[{"word":string,"meaning":string}] 3-8 words, child-friendly meanings,',
-    ` "sequence":[exactly ${z.sections} objects {"heading":string,"idea":string (the ONE new idea this part teaches),"how":string (the concrete example, model or real-world context used to teach it and the reasoning that shows WHY it works)}] ordered so that each idea needs only the ones before it,`,
+    ` "sequence":[exactly ${z.sections} objects {"heading":string,"idea":string (the ONE new idea this part teaches),"how":string (the concrete example, model or real-world context used to teach it, and the reasoning that shows WHY it works),"key_points":[3-5 strings: the specific facts, rules or reasoning this part must make clear]}] ordered so that each idea needs only the ones before it,`,
     ` "worked_examples":[exactly ${z.workedExamples} objects {"title":string,"problem":string (the exact problem with real numbers or words),"skill":string (what this example models)}] from easiest to hardest, each modelling a different skill or situation,`,
     ' "misconceptions":[{"mistake":string,"fix":string (the correct reasoning)}] 2-4 genuine likely errors,',
     ' "practice_plan":string (which skills guided practice and independent practice must cover, easiest to hardest)}',
   ].join("\n");
 }
 
-export function instructionPrompt(sp: Spec, design: any): string {
-  const z = sizeFor(sp.minutes);
+const designBrief = (design: any) => JSON.stringify({ concept: design.concept, key_words: design.key_words, sequence: (design.sequence || []).map((s: any) => s.heading), worked_examples: (design.worked_examples || []).map((w: any) => w.title), misconceptions: design.misconceptions });
+
+export function framePrompt(sp: Spec, design: any): string {
   return [
-    `STAGE 2 OF 3: THE TEACHING for one lesson of about ${sp.minutes} minutes. The design below is settled. Now write the actual instruction a student reads.`,
+    `STAGE 2: THE FRAME for a ${sp.minutes}-minute lesson. The design is settled. Write the opening and the closing the student reads, and any reading the lesson needs.`,
     ...contextBlock(sp),
-    `DESIGN:\n${JSON.stringify(design)}`,
-    standardExcerpt(sp.delivery),
-    "Write one 'sections' item for every item in the design's sequence, in the same order, using its idea and its way of teaching it. Each body is 130 to 230 words of genuinely developed explanation: introduce the idea in plain words, show it with the concrete example, explain WHY it works, define new vocabulary where it first appears, and link back to what came before. Write each worked example for the problems named in the design, in order, with every step as a full sentence that says what is done and why, and an answer that has been checked.",
+    `DESIGN:\n${designBrief(design)}`,
     "JSON shape:",
-    '{"introduction":string (3-6 sentences: a concrete scenario or question that makes the learning feel needed, and what will be learned),',
-    ` "sections":[{"heading":string,"body":string,"visual":optional}] (${z.sections} items; ${VISUAL_FORMAT}),`,
-    ` "worked_examples":[{"title":string,"problem":string,"steps":[strings, 3-8 full-sentence steps],"answer":string,"visual":optional}] (${z.workedExamples} items),`,
-    ' "texts":[optional: {"title":string,"kind":"text"|"source"|"data","content":string}] only if the subject needs a reading, source or data table that you write in full,',
-    ' "consolidation":string (a wrap-up that restates the essential ideas in order and corrects the likely mistakes)}',
+    '{"introduction":string (4-7 sentences: a concrete scenario or question that makes the learning feel needed, then exactly what the student will learn and how the lesson will go),',
+    ' "texts":[optional: {"title":string,"kind":"text"|"source"|"data","content":string}] ONLY if the subject needs a reading, source or data table that you write in full (original writing only),',
+    ' "consolidation":string (a thorough wrap-up of 120-200 words: restate each essential idea in order in plain words, tie them together, correct the likely mistakes, and say what the student can now do)}',
   ].join("\n");
 }
 
-export function practicePrompt(sp: Spec, design: any, taught: any): string {
-  const z = sizeFor(sp.minutes);
-  const lesson = [
+export function sectionPrompt(sp: Spec, design: any, i: number, texts: any[]): string {
+  const sec = design.sequence[i];
+  const n = design.sequence.length;
+  return [
+    `STAGE 3, SECTION ${i + 1} OF ${n}: write ONE complete teaching section of a ${sp.minutes}-minute lesson. This is the actual explanation the student reads, so it must teach thoroughly and completely.`,
+    ...contextBlock(sp),
+    `WHOLE LESSON OUTLINE (so you fit in and do not repeat other sections): ${designBrief(design)}`,
+    texts?.length ? `READINGS THE LESSON USES:\n${texts.map((t: any) => `${t.title}: ${t.content}`).join("\n")}` : "",
+    standardExcerpt(sp.delivery),
+    `THIS SECTION: heading "${sec.heading}". The ONE new idea: ${sec.idea}. How to teach it: ${sec.how}. It must make clear: ${(sec.key_points || []).join("; ")}.${i > 0 ? ` The student has already been taught: ${design.sequence.slice(0, i).map((s: any) => s.idea).join("; ")}. Build on that without repeating it.` : " This is the first section, so begin from what the student already knows."}`,
+    "Write 250 to 380 words in short paragraphs separated by blank lines. Cover, in this order: (1) connect to something the student already knows or has seen; (2) state the new idea in plain words and define any new term the first time it appears; (3) work through at least one concrete example with the real numbers or details, one step at a time, saying what happens at each step; (4) explain WHY it works, not just what to do; (5) point out the slip students commonly make here and how to avoid it; (6) finish with a sentence that leads into what comes next. Every sentence must teach something. No filler, no repeating the heading.",
+    'JSON shape: {"heading":string,"body":string,"visual":optional (' + VISUAL_FORMAT + ")}",
+  ].filter(Boolean).join("\n");
+}
+
+export function examplePrompt(sp: Spec, design: any, i: number, texts: any[]): string {
+  const w = design.worked_examples[i];
+  const n = design.worked_examples.length;
+  return [
+    `STAGE 3, WORKED EXAMPLE ${i + 1} OF ${n}: write ONE complete worked example for a ${sp.minutes}-minute lesson, as a teacher would model it on the board while thinking aloud.`,
+    ...contextBlock(sp),
+    `WHOLE LESSON OUTLINE: ${designBrief(design)}`,
+    texts?.length ? `READINGS THE LESSON USES:\n${texts.map((t: any) => `${t.title}: ${t.content}`).join("\n")}` : "",
+    `THIS EXAMPLE: "${w.title}". Problem (use exactly this): ${w.problem}. It models: ${w.skill}.${i > 0 ? " It comes after easier examples, so it can use what they showed." : " It is the first example, so keep it straightforward."}`,
+    "Show 5 to 9 steps. Each step is one or two full sentences that say what is done AND why, using the actual numbers or words, so a student can follow without anyone's help. Begin with what the problem is asking and a plan. Include one step that checks the answer a second way, or that warns of the slip a student could make here. End with the final answer, checked.",
+    'JSON shape: {"title":string,"problem":string,"steps":[strings],"answer":string,"visual":optional (' + VISUAL_FORMAT + ")}",
+  ].filter(Boolean).join("\n");
+}
+
+function taughtSummary(taught: any): string {
+  return [
     ...(taught.sections || []).map((s: any, i: number) => `Part ${i + 1}. ${s.heading}: ${s.body}`),
     ...(taught.worked_examples || []).map((w: any) => `Worked example "${w.title}": ${w.problem} => ${w.answer}`),
     ...(taught.texts || []).map((t: any) => `Reading "${t.title}": ${t.content}`),
   ].join("\n");
+}
+
+export function practiceAPrompt(sp: Spec, design: any, taught: any): string {
+  const z = sizeFor(sp.minutes);
   return [
-    `STAGE 3 OF 3: PRACTICE AND ASSESSMENT for one lesson of about ${sp.minutes} minutes. The student has just been taught the material below. Write practice and assessment that exactly match it.`,
+    `STAGE 4, PRACTICE: guided and independent practice for a ${sp.minutes}-minute lesson. The student has just been taught the material below. Write practice that exactly matches it.`,
     ...contextBlock(sp),
     `KEY WORDS: ${JSON.stringify(design.key_words || [])}`,
     `PRACTICE PLAN: ${design.practice_plan || ""}`,
     `LIKELY MISTAKES: ${JSON.stringify(design.misconceptions || [])}`,
-    `WHAT WAS TAUGHT:\n${lesson}`,
-    `Write all the questions in full with correct answers. Guided practice starts close to the worked examples and gets harder, each hint nudging without giving the answer. Independent activities then apply the ideas to new situations (including word problems or real contexts), each with ${z.tasksPerActivity} or more distinct on-screen tasks. Written questions and quiz questions assess only what was taught above, and at least one of each probes the likely mistakes. Every task has a complete, correct answer. Double-check every calculation.`,
+    `WHAT WAS TAUGHT:\n${taughtSummary(taught)}`,
+    `Guided practice starts very close to the worked examples and steadily gets harder; each hint nudges without giving the answer by reminding the student of the method. Independent activities then apply the ideas to new situations (including word problems or real contexts), each with ${z.tasksPerActivity} or more distinct on-screen tasks that go from easy to challenging. Every item has a complete, correct answer. Double-check every calculation.`,
     "JSON shape:",
     `{"guided_practice":[ITEM] (${z.guided} items),`,
-    ` "activities":[{"title":string,"instructions":string (what the student does and why, in 2-5 sentences),"offline":boolean,"visual":optional,"tasks":[ITEM]}] (${z.activities} activities; non-hands-on activities have ${z.tasksPerActivity} or more tasks; a hands-on activity (offline true) has tasks that record a prediction, observations, results and a reflection),`,
-    ` "questions":[{"prompt":string,"type":"short"|"long","answer_key":string (a complete correct answer or marking guidance)}] (${z.questions} items),`,
-    ` "quiz":[{"question":string,"options":[3 or 4 plausible strings],"correct_index":number (zero-based),"explanation":string}] (${z.quiz} items; vary which option is correct),`,
-    ' "support":string (3-5 specific ideas if the student is struggling),',
-    ' "extension":string (2-3 specific challenge tasks, written out in full),',
-    ' "materials":[strings: simple items needed, usually none],',
-    ' "teaching_questions":[{"ask":string,"expected":string}] 4-6 questions to ask while teaching and the answer to expect,',
-    ' "parent_script":string (see the delivery mode above),',
-    ' "evidence_suggestions":[3-4 strings],',
-    ' "answer_key":string (complete answers for every guided practice item, activity task, written question and quiz question),',
-    ` "duration_minutes":number}`,
+    ` "activities":[{"title":string,"instructions":string (what the student does and why, in 2-5 sentences),"offline":boolean,"visual":optional,"tasks":[ITEM]}] (${z.activities} activities; non-hands-on activities have ${z.tasksPerActivity} or more tasks; a hands-on activity (offline true) is optional and has tasks that record a prediction, observations, results and a reflection)}`,
     `${ITEM_FORMAT} ${VISUAL_FORMAT}`,
   ].join("\n");
 }
 
+export function assessmentPrompt(sp: Spec, design: any, taught: any): string {
+  const z = sizeFor(sp.minutes);
+  return [
+    `STAGE 4, ASSESSMENT: written questions, a quiz and the guidance around them for a ${sp.minutes}-minute lesson. The student has just been taught the material below. Assess only what was taught.`,
+    ...contextBlock(sp),
+    `LIKELY MISTAKES: ${JSON.stringify(design.misconceptions || [])}`,
+    `WHAT WAS TAUGHT:\n${taughtSummary(taught)}`,
+    "Questions move from recall to explanation and application; at least one of the written questions and one quiz question probes a likely mistake. Quiz options must be plausible, with wrong options reflecting real errors. Every question has a complete correct answer or marking guidance.",
+    "JSON shape:",
+    `{"questions":[{"prompt":string,"type":"short"|"long","answer_key":string (a complete correct answer or marking guidance)}] (${z.questions} items),`,
+    ` "quiz":[{"question":string,"options":[3 or 4 plausible strings],"correct_index":number (zero-based),"explanation":string}] (${z.quiz} items; vary which option is correct),`,
+    ' "support":string (3-5 specific ideas if the student is struggling),',
+    ' "extension":string (2-3 specific challenge tasks, written out in full),',
+    ' "materials":[strings: simple items needed, usually none],',
+    ' "teaching_questions":[{"ask":string,"expected":string}] 4-6 questions a parent could ask afterwards to check understanding, and the answer to expect,',
+    ' "parent_script":string (see the delivery mode above),',
+    ' "evidence_suggestions":[3-4 strings],',
+    ` "duration_minutes":number}`,
+  ].join("\n");
+}
+
 type StageRun = { value: any; salvaged: boolean };
-const hasKeys = (v: any, keys: string[]) => v && typeof v === "object" && keys.every((k) => v[k] !== undefined && !(Array.isArray(v[k]) && !v[k].length));
+const hasKeys = (v: any, keys: string[]) => v && typeof v === "object" && keys.every((k) => v[k] !== undefined && !(Array.isArray(v[k]) && !v[k].length) && v[k] !== "");
 
 /** Strict parse first; only if that fails is a cut-off reply patched up, and then it is reported, never hidden. */
 export function parseReply(out: unknown): StageRun | null {
@@ -557,7 +597,31 @@ export function generationReport(st: GenStats, model: string) {
 
 export type GenStats = { calls: number; input_tokens: number; output_tokens: number; stages: string[] };
 
-/** Runs the three stages. `call(messages, maxTokens)` returns the raw model reply. Throws only if the model cannot be reached. */
+/** The parent answer key is assembled from the items themselves, so it always agrees with the lesson. */
+export function buildAnswerKey(l: any): string {
+  const out: string[] = [];
+  (l.guided_practice || []).forEach((g: any, i: number) => out.push(`Practice ${i + 1}: ${g.answer ?? ""}`));
+  (l.activities || []).forEach((a: any) => (a.tasks || []).forEach((t: any, j: number) => out.push(`${a.title} ${String.fromCharCode(97 + (j % 26))}: ${t.answer ?? ""}`)));
+  (l.questions || []).forEach((q: any, i: number) => out.push(`Question ${i + 1}: ${q.answer_key ?? ""}`));
+  (l.quiz || []).forEach((q: any, i: number) => out.push(`Quiz ${i + 1}: ${Array.isArray(q.options) ? q.options[q.correct_index] : ""}${q.explanation ? ` (${q.explanation})` : ""}`));
+  return out.join("\n");
+}
+
+const SMALL_POOL = 4;
+async function pool<T>(jobs: (() => Promise<T>)[], size = SMALL_POOL): Promise<T[]> {
+  const out: T[] = new Array(jobs.length);
+  let next = 0;
+  await Promise.all(Array.from({ length: Math.min(size, jobs.length) }, async () => {
+    while (next < jobs.length) { const k = next++; out[k] = await jobs[k](); }
+  }));
+  return out;
+}
+
+/**
+ * Builds the lesson in focused requests so each part gets the model's full attention:
+ *   1 design, 2 frame (introduction, readings, wrap-up), 3 one request per teaching section and per worked example (run a few at a time),
+ *   4 practice and assessment (two requests). `call(messages, maxTokens)` returns the raw model reply and throws only if the model cannot be reached.
+ */
 export async function generateStaged(
   call: (messages: { role: string; content: string }[], maxTokens: number) => Promise<unknown>,
   spec: Spec,
@@ -577,23 +641,45 @@ export async function generateStaged(
       if (r && hasKeys(r.value, need)) {
         if (!r.salvaged) return r.value;
         best = r;
-      } else if (r && !best) best = hasKeys(r.value, need) ? r : null;
+      }
     }
     if (best) { flags.push(`The AI's reply for the ${name} step was cut off, so the end of it may be missing. Please read it through.`); return best.value; }
     return null;
   };
-  const design = await go("design", designPrompt(spec), 2600, ["sequence", "worked_examples"]);
+
+  const design = await go("design", designPrompt(spec), 2800, ["sequence", "worked_examples"]);
   if (!design) return null;
-  const taught = await go("teaching", instructionPrompt(spec, design), 6500, ["sections", "worked_examples"]);
-  if (!taught) return null;
-  const practice = await go("practice", practicePrompt(spec, design, taught), 7500, ["guided_practice", "quiz"]);
-  if (!practice) return null;
-  return {
+  const seq: any[] = (design.sequence || []).filter((s: any) => s && s.heading && s.idea).slice(0, 10);
+  const exs: any[] = (design.worked_examples || []).filter((w: any) => w && w.problem).slice(0, 8);
+  if (!seq.length || !exs.length) return null;
+  design.sequence = seq; design.worked_examples = exs;
+
+  const frame = await go("frame", framePrompt(spec, design), 1800, ["introduction", "consolidation"]);
+  if (!frame) return null;
+  const texts: any[] = Array.isArray(frame.texts) ? frame.texts.filter((t: any) => t?.content) : [];
+
+  const results = await pool<any>([
+    ...seq.map((_, i) => () => go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])),
+    ...exs.map((_, i) => () => go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps", "answer"])),
+  ]);
+  const sections = results.slice(0, seq.length);
+  const examples = results.slice(seq.length);
+  if (sections.some((s) => !s) || examples.some((s) => !s)) return null;
+  const taught = { sections, worked_examples: examples, texts };
+
+  const [pa, pb] = await Promise.all([
+    go("practice", practiceAPrompt(spec, design, taught), 6000, ["guided_practice", "activities"]),
+    go("assessment", assessmentPrompt(spec, design, taught), 4500, ["questions", "quiz"]),
+  ]);
+  if (!pa || !pb) return null;
+  const merged: Record<string, any> = {
     title: design.title, teaching_plan: design.teaching_plan, why_it_matters: design.why_it_matters, prior_knowledge: design.prior_knowledge,
     objectives: design.objectives, key_words: design.key_words, misconceptions: design.misconceptions,
-    introduction: taught.introduction, sections: taught.sections, worked_examples: taught.worked_examples, texts: taught.texts, consolidation: taught.consolidation,
-    ...practice,
+    introduction: frame.introduction, consolidation: frame.consolidation, texts,
+    sections, worked_examples: examples, ...pa, ...pb,
   };
+  merged.answer_key = buildAnswerKey({ ...merged, quiz: (pb.quiz || []) });
+  return merged;
 }
 
 export async function draftLessonWithAi(

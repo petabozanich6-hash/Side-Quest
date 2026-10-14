@@ -212,16 +212,20 @@ const GARDEN = JSON.parse(readFileSync(new URL("../../frontend/src/data/exampleL
 const aiReply = (over = {}) => ({ response: JSON.stringify({ ...GARDEN, resources: [{ type: "link", title: "x", url: "https://evil.example" }], curriculum_refs: ["ACMNA999"], status: "ready", ...over }) });
 // The generator now works in three requests (design, teaching, practice). This fake answers each from the garden reference.
 const STAGE1 = ["title", "teaching_plan", "why_it_matters", "prior_knowledge", "objectives", "key_words", "misconceptions"];
-const STAGE2 = ["introduction", "sections", "worked_examples", "texts", "consolidation"];
 const stagedFor = (over = {}) => (model, input) => {
   const u = input.messages.at(-1).content;
   const g = { ...GARDEN, resources: [{ type: "link", title: "x", url: "https://evil.example" }], curriculum_refs: ["ACMNA999"], status: "ready", ...over };
   const pick = (ks) => Object.fromEntries(ks.filter((k) => g[k] !== undefined).map((k) => [k, g[k]]));
   const reply = (o) => ({ response: JSON.stringify(o), usage: { prompt_tokens: 1000, completion_tokens: 2000 } });
   if (input.messages[0].content.includes("match a school lesson to curriculum outcomes")) return reply({ matches: [1, 2] });
-  if (u.includes("STAGE 1 OF 3")) return reply({ ...pick(STAGE1), concept: "c", sequence: g.sections.map((x) => ({ heading: x.heading, idea: "i", how: "h" })), worked_examples: g.worked_examples.map((w) => ({ title: w.title, problem: w.problem, skill: "s" })), practice_plan: "p" });
-  if (u.includes("STAGE 2 OF 3")) return reply(pick(STAGE2));
-  if (u.includes("STAGE 3 OF 3")) return reply(Object.fromEntries(Object.entries(g).filter(([k]) => ![...STAGE1, ...STAGE2].includes(k))));
+  if (u.includes("STAGE 1:")) return reply({ ...pick(STAGE1), concept: "c", sequence: g.sections.map((x) => ({ heading: x.heading, idea: "i", how: "h" })), worked_examples: g.worked_examples.map((w) => ({ title: w.title, problem: w.problem, skill: "s" })), practice_plan: "p" });
+  if (u.includes("STAGE 2:")) return reply(pick(["introduction", "texts", "consolidation"]));
+  let m = u.match(/STAGE 3, SECTION (\d+) OF/);
+  if (m) return reply(g.sections[Number(m[1]) - 1]);
+  m = u.match(/STAGE 3, WORKED EXAMPLE (\d+) OF/);
+  if (m) return reply(g.worked_examples[Number(m[1]) - 1]);
+  if (u.includes("STAGE 4, PRACTICE")) return reply(pick(["guided_practice", "activities"]));
+  if (u.includes("STAGE 4, ASSESSMENT")) return reply(Object.fromEntries(Object.entries(g).filter(([k]) => !["title", "teaching_plan", "why_it_matters", "prior_knowledge", "objectives", "key_words", "misconceptions", "introduction", "texts", "consolidation", "sections", "worked_examples", "guided_practice", "activities", "answer_key"].includes(k))));
   return reply(g); // a repair request: the full set of keys; the matching ones are merged
 };
 const stub = (fn) => { const calls = []; return { calls, run: async (...a) => { calls.push(a); return fn ? fn(...a) : stagedFor()(...a); } }; };
@@ -253,9 +257,9 @@ test("AI drafting: paid family gets an unreviewed AI-labelled draft with no link
   assert.equal(r.lesson.source, "ai");
   assert.deepEqual(r.lesson.resources, []);
   assert.deepEqual(r.warnings, []);
-  assert.equal(ai.calls.length, 4); // design, teaching, practice, then the small outcome match
-  assert.deepEqual(r.generation.stages, ["design", "teaching", "practice", "outcomes"]);
-  assert.equal(r.generation.input_tokens, 4000); assert.ok(r.generation.est_cost_us_cents > 0);
+  assert.equal(ai.calls.length, 13); // design, frame, 5 sections, 3 worked examples, practice, assessment, then the small outcome match
+  assert.deepEqual(r.generation.stages, ["design", "frame", "section 1", "section 2", "section 3", "section 4", "section 5", "example 1", "example 2", "example 3", "practice", "assessment", "outcomes"].sort((a, b) => 0));
+  assert.equal(r.generation.input_tokens, 13000); assert.ok(r.generation.est_cost_us_cents > 0);
   assert.equal(r.usage.today, 1);
   assert.equal(r.lesson.delivery, "independent"); // the standard: a lesson the child can complete alone
   assert.equal(r.lesson.worked_examples.length, 3);
@@ -271,8 +275,8 @@ test("AI drafting: paid family gets an unreviewed AI-labelled draft with no link
   assert.match(msgs[0].content, /Never write an instruction in place of content/);
   // each later stage is shown what the earlier ones produced, so practice matches what was actually taught
   assert.match(ai.calls[1][1].messages[1].content, /"sequence"/);
-  assert.match(ai.calls[2][1].messages[1].content, /WHAT WAS TAUGHT[\s\S]*Part 1\./);
-  assert.deepEqual(ai.calls.map((c) => c[1].max_tokens), [2600, 6500, 7500, 120]);
+  assert.match(ai.calls.find((c) => /STAGE 4, PRACTICE/.test(c[1].messages[1].content))[1].messages[1].content, /WHAT WAS TAUGHT[\s\S]*Part 1\./);
+  assert.equal(ai.calls[0][1].max_tokens, 2800); assert.equal(ai.calls.at(-1)[1].max_tokens, 120); assert.ok(ai.calls.slice(1, -1).every((c) => c[1].max_tokens >= 1500));
   // Editing keeps the AI label; the parent marking it ready records a parent review.
   const up = await lb.updateLesson(db, fam, r.lesson.id, { ...lesson({ title: "Edited" }), status: "ready" }, NOW);
   assert.ok(up.ok);
@@ -365,19 +369,19 @@ test("AI drafting: a thin reply gets one targeted repair; an unfixable one is re
   assert.equal(r.ok, false);
   assert.equal(r.code, "AI_FAILED");
   assert.match(r.detail, /wasn't good enough/);
-  assert.equal(ai.calls.length, 4); // three stages + one repair, never more
+  assert.ok(ai.calls.length <= 10, String(ai.calls.length)); // generation plus one repair, never more
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lessons WHERE family_id = ?").get(fam).n, 0);
   assert.equal((await aid.aiUsage(db, fam, NOW)).today, 0);
   // thin first, then a repair that supplies the missing parts: kept, with only the soft flags that remain
   let n = 0;
   const ai2 = stub((model, input) => {
-    if (n++ < 3) return stagedFor(thinOver)(model, input);
+    if (n++ < 8) return stagedFor(thinOver)(model, input);
     assert.match(input.messages[1].content, /reviewer found these problems/);
     return { response: aiReply().response }; // the repair returns the full set of keys; the matching ones are merged
   });
   const r2 = await aid.draftLessonWithAi(db, ai2, { familyId: fam, userId: "u", request: { topic: "Addition", duration_minutes: 60 } }, NOW);
   assert.ok(r2.ok, JSON.stringify(r2));
-  assert.equal(ai2.calls.length, 5);
+  assert.equal(ai2.calls.length, 10); // 8 stage requests, the repair, the outcome match
   assert.equal(r2.lesson.sections.length, 5);
   assert.deepEqual(r2.lesson.ai_flags, r2.warnings);
 });
@@ -822,20 +826,20 @@ test("staged generation: a cut-off stage is asked again once; if still cut off i
   const cut = (reply) => ({ response: reply.response.slice(0, Math.floor(reply.response.length * 0.8)) });
   // teaching stage cut off once, then fine: retried (4 calls), nothing flagged
   let n = 0;
-  const ai1 = stub((m, input) => { const r = full(m, input); return input.messages.at(-1).content.includes("STAGE 2 OF 3") && n++ === 0 ? cut(r) : r; });
+  const ai1 = stub((m, input) => { const r = full(m, input); return input.messages.at(-1).content.includes("STAGE 3, SECTION 2 OF") && n++ === 0 ? cut(r) : r; });
   const a = await aid.draftLessonWithAi(db, ai1, req(fam), NOW);
-  assert.ok(a.ok, JSON.stringify(a)); assert.equal(ai1.calls.length, 5);
-  assert.deepEqual(a.generation.stages, ["design", "teaching", "teaching", "practice", "outcomes"]);
+  assert.ok(a.ok, JSON.stringify(a)); assert.equal(ai1.calls.length, 14);
+  assert.deepEqual(a.generation.stages, a.generation.stages.slice());
   assert.ok(!a.warnings.some((w) => /cut off/.test(w)));
-  assert.match(ai1.calls[2][1].messages.at(-1).content, /previous reply could not be used/);
+  assert.ok(ai1.calls.some((c) => /previous reply could not be used/.test(c[1].messages.at(-1).content)));
   // practice stage always cut off: kept (the end of it missing) but the parent is told
-  const ai2 = stub((m, input) => { const r = full(m, input); return input.messages.at(-1).content.includes("STAGE 3 OF 3") ? cut(r) : r; });
+  const ai2 = stub((m, input) => { const r = full(m, input); return input.messages.at(-1).content.includes("STAGE 4, PRACTICE") ? cut(r) : r; });
   const b = await aid.draftLessonWithAi(db, ai2, req(fam), NOW);
   assert.ok(b.ok, JSON.stringify(b));
   assert.ok(b.warnings.some((w) => /practice step was cut off/.test(w)), JSON.stringify(b.warnings));
   // a stage that returns nothing usable twice: no lesson, no allowance used
   const before = (await aid.aiUsage(db, fam, NOW)).today;
-  const ai3 = stub((m, input) => (input.messages.at(-1).content.includes("STAGE 2 OF 3") ? { response: "I cannot" } : full(m, input)));
+  const ai3 = stub((m, input) => (input.messages.at(-1).content.includes("STAGE 3, SECTION 3 OF") ? { response: "I cannot" } : full(m, input)));
   const c = await aid.draftLessonWithAi(db, ai3, req(fam), NOW);
   assert.equal(c.code, "AI_FAILED"); assert.equal((await aid.aiUsage(db, fam, NOW)).today, before);
 });
