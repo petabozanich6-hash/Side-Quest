@@ -45,8 +45,8 @@ export default function Register() {
         <Fern className="absolute left-6 bottom-6" size={200} color="#6B8A5B"/>
         <div className="flex items-center gap-2 relative z-10"><Compass size={28} style={{color:"#D4A574"}}/><span className="font-display text-xl font-bold">Side-Quest Learning</span></div>
         <div className="relative z-10">
-          <div className="font-script text-3xl mb-2" style={{color:"#D4A574"}}>Welcome, kindred spirit.</div>
-          <h2 className="font-display text-4xl font-bold leading-tight">Begin your family's learning journey.</h2>
+          <div className="font-script text-3xl mb-2" style={{color:"#D4A574"}}>Welcome to the family.</div>
+          <h2 className="font-display text-4xl font-bold leading-tight">A little more joy, a little less juggling.</h2>
           <ul className="mt-6 space-y-2.5 text-sm" style={{color:"#E8E2D1"}}>
             <li className="flex gap-2"><span>·</span>Build your own lessons, or let AI draft them for your review</li>
             <li className="flex gap-2"><span>·</span>For Australian families; NSW outcome mapping is available first</li>
@@ -63,7 +63,7 @@ export default function Register() {
       <div className="flex items-center justify-center p-6">
         <form onSubmit={submit} className="w-full max-w-md paper-card p-8" data-testid="register-form">
           <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Create a family account</h1>
-          <p className="text-sm text-stone-500 mt-1">Welcome to the Side-Quest family! Start with a 7-day preview — no card required. Add your children once you’re inside.</p>
+          <p className="text-sm text-stone-500 mt-1">We’re glad you’re here! Your seven-day free preview needs no card. Add your children once you’re inside.</p>
 
           <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-stone-400"><div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/>email<div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/></div>
 
