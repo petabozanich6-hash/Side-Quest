@@ -1,5 +1,9 @@
 import { analyseLifeEvidence } from "./data/lifeEvidence";
 import { buildPlanContent } from "./data/planBuilder";
+import { buildPlanWithAi, planAiUsage } from "./aiPlan";
+import { getJurisdiction } from "./jurisdiction";
+import { JURISDICTIONS } from "./data/jurisdictions";
+import { getEntitlement } from "./lessonBuilder";
 import type { App, Guards } from "./types";
 import { nowIso, parseJson, newId } from "./types";
 
@@ -359,6 +363,8 @@ export function registerLearning(app: App, g: Guards) {
     return c.json({ ok: true });
   });
 
+  // Paid families with Workers AI get a plan written for their state or territory; everyone else gets the template,
+  // which also uses the family's jurisdiction. ?mode=template forces the template (e.g. if the AI is down).
   const buildHandler = async (c: any) => {
     const user = c.get("user");
     const planRow: any = await c.env.DB.prepare("SELECT * FROM learning_plans WHERE id = ? AND family_id = ?")
@@ -367,12 +373,32 @@ export function registerLearning(app: App, g: Guards) {
     if (!planRow) return c.json({ detail: "Plan not found" }, 404);
     const studentRow = await getStudent(c.env.DB, user.family_id, planRow.student_id);
     if (!studentRow) return c.json({ detail: "Student not found" }, 404);
-    const content = await buildPlanContent(c.env.DB, planOut(planRow), studentOut(studentRow) || {});
+    const code = await getJurisdiction(c.env.DB, user.family_id);
+    if (!code) return c.json({ detail: "Choose your state or territory first, so the plan is written for the right requirements.", code: "JURISDICTION_REQUIRED" }, 409);
+    const { limits } = await getEntitlement(c.env.DB, user.family_id);
+    const useAi = limits.aiGeneration && !!c.env.AI && c.req.query("mode") !== "template";
+    let content: any;
+    let warnings: string[] = [];
+    if (useAi) {
+      const r = await buildPlanWithAi(c.env.DB, c.env.AI, { familyId: user.family_id, userId: user.id, planId: planRow.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID });
+      if (!r.ok) return c.json({ detail: r.detail, code: r.code }, r.status);
+      content = r.content;
+      warnings = r.warnings;
+    } else {
+      content = await buildPlanContent(c.env.DB, planOut(planRow), studentOut(studentRow) || {}, JURISDICTIONS[code]);
+    }
     await c.env.DB.prepare("UPDATE learning_plans SET ai_content = ?, status = 'draft', updated_at = ? WHERE id = ? AND family_id = ?")
       .bind(JSON.stringify(content), nowIso(), planRow.id, user.family_id)
       .run();
-    return c.json({ ok: true });
+    return c.json({ ok: true, generated_by: content.generated_by, warnings });
   };
+
+  app.get("/api/learning-plans-ai/status", g.auth, g.parent, async (c) => {
+    const user = c.get("user");
+    const { limits } = await getEntitlement(c.env.DB, user.family_id);
+    const code = await getJurisdiction(c.env.DB, user.family_id);
+    return c.json({ allowed: limits.aiGeneration, available: !!c.env.AI, jurisdiction: code, jurisdiction_name: code ? JURISDICTIONS[code].name : null, usage: await planAiUsage(c.env.DB, user.family_id) });
+  });
 
   app.post("/api/learning-plans/:pid/build", g.auth, g.parent, buildHandler);
   app.post("/api/learning-plans/:pid/generate", g.auth, g.parent, buildHandler);

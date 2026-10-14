@@ -15,6 +15,8 @@ import { registerPasswordReset } from "./passwordReset";
 import { registerStudentCredentials } from "./studentCredentials";
 import { registerHelpRequests } from "./helpRequests";
 import { registerBilling } from "./billing";
+import { registerJurisdiction, setJurisdiction } from "./jurisdiction";
+import { asJurisdiction } from "./data/jurisdictions";
 import { sendEmail, welcomeEmail } from "./email";
 import { handleInbound } from "./inbound";
 import type { InboundMessage } from "./inbound";
@@ -106,6 +108,9 @@ app.post("/api/auth/register", async (c) => {
   if (!email.includes("@") || password.length < 8 || !name) {
     return c.json({ detail: "Valid email, name and a password of 8+ characters are required" }, 400);
   }
+  // State or territory the family is registered in. Required by the sign-up form; optional here so older clients still work.
+  const jurisdiction = asJurisdiction(b.jurisdiction);
+  if (b.jurisdiction && !jurisdiction) return c.json({ detail: "Choose your state or territory." }, 400);
   const exists = await c.env.DB.prepare("SELECT id FROM users WHERE email = ?").bind(email).first();
   if (exists) return c.json({ detail: "Email already registered" }, 400);
 
@@ -120,6 +125,8 @@ app.post("/api/auth/register", async (c) => {
       "INSERT INTO users (id, family_id, email, password_hash, name, is_owner, created_at) VALUES (?, ?, ?, ?, ?, 1, ?)"
     ).bind(userId, familyId, email, await hashSecret(password), name, ts),
   ]);
+  // Separate statement so sign-up still works before migration 0054 is applied.
+  if (jurisdiction) await setJurisdiction(c.env.DB, familyId, jurisdiction);
   const token = await makeToken(c.env, userId, "parent", familyId);
 
   // Welcome email: sent in the background, and never blocks or breaks sign up.
@@ -129,7 +136,7 @@ app.post("/api/auth/register", async (c) => {
   return c.json({
     token,
     user: { id: userId, email, name, family_id: familyId, role: "parent" },
-    family: { id: familyId, name: familyName },
+    family: { id: familyId, name: familyName, jurisdiction },
   });
 });
 
@@ -204,6 +211,7 @@ registerPasswordReset(app);
 registerStudentCredentials(app, guards);
 registerHelpRequests(app, guards);
 registerBilling(app, guards);
+registerJurisdiction(app, guards);
 
 app.notFound((c) => c.json({ detail: "Not found" }, 404));
 

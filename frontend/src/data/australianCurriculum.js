@@ -1,9 +1,8 @@
 /**
  * Official Australian home-education resources.
  *
- * Stable state codes are deliberate: a later signup/profile jurisdiction
- * setting can filter these records by code without re-authoring the content.
- * No state choice is collected or persisted by this module.
+ * Stable state codes are deliberate: the family's state or territory is chosen at
+ * sign-up (families.jurisdiction) using these codes. This module only lists resources.
  *
  * These links are a directory, NOT automatic curriculum alignment or
  * legal/compliance advice. Review official authority pages before acting.

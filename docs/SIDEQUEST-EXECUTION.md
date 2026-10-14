@@ -37,13 +37,21 @@ Claude builds and integrates; the owner tests by hand; ChatGPT may prepare small
 | H | Evidence Backpack | IMPLEMENTED | Auto evidence on accepted review. Next: parent-added manual evidence, search. |
 | I | Progress tracking | IMPLEMENTED | Completed vs demonstrated distinguished in XP/evidence. Next: summaries. |
 | J | Portfolio and exports | IMPLEMENTED | Print portfolio (preview-limited). Next: date range, CSV. |
-| K | Family onboarding | IMPLEMENTED | Get-started checklist. Next: state/territory at registration, child avatar/theme. |
+| K | Family onboarding | IMPLEMENTED | Get-started checklist; state/territory chosen at registration (migration 0054), changeable on Learning Plans. Next: child avatar/theme. |
 | L | Seven-day free preview | VERIFIED | Server-enforced limits and expiry. |
 | M | Paid subscription | NOT STARTED | Stripe test mode only; needs owner's Stripe test keys. No live charges. |
 | N | Dashboards (real data only) | IMPLEMENTED | |
 | O | Mobile/tablet | VERIFIED (phone layouts) | Tablet pass pending. |
 | P | Production hardening | NOT STARTED | Password reset, account deletion, legal pages flagged for owner/legal review. |
 | AI | Paid-only AI lesson drafting | IMPLEMENTED, tests passing locally | See below. |
+
+## Learning plans for the family's state or territory (14 Oct 2026)
+
+- `families.jurisdiction` (migration **0054**, additive): NSW, VIC, QLD, WA, SA, TAS, ACT or NT. Chosen at sign-up (required in the form); existing families pick it on Learning Plans. `GET/PUT /api/family/jurisdiction`. Code tolerates the column being absent, so deploying before the migration does not break sign-up; saving a state then returns 503 `MIGRATION_PENDING` until 0054 is applied.
+- Requirements per jurisdiction: `worker/src/data/jurisdictions.ts` (authority, what the plan is called, curriculum position, learning areas, the elements the authority looks for, official source links, checked 14 Oct 2026). Re-check these when rules change.
+- Paid plans: `POST /api/learning-plans/:id/build` writes the plan with Workers AI (`worker/src/aiPlan.ts`): three parallel calls (whole-program sections + learning areas in two halves) plus at most one repair for missing areas. Fair use 5 plans/day, 20/month (`ai_usage.kind = 'learning_plan'`); INTERNAL is exempt; failures use no allowance. The child's name is never sent (placeholder replaced after). Curriculum codes only from the NSW list Side-Quest holds; any other code is dropped. Output includes a checklist of the authority's elements, with gaps left visibly blank, and a "for you to add" list (e.g. named resources for VIC/SA).
+- Free preview, or AI unavailable: the template builder, now using the family's jurisdiction (its learning area names; NSW codes and wording only for NSW). `?mode=template` forces it. Status: `GET /api/learning-plans-ai/status`.
+- No plan claims compliance; the page and print carry a jurisdiction-specific review notice and links to the official guidance.
 
 ## AI lesson drafting (paid plans only)
 

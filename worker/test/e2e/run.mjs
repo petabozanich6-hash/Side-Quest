@@ -101,6 +101,7 @@ await step("A. new family registers through the UI", async () => {
   await page.goto(BASE + "/register");
   await page.fill('[data-testid=reg-name]', "Pat Parent");
   await page.selectOption('[data-testid=reg-label]', { index: 1 });
+  await page.selectOption('[data-testid=reg-jurisdiction]', 'VIC');
   await page.fill('[data-testid=reg-email]', email1);
   await page.fill('[data-testid=reg-password]', pw);
   await page.click('[data-testid=reg-submit]');
@@ -109,6 +110,8 @@ await step("A. new family registers through the UI", async () => {
   const plan = await api("GET", "/account/plan", parentToken);
   ok(plan.json.effective_plan === "FREE_PREVIEW", "not on free preview: " + JSON.stringify(plan.json));
   ok(plan.json.billing && plan.json.billing.enabled === false, "billing off without Stripe secrets: " + JSON.stringify(plan.json.billing));
+  const jur = await api("GET", "/family/jurisdiction", parentToken);
+  ok(jur.json.jurisdiction === "VIC", "state chosen at sign-up not saved: " + JSON.stringify(jur.json));
   await shot("parent-home");
 });
 

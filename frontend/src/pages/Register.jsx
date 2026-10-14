@@ -5,11 +5,12 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 import { Compass } from "lucide-react";
 import { Fern, Pet, Branch } from "../components/shared/Botanical";
+import { AUSTRALIAN_JURISDICTIONS } from "../data/australianCurriculum";
 
 const LABELS = ["Mum", "Dad", "Aunty", "Uncle", "Nan", "Pop", "Grandma", "Grandpa"];
 
 export default function Register() {
-  const [form, setForm] = useState({ name: "", family_name: "", email: "", password: "" });
+  const [form, setForm] = useState({ name: "", family_name: "", email: "", password: "", jurisdiction: "" });
   const [pick, setPick] = useState("");
   const [other, setOther] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,6 +22,7 @@ export default function Register() {
   const submit = async (e) => {
     e.preventDefault();
     if (!label) { toast.error("Please tell us what your children call you"); return; }
+    if (!form.jurisdiction) { toast.error("Please choose your state or territory"); return; }
     setLoading(true);
     try {
       const { data } = await api.post("/auth/register", form);
@@ -77,6 +79,13 @@ export default function Register() {
               </select>
               {pick === "__other" && <input value={other} onChange={e => setOther(e.target.value)} maxLength={30} required placeholder="e.g. Mama" className="input mt-2" data-testid="reg-label-other"/>}
               <p className="text-[11px] text-stone-500 mt-1">Your child's pet will say "{label || "Mum"} sent you a message" instead of using your name.</p>
+            </F>
+            <F label="State or territory">
+              <select value={form.jurisdiction} onChange={upd("jurisdiction")} required className="input" data-testid="reg-jurisdiction">
+                <option value="">Choose...</option>
+                {AUSTRALIAN_JURISDICTIONS.map(j => <option key={j.code} value={j.code}>{j.name}</option>)}
+              </select>
+              <p className="text-[11px] text-stone-500 mt-1">Where you're registered (or applying) to home educate. Learning plans are written for its requirements. You can change it later.</p>
             </F>
             <F label="Family name (optional)"><input value={form.family_name} onChange={upd("family_name")} className="input" data-testid="reg-family"/></F>
             <F label="Email"><input value={form.email} onChange={upd("email")} type="email" required className="input" data-testid="reg-email"/></F>
