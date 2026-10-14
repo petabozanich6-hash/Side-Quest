@@ -6,7 +6,7 @@
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
 const fmt = (d) => { if (!d) return ""; const t = new Date(d.length === 10 ? d + "T00:00:00" : d); return isNaN(t) ? esc(d) : t.toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" }); };
 const hours = (m) => (m ? `${Math.round((m / 60) * 10) / 10} h` : "");
-const KIND = { lesson: "Lesson work", life: "Life learning", note: "Parent observation" };
+const KIND = { lesson: "Lesson work", life: "Life learning", note: "Parent observation", reading: "Reading record" };
 
 const CSS = `
   @page { size: A4; margin: 16mm 14mm; }
@@ -42,7 +42,7 @@ function entryHtml(e, images) {
     <div class="muted">${esc([KIND[e.kind], e.subject && e.subject !== e.learning_area ? e.subject : "", e.year_level, e.result, e.duration_minutes ? `${e.duration_minutes} min` : "", e.location].filter(Boolean).join(" · "))}</div>
     ${outcomeTags(e.outcomes)}
     ${(e.outcomes || []).length ? `<div class="muted" style="margin-top:4px">${e.outcomes.map((o) => `${esc(o.code)}${o.code ? ": " : ""}${esc(o.description)}`).join("<br>")}</div>` : ""}
-    ${block(e.kind === "lesson" ? "Child's work" : e.kind === "life" ? "What happened" : "Parent's notes", e.work)}
+    ${block(e.kind === "lesson" ? "Child's work" : e.kind === "life" ? "What happened" : e.kind === "reading" ? "Reading details" : "Parent's notes", e.work)}
     ${block("Child's reflection", e.reflection)}
     ${block("Parent annotation", e.parent_comment)}
     ${e.next_step ? `<p style="margin:6px 0 0"><strong>Next step:</strong> ${esc(e.next_step)}</p>` : ""}
@@ -93,7 +93,7 @@ export function portfolioHtml(p, extra = {}) {
     <tr><td>Period covered</td><td>${period}</td></tr>
     <tr><td>Record kept by</td><td>${esc(p.parent_name) || "—"}</td></tr>
     <tr><td>Curriculum reference</td><td>${esc(p.framework)}</td></tr>
-    <tr><td>Entries</td><td>${p.total} dated ${p.total === 1 ? "entry" : "entries"} (lesson work, life learning and parent observations)</td></tr>
+    <tr><td>Entries</td><td>${p.total} dated ${p.total === 1 ? "entry" : "entries"} (lesson work, life learning, parent observations and reading records)</td></tr>
     <tr><td>Generated</td><td>${fmt(p.generated_at)}</td></tr>
   </table>
   ${p.limited ? `<div class="banner">Free preview: the summary covers all ${p.total} entries but only one work sample is shown in full. A Family Membership prints the complete record.</div>` : ""}

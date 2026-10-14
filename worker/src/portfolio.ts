@@ -32,7 +32,7 @@ export type PortfolioOutcome = { code: string; description: string; learning_are
 export type PortfolioFile = { id: string; name: string; content_type: string };
 export type PortfolioEntry = {
   id: string;
-  kind: "lesson" | "life" | "note";
+  kind: "lesson" | "life" | "note" | "reading";
   date: string; // YYYY-MM-DD the learning happened or was approved
   title: string;
   learning_area: string; // key learning area (normalised), or "Other"
@@ -205,6 +205,34 @@ export async function buildPortfolio(db: DB, familyId: string, studentId: string
       subject: n.learning_area || "", year_level: "", result: "Recorded by parent", work: n.notes || "", reflection: "", parent_comment: "", next_step: "",
       duration_minutes: null, location: "", outcomes: [], files: [], _file_ids: n.file_ids || [],
     } as any);
+  }
+
+  // 4. Reading records added or approved by a parent.
+  // Child-written reading suggestions are omitted until a parent approves them.
+  // An approved child submission is copied to reading_log with logged_role='parent'.
+  // Reading demonstrates engagement and progress but never silently awards
+  // curriculum outcomes; parents may record supporting observations separately.
+  const reading = await db.prepare(
+    "SELECT * FROM reading_log WHERE family_id = ? AND student_id = ? AND logged_role = 'parent' AND (? = '' OR read_date >= ?) AND (? = '' OR read_date <= ?) ORDER BY read_date ASC LIMIT 500"
+  ).bind(familyId, studentId, from, from, to, to).all().then((r: any) => r.results || []).catch(() => [] as any[]);
+  for (const r of reading) {
+    const pages = Number(r.pages_read || r.pages || 0);
+    const book = String(r.title || "Reading");
+    const details = [
+      r.author ? `Author: ${r.author}` : "",
+      r.book_type ? `Book type: ${r.book_type}` : "",
+      r.reading_mode ? `Reading mode: ${String(r.reading_mode).replace(/_/g, " ")}` : "",
+      pages > 0 ? `Pages read: ${pages}` : "",
+      r.comprehension_notes ? `Comprehension: ${r.comprehension_notes}` : "",
+    ].filter(Boolean).join("\n");
+    entries.push({
+      id: r.id, kind: "reading", date: day(r.read_date), title: `Reading: ${book}`,
+      learning_area: "English", subject: "Reading", year_level: yearLabel(student.year_level, stage),
+      result: "Recorded or approved by parent", work: details,
+      reflection: String(r.favourite_part || ""), parent_comment: String(r.parent_note || ""), next_step: "",
+      duration_minutes: Number(r.duration_minutes) > 0 ? Number(r.duration_minutes) : null,
+      location: "", outcomes: [], files: [],
+    });
   }
 
   if (!nsw) for (const e of entries) {

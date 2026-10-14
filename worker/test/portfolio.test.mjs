@@ -66,6 +66,32 @@ test("full record: every source, chronological, outcomes, coverage gaps", async 
   assert.deepEqual(ranged.entries.map((e) => e.id), ["n1", "le1"]);
 });
 
+test("parent-approved reading records appear in state-aware evidence, while unapproved child entries do not", async () => {
+  const db = makeDb();
+  family(db, "fr", "ACTIVE_MONTHLY", "VIC");
+  family(db, "other", "ACTIVE_MONTHLY", "QLD");
+  const add = (id, role, date, fam = "fr") => db.raw.prepare(
+    "INSERT INTO reading_log (id,family_id,student_id,title,author,read_date,duration_minutes,pages_read,reading_mode,comprehension_notes,parent_note,logged_by,logged_role,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+  ).run(id, fam, `s-${fam}`, `Book ${id}`, "A Writer", date, 25, 14, "independent", "Explained the main character's motivation", "Improved fluency", `u-${fam}`, role, T);
+  add("approved", "parent", "2026-09-01");
+  add("unreviewed", "child", "2026-09-02");
+  add("outofperiod", "parent", "2026-10-10");
+  add("unrelated", "parent", "2026-09-01", "other");
+
+  const p = await buildPortfolio(db, "fr", "s-fr", { from: "2026-09-01", to: "2026-09-30", now: NOW });
+  assert.equal(p.total, 1, "unapproved, out-of-range, and other-family reading must stay out");
+  assert.equal(p.entries[0].kind, "reading");
+  assert.equal(p.entries[0].learning_area, "English");
+  assert.equal(p.entries[0].date, "2026-09-01");
+  assert.match(p.entries[0].work, /main character's motivation/);
+  assert.match(p.entries[0].work, /Pages read: 14/);
+  assert.match(p.entries[0].parent_comment, /Improved fluency/);
+  assert.deepEqual(p.entries[0].outcomes, [], "reading logs are not auto-labelled with invented outcomes");
+  assert.equal(p.summary.areas.find(a => a.learning_area === "English").entries, 1);
+  assert.ok(!JSON.stringify(p).includes("unreviewed"));
+  assert.ok(!JSON.stringify(p).includes("unrelated"));
+});
+
 test("preview shows the summary but only one detailed entry; other families cannot read", async () => {
   const db = makeDb();
   family(db, "f2", "FREE_PREVIEW");
