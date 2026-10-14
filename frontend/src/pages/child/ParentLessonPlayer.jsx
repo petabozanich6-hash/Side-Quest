@@ -14,14 +14,15 @@ const INK = { color: "#1F3B2D" };
 // "I'm stuck! Help me understand." A small inline panel under the part of the lesson the child is on.
 // The server knows the lesson; this only says which part and what kind of help. Nothing here touches the child's answers.
 const HELP_KINDS = [["explain", "Explain it differently"], ["example", "Show me another example"], ["hint", "Give me a hint"]];
-function Stuck({ assignmentId, target, enabled, locked }) {
+function Stuck({ assignmentId, target, enabled, locked, onGrownUp }) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState("");
   const [res, setRes] = useState({}); // kind -> text, kept while the lesson is open
   const [err, setErr] = useState("");
   const [shown, setShown] = useState("");
+  const [sure, setSure] = useState(false);
   const levels = useRef(0);
-  if (!enabled || locked) return null;
+  if (locked || (!enabled && !onGrownUp)) return null;
   const ask = async (kind) => {
     setErr(""); setShown(kind);
     if (kind !== "hint" && res[kind]) return;
@@ -35,6 +36,18 @@ function Stuck({ assignmentId, target, enabled, locked }) {
     finally { setBusy(""); }
   };
   const border = { borderColor: "#D4C8A8" };
+  const lastRung = onGrownUp && (
+    <div className="border-t pt-3 space-y-2" style={border}>
+      {!sure ? (
+        <button type="button" onClick={() => setSure(true)} className="text-sm font-bold underline text-stone-700" data-testid="stuck-grownup">I've tried everything and I'm really stuck. I need a grown-up.</button>
+      ) : (
+        <div className="rounded-xl bg-white border p-3 space-y-2" style={border} data-testid="stuck-grownup-confirm">
+          <p className="text-sm">This saves your work and sends it to your grown-up so they can help you. The lesson pauses until they reply. Send it?</p>
+          <div className="flex gap-2"><button type="button" onClick={onGrownUp} className="rounded-full px-4 py-1.5 text-sm font-bold" style={{ backgroundColor: "#C77B5B", color: "#FBF7EC" }} data-testid="stuck-grownup-send">Yes, send it</button><button type="button" onClick={() => setSure(false)} className="rounded-full border-2 px-4 py-1.5 text-sm font-bold" style={border}>No, keep trying</button></div>
+        </div>
+      )}
+    </div>
+  );
   if (!open) return <button type="button" onClick={() => setOpen(true)} className="text-sm font-bold rounded-full border-2 px-4 py-2" style={{ borderColor: "#C77B5B", color: "#8A4B30" }} data-testid="stuck-btn">🤔 I'm stuck! Help me understand.</button>;
   return (
     <div className="rounded-2xl border-2 p-4 space-y-3 bg-[#FBF7EC]" style={{ borderColor: "#C77B5B" }} data-testid="stuck-panel" role="region" aria-label="Help">
@@ -42,18 +55,20 @@ function Stuck({ assignmentId, target, enabled, locked }) {
         <p className="font-display text-lg font-semibold" style={INK}>What would help?</p>
         <button type="button" onClick={() => setOpen(false)} className="text-sm font-bold underline shrink-0" data-testid="stuck-close">Close and keep going</button>
       </div>
-      <div className="flex flex-wrap gap-2">
+      {enabled && <div className="flex flex-wrap gap-2">
         {HELP_KINDS.map(([k, label]) => (
           <button key={k} type="button" disabled={!!busy} onClick={() => ask(k)} className={`rounded-full border-2 px-4 py-2 text-sm font-bold disabled:opacity-50 ${shown === k ? "bg-white" : ""}`} style={border} data-testid={`stuck-${k}`}>{label}</button>
         ))}
-      </div>
+      </div>}
+      {enabled ? null : <p className="text-sm text-stone-700" data-testid="stuck-offline">Try this first: press <b>← Back</b> to look at the explanation and the worked examples again, then have another go. They show every step.</p>}
       {busy && <p className="text-sm text-stone-600" role="status">Thinking about the best way to help…</p>}
       {err && <p className="text-sm text-rose-800" role="alert" data-testid="stuck-error">{err}</p>}
       {shown && res[shown] && !busy && (
         <div className="rounded-xl border bg-white p-4 text-base leading-relaxed whitespace-pre-wrap" style={border} data-testid="stuck-answer">{res[shown]}</div>
       )}
       {shown === "hint" && res.hint && !busy && <button type="button" onClick={() => ask("hint")} className="text-sm font-bold underline" data-testid="stuck-more-hint">Still stuck? Give me a bigger hint</button>}
-      <p className="text-xs text-stone-500">This helper only talks about this lesson. It can make mistakes, so check with your grown-up if something seems odd.</p>
+      {enabled && <p className="text-xs text-stone-500">This helper only talks about this lesson. It can make mistakes.</p>}
+      {lastRung}
     </div>
   );
 }
@@ -83,6 +98,23 @@ function Watch({ r, note, setNote, locked }) {
       </div>
     </div>
   );
+}
+
+// Reads text aloud with the browser's own voice (free, nothing is sent anywhere) so a child does not need an adult to read to them.
+function ReadAloud({ text }) {
+  const [on, setOn] = useState(false);
+  const ok = typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
+  useEffect(() => () => { try { window.speechSynthesis?.cancel(); } catch { /* ignore */ } }, []);
+  if (!ok || !text) return null;
+  const toggle = () => {
+    try {
+      if (on) { window.speechSynthesis.cancel(); setOn(false); return; }
+      const u = new SpeechSynthesisUtterance(String(text).replace(/\s+/g, " "));
+      u.lang = "en-AU"; u.rate = 0.92; u.onend = () => setOn(false); u.onerror = () => setOn(false);
+      window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); setOn(true);
+    } catch { setOn(false); }
+  };
+  return <button type="button" onClick={toggle} className="text-sm font-bold rounded-full border-2 px-3 py-1" style={{ borderColor: "#4A5D3A", color: "#4A5D3A" }} data-testid="read-aloud" aria-pressed={on}>{on ? "⏹ Stop reading" : "🔊 Read this to me"}</button>;
 }
 
 // Plays a lesson built by a parent, one screen at a time: learn, see it worked, try it, do it, show it, hand it in.
@@ -130,7 +162,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
 
   const [helpOn, setHelpOn] = useState(false);
   useEffect(() => { if (preview) return; api.get("/help/status").then(r => setHelpOn(!!r.data.available && r.data.reason !== "limit")).catch(() => {}); }, [preview]);
-  const S = (target) => <Stuck assignmentId={a.id} target={target} enabled={helpOn} locked={locked} />;
+  const S = (target) => <Stuck assignmentId={a.id} target={target} enabled={helpOn} locked={locked} onGrownUp={preview || locked ? undefined : () => submit(true)} />;
   useEffect(() => { if (preview) return; api.get("/features").then(r => setUploadsOn(!!r.data.uploads)).catch(() => {}); }, [preview]);
 
   const upload = async (file) => {
@@ -201,7 +233,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const needsQuiz = hasQuiz && !quizOk;
   const canSubmit = needsHelp || (!needsQuiz && unanswered === 0);
 
-  const submit = async () => {
+  const submit = async (forceHelp) => {
     setBusy(true);
     const lines = [];
     questions.forEach((q, i) => lines.push(`${i + 1}. ${q.prompt}\nAnswer: ${(answers[i] || "").trim() || "(no answer)"}`));
@@ -212,8 +244,8 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
     const didIt = activities.filter((_, i) => checks[i]).map((x) => x.title);
     if (activities.length) lines.push(`Activities done: ${didIt.length ? didIt.join(", ") : "none ticked"}`);
     try {
-      await api.post("/submissions", { assignment_id: a.id, response_text: lines.join("\n\n"), reflection: reflection.trim() || null, file_ids: files.map((f) => f.id), needs_help: needsHelp });
-      toast.success(needsHelp ? "Sent for help" : "Handed in! Your grown-up will take a look.");
+      await api.post("/submissions", { assignment_id: a.id, response_text: lines.join("\n\n"), reflection: reflection.trim() || null, file_ids: files.map((f) => f.id), needs_help: forceHelp === true || needsHelp });
+      toast.success(forceHelp === true || needsHelp ? "Sent to your grown-up" : "Handed in! Your grown-up will take a look.");
       onChanged && onChanged();
     } catch (e) {
       toast.error(e.response?.data?.detail || "Could not hand in. Please try again.");
@@ -236,7 +268,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
     if (st.id === "welcome") return (
       <div className="space-y-4" data-testid="intro">
         {(l.objectives || []).length > 0 && <div><p className="font-bold text-sm">By the end you will be able to:</p><ul className="list-disc pl-5 text-base">{l.objectives.map((o, i) => <li key={i}>{o}</li>)}</ul></div>}
-        {l.introduction && <p className="text-base leading-relaxed whitespace-pre-wrap">{l.introduction}</p>}
+        {l.introduction && <><p className="text-base leading-relaxed whitespace-pre-wrap">{l.introduction}</p><ReadAloud text={l.introduction} /></>}
         {l.why_it_matters && <p className="text-base leading-relaxed"><b>Why this matters:</b> {l.why_it_matters}</p>}
         {keyWords.length > 0 && (
           <div className="rounded-xl border p-3 bg-white" style={border} data-testid="key-words">
@@ -249,11 +281,12 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
         <p className="text-sm text-stone-600">Take the lesson one screen at a time. Your work saves as you go, so you can stop and come back.</p>
       </div>
     );
-    if (st.text !== undefined) { const t = texts[st.text]; return <div data-testid={`text-${st.text}`}><p className="text-base leading-relaxed whitespace-pre-wrap rounded-xl border p-4 bg-white" style={border}>{t.content}</p></div>; }
+    if (st.text !== undefined) { const t = texts[st.text]; return <div className="space-y-2" data-testid={`text-${st.text}`}><ReadAloud text={t.content} /><p className="text-base leading-relaxed whitespace-pre-wrap rounded-xl border p-4 bg-white" style={border}>{t.content}</p></div>; }
     if (st.video !== undefined) return <Watch r={videos[st.video]} note={watch[st.video]} setNote={(v) => setWatch({ ...watch, [st.video]: v })} locked={locked} />;
     if (st.section !== undefined) { const s = sections[st.section]; return (
       <div className="space-y-4" data-testid={`section-${st.section}`}>
         <p className="text-base leading-relaxed whitespace-pre-wrap">{s.body}</p>
+        <ReadAloud text={s.body} />
         {s.visual && <LessonVisual visual={s.visual} />}
         {S({ part: "section", i: st.section })}
       </div>
@@ -261,6 +294,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
     if (st.worked !== undefined) { const w = worked[st.worked]; return (
       <div className="space-y-3" data-testid={`worked-${st.worked}`}>
         <p className="font-bold text-lg">{w.problem}</p>
+        <ReadAloud text={`${w.problem}. ${(w.steps || []).map((x, k) => `Step ${k + 1}. ${x}`).join(" ")} ${w.answer ? `So the answer is ${w.answer}` : ""}`} />
         {w.visual && <LessonVisual visual={w.visual} />}
         <ol className="list-decimal pl-5 space-y-2 text-base">{(w.steps || []).map((x, j) => <li key={j}>{x}</li>)}</ol>
         {w.answer && <p className="font-bold" style={INK}>Answer: {w.answer}</p>}
@@ -299,7 +333,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
     ); }
     if (st.id === "wrap") return (
       <div className="space-y-4" data-testid="consolidation">
-        {l.consolidation && <p className="text-base leading-relaxed whitespace-pre-wrap">{l.consolidation}</p>}
+        {l.consolidation && <><p className="text-base leading-relaxed whitespace-pre-wrap">{l.consolidation}</p><ReadAloud text={l.consolidation} /></>}
         {l.extension && <div className="rounded-xl border p-3 bg-white" style={border} data-testid="extension"><p className="font-bold text-sm">Extra challenge</p><p className="text-base whitespace-pre-wrap">{l.extension}</p></div>}
         {links.length > 0 && <div><p className="font-bold text-sm">Optional: explore more</p>{links.map((r, i) => <a key={i} href={r.url} target="_blank" rel="noopener noreferrer" className="block underline font-bold" style={{ color: "#4A5D3A" }}>{r.title} ↗</a>)}</div>}
       </div>
@@ -344,7 +378,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
         {!canSubmit && <p className="text-sm text-amber-800" data-testid="submit-hint">{needsQuiz ? "Pass the quest check to hand in." : `Answer all ${questions.length} questions in “Show what you know” to hand in (${unanswered} to go).`}</p>}
         <div className="flex items-center gap-3 flex-wrap">
           <button type="button" onClick={() => saveNow(false)} className="rounded-full border-2 px-5 py-2.5 text-sm font-bold" style={{ borderColor: "#1F3B2D", color: "#1F3B2D" }} data-testid="save-progress">Save my progress</button>
-          <button type="button" disabled={!canSubmit || busy} onClick={submit} className="rounded-full px-6 py-2.5 text-sm font-bold disabled:opacity-40" style={ACCENT} data-testid="submit-work">{busy ? "Handing in…" : needsHelp ? "Ask for help" : "Hand it in"}</button>
+          <button type="button" disabled={!canSubmit || busy} onClick={() => submit()} className="rounded-full px-6 py-2.5 text-sm font-bold disabled:opacity-40" style={ACCENT} data-testid="submit-work">{busy ? "Handing in…" : needsHelp ? "Ask for help" : "Hand it in"}</button>
           <span className="text-xs text-stone-500" aria-live="polite" data-testid="save-state">{saved}</span>
         </div>
       </div>

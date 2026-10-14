@@ -844,3 +844,16 @@ test("quality gate: instructions that stand in for teaching are caught", () => {
   const bad = { ...d, sections: [{ heading: "H", body: "Explain the concept of a fraction to your child. Then demonstrate how to add them." }, ...d.sections] };
   assert.ok(aid.qualityIssues(bad, spec).some((i) => /instead of doing it/.test(i.msg)));
 });
+
+test("young learners get a reading-level instruction; the lesson is told the child works alone", async () => {
+  assert.match(aid.readingLevel("Year 2"), /very short sentences/);
+  assert.match(aid.readingLevel("Year 5"), /upper primary/);
+  assert.match(aid.readingLevel("Year 9"), /secondary/);
+  assert.equal(aid.readingLevel(""), "");
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const ai = stub();
+  await aid.draftLessonWithAi(db, ai, req(fam, ai, { year_level: "Year 2" }), NOW);
+  assert.match(ai.calls[1][1].messages[1].content, /READING LEVEL: this is a young child/);
+  assert.match(ai.calls[0][1].messages[0].content, /almost never needs an adult/);
+});
