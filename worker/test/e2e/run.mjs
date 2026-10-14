@@ -387,6 +387,22 @@ await step("Pet goals, shop and parent weekly summary work end to end", async ()
   ok((await api("GET", `/pet/week/${kids.json[0].id}`, childToken)).status === 403, "child read parent summary");
 });
 
+await step("Pet room shows goals, sound toggle and the shop, and sounds can be muted", async () => {
+  const pp = await cpage.context().newPage();
+  const errs = [];
+  pp.on("pageerror", (e) => errs.push(String(e.message || e)));
+  try {
+    await pp.goto(`${BASE}/child/room`);
+    await pp.waitForSelector("[data-testid=pet-quests]", { timeout: 15000 });
+    await pp.waitForSelector("[data-testid=sound-toggle]");
+    ok((await pp.locator("[data-testid=daily-goals] li").count()) === 3, "three goals expected");
+    await pp.click("[data-testid=sound-toggle]");
+    ok(/off/i.test(await pp.innerText("[data-testid=sound-toggle]")), "sound did not mute");
+    await pp.waitForSelector("[data-testid=pet-shop]");
+    ok(errs.length === 0, "page errors: " + errs.join("; "));
+  } finally { await pp.close(); }
+});
+
 await step("cannot hand in before passing the quiz (server enforces it)", async () => {
   const r = await api("POST", "/submissions", childToken, { assignment_id: assignmentId, response_text: "cheat" });
   ok(r.status === 409 && r.json.code === "QUIZ_NOT_PASSED", `expected QUIZ_NOT_PASSED got ${r.status} ${JSON.stringify(r.json)}`);

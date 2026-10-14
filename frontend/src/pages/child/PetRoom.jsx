@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
 import { Pet, Fern, Flower, Branch } from "../../components/shared/Botanical";
@@ -7,6 +7,7 @@ import SeasonalWorn from "../../components/shared/SeasonalWorn";
 import SeasonalWardrobeItems from "../../components/shared/SeasonalWardrobeItems";
 import { toast } from "sonner";
 import PetQuests, { ROOM_EMOJI } from "../../components/pet/PetQuests";
+import { playSfx, setSfx, sfxOn } from "../../lib/sfx";
 import { ArrowLeft, Apple, Gamepad2, Palette, Sparkles, Loader2, Droplets } from "lucide-react";
 
 const BG_OPTIONS = [
@@ -104,11 +105,21 @@ const PET_CSS = `
 @keyframes petBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 @keyframes petBreathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
 @keyframes auraSpin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+@keyframes petMunch { 0%,100%{transform:scale(1,1)} 25%{transform:scale(1.08,.9)} 50%{transform:scale(.95,1.06)} 75%{transform:scale(1.06,.93)} }
+@keyframes petSpin { 0%{transform:translateY(0) rotate(0)} 40%{transform:translateY(-34px) rotate(180deg)} 70%{transform:translateY(-12px) rotate(320deg)} 100%{transform:translateY(0) rotate(360deg)} }
+@keyframes petShimmy { 0%,100%{transform:rotate(0)} 20%{transform:rotate(-6deg)} 40%{transform:rotate(6deg)} 60%{transform:rotate(-4deg)} 80%{transform:rotate(4deg)} }
+@keyframes fxRise { 0%{opacity:0;transform:translateY(0) scale(.6)} 20%{opacity:1} 100%{opacity:0;transform:translateY(-120px) scale(1.2)} }
+.act-feed{animation:petMunch .8s ease-in-out 2}
+.act-play{animation:petSpin 1s ease-in-out}
+.act-clean{animation:petShimmy .8s ease-in-out}
+.act-party{animation:petBounce .5s ease-in-out 3}
+.fx{animation:fxRise 1.4s ease-out forwards;pointer-events:none}
+.arranging{outline:2px dashed #4A5D3A;outline-offset:3px;border-radius:12px;cursor:grab;touch-action:none}
 .mood-happy{animation:petBounce 1.6s ease-in-out infinite}
 .mood-calm,.mood-sleepy{animation:petBreathe 4s ease-in-out infinite}
 .aura{position:absolute;inset:-18px;border-radius:9999px;pointer-events:none;filter:blur(14px);opacity:.7}
 .aura-ring{animation:auraSpin 14s linear infinite}
-@media (prefers-reduced-motion: reduce){.egg,.zzz,.mood-happy,.mood-calm,.mood-sleepy,.aura-ring{animation:none!important}}
+@media (prefers-reduced-motion: reduce){.egg,.zzz,.mood-happy,.mood-calm,.mood-sleepy,.aura-ring,.act-feed,.act-play,.act-clean,.act-party,.fx{animation:none!important}}
 `;
 
 const XP_SOURCES = [
@@ -138,6 +149,12 @@ export default function PetRoom() {
   const [newName, setNewName] = useState("");
   const [reaction, setReaction] = useState(null);
   const [quests, setQuests] = useState(null);
+  const [fx, setFx] = useState([]);
+  const [actFx, setActFx] = useState("");
+  const [sound, setSound] = useState(sfxOn());
+  const [arranging, setArranging] = useState(false);
+  const [pos, setPos] = useState({});
+  const stageRef = useRef(null);
 
   const apply = (data) => {
     if (!data || data.needs_pet) return;
@@ -164,6 +181,37 @@ export default function PetRoom() {
 
   const react = (kind) => { setReaction(kind); setTimeout(() => setReaction(null), 1000); };
 
+  // little bursts of emoji and a matching move for the pet, with a quiet sound
+  const FX = { feed: ["🍎", "🍓", "🥕"], play: ["⚽", "🎾", "⭐"], clean: ["✨", "🫧", "✨"], coin: ["🪙", "🪙", "✨"], party: ["🎉", "⭐", "🎊", "✨"], sparkle: ["✨", "💫", "✨"] };
+  const burst = (kind) => {
+    const list = FX[kind] || FX.sparkle;
+    const id = Date.now();
+    setFx(list.map((emoji, i) => ({ key: `${id}-${i}`, emoji, left: 30 + i * (40 / list.length) + Math.random() * 8 })));
+    setTimeout(() => setFx([]), 1500);
+    const move = { feed: "feed", play: "play", clean: "clean", party: "party" }[kind];
+    if (move) { setActFx(move); setTimeout(() => setActFx(""), 1100); }
+  };
+  const toggleSound = () => { const next = !sound; setSound(next); setSfx(next); if (next) playSfx("pop"); };
+  const questsKey = JSON.stringify(quests?.room_pos || {}) + (quests?.room || []).join(",");
+  useEffect(() => { setPos(quests?.room_pos || {}); }, [questsKey]); // eslint-disable-line
+  const spot = (id, i) => pos[id] || { x: 8 + i * 14, y: 2 + (i % 2) * 11 };
+  const drag = (id) => (e) => {
+    if (!arranging || !stageRef.current) return;
+    e.preventDefault();
+    const el = e.currentTarget; el.setPointerCapture?.(e.pointerId);
+    const move = (ev) => {
+      const r = stageRef.current.getBoundingClientRect();
+      const x = Math.min(92, Math.max(2, ((ev.clientX - r.left) / r.width) * 100 - 3));
+      const y = Math.min(60, Math.max(0, ((r.bottom - ev.clientY) / r.height) * 100 - 6));
+      setPos((p) => ({ ...p, [id]: { x: Math.round(x), y: Math.round(y) } }));
+    };
+    const up = () => {
+      el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
+      setPos((p) => { api.put("/pet/room", { placed: quests.room, positions: p }).catch(() => toast.error("Could not save the room")); return p; });
+    };
+    el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
+  };
+
   const act = async (path, legacy, success, kind) => {
     setLoading(true);
     try {
@@ -175,6 +223,8 @@ export default function PetRoom() {
       }
       toast.success(res?.data?.revived ? `${pet.name} woke up! Take good care of them.` : success);
       react(kind);
+      const what = path.includes("feed") ? "feed" : path.includes("play") ? "play" : path.includes("clean") ? "clean" : "";
+      if (what) { playSfx(what); burst(what); }
       await load();
     } catch (e) {
       toast.error(e?.response?.data?.detail || "Try again shortly");
@@ -243,7 +293,10 @@ export default function PetRoom() {
       )}
 
       <div className="paper-card overflow-hidden relative" data-testid="pet-stage">
-        <div className="relative h-80 flex items-end justify-center" style={{ background: bgStyle }}>
+        <div ref={stageRef} className="relative h-80 flex items-end justify-center overflow-hidden" style={{ background: bgStyle }}>
+          <button type="button" onClick={toggleSound} className="absolute right-3 top-3 z-20 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} aria-pressed={sound} data-testid="sound-toggle">{sound ? "🔊 Sounds on" : "🔇 Sounds off"}</button>
+          {(quests?.room || []).length > 0 && <button type="button" onClick={() => setArranging((a) => !a)} className="absolute left-3 top-3 z-20 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} aria-pressed={arranging} data-testid="arrange-toggle">{arranging ? "✅ Done arranging" : "✋ Arrange room"}</button>}
+          {fx.map((f) => <span key={f.key} className="fx absolute z-20 text-3xl" style={{ left: `${f.left}%`, bottom: "35%" }} aria-hidden>{f.emoji}</span>)}
           <HalloweenOverlay />
           <Fern className="absolute left-4 bottom-0" size={160} color="#4A5D3A" />
           <Fern className="absolute right-4 bottom-0" size={140} color="#6B8A5B" />
@@ -251,11 +304,11 @@ export default function PetRoom() {
           <Flower className="absolute right-32 bottom-10" size={24} color="#C77B5B" />
           <Branch className="absolute right-10 top-4" size={120} color="#4A5D3A" />
           {(quests?.room || []).map((id, i) => (
-            <span key={id} className="absolute text-4xl select-none" style={{ bottom: 6 + (i % 2) * 36, left: `${8 + i * 14}%`, zIndex: 5 }} data-testid={`room-${id}`} aria-hidden>{ROOM_EMOJI[id]}</span>
+            <span key={id} onPointerDown={drag(id)} className={`absolute text-4xl select-none ${arranging ? "arranging" : ""}`} style={{ bottom: `${spot(id, i).y}%`, left: `${spot(id, i).x}%`, zIndex: arranging ? 15 : 5 }} data-testid={`room-${id}`} aria-hidden={!arranging}>{ROOM_EMOJI[id]}</span>
           ))}
           <div className="relative z-10 mb-2 flex flex-col items-center">
             {hatched && quests?.mood && <div className="mb-2 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} data-testid="pet-mood">{quests.mood.text}</div>}
-            <div className={`relative ${hatched && quests ? `mood-${quests.mood.mood}` : ""}`} onClick={() => react(hatched ? "hop" : "wobble")} data-testid="pet-body"
+            <div className={`relative ${actFx ? `act-${actFx}` : hatched && quests ? `mood-${quests.mood.mood}` : ""}`} onClick={() => react(hatched ? "hop" : "wobble")} data-testid="pet-body"
               data-form={pet.level_name}
               style={{ filter: sick ? "grayscale(0.7)" : asleep ? "brightness(0.75)" : "none", cursor: "pointer" }}>
               {hatched && AURA[pet.level_name] && <span className={`aura ${pet.level_name === "Legend" ? "aura-ring" : ""}`} style={{ background: AURA[pet.level_name] }} aria-hidden />}
@@ -326,7 +379,7 @@ export default function PetRoom() {
         </div>
       </section>
 
-      {hatched && <PetQuests pet={pet} quests={quests} onChange={questChanged} />}
+      <PetQuests pet={pet} quests={quests} onChange={questChanged} onFx={burst} />
 
       {catalog.length > 0 && (
         <section className="paper-card p-5" data-testid="wardrobe">

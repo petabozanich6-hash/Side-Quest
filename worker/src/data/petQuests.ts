@@ -156,12 +156,22 @@ export function buyItem(pet: PetState, id: string): { ok: boolean; detail?: stri
   return { ok: true };
 }
 
-export function placeItems(pet: PetState, ids: unknown): { ok: boolean; detail?: string } {
+export function placeItems(pet: PetState, ids: unknown, positions?: unknown): { ok: boolean; detail?: string } {
   const e = ex(pet);
   const owned = new Set(arr(e.owned));
   const list = [...new Set(arr(ids).map(String))].filter((x) => owned.has(x));
   if (list.length > MAX_PLACED) return { ok: false, detail: `Up to ${MAX_PLACED} things fit in the room` };
   e.room = list;
+  // where each thing sits, as a percentage across (x) and up from the floor (y); anything out of range is pulled back in
+  if (positions && typeof positions === "object" && !Array.isArray(positions)) {
+    const out: Record<string, { x: number; y: number }> = {};
+    for (const id of list) {
+      const p: any = (positions as any)[id];
+      const x = Number(p?.x), y = Number(p?.y);
+      if (Number.isFinite(x) && Number.isFinite(y)) out[id] = { x: Math.round(Math.min(92, Math.max(2, x))), y: Math.round(Math.min(60, Math.max(0, y))) };
+    }
+    e.room_pos = out;
+  }
   return { ok: true };
 }
 
@@ -224,6 +234,7 @@ export function questView(pet: PetState, now: Date) {
     trophy_count: trophies.length,
     shop: SHOP.map((s) => ({ ...s, owned: owned.has(s.id) })),
     room: arr(e.room),
+    room_pos: e.room_pos && typeof e.room_pos === "object" ? e.room_pos : {},
     rare: Object.entries(RARE).map(([id, r]) => ({ id, ...r, have: arr(e.rare).includes(id) })),
     mood: moodFor(pet),
     form: levelForXp(pet.xp).level_name,

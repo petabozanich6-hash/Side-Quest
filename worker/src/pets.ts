@@ -173,7 +173,7 @@ export function registerPets(app: App, g: Guards) {
   app.post("/api/pet/quests/claim", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const b: any = await jsonBody(c); const r = claimGoal(pet, String(b.id || ""), now); return saved(c, pet, now, r, { reward: r.reward }); }));
   app.post("/api/pet/quests/chest", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const r = claimChest(pet, now); return saved(c, pet, now, r, { prize: r.prize, bonus_coins: r.coins }); }));
   app.post("/api/pet/shop/buy", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const b: any = await jsonBody(c); return saved(c, pet, now, buyItem(pet, String(b.item || ""))); }));
-  app.put("/api/pet/room", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const b: any = await jsonBody(c); return saved(c, pet, now, placeItems(pet, b.placed)); }));
+  app.put("/api/pet/room", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const b: any = await jsonBody(c); return saved(c, pet, now, placeItems(pet, b.placed, b.positions)); }));
   app.post("/api/pet/stable/new", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const b: any = await jsonBody(c); return saved(c, pet, now, newPet(pet, String(b.species || ""), String(b.name || ""))); }));
   app.post("/api/pet/stable/swap", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const b: any = await jsonBody(c); return saved(c, pet, now, swapPet(pet, Number(b.index))); }));
   app.post("/api/pet/cheer/seen", g.auth, g.child, (c) => withPet(c, async (pet, now) => { if (pet.extra?.cheer) pet.extra.cheer.seen = true; await savePet(c.env.DB, pet); return c.json(questView(pet, now)); }));

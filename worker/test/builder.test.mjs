@@ -1060,3 +1060,13 @@ test("pet mood and weekly summary read sensibly; parent summary counts this week
   assert.deepEqual(w.words_mastered, ["integer"]);
   assert.equal(w.week, "2026-10-12");
 });
+
+test("pet room: things can be moved, positions are kept in range and only for things placed", () => {
+  const pet = mkPet(); pet.extra.coins = 300;
+  pq.buyItem(pet, "plant"); pq.buyItem(pet, "lamp");
+  assert.equal(pq.placeItems(pet, ["plant", "lamp"], { plant: { x: 30.4, y: 12 }, lamp: { x: 500, y: -9 }, piano: { x: 1, y: 1 } }).ok, true);
+  const v = pq.questView(pet, D("2026-10-14"));
+  assert.deepEqual(v.room_pos.plant, { x: 30, y: 12 });
+  assert.deepEqual(v.room_pos.lamp, { x: 92, y: 0 });
+  assert.equal(v.room_pos.piano, undefined);
+});

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { api } from "../../lib/api";
+import { playSfx } from "../../lib/sfx";
 
 const INK = { color: "#1F3B2D" };
 const BTN = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
@@ -11,25 +12,25 @@ const RARE_EMOJI = { top_hat: "🎩", rainbow: "🌈", magic_wand: "🪄", headp
 export const ROOM_EMOJI = { plant: "🪴", lamp: "🕯️", rug: "🧶", bookshelf: "📚", fishtank: "🐠", telescope: "🔭", globe: "🌏", piano: "🎹" };
 
 // Daily goals, weekly chest, spelling trophies, the shop, and extra pets. Everything is earned by learning and gentle care.
-export default function PetQuests({ pet, quests, onChange }) {
+export default function PetQuests({ pet, quests, onChange, onFx }) {
   const [busy, setBusy] = useState("");
   const [adopt, setAdopt] = useState({ species: "", name: "" });
   if (!quests) return null;
   const q = quests;
 
-  const call = async (key, fn, okMsg) => {
+  const call = async (key, fn, okMsg, sound, fx) => {
     setBusy(key);
-    try { const { data } = await fn(); onChange(data); if (okMsg) toast.success(typeof okMsg === "function" ? okMsg(data) : okMsg); }
+    try { const { data } = await fn(); onChange(data); if (okMsg) toast.success(typeof okMsg === "function" ? okMsg(data) : okMsg); if (sound) playSfx(sound); if (fx && onFx) onFx(fx); }
     catch (e) { toast.error(e?.response?.data?.detail || "That did not work. Try again."); }
     finally { setBusy(""); }
   };
 
-  const claim = (g) => call(`g${g.id}`, () => api.post("/pet/quests/claim", { id: g.id }), `+${g.reward} coins!`);
-  const chest = () => call("chest", () => api.post("/pet/quests/chest"), (d) => (d.prize ? `You got a rare accessory: ${d.prize.replace("_", " ")}!` : "Chest opened! +50 coins"));
-  const buy = (s) => call(`b${s.id}`, () => api.post("/pet/shop/buy", { item: s.id }), `${s.label} is in your room!`);
+  const claim = (g) => call(`g${g.id}`, () => api.post("/pet/quests/claim", { id: g.id }), `+${g.reward} coins!`, "coin", "coin");
+  const chest = () => call("chest", () => api.post("/pet/quests/chest"), (d) => (d.prize ? `You got a rare accessory: ${d.prize.replace("_", " ")}!` : "Chest opened! +50 coins"), "cheer", "party");
+  const buy = (s) => call(`b${s.id}`, () => api.post("/pet/shop/buy", { item: s.id }), `${s.label} is in your room!`, "buy", "sparkle");
   const place = (id) => call(`p${id}`, () => api.put("/pet/room", { placed: q.room.includes(id) ? q.room.filter((x) => x !== id) : [...q.room, id] }));
-  const swap = (i) => call(`s${i}`, () => api.post("/pet/stable/swap", { index: i }), "Switched pets");
-  const adoptNew = (e) => { e.preventDefault(); call("new", () => api.post("/pet/stable/new", adopt), "A new egg has arrived!").then(() => setAdopt({ species: "", name: "" })); };
+  const swap = (i) => call(`s${i}`, () => api.post("/pet/stable/swap", { index: i }), "Switched pets", "pop", "sparkle");
+  const adoptNew = (e) => { e.preventDefault(); call("new", () => api.post("/pet/stable/new", adopt), "A new egg has arrived!", "cheer", "party").then(() => setAdopt({ species: "", name: "" })); };
 
   const allDone = q.goals.every((g) => g.claimed);
 
