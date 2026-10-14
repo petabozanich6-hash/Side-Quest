@@ -1,4 +1,5 @@
 import React from "react";
+import LessonVisual from "../shared/LessonVisual";
 
 // One readable document for a whole lesson. Used for the parent's review screen and for printing.
 //   view="parent":  everything, including answers and the teaching guide
@@ -24,6 +25,7 @@ export default function LessonDocument({ lesson: l, view = "parent" }) {
       {parent && l.teaching_plan && <><H>Teaching plan</H><Para>{l.teaching_plan}</Para></>}
       {list(l.objectives).length > 0 && <><H>Learning goals</H><ul className="list-disc pl-5 space-y-1 text-[15px]">{list(l.objectives).map((o, i) => <li key={i}>{o}</li>)}</ul></>}
       {list(l.materials).length > 0 && <><H>You will need</H><Para>{(Array.isArray(l.materials) ? l.materials : [l.materials]).join(", ")}</Para></>}
+      {list(l.key_words).length > 0 && <><H>Words to know</H><ul className="space-y-1 text-[15px]">{list(l.key_words).map((k, i) => <li key={i}><b>{k.word}</b> — {k.meaning}</li>)}</ul></>}
       {l.introduction && <><H>Introduction</H><Para>{l.introduction}</Para></>}
       {parent && l.why_it_matters && <><H>Why it matters</H><Para>{l.why_it_matters}</Para></>}
 
@@ -37,13 +39,14 @@ export default function LessonDocument({ lesson: l, view = "parent" }) {
       {list(l.texts).map((t, i) => <div key={i}><H>{t.title || "Reading"}</H><div className="rounded-lg bg-amber-50/60 border border-amber-200 p-4"><Para>{t.content}</Para></div></div>)}
 
       {sections.length > 0 && <H>Learn it</H>}
-      {sections.map((s, i) => <div key={i} className="mb-3">{s.heading && <h3 className="font-bold text-slate-900">{s.heading}</h3>}<Para>{s.body}</Para></div>)}
+      {sections.map((s, i) => <div key={i} className="mb-3">{s.heading && <h3 className="font-bold text-slate-900">{s.heading}</h3>}<Para>{s.body}</Para>{s.visual && <div className="mt-2"><LessonVisual visual={s.visual} /></div>}</div>)}
 
       {list(l.worked_examples).length > 0 && <H>Worked examples</H>}
       {list(l.worked_examples).map((w, i) => (
         <div key={i} className="mb-4 rounded-lg border border-slate-200 p-3 break-inside-avoid">
           <p className="font-bold">{w.title || `Example ${i + 1}`}</p>
           <p className="mt-1 text-[15px]">{w.problem}</p>
+          {w.visual && <div className="mt-2"><LessonVisual visual={w.visual} /></div>}
           <ol className="list-decimal pl-5 mt-1 space-y-0.5 text-[15px]">{list(w.steps).map((s, j) => <li key={j}>{s}</li>)}</ol>
           {w.answer && <p className="mt-1 font-semibold text-[15px]">Answer: {w.answer}</p>}
         </div>
@@ -57,7 +60,7 @@ export default function LessonDocument({ lesson: l, view = "parent" }) {
       {list(l.guided_practice).map((g, i) => (
         <div key={i} className="mb-2 break-inside-avoid">
           <p className="text-[15px]"><b>{i + 1}.</b> {g.prompt}</p>
-          {student ? <Lines n={2} /> : <>{g.hint && <p className="text-sm text-slate-600">Hint: {g.hint}</p>}{parent && g.answer && <Ans>{g.answer}</Ans>}</>}
+          {student ? <Lines n={2} /> : <>{list(g.options).length > 0 && <p className="text-sm text-slate-600">Options: {g.options.join(" · ")}</p>}{g.hint && <p className="text-sm text-slate-600">Hint: {g.hint}</p>}{parent && g.answer && <Ans>{g.answer}</Ans>}</>}
         </div>
       ))}
 
@@ -66,6 +69,7 @@ export default function LessonDocument({ lesson: l, view = "parent" }) {
         <div key={i} className="mb-4 break-inside-avoid">
           <h3 className="font-bold">Activity {i + 1}: {a.title}</h3>
           {a.instructions && <Para>{a.instructions}</Para>}
+          {a.visual && <div className="my-2"><LessonVisual visual={a.visual} /></div>}
           {list(a.tasks).map((t, j) => (
             <div key={j} className="mt-1">
               <p className="text-[15px]"><b>{String.fromCharCode(97 + (j % 26))}.</b> {t.prompt}</p>

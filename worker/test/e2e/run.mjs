@@ -237,10 +237,32 @@ await step("child cannot use parent controls (permissions)", async () => {
   ok((await api("POST", `/submissions/${"nope"}/feedback`, childToken, { status: "demonstrated" })).status === 403, "child can review");
 });
 
+// The child lesson is a step-by-step player. These walk it the way a child would.
+async function readAll(p) {
+  await p.selectOption("[data-testid=step-jump]", { index: 0 });
+  let t = "";
+  for (let n = 0; n < 60; n++) {
+    t += "\n" + (await p.textContent("[data-testid=child-lesson]"));
+    if (!(await p.locator("[data-testid=step-next]").count())) break;
+    await p.click("[data-testid=step-next]");
+  }
+  await p.selectOption("[data-testid=step-jump]", { index: 0 });
+  return t;
+}
+async function seek(p, selector) {
+  await p.selectOption("[data-testid=step-jump]", { index: 0 });
+  for (let n = 0; n < 60; n++) {
+    if (await p.locator(selector).count()) return;
+    if (!(await p.locator("[data-testid=step-next]").count())) break;
+    await p.click("[data-testid=step-next]");
+  }
+  throw new Error("never reached " + selector);
+}
+
 await step("G. child opens the lesson: sees real content, no answer keys anywhere in the response", async () => {
   await cpage.goto(`${BASE}/child/lesson/${assignmentId}`);
   await cpage.waitForSelector('[data-testid=lesson-title]', { timeout: 15000 });
-  const body = await cpage.textContent("body");
+  const body = await readAll(cpage);
   ok(body.includes("A half is one of two equal parts"), "teaching text missing");
   ok(body.includes("How many quarters make a whole?"), "question missing");
   ok(!body.includes(SECRET), "answer key text visible to child");
@@ -255,12 +277,19 @@ await step("G. child opens the lesson: sees real content, no answer keys anywher
 });
 
 await step("child answers are saved and survive a refresh", async () => {
-  await cpage.fill('[data-testid=answer-0]', "Four quarters");
+  await seek(cpage, '[data-testid=activity-0]');
   await cpage.check('[data-testid=activity-0]');
+  await seek(cpage, '[data-testid=answer-0]');
+  await cpage.fill('[data-testid=answer-0]', "Four quarters");
+  await seek(cpage, '[data-testid=save-progress]');
   await cpage.click('[data-testid=save-progress]');
   await cpage.waitForSelector("text=Your work is saved");
-  await cpage.reload(); await cpage.waitForSelector('[data-testid=answer-0]');
+  await cpage.reload(); await cpage.waitForSelector('[data-testid=step-jump]');
+  // the child comes back to the step they were on, and nothing is lost
+  await cpage.waitForSelector('[data-testid=save-progress]', { timeout: 10000 });
+  await seek(cpage, '[data-testid=answer-0]');
   ok((await cpage.inputValue('[data-testid=answer-0]')) === "Four quarters", "written answer lost on refresh");
+  await seek(cpage, '[data-testid=activity-0]');
   ok(await cpage.isChecked('[data-testid=activity-0]'), "tick lost on refresh");
 });
 
@@ -270,6 +299,7 @@ await step("cannot hand in before passing the quiz (server enforces it)", async 
 });
 
 await step("multiple-choice quiz: wrong answer fails, right answer passes (marked on the server)", async () => {
+  await seek(cpage, '[data-testid=quiz-section]');
   await cpage.getByRole("button", { name: "A quarter", exact: true }).click();
   await cpage.getByRole("button", { name: /Check my answers/ }).click();
   await cpage.waitForSelector("text=Try again");
@@ -280,6 +310,7 @@ await step("multiple-choice quiz: wrong answer fails, right answer passes (marke
 });
 
 await step("H. child hands the work in", async () => {
+  await seek(cpage, '[data-testid=submit-work]');
   await cpage.click('[data-testid=submit-work]');
   await cpage.waitForSelector('[data-testid=handed-in]', { timeout: 15000 });
   const again = await api("POST", "/submissions", childToken, { assignment_id: assignmentId, response_text: "again" });
@@ -455,7 +486,7 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   ok(await page.inputValue("[data-testid=b-parent-script]").then(v => v.includes("Hook (0 to 5 min)")), "parent guide missing in editor");
   await page.click("[data-testid=preview-tab]");
   const pv = await page.textContent("[data-testid=builder-preview]");
-  ok(pv.includes("Watch how it is done") && pv.includes("Try it together") && !pv.includes("Hook (0 to 5 min)") && !pv.includes("Sam forgot to regroup"), "preview content/leak");
+  ok(pv.includes("Mistakes to avoid") && pv.includes("Try it") && !pv.includes("Hook (0 to 5 min)") && !pv.includes("Sam forgot to regroup"), "preview content/leak");
   // child sees it
   const mctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true });
   const cp = await mctx.newPage();
@@ -467,10 +498,9 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   try { await cp.waitForSelector('[data-testid=pet-picker]', { timeout: 6000 }); await cp.click('[data-testid=pet-fox]'); await cp.fill('[data-testid=pet-name]', "Ember"); await cp.click('[data-testid=create-pet]'); } catch {}
   await cp.goto(`${BASE}/child/lesson/${asg.json.id}`);
   await cp.waitForSelector("[data-testid=lesson-title]", { timeout: 15000 });
-  const body = await cp.textContent("body");
-  for (const need of ["Imagine you have a vegie patch", "Tens and ones: how numbers are built", "Watch how it is done", "13 ones is more than 10, so regroup", "Try it together", "You will need:", "Extra challenge", "Work out 36 + 27", "Why this matters:", "Before you start, you should already know:", "Watch out for these mistakes", "Writing the whole 13 in the ones place", "Remember", "Let's remember the three big ideas", "Add Bed A and Bed B: 34 + 27"]) ok(body.includes(need), "child page missing: " + need);
+  const body = await readAll(cp);
+  for (const need of ["Imagine you have a vegie patch", "Tens and ones: how numbers are built", "13 ones is more than 10, so regroup", "Try it", "You will need:", "Extra challenge", "Work out 36 + 27", "Why this matters:", "You should already know:", "Mistakes to avoid", "Writing the whole 13 in the ones place", "Remember", "Let's remember the three big ideas", "Add Bed A and Bed B: 34 + 27"]) ok(body.includes(need), "child page missing: " + need);
   for (const leak of ["Hook (0 to 5 min)", "Sam forgot to regroup", "If your child finds regrouping hard", "A photo of the bean cups", "63. Tens: 30", "Reference example (not AI output)", "Concept: adding two-digit", "How many tens and how many ones are in 47?", "4 cups and 5 loose beans. 27 + 18 = 45"]) ok(!body.includes(leak), "child page leaks: " + leak);
-  await cp.click("text=Need a hint?").catch(() => {});
   await cp.screenshot({ path: `${SHOTS}/garden-lesson-child-mobile.png`, fullPage: true });
   const tok = await cp.evaluate(() => localStorage.getItem("sq_token"));
   const raw = JSON.stringify((await api("GET", `/assignments/${asg.json.id}`, tok)).json);
@@ -501,8 +531,8 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   ok(asg7.status === 200, "assign y7 " + asg7.status);
   await cp.goto(`${BASE}/child/lesson/${asg7.json.id}`);
   await cp.waitForSelector("[data-testid=lesson-title]", { timeout: 15000 });
-  const b7 = await cp.textContent("body");
-  for (const need of ["Negative numbers: counting below zero", "What is a negative number?", "The number line", "Opposites and distance from zero", "Ordering temperatures", "Adding across zero", "Why this matters:", "Watch out for these mistakes", "Temperature detective", "Write the five places in order from coldest to warmest.", "Money story", "Remember", "Challenge yourself"]) ok(b7.includes(need), "y7 child page missing: " + need);
+  const b7 = await readAll(cp);
+  for (const need of ["Negative numbers: counting below zero", "What is a negative number?", "The number line", "Opposites and distance from zero", "Ordering temperatures", "Adding across zero", "Why this matters:", "Mistakes to avoid", "Temperature detective", "Write the five places in order from coldest to warmest.", "Money story", "Remember", "Challenge yourself"]) ok(b7.includes(need), "y7 child page missing: " + need);
   for (const leak of ["Concept: negative integers", "Suggested check-ins", "If you find this hard:", "Charlotte Pass (\u22128), Thredbo", "Sam moved the wrong way", "Which is greater, \u22129 or \u22122, and how do you know?"]) ok(!b7.includes(leak), "y7 child page leaks: " + leak);
   await cp.screenshot({ path: `${SHOTS}/year7-lesson-child-mobile.png`, fullPage: true });
   const raw7 = JSON.stringify((await api("GET", `/assignments/${asg7.json.id}`, tok)).json);

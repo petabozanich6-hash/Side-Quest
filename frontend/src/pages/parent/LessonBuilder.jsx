@@ -18,7 +18,7 @@ const blank = () => ({
   offline_alternative: "", answer_key: "", parent_notes: "", status: "draft",
   delivery: "independent", introduction: "", materials: "", worked_examples: [], guided_practice: [],
   support: "", extension: "", parent_script: "", evidence_suggestions: "",
-  teaching_plan: "", why_it_matters: "", prior_knowledge: "", misconceptions: [], teaching_questions: [], texts: [], consolidation: "", ai_flags: [],
+  key_words: "", teaching_plan: "", why_it_matters: "", prior_knowledge: "", misconceptions: [], teaching_questions: [], texts: [], consolidation: "", ai_flags: [],
 });
 
 const field = "mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:border-slate-500";
@@ -43,16 +43,17 @@ function fromServer(l) {
     ai_flags: l.ai_flags || [],
     title: l.title || "", learning_area: l.learning_area || "", year_level: l.year_level || "",
     objectives: l.objectives?.length ? l.objectives : [""],
-    sections: l.sections?.length ? l.sections : [{ heading: "", body: "" }],
+    sections: l.sections?.length ? l.sections.map(x => ({ ...x })) : [{ heading: "", body: "" }],
     activities: (l.activities || []).map(a => ({ ...a, tasks: a.tasks || [] })), questions: l.questions || [], quiz: l.quiz || [],
-    resources: (l.resources || []).map(r => ({ type: r.type === "video" ? "video" : "link", title: r.title || "", url: r.url || "" })),
+    resources: (l.resources || []).map(r => ({ ...r, type: r.type === "video" ? "video" : "link", title: r.title || "", url: r.url || "" })),
+    key_words: (l.key_words || []).map(w => `${w.word} = ${w.meaning}`).join("\n"),
     duration_minutes: l.duration_minutes ?? "", curriculum_refs: (l.curriculum_refs || []).join("\n"),
     offline_alternative: l.offline_alternative && !l.activities?.some(a => a.offline) ? l.offline_alternative : (l.offline_alternative || ""),
     answer_key: l.answer_key || "", parent_notes: l.parent_notes || "", status: l.status || "draft",
     delivery: l.delivery === "parent_guided" ? "parent_guided" : "independent",
     introduction: l.introduction || "", materials: (l.materials || []).join("\n"),
-    worked_examples: (l.worked_examples || []).map(w => ({ title: w.title || "", problem: w.problem || "", steps: (w.steps || []).join("\n"), answer: w.answer || "" })),
-    guided_practice: (l.guided_practice || []).map(g => ({ prompt: g.prompt || "", hint: g.hint || "", answer: g.answer || "" })),
+    worked_examples: (l.worked_examples || []).map(w => ({ ...w, title: w.title || "", problem: w.problem || "", steps: (w.steps || []).join("\n"), answer: w.answer || "" })),
+    guided_practice: (l.guided_practice || []).map(g => ({ ...g, prompt: g.prompt || "", hint: g.hint || "", answer: g.answer || "" })),
     support: l.support || "", extension: l.extension || "", parent_script: l.parent_script || "",
     evidence_suggestions: (l.evidence_suggestions || []).join("\n"),
     teaching_plan: l.teaching_plan || "", why_it_matters: l.why_it_matters || "", prior_knowledge: (l.prior_knowledge || []).join("\n"),
@@ -68,18 +69,19 @@ function toServer(f, status) {
     title: f.title, learning_area: f.learning_area, year_level: f.year_level, stage: STAGE_OF[f.year_level] || "",
     status,
     objectives: f.objectives.map(s => s.trim()).filter(Boolean),
-    sections: f.sections.filter(s => s.body.trim()).map(s => ({ heading: s.heading, body: s.body })),
-    activities: f.activities.filter(a => a.title.trim()).map(a => ({ title: a.title, instructions: a.instructions || "", offline: !!a.offline, tasks: (a.tasks || []).filter(t => t.prompt.trim()).map(t => ({ prompt: t.prompt, answer: t.answer || "" })) })),
+    sections: f.sections.filter(s => s.body.trim()).map(s => ({ ...s, heading: s.heading, body: s.body })),
+    activities: f.activities.filter(a => a.title.trim()).map(a => ({ ...a, title: a.title, instructions: a.instructions || "", offline: !!a.offline, tasks: (a.tasks || []).filter(t => t.prompt.trim()).map(t => ({ ...t, prompt: t.prompt, answer: t.answer || "" })) })),
     questions: f.questions.filter(q => q.prompt.trim()).map(q => ({ prompt: q.prompt, type: q.type === "long" ? "long" : "short", answer_key: q.answer_key || "" })),
     quiz: f.quiz.filter(q => q.question.trim()).map(q => ({ question: q.question, options: q.options.filter(o => o.trim()), correct_index: q.correct_index, explanation: q.explanation || "" })),
-    resources: f.resources.filter(r => r.title.trim() && r.url.trim()).map(r => ({ type: r.type, title: r.title, url: r.url })),
+    resources: f.resources.filter(r => r.title.trim() && r.url.trim()).map(r => ({ ...r, type: r.type, title: r.title, url: r.url })),
+    key_words: lines(f.key_words).map(x => { const i = x.indexOf("="); return i > 0 ? { word: x.slice(0, i).trim(), meaning: x.slice(i + 1).trim() } : null; }).filter(w => w && w.word && w.meaning),
     duration_minutes: f.duration_minutes === "" ? null : Number(f.duration_minutes),
     curriculum_refs: f.curriculum_refs.split("\n").map(s => s.trim()).filter(Boolean),
     offline_alternative: f.offline_alternative, answer_key: f.answer_key, parent_notes: f.parent_notes,
     delivery: f.delivery, introduction: f.introduction,
     materials: lines(f.materials),
-    worked_examples: f.worked_examples.filter(w => w.problem.trim()).map(w => ({ title: w.title, problem: w.problem, steps: lines(w.steps), answer: w.answer })),
-    guided_practice: f.guided_practice.filter(g => g.prompt.trim()).map(g => ({ prompt: g.prompt, hint: g.hint, answer: g.answer })),
+    worked_examples: f.worked_examples.filter(w => w.problem.trim()).map(w => ({ ...w, title: w.title, problem: w.problem, steps: lines(w.steps), answer: w.answer })),
+    guided_practice: f.guided_practice.filter(g => g.prompt.trim()).map(g => ({ ...g, prompt: g.prompt, hint: g.hint, answer: g.answer })),
     support: f.support, extension: f.extension, parent_script: f.parent_script,
     evidence_suggestions: lines(f.evidence_suggestions),
     teaching_plan: f.teaching_plan, why_it_matters: f.why_it_matters, prior_knowledge: lines(f.prior_knowledge),
@@ -91,6 +93,8 @@ function toServer(f, status) {
 }
 const lines = (t) => String(t || "").split("\n").map(x => x.trim()).filter(Boolean);
 
+const previewItem = (it) => ({ prompt: it.prompt, hint: it.hint, kind: it.kind, options: it.options, lefts: it.pairs?.map(p => p.left), rights: it.pairs?.map(p => p.right) });
+
 /** The lesson as the child will see it: no answers, no parent guide. */
 function childView(f) {
   const s = toServer(f, "draft");
@@ -99,8 +103,8 @@ function childView(f) {
     child_mission: s.objectives[0] ? `Your mission: ${s.objectives[0]}` : "",
     pass_mark: 0.7,
     questions: s.questions.map(q => ({ prompt: q.prompt, type: q.type })),
-    guided_practice: s.guided_practice.map(g => ({ prompt: g.prompt, hint: g.hint })),
-    activities: s.activities.map(a => ({ ...a, tasks: a.tasks.map(t => ({ prompt: t.prompt })) })),
+    guided_practice: s.guided_practice.map(previewItem),
+    activities: s.activities.map(a => ({ ...a, tasks: a.tasks.map(previewItem) })),
     quiz: s.quiz.map(({ correct_index, explanation, ...q }) => ({ ...q, type: "multiple_choice" })),
   };
   for (const k of ["answer_key", "parent_notes", "parent_script", "support", "evidence_suggestions", "curriculum_refs", "teaching_plan", "teaching_questions"]) delete l[k];
@@ -348,6 +352,10 @@ export default function LessonBuilder() {
               </div>
             ))}
             <button onClick={() => add("misconceptions", { mistake: "", fix: "" })} className="text-sm font-semibold text-slate-700 flex items-center gap-1"><Plus size={14} /> Add a common mistake</button>
+          </Card>
+
+          <Card title="Words to know" hint="Vocabulary your child will see at the start. One per line, like: ones = the single units in a number.">
+            <textarea className={field} rows={3} value={f.key_words} onChange={e => set("key_words", e.target.value)} placeholder="regroup = swap 10 ones for 1 ten" data-testid="b-keywords" />
           </Card>
 
           <Card title="Wrap-up" hint="Revisit the key ideas at the end. Your child sees this.">

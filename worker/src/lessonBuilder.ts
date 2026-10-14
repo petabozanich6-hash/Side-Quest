@@ -265,7 +265,7 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
           const dur = Number(o.duration_seconds);
           return {
             type: "video", title, url, embed_url: embed,
-            video_id: /^[A-Za-z0-9_-]{6,20}$/.test(String(o.video_id ?? "")) ? String(o.video_id) : (/embed\/([A-Za-z0-9_-]+)/.exec(embed)?.[1] ?? ""),
+            video_id: /embed\/([A-Za-z0-9_-]+)/.exec(embed)?.[1] ?? "",
             channel: text(o.channel, 120, `Resource ${i + 1} channel`), description: text(o.description, 300, `Resource ${i + 1} description`),
             duration_seconds: Number.isFinite(dur) && dur > 0 && dur < 14400 ? Math.round(dur) : null,
             thumbnail: /^https:\/\/i\.ytimg\.com\/vi\/[A-Za-z0-9_-]+\/[a-z0-9]+\.jpg$/.test(String(o.thumbnail ?? "")) ? String(o.thumbnail) : "",
