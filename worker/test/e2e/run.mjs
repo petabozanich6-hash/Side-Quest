@@ -135,7 +135,12 @@ await step("C. parent builds a lesson in the builder, previews it and saves it t
   await page.locator('input[type=radio][name^="correct-"]').nth(1).check();
   await page.fill('textarea[placeholder="Answers and what to look for"]', SECRET + " answer sheet");
   await page.click('[data-testid=preview-tab]');
-  const prev = await page.textContent('[data-testid=builder-preview]');
+  let prev = "";
+  for (let n = 0; n < 40; n++) {
+    prev += "\n" + (await page.textContent('[data-testid=builder-preview]'));
+    if (!(await page.locator('[data-testid=builder-preview] [data-testid=step-next]').count())) break;
+    await page.click('[data-testid=builder-preview] [data-testid=step-next]');
+  }
   ok(prev.includes("Halves and quarters") && prev.includes("How many quarters"), "preview missing content");
   ok(!prev.includes(SECRET), "preview shows answer key to the 'child'");
   await shot("builder-preview");
