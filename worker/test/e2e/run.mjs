@@ -874,10 +874,30 @@ await step("AI lesson set: open, edit, assign, move around and refresh without l
 });
 
 await step("O. outcome tracker: QLD family sees the honest gap, not invented outcomes", async () => {
-  await page.goto(BASE + "/parent/outcomes");
-  await page.waitForSelector("[data-testid=tracker-unavailable]", { timeout: 15000 });
-  ok(/verified outcome list/.test(await page.textContent("[data-testid=tracker-unavailable]")), "gap not explained");
-  ok(await page.locator("[data-testid=tracker-list]").count() === 0, "outcomes listed for a curriculum Side-Quest doesn't hold");
+  // Use a separate QLD family: the primary e2e account was deliberately switched back to NSW earlier.
+  // Otherwise this test asks a NSW family's tracker to show the QLD-only unavailable message.
+  const email = `outcomes-qld-${stamp}@example.com`;
+  const reg = await api("POST", "/auth/register", null, { name: "Queensland Family", email, password: pw, jurisdiction: "QLD" });
+  ok(reg.status === 200 && reg.json?.token, "QLD registration failed: " + JSON.stringify(reg.json));
+  const child = await api("POST", "/students", reg.json.token, {
+    name: "Queensland Learner", username: `qld${stamp}`.slice(0, 16), pin: "4321", stage: "S2"
+  });
+  ok(child.status === 200 && child.json?.id, "QLD child creation failed: " + JSON.stringify(child.json));
+  const qctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  try {
+    const qpage = await qctx.newPage();
+    await qpage.goto(BASE + "/login");
+    await qpage.fill('[data-testid=login-email]', email);
+    await qpage.fill('[data-testid=login-password]', pw);
+    await qpage.click('[data-testid=login-submit]');
+    await qpage.waitForURL("**/parent", { timeout: 20000 });
+    await qpage.goto(BASE + `/parent/outcomes/${child.json.id}`);
+    await qpage.waitForSelector("[data-testid=tracker-unavailable]", { timeout: 15000 });
+    ok(/verified outcome list/.test(await qpage.textContent("[data-testid=tracker-unavailable]")), "gap not explained");
+    ok(await qpage.locator("[data-testid=tracker-list]").count() === 0, "outcomes listed for a curriculum Side-Quest doesn't hold");
+  } finally {
+    await qctx.close();
+  }
 });
 
 await step("P. outcome tracker: hand-in, review and evidence update it; only the parent confirms Achieved", async () => {
