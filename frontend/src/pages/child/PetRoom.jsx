@@ -6,6 +6,7 @@ import HalloweenOverlay from "../../components/shared/HalloweenOverlay";
 import SeasonalWorn from "../../components/shared/SeasonalWorn";
 import SeasonalWardrobeItems from "../../components/shared/SeasonalWardrobeItems";
 import { toast } from "sonner";
+import PetQuests, { ROOM_EMOJI } from "../../components/pet/PetQuests";
 import { ArrowLeft, Apple, Gamepad2, Palette, Sparkles, Loader2, Droplets } from "lucide-react";
 
 const BG_OPTIONS = [
@@ -19,6 +20,15 @@ const BG_OPTIONS = [
 const ACC_EMOJI = {
   scarf: "🧣", bow: "🎀", flower_crown: "🌸", party_hat: "🎉", bookworm_specs: "👓",
   backpack: "🎒", cape: "🧥", star_badge: "⭐", crown: "👑",
+  top_hat: "🎩", rainbow: "🌈", magic_wand: "🪄", headphones: "🎧", shades: "🕶️", butterfly: "🦋",
+};
+
+// Growth shows: a soft glow from Youngling, richer colour at each level, and a turning rainbow glow for a Legend.
+const AURA = {
+  Youngling: "radial-gradient(circle, rgba(167,243,208,.9), rgba(167,243,208,0) 70%)",
+  Companion: "radial-gradient(circle, rgba(253,230,138,.9), rgba(253,230,138,0) 70%)",
+  Hero: "radial-gradient(circle, rgba(251,191,36,.95), rgba(251,191,36,0) 70%)",
+  Legend: "conic-gradient(from 0deg, rgba(248,113,113,.8), rgba(251,191,36,.8), rgba(52,211,153,.8), rgba(96,165,250,.8), rgba(167,139,250,.8), rgba(248,113,113,.8))",
 };
 
 const EGG_FALLBACK = { base: "#E9C8A0", accent: "#FFFFFF", pattern: "spots", glow: "#FFF0DC" };
@@ -91,7 +101,14 @@ const PET_CSS = `
 .egg-hop{animation:eggHop .6s ease-out}
 .egg-glow{animation:eggGlow .9s ease-in-out}
 .zzz{animation:floatZ 2.6s ease-out infinite}
-@media (prefers-reduced-motion: reduce){.egg,.zzz{animation:none!important}}
+@keyframes petBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes petBreathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
+@keyframes auraSpin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+.mood-happy{animation:petBounce 1.6s ease-in-out infinite}
+.mood-calm,.mood-sleepy{animation:petBreathe 4s ease-in-out infinite}
+.aura{position:absolute;inset:-18px;border-radius:9999px;pointer-events:none;filter:blur(14px);opacity:.7}
+.aura-ring{animation:auraSpin 14s linear infinite}
+@media (prefers-reduced-motion: reduce){.egg,.zzz,.mood-happy,.mood-calm,.mood-sleepy,.aura-ring{animation:none!important}}
 `;
 
 const XP_SOURCES = [
@@ -120,6 +137,7 @@ export default function PetRoom() {
   const [renaming, setRenaming] = useState(false);
   const [newName, setNewName] = useState("");
   const [reaction, setReaction] = useState(null);
+  const [quests, setQuests] = useState(null);
 
   const apply = (data) => {
     if (!data || data.needs_pet) return;
@@ -128,10 +146,20 @@ export default function PetRoom() {
     setNewName(data.name || "");
   };
 
+  const loadQuests = async () => {
+    try {
+      const { data } = await api.get("/pet/quests");
+      setQuests(data);
+      if (data.cheer) { toast(data.cheer.text, { icon: "🐾" }); api.post("/pet/cheer/seen").catch(() => {}); }
+    } catch { /* the quest panel is a bonus; the room works without it */ }
+  };
   const load = async () => {
     try { apply((await api.get("/pet/state")).data); }
     catch { apply((await api.get("/pet")).data); } // falls back to old endpoint
+    loadQuests();
   };
+  // after a quest change the pet itself may have changed too (switching pets)
+  const questChanged = (data) => { setQuests(data); api.get("/pet/state").then((r) => apply(r.data)).catch(() => {}); };
   useEffect(() => { load(); }, []);
 
   const react = (kind) => { setReaction(kind); setTimeout(() => setReaction(null), 1000); };
@@ -222,9 +250,15 @@ export default function PetRoom() {
           <Flower className="absolute left-28 bottom-6" size={28} color="#D4857A" />
           <Flower className="absolute right-32 bottom-10" size={24} color="#C77B5B" />
           <Branch className="absolute right-10 top-4" size={120} color="#4A5D3A" />
+          {(quests?.room || []).map((id, i) => (
+            <span key={id} className="absolute text-4xl select-none" style={{ bottom: 6 + (i % 2) * 36, left: `${8 + i * 14}%`, zIndex: 5 }} data-testid={`room-${id}`} aria-hidden>{ROOM_EMOJI[id]}</span>
+          ))}
           <div className="relative z-10 mb-2 flex flex-col items-center">
-            <div className="relative" onClick={() => react(hatched ? "hop" : "wobble")}
+            {hatched && quests?.mood && <div className="mb-2 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} data-testid="pet-mood">{quests.mood.text}</div>}
+            <div className={`relative ${hatched && quests ? `mood-${quests.mood.mood}` : ""}`} onClick={() => react(hatched ? "hop" : "wobble")} data-testid="pet-body"
+              data-form={pet.level_name}
               style={{ filter: sick ? "grayscale(0.7)" : asleep ? "brightness(0.75)" : "none", cursor: "pointer" }}>
+              {hatched && AURA[pet.level_name] && <span className={`aura ${pet.level_name === "Legend" ? "aura-ring" : ""}`} style={{ background: AURA[pet.level_name] }} aria-hidden />}
               {hatched
                 ? <Pet species={pet.species} size={200} happy={!sad && pet.happiness > 40}><SeasonalWorn /></Pet>
                 : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"}><SeasonalWorn layout="egg" /></SpeciesEgg>}
@@ -292,6 +326,8 @@ export default function PetRoom() {
         </div>
       </section>
 
+      {hatched && <PetQuests pet={pet} quests={quests} onChange={questChanged} />}
+
       {catalog.length > 0 && (
         <section className="paper-card p-5" data-testid="wardrobe">
           <h2 className="font-display text-lg font-bold mb-1" style={{ color: "#1F3B2D" }}>Wardrobe</h2>
@@ -352,6 +388,7 @@ const ruleText = (rule = "") => {
   if (k === "streak") return `${v}-day care streak`;
   if (k === "cleans") return `Clean up ${v} times`;
   if (k === "reading") return `Log ${v} books`;
+  if (k === "quest") return "Weekly chest prize";
   return "Keep growing";
 };
 

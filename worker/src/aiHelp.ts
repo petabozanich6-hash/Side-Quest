@@ -106,7 +106,7 @@ const KIND_TEXT: Record<HelpKind, string> = {
   hint: "Give a hint, not the answer. Help the child think about the first step or what to notice, using a question or a small scaffold (for example, suggest splitting numbers into tens and ones, or picture a number line). Do not solve it.",
 };
 
-export function helpPrompt(opts: { lesson: any; bits: NonNullable<ReturnType<typeof locate>>; kind: HelpKind; level: number; year: string; prefs: any; interests: string[] }) {
+export function helpPrompt(opts: { lesson: any; bits: NonNullable<ReturnType<typeof locate>>; kind: HelpKind; level: number; year: string; prefs: any; interests: string[]; pet?: { name: string; species: string } | null }) {
   const { lesson: L, bits, kind, level, year, prefs, interests } = opts;
   const teach = (L.sections || []).slice(0, 2).map((s: any) => `${s.heading || ""}: ${clip(s.body, 450)}`).join("\n");
   return [
@@ -121,6 +121,7 @@ export function helpPrompt(opts: { lesson: any; bits: NonNullable<ReturnType<typ
     kind === "hint" && level > 1 ? `The child has already had ${level - 1} hint${level > 2 ? "s" : ""}. Make this one a little more direct than a first hint, but still do not state the answer.` : "",
     bits.graded ? "This question is part of an assessment: do not give or confirm the answer; teach the underlying idea with a different example." : "",
     KIND_TEXT[kind],
+    opts.pet ? `Speak as the child's pet companion, ${opts.pet.name} the ${opts.pet.species}: begin with one short, warm line in that friendly voice, then teach clearly. Every rule above still applies, and never pretend to be a person.` : "",
   ].filter(Boolean).join("\n\n");
 }
 
@@ -166,7 +167,9 @@ export async function helpForChild(
   const row = await childRow(db, user.family_id, user.id);
   const extra = parse(row?.extra, {});
   const year = /^\d{1,2}$/.test(String(row?.year_level || "")) ? `Year ${row.year_level}` : String(row?.year_level || lesson?.year_level || "");
-  const prompt = helpPrompt({ lesson, bits, kind, level, year, prefs: extra.prefs || {}, interests: parse(row?.interests, []).filter((x: unknown) => typeof x === "string").slice(0, 3) });
+  const petRow = await db.prepare("SELECT name, species FROM pets WHERE student_id = ?").bind(user.id).first<any>().catch(() => null);
+  const pet = petRow?.name ? { name: String(petRow.name).slice(0, 30), species: String(petRow.species || "pet").slice(0, 20) } : null;
+  const prompt = helpPrompt({ lesson, bits, kind, level, year, pet, prefs: extra.prefs || {}, interests: parse(row?.interests, []).filter((x: unknown) => typeof x === "string").slice(0, 3) });
 
   const usageId = crypto.randomUUID();
   await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, 'help', 'pending', ?)").bind(usageId, user.family_id, user.id, now.toISOString()).run();

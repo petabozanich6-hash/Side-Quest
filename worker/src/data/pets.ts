@@ -60,6 +60,13 @@ export const ACCESSORIES: Record<string, { label: string; rule: string }> = {
   cape: { label: "Hero Cape", rule: "stage:Hero" },
   star_badge: { label: "Star Badge", rule: "streak:30" },
   crown: { label: "Legend Crown", rule: "stage:Legend" },
+  // Rare: opened from the weekly chest by finishing the daily goals on five days
+  top_hat: { label: "Top Hat", rule: "quest:top_hat" },
+  rainbow: { label: "Rainbow Halo", rule: "quest:rainbow" },
+  magic_wand: { label: "Magic Wand", rule: "quest:magic_wand" },
+  headphones: { label: "Study Headphones", rule: "quest:headphones" },
+  shades: { label: "Cool Shades", rule: "quest:shades" },
+  butterfly: { label: "Butterfly Wings", rule: "quest:butterfly" },
 };
 
 const SUBMISSION_XP = 15;
@@ -178,6 +185,7 @@ function ruleMet(rule: string, stageIndex: number, pet: PetState, readingCount: 
   if (kind === "streak") return pet.best_streak >= Number(value || 0);
   if (kind === "cleans") return pet.cleans_total >= Number(value || 0);
   if (kind === "reading") return readingCount >= Number(value || 0);
+  if (kind === "quest") return Array.isArray(pet.extra?.rare) && pet.extra.rare.includes(value);
   return false;
 }
 

@@ -969,3 +969,94 @@ test("spelling words for the Word Hoard: cleaned, single words only, kept with h
   assert.deepEqual(r.value.builder.hoard_words.map((w) => w.word), ["negative", "integer", "opposite"]);
   assert.equal(r.value.builder.hoard_words[0].hint, "neg-a-tive");
 });
+
+// ---------------------------------------------------------------- pet quests
+import * as pq from "../src/data/petQuests.ts";
+import * as pd from "../src/data/pets.ts";
+const mkPet = () => pd.makePet("s1", "f1", "Bo", "fox");
+const D = (s) => new Date(`${s}T01:00:00Z`);
+
+test("pet goals: three a day, progress from real learning, coins only when collected, once each", () => {
+  const pet = mkPet(); const now = D("2026-10-14");
+  const v0 = pq.questView(pet, now);
+  assert.equal(v0.goals.length, 3);
+  const learn = v0.goals[0];
+  for (let i = 0; i < learn.target; i++) pq.applyEvent(pet, { kind: "word_right" }, now);
+  const v1 = pq.questView(pet, now);
+  assert.equal(v1.goals[0].progress, learn.target); assert.ok(v1.goals[0].ready);
+  const before = v1.coins;
+  assert.equal(pq.claimGoal(pet, learn.id, now).ok, true);
+  assert.equal(pq.questView(pet, now).coins, before + learn.reward);
+  assert.equal(pq.claimGoal(pet, learn.id, now).ok, false); // not twice
+  assert.equal(pq.claimGoal(pet, "nope", now).ok, false);
+  // a new day gives fresh goals
+  assert.equal(pq.questView(pet, D("2026-10-15")).goals[0].progress, 0);
+});
+
+test("pet coins from spelling are capped each day so repeating cannot farm them", () => {
+  const pet = mkPet(); const now = D("2026-10-14");
+  for (let i = 0; i < 100; i++) pq.applyEvent(pet, { kind: "word_right" }, now);
+  assert.equal(pq.questView(pet, now).coins, pq.COINS_PER_DAY_FROM_WORDS);
+});
+
+test("pet weekly chest needs five finished days, gives a rare accessory once, and the accessory can be worn", async () => {
+  const pet = mkPet(); pet.hatched = true;
+  const days = ["2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16"]; // a Monday to Friday
+  assert.equal(pq.claimChest(pet, D(days[0])).ok, false);
+  for (const d of days) {
+    const now = D(d);
+    for (const g of pq.goalsFor(pq.dayKey(now))) {
+      const ev = g.kind === "care" ? [{ kind: "feed" }, { kind: "clean" }] : [{ kind: g.kind === "word_right" ? "word_right" : g.kind }];
+      for (let i = 0; i < g.target * 2; i++) for (const e of ev) pq.applyEvent(pet, e, now);
+      assert.equal(pq.claimGoal(pet, g.id, now).ok, true, `${d} ${g.id}`);
+    }
+  }
+  const now = D(days[4]);
+  assert.ok(pq.chestStatus(pet, now).ready);
+  const r = pq.claimChest(pet, now);
+  assert.ok(r.ok && r.prize, JSON.stringify(r));
+  assert.equal(pq.claimChest(pet, now).ok, false); // once a week
+  const pub = await pd.publicPet({ prepare() { throw new Error("no db"); } }, pet).catch(() => null);
+  assert.ok(pet.unlocked_accessories.includes(r.prize));
+  assert.ok(pet.extra.rare.includes(r.prize));
+  assert.ok(pd.ACCESSORIES[r.prize]);
+});
+
+test("pet shop: buy with coins, own once, place up to six, cannot place what you do not own", () => {
+  const pet = mkPet(); pet.extra.coins = 100;
+  assert.equal(pq.buyItem(pet, "bookshelf").ok, true);
+  assert.equal(pet.extra.coins, 40);
+  assert.equal(pq.buyItem(pet, "bookshelf").ok, false);
+  assert.equal(pq.buyItem(pet, "piano").ok, false); // too dear
+  assert.equal(pq.buyItem(pet, "nope").ok, false);
+  assert.equal(pq.placeItems(pet, ["bookshelf", "piano"]).ok, true);
+  assert.deepEqual(pet.extra.room, ["bookshelf"]);
+});
+
+test("pet trophies and extra pets: mastered words open slots, swapping keeps each pet's own progress", () => {
+  const pet = mkPet(); const now = D("2026-10-14");
+  pet.xp = 120;
+  assert.equal(pq.newPet(pet, "owl", "Hoot").ok, false); // no slot yet
+  for (let i = 0; i < 10; i++) pq.applyEvent(pet, { kind: "word_mastered", word: `word${i}` }, now);
+  pq.applyEvent(pet, { kind: "word_mastered", word: "word1" }, now); // same word again is not a second trophy
+  assert.equal(pq.questView(pet, now).trophy_count, 10);
+  assert.equal(pq.questView(pet, now).slots.total, 2);
+  assert.equal(pq.newPet(pet, "fox", "Again").ok, false); // already have a fox
+  assert.equal(pq.newPet(pet, "owl", "Hoot").ok, true);
+  assert.equal(pet.name, "Hoot"); assert.equal(pet.xp, 0); assert.equal(pet.hatched, false);
+  assert.equal(pq.newPet(pet, "dragon", "Smaug").ok, false); // third slot needs 30
+  assert.equal(pq.swapPet(pet, 0).ok, true);
+  assert.equal(pet.name, "Bo"); assert.equal(pet.xp, 120);
+  assert.equal(pq.questView(pet, now).stable[0].name, "Hoot");
+  assert.equal(pq.swapPet(pet, 5).ok, false);
+});
+
+test("pet mood and weekly summary read sensibly; parent summary counts this week's mastered words", () => {
+  const pet = mkPet(); pet.hatched = true; pet.happiness = 90; const now = D("2026-10-14");
+  assert.equal(pq.moodFor(pet).mood, "happy");
+  pet.care_status = "asleep"; assert.equal(pq.moodFor(pet).mood, "sleepy");
+  pq.applyEvent(pet, { kind: "word_mastered", word: "integer" }, now);
+  const w = pq.weekSummary(pet, now);
+  assert.deepEqual(w.words_mastered, ["integer"]);
+  assert.equal(w.week, "2026-10-12");
+});

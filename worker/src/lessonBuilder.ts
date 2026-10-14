@@ -1,6 +1,7 @@
 // Parent lesson builder, assignment snapshots, submissions, review and entitlement checks.
 // Plain functions over a D1-shaped database so they can be tested without the Worker runtime.
 // Every function that touches family data takes the family id from the authenticated user, never from the request body.
+import { recordPetEvent } from "./data/petQuests";
 import { knownOutcomeCodes } from "./outcomeMatch";
 import { cleanItemKind, cleanVisual, cleanKeyWords, childItem, markItem, modelAnswer, estimateMinutes } from "./items";
 import { effectivePlan, limitsFor, trialEndFrom, UPGRADE_MESSAGE } from "./entitlements";
@@ -684,6 +685,7 @@ export async function submitWork(
       .bind(id, user.family_id, a.id, user.id, a.lesson_id, response, reflection, JSON.stringify(fileIds), needsHelp ? 1 : 0, status, ts),
     db.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ?").bind(status, ts, a.id),
   ]);
+  if (!needsHelp) await recordPetEvent(db as any, user.id, { kind: "lesson_done" }, now);
   return { ok: true, id, status, assignment_id: a.id, submitted_at: ts, xp_gained: 0 };
 }
 

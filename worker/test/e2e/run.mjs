@@ -371,6 +371,22 @@ await step("Word Hoard: practice goes See it, Hear it, Spell it, Type it, and a 
   } finally { await hp.close(); }
 });
 
+await step("Pet goals, shop and parent weekly summary work end to end", async () => {
+  const mk = await api("POST", "/pet", childToken, { species: "fox", name: "Rusty" });
+  ok(mk.status === 200, "pet create " + mk.status);
+  const q = await api("GET", "/pet/quests", childToken);
+  ok(q.status === 200 && q.json.goals.length === 3, "quests: " + JSON.stringify(q.json).slice(0, 200));
+  ok(q.json.shop.length > 0 && q.json.slots.total === 1, "shop/slots");
+  ok((await api("POST", "/pet/quests/claim", childToken, { id: q.json.goals[0].id })).status === 400, "claimed an unfinished goal");
+  ok((await api("POST", "/pet/shop/buy", childToken, { item: "plant" })).status === 400, "bought without coins");
+  ok((await api("POST", "/pet/stable/new", childToken, { species: "owl", name: "Hoot" })).status === 400, "second pet before it was earned");
+  ok((await api("POST", "/pet/quests", parentToken, {})).status !== 200, "route exposed to parent");
+  const kids = await api("GET", "/students", parentToken);
+  const wk = await api("GET", `/pet/week/${kids.json[0].id}`, parentToken);
+  ok(wk.status === 200 && Array.isArray(wk.json.words_mastered), "week summary " + wk.status);
+  ok((await api("GET", `/pet/week/${kids.json[0].id}`, childToken)).status === 403, "child read parent summary");
+});
+
 await step("cannot hand in before passing the quiz (server enforces it)", async () => {
   const r = await api("POST", "/submissions", childToken, { assignment_id: assignmentId, response_text: "cheat" });
   ok(r.status === 409 && r.json.code === "QUIZ_NOT_PASSED", `expected QUIZ_NOT_PASSED got ${r.status} ${JSON.stringify(r.json)}`);

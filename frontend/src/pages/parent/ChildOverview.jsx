@@ -13,9 +13,11 @@ export default function ChildOverview() {
   const [data, setData] = useState(null);
   const [msg, setMsg] = useState("");
   const [emoji, setEmoji] = useState("🙌");
+  const [week, setWeek] = useState(null);
 
   const load = () => api.get(`/students/${sid}/overview`).then(r => setData(r.data));
   useEffect(() => { load(); }, [sid]);
+  useEffect(() => { api.get(`/pet/week/${sid}`).then(r => setWeek(r.data)).catch(() => setWeek(null)); }, [sid]);
 
   const sendCheer = async () => {
     if (!msg.trim()) { toast.error("Add a short message"); return; }
@@ -70,6 +72,18 @@ export default function ChildOverview() {
             style={{backgroundColor: petPaused ? "#C77B5B" : "#1F3B2D", color:"#F5EFE0"}} data-testid="toggle-pet-pause">
             {petPaused ? "Resume pet care" : "Pause pet care"}
           </button>
+        </section>
+      )}
+
+      {week && (
+        <section className="paper-card p-6" data-testid="pet-week">
+          <h2 className="font-display text-lg font-bold" style={{color:"#1F3B2D"}}>{week.name}'s week</h2>
+          <p className="text-sm text-stone-700 mt-1">
+            {week.words_mastered.length > 0
+              ? <>Words mastered this week: <b>{week.words_mastered.join(", ")}</b>.</>
+              : "No words mastered yet this week."}
+            {" "}Daily goals finished on {week.goal_days} {week.goal_days === 1 ? "day" : "days"} ({week.chest.days_needed} opens the weekly chest). {week.xp_earned} XP earned. {week.trophy_total} spelling {week.trophy_total === 1 ? "trophy" : "trophies"} in total.
+          </p>
         </section>
       )}
 

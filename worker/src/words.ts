@@ -1,5 +1,6 @@
 import { getStaticWordHint } from "./data/wordBank";
 import { newId, nowIso, parseJson } from "./types";
+import { recordPetEvent } from "./data/petQuests";
 import type { App, AuthUser, Guards } from "./types";
 
 const STAGES = ["wild", "spotted", "tamed", "mastered"] as const;
@@ -324,6 +325,7 @@ const insertReadingLogBestEffort = async (
         entry.created_at
       )
       .run();
+    await recordPetEvent(db, entry.student_id as string, { kind: "read" });
     return true;
   } catch (error) {
     console.warn("Skipping reading_log insert", error);
@@ -601,9 +603,12 @@ export function registerWords(app: App, g: Guards) {
           .first<Record<string, unknown>>();
       }
       if (!row) throw new ApiError(404, "Word not found");
-      return c.json(
-        await applyAttempt(c.env.DB, parseWordRow(row), String(body.guess || "").trim().toLowerCase() === word, user)
-      );
+      const outcome: any = await applyAttempt(c.env.DB, parseWordRow(row), String(body.guess || "").trim().toLowerCase() === word, user);
+      if (outcome?.correct) {
+        await recordPetEvent(c.env.DB, user.id, { kind: "word_right" });
+        if (outcome.just_mastered) await recordPetEvent(c.env.DB, user.id, { kind: "word_mastered", word });
+      }
+      return c.json(outcome);
     } catch (error) {
       return handleError(c, error);
     }

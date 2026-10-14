@@ -25,6 +25,7 @@ import {
   syncPetCare,
   touchStreak,
 } from "./data/pets";
+import { applyEvent, buyItem, claimChest, claimGoal, newPet, placeItems, questView, swapPet, weekSummary } from "./data/petQuests";
 
 const cleanDate = (value: unknown) => {
   if (value == null || String(value).trim() === "") return null;
@@ -156,6 +157,32 @@ export function registerPets(app: App, g: Guards) {
     });
   });
 
+  // ---- goals, coins, trophies, shop, room and extra pets (all stored in the pet's own record) ----
+  const withPet = async (c: any, fn: (pet: any, now: Date) => Promise<Response> | Response) => {
+    const now = new Date();
+    const pet = await loadSyncedPet(c.env.DB, c.get("user").id, now);
+    if (!pet) return jsonDetail(c, "No pet yet", 404);
+    return fn(pet, now);
+  };
+  const saved = async (c: any, pet: any, now: Date, r: { ok: boolean; detail?: string }, extra: object = {}) => {
+    if (!r.ok) return jsonDetail(c, r.detail || "Not possible", 400);
+    await savePet(c.env.DB, pet);
+    return c.json({ ...extra, ...questView(pet, now) });
+  };
+  app.get("/api/pet/quests", g.auth, g.child, (c) => withPet(c, async (pet, now) => { await savePet(c.env.DB, pet); return c.json(questView(pet, now)); }));
+  app.post("/api/pet/quests/claim", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const b: any = await jsonBody(c); const r = claimGoal(pet, String(b.id || ""), now); return saved(c, pet, now, r, { reward: r.reward }); }));
+  app.post("/api/pet/quests/chest", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const r = claimChest(pet, now); return saved(c, pet, now, r, { prize: r.prize, bonus_coins: r.coins }); }));
+  app.post("/api/pet/shop/buy", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const b: any = await jsonBody(c); return saved(c, pet, now, buyItem(pet, String(b.item || ""))); }));
+  app.put("/api/pet/room", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const b: any = await jsonBody(c); return saved(c, pet, now, placeItems(pet, b.placed)); }));
+  app.post("/api/pet/stable/new", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const b: any = await jsonBody(c); return saved(c, pet, now, newPet(pet, String(b.species || ""), String(b.name || ""))); }));
+  app.post("/api/pet/stable/swap", g.auth, g.child, (c) => withPet(c, async (pet, now) => { const b: any = await jsonBody(c); return saved(c, pet, now, swapPet(pet, Number(b.index))); }));
+  app.post("/api/pet/cheer/seen", g.auth, g.child, (c) => withPet(c, async (pet, now) => { if (pet.extra?.cheer) pet.extra.cheer.seen = true; await savePet(c.env.DB, pet); return c.json(questView(pet, now)); }));
+  app.get("/api/pet/week/:student_id", g.auth, g.parent, async (c) => {
+    const pet = await loadPet(c.env.DB, c.req.param("student_id"));
+    if (!pet || pet.family_id !== c.get("user").family_id) return jsonDetail(c, "Pet not found", 404);
+    return c.json({ name: pet.name, species: pet.species, ...weekSummary(pet, new Date()) });
+  });
+
   app.get("/api/pet/state", g.auth, g.child, async (c) => {
     const pet = await loadSyncedPet(c.env.DB, c.get("user").id);
     if (!pet) return c.json({ needs_pet: true });
@@ -181,6 +208,7 @@ export function registerPets(app: App, g: Guards) {
     if (!pet.hatched) {
       pet.egg_care_dates = [...new Set([...pet.egg_care_dates, now.toISOString().slice(0, 10)])].sort();
     }
+    applyEvent(pet, { kind: "feed" }, now);
     await savePet(c.env.DB, pet);
     await syncPetCare(c.env.DB, pet, now);
     return c.json({ ...(await publicPet(c.env.DB, pet)), revived });
@@ -202,6 +230,7 @@ export function registerPets(app: App, g: Guards) {
     pet.xp += PLAY_XP;
     pet.activity = [...pet.activity, { amount: PLAY_XP, reason: "Played with pet", at: now.toISOString() }];
     if (!pet.hatched) pet.egg_care_dates = [...new Set([...pet.egg_care_dates, today])].sort();
+    applyEvent(pet, { kind: "play" }, now);
     await savePet(c.env.DB, pet);
     await syncPetCare(c.env.DB, pet, now);
     return c.json(await publicPet(c.env.DB, pet));
@@ -218,6 +247,7 @@ export function registerPets(app: App, g: Guards) {
     pet.next_poop_at = new Date(now.getTime() + 24 * 3600000).toISOString();
     pet.cleans_total += 1;
     pet.happiness = Math.min(100, pet.happiness + 5);
+    applyEvent(pet, { kind: "clean" }, now);
     await savePet(c.env.DB, pet);
     await syncPetCare(c.env.DB, pet, now);
     return c.json(await publicPet(c.env.DB, pet));

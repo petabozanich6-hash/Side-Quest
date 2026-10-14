@@ -15,7 +15,7 @@ const INK = { color: "#1F3B2D" };
 // "I'm stuck! Help me understand." A small inline panel under the part of the lesson the child is on.
 // The server knows the lesson; this only says which part and what kind of help. Nothing here touches the child's answers.
 const HELP_KINDS = [["explain", "Explain it differently"], ["example", "Show me another example"], ["hint", "Give me a hint"]];
-function Stuck({ assignmentId, target, enabled, locked, onGrownUp }) {
+function Stuck({ assignmentId, target, enabled, locked, onGrownUp, petName }) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState("");
   const [res, setRes] = useState({}); // kind -> text, kept while the lesson is open
@@ -65,7 +65,7 @@ function Stuck({ assignmentId, target, enabled, locked, onGrownUp }) {
       {busy && <p className="text-sm text-stone-600" role="status">Thinking about the best way to help…</p>}
       {err && <p className="text-sm text-rose-800" role="alert" data-testid="stuck-error">{err}</p>}
       {shown && res[shown] && !busy && (
-        <div className="rounded-xl border bg-white p-4 text-base leading-relaxed whitespace-pre-wrap" style={border} data-testid="stuck-answer">{res[shown]}</div>
+        <div className="rounded-xl border bg-white p-4 text-base leading-relaxed whitespace-pre-wrap" style={border} data-testid="stuck-answer">{petName && <span className="block text-xs font-bold text-stone-500 mb-1">🐾 {petName} says:</span>}{res[shown]}</div>
       )}
       {shown === "hint" && res.hint && !busy && <button type="button" onClick={() => ask("hint")} className="text-sm font-bold underline" data-testid="stuck-more-hint">Still stuck? Give me a bigger hint</button>}
       {enabled && <p className="text-xs text-stone-500">This helper only talks about this lesson. It can make mistakes.</p>}
@@ -210,8 +210,10 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const top = useRef(null);
 
   const [helpOn, setHelpOn] = useState(false);
+  const [petName, setPetName] = useState("");
+  useEffect(() => { if (preview) return; api.get("/pet").then(r => setPetName(r.data?.name || "")).catch(() => {}); }, [preview]);
   useEffect(() => { if (preview) return; api.get("/help/status").then(r => setHelpOn(!!r.data.available && r.data.reason !== "limit")).catch(() => {}); }, [preview]);
-  const S = (target) => <Stuck assignmentId={a.id} target={target} enabled={helpOn} locked={locked} onGrownUp={preview || locked ? undefined : () => submit(true)} />;
+  const S = (target) => <Stuck petName={petName} assignmentId={a.id} target={target} enabled={helpOn} locked={locked} onGrownUp={preview || locked ? undefined : () => submit(true)} />;
   useEffect(() => { if (preview) return; api.get("/features").then(r => setUploadsOn(!!r.data.uploads)).catch(() => {}); }, [preview]);
 
   const upload = async (file) => {
