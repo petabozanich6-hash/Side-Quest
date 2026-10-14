@@ -112,6 +112,57 @@ await step("A. new family registers through the UI", async () => {
   await shot("parent-home");
 });
 
+await step("public homepage explains the full product and honest membership pricing", async () => {
+  await page.goto(BASE + "/");
+  const t = await page.textContent("body");
+  for (const expected of ["across Australia", "AI Lesson Builder", "Evidence Backpack", "Parent", "pocket pet", "$3", "$6", "$13", "$130", "seven days free"]) {
+    ok(t.toLowerCase().includes(expected.toLowerCase()), `homepage does not explain ${expected}`);
+  }
+  ok(!/ready-made lesson library|prewritten lesson library|NSW-only homeschooling platform/i.test(t), "outdated marketing claim");
+});
+
+await step("new parent receives clear first steps without promotional interruption", async () => {
+  await page.goto(BASE + "/parent");
+  await page.waitForSelector('[data-testid=get-started]');
+  ok(await page.locator('[data-testid=empty-students]').isVisible(), "new parent missing child guidance");
+  await page.goto(BASE + "/parent/assignments");
+  ok((await page.locator('[data-testid=assignments-empty]').innerText()).includes("adding a child"), "assignments empty state has no next action");
+  await page.goto(BASE + "/parent/resources");
+  ok(await page.locator('[data-testid=resources-empty-add]').isVisible(), "resource empty state has no action");
+  await page.goto(BASE + "/parent/learning-plans");
+  ok(await page.locator('[data-testid=plans-empty-add-child]').isVisible(), "learning plans have no child onboarding link");
+  await page.goto(BASE + "/parent/evidence");
+  ok(await page.locator('[data-testid=empty-evidence-notes]').isVisible(), "evidence notes should have a helpful empty state");
+});
+
+await step("parent onboarding pages fit phone, tablet and desktop", async () => {
+  for (const [label, width, height] of [["phone", 375, 812], ["tablet", 768, 1024], ["desktop", 1440, 900]]) {
+    const context = await browser.newContext({ viewport: { width, height } });
+    const p = await context.newPage();
+    try {
+      await p.goto(BASE + "/login");
+      await p.fill('[data-testid=login-email]', email1);
+      await p.fill('[data-testid=login-password]', pw);
+      await p.click('[data-testid=login-submit]');
+      await p.waitForURL("**/parent");
+      for (const [name, route, selector] of [
+        ["hub", "/parent", "[data-testid=parent-dashboard]"],
+        ["assignments", "/parent/assignments", "[data-testid=assignments-page]"],
+        ["resources", "/parent/resources", "[data-testid=resources-page]"],
+        ["learning-plans", "/parent/learning-plans", "[data-testid=learning-plans]"],
+        ["evidence", "/parent/evidence", "[data-testid=evidence-page]"],
+        ["membership", "/parent/plan", "[data-testid=upgrade-page]"],
+      ]) {
+        await p.goto(BASE + route);
+        await p.waitForSelector(selector);
+        const dims = await p.evaluate(() => ({ scroll: document.documentElement.scrollWidth, viewport: window.innerWidth }));
+        ok(dims.scroll <= dims.viewport + 2, `${name} ${label} overflows horizontally (${dims.scroll} > ${dims.viewport})`);
+        if (label !== "desktop" || name === "membership") await p.screenshot({ path: `${SHOTS}/launch-${name}-${label}.png`, fullPage: true });
+      }
+    } finally { await context.close(); }
+  }
+});
+
 await step("curriculum directory covers every Australian state and territory without a location setting", async () => {
   await page.goto(BASE + "/parent/curriculum");
   await page.waitForSelector('[data-testid=curriculum-page]');
