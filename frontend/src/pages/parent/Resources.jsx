@@ -36,7 +36,7 @@ export default function ResourcesPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-bold text-slate-900">Resource Library</h1>
-          <p className="text-sm text-slate-600 mt-1 max-w-2xl">Save useful links for later lessons. This is your family’s own resource collection, not a catalogue of prewritten lessons. Free to access does not mean free to copy: check licences before adapting or republishing.</p>
+          <p className="text-sm text-slate-600 mt-1 max-w-2xl">Save useful links for later lessons. These are resources saved by your family, not lessons you have to purchase separately. Free to access does not mean free to copy: check licences before adapting or republishing.</p>
         </div>
         <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-resource-btn"><Plus size={14}/> Add resource</button>
       </div>
