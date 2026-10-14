@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { ArrowLeft, Send, BookOpen, Camera, Heart } from "lucide-react";
@@ -114,9 +114,9 @@ export default function ChildOverview() {
       </section>
 
       <section className="grid md:grid-cols-3 gap-4">
-        <StatCard icon={BookOpen} label="Reading entries" value={data.reading_count} tint="#C8893B"/>
-        <StatCard icon={Camera} label="Submissions" value={data.recent_submissions.length} tint="#4A5D3A"/>
-        <StatCard icon={Heart} label="Assignments" value={data.assignments.length} tint="#C77B5B"/>
+        <Link to="/parent/reading-log" data-testid="child-overview-reading-link" aria-label="Open reading records"><StatCard icon={BookOpen} label="Reading entries" value={data.reading_count} tint="#C8893B"/></Link>
+        <Link to="/parent/evidence" data-testid="child-overview-evidence-link" aria-label="Open the Evidence Backpack"><StatCard icon={Camera} label="Evidence & submissions" value={data.recent_submissions.length} tint="#4A5D3A"/></Link>
+        <Link to="/parent/assignments" data-testid="child-overview-assignments-link" aria-label="Open assignments"><StatCard icon={Heart} label="Assignments" value={data.assignments.length} tint="#C77B5B"/></Link>
       </section>
 
       <section className="paper-card p-6">

@@ -245,6 +245,19 @@ await step("legacy 19,202 lessons are hidden and cannot be assigned", async () =
   ok(one.status === 404, "legacy lesson readable");
 });
 
+await step("parent can permanently delete an unassigned draft without losing other lessons", async () => {
+  const before = await api("GET", "/lessons", parentToken);
+  const draft = before.json.find(x => x.id !== lessonId && x.status === "draft");
+  ok(draft?.id, "missing unassigned draft for delete test");
+  await page.goto(BASE + "/parent/lessons");
+  await page.waitForSelector(`[data-testid=delete-${draft.id}]`);
+  page.once("dialog", d => d.accept());
+  await page.click(`[data-testid=delete-${draft.id}]`);
+  await page.waitForSelector(`[data-testid=lesson-${draft.id}]`, { state: "detached" });
+  ok((await api("GET", `/lessons/${draft.id}`, parentToken)).status === 404, "unassigned lesson was not permanently deleted");
+  ok((await api("GET", `/lessons/${lessonId}`, parentToken)).status === 200, "unrelated lesson was removed");
+});
+
 await step("E. parent assigns the lesson to the child through the UI", async () => {
   await page.goto(BASE + "/parent/lessons");
   await page.click(`[data-testid=assign-${lessonId}]`);
@@ -468,7 +481,13 @@ await step("J. XP, progress and evidence update; XP is awarded exactly once", as
   ok(again.status === 200 && again.json.xp_awarded === 0, "XP awarded twice");
   const dash2 = await api("GET", "/dashboard/child", childToken);
   ok(dash2.json.xp < dash.json.xp + 45, "XP was awarded again on re-review");
-  await cpage.goto(BASE + "/child"); await cpage.waitForSelector('[data-testid=completed-section]');
+  await cpage.goto(BASE + "/child"); await cpage.waitForSelector('[data-testid=completed-portfolio-link]');
+  ok(await cpage.locator('[data-testid=completed-section]').count() === 0, "completed lessons should not stay on child home");
+  await cpage.click('[data-testid=completed-portfolio-link]');
+  await cpage.waitForURL("**/child/portfolio");
+  await cpage.waitForSelector('[data-testid^=port-]', { state: "visible", timeout: 15000 });
+  await cpage.goto(BASE + "/child");
+  await cpage.waitForSelector('[data-testid=stat-xp]');
   const shown = Number((await cpage.textContent('[data-testid=stat-xp]')).trim());
   const nowXp = (await api("GET", "/dashboard/child", childToken)).json.xp;
   ok(shown >= xp0 + 45 && shown <= nowXp, `XP shown to child (${shown}) should include the 45 awarded (before ${xp0}, now ${nowXp})`);
@@ -485,6 +504,35 @@ await step("J. XP, progress and evidence update; XP is awarded exactly once", as
   await cpage.goto(`${BASE}/child/lesson/${assignmentId}`); await cpage.waitForSelector('[data-testid=reviewed-note]');
   ok((await cpage.textContent('[data-testid=reviewed-note]')).includes("Lovely folding"), "child cannot see feedback");
   await shot("evidence");
+});
+
+await step("parent feedback and cheers disappear after child acknowledges them on the server", async () => {
+  const before = await api("GET", "/child/inbox", childToken);
+  ok(before.status === 200, "child inbox unavailable");
+  const feedback = before.json.find(x => x.kind === "feedback");
+  ok(feedback, "approved work feedback missing");
+  ok((await api("POST", "/child/inbox/seen", childToken, { id: feedback.id, kind: feedback.kind })).status === 200, "cannot acknowledge feedback");
+  const after = await api("GET", "/child/inbox", childToken);
+  ok(!after.json.some(x => x.id === feedback.id), "acknowledged feedback remains visible across devices");
+  const students = await api("GET", "/students", parentToken);
+  const created = await api("POST", "/cheers", parentToken, { student_id: students.json[0].id, message: "Excellent effort!", emoji: "⭐" });
+  ok(created.status === 200, "parent cheer could not be saved");
+  const cheer = (await api("GET", "/child/inbox", childToken)).json.find(x => x.kind === "cheer" && x.id === created.json.id);
+  ok(cheer, "new parent cheer missing");
+  ok((await api("POST", "/child/inbox/seen", childToken, { id: cheer.id, kind: "cheer" })).status === 200, "cannot acknowledge parent cheer");
+  ok(!(await api("GET", "/child/inbox", childToken)).json.some(x => x.id === cheer.id), "acknowledged cheer was not cleared");
+});
+
+await step("parent can open the child learning records from the child overview", async () => {
+  const students = await api("GET", "/students", parentToken);
+  await page.goto(BASE + `/parent/children/${students.json[0].id}`);
+  await page.waitForSelector('[data-testid=child-overview]');
+  ok(await page.locator('[data-testid=child-overview-reading-link]').isVisible(), "reading link missing");
+  ok(await page.locator('[data-testid=child-overview-evidence-link]').isVisible(), "evidence link missing");
+  await page.click('[data-testid=child-overview-evidence-link]');
+  await page.waitForURL("**/parent/evidence");
+  await page.goto(BASE + "/parent");
+  await page.waitForSelector('[data-testid=quick-evidence]', { state: "visible", timeout: 10000 });
 });
 
 await step("editing the library lesson does not change the finished assignment (snapshot)", async () => {
@@ -732,7 +780,7 @@ await step("M. expired preview: cannot create or assign, but nothing is lost", a
   ok((await api("POST", "/lessons", parentToken, { title: "after", status: "draft" })).status === 402, "can create after expiry");
   const kids = await api("GET", "/students", parentToken);
   ok((await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId })).status === 402, "can assign after expiry");
-  ok((await api("GET", "/lessons", parentToken)).json.length >= 2, "lessons not readable after expiry");
+  ok((await api("GET", "/lessons", parentToken)).json.some(l => l.id === lessonId), "remaining lesson not readable after expiry");
   ok((await api("GET", "/dashboard/child", childToken)).json.xp >= xp0 + 45, "child progress lost");
   await page.goto(BASE + "/parent/lessons"); await page.waitForSelector('[data-testid=expired-banner]');
   await shot("expired");

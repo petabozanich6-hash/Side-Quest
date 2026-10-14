@@ -45,11 +45,18 @@ export function useChildInbox() {
   const uid = user?.id;
   const [items, setItems] = useState([]);
 
+  // The server is the source of truth for acknowledgement across devices.
+  // Local seen keys are retained as a graceful fallback for older sessions.
   const load = useCallback(() => (
     Promise.all([
-      api.get("/dashboard/child"),
+      api.get("/child/inbox"),
       api.get("/child/parent-labels").then(r => r.data || {}).catch(() => ({})),
-    ]).then(([d, labels]) => setItems(buildItems(d.data || {}, readSeen(uid), labels))).catch(() => {})
+    ]).then(([d, labels]) => setItems((d.data || [])
+      .filter(item => !readSeen(uid).includes(item.key))
+      .map(item => ({
+        ...item,
+        who: labels[item.reviewed_by || item.from_user_id] || item.from_name || FALLBACK,
+      })))).catch(() => {})
   ), [uid]);
 
   useEffect(() => {
@@ -72,8 +79,11 @@ export function useChildInbox() {
     try { localStorage.setItem(storeKey(uid), JSON.stringify([...seen, item.key].slice(-200))); } catch { /* ignore */ }
     setItems(cur => cur.filter(i => i.key !== item.key));
     window.dispatchEvent(new Event(EVT));
-    if (item.kind === "cheer") {
-      try { await api.post(`/cheers/${item.id}/seen`); } catch { /* local record already saved */ }
+    try {
+      await api.post("/child/inbox/seen", { id: item.id, kind: item.kind });
+    } catch {
+      // Local acknowledgement still hides the message on this device.
+      // A future session can retry if the server could not be reached.
     }
   }, [uid]);
 
