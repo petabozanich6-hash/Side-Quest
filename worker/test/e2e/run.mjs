@@ -119,6 +119,17 @@ await step("security: family isolation, sibling privacy, PIN revocation and thro
   await denied("parent B cannot add reading log for A's child", "POST", "/reading-log", b, { student_id: a1.id, title: "Foreign", read_date: "2026-11-01" });
   await denied("parent B cannot add life evidence for A's child", "POST", "/life-evidence", b, { student_id: a1.id, title: "Foreign", description: "Unauthorized" });
   await denied("parent B cannot create learning plan for A's child", "POST", "/learning-plans", b, { student_id: a1.id, title: "Foreign", period_start: "2026-11-01", period_end: "2026-11-30" });
+  const fd = new FormData();
+  fd.append("file", new Blob(["family A private file"], { type: "text/plain" }), "private.txt");
+  const uploadResponse = await fetch(BASE + "/api/files/upload", { method: "POST", headers: { authorization: `Bearer ${a}` }, body: fd });
+  const upload = await uploadResponse.json().catch(() => ({}));
+  ok(uploadResponse.status === 200 && upload.id, `test file upload failed: ${uploadResponse.status}`);
+  const foreignFile = await api("GET", `/files/${upload.id}`, b);
+  ok(foreignFile.status === 404, `foreign family downloaded A's file: ${foreignFile.status}`);
+  const foreignChildFile = await api("GET", `/files/${upload.id}`, b1.token);
+  ok(foreignChildFile.status === 404, `foreign child downloaded A's file: ${foreignChildFile.status}`);
+  const missingFile = await api("GET", `/files/${upload.id}`);
+  ok(missingFile.status === 401, "unauthenticated file downloaded");
   const foreignPortfolio = await api("GET", `/portfolio?student_id=${a1.id}`, b);
   ok([403, 404].includes(foreignPortfolio.status), `foreign family portfolio returned ${foreignPortfolio.status}`);
   const foreignReading = await api("GET", `/reading-log?student_id=${a1.id}`, b);
