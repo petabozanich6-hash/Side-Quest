@@ -88,7 +88,7 @@ export default function LearningPlans() {
     lines.push(`<h2>Resources Overview</h2><p>${c.resources_overview||""}</p>`);
     lines.push(`<h2>Review Schedule</h2><p>${c.review_schedule||""}</p>`);
     lines.push(`<h2>Notes for Authorised Person</h2><p>${c.assessor_notes||""}</p>`);
-    lines.push(`<p style="margin-top:40px;font-size:11px;color:#666">This plan was built from the parent's inputs and NSW syllabus outcomes and reviewed by the parent. The parent remains responsible for selecting an appropriate educational program and confirming current NESA requirements.</p></body></html>`);
+    lines.push(`<p style="margin-top:40px;font-size:11px;color:#666">This draft uses parent inputs and an existing NSW syllabus reference list. It must be reviewed and adapted to the requirements of the family's own state or territory.</p></body></html>`);
     w.document.write(lines.join("")); w.document.close(); w.print();
   };
 
@@ -98,11 +98,12 @@ export default function LearningPlans() {
       <Branch className="absolute left-0 bottom-10 opacity-30" size={160} color="#4A5D3A"/>
 
       <header>
-        <div className="font-script text-2xl" style={{color:"#C77B5B"}}>For your inspection folder</div>
+        <div className="font-script text-2xl" style={{color:"#C77B5B"}}>Make room for the journey</div>
         <h1 className="font-display text-4xl font-bold" style={{color:"#1F3B2D"}}>Learning Plans</h1>
         <p className="mt-2 text-sm text-stone-600 max-w-3xl leading-relaxed">
-          Learning-plan documents for your Authorised Person (AP) visit. Choose a child, a period and their interests, and the plan is
-          built for you from their stage and the NSW syllabus outcomes. Read it through, then print it.
+          Keep your teaching plans organised for each child and learning period. Choose their interests,
+          review the generated draft and make it your own. The current automated planning template
+          still draws on NSW syllabus data; check your state's or territory's official requirements in Curriculum.
         </p>
       </header>
 
@@ -140,7 +141,7 @@ export default function LearningPlans() {
           <div className="col-span-full paper-card p-10 text-center">
             <FileCheck className="mx-auto mb-3" size={32} style={{color:"#4A5D3A"}}/>
             <p className="font-display text-lg" style={{color:"#1F3B2D"}}>No learning plans yet</p>
-            <p className="text-sm text-stone-500 mt-2 max-w-md mx-auto">Create a plan for each inspection period. It is built for you from your child's stage, interests and the NSW syllabus outcomes.</p>
+            <p className="text-sm text-stone-500 mt-2 max-w-md mx-auto">Create a plan for the term or period you're preparing for. The current generator uses NSW syllabus references, so review it against your own jurisdiction's guidance.</p>
           </div>
         )}
       </div>
@@ -195,7 +196,7 @@ export default function LearningPlans() {
             </div>
             <Content c={view.ai_content}/>
             <div className="mt-6 rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900">
-              This plan was built from your inputs and NSW syllabus outcomes. Read it through before the visit. You remain responsible for selecting the educational program and verifying current NESA requirements.
+              This draft draws on your inputs and an existing NSW syllabus reference list. Please review and adapt it for your family's needs, and check requirements with your state or territory's education authority before relying on it.
             </div>
           </div>
         </div>
