@@ -120,7 +120,7 @@ await step("security: family isolation, sibling privacy, PIN revocation and thro
   await denied("parent B cannot add life evidence for A's child", "POST", "/life-evidence", b, { student_id: a1.id, title: "Foreign", description: "Unauthorized" });
   await denied("parent B cannot create learning plan for A's child", "POST", "/learning-plans", b, { student_id: a1.id, title: "Foreign", period_start: "2026-11-01", period_end: "2026-11-30" });
   const fd = new FormData();
-  fd.append("file", new Blob(["family A private file"], { type: "text/plain" }), "private.txt");
+  fd.append("file", new Blob(["family A private file"], { type: "image/png" }), "private.png");
   const uploadResponse = await fetch(BASE + "/api/files/upload", { method: "POST", headers: { authorization: `Bearer ${a}` }, body: fd });
   const upload = await uploadResponse.json().catch(() => ({}));
   ok(uploadResponse.status === 200 && upload.id, `test file upload failed: ${uploadResponse.status}`);
