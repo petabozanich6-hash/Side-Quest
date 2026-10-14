@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { api } from "../../lib/api";
+import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
 import { Plus, X, Sparkles, Loader2, FileCheck, Printer, Trash2, MapPin } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
@@ -85,7 +85,7 @@ export default function LearningPlans() {
       setOpen(false); load();
       if (created && created.id) { await build(created.id); }
       else { toast.success("Plan created. Press Build plan"); }
-    } catch { toast.error("Failed"); }
+    } catch (err) { toast.error(apiErrorMessage(err)); }
   };
 
   const del = async (id) => {
