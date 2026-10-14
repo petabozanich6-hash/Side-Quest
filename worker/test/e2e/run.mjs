@@ -114,6 +114,7 @@ await step("security: family isolation, sibling privacy, PIN revocation and thro
   await denied("parent B cannot change A's PIN", "PUT", `/students/${a1.id}/pin`, b, { pin: "2222" });
   await denied("parent B cannot change A's profile", "PUT", `/students/${a1.id}`, b, { name: "Tampered" });
   await denied("parent B cannot delete A's profile", "DELETE", `/students/${a1.id}`, b);
+  await denied("parent B cannot create calendar event for A's child", "POST", "/calendar", b, { title: "Private", date: "2026-11-01", student_id: a1.id });
   const newPin = await api("PUT", `/students/${a1.id}/pin`, a, { pin: "9876" });
   ok(newPin.status === 200, "PIN change failed");
   const oldSession = await api("GET", "/auth/me", a1.token);
