@@ -316,7 +316,7 @@ test("verified live paid checkout invokes owner notifier; sandbox, renewals, zer
   await notify(ev("free_coupon", "checkout.session.completed", { ...session, amount_total: 0 }, true));
   await b.handleEvent(db, TEST_CFG, ev("sandbox_checkout", "checkout.session.completed", session), fakeStripe(current), NOW, notifyCustomer, notifyOwner);
   assert.equal(ownerEmails, 1, "No owner alert for invoice renewal, unpaid or sandbox");
-  assert.equal(customerEmails, 2, "Existing customer confirmation behavior is preserved for paid and zero-dollar checkouts");
+  assert.equal(customerEmails, 3, "Customer confirmations retain existing behavior, including sandbox and zero-dollar sessions");
 
   // An owner email crash must not cause another confirmation or roll back paid access.
   await notify(ev("another_checkout", "checkout.session.completed", session, true));
