@@ -14,6 +14,7 @@ import { registerAccount } from "./account";
 import { registerPasswordReset } from "./passwordReset";
 import { registerStudentCredentials } from "./studentCredentials";
 import { registerHelpRequests } from "./helpRequests";
+import { registerBilling } from "./billing";
 import { sendEmail, welcomeEmail } from "./email";
 import { handleInbound } from "./inbound";
 import type { InboundMessage } from "./inbound";
@@ -36,6 +37,8 @@ const sameText = (a: string, b: string) => {
 app.use("/api/*", async (c, next) => {
   const key = c.env.STAGING_KEY;
   if (!key) return next();
+  // Stripe cannot hold the staging cookie; the webhook authenticates by signature instead.
+  if (c.req.path === "/api/billing/webhook") return next();
   if (c.req.path === "/api/staging-access") {
     if (sameText(c.req.query("key") || "", key)) {
       return new Response(null, {
@@ -200,6 +203,7 @@ registerAccount(app, guards);
 registerPasswordReset(app);
 registerStudentCredentials(app, guards);
 registerHelpRequests(app, guards);
+registerBilling(app, guards);
 
 app.notFound((c) => c.json({ detail: "Not found" }, 404));
 

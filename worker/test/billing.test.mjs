@@ -1,0 +1,250 @@
+// Targeted billing tests: signature verification, server-side price mapping, webhook idempotency,
+// out-of-order events, cancellation at period end, payment failure and entitlement mapping.
+import test from "node:test";
+import assert from "node:assert/strict";
+import { makeDb } from "./fakeD1.mjs";
+import * as b from "../src/billing.ts";
+import { effectivePlan, limitsFor, isPaidPlan } from "../src/entitlements.ts";
+
+const NOW = new Date("2026-10-14T00:00:00Z");
+const S = (d) => Math.floor(d.getTime() / 1000);
+const DAY = 86400000;
+const TEST_CFG = b.billingConfig({ STRIPE_SECRET_KEY: "sk_test_dummy" });
+const P = b.PRICES.test;
+
+function seedFamily(db, id, plan = "FREE_PREVIEW", extra = {}) {
+  db.raw.prepare("INSERT INTO families (id,name,owner_id,created_at,plan,trial_started_at,trial_ends_at) VALUES (?,?,?,?,?,?,?)")
+    .run(id, "Fam", `u${id}`, NOW.toISOString(), plan, NOW.toISOString(), new Date(NOW.getTime() + 7 * DAY).toISOString());
+  for (const [k, v] of Object.entries(extra)) db.raw.prepare(`UPDATE families SET ${k} = ? WHERE id = ?`).run(v, id);
+}
+const fam = (db, id) => db.raw.prepare("SELECT * FROM families WHERE id = ?").get(id);
+
+function sub({ id = "sub_1", customer = "cus_1", status = "active", price = P.monthly.price, end = new Date(NOW.getTime() + 30 * DAY), family = "f1", cancel = false, ended = null } = {}) {
+  return {
+    id, object: "subscription", customer, status, cancel_at_period_end: cancel, ended_at: ended ? S(ended) : null,
+    metadata: { family_id: family },
+    items: { data: [{ price: { id: price }, current_period_end: S(end) }] },
+  };
+}
+// Fake Stripe: GET /subscriptions/:id returns whatever the "current" state is.
+function fakeStripe(state) {
+  return async (url) => {
+    const m = url.match(/subscriptions\/([^?]+)/);
+    const s = m && state[decodeURIComponent(m[1])];
+    return new Response(JSON.stringify(s || { error: { message: "nope" } }), { status: s ? 200 : 404 });
+  };
+}
+const ev = (id, type, object, livemode = false) => ({ id, type, livemode, data: { object } });
+
+test("config: test key uses sandbox prices; live key is refused unless explicitly enabled and priced", () => {
+  assert.equal(TEST_CFG.ok, true);
+  assert.equal(TEST_CFG.mode, "test");
+  assert.equal(b.billingConfig({}).ok, false);
+  assert.equal(b.billingConfig({ STRIPE_SECRET_KEY: "pk_test_x" }).ok, false);
+  assert.equal(b.billingConfig({ STRIPE_SECRET_KEY: "sk_live_x" }).ok, false);
+  assert.equal(b.billingConfig({ STRIPE_SECRET_KEY: "sk_live_x", STRIPE_LIVE_ENABLED: "true" }).ok, false, "no live prices yet");
+  assert.deepEqual(Object.keys(P).sort(), ["fortnightly", "monthly", "weekly", "yearly"]);
+  assert.equal(P.weekly.amount_cents, 300);
+  assert.equal(P.fortnightly.amount_cents, 600);
+  assert.equal(P.monthly.amount_cents, 1300);
+  assert.equal(P.yearly.amount_cents, 13000);
+  assert.equal(b.intervalForPrice(P, "price_unknown"), null);
+});
+
+test("signature: valid accepted; tampered, wrong secret, stale or missing rejected", async () => {
+  const body = JSON.stringify({ id: "evt_1" });
+  const t = S(NOW);
+  const sig = await b.hmacHex("whsec_abc", `${t}.${body}`);
+  const header = `t=${t},v1=${sig}`;
+  assert.equal(await b.verifyStripeSignature(body, header, "whsec_abc", t), true);
+  assert.equal(await b.verifyStripeSignature(body + " ", header, "whsec_abc", t), false);
+  assert.equal(await b.verifyStripeSignature(body, header, "whsec_other", t), false);
+  assert.equal(await b.verifyStripeSignature(body, header, "whsec_abc", t + 3600), false);
+  assert.equal(await b.verifyStripeSignature(body, null, "whsec_abc", t), false);
+  assert.equal(await b.verifyStripeSignature(body, `t=${t},v1=${"0".repeat(64)},v1=${sig}`, "whsec_abc", t), true, "any matching v1");
+});
+
+test("all four intervals map to paid Family Membership with identical limits", async () => {
+  const db = makeDb();
+  for (const i of b.INTERVALS) {
+    const id = `f_${i}`;
+    seedFamily(db, id);
+    const d = b.decideSync(fam(db, id), sub({ price: P[i].price, family: id, customer: `cus_${i}` }), P, NOW);
+    assert.equal(d.action, "update");
+    await b.applyDecision(db, id, d);
+    const row = fam(db, id);
+    assert.equal(row.plan, b.PLAN_FOR_INTERVAL[i]);
+    assert.equal(row.billing_interval, i);
+    const eff = effectivePlan(row, NOW);
+    assert.equal(isPaidPlan(eff), true);
+    assert.deepEqual(limitsFor(eff), limitsFor("ACTIVE_MONTHLY"));
+  }
+});
+
+test("unknown price, incomplete payment and wrong customer never grant access", () => {
+  const db = makeDb();
+  seedFamily(db, "f1");
+  let d = b.decideSync(fam(db, "f1"), sub({ price: "price_attacker" }), P, NOW);
+  assert.equal(d.fields.plan, undefined);
+  d = b.decideSync(fam(db, "f1"), sub({ status: "incomplete" }), P, NOW);
+  assert.equal(d.fields.plan, undefined);
+  seedFamily(db, "f2", "FREE_PREVIEW", { stripe_customer_id: "cus_real" });
+  d = b.decideSync(fam(db, "f2"), sub({ customer: "cus_other", family: "f2" }), P, NOW);
+  assert.equal(d.action, "ignore");
+});
+
+test("webhook: duplicate events are processed once; livemode mismatch ignored", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1");
+  const state = { sub_1: sub() };
+  let calls = 0;
+  const f = async (u) => { calls++; return fakeStripe(state)(u); };
+  const e = ev("evt_a", "customer.subscription.created", sub());
+  assert.match(await b.handleEvent(db, TEST_CFG, e, f, NOW), /synced/);
+  assert.equal(await b.handleEvent(db, TEST_CFG, e, f, NOW), "duplicate");
+  assert.equal(calls, 1);
+  assert.equal(fam(db, "f1").plan, "ACTIVE_MONTHLY");
+  assert.match(await b.handleEvent(db, TEST_CFG, ev("evt_live", "invoice.paid", { object: "invoice", subscription: "sub_1" }, true), f, NOW), /ignored/);
+});
+
+test("checkout success alone (no webhook) grants nothing; checkout.session.completed links customer and activates", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1");
+  assert.equal(effectivePlan(fam(db, "f1"), new Date(NOW.getTime() + 8 * DAY)), "PREVIEW_EXPIRED");
+  const state = { sub_1: sub({ price: P.yearly.price, end: new Date(NOW.getTime() + 365 * DAY) }) };
+  const session = { object: "checkout.session", mode: "subscription", customer: "cus_1", subscription: "sub_1", client_reference_id: "f1", metadata: { family_id: "f1" } };
+  await b.handleEvent(db, TEST_CFG, ev("evt_cs", "checkout.session.completed", session), fakeStripe(state), NOW);
+  const row = fam(db, "f1");
+  assert.equal(row.stripe_customer_id, "cus_1");
+  assert.equal(row.plan, "ACTIVE_ANNUAL");
+});
+
+test("out-of-order: a stale 'created/incomplete' event arriving after activation does not revoke access", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1");
+  const state = { sub_1: sub() };
+  await b.handleEvent(db, TEST_CFG, ev("evt_paid", "invoice.paid", { object: "invoice", parent: { subscription_details: { subscription: "sub_1" } } }), fakeStripe(state), NOW);
+  assert.equal(fam(db, "f1").plan, "ACTIVE_MONTHLY");
+  // Older event with an incomplete payload arrives late; we re-fetch and Stripe says active.
+  await b.handleEvent(db, TEST_CFG, ev("evt_old", "customer.subscription.created", sub({ status: "incomplete" })), fakeStripe(state), NOW);
+  assert.equal(fam(db, "f1").plan, "ACTIVE_MONTHLY");
+  // A late 'deleted' for an OLD subscription cannot cancel the family's newer one.
+  const state2 = { sub_0: sub({ id: "sub_0", status: "canceled", ended: NOW }) };
+  await b.handleEvent(db, TEST_CFG, ev("evt_oldsub", "customer.subscription.deleted", state2.sub_0), fakeStripe(state2), NOW);
+  assert.equal(fam(db, "f1").plan, "ACTIVE_MONTHLY");
+  assert.equal(fam(db, "f1").stripe_subscription_id, "sub_1");
+});
+
+test("cancellation keeps paid access until period end, then ends; data is untouched", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1");
+  db.raw.prepare("INSERT INTO students (id,family_id,name,username,pin_hash,stage,created_at) VALUES ('s1','f1','Kid','kid1','x','S2',?)").run(NOW.toISOString());
+  const end = new Date(NOW.getTime() + 10 * DAY);
+  const state = { sub_1: sub({ cancel: true, end }) };
+  await b.handleEvent(db, TEST_CFG, ev("evt_u", "customer.subscription.updated", state.sub_1), fakeStripe(state), NOW);
+  let row = fam(db, "f1");
+  assert.equal(row.cancel_at_period_end, 1);
+  assert.equal(isPaidPlan(effectivePlan(row, new Date(NOW.getTime() + 9 * DAY))), true);
+  // Period ends: Stripe sends deleted.
+  const later = new Date(end.getTime() + 60000);
+  state.sub_1 = sub({ status: "canceled", end, ended: end });
+  await b.handleEvent(db, TEST_CFG, ev("evt_d", "customer.subscription.deleted", state.sub_1), fakeStripe(state), later);
+  row = fam(db, "f1");
+  assert.equal(row.plan, "CANCELLED");
+  assert.equal(isPaidPlan(effectivePlan(row, later)), false);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM students WHERE family_id='f1'").get().n, 1);
+});
+
+test("payment failure: short grace, then locked; successful retry restores", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1");
+  const state = { sub_1: sub() };
+  await b.handleEvent(db, TEST_CFG, ev("e1", "invoice.paid", { object: "invoice", subscription: "sub_1" }), fakeStripe(state), NOW);
+  state.sub_1 = sub({ status: "past_due" });
+  await b.handleEvent(db, TEST_CFG, ev("e2", "invoice.payment_failed", { object: "invoice", subscription: "sub_1" }), fakeStripe(state), NOW);
+  const row = fam(db, "f1");
+  assert.equal(row.plan, "PAST_DUE");
+  assert.equal(isPaidPlan(effectivePlan(row, new Date(NOW.getTime() + 6 * DAY))), true);
+  assert.equal(isPaidPlan(effectivePlan(row, new Date(NOW.getTime() + 8 * DAY))), false);
+  // A second failure does not extend the grace window.
+  await b.handleEvent(db, TEST_CFG, ev("e3", "invoice.payment_failed", { object: "invoice", subscription: "sub_1" }), fakeStripe(state), new Date(NOW.getTime() + 5 * DAY));
+  assert.equal(fam(db, "f1").plan_period_end, row.plan_period_end);
+  state.sub_1 = sub({ end: new Date(NOW.getTime() + 40 * DAY) });
+  await b.handleEvent(db, TEST_CFG, ev("e4", "invoice.paid", { object: "invoice", subscription: "sub_1" }), fakeStripe(state), new Date(NOW.getTime() + 9 * DAY));
+  assert.equal(fam(db, "f1").plan, "ACTIVE_MONTHLY");
+});
+
+test("renewal moves the period forward; missed renewals stop access after grace", () => {
+  const row = { plan: "ACTIVE_WEEKLY", plan_period_end: new Date(NOW.getTime() + 7 * DAY).toISOString() };
+  assert.equal(effectivePlan(row, new Date(NOW.getTime() + 9 * DAY)), "ACTIVE_WEEKLY");
+  assert.equal(effectivePlan(row, new Date(NOW.getTime() + 11 * DAY)), "CANCELLED");
+  assert.equal(effectivePlan({ plan: "ACTIVE_FORTNIGHTLY" }, NOW), "ACTIVE_FORTNIGHTLY");
+});
+
+test("INTERNAL early-access families keep their plan whatever Stripe says", async () => {
+  const db = makeDb();
+  seedFamily(db, "fi", "INTERNAL");
+  const d = b.decideSync(fam(db, "fi"), sub({ family: "fi", status: "canceled", ended: NOW }), P, NOW);
+  await b.applyDecision(db, "fi", d);
+  assert.equal(fam(db, "fi").plan, "INTERNAL");
+});
+
+test("invoice subscription id is found on old and new API shapes", () => {
+  assert.equal(b.subscriptionIdFromEvent(ev("x", "invoice.paid", { object: "invoice", subscription: "sub_a" })), "sub_a");
+  assert.equal(b.subscriptionIdFromEvent(ev("x", "invoice.paid", { object: "invoice", parent: { subscription_details: { subscription: "sub_b" } } })), "sub_b");
+  assert.equal(b.subscriptionIdFromEvent(ev("x", "checkout.session.completed", { object: "checkout.session", mode: "payment", subscription: null })), null);
+});
+
+// Route test without the Worker runtime: capture handlers and call them with a minimal context.
+function routes(fetchImpl) {
+  const h = {};
+  const app = { post: (path, ...fns) => { h[path] = fns[fns.length - 1]; } };
+  b.registerBilling(app, { auth: null, parent: null }, fetchImpl);
+  return h;
+}
+function ctx(db, body, env = {}) {
+  return {
+    env: { DB: db, STRIPE_SECRET_KEY: "sk_test_dummy", ...env },
+    req: { json: async () => body, url: "https://sidequestlearning.app/api/billing/checkout", text: async () => "", header: () => null },
+    get: () => ({ id: "u1", family_id: "f1", role: "parent", name: "P" }),
+    json: (data, status = 200) => ({ data, status }),
+  };
+}
+
+test("checkout: server picks price, family and redirect; client values are ignored; no trial; no double subscriptions", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1");
+  db.raw.prepare("INSERT INTO users (id,family_id,email,name,created_at) VALUES ('u1','f1','p@example.com','P',?)").run(NOW.toISOString());
+  const sent = [];
+  const f = async (url, init) => {
+    sent.push({ url, body: decodeURIComponent(init.body || "") });
+    if (url.endsWith("/customers")) return new Response(JSON.stringify({ id: "cus_new" }));
+    return new Response(JSON.stringify({ id: "cs_1", url: "https://checkout.stripe.com/c/pay/cs_1" }));
+  };
+  const h = routes(f);
+  const r = await h["/api/billing/checkout"](ctx(db, { interval: "fortnightly", price: "price_evil", family_id: "f2", success_url: "https://evil.example" }));
+  assert.equal(r.status, 200);
+  assert.equal(r.data.url, "https://checkout.stripe.com/c/pay/cs_1");
+  const cs = sent.find((s) => s.url.endsWith("/checkout/sessions")).body;
+  assert.match(cs, new RegExp(`line_items\\[0\\]\\[price\\]=${P.fortnightly.price}`));
+  assert.match(cs, /client_reference_id=f1/);
+  assert.match(cs, /customer=cus_new/);
+  assert.match(cs, /success_url=https:\/\/sidequestlearning.app\/parent\/plan\?checkout=success/);
+  assert.ok(!cs.includes("evil") && !cs.includes("f2") && !cs.includes("trial"));
+  assert.equal(fam(db, "f1").stripe_customer_id, "cus_new");
+  assert.equal(effectivePlan(fam(db, "f1"), NOW), "FREE_PREVIEW", "checkout grants nothing");
+
+  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "lifetime" }))).status, 400);
+  db.raw.prepare("UPDATE families SET plan='ACTIVE_MONTHLY', subscription_status='active' WHERE id='f1'").run();
+  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }))).status, 409);
+  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }, { STRIPE_SECRET_KEY: "" }))).status, 503);
+});
+
+test("webhook route rejects unsigned requests", async () => {
+  const db = makeDb();
+  const h = routes(async () => new Response("{}"));
+  const c = ctx(db, {}, { STRIPE_WEBHOOK_SECRET: "whsec_abc" });
+  c.req.text = async () => JSON.stringify({ id: "evt_forged", type: "invoice.paid", livemode: false, data: { object: {} } });
+  assert.equal((await h["/api/billing/webhook"](c)).status, 400);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM stripe_events").get().n, 0);
+});

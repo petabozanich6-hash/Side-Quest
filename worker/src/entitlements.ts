@@ -1,10 +1,12 @@
 // Account-level entitlements. Pure functions with no imports so they can be unit tested directly.
-// Billing is NOT LIVE: nothing here talks to a payment provider. The plan is only ever changed
-// server-side (database or a future, authenticated billing webhook), never from a client request.
+// Nothing here talks to a payment provider. The plan is only ever changed server-side
+// (database, or the signature-verified Stripe webhook in billing.ts), never from a client request.
 
 export type Plan =
   | "FREE_PREVIEW"
   | "PREVIEW_EXPIRED"
+  | "ACTIVE_WEEKLY"
+  | "ACTIVE_FORTNIGHTLY"
   | "ACTIVE_MONTHLY"
   | "ACTIVE_ANNUAL"
   | "PAST_DUE"
@@ -30,6 +32,10 @@ export type Limits = {
 };
 
 export const TRIAL_DAYS = 7;
+/** An active plan whose recorded period end has passed by more than this (missed renewal webhook) stops granting access. */
+export const RENEWAL_GRACE_DAYS = 3;
+/** How long a failed renewal keeps paid access while Stripe retries the card. */
+export const PAST_DUE_GRACE_DAYS = 7;
 
 // One place to change preview/paid limits. Paid caps are fair-use safeguards, not product limits.
 export const LIMITS: Record<"PREVIEW" | "EXPIRED" | "PAID", Limits> = {
@@ -39,7 +45,8 @@ export const LIMITS: Record<"PREVIEW" | "EXPIRED" | "PAID", Limits> = {
 };
 
 const DAY_MS = 86400000;
-const KNOWN: Plan[] = ["FREE_PREVIEW", "PREVIEW_EXPIRED", "ACTIVE_MONTHLY", "ACTIVE_ANNUAL", "PAST_DUE", "CANCELLED", "INTERNAL"];
+const KNOWN: Plan[] = ["FREE_PREVIEW", "PREVIEW_EXPIRED", "ACTIVE_WEEKLY", "ACTIVE_FORTNIGHTLY", "ACTIVE_MONTHLY", "ACTIVE_ANNUAL", "PAST_DUE", "CANCELLED", "INTERNAL"];
+export const ACTIVE_PLANS: Plan[] = ["ACTIVE_WEEKLY", "ACTIVE_FORTNIGHTLY", "ACTIVE_MONTHLY", "ACTIVE_ANNUAL"];
 
 export function trialEndFrom(startIso: string): string {
   return new Date(new Date(startIso).getTime() + TRIAL_DAYS * DAY_MS).toISOString();
@@ -55,7 +62,8 @@ function ms(v?: string | null): number | null {
  * The plan that actually applies right now.
  * - FREE_PREVIEW becomes PREVIEW_EXPIRED once the trial end has passed.
  * - CANCELLED keeps paid access until plan_period_end, then behaves as expired.
- * - PAST_DUE keeps paid access while payment is retried (grace); revisit when billing goes live.
+ * - PAST_DUE keeps paid access until plan_period_end (the billing webhook sets it to a short grace window).
+ * - ACTIVE_* with a recorded period end stops granting access a few days after that end if no renewal arrived.
  * - Unknown or missing values fail closed to PREVIEW_EXPIRED (never to a paid state).
  */
 export function effectivePlan(row: FamilyPlanRow | null | undefined, now: Date = new Date()): Plan {
@@ -66,6 +74,14 @@ export function effectivePlan(row: FamilyPlanRow | null | undefined, now: Date =
   if (plan === "FREE_PREVIEW") {
     const end = ms(row.trial_ends_at) ?? (ms(row.trial_started_at) ?? ms(row.created_at) ?? t) + TRIAL_DAYS * DAY_MS;
     return t < end ? "FREE_PREVIEW" : "PREVIEW_EXPIRED";
+  }
+  if (ACTIVE_PLANS.includes(plan)) {
+    const end = ms(row.plan_period_end);
+    return end !== null && t > end + RENEWAL_GRACE_DAYS * DAY_MS ? "CANCELLED" : plan;
+  }
+  if (plan === "PAST_DUE") {
+    const end = ms(row.plan_period_end);
+    return end !== null && t >= end ? "CANCELLED" : plan;
   }
   if (plan === "CANCELLED") {
     const end = ms(row.plan_period_end);
@@ -78,6 +94,8 @@ export function limitsFor(plan: Plan): Limits {
   switch (plan) {
     case "FREE_PREVIEW":
       return LIMITS.PREVIEW;
+    case "ACTIVE_WEEKLY":
+    case "ACTIVE_FORTNIGHTLY":
     case "ACTIVE_MONTHLY":
     case "ACTIVE_ANNUAL":
     case "PAST_DUE":

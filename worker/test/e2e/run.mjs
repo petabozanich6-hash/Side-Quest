@@ -93,7 +93,7 @@ await step("A. new family registers through the UI", async () => {
   parentToken = await tokenOf(); ok(parentToken, "no token");
   const plan = await api("GET", "/account/plan", parentToken);
   ok(plan.json.effective_plan === "FREE_PREVIEW", "not on free preview: " + JSON.stringify(plan.json));
-  ok(plan.json.billing === "NOT_LIVE", "billing flag");
+  ok(plan.json.billing && plan.json.billing.enabled === false, "billing off without Stripe secrets: " + JSON.stringify(plan.json.billing));
   await shot("parent-home");
 });
 
