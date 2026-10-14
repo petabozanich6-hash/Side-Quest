@@ -38,11 +38,13 @@ export default function MakeLesson() {
   const [outline, setOutline] = useState(null); // multi-lesson plan awaiting confirmation
   const [made, setMade] = useState([]); // multi-lesson results
   const [linkOutcomes, setLinkOutcomes] = useState(true);
+  const [jurisdiction, setJurisdiction] = useState(null);
   const leaving = useRef(false);
 
   useEffect(() => {
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => setPlan({ limits: {} }));
     api.get("/students").then(r => { setStudents(r.data); if (r.data.length === 1) setStudent(r.data[0].id); }).catch(() => {});
+    api.get("/auth/me").then(r => setJurisdiction(r.data?.jurisdiction || null)).catch(() => {});
   }, []);
   useEffect(() => {
     const warn = e => { if (busy && !leaving.current) { e.preventDefault(); e.returnValue = ""; } };
@@ -194,7 +196,11 @@ export default function MakeLesson() {
           </div>
           {busy ? <Progress label={busy === "plan" ? "Planning your lessons…" : "Writing your lesson…"} /> : (
             <>
-            <label className="flex items-start gap-2 text-sm text-slate-700 mb-3"><input type="checkbox" className="mt-1" checked={linkOutcomes} onChange={e => setLinkOutcomes(e.target.checked)} data-testid="mk-outcomes" /><span>Link this lesson to the curriculum outcomes it develops <span className="text-slate-500">(suggested automatically; you can change them on the next screen)</span></span></label>
+            {jurisdiction === "NSW" ? (
+              <label className="flex items-start gap-2 text-sm text-slate-700 mb-3"><input type="checkbox" className="mt-1" checked={linkOutcomes} onChange={e => setLinkOutcomes(e.target.checked)} data-testid="mk-outcomes" /><span>Suggest relevant NSW syllabus outcome codes <span className="text-slate-500">(from Side-Quest's verified list; review each suggestion before using it)</span></span></label>
+            ) : (
+              <p className="text-xs text-stone-600 mb-3" data-testid="mk-state-curriculum-note">{jurisdiction ? `Your lesson will be written with your ${jurisdiction} curriculum in mind, and will include a link to the official curriculum. Verified outcome codes for ${jurisdiction} are not yet loaded, so no codes will be invented.` : "Choose your family's state or territory on the Curriculum page for state-aware lesson drafting. Until then, drafts are general Australian lessons without automatic curriculum codes."}</p>
+            )}
             <button onClick={create} disabled={text.trim().length < 5} className="w-full sm:w-auto rounded-full bg-violet-700 text-white px-8 py-3 text-base font-bold disabled:opacity-50" data-testid="mk-go">Create My Lesson</button>
             </>
           )}
