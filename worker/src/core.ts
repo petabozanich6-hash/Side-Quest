@@ -539,6 +539,11 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   app.post("/api/calendar", auth, parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
     if (!b.title || !b.date) return c.json({ detail: "Title and date are required" }, 400);
+    if (b.student_id) {
+      const student = await c.env.DB.prepare("SELECT id FROM students WHERE id = ? AND family_id = ?")
+        .bind(String(b.student_id), c.get("user").family_id).first();
+      if (!student) return c.json({ detail: "Student not found" }, 404);
+    }
     const id = newId();
     await c.env.DB.prepare(
       "INSERT INTO calendar_events (id, family_id, student_id, title, date, start_time, duration_minutes, event_type, linked_lesson_id, linked_assignment_id, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
