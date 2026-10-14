@@ -121,16 +121,67 @@ export class StripeError extends Error {
   constructor(status: number, message: string) { super(message); this.status = status; }
 }
 
-export async function stripeCall(key: string, method: "GET" | "POST", path: string, params: Record<string, unknown> = {}, opts: { idempotencyKey?: string; fetchImpl?: Fetch } = {}): Promise<any> {
+export async function stripeCall(key: string, method: "GET" | "POST" | "DELETE", path: string, params: Record<string, unknown> = {}, opts: { idempotencyKey?: string; fetchImpl?: Fetch } = {}): Promise<any> {
   const body = formEncode(params).join("&");
   const url = method === "GET" && body ? `${STRIPE_API}/${path}?${body}` : `${STRIPE_API}/${path}`;
   const headers: Record<string, string> = { Authorization: `Bearer ${key}`, "Stripe-Version": STRIPE_VERSION };
-  if (method === "POST") headers["Content-Type"] = "application/x-www-form-urlencoded";
+  if (method !== "GET") headers["Content-Type"] = "application/x-www-form-urlencoded";
   if (opts.idempotencyKey) headers["Idempotency-Key"] = opts.idempotencyKey;
-  const res = await (opts.fetchImpl || fetch)(url, { method, headers, body: method === "POST" ? body : undefined });
+  const res = await (opts.fetchImpl || fetch)(url, { method, headers, body: method !== "GET" ? body : undefined });
   const json: any = await res.json().catch(() => ({}));
   if (!res.ok) throw new StripeError(res.status, json?.error?.message || `Stripe ${method} ${path} failed (${res.status})`);
   return json;
+}
+
+/**
+ * Before erasing the last parent and family records, stop every billable Stripe
+ * subscription on that family's Stripe customer. The customer id is resolved
+ * server-side; nothing about billing is trusted from the browser.
+ *
+ * Fail closed if Stripe cannot be reached or confirms more subscriptions than
+ * can be checked. Never remove a family while recurring charges may continue.
+ *
+ * Immediate account erasure is a different action from normal period-end
+ * cancellation via the billing portal. It ends remaining paid access now.
+ */
+export async function cancelFamilySubscriptionsForDeletion(
+  env: Pick<Env, "STRIPE_SECRET_KEY" | "STRIPE_LIVE_ENABLED">,
+  customerId: string | null,
+  linkedSubscriptionId: string | null,
+  fetchImpl: Fetch = fetch,
+): Promise<number> {
+  if (!customerId) {
+    if (linkedSubscriptionId) throw new Error("Family has a subscription without a Stripe customer");
+    return 0;
+  }
+  const config = billingConfig(env);
+  if (!config.ok) throw new Error("Stripe billing is unavailable; cannot confirm subscription cancellation");
+
+  const listing = await stripeCall(config.key, "GET", "subscriptions", {
+    customer: customerId, status: "all", limit: 100,
+  }, { fetchImpl });
+  if (!Array.isArray(listing?.data) || listing.has_more !== false) {
+    throw new Error("Could not verify all Stripe subscriptions before account deletion");
+  }
+  if (linkedSubscriptionId && !listing.data.some((sub: any) => sub.id === linkedSubscriptionId)) {
+    throw new Error("Family's saved Stripe subscription was not returned for its customer");
+  }
+
+  let canceled = 0;
+  for (const sub of listing.data) {
+    if (!sub || typeof sub.id !== "string" || sub.customer !== customerId) {
+      throw new Error("Stripe returned a subscription that does not match the family");
+    }
+    if (sub.status === "canceled" || sub.status === "incomplete_expired") continue;
+    const ended = await stripeCall(config.key, "DELETE", `subscriptions/${encodeURIComponent(sub.id)}`, {
+      invoice_now: false, prorate: false,
+    }, { fetchImpl });
+    if (ended.id !== sub.id || ended.customer !== customerId || ended.status !== "canceled") {
+      throw new Error("Stripe did not confirm subscription cancellation");
+    }
+    canceled++;
+  }
+  return canceled;
 }
 
 // ---------------------------------------------------------------- subscription -> family state
