@@ -256,7 +256,7 @@ test("AI drafting: paid family gets an unreviewed AI-labelled draft with no link
   assert.deepEqual(r.generation.stages, ["design", "teaching", "practice"]);
   assert.equal(r.generation.input_tokens, 3000); assert.ok(r.generation.est_cost_us_cents > 0);
   assert.equal(r.usage.today, 1);
-  assert.equal(r.lesson.delivery, "parent_guided");
+  assert.equal(r.lesson.delivery, "independent"); // the standard: a lesson the child can complete alone
   assert.equal(r.lesson.worked_examples.length, 3);
   assert.deepEqual(r.lesson.curriculum_refs, []); // invented codes are discarded
   const q1 = r.lesson.quiz.find((q) => q.question === "What is 23 + 45?");

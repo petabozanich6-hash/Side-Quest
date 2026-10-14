@@ -110,7 +110,7 @@ export function resolveRequest(body: Record<string, unknown>, student: StudentIn
   const n = yearNum(year);
   const minutes = Number(body.duration_minutes) > 0 ? Number(body.duration_minutes) : p.minutes || prefs.duration_minutes || 45;
   const delivery: Resolved["delivery"] =
-    body.delivery === "independent" || body.delivery === "parent_guided" ? (body.delivery as Resolved["delivery"]) : p.delivery || prefs.delivery || (n !== null && n >= 7 ? "independent" : "parent_guided");
+    body.delivery === "independent" || body.delivery === "parent_guided" ? (body.delivery as Resolved["delivery"]) : p.delivery || prefs.delivery || "independent";
   const interests = clip(body.interests, 300) || (student?.interests || []).join(", ");
   const profile: string[] = [];
   if (prefs.reading === "supported") profile.push("Reading confidence: needs support. Use short sentences and everyday words, explain every new word where it first appears, and keep any reading passages short.");
