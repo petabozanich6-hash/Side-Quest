@@ -73,6 +73,18 @@ function Stuck({ assignmentId, target, enabled, locked, onGrownUp }) {
   );
 }
 
+// If one screen cannot be drawn, the child sees a calm message and can still move on, never a blank page.
+class StepGuard extends React.Component {
+  constructor(p) { super(p); this.state = { bad: false, why: "" }; }
+  static getDerivedStateFromError(e) { return { bad: true, why: String(e?.message || e || "").slice(0, 160) }; }
+  componentDidCatch(e) { try { console.error("Lesson screen failed", e); } catch { /* ignore */ } }
+  componentDidUpdate(prev) { if (prev.stepKey !== this.props.stepKey && this.state.bad) this.setState({ bad: false }); }
+  render() {
+    if (!this.state.bad) return this.props.children;
+    return <div className="rounded-xl border p-4 bg-white space-y-2" style={{ borderColor: "#D4C8A8" }} role="alert" data-testid="step-error"><p className="font-bold">This screen could not be shown.</p><p className="text-sm text-stone-700">Press Next to carry on with the lesson. If it keeps happening, tell your grown-up.</p>{this.state.why && <p className="text-xs text-stone-500" data-testid="step-error-why">Detail for the grown-up: {this.props.stepKey} — {this.state.why}</p>}</div>;
+  }
+}
+
 const PAGE = 4; // practice questions per screen
 const mmss = (s) => (s ? `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}` : "");
 const filled = (v) => (Array.isArray(v) ? v.some(Boolean) : !!String(v || "").trim());
@@ -425,7 +437,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
 
       <section className={card} data-testid={`step-${st.id}`} aria-live="polite">
         <h2 className={h2} style={INK} data-testid="step-title">{st.title}</h2>
-        {body()}
+        <StepGuard stepKey={st.id}>{body()}</StepGuard>
       </section>
 
       <div className="flex items-center justify-between gap-3">

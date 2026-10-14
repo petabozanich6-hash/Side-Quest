@@ -4,8 +4,17 @@ import React from "react";
 // The lesson only supplies numbers and labels; nothing here runs content from the lesson.
 const INK = "#1F3B2D", ACC = "#C77B5B", GREEN = "#4A5D3A";
 
-function NumberLine({ v }) {
+const nz = (n, d) => (Number.isFinite(Number(n)) && n !== null && n !== "" ? Number(n) : d);
+const list = (a) => (Array.isArray(a) ? a : []);
+
+function NumberLine({ v: raw }) {
   const W = 640, pad = 28, y = 64;
+  const lo = nz(raw.min, 0), hi = nz(raw.max, lo + 10);
+  const min = hi > lo ? lo : 0, max = hi > lo ? hi : 10;
+  let step = nz(raw.step, 1);
+  if (step <= 0) step = 1;
+  if ((max - min) / step > 60) step = (max - min) / 60;
+  const v = { min, max, step, caption: raw.caption, points: list(raw.points).filter((p) => Number.isFinite(Number(p?.at))).map((p) => ({ ...p, at: Number(p.at) })), jumps: list(raw.jumps).filter((j) => Number.isFinite(Number(j?.from)) && Number.isFinite(Number(j?.to))).map((j) => ({ ...j, from: Number(j.from), to: Number(j.to) })) };
   const span = v.max - v.min;
   const x = (n) => pad + ((n - v.min) / span) * (W - pad * 2);
   const ticks = [];
@@ -41,7 +50,7 @@ function NumberLine({ v }) {
 }
 
 function PlaceValue({ v }) {
-  const digits = String(v.number).padStart(1, "0").split("").map(Number);
+  const digits = String(Math.min(9999, Math.max(0, Math.floor(nz(v.number, 0))))).split("").map(Number);
   const names = ["thousands", "hundreds", "tens", "ones"].slice(4 - digits.length);
   return (
     <div className="flex flex-wrap gap-4 items-end">
@@ -66,8 +75,8 @@ function Table({ v }) {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full text-sm border-collapse">
-        <thead><tr>{v.headers.map((h, i) => <th key={i} className="border px-2 py-1 text-left bg-[#EFE6CF]" style={{ borderColor: "#D4C8A8" }}>{h}</th>)}</tr></thead>
-        <tbody>{v.rows.map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j} className="border px-2 py-1" style={{ borderColor: "#D4C8A8" }}>{c}</td>)}</tr>)}</tbody>
+        <thead><tr>{list(v.headers).map((h, i) => <th key={i} className="border px-2 py-1 text-left bg-[#EFE6CF]" style={{ borderColor: "#D4C8A8" }}>{h}</th>)}</tr></thead>
+        <tbody>{list(v.rows).map((r, i) => <tr key={i}>{list(r).map((c, j) => <td key={j} className="border px-2 py-1" style={{ borderColor: "#D4C8A8" }}>{c}</td>)}</tr>)}</tbody>
       </table>
     </div>
   );
