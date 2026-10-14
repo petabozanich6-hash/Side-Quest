@@ -699,6 +699,11 @@ export function registerFamily(app: App, g: Guards) {
       .bind(c.req.param("fid"), user.family_id)
       .first<Record<string, unknown>>();
     if (!record) return c.json({ detail: "Not found" }, 404);
+    // A child-uploaded file is private to that child and their parents.
+    // Parent-uploaded teaching resources remain accessible to the family.
+    if (user.role === "child" && record.uploader_role === "child" && record.uploader_id !== user.id) {
+      return c.json({ detail: "Not found" }, 404);
+    }
     if (!c.env.BUCKET) return c.json({ detail: "File storage not configured" }, 501);
 
     const object = await c.env.BUCKET.get(String(record.storage_path));
