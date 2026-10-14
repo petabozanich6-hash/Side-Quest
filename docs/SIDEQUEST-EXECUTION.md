@@ -34,7 +34,7 @@ Claude builds and integrates; the owner tests by hand; ChatGPT may prepare small
 | E | Submissions and review | VERIFIED | Draft autosave, quiz gate, hand-in, review states, XP once. |
 | F | Planner | IMPLEMENTED | Uses assignments. Next: weekly/daily view polish. |
 | G | Resources and files | IMPLEMENTED | R2 code verified against local bucket in CI; production bucket binding is an owner step. |
-| H | Evidence Backpack | IMPLEMENTED | Auto evidence on accepted review. Next: parent-added manual evidence, search. |
+| H | Evidence Backpack | IMPLEMENTED | Auto evidence on accepted review, parent notes, search. Printable record of learning and progress for home education liaison / Authorised Person visits: KLA coverage summary with gaps, syllabus outcomes evidenced (achieved / working towards, first and latest evidence), dated work samples by KLA earliest-first with embedded photos, reviewed life learning, parent summary and declaration (`worker/src/portfolio.ts`, `frontend/src/lib/portfolioDoc.js`). |
 | I | Progress tracking | IMPLEMENTED | Completed vs demonstrated distinguished in XP/evidence. Next: summaries. |
 | J | Portfolio and exports | IMPLEMENTED | Print portfolio (preview-limited). Next: date range, CSV. |
 | K | Family onboarding | IMPLEMENTED | Get-started checklist. Next: state/territory at registration, child avatar/theme. |

@@ -3,45 +3,117 @@ import { api } from "../../lib/api";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import ReviewModal from "../../components/parent/ReviewModal";
-
-const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
-
-function portfolioHtml(p) {
-  const rows = p.items.map((i) => `
-    <section style="break-inside:avoid;border-top:1px solid #ccc;margin-top:18px;padding-top:12px">
-      <h2 style="font-size:16px;margin:0">${esc(i.title)}</h2>
-      <p style="color:#555;font-size:12px;margin:2px 0 8px">${esc([i.learning_area, i.year_level].filter(Boolean).join(" · "))} · Approved ${i.reviewed_at ? esc(new Date(i.reviewed_at).toLocaleDateString("en-AU")) : ""}</p>
-      ${i.response_text ? `<h3 style="font-size:12px;margin:8px 0 2px">Work</h3><p style="white-space:pre-wrap;font-size:13px;margin:0">${esc(i.response_text)}</p>` : ""}
-      ${i.reflection ? `<h3 style="font-size:12px;margin:8px 0 2px">Reflection</h3><p style="white-space:pre-wrap;font-size:13px;margin:0">${esc(i.reflection)}</p>` : ""}
-      ${i.parent_feedback ? `<h3 style="font-size:12px;margin:8px 0 2px">Parent comment</h3><p style="white-space:pre-wrap;font-size:13px;margin:0">${esc(i.parent_feedback)}</p>` : ""}
-      ${i.next_step ? `<p style="font-size:13px;margin:6px 0 0"><strong>Next step:</strong> ${esc(i.next_step)}</p>` : ""}
-      ${i.files.length ? `<p style="font-size:12px;color:#555;margin:6px 0 0">Attached files: ${i.files.map((f) => esc(f.name)).join(", ")}</p>` : ""}
-    </section>`).join("");
-  const noteRows = (p.notes || []).map((n) => `
-    <section style="break-inside:avoid;border-top:1px solid #ccc;margin-top:18px;padding-top:12px">
-      <h2 style="font-size:16px;margin:0">${esc(n.title)}</h2>
-      <p style="color:#555;font-size:12px;margin:2px 0 8px">${esc([n.learning_area, n.occurred_on].filter(Boolean).join(" · "))} · Recorded by parent</p>
-      ${n.notes ? `<p style="white-space:pre-wrap;font-size:13px;margin:0">${esc(n.notes)}</p>` : ""}
-      ${n.files.length ? `<p style="font-size:12px;color:#555;margin:6px 0 0">Attached files: ${n.files.map((f) => esc(f.name)).join(", ")}</p>` : ""}
-    </section>`).join("");
-  return `<!doctype html><html><head><meta charset="utf-8"><title>${esc(p.student.name)} learning portfolio</title></head>
-  <body style="font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;color:#111">
-  <h1 style="font-size:24px;margin:0">Learning portfolio: ${esc(p.student.name)}</h1>
-  <p style="color:#555;font-size:12px">Generated ${esc(new Date(p.generated_at).toLocaleDateString("en-AU"))} from parent-approved work in Side Quest. ${p.items.length + (p.notes || []).length} of ${p.total} entries${p.from || p.to ? ` (${esc(p.from || "start")} to ${esc(p.to || "now")})` : ""}.</p>
-  ${p.limited ? `<p style="background:#fff7e0;border:1px solid #e6c96b;padding:8px;font-size:12px">Free preview: this sample shows 1 entry. A Family Membership exports the full portfolio.</p>` : ""}
-  ${rows + noteRows || "<p>No approved work yet.</p>"}
-  <p style="margin-top:28px;font-size:11px;color:#666">This is a record of learning kept by the parent. It is not an official assessment, and Side Quest does not provide legal or compliance advice. Check your own state or territory's home education requirements.</p>
-  </body></html>`;
-}
+import { portfolioHtml, portfolioCsv } from "../../lib/portfolioDoc";
 
 const APPROVED = ["accepted", "demonstrated"];
-const csvCell = (v) => { let t = String(v ?? "").replace(/\r?\n/g, " "); if (/^[=+\-@\t]/.test(t)) t = "'" + t; return `"${t.replace(/"/g, '""')}"`; };
-export function portfolioCsv(p) {
-  const head = ["Type", "Date", "Title", "Subject", "Year level", "Outcome", "Work", "Parent comment", "Next step"];
-  const lines = [head.map(csvCell).join(",")];
-  (p.items || []).forEach((i) => lines.push(["Lesson", (i.reviewed_at || "").slice(0, 10), i.title, i.learning_area, i.year_level, i.status === "demonstrated" ? "Skill shown" : "Completed", i.response_text, i.parent_feedback, i.next_step].map(csvCell).join(",")));
-  (p.notes || []).forEach((n) => lines.push(["Parent evidence", n.occurred_on, n.title, n.learning_area, "", "", n.notes, "", ""].map(csvCell).join(",")));
-  return lines.join("\r\n");
+export { portfolioCsv };
+
+// Turns attached photos into data URLs so they print inside the record (the file links need a sign-in).
+async function embedImages(entries, max = 60) {
+  const out = {};
+  let n = 0;
+  for (const e of entries || []) {
+    for (const f of (e.files || []).filter((x) => /^image\//.test(x.content_type)).slice(0, 4)) {
+      if (n >= max) return out;
+      try {
+        const { data } = await api.get(`/files/${f.id}`, { responseType: "blob" });
+        if (data.size > 4 * 1024 * 1024) continue;
+        out[f.id] = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(data); });
+        n++;
+      } catch { /* leave it listed by name */ }
+    }
+  }
+  return out;
+}
+
+const NOTE_KEY = (sid) => `sq_visit_notes_${sid}`;
+const readNotes = (sid) => { try { return JSON.parse(localStorage.getItem(NOTE_KEY(sid)) || "{}"); } catch { return {}; } };
+const saveNotes = (sid, v) => { try { localStorage.setItem(NOTE_KEY(sid), JSON.stringify(v)); } catch { /* not kept */ } };
+
+function VisitPrep({ students, range, setRange, bump }) {
+  const [sid, setSid] = useState(students[0]?.id || "");
+  const [data, setData] = useState(null);
+  const [notes, setNotes] = useState({});
+  const [busy, setBusy] = useState(false);
+  useEffect(() => { if (!sid && students[0]) setSid(students[0].id); }, [students, sid]);
+  useEffect(() => { if (sid) setNotes(readNotes(sid)); }, [sid]);
+  useEffect(() => {
+    if (!sid) return;
+    let alive = true;
+    api.get("/portfolio", { params: { student_id: sid, from: range.from || undefined, to: range.to || undefined } })
+      .then((r) => alive && setData(r.data)).catch(() => alive && setData(null));
+    return () => { alive = false; };
+  }, [sid, range.from, range.to, bump]);
+  const setNote = (k, v) => { const next = { ...notes, [k]: v }; setNotes(next); saveNotes(sid, next); };
+  const child = students.find((s) => s.id === sid);
+
+  const print = async () => {
+    const w = window.open("", "_blank");
+    if (!w) { toast.error("Allow pop-ups to open the record"); return; }
+    w.document.write("<p style='font-family:sans-serif;padding:24px'>Preparing the record and its photos…</p>");
+    setBusy(true);
+    try {
+      const { data: p } = await api.get("/portfolio", { params: { student_id: sid, from: range.from || undefined, to: range.to || undefined } });
+      const images = await embedImages(p.entries);
+      w.document.open(); w.document.write(portfolioHtml(p, { ...notes, images })); w.document.close(); w.focus();
+      setTimeout(() => w.print(), 400);
+    } catch (e) { w.close(); toast.error(e.response?.data?.detail || "Could not build the record"); }
+    finally { setBusy(false); }
+  };
+  const csv = async () => {
+    try {
+      const { data: p } = await api.get("/portfolio", { params: { student_id: sid, from: range.from || undefined, to: range.to || undefined } });
+      const blob = new Blob(["\ufeff" + portfolioCsv(p)], { type: "text/csv;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = `${(child?.name || "child").replace(/[^\w-]+/g, "_")}-learning-record.csv`; a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    } catch (e) { toast.error(e.response?.data?.detail || "Could not build the export"); }
+  };
+  const area = "rounded-lg border border-slate-300 px-3 py-2 text-sm w-full";
+  const s = data?.summary;
+
+  return (
+    <section className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 space-y-4" data-testid="visit-prep">
+      <div>
+        <h2 className="font-display text-xl font-bold text-slate-900">Prepare for a home education visit</h2>
+        <p className="text-sm text-slate-600">Print a record of learning and progress to show your liaison or Authorised Person: a summary by key learning area, the syllabus outcomes evidenced, dated and annotated work samples (photos included) in order so progress over time is clear, and your own summary and declaration.</p>
+      </div>
+      <div className="flex flex-wrap items-end gap-3 text-xs font-semibold text-slate-600">
+        <label>Child<select value={sid} onChange={(e) => setSid(e.target.value)} className="block mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal" data-testid="visit-child">{students.map((st) => <option key={st.id} value={st.id}>{st.name}</option>)}</select></label>
+        <label>From<input type="date" value={range.from} onChange={e => setRange({ ...range, from: e.target.value })} className="block mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal" data-testid="range-from" /></label>
+        <label>To<input type="date" value={range.to} onChange={e => setRange({ ...range, to: e.target.value })} className="block mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal" data-testid="range-to" /></label>
+        <span className="text-slate-500 font-normal">Usually your current registration period. Leave blank for everything.</span>
+      </div>
+
+      {s && (
+        <div className="overflow-x-auto" data-testid="visit-coverage">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 text-left text-xs uppercase tracking-wider text-slate-500"><tr><th className="p-2">Key learning area</th><th className="p-2">Entries</th><th className="p-2">Outcomes achieved</th><th className="p-2">Working towards</th></tr></thead>
+            <tbody>{s.areas.map((a) => (
+              <tr key={a.learning_area} className="border-t border-slate-100">
+                <td className="p-2">{a.learning_area}</td>
+                <td className={`p-2 ${a.expected && !a.entries ? "text-amber-700 font-semibold" : ""}`}>{a.entries || (a.expected ? "None yet" : 0)}</td>
+                <td className="p-2">{a.outcomes_achieved || "—"}</td><td className="p-2">{a.outcomes_working_towards || "—"}</td>
+              </tr>))}</tbody>
+          </table>
+          {s.not_yet_evidenced.length > 0 && <p className="text-xs text-amber-800 mt-2" data-testid="visit-gaps">No evidence yet for {s.not_yet_evidenced.join(", ")} in this period. Add a work sample or an observation below, or explain how these are covered in your summary.</p>}
+        </div>
+      )}
+
+      <div className="grid gap-3">
+        <label className="text-xs font-semibold text-slate-600">Progress made during this period<textarea rows={3} value={notes.summary || ""} onChange={(e) => setNote("summary", e.target.value)} maxLength={4000} className={`${area} mt-1 font-normal`} placeholder="e.g. Mia now reads chapter books independently and can explain how a character changes." data-testid="visit-summary" /></label>
+        <label className="text-xs font-semibold text-slate-600">Areas of strength or advancement<textarea rows={2} value={notes.advancement || ""} onChange={(e) => setNote("advancement", e.target.value)} maxLength={4000} className={`${area} mt-1 font-normal`} data-testid="visit-advancement" /></label>
+        <label className="text-xs font-semibold text-slate-600">Areas needing further attention and how you will address them<textarea rows={2} value={notes.attention || ""} onChange={(e) => setNote("attention", e.target.value)} maxLength={4000} className={`${area} mt-1 font-normal`} data-testid="visit-attention" /></label>
+        <p className="text-xs text-slate-500">Saved on this device only. Leave blank to get lined space you can fill in by hand.</p>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <button onClick={print} disabled={busy || !sid} className="rounded-full bg-slate-900 text-white px-5 py-2 text-sm font-semibold disabled:opacity-50" data-testid={`export-${sid}`}>{busy ? "Preparing…" : `Print learning record${child ? `: ${child.name}` : ""}`}</button>
+        <button onClick={csv} disabled={!sid} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold" data-testid={`csv-${sid}`}>Download CSV</button>
+      </div>
+      {data?.limited && <p className="text-xs text-slate-600">Free preview: the printed record shows your full summary but only one work sample in full.</p>}
+    </section>
+  );
 }
 
 export default function EvidencePage() {
@@ -65,24 +137,6 @@ export default function EvidencePage() {
     } catch (err) { toast.error(err.response?.data?.detail || "Could not save that"); }
     finally { setAdding(false); }
   };
-  const csvFor = async (sid, name) => {
-    try {
-      const { data } = await api.get("/portfolio", { params: { student_id: sid, from: range.from || undefined, to: range.to || undefined } });
-      const blob = new Blob(["\ufeff" + portfolioCsv(data)], { type: "text/csv;charset=utf-8" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob); a.download = `${name.replace(/[^\w-]+/g, "_")}-portfolio.csv`; a.click();
-      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-    } catch (e) { toast.error(e.response?.data?.detail || "Could not build the export"); }
-  };
-  const exportFor = async (sid) => {
-    const w = window.open("", "_blank");
-    if (!w) { toast.error("Allow pop-ups to open the portfolio"); return; }
-    try {
-      const { data } = await api.get("/portfolio", { params: { student_id: sid, from: range.from || undefined, to: range.to || undefined } });
-      w.document.write(portfolioHtml(data)); w.document.close(); w.focus(); w.print();
-    } catch (e) { w.close(); toast.error(e.response?.data?.detail || "Could not build the portfolio"); }
-  };
-
   const load = () => api.get("/submissions").then(r => setSubmissions((r.data || []).filter(s => APPROVED.includes(s.status))));
   useEffect(() => { load(); loadNotes(); api.get("/students").then(r => setStudents(r.data)).catch(() => {}); }, []);
 
@@ -93,19 +147,7 @@ export default function EvidencePage() {
         <p className="text-sm text-slate-600 mt-1">A home for your family’s learning portfolio: parent-approved lessons, notes from everyday learning and progress records. Review work waiting for you on the dashboard.</p>
       </header>
 
-      {students.length > 0 && (
-        <div className="space-y-2" data-testid="export-buttons">
-          <div className="flex flex-wrap items-end gap-3 text-xs font-semibold text-slate-600">
-            <label>From<input type="date" value={range.from} onChange={e => setRange({ ...range, from: e.target.value })} className="block mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal" data-testid="range-from" /></label>
-            <label>To<input type="date" value={range.to} onChange={e => setRange({ ...range, to: e.target.value })} className="block mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal" data-testid="range-to" /></label>
-            <span className="text-slate-500 font-normal">Leave blank for everything.</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {students.map(st => <button key={st.id} onClick={() => exportFor(st.id)} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold" data-testid={`export-${st.id}`}>Print portfolio: {st.name}</button>)}
-            {students.map(st => <button key={`c${st.id}`} onClick={() => csvFor(st.id, st.name)} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold" data-testid={`csv-${st.id}`}>Download CSV: {st.name}</button>)}
-          </div>
-        </div>
-      )}
+      {students.length > 0 && <VisitPrep students={students} range={range} setRange={setRange} bump={notes.length + submissions.length} />}
 
       <div className="rounded-2xl border border-slate-200 bg-white overflow-x-auto">
         <table className="w-full text-sm">

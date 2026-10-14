@@ -466,8 +466,8 @@ await step("J. XP, progress and evidence update; XP is awarded exactly once", as
   ok((await page.textContent("body")).includes("Halves and quarters"), "evidence page missing the approved work");
   const kidsNow = await api("GET", "/students", parentToken);
   const pf = await api("GET", `/portfolio?student_id=${kidsNow.json[0].id}`, parentToken);
-  ok(pf.status === 200 && pf.json.items.length === 1 && pf.json.items[0].title === "Halves and quarters", "portfolio export missing the approved work");
-  ok(pf.json.items[0].response_text.includes("Four quarters") && pf.json.items[0].parent_feedback.includes("Lovely"), "portfolio missing answers or comment");
+  ok(pf.status === 200 && pf.json.entries.length === 1 && pf.json.entries[0].title === "Halves and quarters" && pf.json.entries[0].learning_area === "Mathematics", "portfolio export missing the approved work");
+  ok(pf.json.entries[0].work.includes("Four quarters") && pf.json.entries[0].parent_comment.includes("Lovely"), "portfolio missing answers or comment");
   ok(!JSON.stringify(pf.json).includes(SECRET), "portfolio leaks the answer key");
   ok((await api("GET", `/portfolio?student_id=${kidsNow.json[0].id}`, childToken)).status === 403, "child can export portfolio");
   const pdash = await api("GET", "/dashboard/parent", parentToken);
@@ -568,7 +568,7 @@ await step("evidence: add a parent note, search it, export CSV with a date range
   const [dl] = await Promise.all([page.waitForEvent("download"), page.click(`[data-testid=csv-${kids.json[0].id}]`)]);
   ok(dl.suggestedFilename().endsWith(".csv"), "csv name");
   const p = await api("GET", `/portfolio?student_id=${kids.json[0].id}&from=2999-01-01`, parentToken);
-  ok(p.json.items.length === 0 && p.json.notes.length === 0, "date range not applied");
+  ok(p.json.entries.length === 0, "date range not applied");
   const other = await api("GET", "/evidence-notes", parentToken);
   ok(other.json.length === 1, "note count");
 });

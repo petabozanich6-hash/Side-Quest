@@ -5,6 +5,7 @@ import * as aid from "./aiDraft";
 import * as help from "./aiHelp";
 import * as res from "./resources";
 import * as pl from "./planning";
+import { buildPortfolio } from "./portfolio";
 import { billingSummary } from "./billing";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
@@ -154,47 +155,9 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   // ---------- Portfolio export (parent only) ----------
   app.get("/api/portfolio", auth, parent, async (c) => {
     const u = c.get("user");
-    const sid = c.req.query("student_id") || "";
-    const student = await c.env.DB.prepare("SELECT id, name, stage, year_level FROM students WHERE id = ? AND family_id = ?").bind(sid, u.family_id).first<any>();
-    if (!student) return c.json({ detail: "Student not found" }, 404);
-    const { limits } = await lb.getEntitlement(c.env.DB, u.family_id);
-    const from = /^\d{4}-\d{2}-\d{2}$/.test(c.req.query("from") || "") ? c.req.query("from")! : "";
-    const to = /^\d{4}-\d{2}-\d{2}$/.test(c.req.query("to") || "") ? c.req.query("to")! + "T23:59:59.999Z" : "";
-    const { results } = await c.env.DB.prepare(
-      "SELECT s.*, a.lesson_snapshot FROM submissions s JOIN assignments a ON a.id = s.assignment_id WHERE s.family_id = ? AND s.student_id = ? AND s.status IN ('accepted','demonstrated') AND (? = '' OR s.reviewed_at >= ?) AND (? = '' OR s.reviewed_at <= ?) ORDER BY s.reviewed_at DESC LIMIT 500"
-    ).bind(u.family_id, sid, from, from, to, to).all<any>();
-    // Tolerate a database that hasn't had migration 0052 applied yet.
-    const noteRows = await pl.listEvidenceNotes(c.env.DB, u.family_id, { student_id: sid, from: from || undefined, to: to ? to.slice(0, 10) : undefined }).catch(() => [] as any[]);
-    const total = results.length + noteRows.length;
-    const rows = limits.fullExports ? results : results.slice(0, 1);
-    const items = [];
-    for (const r of rows) {
-      const live = r.lesson_snapshot ? null : await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first();
-      const l: any = lb.assignmentLesson({ lesson_snapshot: r.lesson_snapshot }, live) || {};
-      const fileIds: string[] = parseJson(r.file_ids, []);
-      const files = [];
-      for (const fid of fileIds.slice(0, 20)) {
-        const f = await c.env.DB.prepare("SELECT id, original_filename FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fid, u.family_id).first<any>();
-        if (f) files.push({ id: f.id, name: f.original_filename });
-      }
-      items.push({
-        id: r.id, title: l.title || "Lesson", learning_area: l.learning_area || "", year_level: l.year_level || "",
-        submitted_at: r.submitted_at, reviewed_at: r.reviewed_at, status: r.status,
-        response_text: r.response_text, reflection: r.reflection, parent_feedback: r.parent_feedback, next_step: r.next_step, files,
-      });
-    }
-    const notes = [];
-    if (limits.fullExports || !items.length) {
-      for (const n of limits.fullExports ? noteRows : noteRows.slice(0, 1 - items.length)) {
-        const files = [];
-        for (const fid of n.file_ids.slice(0, 10)) {
-          const f = await c.env.DB.prepare("SELECT id, original_filename FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fid, u.family_id).first<any>();
-          if (f) files.push({ id: f.id, name: f.original_filename });
-        }
-        notes.push({ id: n.id, title: n.title, learning_area: n.learning_area || "", notes: n.notes || "", occurred_on: n.occurred_on, files });
-      }
-    }
-    return c.json({ student, items, notes, total, limited: !limits.fullExports && total > items.length + notes.length, from: from || null, to: c.req.query("to") || null, generated_at: nowIso() });
+    const out = await buildPortfolio(c.env.DB, u.family_id, c.req.query("student_id") || "", { from: c.req.query("from") || "", to: c.req.query("to") || "" });
+    if (!out) return c.json({ detail: "Student not found" }, 404);
+    return c.json(out);
   });
 
   // ---------- Account plan ----------
