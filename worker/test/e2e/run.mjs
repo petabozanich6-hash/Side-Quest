@@ -74,6 +74,58 @@ page.on("pageerror", (e) => pageErrors.push(String(e).slice(0, 300)));
 
 let parentToken, lessonId, assignmentId, childToken, submissionId, xp0 = 0;
 
+
+// ---- Multi-family and sibling isolation regression tests (real Worker + real D1)
+await step("security: family isolation, sibling privacy, PIN revocation and throttling", async () => {
+  const tag = Date.now().toString(36);
+  async function family(n) {
+    const r = await api("POST", "/auth/register", null, {
+      email: `security-${n}-${tag}@example.com`, name: `Parent ${n}`,
+      password: "SecurityPass123!", jurisdiction: "NSW"
+    });
+    ok(r.status === 200 && r.json?.token, `registration ${n}: ${r.status}`);
+    return r.json.token;
+  }
+  async function child(parent, name) {
+    const username = `sec${name.toLowerCase()}${tag}`;
+    const r = await api("POST", "/students", parent, { name, username, pin: "7392", stage: "S2" });
+    ok(r.status === 200 && r.json?.id, `create ${name}: ${r.status}`);
+    const login = await api("POST", "/auth/child-login", null, { username, pin: "7392" });
+    ok(login.status === 200 && login.json?.token, `login ${name}: ${login.status}`);
+    return { id: r.json.id, username, token: login.json.token };
+  }
+  const a = await family("a"), b = await family("b");
+  const a1 = await child(a, "Alpha"), a2 = await child(a, "Bravo"), b1 = await child(b, "Charlie");
+  async function denied(label, method, path, token, body) {
+    const r = await api(method, path, token, body);
+    ok([403, 404].includes(r.status), `${label} unexpectedly returned ${r.status}`);
+  }
+  await denied("parent B cannot view A's child", "GET", `/students/${a1.id}`, b);
+  await denied("parent B cannot view A's overview", "GET", `/students/${a1.id}/overview`, b);
+  await denied("child B cannot view A's child", "GET", `/students/${a1.id}`, b1.token);
+  await denied("child A cannot view sibling", "GET", `/students/${a2.id}`, a1.token);
+  await denied("parent B cannot change A's PIN", "PUT", `/students/${a1.id}/pin`, b, { pin: "2222" });
+  await denied("parent B cannot change A's profile", "PUT", `/students/${a1.id}`, b, { name: "Tampered" });
+  await denied("parent B cannot delete A's profile", "DELETE", `/students/${a1.id}`, b);
+  const newPin = await api("PUT", `/students/${a1.id}/pin`, a, { pin: "9876" });
+  ok(newPin.status === 200, "PIN change failed");
+  const oldSession = await api("GET", "/auth/me", a1.token);
+  ok(oldSession.status === 401, `old child token still valid: ${oldSession.status}`);
+  const oldPin = await api("POST", "/auth/child-login", null, { username: a1.username, pin: "7392" });
+  ok(oldPin.status === 401, "old PIN still valid");
+  const relogin = await api("POST", "/auth/child-login", null, { username: a1.username, pin: "9876" });
+  ok(relogin.status === 200, "new PIN login failed");
+  const profileUpdate = await api("PUT", `/students/${a2.id}`, a, { pin: "6677" });
+  ok(profileUpdate.status === 200, "profile PIN edit failed");
+  const siblingOld = await api("GET", "/auth/me", a2.token);
+  ok(siblingOld.status === 401, "old token survived profile PIN edit");
+  for (let i = 0; i < 8; i++) {
+    await api("POST", "/auth/child-login", null, { username: `guess${tag}`, pin: "0000" });
+  }
+  const blocked = await api("POST", "/auth/child-login", null, { username: `guess${tag}`, pin: "0000" });
+  ok(blocked.status === 429, `guessing not throttled: ${blocked.status}`);
+});
+
 await step("landing page loads and has no NSW-only marketing", async () => {
   await page.goto(BASE + "/"); await page.waitForLoadState("networkidle");
   const t = await page.textContent("body");
