@@ -67,7 +67,7 @@ export function RefinePanel({ lessonId, onApplied, onClose }) {
       <div className="flex flex-wrap items-center gap-3 text-sm">
         <label className="flex items-center gap-2">Change only: <select value={part} onChange={e => setPart(e.target.value)} className="rounded-lg border border-slate-300 bg-white px-2 py-1" data-testid="refine-part">{PARTS.map(([v, n]) => <option key={v} value={v}>{n}</option>)}</select></label>
         <button disabled={busy || text.trim().length < 3} onClick={ask} className="rounded-full bg-violet-700 text-white px-4 py-1.5 font-semibold disabled:opacity-50" data-testid="refine-go">{busy && !proposal ? "Working on it… up to a minute" : "Show me the change"}</button>
-        {left && <span className="text-xs text-slate-600">AI changes left today: {Math.max(0, left.changes_limit_per_day - left.changes_today)}</span>}
+        {left && <span className="text-xs text-slate-600">{left.unlimited ? "AI changes: unlimited for owner testing" : `AI changes left today: ${Math.max(0, left.changes_limit_per_day - left.changes_today)}`}</span>}
       </div>
       {err && <p role="alert" className="text-sm text-rose-700" data-testid="refine-error">{err}</p>}
       {proposal && (
