@@ -537,7 +537,7 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   await cp.goto(`${BASE}/child/lesson/${asg7.json.id}`);
   await cp.waitForSelector("[data-testid=lesson-title]", { timeout: 15000 });
   const b7 = await readAll(cp);
-  for (const need of ["Negative numbers: counting below zero", "What is a negative number?", "The number line", "Opposites and distance from zero", "Ordering temperatures", "Adding across zero", "Why this matters:", "Mistakes to avoid", "Temperature detective", "Write the five places in order from coldest to warmest.", "Money story", "Remember", "Challenge yourself"]) ok(b7.includes(need), "y7 child page missing: " + need);
+  for (const need of ["Negative numbers: counting below zero", "What is a negative number?", "The number line", "Opposites and distance from zero", "Ordering temperatures", "Adding across zero", "Why this matters:", "Mistakes to avoid", "Temperature detective", "Put the places in order from coldest to warmest.", "Money story", "Remember", "Challenge yourself"]) ok(b7.includes(need), "y7 child page missing: " + need);
   for (const leak of ["Concept: negative integers", "Suggested check-ins", "If you find this hard:", "Charlotte Pass (\u22128), Thredbo", "Sam moved the wrong way", "Which is greater, \u22129 or \u22122, and how do you know?"]) ok(!b7.includes(leak), "y7 child page leaks: " + leak);
   await cp.screenshot({ path: `${SHOTS}/year7-lesson-child-mobile.png`, fullPage: true });
   const raw7 = JSON.stringify((await api("GET", `/assignments/${asg7.json.id}`, tok)).json);
