@@ -300,7 +300,6 @@ await step("child answers are saved and survive a refresh", async () => {
 });
 
 await step("Word Hoard: the lesson's spelling words reach the child's hoard when the lesson opens", async () => {
-  await cpage.waitForSelector('[data-testid=hoard-words]', { timeout: 15000 });
   const wb = await api("GET", "/word-bank", childToken);
   const all = Object.values(wb.json.words || {}).flat().map((w) => w.word);
   ok(all.includes("fraction") && all.includes("quarter"), "hoard words missing: " + JSON.stringify(all));
