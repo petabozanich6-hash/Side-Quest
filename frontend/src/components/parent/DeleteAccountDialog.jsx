@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AlertTriangle, X } from "lucide-react";
 import { api } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
@@ -47,7 +47,8 @@ export default function DeleteAccountDialog({ onClose }) {
           <li>Reading logs, life learning and evidence</li>
           <li>All uploaded files and calendar events</li>
         </ul>
-        <p className="text-sm font-bold mb-4" style={{color:"#9B2C2C"}}>This cannot be undone. Your children will no longer be able to sign in.</p>
+        <p className="text-sm font-bold mb-2" style={{color:"#9B2C2C"}}>This cannot be undone. Your children will no longer be able to sign in.</p>
+        <p className="text-sm text-stone-700 mb-4">If you have a paid membership, deleting your account first cancels its Stripe subscription <strong>immediately</strong>. Any remaining paid access ends now, not at the usual period end. Save records you need first. For billing concerns or refunds, see <Link to="/parent/trust/refunds" className="font-semibold underline" onClick={onClose}>Refunds &amp; Consumer Rights</Link>. If billing cancellation cannot be confirmed, nothing is deleted and you can contact support.</p>
 
         <label className="block text-xs font-bold text-stone-600 mb-1">Your password</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password"
