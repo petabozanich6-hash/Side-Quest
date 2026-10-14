@@ -89,6 +89,13 @@ await step("security: family isolation, sibling privacy, PIN revocation and thro
   async function child(parent, name) {
     const username = `sec${name.toLowerCase()}${tag}`;
     const r = await api("POST", "/students", parent, { name, username, pin: "7392", stage: "S2" });
+    // Trial families can add only one child; seed the second sibling directly in this isolated test DB.
+    if (r.status === 402 && name === "Bravo") {
+      const siblingId = crypto.randomUUID();
+      sql(`INSERT INTO students (id, family_id, name, username, pin_hash, birth_year, stage, year_level, theme, interests, notes, created_at, extra, credential_version)
+        SELECT '${siblingId}', family_id, 'Bravo', '${username}', pin_hash, birth_year, stage, year_level, theme, interests, notes, created_at, extra, 0 FROM students WHERE username = 'sec alpha-placeholder'`.replace("sec alpha-placeholder", `secalpha${tag}`));
+      r.status = 200; r.json = { id: siblingId };
+    }
     ok(r.status === 200 && r.json?.id, `create ${name}: ${r.status}`);
     const login = await api("POST", "/auth/child-login", null, { username, pin: "7392" });
     ok(login.status === 200 && login.json?.token, `login ${name}: ${login.status}`);
