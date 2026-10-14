@@ -598,7 +598,7 @@ export async function trackerFor(db: DB, familyId: string, studentId: string, o:
       evidence_count: e.counts.evidence,
       last_evidence_on: e.last_on,
       gaps: e.gaps,
-      catalogue_changed: !!(p && k && p.description && p.description !== k.description),
+      catalogue_changed: !!(p?.catalogue_version && p.catalogue_version !== cat.version),
     };
   }).sort((a, b) => a.learning_area.localeCompare(b.learning_area) || a.code.localeCompare(b.code));
 
@@ -672,7 +672,7 @@ export async function outcomeDetail(db: DB, familyId: string, studentId: string,
     student: { id: student.id, name: student.name },
     framework: { key: cat.framework, name: cat.name, version: cat.version },
     outcome,
-    catalogue_changed: !!(p?.description && k && p.description !== k.description) ? { recorded: p.description, current: k.description } : null,
+    catalogue_changed: !!(p?.catalogue_version && p.catalogue_version !== cat.version) ? { recorded_version: p.catalogue_version, current_version: cat.version } : null,
     status: e.status, computed_status: e.computed, reason: e.reason, last_change_reason: p?.status_reason || null,
     confirmed: p?.parent_confirmed_at ? { at: p.parent_confirmed_at, note: p.confirmation_note || "" } : null,
     criteria: e.criteria, gaps: e.gaps, counts: e.counts, rules, learner_support: learner,
