@@ -7,6 +7,7 @@ import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
 import HelpAlertBar from "../../components/parent/HelpAlertBar";
 import ParentLabel from "../../components/parent/ParentLabel";
+import InstallApp from "../../components/shared/InstallApp";
 import JurisdictionGate from "../../components/parent/JurisdictionPicker";
 
 const nav = [
@@ -61,6 +62,7 @@ export default function ParentLayout() {
             <div className="text-xs font-bold truncate" style={{color:"#1F3B2D"}}>{user?.name}</div>
             <div className="text-[11px] text-stone-500 truncate">{user?.email}</div>
           </div>
+          <InstallApp />
           <button onClick={doLogout} className="w-full flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-stone-700 hover:bg-white/80" data-testid="parent-logout">
             <LogOut size={16} /> Sign out
           </button>

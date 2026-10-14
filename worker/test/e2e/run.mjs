@@ -97,6 +97,20 @@ await step("landing page remains usable on phone, tablet and desktop", async () 
   }
 });
 
+await step("installable app: manifest, icons, service worker and offline page are served", async () => {
+  const m = await fetch(BASE + "/manifest.webmanifest");
+  ok(m.status === 200, "manifest " + m.status);
+  const man = await m.json();
+  ok(man.name === "Side-Quest Learning" && man.display === "standalone" && man.icons.some((i) => i.sizes === "512x512"), "manifest fields");
+  for (const path of ["/sw.js", "/offline.html", "/icons/icon-192.png", "/icons/maskable-512.png", "/icons/apple-touch-icon.png"]) {
+    const r = await fetch(BASE + path);
+    ok(r.status === 200, path + " " + r.status);
+    if (path.endsWith(".js")) ok(/javascript/.test(r.headers.get("content-type") || ""), "sw.js content type " + r.headers.get("content-type"));
+  }
+  await page.goto(BASE + "/");
+  ok(await page.locator('link[rel=manifest]').count() === 1, "manifest link missing from the page");
+});
+
 await step("A. new family registers through the UI", async () => {
   await page.goto(BASE + "/register");
   await page.fill('[data-testid=reg-name]', "Pat Parent");
