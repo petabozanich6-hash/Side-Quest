@@ -2,6 +2,7 @@ import type { Hono, MiddlewareHandler } from "hono";
 import { applySpelling } from "./data/spelling";
 import * as lb from "./lessonBuilder";
 import * as aid from "./aiDraft";
+import * as bat from "./lessonBatches";
 import * as help from "./aiHelp";
 import * as res from "./resources";
 import * as pl from "./planning";
@@ -204,6 +205,28 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const u = c.get("user");
     const b: any = await c.req.json().catch(() => ({}));
     const r = await aid.planSeriesWithAi(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, request: b });
+    return r.ok ? c.json(r) : send(c, r);
+  });
+
+  // Sets of AI lessons ("four science lessons…"), remembered on the server so no draft is ever lost from view.
+  app.post("/api/ai/batches", auth, parent, async (c) => {
+    const u = c.get("user");
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await bat.createBatch(c.env.DB, { familyId: u.family_id, userId: u.id, body: b });
+    return r.ok ? c.json(r.batch) : send(c, r);
+  });
+  app.get("/api/ai/batches", auth, parent, async (c) => c.json(await bat.listBatches(c.env.DB, c.get("user").family_id, { open: c.req.query("open") === "1" })));
+  app.get("/api/ai/batches/:id", auth, parent, async (c) => {
+    const r = await bat.getBatch(c.env.DB, c.get("user").family_id, c.req.param("id"));
+    return r.ok ? c.json(r.batch) : send(c, r);
+  });
+  app.post("/api/ai/batches/:id/items/:index/draft", auth, parent, async (c) => {
+    const u = c.get("user");
+    const r = await bat.draftBatchItem(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, batchId: c.req.param("id"), index: Number(c.req.param("index")) });
+    return r.ok ? c.json({ lesson: r.lesson, reused: r.reused, usage: r.usage, warnings: r.warnings, assumptions: r.assumptions, generation: r.generation }) : send(c, r);
+  });
+  app.post("/api/ai/batches/:id/dismiss", auth, parent, async (c) => {
+    const r = await bat.dismissBatch(c.env.DB, c.get("user").family_id, c.req.param("id"));
     return r.ok ? c.json(r) : send(c, r);
   });
 

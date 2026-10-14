@@ -67,6 +67,7 @@ export default function LessonsPage() {
         <div className="flex flex-wrap gap-2">
           <Link to="/parent/lessons/make" className="rounded-full bg-violet-700 text-white px-5 py-2.5 text-sm font-semibold flex items-center gap-1" data-testid="new-lesson-ai"><Plus size={16} /> Make a lesson for me</Link>
           <Link to="/parent/lessons/new" className="rounded-full border border-slate-900 bg-white px-5 py-2.5 text-sm font-semibold" data-testid="new-lesson">I'll build it myself</Link>
+          <Link to="/parent/lessons/drafts" className="rounded-full border border-violet-300 bg-violet-50 px-5 py-2.5 text-sm font-semibold text-violet-900" data-testid="lesson-drafts-link">AI lesson drafts</Link>
         </div>
       </div>
 

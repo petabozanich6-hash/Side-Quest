@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import { Sparkles, Hammer, FileText, ArrowLeft, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Sparkles, Hammer, FileText, ArrowLeft, Loader2 } from "lucide-react";
 import { api } from "../../lib/api";
-import { isoLocal } from "../../components/parent/ScheduleModal";
+import { newId, runBatch } from "../../lib/batchRunner";
 
 const EXAMPLES = [
   "Create a one-hour Year 3 maths lesson about addition using gardening as the theme.",
@@ -36,10 +35,10 @@ export default function MakeLesson() {
   const [busy, setBusy] = useState("");
   const [err, setErr] = useState("");
   const [outline, setOutline] = useState(null); // multi-lesson plan awaiting confirmation
-  const [made, setMade] = useState([]); // multi-lesson results
   const [linkOutcomes, setLinkOutcomes] = useState(true);
   const [jurisdiction, setJurisdiction] = useState(null);
   const leaving = useRef(false);
+  const batchId = useRef(null); // one set per "Write all", even if the button is pressed twice
 
   useEffect(() => {
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => setPlan({ limits: {} }));
@@ -74,49 +73,17 @@ export default function MakeLesson() {
     } catch (e) { fail(e); setBusy(""); }
   };
 
+  // A set of lessons is created on the server first, so every lesson stays reachable however the parent moves
+  // around (open one, edit, assign, leave, refresh). Lessons are then written one by one in the background.
   const createAll = async () => {
-    setErr(""); setBusy("series"); setMade([]);
-    const titles = outline.lessons.map(l => l.title), goals = outline.lessons.map(l => l.goal);
-    const out = [];
-    for (let i = 0; i < outline.lessons.length; i++) {
-      let done = null, last = "";
-      for (let attempt = 0; attempt < 2 && !done; attempt++) {
-        try {
-          const r = await api.post("/ai/lesson-draft", body({ series: { index: i, titles, goals } }));
-          done = r.data;
-        } catch (e) { last = e.response?.data?.detail || "That lesson could not be written."; if (e.response?.data?.code === "AI_QUOTA" || e.response?.status === 402) break; }
-      }
-      out.push(done ? { ok: true, lesson: done.lesson, title: outline.lessons[i].title } : { ok: false, title: outline.lessons[i].title, error: last });
-      setMade([...out]);
-      if (!done && /allowance|limit|AI drafts|plan/i.test(last)) break;
-    }
-    setBusy("");
-  };
-
-  const suggestDates = n => {
-    const d = new Date(); const out = [];
-    // "next week": the weekdays of the coming Monday onwards
-    d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7));
-    while (out.length < n) { if (d.getDay() !== 0 && d.getDay() !== 6) out.push(isoLocal(d)); d.setDate(d.getDate() + 1); }
-    return out;
-  };
-  const assignAll = async () => {
-    const good = made.filter(m => m.ok);
-    const dates = suggestDates(good.length);
-    setBusy("assign");
+    setErr(""); setBusy("series");
     try {
-      for (let i = 0; i < good.length; i++) {
-        const l = good[i].lesson;
-        await api.put(`/lessons/${l.id}`, { ...l, status: "ready" });
-        if (student) {
-          await api.post("/assignments", { student_id: student, lesson_id: l.id, support_level: "green" }).catch(e => { if (e.response?.data?.code !== "ALREADY_ASSIGNED") throw e; });
-          await api.post("/calendar", { title: l.title, date: dates[i], event_type: "lesson", student_id: student, linked_lesson_id: l.id, duration_minutes: Number(l.duration_minutes) || 45, notes: "" });
-        }
-      }
-      toast.success(student ? `Assigned and scheduled for ${child?.name || "your child"}` : "Saved to your library");
-      nav(student ? "/parent/assignments" : "/parent/lessons");
-    } catch (e) { toast.error(e.response?.data?.detail || "Could not finish assigning. Your lessons are saved as drafts."); }
-    finally { setBusy(""); }
+      if (!batchId.current) batchId.current = newId();
+      const r = await api.post("/ai/batches", { id: batchId.current, title: outline.title, lessons: outline.lessons, student_id: student || undefined, request: text.trim(), link_outcomes: linkOutcomes });
+      runBatch(r.data.id, r.data.items.filter(i => i.state === "pending").map(i => i.index));
+      leaving.current = true;
+      nav(`/parent/lessons/drafts/${r.data.id}`);
+    } catch (e) { fail(e); setBusy(""); }
   };
 
   if (!plan) return <div className="p-8 text-sm text-slate-500">Loading…</div>;
@@ -144,28 +111,19 @@ export default function MakeLesson() {
           <ol className="space-y-3">
             {outline.lessons.map((l, i) => (
               <li key={i} className="rounded-lg border border-slate-200 p-3">
-                <input disabled={!!busy || made.length > 0} value={l.title} onChange={e => setOutline(o => ({ ...o, lessons: o.lessons.map((x, j) => j === i ? { ...x, title: e.target.value } : x) }))} className="w-full font-semibold border-b border-dashed border-slate-300 focus:outline-none" data-testid="series-title" />
-                <input disabled={!!busy || made.length > 0} value={l.goal} onChange={e => setOutline(o => ({ ...o, lessons: o.lessons.map((x, j) => j === i ? { ...x, goal: e.target.value } : x) }))} className="w-full text-sm text-slate-600 mt-1 focus:outline-none" />
-                {made[i] && (made[i].ok
-                  ? <p className="text-sm text-emerald-700 flex items-center gap-1 mt-1"><CheckCircle2 size={14} /> Written. <Link className="underline" to={`/parent/lessons/${made[i].lesson.id}/review`} state={{ studentId: student || undefined, assumptions: { child: child?.name } }}>Read it</Link></p>
-                  : <p className="text-sm text-rose-700 flex items-center gap-1 mt-1"><AlertCircle size={14} /> {made[i].error}</p>)}
+                <input disabled={!!busy} value={l.title} onChange={e => setOutline(o => ({ ...o, lessons: o.lessons.map((x, j) => j === i ? { ...x, title: e.target.value } : x) }))} className="w-full font-semibold border-b border-dashed border-slate-300 focus:outline-none" data-testid="series-title" />
+                <input disabled={!!busy} value={l.goal} onChange={e => setOutline(o => ({ ...o, lessons: o.lessons.map((x, j) => j === i ? { ...x, goal: e.target.value } : x) }))} className="w-full text-sm text-slate-600 mt-1 focus:outline-none" />
               </li>
             ))}
           </ol>
-          {busy === "series" && <Progress label={`Writing lesson ${Math.min(made.length + 1, outline.count)} of ${outline.count}…`} />}
+          {busy === "series" && <Progress label="Setting up your lessons…" />}
           {err && <p role="alert" className="text-sm text-rose-700">{err}</p>}
           <p className="text-xs text-slate-500">{outline.usage.unlimited ? "Owner testing: AI lesson drafts are unlimited. Each generated lesson is still recorded for usage tracking." : `This uses ${outline.count} of your ${outline.usage.limit_per_day - outline.usage.today} lesson drafts left today (${outline.usage.limit_per_month - outline.usage.month} left this month). It is the same as writing ${outline.count} single lessons.`}</p>
-          {made.length === 0 && busy !== "series" && (
+          <p className="text-xs text-slate-500">Your lessons are kept together under <b>AI lesson drafts</b>, so you can open, edit and assign them one at a time and come back to the rest whenever you like.</p>
+          {busy !== "series" && (
             <div className="flex gap-2 flex-wrap">
               <button onClick={createAll} className="rounded-full bg-violet-700 text-white px-5 py-2.5 text-sm font-semibold" data-testid="series-go">Write all {outline.count} lessons</button>
               <button onClick={() => setOutline(null)} className="rounded-full border border-slate-400 bg-white px-5 py-2.5 text-sm font-semibold">Back</button>
-            </div>
-          )}
-          {made.length > 0 && busy !== "series" && (
-            <div className="flex gap-2 flex-wrap">
-              {made.some(m => m.ok) && <button disabled={busy === "assign"} onClick={assignAll} className="rounded-full bg-emerald-700 text-white px-5 py-2.5 text-sm font-semibold disabled:opacity-50" data-testid="series-assign">{student ? `Assign all to ${child?.name || "my child"}, one a day from next Monday` : "Save all to my library"}</button>}
-              <Link to="/parent/lessons" className="rounded-full border border-slate-400 bg-white px-5 py-2.5 text-sm font-semibold">Save for later</Link>
-              {made.some(m => !m.ok) && <button onClick={() => { setMade([]); }} className="rounded-full border border-slate-400 bg-white px-5 py-2.5 text-sm font-semibold">Try the plan again</button>}
             </div>
           )}
         </div>

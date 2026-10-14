@@ -766,6 +766,113 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   await mctx.close(); await pctx.close();
 });
 
+await step("AI lesson set: open, edit, assign, move around and refresh without losing any of the five drafts", async () => {
+  // AI is not connected in CI, so five written lessons are seeded as one set exactly as the generator leaves them.
+  const GARDEN = JSON.parse(readFileSync(resolve(ROOT, "frontend/src/data/exampleLesson.json"), "utf8"));
+  const email = `set-${stamp}@example.com`;
+  const reg = await api("POST", "/auth/register", null, { name: "Set Fam", email, password: pw, jurisdiction: "NSW" });
+  const pt = reg.json.token;
+  const fam = JSON.parse(Buffer.from(pt.split(".")[1], "base64url").toString()).family_id;
+  sql(`UPDATE families SET plan='ACTIVE_MONTHLY' WHERE id='${fam}';`);
+  const ch = await api("POST", "/students", pt, { name: "Ivy", username: `iv${stamp}`.slice(0, 14), pin: "4321", stage: "S3" });
+  ok(ch.status === 200, "child " + ch.status);
+  const ids = [];
+  for (let i = 1; i <= 5; i++) {
+    const l = await api("POST", "/lessons", pt, { ...GARDEN, title: `Planets ${i}`, status: "draft" });
+    ok(l.status === 200, "seed lesson " + l.status); ids.push(l.json.id);
+  }
+  const bid = `e2e-set-${stamp}`, ts = new Date().toISOString();
+  sql(`INSERT INTO lesson_batches (id, family_id, student_id, title, request, created_at, updated_at) VALUES ('${bid}', '${fam}', '${ch.json.id}', 'Our Solar System', '{}', '${ts}', '${ts}');`);
+  sql(`INSERT INTO lesson_batch_items (batch_id, idx, family_id, title, goal, status, lesson_id, updated_at) VALUES ${ids.map((id, i) => `('${bid}', ${i}, '${fam}', 'Planets ${i + 1}', 'Goal', 'done', '${id}', '${ts}')`).join(", ")};`);
+  const states = async () => Promise.all([0, 1, 2, 3, 4].map(i => page.textContent(`[data-testid=draft-state-${i}]`)));
+
+  const pctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const page = await pctx.newPage();
+  await page.goto(BASE + "/login");
+  await page.fill('[data-testid=login-email]', email); await page.fill('[data-testid=login-password]', pw);
+  await page.click('[data-testid=login-submit]'); await page.waitForURL("**/parent");
+  await page.waitForSelector("[data-testid=drafts-awaiting]");
+  ok((await page.textContent("[data-testid=drafts-awaiting-count]")).trim() === "5", "Parent Hub count before");
+  await page.click("[data-testid=drafts-awaiting-link]");
+  await page.waitForSelector("[data-testid=lesson-drafts]");
+  ok((await page.textContent("[data-testid=drafts-heading]")).includes("5 Lessons"), "set heading");
+  ok((await states()).every(s => s.includes("Ready for review")), "all five ready: " + (await states()).join("|"));
+
+  // 1-3. open Lesson 1, edit it, save
+  await page.click("[data-testid=draft-review-0]");
+  await page.waitForSelector("[data-testid=batch-nav]");
+  ok((await page.textContent("[data-testid=batch-nav-pos]")).includes("Lesson 1 of 5"), "position on lesson 1");
+  await page.click("[data-testid=r-edit]");
+  await page.waitForSelector("[data-testid=builder-batch-links]");
+  await page.fill("[data-testid=b-title]", "Planets 1 — my version");
+  await page.click("[data-testid=b-save-draft]");
+  await page.waitForFunction(() => !document.querySelector("[data-testid=save-state]")?.textContent.includes("Unsaved"));
+  // 4. back to the lesson, approve and assign it to Ivy; the parent lands back on the set
+  await page.click("[data-testid=builder-batch-links] a >> nth=0");
+  await page.waitForSelector("[data-testid=review-actions]");
+  await page.click("[data-testid=r-assign]");
+  await page.waitForSelector("[data-testid=schedule-modal]");
+  await page.check(`[data-testid=sch-student-${ch.json.id}]`);
+  await page.click("[data-testid=sch-submit]");
+  // 5. back on the remaining drafts
+  await page.waitForSelector("[data-testid=lesson-drafts]");
+  await page.waitForFunction(() => document.querySelector("[data-testid=draft-state-0]")?.textContent.includes("Assigned"));
+  ok((await page.textContent("[data-testid=draft-row-0]")).includes("Planets 1 — my version"), "edit not kept");
+  // 6. open Lesson 3, and step forward to check the next link
+  await page.click("[data-testid=draft-review-2]");
+  await page.waitForSelector("[data-testid=batch-nav-pos]");
+  ok((await page.textContent("[data-testid=batch-nav-pos]")).includes("Lesson 3 of 5"), "position on lesson 3");
+  await page.click("[data-testid=batch-nav-next]");
+  await page.waitForFunction(() => document.querySelector("[data-testid=batch-nav-pos]")?.textContent.includes("Lesson 4 of 5"));
+  // the next lesson gets its own video panel, not the previous lesson's
+  await page.waitForSelector("[data-testid=video-suggestions]");
+  await page.waitForFunction(() => document.querySelector("[data-testid=review-assumptions]")?.textContent.includes("Made for Ivy"), null, { timeout: 15000 }).catch(() => { throw new Error("next lesson lost its context"); });
+  const vid = await api("GET", `/lessons/${ids[3]}`, pt);
+  ok((await api("PUT", `/lessons/${ids[3]}`, pt, { ...vid.json, resources: [{ type: "video", title: "Planets", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }] })).status === 200, "add video");
+  // 7-8. away to the Parent Hub and back into the drafts
+  await page.click("[data-testid=nav-dashboard] >> visible=true");
+  await page.waitForSelector("[data-testid=drafts-awaiting]");
+  ok((await page.textContent("[data-testid=drafts-awaiting-count]")).trim() === "4", "Parent Hub count after assigning one");
+  await page.click("[data-testid=drafts-awaiting-link]");
+  await page.waitForSelector("[data-testid=lesson-drafts]");
+  // 9-10. open Lesson 2 and refresh the browser
+  await page.click("[data-testid=draft-review-1]");
+  await page.waitForSelector("[data-testid=batch-nav-pos]");
+  await page.reload();
+  await page.waitForSelector("[data-testid=batch-nav-pos]");
+  ok((await page.textContent("[data-testid=batch-nav-pos]")).includes("Lesson 2 of 5"), "set lost after refresh");
+  await page.waitForSelector("[data-testid=video-suggestions]");
+  await page.waitForFunction(() => document.querySelector("[data-testid=review-assumptions]")?.textContent.includes("Made for Ivy"), null, { timeout: 15000 }).catch(() => { throw new Error("lesson context lost after refresh"); });
+  await page.click("[data-testid=batch-nav-all]");
+  await page.waitForSelector("[data-testid=lesson-drafts]");
+  const s = await states();
+  ok(s[0].includes("Assigned") && [1, 2, 4].every(i => s[i].includes("Ready for review")) && s[3].includes("Edited"), "final states: " + s.join("|"));
+  ok((await page.textContent("[data-testid=draft-row-0]")).includes("Planets 1 — my version"), "edit lost after refresh");
+  ok((await page.textContent("[data-testid=draft-videos-3]")).includes("1 video"), "video on lesson 4 not shown on the set");
+  ok((await page.textContent("[data-testid=draft-videos-1]")).includes("No video yet"), "lesson 2 video status");
+  await shot("ai-set-after-refresh", page);
+  // nothing duplicated
+  const lessons = (await api("GET", "/lessons", pt)).json;
+  ok(lessons.length === 5, "lessons now " + lessons.length);
+  ok(lessons.find(l => l.id === ids[0]).title === "Planets 1 — my version", "edit not saved on the server");
+  const asg = (await api("GET", "/assignments", pt)).json;
+  ok(asg.length === 1 && asg[0].lesson_id === ids[0], "assignments: " + asg.length);
+
+  // A set where one lesson failed and one was never started: the good lesson stays usable, the failure is shown with a retry,
+  // and the unstarted one is picked up automatically (here AI is off, so it fails honestly instead of disappearing).
+  const bid2 = `e2e-set2-${stamp}`;
+  sql(`INSERT INTO lesson_batches (id, family_id, student_id, title, request, created_at, updated_at) VALUES ('${bid2}', '${fam}', NULL, 'Fractions set', '{"request":"three fractions lessons"}', '${ts}', '${ts}');`);
+  sql(`INSERT INTO lesson_batch_items (batch_id, idx, family_id, title, goal, status, lesson_id, error, updated_at) VALUES ('${bid2}', 0, '${fam}', 'Halves', '', 'done', '${ids[4]}', NULL, '${ts}'), ('${bid2}', 1, '${fam}', 'Quarters', '', 'failed', NULL, 'The AI service did not respond.', '${ts}'), ('${bid2}', 2, '${fam}', 'Eighths', '', 'pending', NULL, NULL, '${ts}');`);
+  await page.goto(BASE + `/parent/lessons/drafts/${bid2}`);
+  await page.waitForSelector("[data-testid=draft-retry-1]");
+  ok(await page.isVisible("[data-testid=draft-review-0]"), "good lesson hidden by a failed one");
+  await page.waitForFunction(() => document.querySelector("[data-testid=draft-state-2]")?.textContent.includes("Failed"), null, { timeout: 30000 });
+  ok((await page.textContent("[data-testid=draft-error-2]")).includes("not switched on"), "unstarted lesson error: " + await page.textContent("[data-testid=draft-row-2]"));
+  ok((await api("GET", "/lessons", pt)).json.length === 5, "failed lessons created rows");
+  await shot("ai-set-partial", page);
+  await pctx.close();
+});
+
 await step("L. users cannot grant themselves a paid plan", async () => {
   const r = await api("PUT", "/account/plan", parentToken, { plan: "ACTIVE_MONTHLY" });
   ok(r.status === 404 || r.status === 405, "plan update route exists: " + r.status);
