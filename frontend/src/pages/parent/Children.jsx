@@ -158,7 +158,7 @@ function EditDialog({ student, onClose, onSaved }) {
   });
   const sp = student.prefs || {};
   const [interests, setInterests] = useState((student.interests || []).join(", "));
-  const [prefs, setPrefs] = useState({ duration_minutes: sp.duration_minutes || "", delivery: sp.delivery || "", reading: sp.reading || "", complexity: sp.complexity || "", activity_types: (sp.activity_types || []).join(", "), support_areas: sp.support_areas || "", extension_areas: sp.extension_areas || "", equipment: sp.equipment || "", other: sp.other || "" });
+  const [prefs, setPrefs] = useState({ calendar_colour: sp.calendar_colour || "#0F766E", duration_minutes: sp.duration_minutes || "", delivery: sp.delivery || "", reading: sp.reading || "", complexity: sp.complexity || "", activity_types: (sp.activity_types || []).join(", "), support_areas: sp.support_areas || "", extension_areas: sp.extension_areas || "", equipment: sp.equipment || "", other: sp.other || "" });
   const setP = (k, v) => setPrefs(p => ({ ...p, [k]: v }));
   const [aiHelp, setAiHelp] = useState(student.ai_help !== false);
   const [helpUse, setHelpUse] = useState(null);
