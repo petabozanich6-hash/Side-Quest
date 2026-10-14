@@ -107,7 +107,7 @@ test("full journey: five lessons, hand-ins, reviews with support, parent confirm
   const reviews = d.evidence.filter((e) => e.source_type === "lesson_review");
   assert.equal(reviews.length, 3);
   assert.deepEqual(new Set(reviews.map((e) => e.submission_id)), new Set([w1.sub, w2.sub, w3.sub]));
-  assert.ok(reviews.every((e) => e.level === "demonstrated" && e.link.to.includes("/parent/assignments")));
+  assert.ok(reviews.every((e) => e.level === "demonstrated" && e.submission_id));
   const quizzes = d.evidence.filter((e) => e.source_type === "quiz");
   assert.equal(quizzes.length, 3);
   assert.ok(quizzes.every((e) => e.level === "practice" && e.score === 1 && e.total === 1));
@@ -377,14 +377,14 @@ test("tracker bookkeeping can never break a review", async () => {
   assert.equal(db.raw.prepare("SELECT status FROM submissions WHERE id = ?").get(w.sub).status, "demonstrated");
 });
 
-test("schema: runtime creation matches migration 0056, and the Backpack shows tracker status", async () => {
-  const fresh = makeDb("0056");
+test("schema: runtime creation matches migration 0057, and the Backpack shows tracker status", async () => {
+  const fresh = makeDb("0057");
   await ot.ensureTracker(fresh);
   const migrated = makeDb();
   const cols = (db, t) => db.raw.prepare(`SELECT name, type, "notnull", dflt_value FROM pragma_table_info('${t}') ORDER BY cid`).all();
   for (const t of ["outcome_evidence", "outcome_progress", "outcome_status_history"]) assert.deepEqual(cols(fresh, t), cols(migrated, t), t);
   // Applying the migration after the runtime created the tables is harmless.
-  fresh.raw.exec(readFileSync(new URL("../migrations/0056_outcome_tracker.sql", import.meta.url), "utf8"));
+  fresh.raw.exec(readFileSync(new URL("../migrations/0057_outcome_tracker.sql", import.meta.url), "utf8"));
 
   const fam = family(migrated);
   const kid = child(migrated, fam);

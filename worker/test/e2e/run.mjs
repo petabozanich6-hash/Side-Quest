@@ -873,6 +873,65 @@ await step("AI lesson set: open, edit, assign, move around and refresh without l
   await pctx.close();
 });
 
+await step("O. outcome tracker: QLD family sees the honest gap, not invented outcomes", async () => {
+  await page.goto(BASE + "/parent/outcomes");
+  await page.waitForSelector("[data-testid=tracker-unavailable]", { timeout: 15000 });
+  ok(/verified outcome list/.test(await page.textContent("[data-testid=tracker-unavailable]")), "gap not explained");
+  ok(await page.locator("[data-testid=tracker-list]").count() === 0, "outcomes listed for a curriculum Side-Quest doesn't hold");
+});
+
+await step("P. outcome tracker: hand-in, review and evidence update it; only the parent confirms Achieved", async () => {
+  const em = `tracker-${stamp}@example.com`;
+  const reg = await api("POST", "/auth/register", null, { name: "Trail Fam", email: em, password: pw, jurisdiction: "NSW" });
+  const pt = reg.json.token;
+  const fam = JSON.parse(Buffer.from(pt.split(".")[1], "base64url").toString()).family_id;
+  sql(`UPDATE families SET plan='ACTIVE_MONTHLY' WHERE id='${fam}';`);
+  const un = `tr${stamp}`.slice(0, 14);
+  const ch = await api("POST", "/students", pt, { name: "Tia", username: un, pin: "4321", stage: "S2" });
+  ok(ch.status === 200, "child " + ch.status);
+  const sid = ch.json.id, RN = "MA2-RN-01";
+  const les = await api("POST", "/lessons", pt, { title: "Place value", learning_area: "Mathematics", stage: "S2", status: "ready", outcome_codes: [RN],
+    sections: [{ heading: "Tens and ones", body: "Numbers are built from tens and ones." }], quiz: [{ question: "Tens in 47?", options: ["4", "7"], correct_index: 0 }] });
+  ok(les.status === 200 && les.json.outcome_codes.includes(RN), "lesson " + JSON.stringify(les.json).slice(0, 200));
+  const asg = await api("POST", "/assignments", pt, { student_id: sid, lesson_id: les.json.id });
+  const ct = (await api("POST", "/auth/child-login", null, { username: un, pin: "4321" })).json.token;
+  ok((await api("POST", `/assignments/${asg.json.id}/quiz-check`, ct, { answers: ["4"] })).json.passed === true, "quiz");
+  ok((await api("POST", "/submissions", ct, { assignment_id: asg.json.id, response_text: "4 tens and 7 ones" })).status === 200, "hand in");
+  let t = await api("GET", `/outcomes/students/${sid}`, pt);
+  ok(t.status === 200 && t.json.available === true, "tracker " + JSON.stringify(t.json).slice(0, 200));
+  ok(t.json.outcomes.find((o) => o.code === RN).status === "developing", "after hand-in: " + t.json.outcomes.find((o) => o.code === RN).status);
+  ok((await api("GET", `/outcomes/students/${sid}`, ct)).status === 403, "child read the tracker");
+  ok((await api("GET", `/outcomes/students/${sid}`, parentToken)).status === 404, "another family read the tracker");
+  const sub = (await api("GET", "/submissions", pt)).json[0];
+  ok((await api("POST", `/submissions/${sub.id}/feedback`, pt, { status: "demonstrated", feedback_text: "Great", outcome_mappings: [{ code: RN, mark: "shown", support: "independent", accepted: true }] })).status === 200, "review");
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  ok((await api("POST", `/outcomes/students/${sid}/outcomes/${RN}/evidence`, pt, { level: "demonstrated", note: "Read 4-digit prices at the shop", occurred_on: yesterday })).status === 200, "add evidence");
+  ok((await api("POST", `/outcomes/students/${sid}/outcomes/${RN}/evidence`, ct, { level: "demonstrated", note: "x" })).status === 403, "child added evidence");
+  t = await api("GET", `/outcomes/students/${sid}`, pt);
+  ok(t.json.outcomes.find((o) => o.code === RN).status === "demonstrated", "not demonstrated");
+
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const tp = await ctx.newPage();
+  await tp.goto(BASE + "/login");
+  await tp.fill('[data-testid=login-email]', em); await tp.fill('[data-testid=login-password]', pw);
+  await tp.click('[data-testid=login-submit]'); await tp.waitForURL("**/parent");
+  await tp.waitForSelector("[data-testid=dashboard-outcomes]", { timeout: 15000 });
+  await tp.goto(BASE + "/parent/outcomes");
+  await tp.waitForSelector(`[data-testid=status-${RN}]`, { timeout: 15000 });
+  ok((await tp.getAttribute(`[data-testid=status-${RN}]`, "data-status")) === "demonstrated", "list status");
+  await tp.click(`[data-testid=outcome-row-${RN}]`);
+  await tp.waitForSelector("[data-testid=outcome-detail]");
+  ok(await tp.locator("[data-testid=evidence-list] li").count() >= 3, "evidence not listed (review, quiz, observation)");
+  await tp.screenshot({ path: `${SHOTS}/outcome-detail.png`, fullPage: true });
+  await tp.fill("[data-testid=confirm-note]", "Explains tens and ones confidently");
+  await tp.click("[data-testid=confirm-btn]");
+  await tp.waitForSelector('[data-testid=detail-status][data-status=achieved]', { timeout: 15000 });
+  const h = await tp.textContent("[data-testid=history]");
+  ok(h.includes("Confirmed as Achieved by you") && h.includes("Demonstrated"), "history: " + h.slice(0, 300));
+  await noOverflow(tp, "/parent/outcomes detail");
+  await ctx.close();
+});
+
 await step("L. users cannot grant themselves a paid plan", async () => {
   const r = await api("PUT", "/account/plan", parentToken, { plan: "ACTIVE_MONTHLY" });
   ok(r.status === 404 || r.status === 405, "plan update route exists: " + r.status);

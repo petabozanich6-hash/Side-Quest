@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Sparkles, Hammer, FileText, ArrowLeft, Loader2 } from "lucide-react";
 import { api } from "../../lib/api";
 import { newId, runBatch } from "../../lib/batchRunner";
@@ -28,8 +28,9 @@ export default function MakeLesson() {
   const nav = useNavigate();
   const [plan, setPlan] = useState(null);
   const [students, setStudents] = useState([]);
-  const [student, setStudent] = useState("");
-  const [text, setText] = useState("");
+  const [qs] = useSearchParams(); // ?prompt=&student= from the Outcome tracker's gap suggestions
+  const [student, setStudent] = useState(qs.get("student") || "");
+  const [text, setText] = useState((qs.get("prompt") || "").slice(0, 1200));
   const [resource, setResource] = useState("");
   const [showRes, setShowRes] = useState(false);
   const [busy, setBusy] = useState("");
@@ -42,7 +43,7 @@ export default function MakeLesson() {
 
   useEffect(() => {
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => setPlan({ limits: {} }));
-    api.get("/students").then(r => { setStudents(r.data); if (r.data.length === 1) setStudent(r.data[0].id); }).catch(() => {});
+    api.get("/students").then(r => { setStudents(r.data); if (r.data.length === 1) setStudent(r.data[0].id); else if (!r.data.some(x => x.id === qs.get("student"))) setStudent(""); }).catch(() => {});
     api.get("/auth/me").then(r => setJurisdiction(r.data?.jurisdiction || null)).catch(() => {});
   }, []);
   useEffect(() => {

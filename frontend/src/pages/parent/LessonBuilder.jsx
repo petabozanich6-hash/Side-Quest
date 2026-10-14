@@ -118,7 +118,8 @@ export default function LessonBuilder() {
   const { id } = useParams();
   const [qs] = useSearchParams();
   const nav = useNavigate();
-  const [f, setF] = useState(() => (!id && qs.get("example") ? EXAMPLE(qs.get("example")) : blank()));
+  // ?outcome=CODE (from the Outcome tracker) starts a new lesson already linked to that outcome; the server checks the code.
+  const [f, setF] = useState(() => (!id && qs.get("example") ? EXAMPLE(qs.get("example")) : { ...blank(), outcome_codes: !id && qs.get("outcome") ? [qs.get("outcome")] : [] }));
   const [lessonId, setLessonId] = useState(id || null);
   const [mode, setMode] = useState("edit"); // edit | preview | split
   const preview = mode === "preview";

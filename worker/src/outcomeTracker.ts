@@ -217,7 +217,7 @@ const SCHEMA = [
 export const TRACKER_SCHEMA = SCHEMA;
 
 const ready = new WeakSet<object>();
-/** Deploys don't run migrations, so the tables are created here too if migration 0056 hasn't been applied. */
+/** Deploys don't run migrations, so the tables are created here too if migration 0057 hasn't been applied. */
 export async function ensureTracker(db: DB) {
   if (ready.has(db)) return;
   for (const sql of SCHEMA) await db.prepare(sql).run();
@@ -615,12 +615,13 @@ export async function outcomeDetail(db: DB, familyId: string, studentId: string,
       files.push(f ? { id: f.id, name: f.original_filename || "file", content_type: f.content_type || "" } : { id: fid, name: "File no longer available", content_type: "", missing: true });
     }
     let link: { label: string; to: string } | null = null;
-    if (r.source_type === "lesson_review" || r.source_type === "quiz") link = { label: "Open the lesson work", to: `/parent/assignments?open=${encodeURIComponent(r.assignment_id || "")}` };
-    else if (r.source_type === "life_learning") link = { label: "Open in Life learning", to: `/parent/life-learning?open=${encodeURIComponent(r.source_id)}` };
+    // Lesson work opens in the review window (by submission id) on the outcome page itself.
+    if (r.source_type === "life_learning") link = { label: "Open in Life learning", to: "/parent/life-learning" };
     else if (r.source_type === "evidence_note") link = { label: "Open in Evidence Backpack", to: "/parent/evidence" };
     evidence.push({
       id: r.id, source_type: r.source_type, source_id: r.source_id, origin: r.origin, lesson_id: r.lesson_id, assignment_id: r.assignment_id,
-      submission_id: r.source_type === "lesson_review" ? r.source_id : null,
+      submission_id: r.source_type === "lesson_review" ? r.source_id
+        : r.source_type === "quiz" ? (await db.prepare("SELECT id FROM submissions WHERE assignment_id = ? AND family_id = ? ORDER BY submitted_at DESC LIMIT 1").bind(r.assignment_id, familyId).first())?.id || null : null,
       level: r.level, support: r.support, consolidate: !!r.consolidate, comprehensive: !!r.comprehensive, score: r.score, total: r.total,
       summary: r.summary, note: r.note, occurred_on: r.occurred_on, files, link,
       counts: !r.removed_at && !r.excluded_at,

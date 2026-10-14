@@ -98,6 +98,7 @@ function VisitPrep({ students, range, setRange, bump }) {
                 <td className="p-2">{a.outcomes_achieved || "—"}</td><td className="p-2">{a.outcomes_working_towards || "—"}</td>
               </tr>))}</tbody>
           </table>
+          {data?.jurisdiction === "NSW" && <p className="text-xs text-slate-600 mt-2" data-testid="visit-tracker-link">"Achieved" in this table means you marked it shown in a piece of work. For each outcome's overall status, the evidence behind it and your confirmations, open the <Link to={`/parent/outcomes/${sid}`} className="font-semibold underline">Outcome tracker</Link>.</p>}
           {s.not_yet_evidenced.length > 0 && <p className="text-xs text-amber-800 mt-2" data-testid="visit-gaps">No evidence yet for {s.not_yet_evidenced.join(", ")} in this period. Add a work sample or an observation below, or explain how these are covered in your summary.</p>}
         </div>
       )}

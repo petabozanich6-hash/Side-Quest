@@ -28,6 +28,9 @@ const CSS = `
   @media print { body { margin: 0; } .noprint { display: none; } }
 `;
 
+// Outcome Tracker statuses (NSW families). "Achieved" here always means the parent confirmed it in the tracker.
+const MASTERY = { not_started: "Not started", introduced: "Introduced", developing: "Developing", demonstrated: "Demonstrated", achieved: "Achieved (parent confirmed)" };
+
 function outcomeTags(outcomes) {
   if (!outcomes?.length) return "";
   return `<div>${outcomes.map((o) => `<span class="tag ${o.status === "achieved" ? "ach" : "wt"}" title="${esc(o.description)}">${esc(o.code || o.description.slice(0, 40))} · ${o.status === "achieved" ? "achieved" : "working towards"}</span>`).join("")}</div>`;
@@ -69,7 +72,7 @@ export function portfolioHtml(p, extra = {}) {
   for (const o of s.outcomes) { if (!byArea.has(o.learning_area)) byArea.set(o.learning_area, []); byArea.get(o.learning_area).push(o); }
   const outcomeTables = [...byArea.entries()].map(([area, list]) => `<h3>${esc(area)}</h3>
     <table><tr><th style="width:15%">Outcome</th><th>Description</th><th style="width:13%">Status</th><th style="width:8%">Samples</th><th style="width:22%">Evidence dated</th></tr>
-    ${list.map((o) => `<tr><td>${esc(o.code) || "—"}</td><td>${esc(o.description)}</td><td>${o.status === "achieved" ? "Achieved" : "Working towards"}</td><td>${o.times}</td><td>${o.first === o.latest ? fmt(o.first) : `${fmt(o.first)} – ${fmt(o.latest)}`}</td></tr>`).join("")}</table>`).join("");
+    ${list.map((o) => `<tr><td>${esc(o.code) || "—"}</td><td>${esc(o.description)}</td><td>${o.mastery ? MASTERY[o.mastery] || "Working towards" : o.status === "achieved" ? "Achieved" : "Working towards"}</td><td>${o.times}</td><td>${o.first === o.latest ? fmt(o.first) : `${fmt(o.first)} – ${fmt(o.latest)}`}</td></tr>`).join("")}</table>`).join("");
 
   const groups = new Map();
   for (const e of p.entries || []) { if (!groups.has(e.learning_area)) groups.set(e.learning_area, []); groups.get(e.learning_area).push(e); }
