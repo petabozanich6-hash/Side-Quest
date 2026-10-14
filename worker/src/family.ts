@@ -201,8 +201,9 @@ async function getAuthUserFromToken(env: Env, token: string): Promise<AuthUser |
   }
   if (!payload?.sub || (payload.role !== "parent" && payload.role !== "child")) return null;
   const table = payload.role === "parent" ? "users" : "students";
-  const row = await env.DB.prepare(`SELECT id, family_id, name FROM ${table} WHERE id = ?`).bind(payload.sub).first<AuthUser>();
-  return row ? { ...row, role: payload.role } : null;
+  const row = await env.DB.prepare(`SELECT id, family_id, name${payload.role === "child" ? ", credential_version" : ""} FROM ${table} WHERE id = ?`).bind(payload.sub).first<AuthUser & { credential_version?: number }>();
+  if (!row || (payload.role === "child" && (typeof payload.cv !== "number" || row.credential_version !== payload.cv))) return null;
+  return { ...row, role: payload.role };
 }
 
 async function fetchGoogleTokenInfo(idToken: string) {
