@@ -273,7 +273,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
 
   app.delete("/api/lessons/:id", auth, parent, async (c) => {
     const r = await lb.deleteLesson(c.env.DB, c.get("user").family_id, c.req.param("id"));
-    return r.ok ? c.json({ ok: true, archived: r.archived }) : send(c, r);
+    return r.ok ? c.json({ ok: true, deleted: r.deleted, archived: r.archived }) : send(c, r);
   });
 
   // ---------- Assignments ----------
