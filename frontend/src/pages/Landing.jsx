@@ -84,7 +84,7 @@ export default function Landing() {
           <div className="paper-card p-6 relative">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <div className="font-mono text-[10px] uppercase tracking-wider text-stone-500">S4 · Year 8 · Science</div>
+                <div className="font-mono text-[10px] uppercase tracking-wider text-stone-500">Year 8 · Science</div>
                 <div className="font-display text-lg font-bold" style={{color:"#1F3B2D"}}>Fair tests</div>
               </div>
               <span className="pill pill-in-progress">In progress</span>
@@ -96,8 +96,8 @@ export default function Landing() {
               <div className="flex items-center gap-2"><Dot c="#D4C8A8"/>Parent review</div>
             </div>
             <div className="mt-5 rounded-xl p-3" style={{backgroundColor:"#F5EFE0", border:"1px dashed #D4C8A8"}}>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-1">Linked outcome</div>
-              <div className="font-mono text-xs" style={{color:"#1F3B2D"}}>SC4-WS-01 · Working Scientifically</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-1">Learning goal</div>
+              <div className="font-mono text-xs" style={{color:"#1F3B2D"}}>Design and explain a fair investigation</div>
             </div>
           </div>
           <div className="absolute -bottom-6 -right-4 paper-card p-3 flex items-center gap-2">
