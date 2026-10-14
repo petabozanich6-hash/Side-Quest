@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Plus, Search, Copy, Archive, ArchiveRestore, Pencil, Send, X } from "lucide-react";
+import { Plus, Search, Copy, Archive, ArchiveRestore, Pencil, Send, X, Trash2 } from "lucide-react";
 import { api } from "../../lib/api";
 import ScheduleModal from "../../components/parent/ScheduleModal";
 
@@ -114,6 +114,19 @@ export default function LessonsPage() {
               {showArchived
                 ? <button onClick={() => act(() => api.post(`/lessons/${l.id}/restore`), "Restored")} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1"><ArchiveRestore size={12} /> Restore</button>
                 : <button onClick={() => window.confirm("Archive this lesson? It moves out of your library. Work already done is kept.") && act(() => api.post(`/lessons/${l.id}/archive`), "Archived")} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`archive-${l.id}`}><Archive size={12} /> Archive</button>}
+              <button
+                type="button"
+                onClick={() => {
+                  if (!window.confirm("Remove this lesson? If no child has ever been assigned it, the lesson will be permanently deleted. If it has been assigned, the lesson will be removed from your current library but the child's work and learning records will be preserved.")) return;
+                  act(async () => {
+                    const { data } = await api.delete(`/lessons/${l.id}`);
+                    toast.success(data.deleted ? "Lesson permanently deleted." : "Lesson removed from your library. Child learning records have been kept.");
+                  });
+                }}
+                className="rounded-lg border border-rose-300 bg-white px-3 py-1.5 text-xs font-semibold text-rose-700 flex items-center gap-1"
+                data-testid={`delete-${l.id}`}
+                aria-label={`Delete ${l.title}`}
+              ><Trash2 size={12}/> Delete</button>
               {!showArchived && l.status === "ready" && <button onClick={() => setAssignOpen(l)} className="ml-auto rounded-lg bg-slate-900 text-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`assign-${l.id}`}><Send size={12} /> Assign</button>}
             </div>
           </div>
