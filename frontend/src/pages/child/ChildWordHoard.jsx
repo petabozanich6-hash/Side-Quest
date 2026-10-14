@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
+import { WordPractice } from "../../components/shared/SpellingSegment";
 
 const BUTTON_STYLE = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
 const TARGET = 10;
@@ -13,21 +14,9 @@ const STAGE_INFO = {
   mastered: { emoji: "🏆", title: "Mastered", blurb: "10 in a row. Yours for good" },
 };
 
-function speak(word) {
-  if (typeof window === "undefined" || !window.speechSynthesis) return false;
-  window.speechSynthesis.cancel();
-  const utter = new SpeechSynthesisUtterance(word);
-  utter.rate = 0.8;
-  window.speechSynthesis.speak(utter);
-  return true;
-}
-
 export default function ChildWordHoard() {
   const [data, setData] = useState(null);
   const [current, setCurrent] = useState(null);
-  const [guess, setGuess] = useState("");
-  const [result, setResult] = useState(null);
-  const [busy, setBusy] = useState(false);
   const [newWords, setNewWords] = useState("");
 
   const load = useCallback(
@@ -53,43 +42,12 @@ export default function ChildWordHoard() {
   const { summary, words, to_tame_today: queue } = data;
   const resting = data.resting_today || 0;
 
-  const start = (word) => {
-    setCurrent(word);
-    setGuess("");
-    setResult(null);
-    if (!speak(word.word)) toast.info(`Your word starts with “${word.word[0]}”`);
-  };
-
-  const check = async (e) => {
-    e.preventDefault();
-    if (!current || !guess.trim()) return;
-    setBusy(true);
-    try {
-      const { data: res } = await api.post("/word-bank/try", {
-        word: current.word,
-        guess: guess.trim(),
-      });
-      setResult(res);
-    } catch (error) {
-      toast.error(error?.response?.data?.detail || "Could not save that try");
-      if (error?.response?.status === 429) {
-        setCurrent(null);
-        setResult(null);
-        load();
-      }
-    } finally {
-      setBusy(false);
-    }
-  };
+  // Every practice goes See it, Hear it, Spell it, Type it. Only the typed try counts towards the run of 10.
+  const start = (word) => setCurrent(word);
 
   const nextWord = async () => {
     setCurrent(null);
-    setResult(null);
     await load();
-  };
-
-  const again = () => {
-    start(current);
   };
 
   const addWords = async (e) => {
@@ -175,90 +133,21 @@ export default function ChildWordHoard() {
           </div>
         )}
 
-        {current && !result && (
-          <form onSubmit={check} className="space-y-3 text-center">
+        {current && (
+          <div className="space-y-3" data-testid="path-panel">
             <p className="text-sm text-stone-700">
-              Listen, then spell the word. In a row so far: {current.streak || 0} of {TARGET}.
+              See it, hear it, spell it, then type it from memory. In a row so far: {current.streak || 0} of {TARGET}.
             </p>
+            <WordPractice key={current.id} item={{ word: current.word, tip: current.hint || "" }} lessonId={current.lesson_id || null} />
             <button
               type="button"
-              onClick={() => speak(current.word)}
-              className="rounded-full px-5 py-2 text-sm font-bold"
-              style={BUTTON_STYLE}
+              onClick={nextWord}
+              className="rounded-full border px-6 py-2.5 text-sm font-bold"
+              style={{ borderColor: "#1F3B2D", color: "#1F3B2D" }}
+              data-testid="back-to-words"
             >
-              🔊 Hear it again
+              Back to my words
             </button>
-            {current.hint && <p className="text-xs text-stone-500">Hint: {current.hint}</p>}
-            <div>
-              <input
-                autoFocus
-                value={guess}
-                onChange={(e) => setGuess(e.target.value)}
-                autoComplete="off"
-                autoCapitalize="off"
-                spellCheck={false}
-                className="rounded-xl border-2 px-4 py-3 text-xl text-center"
-                style={{ borderColor: "#D4C8A8" }}
-                aria-label="Type the word"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={busy}
-              className="rounded-full px-6 py-3 text-sm font-bold disabled:opacity-50"
-              style={BUTTON_STYLE}
-            >
-              Check
-            </button>
-          </form>
-        )}
-
-        {current && result && (
-          <div className="text-center space-y-2" data-testid="tame-result">
-            <div className="text-5xl">{result.correct ? (result.just_mastered ? "🏆" : "🎉") : "🌱"}</div>
-            <h3 className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>
-              {result.correct
-                ? result.just_mastered
-                  ? "Mastered! 10 in a row!"
-                  : `Correct! ${result.streak} in a row. ${result.to_go} to go.`
-                : `Nearly! It is spelled “${current.word}”.`}
-            </h3>
-            {result.correct && result.moved && !result.just_mastered && (
-              <p className="text-sm text-stone-700">It is now {result.new_stage}!</p>
-            )}
-            {result.xp_gained > 0 && (
-              <p className="text-sm text-stone-700">+{result.xp_gained} XP for your pet</p>
-            )}
-            {!result.correct && (
-              <p className="text-sm text-stone-600">Your run starts again from 0. Look closely at the tricky part.</p>
-            )}
-            {!result.just_mastered && (
-              <p className="text-sm text-stone-600">
-                {result.attempts_left > 0
-                  ? `${result.attempts_left} ${result.attempts_left === 1 ? "try" : "tries"} left for this word today.`
-                  : "That was your last try for this word today. Come back tomorrow!"}
-              </p>
-            )}
-            <div className="flex justify-center gap-3 flex-wrap">
-              {!result.just_mastered && result.attempts_left > 0 && (
-                <button
-                  type="button"
-                  onClick={again}
-                  className="mt-2 rounded-full px-6 py-3 text-sm font-bold"
-                  style={BUTTON_STYLE}
-                >
-                  Spell it again
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={nextWord}
-                className="mt-2 rounded-full border px-6 py-3 text-sm font-bold"
-                style={{ borderColor: "#1F3B2D", color: "#1F3B2D" }}
-              >
-                Back to my words
-              </button>
-            </div>
           </div>
         )}
       </section>

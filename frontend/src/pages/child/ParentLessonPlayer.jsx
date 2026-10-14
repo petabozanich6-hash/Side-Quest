@@ -5,6 +5,7 @@ import { api } from "../../lib/api";
 import QuestQuiz from "../../components/shared/QuestQuiz";
 import PracticeItem from "../../components/shared/PracticeItem";
 import LessonVisual from "../../components/shared/LessonVisual";
+import { englishVoices, getVoicePrefs, readAloud, setVoicePrefs, stopSpeaking } from "../../lib/voice";
 
 const BTN = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
 const ACCENT = { backgroundColor: "#C77B5B", color: "#FBF7EC" };
@@ -112,21 +113,45 @@ function Watch({ r, note, setNote, locked }) {
   );
 }
 
-// Reads text aloud with the browser's own voice (free, nothing is sent anywhere) so a child does not need an adult to read to them.
+// Reads text aloud with a voice already on the device (free, nothing is sent anywhere). The child can pick the voice and speed.
 function ReadAloud({ text }) {
   const [on, setOn] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [prefs, setPrefs] = useState(getVoicePrefs());
+  const [voices, setVoices] = useState(() => englishVoices());
   const ok = typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
-  useEffect(() => () => { try { window.speechSynthesis?.cancel(); } catch { /* ignore */ } }, []);
+  useEffect(() => {
+    if (!ok) return undefined;
+    const sync = () => setVoices(englishVoices());
+    window.speechSynthesis.addEventListener?.("voiceschanged", sync);
+    return () => { window.speechSynthesis.removeEventListener?.("voiceschanged", sync); stopSpeaking(); };
+  }, [ok]);
   if (!ok || !text) return null;
-  const toggle = () => {
-    try {
-      if (on) { window.speechSynthesis.cancel(); setOn(false); return; }
-      const u = new SpeechSynthesisUtterance(String(text).replace(/\s+/g, " "));
-      u.lang = "en-AU"; u.rate = 0.92; u.onend = () => setOn(false); u.onerror = () => setOn(false);
-      window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); setOn(true);
-    } catch { setOn(false); }
-  };
-  return <button type="button" onClick={toggle} className="text-sm font-bold rounded-full border-2 px-3 py-1" style={{ borderColor: "#4A5D3A", color: "#4A5D3A" }} data-testid="read-aloud" aria-pressed={on}>{on ? "⏹ Stop reading" : "🔊 Read this to me"}</button>;
+  const start = () => { setOn(readAloud(text, { onEnd: () => setOn(false) })); };
+  const toggle = () => { if (on) { stopSpeaking(); setOn(false); } else start(); };
+  const change = (p) => { setVoicePrefs(p); setPrefs(getVoicePrefs()); if (on) { stopSpeaking(); setTimeout(start, 50); } };
+  const chip = { borderColor: "#4A5D3A", color: "#4A5D3A" };
+  return (
+    <div className="flex flex-wrap items-center gap-2" data-testid="read-aloud-box">
+      <button type="button" onClick={toggle} className="text-sm font-bold rounded-full border-2 px-3 py-1" style={chip} data-testid="read-aloud" aria-pressed={on}>{on ? "⏹ Stop reading" : "🔊 Read this to me"}</button>
+      <button type="button" onClick={() => setOpen((o) => !o)} className="text-xs underline text-stone-600" aria-expanded={open} data-testid="voice-settings-btn">Voice and speed</button>
+      {open && (
+        <div className="basis-full rounded-xl border bg-white p-3 space-y-2 text-sm" style={{ borderColor: "#D4C8A8" }} data-testid="voice-settings">
+          <div className="flex flex-wrap items-center gap-2"><span className="font-bold">Speed:</span>
+            {[["Slower", 0.75], ["Normal", 0.9], ["Faster", 1.1]].map(([label, r]) => <button key={label} type="button" onClick={() => change({ rate: r })} className="rounded-full border px-3 py-1 font-bold" style={prefs.rate === r ? { ...chip, backgroundColor: "#DCE8DD" } : { borderColor: "#D4C8A8" }}>{label}</button>)}
+          </div>
+          {voices.length > 1 && (
+            <label className="flex flex-wrap items-center gap-2"><span className="font-bold">Voice:</span>
+              <select value={prefs.voice || voices[0].name} onChange={(e) => change({ voice: e.target.value })} className="rounded-lg border px-2 py-1 bg-white max-w-[16rem]" style={{ borderColor: "#D4C8A8" }}>
+                {voices.map((v) => <option key={v.name} value={v.name}>{v.name} ({v.lang})</option>)}
+              </select>
+            </label>
+          )}
+          <p className="text-xs text-stone-500">Voices come from this device. If one is hard to understand, try another voice or a slower speed.</p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // Plays a lesson built by a parent, one screen at a time: learn, see it worked, try it, do it, show it, hand it in.

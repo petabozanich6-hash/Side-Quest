@@ -322,6 +322,25 @@ await step("Word Hoard: the lesson's spelling words reach the child's hoard when
   ok(/frac-shun/.test(JSON.stringify(hint)), "memory trick lost: " + JSON.stringify(hint));
 });
 
+await step("Word Hoard: practice goes See it, Hear it, Spell it, Type it, and a right answer counts", async () => {
+  const hp = await cpage.context().newPage();
+  try {
+    await hp.goto(`${BASE}/child/word-hoard`);
+    await hp.getByRole("button", { name: /Tame a/ }).first().click();
+    await hp.waitForSelector("text=1. See it");
+    await hp.getByRole("button", { name: /I have seen it/ }).click();
+    const word = (await hp.locator(".font-display.text-3xl").first().innerText()).trim();
+    ok(/^[a-z'-]+$/i.test(word), "word not shown in See it: " + word);
+    await hp.getByRole("button", { name: /Next: hear it|I have seen it/ }).first().isVisible().catch(() => {});
+    await hp.waitForSelector("text=Listen to the word");
+    await hp.getByRole("button", { name: /I said it/ }).click();
+    await hp.getByRole("button", { name: /I spelled it/ }).click();
+    await hp.locator("input[type=text]").fill(word);
+    await hp.getByRole("button", { name: "Check", exact: true }).click();
+    await hp.waitForSelector("text=Correct. Well done.");
+  } finally { await hp.close(); }
+});
+
 await step("cannot hand in before passing the quiz (server enforces it)", async () => {
   const r = await api("POST", "/submissions", childToken, { assignment_id: assignmentId, response_text: "cheat" });
   ok(r.status === 409 && r.json.code === "QUIZ_NOT_PASSED", `expected QUIZ_NOT_PASSED got ${r.status} ${JSON.stringify(r.json)}`);

@@ -37,7 +37,7 @@ function StepBar({ phase }) {
   );
 }
 
-function WordPractice({ item, lessonId, onCorrect }) {
+export function WordPractice({ item, lessonId, onCorrect, onChecked }) {
   const [phase, setPhase] = useState("see");
   const [value, setValue] = useState("");
   const [result, setResult] = useState(null);
@@ -85,7 +85,8 @@ function WordPractice({ item, lessonId, onCorrect }) {
     setBusy(false);
     setResult(ok ? "right" : "wrong");
     setPhase("checked");
-    if (ok) onCorrect(item.word);
+    if (onChecked) onChecked(ok);
+    if (ok && onCorrect) onCorrect(item.word);
   };
 
   const showWord = phase === "see" || phase === "hear" || phase === "spell" || phase === "checked";

@@ -1,39 +1,9 @@
 // Reads spelling words aloud clearly: an English voice, a low steady pitch,
 // a slow rate. speakWord says the word twice; speakLetters says the letters.
 
-let cachedVoice = null;
+import { bestVoice } from "./voice";
 
-const PREFERRED_LANGS = ["en-au", "en-gb", "en-nz", "en-us", "en"];
-const AVOID = /(compact|novelty|whisper|zarvox|bells|bad news|good news|bubbles|cellos|organ|trinoids|albert|junior|fred|ralph)/i;
-
-function pickVoice() {
-  if (cachedVoice) return cachedVoice;
-  if (typeof window === "undefined" || !window.speechSynthesis) return null;
-
-  const voices = window.speechSynthesis.getVoices() || [];
-  if (voices.length === 0) return null;
-
-  const usable = voices.filter((v) => !AVOID.test(v.name));
-
-  for (const lang of PREFERRED_LANGS) {
-    const matches = usable.filter((v) => (v.lang || "").toLowerCase().replace("_", "-").startsWith(lang));
-    if (matches.length === 0) continue;
-
-    const natural = matches.find((v) => /(natural|premium|enhanced|neural|online)/i.test(v.name));
-    const female = matches.find((v) => /(karen|catherine|natasha|libby|hazel|susan|samantha|google)/i.test(v.name));
-    cachedVoice = natural || female || matches[0];
-    return cachedVoice;
-  }
-
-  return null;
-}
-
-if (typeof window !== "undefined" && window.speechSynthesis) {
-  window.speechSynthesis.onvoiceschanged = () => {
-    cachedVoice = null;
-    pickVoice();
-  };
-}
+const pickVoice = () => bestVoice();
 
 function say(text, rate) {
   const utter = new SpeechSynthesisUtterance(text);
@@ -47,7 +17,7 @@ function say(text, rate) {
   }
 
   utter.rate = rate;
-  utter.pitch = 0.9;
+  utter.pitch = 1;
   utter.volume = 1;
   return utter;
 }
