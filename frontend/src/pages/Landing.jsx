@@ -199,6 +199,12 @@ export default function Landing() {
       <footer className="relative z-10 border-t py-10 text-center text-xs" style={{color:"#7A6E5D", borderColor:"#D4C8A8"}}>
         <p>Side-Quest Learning · Built for homeschool families across Australia.</p>
         <p className="mt-1 font-script text-base" style={{color:"#C77B5B"}}>Made with care for homeschool families.</p>
+        <nav aria-label="Legal and support" className="mt-4 flex flex-wrap justify-center gap-4 text-sm">
+          <Link to="/legal/privacy-policy" className="underline">Privacy Policy</Link>
+          <Link to="/legal/terms" className="underline">Terms of Use</Link>
+          <Link to="/legal/refunds" className="underline">Refunds &amp; Consumer Rights</Link>
+          <Link to="/legal/ai-use" className="underline">AI Use</Link>
+        </nav>
       </footer>
     </div>
   );
