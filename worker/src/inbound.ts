@@ -30,7 +30,7 @@ function looksAutomated(h: Headers, from: string): boolean {
 
 function replySubject(original: string | null): string {
   const clean = (original || "").replace(/[\r\n]+/g, " ").trim().slice(0, 120);
-  if (!clean) return "Your message to Side Quest";
+  if (!clean) return "Your message to Side-Quest Learning";
   return /^re:/i.test(clean) ? clean : `Re: ${clean}`;
 }
 
