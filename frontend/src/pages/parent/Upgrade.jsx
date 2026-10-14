@@ -87,7 +87,7 @@ export default function UpgradePage() {
       {canBuy && (
         <section data-testid="billing-options">
           <h2 className="font-display text-lg font-bold mb-1" style={{color:"#1F3B2D"}}>Choose how often to pay</h2>
-          <p className="text-sm text-stone-600 mb-4">Every option includes the same Family Membership. There are no per-child or per-subject charges.</p>
+          <p className="text-sm text-stone-600 mb-4">Every option includes the same Family Membership, with no per-child or per-subject charges. Membership renews at the selected interval until you cancel.</p>
           <div className="grid gap-3 sm:grid-cols-2">
             {billing.options.map((o) => (
               <div key={o.interval} className="paper-card p-4 flex flex-col gap-2" data-testid={`plan-${o.interval}`}>
@@ -100,7 +100,7 @@ export default function UpgradePage() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-stone-500 mt-2">Payments are handled securely by Stripe. No trial is added at checkout; the 7-day free preview needs no card.</p>
+          <p className="text-xs text-stone-500 mt-2">Payments are handled securely by Stripe. No trial is added at checkout; the 7-day free preview needs no card. You choose and authorise a paid plan yourself.</p>
         </section>
       )}
 
