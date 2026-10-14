@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Plus, X, ChevronLeft, ChevronRight, CalendarPlus } from "lucide-react";
 import ScheduleModal, { isoLocal } from "../../components/parent/ScheduleModal";
 import TimetableGenerator from "../../components/parent/TimetableGenerator";
+import CalendarEventEditor from "../../components/parent/CalendarEventEditor";
 
 const COLOURS = ["#0F766E", "#B45309", "#6D28D9", "#BE123C", "#1D4ED8", "#4D7C0F"];
 
@@ -31,6 +32,8 @@ export default function CalendarPage() {
   const [schedOpen, setSchedOpen] = useState(false);
   const [generatorOpen, setGeneratorOpen] = useState(false);
   const [dayOpen, setDayOpen] = useState(null);
+  const [editing, setEditing] = useState(null);
+  const [removingDay, setRemovingDay] = useState(false);
   const [saving, setSaving] = useState(false);
   const [filter, setFilter] = useState("");
   const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "lesson", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
@@ -79,6 +82,20 @@ export default function CalendarPage() {
       setOpen(false); load();
     } catch (err) { toast.error(apiErrorMessage(err, "Some entries may already have been added")); load(); }
     finally { setSaving(false); }
+  };
+
+  const clearDay = async () => {
+    const selected = dayList.filter(e => !!e.id);
+    if (!selected.length || !window.confirm(`Remove all ${selected.length} calendar entries scheduled for ${dayOpen}? Assigned lessons and portfolio evidence will be kept.`)) return;
+    setRemovingDay(true);
+    try {
+      const outcomes = await Promise.allSettled(selected.map(e => api.delete(`/calendar/${e.id}`)));
+      const failed = outcomes.filter(r => r.status === "rejected");
+      await load();
+      if (failed.length) toast.error(`${failed.length} entries could not be removed. The others were removed.`);
+      else { toast.success("Scheduled day cleared; learning records kept."); setDayOpen(null); }
+    } catch (err) { toast.error(apiErrorMessage(err)); }
+    finally { setRemovingDay(false); }
   };
 
   const monthName = cur.toLocaleString("en-AU", { month: "long", year: "numeric" });
@@ -131,10 +148,10 @@ export default function CalendarPage() {
                 const isToday = iso === todayIso;
                 return (
                   <div key={j} className={`min-h-[88px] p-2 border-r border-slate-100 last:border-0 ${inMonth ? "bg-white" : "bg-slate-50/40 text-slate-400"}`} data-testid={`cal-day-${iso}`}>
-                    <div className={`text-xs ${isToday ? "font-bold text-teal-700" : ""}`}>{dt.getDate()}</div>
+                    <div className={`text-xs ${isToday ? "font-bold text-teal-700" : ""}`}><button type="button" onClick={()=>setDayOpen(iso)} aria-label={`View and edit ${iso}`} className="rounded p-1 hover:bg-teal-50">{dt.getDate()}</button></div>
                     <div className="mt-1 space-y-0.5">
                       {dayEvents.slice(0,3).map(e => (
-                        <div key={e.id} title={`${nameOf(e.student_id) || "Whole family"}: ${e.title}`} className="truncate text-[10px] rounded px-1.5 py-0.5 text-white" style={{backgroundColor: colourOf(e.student_id)}}>{labelOf(e)}</div>
+                        <button type="button" key={e.id} title={`${nameOf(e.student_id) || "Whole family"}: ${e.title}`} className="block w-full text-left truncate text-[10px] rounded px-1.5 py-0.5 text-white" style={{backgroundColor: colourOf(e.student_id)}} onClick={()=>setEditing(e)} data-testid={`edit-cal-${e.id}`}>{labelOf(e)}</button>
                       ))}
                       {dayEvents.length > 3 && <button type="button" onClick={()=>setDayOpen(iso)} className="text-[10px] text-teal-700 font-semibold underline" data-testid={`more-${iso}`}>+{dayEvents.length - 3} more</button>}
                     </div>
@@ -146,19 +163,21 @@ export default function CalendarPage() {
         </div>
       </div>
 
+      {editing && <CalendarEventEditor event={editing} students={students} lessons={lessons} onClose={()=>setEditing(null)} onSaved={load}/>}
       {generatorOpen && <TimetableGenerator students={students} events={events} onClose={()=>setGeneratorOpen(false)} onDone={load} />}
       {schedOpen && <ScheduleModal lessons={lessons} students={students} onClose={()=>setSchedOpen(false)} onDone={load} />}
 
       {dayOpen && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={()=>setDayOpen(null)}>
           <div onClick={e=>e.stopPropagation()} className="w-full max-w-md rounded-2xl bg-white p-6 max-h-[80vh] overflow-y-auto" data-testid="day-modal">
-            <div className="flex items-center justify-between mb-4"><h2 className="font-display text-lg font-bold">{dayOpen}</h2><button type="button" onClick={()=>setDayOpen(null)}><X size={18}/></button></div>
+            <div className="flex items-center justify-between mb-4"><h2 className="font-display text-lg font-bold">{dayOpen}</h2><button type="button" onClick={()=>setDayOpen(null)} aria-label="Close day"><X size={18}/></button></div>
+            <div className="flex justify-between items-center gap-2 mb-3"><span className="text-xs text-slate-500">{dayList.length} scheduled entries</span><button type="button" disabled={!dayList.length || removingDay} onClick={clearDay} className="rounded-full border border-red-300 text-red-700 px-3 py-1.5 text-xs disabled:opacity-50">{removingDay ? "Clearing…" : "Clear scheduled day"}</button></div>
             <div className="space-y-2">
               {dayList.map(e => (
                 <div key={e.id} className="flex items-center gap-2 text-sm rounded-lg border border-slate-200 px-3 py-2">
                   <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{backgroundColor: colourOf(e.student_id)}}/>
                   <span className="font-medium">{nameOf(e.student_id) || "Whole family"}</span>
-                  <span className="text-slate-600 truncate">{e.title}</span>
+                  <span className="text-slate-600 truncate flex-1">{e.title}</span><button type="button" className="text-teal-700 text-xs font-semibold underline" onClick={()=>{setDayOpen(null);setEditing(e);}}>Edit</button>
                 </div>
               ))}
             </div>
