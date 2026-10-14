@@ -253,7 +253,7 @@ export default function ChildrenPage() {
   const [students, setStudents] = useState([]);
   const [open, setOpen] = useState(false);
   const [pattern, setPattern] = useState(null);
-  const [form, setForm] = useState({ name: "", username: "", pin: "", stage: "S2", year_level: "3", birth_year: "" });
+  const [form, setForm] = useState({ name: "", username: "", pin: "", stage: "S2", year_level: "3", birth_year: "", calendar_colour: "#0F766E" });
   const [electives, setElectives] = useState([]);
   const [pathway, setPathway] = useState("");
   const [creds, setCreds] = useState(null);
@@ -290,12 +290,13 @@ export default function ChildrenPage() {
         ...form, theme: stage?.theme,
         birth_year: form.birth_year ? Number(form.birth_year) : null,
         electives: chosenElectives,
+        prefs: { calendar_colour: form.calendar_colour || "#0F766E" },
       });
       // Save the PIN again so a parent can view it later. The child can already sign in if this step fails.
       try { await api.put(`/students/${created.id}/pin`, { pin: form.pin }); } catch { /* ignore */ }
       toast.success("Student added");
       setOpen(false);
-      setForm({ name: "", username: "", pin: "", stage: "S2", year_level: "3", birth_year: "" });
+      setForm({ name: "", username: "", pin: "", stage: "S2", year_level: "3", birth_year: "", calendar_colour: "#0F766E" });
       setElectives([]); setPathway("");
       load();
     } catch (err) { toast.error(err.response?.data?.detail || "Failed"); }
