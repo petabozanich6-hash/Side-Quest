@@ -103,6 +103,12 @@ await step("security: family isolation, sibling privacy, PIN revocation and thro
   }
   const a = await family("a"), b = await family("b");
   const a1 = await child(a, "Alpha"), a2 = await child(a, "Bravo"), b1 = await child(b, "Charlie");
+  const collision = await api("POST", "/students", b, { name: "Wrong family", username: a1.username, pin: "7392", stage: "S2" });
+  ok(collision.status === 400 || collision.status === 409, `duplicate username unexpectedly accepted: ${collision.status}`);
+  const samePinOtherFamily = await api("POST", "/auth/child-login", null, { username: b1.username, pin: "7392" });
+  ok(samePinOtherFamily.status === 200 && samePinOtherFamily.json?.student?.id === b1.id,
+    "identical PINs did not resolve to their own unique child accounts");
+
   async function denied(label, method, path, token, body) {
     const r = await api(method, path, token, body);
     ok([403, 404].includes(r.status), `${label} unexpectedly returned ${r.status}`);
