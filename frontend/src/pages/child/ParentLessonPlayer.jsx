@@ -372,9 +372,38 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
     );
     // hand in
     if (preview) return <p className="rounded-xl border border-dashed p-4 text-sm text-stone-600" style={border}>The hand-in box appears here for your child. Nothing in this preview is saved.</p>;
-    if (locked) return <p className="text-sm text-stone-600">This lesson has been handed in.</p>;
+    const gDone = guided.filter((_, i) => filled(gp[i])).length;
+    const aTasks = activities.reduce((n, x) => n + (x.tasks || []).length, 0);
+    const aDone = activities.reduce((n, x, i) => n + (x.tasks || []).filter((_, j) => filled(tv[`${i}.${j}`])).length, 0);
+    const qDone = questions.length - unanswered;
+    const rows = [
+      guided.length > 0 && ["Practice questions", `${gDone} of ${guided.length} answered`, gDone === guided.length],
+      aTasks > 0 && ["Activity tasks", `${aDone} of ${aTasks} answered`, aDone === aTasks],
+      questions.length > 0 && ["Show what you know", `${qDone} of ${questions.length} answered`, unanswered === 0],
+      hasQuiz && ["Quest check", quizOk ? "Passed" : "Not passed yet", quizOk],
+    ].filter(Boolean);
+    const summary = rows.length > 0 && (
+      <div className="rounded-xl border bg-white p-4" style={border} data-testid="progress-summary">
+        <p className="font-bold text-sm">{locked ? "What you did" : "Before you hand in"}</p>
+        <ul className="mt-2 space-y-1 text-base">{rows.map(([label, value, ok], i) => <li key={i} className="flex items-center gap-2"><span aria-hidden>{ok ? "✅" : "⬜"}</span><span className="font-bold">{label}:</span> {value}</li>)}</ul>
+        {!locked && rows.some((r) => !r[2]) && <p className="mt-2 text-sm text-stone-600">You can go back to any step from the list at the top. Unfinished practice is fine to hand in; it helps your grown-up see where to help.</p>}
+      </div>
+    );
+    if (locked) return (
+      <div className="space-y-4" data-testid="lesson-complete">
+        <div className="rounded-2xl border-2 p-5 text-center" style={{ borderColor: "#4A5D3A", background: "#F3F6EC" }}>
+          <p className="text-4xl" aria-hidden>🎉</p>
+          <p className="font-display text-2xl font-semibold" style={INK}>{["accepted", "demonstrated", "completed"].includes(a.status) ? "Quest complete!" : "Handed in. Great work!"}</p>
+          <p className="text-base mt-1">{["accepted", "demonstrated", "completed"].includes(a.status) ? "Your grown-up has looked at your work." : "Your grown-up will look at your work soon. When they accept it, your pet earns XP."}</p>
+        </div>
+        {summary}
+        {last?.reflection && <p className="text-sm text-stone-700"><b>Your note:</b> {last.reflection}</p>}
+        <Link to="/child" className="inline-block rounded-full px-6 py-2.5 text-sm font-bold" style={BTN} data-testid="complete-home">Back to my quests</Link>
+      </div>
+    );
     return (
       <div className="space-y-4" data-testid="hand-in">
+        {summary}
         <div>
           <label htmlFor="refl" className="font-bold text-sm">How did it go? (optional)</label>
           <textarea id="refl" rows={2} value={reflection} onChange={(e) => setReflection(e.target.value)} className={`mt-1 ${area}`} style={border} data-testid="reflection-text" />
