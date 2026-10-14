@@ -4,6 +4,7 @@ import * as lb from "./lessonBuilder";
 import * as aid from "./aiDraft";
 import * as help from "./aiHelp";
 import * as pl from "./planning";
+import { billingSummary } from "./billing";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
 type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string; HELP_PER_CHILD_DAY?: string; HELP_PER_FAMILY_DAY?: string; HELP_PER_FAMILY_MONTH?: string };
@@ -197,7 +198,8 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
 
   // ---------- Account plan ----------
   app.get("/api/account/plan", auth, async (c) => {
-    return c.json(await lb.planSummary(c.env.DB, c.get("user").family_id));
+    const fid = c.get("user").family_id;
+    return c.json({ ...(await lb.planSummary(c.env.DB, fid)), billing: await billingSummary(c.env.DB, c.env as any, fid) });
   });
 
   // ---------- Lessons (family library; pre-made lessons are hidden: "Side-Quest upgrade coming later") ----------

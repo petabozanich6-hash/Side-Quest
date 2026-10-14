@@ -37,6 +37,14 @@ export type Env = {
   OWNER_PASSWORD?: string;
   /** Private staging only: when set, every /api call needs the access cookie granted by /api/staging-access?key=... */
   STAGING_KEY?: string;
+  /** Stripe secret (sk_test_... / rk_test_... for sandbox). Cloudflare secret, never in code or chat. */
+  STRIPE_SECRET_KEY?: string;
+  /** Signing secret (whsec_...) of the Stripe webhook endpoint for this Worker. Cloudflare secret. */
+  STRIPE_WEBHOOK_SECRET?: string;
+  /** Must be exactly "true" before a live Stripe key is accepted. Leave unset until live payments are approved. */
+  STRIPE_LIVE_ENABLED?: string;
+  /** Optional https origin used for Stripe redirect URLs (defaults to the request origin). */
+  APP_URL?: string;
 };
 export type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
 export type Vars = { user: AuthUser };

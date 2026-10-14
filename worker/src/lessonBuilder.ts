@@ -64,13 +64,13 @@ export async function planSummary(db: DB, familyId: string, now: Date = new Date
     plan: row?.plan ?? "FREE_PREVIEW",
     effective_plan: plan,
     trial_ends_at: row?.trial_ends_at ?? (row?.created_at ? trialEndFrom(row.created_at) : null),
+    period_end: row?.plan_period_end ?? null,
     limits,
     usage: {
       children: await countChildren(db, familyId),
       lessons: await countLessons(db, familyId),
       active_assignments: await countActiveAssignments(db, familyId),
     },
-    billing: "NOT_LIVE",
   };
 }
 
