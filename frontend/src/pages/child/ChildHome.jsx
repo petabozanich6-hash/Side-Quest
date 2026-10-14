@@ -86,7 +86,7 @@ export default function ChildHome() {
 
       <section className="grid grid-cols-3 gap-3" data-testid="quest-stats">
         <div className="rounded-2xl bg-white border border-slate-200 p-4 text-center"><div className="font-display text-2xl font-bold" data-testid="stat-xp">{data.xp ?? 0}</div><div className="text-xs opacity-70">XP earned</div></div>
-        <div className="rounded-2xl bg-white border border-slate-200 p-4 text-center"><div className="font-display text-2xl font-bold" data-testid="stat-done">{(data.completed || []).length}</div><div className="text-xs opacity-70">Quests complete</div></div>
+        <Link to="/child/portfolio" className="rounded-2xl bg-white border border-slate-200 p-4 text-center hover:border-emerald-300" data-testid="stat-done-link"><div className="font-display text-2xl font-bold" data-testid="stat-done">{(data.completed || []).length}</div><div className="text-xs opacity-70">Quests complete · Portfolio</div></Link>
         <div className="rounded-2xl bg-white border border-slate-200 p-4 text-center"><div className="font-display text-2xl font-bold" data-testid="stat-waiting">{(data.waiting || []).length}</div><div className="text-xs opacity-70">Waiting for review</div></div>
       </section>
 
@@ -122,10 +122,10 @@ export default function ChildHome() {
         </>
       )}
       {(data.completed || []).length > 0 && (
-        <section data-testid="completed-section">
-          <h2 className="font-display text-lg font-semibold">Completed quests</h2>
-          <div className="space-y-2 mt-2">{data.completed.map(cx => <div key={cx.id} className="rounded-xl bg-white border border-slate-200 px-4 py-3 text-sm">✅ {cx.lesson?.title}</div>)}</div>
-        </section>
+        <Link to="/child/portfolio" className="block rounded-2xl border border-emerald-200 bg-emerald-50 p-4 hover:bg-emerald-100" data-testid="completed-portfolio-link">
+          <span className="font-display text-lg font-semibold text-emerald-900">Your completed quests are in My Portfolio</span>
+          <p className="mt-1 text-sm text-emerald-800">Visit your portfolio whenever you want to look back at your work, parent feedback and achievements.</p>
+        </Link>
       )}
     </div>
   );
