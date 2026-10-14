@@ -180,7 +180,7 @@ export async function buildPlanWithAi(
   const { familyId, userId } = opts;
   const plan = await db.prepare("SELECT * FROM learning_plans WHERE id = ? AND family_id = ?").bind(opts.planId, familyId).first<any>();
   if (!plan) return lb.fail(404, "Plan not found");
-  const student = await db.prepare("SELECT id, name, stage, year_level, interests, electives, extra FROM students WHERE id = ? AND family_id = ?").bind(plan.student_id, familyId).first<any>();
+  const student = await db.prepare("SELECT id, name, stage, year_level, interests, extra FROM students WHERE id = ? AND family_id = ?").bind(plan.student_id, familyId).first<any>();
   if (!student) return lb.fail(404, "Student not found");
   const { limits } = await lb.getEntitlement(db, familyId, now);
   if (!limits.aiGeneration) return lb.paywall("AI learning plans written for your state or territory are part of the paid plan. Your free preview builds a basic plan template.");
@@ -193,7 +193,7 @@ export async function buildPlanWithAi(
 
   const j = JURISDICTIONS[code as JurisdictionCode];
   const extra = parse<any>(student.extra, {});
-  const courses = [...parse<any[]>(student.electives, []), ...(Array.isArray(extra.electives) ? extra.electives : [])]
+  const courses = (Array.isArray(extra.electives) ? extra.electives : [])
     .map((c: any) => str(typeof c === "string" ? c : c?.name, 80)).filter(Boolean);
   const focus = strs(parse(plan.subject_focus, []), 10, 80);
   const { areas, note } = planAreas(j, student, focus, isSecondary(student) ? courses : []);
