@@ -116,9 +116,9 @@ export default function UpgradePage() {
         <table className="w-full text-sm">
           <thead><tr className="text-left text-xs uppercase tracking-wider text-stone-500"><th className="p-3"></th><th className="p-3 text-center">Free preview (7 days)</th><th className="p-3 text-center">Family Membership</th></tr></thead>
           <tbody>
-            {row("Children", ["1", "All your children"])}
-            {row("Lessons you create", ["2", "Unlimited*"])}
-            {row("Active assignments", ["2", "Unlimited*"])}
+            {row("Children", ["1", "Up to 20 (no extra fee)"])}
+            {row("Lessons you create", ["2", "Up to 5,000*"])}
+            {row("Active assignments", ["2", "Up to 5,000*"])}
             {row("Child dashboard, XP and pet", ["Yes", "Yes"])}
             {row("Parent review and Evidence Backpack", ["Yes", "Yes"])}
             {row("Full portfolio export", ["1 sample entry", "Full"])}
@@ -127,7 +127,7 @@ export default function UpgradePage() {
           </tbody>
         </table>
       </div>
-      <p className="text-xs text-stone-500">*Paid families can create and assign thousands of lessons subject to reasonable fair-use safeguards. AI drafting and changes have the allowances listed above. Prices are in AUD; all payment options include the same features.</p>
+      <p className="text-xs text-stone-500">*These are generous family-wide limits. AI drafting and changes have the allowances listed above. Prices are in AUD; all payment options include the same features.</p>
 
       <div className="text-sm text-stone-600">
         Used so far: {usage.children} of {plan.limits.maxChildren} children · {usage.lessons} lessons · {usage.active_assignments ?? usage.activeAssignments} active assignments.
