@@ -7,6 +7,7 @@ import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
 import HelpAlertBar from "../../components/parent/HelpAlertBar";
 import ParentLabel from "../../components/parent/ParentLabel";
+import JurisdictionGate from "../../components/parent/JurisdictionPicker";
 
 const nav = [
   { to: "/parent", icon: LayoutDashboard, label: "Dashboard", end: true, testid: "nav-dashboard" },
@@ -74,6 +75,7 @@ export default function ParentLayout() {
           <span className="font-display font-bold" style={{color:"#1F3B2D"}}>Side-Quest</span>
         </div>
         <HelpAlertBar />
+        <JurisdictionGate />
         <Outlet />
       </main>
       {showDelete && <DeleteAccountDialog onClose={() => setShowDelete(false)} />}

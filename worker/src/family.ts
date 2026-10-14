@@ -1,5 +1,6 @@
 import { sign, verify } from "hono/jwt";
 import { trialEndFrom } from "./entitlements";
+import { getFamilyJurisdiction } from "./data/jurisdictions";
 
 import { hashSecret } from "./auth";
 import {
@@ -218,7 +219,8 @@ async function upsertGoogleUser(env: Env, email: string, name: string, picture?:
     await env.DB.prepare("UPDATE users SET name = ?, picture = ?, oauth_provider = 'google' WHERE id = ?")
       .bind(name, picture ?? null, existing.id)
       .run();
-    const user = { ...existing, name, picture: picture ?? null, oauth_provider: "google", role: "parent" };
+    const jurisdiction = await getFamilyJurisdiction(env.DB, String(existing.family_id)).catch(() => null);
+    const user = { ...existing, name, picture: picture ?? null, oauth_provider: "google", role: "parent", jurisdiction };
     return { token: await makeToken(env, String(existing.id), "parent", String(existing.family_id)), user };
   }
 
@@ -234,7 +236,7 @@ async function upsertGoogleUser(env: Env, email: string, name: string, picture?:
   ]);
   return {
     token: await makeToken(env, userId, "parent", familyId),
-    user: { id: userId, family_id: familyId, email, name, picture: picture ?? null, oauth_provider: "google", is_owner: 1, created_at: ts, role: "parent" },
+    user: { id: userId, family_id: familyId, email, name, picture: picture ?? null, oauth_provider: "google", is_owner: 1, created_at: ts, role: "parent", jurisdiction: null },
   };
 }
 

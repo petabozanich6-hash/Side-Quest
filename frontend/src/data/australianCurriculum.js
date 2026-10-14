@@ -1,9 +1,9 @@
 /**
  * Official Australian home-education resources.
  *
- * Stable state codes are deliberate: a later signup/profile jurisdiction
- * setting can filter these records by code without re-authoring the content.
- * No state choice is collected or persisted by this module.
+ * Each family chooses its state or territory at sign-up (stored on the family
+ * as one of these stable codes). Pages show only that family's entry plus the
+ * national resources; use jurisdictionFor(code) to look it up.
  *
  * These links are a directory, NOT automatic curriculum alignment or
  * legal/compliance advice. Review official authority pages before acting.
@@ -27,9 +27,9 @@ export const NATIONAL_RESOURCES = [
 ];
 
 /**
- * The resource categories remain consistent across jurisdictions for future
- * family-specific presentation. All entries are shown until signup filtering
- * is implemented. Do not use this data to assign NSW outcome codes elsewhere.
+ * The resource categories remain consistent across jurisdictions. Pages filter
+ * this list by the family's chosen code. Do not use this data to assign NSW
+ * outcome codes elsewhere.
  */
 export const AUSTRALIAN_JURISDICTIONS = [
   {
@@ -139,3 +139,8 @@ export const AUSTRALIAN_JURISDICTIONS = [
 ];
 
 export const JURISDICTION_CODES = AUSTRALIAN_JURISDICTIONS.map(({ code }) => code);
+
+export const jurisdictionFor = (code) => AUSTRALIAN_JURISDICTIONS.find((j) => j.code === code) || null;
+
+/** NSW syllabus outcomes are the only verified outcome list loaded. Never assumed for a family that hasn't chosen. */
+export const usesNswOutcomes = (code) => code === "NSW";

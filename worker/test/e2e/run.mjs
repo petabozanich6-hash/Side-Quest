@@ -101,9 +101,9 @@ await step("A. new family registers through the UI", async () => {
   await page.goto(BASE + "/register");
   await page.fill('[data-testid=reg-name]', "Pat Parent");
   await page.selectOption('[data-testid=reg-label]', { index: 1 });
-  await page.selectOption('[data-testid=reg-jurisdiction]', 'NSW');
   await page.fill('[data-testid=reg-email]', email1);
   await page.fill('[data-testid=reg-password]', pw);
+  await page.selectOption('[data-testid=reg-jurisdiction]', "VIC");
   await page.click('[data-testid=reg-submit]');
   await page.waitForURL("**/parent", { timeout: 20000 });
   parentToken = await tokenOf(); ok(parentToken, "no token");
@@ -113,20 +113,30 @@ await step("A. new family registers through the UI", async () => {
   await shot("parent-home");
 });
 
-await step("curriculum directory covers every Australian state and territory without a location setting", async () => {
+await step("curriculum shows only the state chosen at sign-up, and it can be changed", async () => {
+  const me = await api("GET", "/auth/me", parentToken);
+  ok(me.json.jurisdiction === "VIC", "sign-up state not saved: " + JSON.stringify(me.json));
   await page.goto(BASE + "/parent/curriculum");
   await page.waitForSelector('[data-testid=curriculum-page]');
-  const codes = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
-  for (const code of codes) {
-    ok(await page.locator(`[data-testid=curriculum-state-${code}]`).count() === 1, `missing jurisdiction ${code}`);
-    ok(await page.locator(`[data-testid=curriculum-jump-${code}]`).count() === 1, `missing jump link ${code}`);
-    ok(await page.locator(`[data-testid=curriculum-state-${code}] [data-testid=curriculum-resource]`).count() >= 3, `not enough references for ${code}`);
+  ok(await page.locator('[data-testid=jurisdiction-gate]').count() === 0, "state prompt shown although a state was chosen at sign-up");
+  ok(await page.locator('[data-testid=curriculum-state-VIC]').count() === 1, "VIC section missing");
+  ok(await page.locator('[data-testid=curriculum-state-VIC] [data-testid=curriculum-resource]').count() >= 3, "not enough VIC references");
+  for (const code of ["NSW", "QLD", "WA", "SA", "TAS", "ACT", "NT"]) {
+    ok(await page.locator(`[data-testid=curriculum-state-${code}]`).count() === 0, `${code} shown to a VIC family`);
   }
   ok(await page.locator('[data-testid=curriculum-national-resources] [data-testid=curriculum-resource]').count() >= 2, "missing national curriculum resources");
-  ok(await page.locator('select[aria-label="Jurisdiction"]').count() === 0, "jurisdiction control should be implemented in signup, not on Curriculum");
-  const content = await page.textContent('[data-testid=curriculum-page]');
-  ok(/Australian families|families all around Australia/i.test(content), "Curriculum page does not welcome Australian families");
-  await shot("curriculum-eight-jurisdictions");
+  ok(!/NSW syllabus outcome list\. They are suggestions/.test(await page.textContent('[data-testid=curriculum-page]')), "NSW outcome wording shown to VIC family");
+  await page.click('[data-testid=curriculum-change-state]');
+  await page.selectOption('[data-testid=curriculum-state-select]', "QLD");
+  await page.click('[data-testid=curriculum-state-save]');
+  await page.waitForSelector('[data-testid=curriculum-state-QLD]');
+  ok(await page.locator('[data-testid=curriculum-state-VIC]').count() === 0, "VIC still shown after change");
+  ok((await api("GET", "/auth/me", parentToken)).json.jurisdiction === "QLD", "change not saved");
+  await page.click('[data-testid=curriculum-change-state]');
+  await page.selectOption('[data-testid=curriculum-state-select]', "NSW");
+  await page.click('[data-testid=curriculum-state-save]');
+  await page.waitForSelector('[data-testid=curriculum-state-NSW]');
+  await shot("curriculum-own-state");
   for (const [label, width, height] of [["phone", 375, 812], ["tablet", 768, 1024]]) {
     const ctx = await browser.newContext({ viewport: { width, height } });
     const p = await ctx.newPage();
@@ -493,14 +503,14 @@ await step("uploads: child can upload a photo, same family can read it, other fa
   ok(ok1.status === 200 && ok1.json.id, "png upload failed " + ok1.status);
   const get = (token, id) => fetch(`${BASE}/api/files/${id}?auth=${encodeURIComponent(token)}`);
   ok((await get(parentToken, ok1.json.id)).status === 200, "parent cannot read child's upload");
-  const other = await api("POST", "/auth/register", null, { name: "Third", email: `family4-${stamp}@example.com`, password: pw });
+  const other = await api("POST", "/auth/register", null, { name: "Third", email: `family4-${stamp}@example.com`, password: pw, jurisdiction: "NSW" });
   ok((await get(other.json.token, ok1.json.id)).status === 404, "other family can read the upload");
   ok((await up(childToken, "x.html", "text/html", "<script>alert(1)</script>")).status === 400, "html upload allowed");
   ok((await up(childToken, "x.svg", "image/svg+xml", "<svg onload=alert(1)/>")).status === 400, "svg upload allowed");
 });
 
 await step("K. another family cannot see or touch this family's records", async () => {
-  const reg = await api("POST", "/auth/register", null, { name: "Other Parent", email: `family2-${stamp}@example.com`, password: pw });
+  const reg = await api("POST", "/auth/register", null, { name: "Other Parent", email: `family2-${stamp}@example.com`, password: pw, jurisdiction: "NSW" });
   ok(reg.status === 200, "register 2 " + reg.status);
   const t2 = reg.json.token;
   ok((await api("GET", "/lessons", t2)).json.length === 0, "family 2 sees lessons");
@@ -575,7 +585,7 @@ await step("evidence: add a parent note, search it, export CSV with a date range
 
 await step("rich lesson: the Year 3 garden addition lesson teaches in the child's lesson page and keeps the parent guide and answers hidden", async () => {
   const GARDEN = JSON.parse(readFileSync(resolve(ROOT, "frontend/src/data/exampleLesson.json"), "utf8"));
-  const reg = await api("POST", "/auth/register", null, { name: "Garden Fam", email: `garden-${stamp}@example.com`, password: pw });
+  const reg = await api("POST", "/auth/register", null, { name: "Garden Fam", email: `garden-${stamp}@example.com`, password: pw, jurisdiction: "NSW" });
   const pt = reg.json.token;
   const fam = JSON.parse(Buffer.from(pt.split(".")[1], "base64url").toString()).family_id;
   sql(`UPDATE families SET plan='ACTIVE_MONTHLY' WHERE id='${fam}';`);
@@ -709,7 +719,7 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
 await step("L. users cannot grant themselves a paid plan", async () => {
   const r = await api("PUT", "/account/plan", parentToken, { plan: "ACTIVE_MONTHLY" });
   ok(r.status === 404 || r.status === 405, "plan update route exists: " + r.status);
-  const r2 = await api("POST", "/auth/register", null, { name: "Sneaky", email: `family3-${stamp}@example.com`, password: pw, plan: "ACTIVE_ANNUAL" });
+  const r2 = await api("POST", "/auth/register", null, { name: "Sneaky", email: `family3-${stamp}@example.com`, password: pw, jurisdiction: "NSW", plan: "ACTIVE_ANNUAL" });
   const p = await api("GET", "/account/plan", r2.json.token);
   ok(p.json.effective_plan === "FREE_PREVIEW", "plan set from request body");
 });

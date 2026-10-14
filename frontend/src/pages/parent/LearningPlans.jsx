@@ -3,11 +3,15 @@ import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { Plus, X, Sparkles, Loader2, FileCheck, Printer, Trash2 } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
+import { useAuth } from "../../context/AuthContext";
+import { usesNswOutcomes } from "../../data/australianCurriculum";
 
 const AREAS = ["English","Mathematics","Science and Technology","HSIE","PDHPE","Creative Arts","Languages","TAS"];
 const SECONDARY = ["S4","S5","S6"];
 
 export default function LearningPlans() {
+  const { user } = useAuth();
+  const nsw = usesNswOutcomes(user?.jurisdiction);
   const [plans, setPlans] = useState([]);
   const [students, setStudents] = useState([]);
   const [open, setOpen] = useState(false);
@@ -102,8 +106,9 @@ export default function LearningPlans() {
         <h1 className="font-display text-4xl font-bold" style={{color:"#1F3B2D"}}>Learning Plans</h1>
         <p className="mt-2 text-sm text-stone-600 max-w-3xl leading-relaxed">
           Keep your teaching plans organised for each child and learning period. Choose their interests,
-          review the generated draft and make it your own. The current automated planning template
-          still draws on NSW syllabus data; check your state's or territory's official requirements in Curriculum.
+          {nsw
+            ? "review the generated draft and make it your own. The plan writer draws on the NSW syllabus; check the official requirements in Curriculum."
+            : `and write it in your own words. The automatic plan writer uses the NSW syllabus, so it is switched off for ${user?.jurisdiction} families until your curriculum is loaded. See Curriculum for your official planning guidance.`}
         </p>
       </header>
 
@@ -127,12 +132,14 @@ export default function LearningPlans() {
             <div className="mt-4 flex items-center gap-2">
               {p.ai_content ? (
                 <button onClick={()=>setView(p)} className="rounded-full px-4 py-1.5 text-xs font-bold" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid={`view-plan-${p.id}`}>View plan</button>
+              ) : !nsw ? (
+                <span className="text-xs text-stone-500" data-testid={`plan-writer-off-${p.id}`}>Plan writer not yet available for {user?.jurisdiction}</span>
               ) : (
                 <button onClick={()=>build(p.id)} disabled={generating} className="rounded-full px-4 py-1.5 text-xs font-bold flex items-center gap-1 disabled:opacity-50" style={{backgroundColor:"#4A5D3A", color:"#F5EFE0"}} data-testid={`gen-plan-${p.id}`}>
                   {generating ? <><Loader2 size={10} className="animate-spin"/> Building…</> : <><Sparkles size={10}/> Build plan</>}
                 </button>
               )}
-              {p.ai_content && <button onClick={()=>build(p.id)} disabled={generating} className="rounded-full border px-3 py-1.5 text-xs font-bold disabled:opacity-50" style={{borderColor:"#D4C8A8"}} data-testid={`rebuild-plan-${p.id}`}>Rebuild</button>}
+              {p.ai_content && nsw && <button onClick={()=>build(p.id)} disabled={generating} className="rounded-full border px-3 py-1.5 text-xs font-bold disabled:opacity-50" style={{borderColor:"#D4C8A8"}} data-testid={`rebuild-plan-${p.id}`}>Rebuild</button>}
               {p.ai_content && <button onClick={()=>printPlan(p)} className="rounded-full border px-3 py-1.5 text-xs font-bold flex items-center gap-1" style={{borderColor:"#D4C8A8"}} data-testid={`print-plan-${p.id}`}><Printer size={10}/> Print</button>}
             </div>
           </div>
@@ -141,7 +148,7 @@ export default function LearningPlans() {
           <div className="col-span-full paper-card p-10 text-center">
             <FileCheck className="mx-auto mb-3" size={32} style={{color:"#4A5D3A"}}/>
             <p className="font-display text-lg" style={{color:"#1F3B2D"}}>No learning plans yet</p>
-            <p className="text-sm text-stone-500 mt-2 max-w-md mx-auto">Create a plan for the term or period you're preparing for. The current generator uses NSW syllabus references, so review it against your own jurisdiction's guidance.</p>
+            <p className="text-sm text-stone-500 mt-2 max-w-md mx-auto">Create a plan for the term or period you're preparing for. {nsw ? "The plan writer uses NSW syllabus references, so review the draft before relying on it." : "Use the official planning guidance for your state or territory in Curriculum."}</p>
           </div>
         )}
       </div>

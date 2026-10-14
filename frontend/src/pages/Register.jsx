@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 import { Compass } from "lucide-react";
 import { Fern, Pet, Branch } from "../components/shared/Botanical";
-import { AUSTRALIAN_JURISDICTIONS } from "../data/australianCurriculum";
+import { JurisdictionSelect } from "../components/parent/JurisdictionPicker";
 
 const LABELS = ["Mum", "Dad", "Aunty", "Uncle", "Nan", "Pop", "Grandma", "Grandpa"];
 
@@ -51,7 +51,7 @@ export default function Register() {
           <h2 className="font-display text-4xl font-bold leading-tight">A little more joy, a little less juggling.</h2>
           <ul className="mt-6 space-y-2.5 text-sm" style={{color:"#E8E2D1"}}>
             <li className="flex gap-2"><span>·</span>Build your own lessons, or let AI draft them for your review</li>
-            <li className="flex gap-2"><span>·</span>Made for Australian families, with curriculum guidance for all eight jurisdictions</li>
+            <li className="flex gap-2"><span>·</span>Made for families in every Australian state and territory, with guidance for where you live</li>
             <li className="flex gap-2"><span>·</span>Keep approved learning records together in the Evidence Backpack</li>
             <li className="flex gap-2"><span>·</span>Offline activities and answer keys, just for you</li>
             <li className="flex gap-2"><span>·</span>Each child gets a pocket pet that grows with them</li>
@@ -80,16 +80,13 @@ export default function Register() {
               {pick === "__other" && <input value={other} onChange={e => setOther(e.target.value)} maxLength={30} required placeholder="e.g. Mama" className="input mt-2" data-testid="reg-label-other"/>}
               <p className="text-[11px] text-stone-500 mt-1">Your child's pet will say "{label || "Mum"} sent you a message" instead of using your name.</p>
             </F>
-            <F label="Your state or territory">
-              <select value={form.jurisdiction} onChange={upd("jurisdiction")} required className="input" data-testid="reg-jurisdiction">
-                <option value="">Choose...</option>
-                {AUSTRALIAN_JURISDICTIONS.map(j => <option key={j.code} value={j.code}>{j.name}</option>)}
-              </select>
-              <p className="text-[11px] text-stone-500 mt-1">Life Learning links activities to your state or territory's curriculum. You can change this later.</p>
+            <F label="State or territory">
+              <JurisdictionSelect value={form.jurisdiction} onChange={(v) => setForm(f => ({ ...f, jurisdiction: v }))} testid="reg-jurisdiction" />
+              <p className="text-[11px] text-stone-500 mt-1">We'll show the home education rules, curriculum and record-keeping guidance for where you live. You can change this later.</p>
             </F>
             <F label="Family name (optional)"><input value={form.family_name} onChange={upd("family_name")} className="input" data-testid="reg-family"/></F>
             <F label="Email"><input value={form.email} onChange={upd("email")} type="email" required className="input" data-testid="reg-email"/></F>
-            <F label="Password"><input value={form.password} onChange={upd("password")} type="password" minLength={6} required className="input" data-testid="reg-password"/></F>
+            <F label="Password"><input value={form.password} onChange={upd("password")} type="password" minLength={8} required className="input" data-testid="reg-password"/></F>
           </div>
           <div className="mt-4 rounded-xl p-3 text-xs leading-relaxed" style={{backgroundColor:"#F5EFE0", borderLeft:"4px solid #D4A574", color:"#1F3B2D"}} data-testid="reg-spam-note">
             <strong>Heads up:</strong> your welcome note and account emails come from a <span className="font-mono">@sidequestlearning.app</span> address. You can reply for help at <span className="font-mono">support@sidequestlearning.app</span>. If you don't see an email, check your spam folder and mark it "Not spam" so important account messages can reach you.

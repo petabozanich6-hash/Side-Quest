@@ -8,6 +8,7 @@ import type { Result } from "./lessonBuilder";
 import { cleanPrefs, resolveRequest, stageFor } from "./aiRequest";
 import { matchOutcomesWithAi, suggestOutcomes, outcomeRef, OUTCOME_FRAMEWORK } from "./outcomeMatch";
 import type { OutcomeSuggestion } from "./outcomeMatch";
+import { getFamilyJurisdiction, usesNswOutcomes, outcomesNotLoadedNote } from "./data/jurisdictions";
 import { cleanItemKind, cleanVisual, cleanKeyWords, estimateMinutes } from "./items";
 import type { StudentInfo } from "./aiRequest";
 import { REFERENCE_INDEPENDENT, REFERENCE_PARENT_GUIDED } from "./data/referenceLessons";
@@ -825,7 +826,8 @@ export async function draftLessonWithAi(
   draft.stage = clip(request.stage, 10) || stageFor(spec.year);
   // Optional (on unless the parent turns it off): link the lesson to the outcomes it develops, picked from the real outcome list.
   let outcomes: OutcomeSuggestion[] = [];
-  if ((request as any).link_outcomes !== false) {
+  // Only the NSW outcome list is loaded, so families in other states and territories never get NSW codes attached.
+  if ((request as any).link_outcomes !== false && usesNswOutcomes(await getFamilyJurisdiction(db, familyId).catch(() => null))) {
     try {
       const m = await matchOutcomesWithAi({ run: (mdl, input, o) => ai.run(mdl, input, o) }, draft, { model, gatewayId: opts.gatewayId });
       if (m) { outcomes = m.suggestions; stats.calls++; stats.stages.push("outcomes"); stats.input_tokens += m.input_tokens; stats.output_tokens += m.output_tokens; }
@@ -1009,6 +1011,8 @@ export async function matchLessonOutcomes(
   const row = await db.prepare("SELECT * FROM lessons WHERE id = ? AND family_id = ?").bind(opts.lessonId, opts.familyId).first<any>();
   if (!row) return lb.fail(404, "Lesson not found");
   const lesson: any = lb.lessonOut(row);
+  const place = await getFamilyJurisdiction(db, opts.familyId).catch(() => null);
+  if (!usesNswOutcomes(place)) return { ok: true, suggestions: [], method: "wording", framework: `${place} outcomes (not loaded yet)`, note: outcomesNotLoadedNote(place!) };
   const note = "These are suggestions based on what the lesson teaches, checked against the outcome list Side-Quest holds (currently the NSW syllabus; other states are not loaded yet). A lesson contributes to an outcome; it does not complete it. Please confirm against your own curriculum.";
   const { limits } = await lb.getEntitlement(db, opts.familyId, now);
   if (ai && limits.aiGeneration) {

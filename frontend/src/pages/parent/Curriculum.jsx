@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { BookOpen, Compass, ExternalLink, FileCheck, MapPinned, ShieldCheck } from "lucide-react";
-import { AUSTRALIAN_JURISDICTIONS, NATIONAL_RESOURCES } from "../../data/australianCurriculum";
+import { NATIONAL_RESOURCES, jurisdictionFor, usesNswOutcomes } from "../../data/australianCurriculum";
+import { useAuth } from "../../context/AuthContext";
+import { JurisdictionSelect, saveJurisdiction } from "../../components/parent/JurisdictionPicker";
 
 const CATEGORY_STYLE = {
   Registration: "bg-emerald-50 text-emerald-800",
@@ -37,56 +40,92 @@ function ResourceLink({ resource }) {
   );
 }
 
+function ChangeJurisdiction({ current }) {
+  const { user, setSession } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [code, setCode] = useState(current || "");
+  const [saving, setSaving] = useState(false);
+  const save = async () => {
+    if (!code || code === current) { setOpen(false); return; }
+    setSaving(true);
+    try { await saveJurisdiction(code, setSession, user); toast.success("State or territory updated"); setOpen(false); }
+    catch (err) { toast.error(err.response?.data?.detail || "Couldn't save that. Please try again."); }
+    finally { setSaving(false); }
+  };
+  if (!open) {
+    return <button type="button" onClick={() => { setCode(current || ""); setOpen(true); }} className="text-sm font-semibold underline text-emerald-800" data-testid="curriculum-change-state">Moved interstate? Change your state or territory</button>;
+  }
+  return (
+    <div className="flex flex-wrap items-center gap-2" data-testid="curriculum-change-form">
+      <div className="w-full sm:w-72"><JurisdictionSelect value={code} onChange={setCode} testid="curriculum-state-select" className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm" /></div>
+      <button type="button" disabled={!code || saving} onClick={save} className="rounded-full bg-emerald-900 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50" data-testid="curriculum-state-save">{saving ? "Saving…" : "Save"}</button>
+      <button type="button" onClick={() => setOpen(false)} className="rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-semibold text-stone-700">Cancel</button>
+    </div>
+  );
+}
+
+function JurisdictionSection({ place }) {
+  return (
+    <section id={`curriculum-${place.code.toLowerCase()}`}
+      className="paper-card p-4 sm:p-6 scroll-mt-24 space-y-4"
+      aria-labelledby={`jurisdiction-heading-${place.code}`}
+      data-testid={`curriculum-state-${place.code}`}>
+      <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800">
+        <MapPinned size={15} aria-hidden="true" /> Your state or territory · {place.code}
+      </span>
+      <div>
+        <h2 id={`jurisdiction-heading-${place.code}`} className="font-display text-2xl sm:text-3xl font-bold" style={{ color: "#1F3B2D" }}>{place.name}</h2>
+        <p className="mt-1 text-xs text-stone-600"><strong>Responsible authority:</strong> {place.authority}</p>
+      </div>
+      <p className="text-sm leading-relaxed text-stone-700">{place.intro}</p>
+      <div className="rounded-xl bg-stone-50 border border-stone-200 p-3 sm:p-4 flex gap-3">
+        <FileCheck size={18} aria-hidden="true" className="shrink-0 mt-0.5 text-emerald-800" />
+        <p className="text-sm leading-relaxed text-stone-700"><strong>Good to know:</strong> {place.focus}</p>
+      </div>
+      <div className="grid md:grid-cols-2 gap-3">
+        {place.links.map((resource) => <ResourceLink key={`${place.code}-${resource.title}`} resource={resource} />)}
+      </div>
+    </section>
+  );
+}
+
 export default function Curriculum() {
+  const { user } = useAuth();
+  const place = jurisdictionFor(user?.jurisdiction);
+  const nsw = usesNswOutcomes(user?.jurisdiction);
   return (
     <div className="p-4 sm:p-6 lg:p-10 space-y-9 max-w-7xl mx-auto" data-testid="curriculum-page">
       <header className="space-y-4">
         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800">
           <Compass size={17} aria-hidden="true" /> Your curriculum compass
         </div>
-        <h1 className="font-display text-3xl sm:text-4xl font-bold" style={{ color: "#1F3B2D" }}>Home education around Australia</h1>
+        <h1 className="font-display text-3xl sm:text-4xl font-bold" style={{ color: "#1F3B2D" }}>
+          {place ? `Home education in ${place.name}` : "Home education in your state or territory"}
+        </h1>
         <p className="text-base leading-relaxed text-stone-700 max-w-3xl">
-          Different places, different requirements — and every family has its own way of learning.
-          We've gathered official home education, curriculum and record-keeping resources for
-          <strong> all eight Australian states and territories</strong>, so you can find the right starting point.
+          Side-Quest welcomes Australian families wherever they live. Here are the official home education,
+          curriculum and record-keeping resources for <strong>{place ? place.name : "your state or territory"}</strong>, plus national resources that are useful anywhere.
         </p>
-        <p className="text-sm text-stone-600 max-w-3xl">
-          Explore your state's or territory's official resources below. All eight are available in this directory;
-          each family can find the guidance that matters to them.
-        </p>
+        {place && <ChangeJurisdiction current={place.code} />}
       </header>
+
+      {place && <JurisdictionSection place={place} />}
 
       <section className="paper-card p-4 sm:p-6 border-l-4" style={{ borderLeftColor: "#4A5D3A" }} aria-labelledby="mapping-heading">
         <div className="flex items-center gap-2 mb-2">
           <ShieldCheck size={20} className="text-emerald-800 shrink-0" aria-hidden="true" />
-          <h2 id="mapping-heading" className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>One platform for families all around Australia</h2>
+          <h2 id="mapping-heading" className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>How Side-Quest fits with your local rules</h2>
         </div>
-        <div className="grid md:grid-cols-2 gap-4 text-sm text-stone-700 leading-relaxed">
-          <p>Plan your learning, create and assign lessons, use your family calendar, see progress and collect the little wins in your Evidence Backpack — wherever you live.</p>
-          <p>Use the official guidance below for your state or territory to decide which curriculum, registration steps and learning records apply to your family.</p>
-        </div>
-        <p className="mt-4 text-sm leading-relaxed text-stone-600">
-          Side-Quest helps you organise learning, not register a child or certify a program.
-          <strong> A current technical limitation:</strong> some automatic outcome suggestions,
-          stage-based subject lists and a review-pack format still use NSW reference material.
-          These are not yet jurisdiction-aware and shouldn't be relied upon for another state's
-          curriculum or reporting requirements.
+        <p className="text-sm leading-relaxed text-stone-700">
+          Plan your learning, create and assign lessons, use your family calendar, see progress and collect the little wins in your Evidence Backpack.
+          Side-Quest helps you organise learning; it doesn't register a child or certify a program, so check what your authority actually asks for.
+        </p>
+        <p className="mt-3 text-sm leading-relaxed text-stone-600" data-testid="curriculum-outcome-note">
+          {nsw
+            ? "Automatic outcome suggestions and the learning plan writer use the NSW syllabus outcome list. They are suggestions for you to check, not official confirmation."
+            : `Side-Quest doesn't hold the ${place ? place.code : "local"} outcome list yet, so automatic outcome suggestions and the learning plan writer are switched off for your family rather than showing NSW outcomes that don't apply. Record outcomes yourself from your official curriculum above.`}
         </p>
       </section>
-
-      <nav className="space-y-3" aria-label="Jump to your state or territory">
-        <h2 className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>Find your part of Australia</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          {AUSTRALIAN_JURISDICTIONS.map((place) => (
-            <a key={place.code} href={`#curriculum-${place.code.toLowerCase()}`}
-              className="rounded-xl border border-stone-200 bg-white px-4 py-3 text-left hover:shadow-sm hover:border-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
-              data-testid={`curriculum-jump-${place.code}`}>
-              <span className="block text-xs font-bold text-emerald-800">{place.code}</span>
-              <span className="block text-sm font-semibold text-stone-800 mt-1">{place.name}</span>
-            </a>
-          ))}
-        </div>
-      </nav>
 
       <section aria-labelledby="australia-wide-heading" className="space-y-4">
         <div className="flex items-center gap-2"><BookOpen aria-hidden="true" size={20} className="text-emerald-800" />
@@ -100,35 +139,6 @@ export default function Curriculum() {
           {NATIONAL_RESOURCES.map((resource) => <ResourceLink key={resource.url} resource={resource} />)}
         </div>
       </section>
-
-      <div className="space-y-7" data-testid="curriculum-jurisdictions">
-        {AUSTRALIAN_JURISDICTIONS.map((place) => (
-          <section key={place.code} id={`curriculum-${place.code.toLowerCase()}`}
-            className="paper-card p-4 sm:p-6 scroll-mt-24 space-y-4"
-            aria-labelledby={`jurisdiction-heading-${place.code}`}
-            data-testid={`curriculum-state-${place.code}`}>
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800">
-                <MapPinned size={15} aria-hidden="true" /> {place.code}
-              </span>
-
-            </div>
-            <div>
-              <h2 id={`jurisdiction-heading-${place.code}`} className="font-display text-2xl sm:text-3xl font-bold" style={{ color: "#1F3B2D" }}>{place.name}</h2>
-              <p className="mt-1 text-xs text-stone-600"><strong>Responsible authority:</strong> {place.authority}</p>
-            </div>
-            <p className="text-sm leading-relaxed text-stone-700">{place.intro}</p>
-            <div className="rounded-xl bg-stone-50 border border-stone-200 p-3 sm:p-4 flex gap-3">
-              <FileCheck size={18} aria-hidden="true" className="shrink-0 mt-0.5 text-emerald-800" />
-              <p className="text-sm leading-relaxed text-stone-700"><strong>Good to know:</strong> {place.focus}</p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-3">
-              {place.links.map((resource) => <ResourceLink key={`${place.code}-${resource.title}`} resource={resource} />)}
-            </div>
-
-          </section>
-        ))}
-      </div>
 
       <section className="rounded-2xl border border-stone-200 bg-stone-50 p-4 sm:p-6 space-y-3">
         <h2 className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>A little help keeping track</h2>

@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { normJurisdiction, setFamilyJurisdiction } from "./data/jurisdictions";
+import { normJurisdiction, setFamilyJurisdiction, getFamilyJurisdiction } from "./data/jurisdictions";
 import { cors } from "hono/cors";
 import { sign, verify } from "hono/jwt";
 import type { MiddlewareHandler } from "hono";
@@ -55,6 +55,8 @@ app.use("/api/*", async (c, next) => {
 });
 
 const nowIso = () => new Date().toISOString();
+// Sign-in must never fail because the state/territory lookup did; a missing value just means the parent is asked again.
+const jurisdictionOrNull = (db: D1Database, familyId: string) => getFamilyJurisdiction(db, familyId).catch(() => null);
 const newId = () => crypto.randomUUID();
 
 async function makeToken(env: Env, sub: string, role: string, familyId: string) {
@@ -107,6 +109,7 @@ app.post("/api/auth/register", async (c) => {
   if (!email.includes("@") || password.length < 8 || !name) {
     return c.json({ detail: "Valid email, name and a password of 8+ characters are required" }, 400);
   }
+  if (!normJurisdiction(b.jurisdiction)) return c.json({ detail: "Please choose your state or territory", code: "JURISDICTION_REQUIRED" }, 400);
   const exists = await c.env.DB.prepare("SELECT id FROM users WHERE email = ?").bind(email).first();
   if (exists) return c.json({ detail: "Email already registered" }, 400);
 
@@ -133,7 +136,7 @@ app.post("/api/auth/register", async (c) => {
 
   return c.json({
     token,
-    user: { id: userId, email, name, family_id: familyId, role: "parent" },
+    user: { id: userId, email, name, family_id: familyId, role: "parent", jurisdiction },
     family: { id: familyId, name: familyName, jurisdiction },
   });
 });
@@ -150,7 +153,8 @@ app.post("/api/auth/login", async (c) => {
   }
   const token = await makeToken(c.env, user.id, "parent", user.family_id);
   const { password_hash, ...safe } = user;
-  return c.json({ token, user: { ...safe, role: "parent" } });
+  const jurisdiction = await jurisdictionOrNull(c.env.DB, user.family_id);
+  return c.json({ token, user: { ...safe, role: "parent", jurisdiction } });
 });
 
 app.post("/api/auth/child-login", async (c) => {
@@ -166,7 +170,11 @@ app.post("/api/auth/child-login", async (c) => {
   return c.json({ token, student: { ...safe, interests: JSON.parse(s.interests || "[]"), role: "child" } });
 });
 
-app.get("/api/auth/me", requireAuth, (c) => c.json(c.get("user")));
+app.get("/api/auth/me", requireAuth, async (c) => {
+  const u = c.get("user");
+  return c.json({ ...u, jurisdiction: await jurisdictionOrNull(c.env.DB, u.family_id) });
+});
+
 
 app.get("/api/students", requireAuth, requireParent, async (c) => {
   const { results } = await c.env.DB.prepare(`SELECT ${STUDENT_SELECT} FROM students WHERE family_id = ?`)

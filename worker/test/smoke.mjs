@@ -22,7 +22,7 @@ async function check(name, p, ok = (r) => r.status >= 200 && r.status < 300) {
 }
 
 const email = `smoke${stamp}@example.com`;
-const reg = await check("register", call("POST", "/auth/register", { body: { email, password: "password123", name: "Smoke" } }));
+const reg = await check("register", call("POST", "/auth/register", { body: { email, password: "password123", name: "Smoke", jurisdiction: "NSW" } }));
 const P = reg.token;
 await check("login", call("POST", "/auth/login", { body: { email, password: "password123" } }));
 await check("auth/me", call("GET", "/auth/me", { token: P }));

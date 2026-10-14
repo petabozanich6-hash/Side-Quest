@@ -100,3 +100,13 @@ export async function setFamilyJurisdiction(db: D1Database, familyId: string, j:
   await ensureJurisdictionColumn(db);
   await db.prepare("UPDATE families SET jurisdiction = ? WHERE id = ?").bind(j, familyId).run();
 }
+
+/**
+ * Lesson outcome suggestions and the plan writer use the NSW syllabus list, the only verified outcome list loaded.
+ * Families in any other state or territory, or who haven't chosen yet, never get NSW codes from them (matching the
+ * Evidence Backpack, which never defaults to NSW). Parents without a state are asked the next time they sign in.
+ */
+export const usesNswOutcomes = (j: JurisdictionCode | null) => j === "NSW";
+
+export const outcomesNotLoadedNote = (j: JurisdictionCode) =>
+  `Lesson outcome suggestions are not available for ${j} yet. Side-Quest only holds a verified outcome list for NSW, so nothing is suggested rather than showing NSW outcomes that don't apply. Record outcomes yourself from your official curriculum (see Curriculum).`;

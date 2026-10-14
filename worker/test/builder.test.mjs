@@ -7,9 +7,9 @@ import { effectivePlan, limitsFor, trialEndFrom } from "../src/entitlements.ts";
 
 const NOW = new Date("2026-10-14T00:00:00Z");
 let n = 0;
-function seed(db, { plan = "FREE_PREVIEW", fam = `f${++n}`, trialStart = NOW.toISOString(), periodEnd = null } = {}) {
-  db.raw.prepare("INSERT INTO families (id,name,owner_id,created_at,plan,trial_started_at,trial_ends_at,plan_period_end) VALUES (?,?,?,?,?,?,?,?)")
-    .run(fam, "Fam", `u${fam}`, trialStart, plan, trialStart, trialEndFrom(trialStart), periodEnd);
+function seed(db, { plan = "FREE_PREVIEW", fam = `f${++n}`, trialStart = NOW.toISOString(), periodEnd = null, jurisdiction = "NSW" } = {}) {
+  db.raw.prepare("INSERT INTO families (id,name,owner_id,created_at,plan,trial_started_at,trial_ends_at,plan_period_end,jurisdiction) VALUES (?,?,?,?,?,?,?,?,?)")
+    .run(fam, "Fam", `u${fam}`, trialStart, plan, trialStart, trialEndFrom(trialStart), periodEnd, jurisdiction);
   return fam;
 }
 function child(db, fam, id = `s${++n}`) {
@@ -1070,3 +1070,32 @@ test("pet room: things can be moved, positions are kept in range and only for th
   assert.deepEqual(v.room_pos.lamp, { x: 92, y: 0 });
   assert.equal(v.room_pos.piano, undefined);
 });
+
+test("state or territory: codes are validated, and families outside NSW never get NSW outcome codes", async () => {
+  const j = await import("../src/data/jurisdictions.ts");
+  assert.equal(j.normJurisdiction(" vic "), "VIC");
+  assert.equal(j.normJurisdiction("Victoria"), null);
+  assert.equal(j.normJurisdiction(""), null);
+  assert.equal(j.JURISDICTION_CODES.length, 8);
+  const Y7L = JSON.parse(readFileSync(new URL("../../frontend/src/data/referenceYear7Integers.json", import.meta.url), "utf8"));
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY", jurisdiction: null });
+  assert.equal(await j.getFamilyJurisdiction(db, fam), null);
+  assert.equal(j.usesNswOutcomes(null), false, "no state chosen must not default to NSW");
+  db.raw.prepare("UPDATE families SET jurisdiction='VIC' WHERE id=?").run(fam);
+  assert.equal(await j.getFamilyJurisdiction(db, fam), "VIC");
+  // existing lesson: no suggestions, no AI call, honest note
+  const l = (await lb.createLesson(db, fam, { ...Y7L, status: "ready" }, NOW)).lesson;
+  const ai = stub((m, input) => ({ response: '{"matches":[1]}' }));
+  const r = await aid.matchLessonOutcomes(db, ai, { familyId: fam, userId: "u", lessonId: l.id }, NOW);
+  assert.ok(r.ok); assert.deepEqual(r.suggestions, []); assert.match(r.note, /VIC/);
+  assert.equal(ai.calls.length, 0);
+  // AI-drafted lesson: no NSW codes attached
+  const d = await aid.draftLessonWithAi(db, stub(), { familyId: fam, userId: "u", request: { topic: "Fractions" } }, NOW);
+  assert.ok(d.ok, JSON.stringify(d)); assert.deepEqual(d.lesson.outcome_codes, []); assert.deepEqual(d.outcomes, []);
+  // NSW families keep outcome matching
+  db.raw.prepare("UPDATE families SET jurisdiction='NSW' WHERE id=?").run(fam);
+  const n = await aid.matchLessonOutcomes(db, ai, { familyId: fam, userId: "u", lessonId: l.id }, NOW);
+  assert.ok(n.ok && n.suggestions.length >= 1);
+});
+

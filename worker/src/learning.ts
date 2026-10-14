@@ -1,5 +1,5 @@
 import { analyseLifeEvidence } from "./data/lifeEvidence";
-import { FRAMEWORKS, JURISDICTION_CODES, frameworkFor, getFamilyJurisdiction, normJurisdiction, setFamilyJurisdiction } from "./data/jurisdictions";
+import { FRAMEWORKS, JURISDICTION_CODES, frameworkFor, getFamilyJurisdiction, normJurisdiction, setFamilyJurisdiction, usesNswOutcomes } from "./data/jurisdictions";
 import { mapLifeEvidenceWithAi, lifeMapLimits } from "./lifeLearningAi";
 import { getEntitlement } from "./lessonBuilder";
 import { buildPlanContent } from "./data/planBuilder";
@@ -410,6 +410,11 @@ export function registerLearning(app: App, g: Guards) {
     if (!planRow) return c.json({ detail: "Plan not found" }, 404);
     const studentRow = await getStudent(c.env.DB, user.family_id, planRow.student_id);
     if (!studentRow) return c.json({ detail: "Student not found" }, 404);
+    // The plan writer is built on the NSW syllabus and says so in the plan text, so it is only offered to NSW families.
+    const place = await getFamilyJurisdiction(c.env.DB, user.family_id);
+    if (!usesNswOutcomes(place)) {
+      return c.json({ detail: `The learning plan writer currently uses the NSW syllabus, so it isn't available for ${place} yet. You can still create a plan and write it yourself.`, code: "JURISDICTION_NOT_SUPPORTED" }, 409);
+    }
     const content = await buildPlanContent(c.env.DB, planOut(planRow), studentOut(studentRow) || {});
     await c.env.DB.prepare("UPDATE learning_plans SET ai_content = ?, status = 'draft', updated_at = ? WHERE id = ? AND family_id = ?")
       .bind(JSON.stringify(content), nowIso(), planRow.id, user.family_id)
