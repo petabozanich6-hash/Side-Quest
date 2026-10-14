@@ -31,6 +31,8 @@ export type Env = {
   LIFE_MAP_PER_FAMILY_DAY?: string;
   LIFE_MAP_PER_FAMILY_MONTH?: string;
   YOUTUBE_API_KEY?: string;
+  /** Opt-in owner destination for first real paid-membership alerts. Never included in client responses. */
+  OWNER_NOTIFICATION_EMAIL?: string;
   /** Optional sender address override (defaults to no-reply@sidequestlearning.app). */
   EMAIL_FROM?: string;
   /** Verified Email Routing destination that incoming support mail is forwarded to. */

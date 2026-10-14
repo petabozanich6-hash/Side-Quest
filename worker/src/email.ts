@@ -292,3 +292,54 @@ This is your membership confirmation, not a tax invoice. Payment documents are a
     }),
   };
 }
+
+
+/** Owner-only celebration: no parent, child or payment-card information. */
+export function newPaidFamilyOwnerEmail(
+  to: string,
+  details: { interval: MembershipInterval; amountCents: number; activeFamilies: number },
+): OutgoingEmail {
+  const cadence: Record<MembershipInterval, string> = {
+    weekly: "per week",
+    fortnightly: "every two weeks",
+    monthly: "per month",
+    yearly: "per year",
+  };
+  const plan = `A$${(details.amountCents / 100).toFixed(2)} ${cadence[details.interval]}`;
+  const active = Math.max(0, Math.floor(details.activeFamilies));
+  const subject = "🐉 ACHIEVEMENT UNLOCKED: A new Side-Quest family!";
+  const text = `ACHIEVEMENT UNLOCKED: YOUR KINGDOM IS GROWING!
+
+A new family has just started a paid Side-Quest Family Membership!
+
+Membership: ${plan}
+Active paying families: ${active}
+
+Somewhere in Australia, a parent has decided to make homeschooling a little less chaotic.
+
+The dragons approve. The goblins are celebrating. Your kingdom grows stronger.
+
+LONG LIVE SIDE-QUEST! 💚
+
+This is an owner-only notification for a new paid membership. Renewals and card-free previews do not trigger this email.
+No children's personal information or payment details are included.`;
+  const body = [
+    p("<strong>ACHIEVEMENT UNLOCKED: YOUR KINGDOM IS GROWING!</strong>"),
+    p("Another family has officially joined the Side-Quest adventure with a paid Family Membership."),
+    note(`<strong>New membership:</strong> ${esc(plan)}<br/><strong>Active paying families:</strong> ${active}`),
+    p("Somewhere in Australia, a parent has decided to make homeschooling a little less chaotic."),
+    p("The dragons approve. The goblins are celebrating. Your kingdom grows stronger."),
+    p("<strong>LONG LIVE SIDE-QUEST! 💚</strong>"),
+    p("This owner-only email is for the first paid membership of a family, not a renewal. It does not include children's details or card information."),
+  ].join("\n");
+  return {
+    to, subject, text,
+    html: layout({
+      preheader: `One new paid family! ${plan}; ${active} active paying families.`,
+      kicker: "A new adventurer approaches!",
+      heading: "Your kingdom is growing!",
+      body,
+      reason: "This is an internal Side-Quest owner alert for a new paid Family Membership.",
+    }),
+  };
+}
