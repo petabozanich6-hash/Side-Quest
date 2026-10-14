@@ -83,11 +83,12 @@ export async function getBatch(db: DB, familyId: string, id: string, now: Date =
   const row = await db.prepare("SELECT * FROM lesson_batches WHERE id = ? AND family_id = ?").bind(id, familyId).first<any>();
   if (!row) return lb.fail(404, "That set of lessons was not found.");
   const items = (await db.prepare(
-    `SELECT i.idx, i.title AS planned_title, i.goal, i.status AS item_status, i.lesson_id, i.error, i.updated_at,
-            l.title AS lesson_title, l.status AS lesson_status, l.version, l.archived_at, l.updated_at AS lesson_updated_at
+    `SELECT i.idx, i.title AS planned_title, i.goal, i.status AS item_status, i.lesson_id, i.error, i.meta, i.updated_at,
+            l.title AS lesson_title, l.status AS lesson_status, l.version, l.archived_at, l.updated_at AS lesson_updated_at, l.data AS lesson_data
        FROM lesson_batch_items i LEFT JOIN lessons l ON l.id = i.lesson_id AND l.family_id = i.family_id
       WHERE i.batch_id = ? AND i.family_id = ? ORDER BY i.idx`
   ).bind(id, familyId).all<any>()).results || [];
+  const student = row.student_id ? await db.prepare("SELECT id, name FROM students WHERE id = ? AND family_id = ?").bind(row.student_id, familyId).first<any>() : null;
   const lessonIds = items.map((i: any) => i.lesson_id).filter(Boolean);
   const assigned: Record<string, { student_id: string; name: string }[]> = {};
   if (lessonIds.length) {
@@ -100,16 +101,20 @@ export async function getBatch(db: DB, familyId: string, id: string, now: Date =
       if (!list.some((x) => x.student_id === r.student_id)) list.push({ student_id: r.student_id, name: r.name || "" });
     }
   }
-  const student = row.student_id ? await db.prepare("SELECT id, name FROM students WHERE id = ? AND family_id = ?").bind(row.student_id, familyId).first<any>() : null;
   const out = items.map((i: any) => {
     const lesson = i.lesson_id && i.lesson_status != null ? { status: i.lesson_status, version: i.version, archived_at: i.archived_at } : null;
     const who = (i.lesson_id && assigned[i.lesson_id]) || [];
     const state = stateOf({ status: i.item_status, updated_at: i.updated_at }, lesson, who, now);
+    const resources = lesson ? parse(i.lesson_data, {}).resources : null;
+    const meta = parse(i.meta, {});
     return {
       index: i.idx, title: i.lesson_title || i.planned_title, planned_title: i.planned_title, goal: i.goal,
       state, lesson_id: lesson ? i.lesson_id : null, lesson_status: i.lesson_status ?? null, assigned_to: who,
       error: state === "failed" ? (i.item_status === "generating" ? "Writing this lesson was interrupted. You can try it again." : i.error || "This lesson could not be written.") : null,
       updated_at: i.lesson_updated_at || i.updated_at,
+      // What the review page needs to treat this as a freshly written lesson, wherever the parent opens it from.
+      meta: { ...meta, assumptions: { ...(meta.assumptions || {}), ...(student?.name ? { child: student.name } : {}) } },
+      videos: Array.isArray(resources) ? resources.filter((r: any) => r?.type === "video").length : 0,
     };
   });
   return { ok: true, batch: { id: row.id, title: row.title, student, created_at: row.created_at, dismissed_at: row.dismissed_at, items: out, counts: countStates(out) } };
@@ -189,7 +194,8 @@ export async function draftBatchItem(
     return r;
   }
   await db.batch([
-    db.prepare("UPDATE lesson_batch_items SET status = 'done', lesson_id = ?, error = NULL, updated_at = ? WHERE batch_id = ? AND idx = ?").bind(r.lesson.id, ts, batchId, index),
+    db.prepare("UPDATE lesson_batch_items SET status = 'done', lesson_id = ?, error = NULL, meta = ?, updated_at = ? WHERE batch_id = ? AND idx = ?")
+      .bind(r.lesson.id, JSON.stringify({ assumptions: r.assumptions || {}, warnings: (r.warnings || []).slice(0, 20), generation: r.generation || null }), ts, batchId, index),
     db.prepare("UPDATE lesson_batches SET updated_at = ? WHERE id = ?").bind(ts, batchId),
   ]);
   return { ...r, reused: false };

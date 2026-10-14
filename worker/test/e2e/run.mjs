@@ -824,6 +824,11 @@ await step("AI lesson set: open, edit, assign, move around and refresh without l
   ok((await page.textContent("[data-testid=batch-nav-pos]")).includes("Lesson 3 of 5"), "position on lesson 3");
   await page.click("[data-testid=batch-nav-next]");
   await page.waitForFunction(() => document.querySelector("[data-testid=batch-nav-pos]")?.textContent.includes("Lesson 4 of 5"));
+  // the next lesson gets its own video panel, not the previous lesson's
+  await page.waitForSelector("[data-testid=video-suggestions]");
+  await page.waitForFunction(() => document.querySelector("[data-testid=review-assumptions]")?.textContent.includes("Made for Ivy"), null, { timeout: 15000 }).catch(() => { throw new Error("next lesson lost its context"); });
+  const vid = await api("GET", `/lessons/${ids[3]}`, pt);
+  ok((await api("PUT", `/lessons/${ids[3]}`, pt, { ...vid.json, resources: [{ type: "video", title: "Planets", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }] })).status === 200, "add video");
   // 7-8. away to the Parent Hub and back into the drafts
   await page.click("[data-testid=nav-dashboard] >> visible=true");
   await page.waitForSelector("[data-testid=drafts-awaiting]");
@@ -836,11 +841,15 @@ await step("AI lesson set: open, edit, assign, move around and refresh without l
   await page.reload();
   await page.waitForSelector("[data-testid=batch-nav-pos]");
   ok((await page.textContent("[data-testid=batch-nav-pos]")).includes("Lesson 2 of 5"), "set lost after refresh");
+  await page.waitForSelector("[data-testid=video-suggestions]");
+  await page.waitForFunction(() => document.querySelector("[data-testid=review-assumptions]")?.textContent.includes("Made for Ivy"), null, { timeout: 15000 }).catch(() => { throw new Error("lesson context lost after refresh"); });
   await page.click("[data-testid=batch-nav-all]");
   await page.waitForSelector("[data-testid=lesson-drafts]");
   const s = await states();
-  ok(s[0].includes("Assigned") && s.slice(1).every(x => x.includes("Ready for review")), "final states: " + s.join("|"));
+  ok(s[0].includes("Assigned") && [1, 2, 4].every(i => s[i].includes("Ready for review")) && s[3].includes("Edited"), "final states: " + s.join("|"));
   ok((await page.textContent("[data-testid=draft-row-0]")).includes("Planets 1 — my version"), "edit lost after refresh");
+  ok((await page.textContent("[data-testid=draft-videos-3]")).includes("1 video"), "video on lesson 4 not shown on the set");
+  ok((await page.textContent("[data-testid=draft-videos-1]")).includes("No video yet"), "lesson 2 video status");
   await shot("ai-set-after-refresh", page);
   // nothing duplicated
   const lessons = (await api("GET", "/lessons", pt)).json;

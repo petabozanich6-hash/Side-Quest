@@ -95,12 +95,17 @@ export default function LessonReview() {
   const { id } = useParams();
   const loc = useLocation();
   const nav = useNavigate();
-  const info = loc.state || {};
   // Opened from a set of AI lessons: keep the parent inside that set (it survives refreshes because it is in the URL).
   const [params] = useSearchParams();
   const batchId = params.get("batch") || "";
-  const [batchChild, setBatchChild] = useState("");
-  useEffect(() => { if (batchId) api.get(`/ai/batches/${batchId}`).then(r => setBatchChild(r.data.student?.id || "")).catch(() => {}); }, [batchId]);
+  const [batch, setBatch] = useState(null);
+  useEffect(() => { if (batchId) api.get(`/ai/batches/${batchId}`).then(r => setBatch(r.data)).catch(() => setBatch(null)); }, [batchId, id]);
+  const batchChild = batch?.student?.id || "";
+  // How the lesson was made (child, year, length, warnings) normally arrives with the navigation and is lost on a
+  // refresh or when moving between lessons. Lessons in a set keep it on the server, so every one of them gets the same
+  // review as a single lesson, including the automatic video suggestions.
+  const item = batch?.items.find(i => i.lesson_id === id);
+  const info = loc.state || (item ? { ...item.meta, studentId: batchChild || undefined } : {});
   const home = batchId ? draftsPath(batchId) : "/parent/lessons";
   const [lesson, setLesson] = useState(null);
   const [students, setStudents] = useState([]);
@@ -128,7 +133,7 @@ export default function LessonReview() {
   const btn = "rounded-full px-5 py-2.5 text-sm font-semibold flex items-center gap-2 disabled:opacity-50";
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-4 max-w-5xl" data-testid="lesson-review">
-      {batchId ? <BatchNav batchId={batchId} lessonId={id} /> : <Link to="/parent/lessons" className="flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> My lessons</Link>}
+      {batchId ? <BatchNav batch={batch} batchId={batchId} lessonId={id} /> : <Link to="/parent/lessons" className="flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> My lessons</Link>}
       <div>
         <h1 className="font-display text-3xl font-bold text-slate-900">Here is your lesson</h1>
         <p className="text-sm text-slate-600 mt-1" data-testid="review-assumptions">
@@ -158,11 +163,11 @@ export default function LessonReview() {
         <a href={`/print/lesson/${id}`} target="_blank" rel="noreferrer" className={`${btn} border border-slate-400 bg-white`} data-testid="r-print"><Printer size={16} /> Printable version</a>
       </div>
 
-      {refine && <RefinePanel lessonId={id} onApplied={l => { setLesson(l); }} onClose={() => setRefine(false)} />}
+      {refine && <RefinePanel key={id} lessonId={id} onApplied={l => { setLesson(l); }} onClose={() => setRefine(false)} />}
 
-      <OutcomePanel lesson={lesson} onSaved={setLesson} />
+      <OutcomePanel key={lesson.id} lesson={lesson} onSaved={setLesson} />
 
-      <VideoSuggestions lesson={lesson} onSaved={setLesson} auto={!!info.assumptions} />
+      <VideoSuggestions key={lesson.id} lesson={lesson} onSaved={setLesson} auto={!!info.assumptions} />
 
       <LessonDocument lesson={lesson} view="parent" />
 

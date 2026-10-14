@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS lesson_batch_items (
   status TEXT NOT NULL DEFAULT 'pending', -- pending | generating | done | failed
   lesson_id TEXT,
   error TEXT,
+  meta TEXT NOT NULL DEFAULT '{}', -- JSON: how the lesson was made (child, year, length, delivery, theme, warnings, generation report)
   updated_at TEXT NOT NULL,
   PRIMARY KEY (batch_id, idx)
 );

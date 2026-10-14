@@ -77,6 +77,14 @@ test("acceptance: five lessons, edit + save + assign one, move around, 'refresh'
   // each lesson was written as its own part of the sequence
   assert.ok(ai.calls.some((c) => JSON.stringify(c[1]).includes("lesson 3 of 5")));
 
+  // Every lesson keeps how it was made, so its review (and automatic video suggestions) works however it is opened.
+  for (const it of b.items) {
+    assert.equal(it.meta.assumptions.child, "Ivy");
+    assert.ok(it.meta.generation && it.meta.generation.calls > 0, JSON.stringify(it.meta));
+    assert.ok(Array.isArray(it.meta.warnings));
+    assert.equal(it.videos, 0);
+  }
+
   // 1-3. Open lesson 1, edit it, save the draft.
   const l1 = lb.lessonOut(db.raw.prepare("SELECT * FROM lessons WHERE id = ?").get(ids[0]));
   const edited = await lb.updateLesson(db, fam, ids[0], { ...l1, title: "Planets 1 — my version", status: "draft" }, NOW);
@@ -109,6 +117,14 @@ test("acceptance: five lessons, edit + save + assign one, move around, 'refresh'
   assert.equal(b.items[0].title, "Planets 1 — my version", "edits kept");
   assert.deepEqual(b.items[0].assigned_to.map((x) => x.name), ["Ivy"]);
   assert.equal(b.counts.awaiting_review, 4);
+  // A video added to a later lesson shows on the set, and is not lost by moving around.
+  const l3 = lb.lessonOut(db.raw.prepare("SELECT * FROM lessons WHERE id = ?").get(ids[2]));
+  const withVideo = await lb.updateLesson(db, fam, ids[2], { ...l3, resources: [{ type: "video", title: "Planets", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }] }, NOW);
+  assert.ok(withVideo.ok, JSON.stringify(withVideo));
+  b = (await bat.getBatch(db, fam, id, NOW)).batch;
+  assert.equal(b.items[2].videos, 1);
+  assert.equal(b.items[2].state, "saved");
+  assert.equal(b.items[2].meta.assumptions.child, "Ivy", "context survives an edit");
   assert.equal(lessonsIn(db, fam), 5, "no duplicate lessons");
   assert.equal(assignmentsIn(db, fam), 1, "no duplicate assignments");
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_batches WHERE family_id = ?").get(fam).n, 1, "no duplicate sets");

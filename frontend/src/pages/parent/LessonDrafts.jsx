@@ -21,9 +21,7 @@ export const reviewPath = (bid, lessonId) => `/parent/lessons/${lessonId}/review
 export const draftsPath = bid => `/parent/lessons/drafts/${bid}`;
 
 /** Shown at the top of a lesson opened from a set: back to the whole set, and previous / next lesson. */
-export function BatchNav({ batchId, lessonId }) {
-  const [batch, setBatch] = useState(null);
-  useEffect(() => { api.get(`/ai/batches/${batchId}`).then(r => setBatch(r.data)).catch(() => setBatch(null)); }, [batchId, lessonId]);
+export function BatchNav({ batch, batchId, lessonId }) {
   if (!batch) return null;
   const open = batch.items.filter(i => i.lesson_id);
   const pos = open.findIndex(i => i.lesson_id === lessonId);
@@ -150,6 +148,7 @@ function BatchView({ id }) {
               <p className="font-display font-bold text-slate-900">{i.title}</p>
               {i.goal && i.state !== "failed" && <p className="text-xs text-slate-500 mt-0.5">{i.goal}</p>}
               {i.state === "failed" && <p className="text-sm text-rose-700 mt-0.5" data-testid={`draft-error-${i.index}`}>{i.error}</p>}
+              {i.lesson_id && i.state !== "archived" && <p className="text-xs text-slate-500 mt-0.5" data-testid={`draft-videos-${i.index}`}>{i.videos ? `🎬 ${i.videos} video${i.videos > 1 ? "s" : ""} added` : "No video yet: open Review to see suggestions"}</p>}
               {i.state === "assigned" && <p className="text-xs text-emerald-800 mt-0.5">Assigned to {i.assigned_to.map(a => a.name || "your child").join(", ")}</p>}
               {i.state === "archived" && <p className="text-xs text-slate-500 mt-0.5">You archived this lesson. Restore it from My lessons (show archived).</p>}
             </div>
