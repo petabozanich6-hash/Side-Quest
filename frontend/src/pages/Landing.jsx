@@ -23,7 +23,7 @@ export default function Landing() {
       <Leaf className="absolute right-20 bottom-32" size={80} color="#C8893B"/>
 
       <header className="relative z-10">
-        <div className="mx-auto max-w-7xl flex items-center justify-between px-6 py-5">
+        <div className="mx-auto max-w-7xl flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between px-5 sm:px-6 py-5">
           <div className="flex items-center gap-2.5">
             <div className="h-10 w-10 rounded-xl grid place-items-center" style={{backgroundColor:"#1F3B2D"}}><Compass className="text-cream" size={22} style={{color:"#F5EFE0"}}/></div>
             <div>
@@ -31,10 +31,10 @@ export default function Landing() {
               <div className="text-[10px] uppercase tracking-widest text-stone-500 font-semibold -mt-0.5">Learning</div>
             </div>
           </div>
-          <nav className="flex items-center gap-3 sm:gap-4">
-            <Link to="/child-login" className="rounded-full px-5 py-2.5 text-sm font-bold hover:translate-y-[-1px] transition shadow-sm" data-testid="nav-child-login" style={{backgroundColor:"#C77B5B", color:"#FFF9EE"}}>Student sign in</Link>
-            <Link to="/login" className="hidden sm:inline text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-login" style={{color:"#52473A"}}>Parent sign in</Link>
-            <Link to="/register" className="rounded-full px-5 py-2.5 text-sm font-semibold hover:translate-y-[-1px] transition shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="nav-register">Create a family</Link>
+          <nav className="flex w-full sm:w-auto flex-wrap items-center gap-2 sm:gap-4" aria-label="Main navigation">
+            <Link to="/child-login" className="rounded-full px-3 sm:px-5 py-2.5 text-sm font-bold hover:translate-y-[-1px] transition shadow-sm" data-testid="nav-child-login" style={{backgroundColor:"#C77B5B", color:"#FFF9EE"}}>Student sign in</Link>
+            <Link to="/login" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-login" style={{color:"#52473A"}}>Parent sign in</Link>
+            <Link to="/register" className="rounded-full px-3 sm:px-5 py-2.5 text-sm font-semibold hover:translate-y-[-1px] transition shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="nav-register">Create a family</Link>
           </nav>
         </div>
       </header>
@@ -42,15 +42,15 @@ export default function Landing() {
       <section className="relative z-10 mx-auto max-w-7xl px-6 pt-10 pb-16 grid lg:grid-cols-5 gap-10 items-center">
         <div className="lg:col-span-3">
           <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest" style={{backgroundColor:"#E8E2D1", color:"#4A5D3A"}}>
-            <Sparkles size={13}/> Australia-wide · Homeschool
+            <Sparkles size={13}/> Made for homeschool families across Australia
           </span>
           <h1 className="mt-6 font-display font-bold tracking-tight leading-[1.02]" style={{color:"#1F3B2D"}}>
-            <span className="block text-5xl md:text-6xl lg:text-7xl">Grow curious minds.</span>
-            <span className="block text-4xl md:text-5xl lg:text-6xl italic mt-2" style={{color:"#4A5D3A"}}>Keep the record.</span>
+            <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl">Less homeschool admin.</span>
+            <span className="block text-4xl sm:text-5xl md:text-5xl lg:text-6xl italic mt-2" style={{color:"#4A5D3A"}}>More room to explore.</span>
           </h1>
           <p className="mt-6 text-lg leading-relaxed max-w-2xl" style={{color:"#52473A"}}>
-            A gentle, serious homeschool platform for your whole family — Kindergarten through Year 12.
-            Parents plan with calm. Children learn with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span> who grows as they do.
+            Side-Quest brings planning, lesson creation, children's learning and progress records together in one friendly place.
+            Tell the AI Lesson Builder what you want to teach, review the draft it creates, and give your child a lesson to enjoy in their own space — complete with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span>.
           </p>
 
           <div className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl" data-testid="who-is-here">
@@ -74,10 +74,11 @@ export default function Landing() {
             </div>
           </div>
 
-          <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Try it free for 7 days. Early access: invited families only.</p>
+          <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Try the free preview for 7 days. No card needed — one child, two lessons and two active assignments.</p>
           <p className="mt-7 text-xs leading-relaxed max-w-xl" style={{color:"#7A6E5D"}}>
-            A planning, teaching and record-keeping tool. Parents remain responsible for selecting an appropriate
-            program and for meeting the home education requirements of your own state or territory. Side Quest does not provide legal or compliance advice.
+            Available to families across Australia. NSW syllabus outcome mapping is supported first; other states and territories
+            can use the planning and record-keeping tools, but must check their own curriculum and registration requirements.
+            Side-Quest supports your teaching; it does not replace a parent or provide legal or compliance advice.
           </p>
         </div>
         <div className="lg:col-span-2 relative">
@@ -112,23 +113,71 @@ export default function Landing() {
 
       <section className="relative z-10 mx-auto max-w-7xl px-6 py-14">
         <div className="text-center mb-10">
-          <div className="font-script text-3xl mb-1" style={{color:"#C77B5B"}}>Everything in one calm place</div>
+          <div className="font-script text-3xl mb-1" style={{color:"#C77B5B"}}>A little less juggling, a lot more learning</div>
           <h2 className="font-display text-3xl md:text-4xl font-bold" style={{color:"#1F3B2D"}}>Plan. Teach. <span className="hand-underline">Record.</span></h2>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-          <Feature icon={Users} title="One family, every stage" desc="Add your children at any stage. Different subject levels per child. Private by family." tint="#4A5D3A"/>
-          <Feature icon={Sparkles} title="Build your own lessons" desc="Write lessons in plain words with teaching, activities, questions and quizzes. Save them to your family library and assign them to any child." tint="#C77B5B"/>
-          <Feature icon={Camera} title="Evidence portfolio" desc="Typed answers, photos of paper work, scans, audio, video — stored privately for parent review." tint="#6B8A5B"/>
-          <Feature icon={CalendarDays} title="Family calendar" desc="Month, week and day planning. Catch-up days, excursions, and co-ops." tint="#C8893B"/>
-          <Feature icon={BookOpen} title="Curriculum audit" desc="Spot lessons without outcomes, missing evidence, unapproved resources and coverage gaps." tint="#4A5D3A"/>
-          <Feature icon={Printer} title="Print & offline" desc="Every lesson prints beautifully. Complete on paper, upload a photo later." tint="#D4A574"/>
+          <Feature icon={Users} title="Your family, one home base" desc="Set up child profiles, plan their learning and keep each child’s work organised privately in your family account." tint="#4A5D3A"/>
+          <Feature icon={Sparkles} title="AI Lesson Builder" desc="Describe a topic in your own words. Side-Quest drafts the teaching, examples, activities and quiz to save you prep time. You review and adjust it before assigning." tint="#C77B5B"/>
+          <Feature icon={Camera} title="Evidence Backpack" desc="Keep approved lesson work and everyday learning records together, add notes and supporting files, and prepare a portfolio when you need it." tint="#6B8A5B"/>
+          <Feature icon={CalendarDays} title="A plan you can actually change" desc="Use the family calendar to organise lessons, outings and everyday plans. Change the schedule when life changes — because it will." tint="#C8893B"/>
+          <Feature icon={BookOpen} title="Progress and NSW outcomes" desc="Review completed work, spot gaps in your records and track NSW syllabus outcomes. Outcome mapping for other states is not yet supported." tint="#4A5D3A"/>
+          <Feature icon={Printer} title="Online or hands-on" desc="Children can work through lessons on screen. Print a lesson or record hands-on learning when you want to step away from the screen." tint="#D4A574"/>
           <Feature icon={ShieldCheck} title="Private by design" desc="No public profiles. Each child only sees their own work. Family data stays isolated." tint="#6B8A5B"/>
-          <Feature icon={Compass} title="Side Quests" desc="Seasonal, cultural and current-interest lessons mapped to genuine curriculum outcomes." tint="#C77B5B"/>
+          <Feature icon={Compass} title="A little bit of magic" desc="Children earn XP with their pocket pets, and families can choose optional seasonal surprises for their pet rooms." tint="#C77B5B"/>
         </div>
       </section>
 
+      <section className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 pb-16">
+        <div className="text-center mb-8">
+          <h2 className="font-display text-3xl md:text-4xl font-bold" style={{color:"#1F3B2D"}}>How your family's Side-Quest works</h2>
+          <p className="mt-3 text-stone-600 max-w-2xl mx-auto">One shared adventure, with the right tools for parents and children.</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-5">
+          <div className="paper-card p-6">
+            <span className="text-xs font-bold uppercase tracking-wider" style={{color:"#4A5D3A"}}>For parents</span>
+            <h3 className="font-display text-xl font-bold mt-2" style={{color:"#1F3B2D"}}>Plan and prepare, without starting from zero</h3>
+            <p className="text-sm text-stone-600 leading-relaxed mt-3">Your dashboard brings lessons, assignments, calendar plans and work waiting for review into view. Build a lesson yourself, or let AI create a first draft for you to check.</p>
+          </div>
+          <div className="paper-card p-6">
+            <span className="text-xs font-bold uppercase tracking-wider" style={{color:"#4A5D3A"}}>For children</span>
+            <h3 className="font-display text-xl font-bold mt-2" style={{color:"#1F3B2D"}}>Their own place to learn</h3>
+            <p className="text-sm text-stone-600 leading-relaxed mt-3">Children sign in to a separate, family-private dashboard to find assignments, work through lessons, submit answers and grow their pocket pet as they learn.</p>
+          </div>
+          <div className="paper-card p-6">
+            <span className="text-xs font-bold uppercase tracking-wider" style={{color:"#4A5D3A"}}>For the journey</span>
+            <h3 className="font-display text-xl font-bold mt-2" style={{color:"#1F3B2D"}}>Keep the little wins, too</h3>
+            <p className="text-sm text-stone-600 leading-relaxed mt-3">The Evidence Backpack gathers parent-approved work and notes from real-life learning. Review progress, track outcomes where supported, and export records for your portfolio.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 py-14" aria-labelledby="membership-heading">
+        <div className="text-center mb-8">
+          <span className="font-script text-2xl" style={{color:"#C77B5B"}}>One family, one membership</span>
+          <h2 id="membership-heading" className="font-display text-3xl md:text-4xl font-bold mt-2" style={{color:"#1F3B2D"}}>Pick a rhythm that suits your family</h2>
+          <p className="text-sm text-stone-600 mt-3 max-w-2xl mx-auto">Every paid option includes the same Family Membership features. No per-child or per-subject charges. Prices in Australian dollars.</p>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+          {[
+            { label: "Weekly", price: "$3", every: "per week" },
+            { label: "Fortnightly", price: "$6", every: "every 2 weeks" },
+            { label: "Monthly", price: "$13", every: "per month" },
+            { label: "Yearly", price: "$130", every: "per year" },
+          ].map((option) => (
+            <div key={option.label} className="paper-card p-4 sm:p-6 text-center">
+              <h3 className="font-display text-lg font-semibold" style={{color:"#1F3B2D"}}>{option.label}</h3>
+              <p className="font-display text-3xl sm:text-4xl font-bold mt-3" style={{color:"#1F3B2D"}}>{option.price}</p>
+              <p className="text-xs sm:text-sm text-stone-600 mt-1">AUD {option.every}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-5 text-center text-sm text-stone-600">Start with a 7-day, card-free preview. Full access includes AI lesson drafting, subject to fair-use limits. Cancel your membership any time; paid access continues through the current billing period.</p>
+        <div className="mt-6 flex justify-center"><Link to="/register" className="rounded-full px-6 py-3 font-semibold text-sm shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}}>Start your free preview</Link></div>
+      </section>
+
       <section className="relative z-10 mx-auto max-w-5xl px-6 py-16">
-        <div className="paper-card-dark p-10 relative overflow-hidden" style={{backgroundColor:"#1F3B2D"}}>
+        <div className="paper-card-dark p-6 sm:p-10 relative overflow-hidden" style={{backgroundColor:"#1F3B2D"}}>
           <Fern className="absolute -right-4 -bottom-4" size={200} color="#6B8A5B"/>
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
             <Pet species="owl" size={160}/>
@@ -149,7 +198,7 @@ export default function Landing() {
       </section>
 
       <footer className="relative z-10 border-t py-10 text-center text-xs" style={{color:"#7A6E5D", borderColor:"#D4C8A8"}}>
-        <p>Side Quest Learning · Built for homeschool families across Australia.</p>
+        <p>Side-Quest Learning · Built for homeschool families across Australia.</p>
         <p className="mt-1 font-script text-base" style={{color:"#C77B5B"}}>Made with care for homeschool families.</p>
       </footer>
     </div>
