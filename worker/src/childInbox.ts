@@ -74,11 +74,11 @@ export function registerChildInbox(app: App, g: Guards) {
       await ensureColumn(c.env);
       const sid = c.get("user").id;
       const cheers = (await c.env.DB.prepare(
-        "SELECT id, from_name, message, emoji, created_at FROM cheers WHERE student_id = ? AND seen = 0 ORDER BY created_at DESC LIMIT 20"
+        "SELECT id, from_user_id, from_name, message, emoji, created_at FROM cheers WHERE student_id = ? AND seen = 0 ORDER BY created_at DESC LIMIT 20"
       ).bind(sid).all<any>()).results ?? [];
       const cutoff = new Date(Date.now() - RECENT_DAYS * 86400000).toISOString();
       const subs = (await c.env.DB.prepare(
-        "SELECT s.id, s.assignment_id, s.status, s.parent_feedback, s.next_step, s.reviewed_at, l.title AS lesson_title FROM submissions s LEFT JOIN lessons l ON l.id = s.lesson_id WHERE s.student_id = ? AND s.reviewed_at IS NOT NULL AND s.reviewed_at > ? AND s.child_seen_at IS NULL ORDER BY s.reviewed_at DESC LIMIT 20"
+        "SELECT s.id, s.assignment_id, s.status, s.reviewed_by, s.parent_feedback, s.next_step, s.reviewed_at, l.title AS lesson_title FROM submissions s LEFT JOIN lessons l ON l.id = s.lesson_id WHERE s.student_id = ? AND s.reviewed_at IS NOT NULL AND s.reviewed_at > ? AND s.child_seen_at IS NULL ORDER BY s.reviewed_at DESC LIMIT 20"
       ).bind(sid, cutoff).all<any>()).results ?? [];
 
       const items = [
@@ -93,6 +93,7 @@ export function registerChildInbox(app: App, g: Guards) {
             message: r.parent_feedback || "",
             next_step: r.next_step || "",
             status: r.status,
+            reviewed_by: r.reviewed_by,
             created_at: r.reviewed_at,
           };
         }),
@@ -101,6 +102,7 @@ export function registerChildInbox(app: App, g: Guards) {
           kind: "cheer",
           id: r.id,
           from_name: r.from_name,
+          from_user_id: r.from_user_id,
           message: r.message,
           emoji: r.emoji,
           created_at: r.created_at,
