@@ -44,6 +44,7 @@ export default function Landing() {
           <span className="inline-flex max-w-full items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wide sm:tracking-widest" style={{backgroundColor:"#E8E2D1", color:"#4A5D3A"}}>
             <Sparkles size={13}/> Made for homeschool families across Australia
           </span>
+          <div className="mt-4 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold tracking-wide shadow-sm" style={{backgroundColor:"#FFF1D6",borderColor:"#D4A574",color:"#735025"}} role="status" data-testid="coming-soon-badge"><Sparkles size={14}/> Look out for our app coming soon!</div>
           <h1 className="mt-6 font-display font-bold tracking-tight leading-[1.02]" style={{color:"#1F3B2D"}}>
             <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl">Less time planning.</span>
             <span className="block text-4xl sm:text-5xl md:text-5xl lg:text-6xl italic mt-2" style={{color:"#4A5D3A"}}>More time learning together.</span>
