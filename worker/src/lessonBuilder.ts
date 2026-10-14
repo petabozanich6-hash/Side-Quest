@@ -285,6 +285,11 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
     const curriculum_refs = list(b.curriculum_refs, 10, "Curriculum references").map((x, i) => text(x, 200, `Curriculum reference ${i + 1}`, true));
 
     const known = knownOutcomeCodes();
+    const seenW = new Set<string>();
+    const hoard_words = (Array.isArray(b.hoard_words) ? b.hoard_words : []).map((w: any) => {
+      const word = String(typeof w === "string" ? w : w?.word ?? "").trim().replace(/[^A-Za-z'-]/g, "").toLowerCase().slice(0, 30);
+      return { word, hint: typeof w === "object" && w ? String(w.hint ?? "").trim().slice(0, 160) : "" };
+    }).filter((w: { word: string }) => w.word.length >= 3 && !seenW.has(w.word) && (seenW.add(w.word), true)).slice(0, 12);
     const outcome_codes = [...new Set((Array.isArray(b.outcome_codes) ? b.outcome_codes : []).map((x: unknown) => String(x).trim()).filter((x: string) => known.has(x)))].slice(0, 8);
 
     const builder = {
@@ -298,6 +303,7 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
       duration_minutes: duration,
       curriculum_refs,
       outcome_codes,
+      hoard_words,
       delivery,
       teaching_plan: text(b.teaching_plan, 3000, "Teaching plan"),
       why_it_matters: text(b.why_it_matters, 2000, "Why it matters"),

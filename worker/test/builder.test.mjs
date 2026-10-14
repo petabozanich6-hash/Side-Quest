@@ -959,3 +959,13 @@ test("model replies with raw line breaks and trailing commas are repaired, and a
   assert.equal(out.code, "AI_FAILED");
   assert.match(out.detail, /section 2: reply was not valid JSON/);
 });
+
+test("spelling words for the Word Hoard: cleaned, single words only, kept with hints, and never carry answers", () => {
+  const spec = { topic: "Negative integers", area: "Mathematics", year: "Year 7", goal: "", minutes: 30, delivery: "independent", interests: "", needs: "", notes: "" };
+  const d = aid.normaliseDraft({ ...JSON.parse(aiReply().response), hoard_words: [{ word: "negative", hint: "neg-a-tive" }, "integer", { word: "two words" }, { word: "x2" }, { word: "a" }, null] }, spec);
+  assert.deepEqual(d.hoard_words.map((w) => w.word), ["negative", "integer"]);
+  const r = lb.sanitizeLessonInput({ ...d, hoard_words: [...d.hoard_words, { word: "Negative" }, { word: "Opposite!", hint: "o-p-p" }], status: "ready" });
+  assert.ok(r.ok);
+  assert.deepEqual(r.value.builder.hoard_words.map((w) => w.word), ["negative", "integer", "opposite"]);
+  assert.equal(r.value.builder.hoard_words[0].hint, "neg-a-tive");
+});

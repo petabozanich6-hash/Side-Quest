@@ -277,6 +277,7 @@ export function normaliseDraft(p: any, spec: Spec) {
     offline_alternative: str(p.offline_alternative, 4000),
     parent_notes: "",
     duration_minutes: Math.min(600, minutes),
+    hoard_words: arr(p.hoard_words, 12).map((w: any) => ({ word: str(typeof w === "string" ? w : w?.word, 30), hint: str(typeof w === "object" ? w?.hint : "", 160) })).filter((w) => /^[A-Za-z][A-Za-z'-]{2,}$/.test(w.word)),
     resources: [], curriculum_refs: [] as string[], outcome_codes: [] as string[],
   };
 }
@@ -482,7 +483,8 @@ export function designPrompt(sp: Spec): string {
     ' "objectives":[2-4 strings starting "I can ..."],',
     ' "key_words":[{"word":string,"meaning":string}] 3-8 words, child-friendly meanings,',
     ` "sequence":[exactly ${z.sections} objects {"heading":string,"idea":string (the ONE new idea this part teaches),"how":string (the concrete example, model or real-world context used to teach it, and the reasoning that shows WHY it works),"key_points":[3-5 strings: the specific facts, rules or reasoning this part must make clear]}] ordered so that each idea needs only the ones before it,`,
-    ` "worked_examples":[exactly ${z.workedExamples} objects {"title":string,"problem":string (the exact problem with real numbers or words),"skill":string (what this example models)}] from easiest to hardest, each modelling a different skill or situation,`,
+    ` "hoard_words":[5-10 objects {"word":string,"hint":string}] the SPELLING words the student should learn from this lesson: single words only (no spaces or numbers), the lesson's key vocabulary and any tricky words in it, suited to the year level; the hint is a short memory trick for spelling that word,
+ "worked_examples":[exactly ${z.workedExamples} objects {"title":string,"problem":string (the exact problem with real numbers or words),"skill":string (what this example models)}] from easiest to hardest, each modelling a different skill or situation,`,
     ' "misconceptions":[{"mistake":string,"fix":string (the correct reasoning)}] 2-4 genuine likely errors,',
     ' "practice_plan":string (which skills guided practice and independent practice must cover, easiest to hardest)}',
   ].join("\n");
@@ -711,7 +713,7 @@ export async function generateStaged(
   if (!pa || !pb) return null;
   const merged: Record<string, any> = {
     title: design.title, teaching_plan: design.teaching_plan, why_it_matters: design.why_it_matters, prior_knowledge: design.prior_knowledge,
-    objectives: design.objectives, key_words: design.key_words, misconceptions: design.misconceptions,
+    objectives: design.objectives, key_words: design.key_words, hoard_words: design.hoard_words, misconceptions: design.misconceptions,
     introduction: frame.introduction, consolidation: frame.consolidation, texts,
     sections, worked_examples: examples, ...pa, ...pb,
   };

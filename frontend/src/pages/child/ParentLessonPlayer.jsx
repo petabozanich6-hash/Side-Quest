@@ -146,6 +146,8 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const keyWords = l.key_words || [];
   const videos = (l.resources || []).filter((r) => r.type === "video" && (r.embed_url || r.url));
   const links = (l.resources || []).filter((r) => r.type !== "video" && r.url);
+  // Spelling words for the Word Hoard: the lesson's own list, or its single-word key words for lessons made before lists existed.
+  const hoard = (Array.isArray(l.hoard_words) && l.hoard_words.length ? l.hoard_words : keyWords.map((k) => ({ word: k.word }))).map((w) => ({ word: String(w?.word ?? w ?? "").trim(), hint: w?.hint || "" })).filter((w) => /^[A-Za-z][A-Za-z'-]{2,}$/.test(w.word)).slice(0, 12);
   const hasQuiz = quiz.some((q) => q.type !== "short_answer" && Array.isArray(q.options));
 
   const locked = ["submitted", "accepted", "demonstrated", "completed"].includes(a.status);
@@ -186,6 +188,18 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
     } catch (e) { toast.error(e.response?.data?.detail || "Could not upload that file"); }
     finally { setUploading(false); if (fileRef.current) fileRef.current.value = ""; }
   };
+
+  const [hoardAdded, setHoardAdded] = useState([]);
+  useEffect(() => {
+    // The moment the child opens the lesson, its spelling words go into their Word Hoard (words they already have are skipped).
+    if (preview || !hoard.length) return;
+    api.post("/word-bank/words", { words: hoard, source: "lesson", lesson_id: l.id || a.lesson_id })
+      .then((res) => {
+        const added = (res.data?.added || []).map((w) => w.word);
+        if (added.length) { setHoardAdded(added); toast.success(`${added.length} new word${added.length === 1 ? "" : "s"} added to your Word Hoard 🐾`); }
+      }).catch(() => {});
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (!preview && a.status === "not_started") api.put(`/assignments/${a.id}/status?status=opened`).catch(() => {});
@@ -290,6 +304,13 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
         )}
         {prior.length > 0 && <div><p className="font-bold text-sm">You should already know:</p><ul className="list-disc pl-5 text-sm text-stone-700">{prior.map((m, i) => <li key={i}>{m}</li>)}</ul></div>}
         {materials.length > 0 && <div className="rounded-xl border p-3 bg-white" style={border}><p className="font-bold text-sm">You will need:</p><ul className="list-disc pl-5 text-sm text-stone-700">{materials.map((m, i) => <li key={i}>{m}</li>)}</ul></div>}
+        {hoard.length > 0 && (
+          <div className="rounded-xl border p-3 bg-white" style={border} data-testid="hoard-words">
+            <p className="font-bold text-sm">🐾 Spelling words for your Word Hoard</p>
+            <ul className="mt-1 space-y-1 text-base">{hoard.map((w, i) => <li key={i}><b>{w.word}</b>{w.hint ? <span className="text-stone-600"> — {w.hint}</span> : null}</li>)}</ul>
+            {!preview && <Link to="/child/word-hoard" className="mt-2 inline-block text-sm font-bold underline" style={{ color: "#4A5D3A" }} data-testid="hoard-link">Practise them in your Word Hoard →</Link>}
+          </div>
+        )}
         <p className="text-sm text-stone-600">Take the lesson one screen at a time. Your work saves as you go, so you can stop and come back.</p>
       </div>
     );
@@ -398,6 +419,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
         </div>
         {summary}
         {last?.reflection && <p className="text-sm text-stone-700"><b>Your note:</b> {last.reflection}</p>}
+        {hoard.length > 0 && <p className="text-base">🐾 Your new spelling words are in your Word Hoard. <Link to="/child/word-hoard" className="font-bold underline" style={{ color: "#4A5D3A" }}>Practise them</Link></p>}
         <Link to="/child" className="inline-block rounded-full px-6 py-2.5 text-sm font-bold" style={BTN} data-testid="complete-home">Back to my quests</Link>
       </div>
     );

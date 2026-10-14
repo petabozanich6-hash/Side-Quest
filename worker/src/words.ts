@@ -346,8 +346,10 @@ const addWords = async (
   const seedKey = await getLessonSeedKey(db, lessonId, familyId);
 
   for (const raw of data.words.slice(0, 100)) {
-    const word = cleanWord(raw);
+    const isObj = raw && typeof raw === "object";
+    const word = cleanWord(isObj ? (raw as any).word : raw);
     if (!word) continue;
+    const ownHint = isObj ? String((raw as any).hint ?? "").trim().slice(0, 200) || null : null;
     const exists = await db
       .prepare("SELECT id FROM word_bank WHERE student_id = ? AND family_id = ? AND word = ?")
       .bind(studentId, familyId, word)
@@ -362,7 +364,7 @@ const addWords = async (
       family_id: familyId,
       student_id: studentId,
       word,
-      hint: explicitHint || getStaticWordHint(word, seedKey),
+      hint: ownHint || explicitHint || getStaticWordHint(word, seedKey),
       stage: "wild",
       streak: 0,
       correct_days: [],

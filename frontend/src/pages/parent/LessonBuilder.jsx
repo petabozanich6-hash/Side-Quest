@@ -14,7 +14,7 @@ const STAGE_OF = { "Kindergarten / Foundation": "ES1", "Year 1": "S1", "Year 2":
 
 const blank = () => ({
   title: "", learning_area: "", year_level: "", objectives: [""], sections: [{ heading: "", body: "" }],
-  activities: [], questions: [], quiz: [], resources: [], duration_minutes: "", curriculum_refs: "", outcome_codes: [],
+  activities: [], questions: [], quiz: [], resources: [], duration_minutes: "", curriculum_refs: "", outcome_codes: [], hoard_words: [],
   offline_alternative: "", answer_key: "", parent_notes: "", status: "draft",
   delivery: "independent", introduction: "", materials: "", worked_examples: [], guided_practice: [],
   support: "", extension: "", parent_script: "", evidence_suggestions: "",
@@ -47,7 +47,7 @@ function fromServer(l) {
     activities: (l.activities || []).map(a => ({ ...a, tasks: a.tasks || [] })), questions: l.questions || [], quiz: l.quiz || [],
     resources: (l.resources || []).map(r => ({ ...r, type: r.type === "video" ? "video" : "link", title: r.title || "", url: r.url || "" })),
     key_words: (l.key_words || []).map(w => `${w.word} = ${w.meaning}`).join("\n"),
-    duration_minutes: l.duration_minutes ?? "", curriculum_refs: (l.curriculum_refs || []).join("\n"), outcome_codes: l.outcome_codes || [],
+    duration_minutes: l.duration_minutes ?? "", curriculum_refs: (l.curriculum_refs || []).join("\n"), outcome_codes: l.outcome_codes || [], hoard_words: l.hoard_words || [],
     offline_alternative: l.offline_alternative && !l.activities?.some(a => a.offline) ? l.offline_alternative : (l.offline_alternative || ""),
     answer_key: l.answer_key || "", parent_notes: l.parent_notes || "", status: l.status || "draft",
     delivery: l.delivery === "parent_guided" ? "parent_guided" : "independent",
@@ -77,7 +77,7 @@ function toServer(f, status) {
     key_words: lines(f.key_words).map(x => { const i = x.indexOf("="); return i > 0 ? { word: x.slice(0, i).trim(), meaning: x.slice(i + 1).trim() } : null; }).filter(w => w && w.word && w.meaning),
     duration_minutes: f.duration_minutes === "" ? null : Number(f.duration_minutes),
     curriculum_refs: f.curriculum_refs.split("\n").map(s => s.trim()).filter(Boolean),
-    outcome_codes: f.outcome_codes || [],
+    outcome_codes: f.outcome_codes || [], hoard_words: f.hoard_words || [],
     offline_alternative: f.offline_alternative, answer_key: f.answer_key, parent_notes: f.parent_notes,
     delivery: f.delivery, introduction: f.introduction,
     materials: lines(f.materials),
