@@ -107,8 +107,8 @@ function PackTab() {
     const readRows = pack.reading.map((r) => `<tr><td>${esc(r.read_date)}</td><td>${esc(r.title)}${r.author ? ` - ${esc(r.author)}` : ""}${r.verified_by_parent ? " (verified by parent)" : ""}</td><td>${esc(r.book_type)}</td><td>${esc((r.reading_mode || "").replace(/_/g, " "))}</td><td>${esc(r.duration_minutes || "")}</td></tr>`).join("");
     const reflection = pack.coverage.map((c) => `<p><strong>${esc(c.area)}:</strong> ${c.samples} dated sample${c.samples === 1 ? "" : "s"} (${c.lessons} lesson${c.lessons === 1 ? "" : "s"}, ${c.life} life-learning). ${c.evidenced.length ? `Outcomes evidenced: ${esc(c.evidenced.join(", "))}.` : "No outcomes evidenced in this period."} ${c.status !== "Good" ? "More evidence is planned for the next period." : ""}</p>`).join("");
     const planLine = pack.plan ? `${esc(pack.plan.title)} (${esc(pack.plan.period_start)} to ${esc(pack.plan.period_end)})` : "No learning plan recorded for this period";
-    const html = `<html><head><title>AP Visit Pack - ${esc(student.name)}</title><style>${css}</style></head><body>
-<h1>Home Schooling Evidence Pack</h1><p class="meta">Prepared for the Authorised Person visit</p>
+    const html = `<html><head><title>Evidence Review Pack - ${esc(student.name)}</title><style>${css}</style></head><body>
+<h1>Home Education Evidence Pack</h1><p class="meta">For parent review and record-keeping. Check your local authority's reporting requirements.</p>
 <table><tr><th>Student</th><td>${esc(student.name)}</td><th>Stage</th><td>${esc(student.stage || "")}</td></tr><tr><th>Period covered</th><td>${esc(start)} to ${esc(end)}</td><th>Learning plan</th><td>${planLine}</td></tr></table>
 <h2>1. Summary</h2><p>${pack.samples.length} dated work samples and activities, ${pack.reading.length} reading entries (${pack.readMinutes} minutes) and ${pack.lifeMinutes} minutes of recorded life learning in this period.</p>
 <h2>2. Planned versus evidenced by learning area</h2><table><tr><th>Learning area</th><th>Lessons</th><th>Life learning</th><th>Planned outcomes</th><th>Outcomes evidenced</th><th>Not yet evidenced</th></tr>${covRows}</table>
@@ -118,7 +118,7 @@ function PackTab() {
 <h2>6. Period reflection</h2>${reflection}${notes ? `<p><strong>Parent notes:</strong> ${esc(notes).replace(/\n/g, "<br/>")}</p>` : ""}
 <h2>7. Parent declaration</h2><p>I declare that this pack is a true record of the educational program provided to ${esc(student.name)} during the period above.</p>
 <div class="sig"><div>Parent / guardian signature</div><div>Date</div></div>
-<p style="margin-top:30px;font-size:10px;color:#666">Generated from records kept in Side Quest. Work samples and files are stored in the platform and can be shown on request.</p>
+<p style="margin-top:30px;font-size:10px;color:#666">Generated from records kept in Side-Quest. Any outcome codes and learning-area categories must be checked against the family's own curriculum and review requirements.</p>
 </body></html>`;
     w.document.write(html); w.document.close(); w.print();
   };
@@ -128,7 +128,7 @@ function PackTab() {
   return (
     <div className="space-y-5" data-testid="ap-pack">
       <p className="text-sm text-slate-600 max-w-3xl">
-        Pulls together approved work, life learning, reading and your learning plan for a chosen period, and prints it as an evidence pack for the Authorised Person. Nothing here needs retyping.
+        Bring together approved work, life learning, reading and your learning plan for a chosen period. Print a record of your family's learning to review or adapt to your own state or territory's requirements. Existing outcome codes may still refer to NSW.
       </p>
       <div className="grid md:grid-cols-4 gap-3 items-end">
         <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">Student
@@ -171,7 +171,7 @@ function PackTab() {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-slate-500">"Good" means {GUIDE_SAMPLES} or more dated samples in the period. This is a rule of thumb used by many home educators, not a NESA rule. Fix "Thin" and "None" areas before the visit. Reading counts as English evidence in the printed log, not in this table.</p>
+          <p className="text-xs text-slate-500">"Good" means {GUIDE_SAMPLES} or more dated samples in the period. This is a platform guide, not an official rule for any Australian state or territory. Fix "Thin" and "None" areas before the visit. Reading counts as English evidence in the printed log, not in this table.</p>
 
           <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500">Parent notes for the reflection (optional)
             <textarea rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm normal-case bg-white" data-testid="pack-notes"/>
@@ -198,8 +198,8 @@ export default function AuditPage() {
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="audit-page">
       <header>
-        <h1 className="font-display text-3xl font-bold text-slate-900">Audit and AP Visit Pack</h1>
-        <div className="mt-3 flex gap-2">{tabBtn("pack", "AP Visit Pack", FileCheck)}{tabBtn("audit", "Curriculum audit", ShieldAlert)}</div>
+        <h1 className="font-display text-3xl font-bold text-slate-900">Learning records and review pack</h1>
+        <div className="mt-3 flex gap-2">{tabBtn("pack", "Evidence review pack", FileCheck)}{tabBtn("audit", "Curriculum audit", ShieldAlert)}</div>
       </header>
 
       {tab === "pack" && <PackTab />}

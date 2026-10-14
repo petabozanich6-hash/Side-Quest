@@ -87,9 +87,9 @@ export default function LifeLearningPage() {
         <div className="font-script text-2xl" style={{color:"#C77B5B"}}>Everyday learning counts</div>
         <h1 className="font-display text-4xl font-bold" style={{color:"#1F3B2D"}}>Life Learning</h1>
         <p className="mt-2 text-sm text-stone-600 max-w-3xl leading-relaxed">
-          Baking, bushwalking, animal care, building, music, budgeting — NESA home-schooling recognises that genuine learning
-          happens everywhere. Log what you did, upload a photo or two, and let AI suggest which curriculum outcomes it maps to.
-          You review and accept each mapping.
+          Baking, bushwalking, animal care, building, music, budgeting — learning happens everywhere.
+          Capture what your family discovered, add a photo or note, and keep a record in your Evidence Backpack.
+          Optional AI outcome suggestions currently use NSW codes, so check them against your jurisdiction's curriculum.
         </p>
       </header>
 
@@ -213,7 +213,7 @@ export default function LifeLearningPage() {
                 </button>
               </div>
               {!analysis ? (
-                <p className="text-sm text-stone-700">Click "Map to outcomes" to get AI-suggested NSW curriculum links across learning areas. You accept each one.</p>
+                <p className="text-sm text-stone-700">AI currently suggests matches from an existing NSW outcome list. Only accept references that are relevant to your child's educational program, and check them against your state or territory's curriculum.</p>
               ) : (
                 <>
                   <div className="text-sm mb-3"><strong>Summary:</strong> {analysis.summary}</div>

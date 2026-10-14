@@ -75,16 +75,16 @@ export default function Landing() {
 
           <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Start with seven days free, no card or automatic charge. Your preview includes one child, two lessons and two active assignments.</p>
           <p className="mt-7 text-xs leading-relaxed max-w-xl" style={{color:"#7A6E5D"}}>
-            Available to families across Australia. NSW syllabus outcome mapping is supported first; other states and territories
-            can use the planning and record-keeping tools, but must check their own curriculum and registration requirements.
-            Side-Quest supports your teaching; it does not replace a parent or provide legal or compliance advice.
+            Made for home-educating families across Australia. You'll find official curriculum,
+            registration and record-keeping resources for your state or territory in the Curriculum hub.
+            You remain responsible for checking local requirements; Side-Quest supports your teaching, not replaces it.
           </p>
         </div>
         <div className="lg:col-span-2 relative">
           <div className="paper-card p-6 relative">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <div className="font-mono text-[10px] uppercase tracking-wider text-stone-500">S4 · Year 8 · Science</div>
+                <div className="font-mono text-[10px] uppercase tracking-wider text-stone-500">Year 8 · Science</div>
                 <div className="font-display text-lg font-bold" style={{color:"#1F3B2D"}}>Fair tests</div>
               </div>
               <span className="pill pill-in-progress">In progress</span>
@@ -96,8 +96,8 @@ export default function Landing() {
               <div className="flex items-center gap-2"><Dot c="#D4C8A8"/>Parent review</div>
             </div>
             <div className="mt-5 rounded-xl p-3" style={{backgroundColor:"#F5EFE0", border:"1px dashed #D4C8A8"}}>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-1">Linked outcome</div>
-              <div className="font-mono text-xs" style={{color:"#1F3B2D"}}>SC4-WS-01 · Working Scientifically</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-1">Learning goal</div>
+              <div className="font-mono text-xs" style={{color:"#1F3B2D"}}>Design and explain a fair investigation</div>
             </div>
           </div>
           <div className="absolute -bottom-6 -right-4 paper-card p-3 flex items-center gap-2">
@@ -120,7 +120,7 @@ export default function Landing() {
           <Feature icon={Sparkles} title="AI Lesson Builder" desc="Have a topic in mind? Let Side-Quest draft the explanations, examples, activities and questions. You check and adjust the lesson instead of starting from a blank page. Included with Family Membership." tint="#C77B5B"/>
           <Feature icon={Camera} title="Evidence Backpack" desc="Gather the work you’ve reviewed, everyday learning notes and progress records in one place. Print or export a portfolio when you need to show the learning journey." tint="#6B8A5B"/>
           <Feature icon={CalendarDays} title="A plan you can actually change" desc="Use the family calendar to organise lessons, outings and everyday plans. Change the schedule when life changes — because it will." tint="#C8893B"/>
-          <Feature icon={BookOpen} title="Progress and NSW outcomes" desc="See what’s been completed, where more evidence might help, and how learning connects to NSW syllabus outcomes. Other states’ outcome mapping is not yet available." tint="#4A5D3A"/>
+          <Feature icon={BookOpen} title="Progress and learning records" desc="See completed work, review progress and organise evidence for your family's learning journey. Find your state's official curriculum and registration resources in the Curriculum hub." tint="#4A5D3A"/>
           <Feature icon={Printer} title="Online or hands-on" desc="Children can work through lessons on screen. Print a lesson or record hands-on learning when you want to step away from the screen." tint="#D4A574"/>
           <Feature icon={ShieldCheck} title="Private by design" desc="No public profiles. Each child only sees their own work. Family data stays isolated." tint="#6B8A5B"/>
           <Feature icon={Compass} title="A little bit of magic" desc="Children earn XP and grow their pocket pets as they learn. Families can also opt into seasonal surprises — a little fun along the way." tint="#C77B5B"/>
