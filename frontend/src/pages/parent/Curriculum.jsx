@@ -51,25 +51,26 @@ export default function Curriculum() {
           <strong> all eight Australian states and territories</strong>, so you can find the right starting point.
         </p>
         <p className="text-sm text-stone-600 max-w-3xl">
-          Browse every jurisdiction below for now. A future account update will use the state or
-          territory selected when your family signs up to show the most relevant guidance automatically.
-          <strong> No location is saved from this page.</strong>
+          Explore your state's or territory's official resources below. All eight are available in this directory;
+          each family can find the guidance that matters to them.
         </p>
       </header>
 
       <section className="paper-card p-4 sm:p-6 border-l-4" style={{ borderLeftColor: "#4A5D3A" }} aria-labelledby="mapping-heading">
         <div className="flex items-center gap-2 mb-2">
           <ShieldCheck size={20} className="text-emerald-800 shrink-0" aria-hidden="true" />
-          <h2 id="mapping-heading" className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>What Side-Quest supports right now</h2>
+          <h2 id="mapping-heading" className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>One platform for families all around Australia</h2>
         </div>
         <div className="grid md:grid-cols-2 gap-4 text-sm text-stone-700 leading-relaxed">
-          <p><strong>For every Australian family:</strong> create and assign lessons, use the family calendar, follow progress and collect learning records in your Evidence Backpack.</p>
-          <p><strong>NSW outcome mapping only:</strong> the built-in outcome codes, suggested matches, stage-based subject patterns and AP visit pack are based on NSW. Those features are <strong>not yet adapted</strong> for other jurisdictions.</p>
+          <p>Plan your learning, create and assign lessons, use your family calendar, see progress and collect the little wins in your Evidence Backpack — wherever you live.</p>
+          <p>Use the official guidance below for your state or territory to decide which curriculum, registration steps and learning records apply to your family.</p>
         </div>
         <p className="mt-4 text-sm leading-relaxed text-stone-600">
-          The official authority for your state or territory decides what registration, curriculum and
-          evidence it requires. Side-Quest can help you organise information, but it cannot register
-          your child, certify a learning program or guarantee an inspection outcome.
+          Side-Quest helps you organise learning, not register a child or certify a program.
+          <strong> A current technical limitation:</strong> some automatic outcome suggestions,
+          stage-based subject lists and a review-pack format still use NSW reference material.
+          These are not yet jurisdiction-aware and shouldn't be relied upon for another state's
+          curriculum or reporting requirements.
         </p>
       </section>
 
@@ -110,7 +111,7 @@ export default function Curriculum() {
               <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800">
                 <MapPinned size={15} aria-hidden="true" /> {place.code}
               </span>
-              {place.code === "NSW" && <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800">NSW outcome tools available</span>}
+
             </div>
             <div>
               <h2 id={`jurisdiction-heading-${place.code}`} className="font-display text-2xl sm:text-3xl font-bold" style={{ color: "#1F3B2D" }}>{place.name}</h2>
@@ -124,12 +125,7 @@ export default function Curriculum() {
             <div className="grid md:grid-cols-2 gap-3">
               {place.links.map((resource) => <ResourceLink key={`${place.code}-${resource.title}`} resource={resource} />)}
             </div>
-            {place.code !== "NSW" && (
-              <p className="text-xs leading-relaxed text-stone-600">
-                Side-Quest's existing automatic outcome suggestions and syllabus stages are NSW-based.
-                Use your local guidance above when planning and reviewing a program for {place.name}.
-              </p>
-            )}
+
           </section>
         ))}
       </div>
@@ -146,7 +142,7 @@ export default function Curriculum() {
           <Link to="/parent/evidence" className="rounded-full bg-emerald-900 px-5 py-2.5 text-sm font-semibold text-white">Open Evidence Backpack</Link>
           <Link to="/parent/lessons" className="rounded-full border border-stone-400 bg-white px-5 py-2.5 text-sm font-semibold text-stone-800">My lessons</Link>
         </div>
-        <p className="text-xs leading-relaxed text-stone-500">Official links and rules can change. This directory was reviewed in October 2026. Always confirm the latest details on the linked authority's website.</p>
+        <p className="text-xs leading-relaxed text-stone-500">Official links and rules can change. Always check the current details on the linked authority's website.</p>
       </section>
     </div>
   );
