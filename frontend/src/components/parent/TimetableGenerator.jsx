@@ -18,6 +18,7 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
   const [days, setDays] = useState([1,2,3,4,5]);
   const [weekStart, setWeekStart] = useState(nextMonday());
   const [minutes, setMinutes] = useState(45);
+  const [startTime, setStartTime] = useState("09:00");
   const [sessions, setSessions] = useState(1);
   const [draft, setDraft] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -32,7 +33,11 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
       subjectList.forEach((title,index) => {
         for(let repeat=0;repeat<sessions;repeat++) {
           const date=dateInWeek(weekStart, dayOrder[(index*sessions+repeat)%dayOrder.length]);
-          if (!existing.has([date,sid,title].join("|"))) result.push({key: sid+"-"+index+"-"+repeat,student_id:sid,title,date,duration_minutes:Number(minutes),event_type:"lesson",notes:"Generated timetable; editable in the family calendar."});
+          const offset = result.filter(x=>x.student_id===sid && x.date===date).length * Number(minutes);
+          const total = Number(startTime.split(":")[0])*60 + Number(startTime.split(":")[1]) + offset;
+          if (total + Number(minutes) > 24*60) continue;
+          const slot = String(Math.floor(total/60)).padStart(2,"0")+":"+String(total%60).padStart(2,"0");
+          if (!existing.has([date,sid,title].join("|")) && !events.some(e=>e.date===date && e.student_id===sid && e.start_time===slot)) result.push({key: sid+"-"+index+"-"+repeat,student_id:sid,title,date,start_time:slot,duration_minutes:Number(minutes),event_type:"lesson",notes:"Generated timetable; editable in the family calendar."});
         }
       });
     }
@@ -70,15 +75,16 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
         </div>)}
       </div>
       <div><p className="text-sm font-semibold mb-2">Learning days</p><div className="flex flex-wrap gap-3">{[0,1,2,3,4,5,6].map(d=><label className="flex gap-1 items-center text-sm" key={d}><input type="checkbox" checked={days.includes(d)} onChange={e=>{setDays(v=>e.target.checked?[...v,d]:v.filter(x=>x!==d));setDraft(null);}}/>{DAY_NAMES[d]}</label>)}</div></div>
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-4">
         <label className="text-sm">Week commencing<input type="date" className="block w-full border rounded p-2 mt-1" value={weekStart} onChange={e=>{setWeekStart(e.target.value);setDraft(null);}}/></label>
+        <label className="text-sm">First lesson starts<input type="time" className="block w-full border rounded p-2 mt-1" value={startTime} onChange={e=>{setStartTime(e.target.value);setDraft(null);}}/></label>
         <label className="text-sm">Minutes per session<select className="block w-full border rounded p-2 mt-1" value={minutes} onChange={e=>{setMinutes(Number(e.target.value));setDraft(null);}}>{[15,30,45,60,90].map(m=><option key={m} value={m}>{m} minutes</option>)}</select></label>
         <label className="text-sm">Sessions per subject<select className="block w-full border rounded p-2 mt-1" value={sessions} onChange={e=>{setSessions(Number(e.target.value));setDraft(null);}}>{[1,2,3,4,5].map(n=><option key={n} value={n}>{n} each week</option>)}</select></label>
       </div>
       <button type="button" onClick={makeDraft} className="rounded-full bg-emerald-800 text-white px-5 py-2 font-semibold">Generate preview</button>
       {draft && <div className="space-y-3">
         <p className="font-semibold">{draft.length} new sessions proposed (existing matching entries are skipped)</p>
-        <div className="max-h-64 overflow-auto border rounded-lg divide-y">{draft.map((d,i)=><div className="p-2 text-sm flex flex-wrap items-center gap-2" key={d.key}><span className="w-32">{students.find(s=>s.id===d.student_id)?.name}</span><input aria-label="Session title" className="flex-1 min-w-24 border rounded p-1" value={d.title} onChange={e=>setDraft(old=>old.map((x,k)=>k===i?{...x,title:e.target.value}:x))}/><input type="date" aria-label="Session date" value={d.date} onChange={e=>setDraft(old=>old.map((x,k)=>k===i?{...x,date:e.target.value}:x))}/><button type="button" onClick={()=>setDraft(old=>old.filter((_,k)=>k!==i))} className="text-rose-700">Remove</button></div>)}</div>
+        <div className="max-h-64 overflow-auto border rounded-lg divide-y">{draft.map((d,i)=><div className="p-2 text-sm flex flex-wrap items-center gap-2" key={d.key}><span className="w-32">{students.find(s=>s.id===d.student_id)?.name}</span><input aria-label="Session title" className="flex-1 min-w-24 border rounded p-1" value={d.title} onChange={e=>setDraft(old=>old.map((x,k)=>k===i?{...x,title:e.target.value}:x))}/><input type="time" aria-label="Session time" value={d.start_time} onChange={e=>setDraft(old=>old.map((x,k)=>k===i?{...x,start_time:e.target.value}:x))}/><input type="date" aria-label="Session date" value={d.date} onChange={e=>setDraft(old=>old.map((x,k)=>k===i?{...x,date:e.target.value}:x))}/><button type="button" onClick={()=>setDraft(old=>old.filter((_,k)=>k!==i))} className="text-rose-700">Remove</button></div>)}</div>
         <p className="text-xs text-slate-500">Calendar entries do not automatically create lessons or assignments. You can attach lessons separately. Saving adds new events; it never deletes previous work.</p>
         <button type="button" disabled={saving||!draft.length} onClick={save} className="rounded-full bg-emerald-800 text-white px-5 py-2 font-semibold disabled:opacity-50">{saving?"Saving…":"Add approved sessions to calendar"}</button>
       </div>}
