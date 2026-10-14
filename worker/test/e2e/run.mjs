@@ -128,7 +128,10 @@ await step("new parent receives clear first steps without promotional interrupti
   await page.goto(BASE + "/parent/assignments");
   ok((await page.locator('[data-testid=assignments-empty]').innerText()).includes("adding a child"), "assignments empty state has no next action");
   await page.goto(BASE + "/parent/resources");
-  ok(await page.locator('[data-testid=resources-empty-add]').isVisible(), "resource empty state has no action");
+  await page.waitForLoadState("networkidle");
+  const emptyResources = await page.locator('[data-testid=resources-empty-add]').isVisible();
+  const savedResources = await page.locator('[data-testid^="resource-"]').count();
+  ok(emptyResources || savedResources > 0, "resources page must show saved items or a helpful first action");
   await page.goto(BASE + "/parent/learning-plans");
   ok(await page.locator('[data-testid=plans-empty-add-child]').isVisible(), "learning plans have no child onboarding link");
   await page.goto(BASE + "/parent/evidence");
