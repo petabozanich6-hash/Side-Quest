@@ -24,7 +24,32 @@
   },
   {
    "heading": "The number line",
-   "body": "A number line is the best picture for integers. Draw a straight horizontal line and mark zero near the middle. Positive integers go to the right of zero in equal steps: 1, 2, 3 and so on. Negative integers go to the left of zero in equal steps: −1, −2, −3 and so on. The spacing must be equal, so −3 is exactly as far to the left of zero as 3 is to the right. As you move to the right, numbers get greater. As you move to the left, numbers get smaller. That is the single most important rule in this lesson, so say it to yourself: right is greater, left is smaller. For example, −3 is three steps left of zero. If you are at −3 and move four steps right you land on 1, because −2, −1, 0, 1 are four steps. You will use the symbols > (greater than) and < (less than): since 1 is to the right of −3, we write 1 > −3, and since −3 is to the left of 1, we write −3 < 1."
+   "body": "A number line is the best picture for integers. Draw a straight horizontal line and mark zero near the middle. Positive integers go to the right of zero in equal steps: 1, 2, 3 and so on. Negative integers go to the left of zero in equal steps: −1, −2, −3 and so on. The spacing must be equal, so −3 is exactly as far to the left of zero as 3 is to the right. As you move to the right, numbers get greater. As you move to the left, numbers get smaller. That is the single most important rule in this lesson, so say it to yourself: right is greater, left is smaller. For example, −3 is three steps left of zero. If you are at −3 and move four steps right you land on 1, because −2, −1, 0, 1 are four steps. You will use the symbols > (greater than) and < (less than): since 1 is to the right of −3, we write 1 > −3, and since −3 is to the left of 1, we write −3 < 1.",
+   "visual": {
+    "type": "number_line",
+    "min": -10,
+    "max": 10,
+    "step": 1,
+    "points": [
+     {
+      "at": -7,
+      "label": "−7"
+     },
+     {
+      "at": -3,
+      "label": "−3"
+     },
+     {
+      "at": 0,
+      "label": "0"
+     },
+     {
+      "at": 4,
+      "label": "4"
+     }
+    ],
+    "caption": "Numbers further to the right are greater. −3 is greater than −7."
+   }
   },
   {
    "heading": "Comparing and ordering integers",
@@ -36,7 +61,36 @@
   },
   {
    "heading": "Adding and subtracting on the number line",
-   "body": "Now let's calculate. A number line turns adding and subtracting into movement. Start at the first number. To add a positive number, move to the right. To subtract a positive number, move to the left. Take −3 + 5: start at −3 and move 5 steps right. The steps land on −2, −1, 0, 1, 2, so the answer is 2. Notice that three of the five steps were used to reach zero and the remaining two went past zero. Now take −2 − 4: start at −2 and move 4 steps left, landing on −3, −4, −5, −6, so −2 − 4 = −6. Subtracting made the number smaller, as it should. Finally take 4 − 7: start at 4 and move 7 steps left. Four steps take you to zero, and three more take you below zero to −3. So 4 − 7 = −3. A useful strategy is to 'cross zero in two moves': count the steps to zero first, then the steps that are left over. Always check that your answer is on the side of zero you expect: if you move left from a positive number and travel further than the number's size, you must end up negative."
+   "body": "Now let's calculate. A number line turns adding and subtracting into movement. Start at the first number. To add a positive number, move to the right. To subtract a positive number, move to the left. Take −3 + 5: start at −3 and move 5 steps right. The steps land on −2, −1, 0, 1, 2, so the answer is 2. Notice that three of the five steps were used to reach zero and the remaining two went past zero. Now take −2 − 4: start at −2 and move 4 steps left, landing on −3, −4, −5, −6, so −2 − 4 = −6. Subtracting made the number smaller, as it should. Finally take 4 − 7: start at 4 and move 7 steps left. Four steps take you to zero, and three more take you below zero to −3. So 4 − 7 = −3. A useful strategy is to 'cross zero in two moves': count the steps to zero first, then the steps that are left over. Always check that your answer is on the side of zero you expect: if you move left from a positive number and travel further than the number's size, you must end up negative.",
+   "visual": {
+    "type": "number_line",
+    "min": -10,
+    "max": 10,
+    "step": 1,
+    "points": [
+     {
+      "at": -6,
+      "label": "start"
+     },
+     {
+      "at": 3,
+      "label": "end"
+     }
+    ],
+    "jumps": [
+     {
+      "from": -6,
+      "to": 0,
+      "label": "+6"
+     },
+     {
+      "from": 0,
+      "to": 3,
+      "label": "+3"
+     }
+    ],
+    "caption": "−6 + 9: jump 6 to reach zero, then 3 more to land on 3."
+   }
   }
  ],
  "worked_examples": [
@@ -50,7 +104,35 @@
     "Place zero after the negatives and the positive number last.",
     "The order from coldest to warmest is −9, −4, −1, 0, 3."
    ],
-   "answer": "−9°C, −4°C, −1°C, 0°C, 3°C."
+   "answer": "−9°C, −4°C, −1°C, 0°C, 3°C.",
+   "visual": {
+    "type": "number_line",
+    "min": -10,
+    "max": 4,
+    "step": 1,
+    "points": [
+     {
+      "at": -9,
+      "label": "−9"
+     },
+     {
+      "at": -4,
+      "label": "−4"
+     },
+     {
+      "at": -1,
+      "label": "−1"
+     },
+     {
+      "at": 0,
+      "label": "0"
+     },
+     {
+      "at": 3,
+      "label": "3"
+     }
+    ]
+   }
   },
   {
    "title": "Adding across zero",
@@ -91,9 +173,10 @@
  ],
  "guided_practice": [
   {
-   "prompt": "Write each situation as an integer: (a) 12 metres below sea level, (b) a temperature of 6 degrees above zero, (c) a debt of $50.",
+   "prompt": "Write each situation as an integer: (a) 12 metres below sea level, (b) a temperature of 6 degrees above zero, (c) a debt of $50. (a) ___ (b) ___ (c) ___",
    "hint": "Below zero and debts are negative. 'Above' is positive.",
-   "answer": "(a) −12 (b) 6 (c) −50."
+   "kind": "blank",
+   "answer": "-12|6|-50"
   },
   {
    "prompt": "Which is greater, −8 or −5? Use a number line or temperatures to explain.",
@@ -101,14 +184,24 @@
    "answer": "−5 is greater because it is further right on the number line (closer to zero). −8°C is colder."
   },
   {
-   "prompt": "Order from least to greatest: 3, −7, 0, −2, −10, 5.",
-   "hint": "Negatives first, zero, then positives. Which negative is furthest left?",
+   "prompt": "Put these in order from least to greatest: 3, −7, 0, −2, −10, 5.",
+   "hint": "Negatives first, then zero, then positives. Which negative is furthest left?",
+   "kind": "order",
+   "options": [
+    "−10",
+    "−7",
+    "−2",
+    "0",
+    "3",
+    "5"
+   ],
    "answer": "−10, −7, −2, 0, 3, 5."
   },
   {
-   "prompt": "What is the opposite of −12? What is |−12|?",
+   "prompt": "The opposite of −12 is ___ and |−12| = ___.",
    "hint": "Opposites are the same distance from zero on the other side.",
-   "answer": "The opposite of −12 is 12. |−12| = 12."
+   "kind": "blank",
+   "answer": "12|12"
   },
   {
    "prompt": "Work out −6 + 9.",
@@ -116,82 +209,188 @@
    "answer": "3 (6 steps to reach zero, then 3 more to the right)."
   },
   {
-   "prompt": "Work out −4 − 5. Then solve this: a diver is at −15 m and swims up 6 m. Where is she now?",
-   "hint": "Subtract means move left. Swimming up is moving towards zero, so add.",
-   "answer": "−4 − 5 = −9. The diver is at −9 m (−15 + 6)."
+   "prompt": "Work out −4 − 5.",
+   "hint": "Subtracting means moving left on the number line.",
+   "answer": "−9 (start at −4 and move 5 steps left)."
+  },
+  {
+   "prompt": "A diver is at −15 m and swims up 6 m. Where is she now (in metres)?",
+   "hint": "Swimming up is moving towards zero, so add.",
+   "answer": "−9 (−15 + 6 = −9)."
+  },
+  {
+   "prompt": "Which temperature is the coldest?",
+   "hint": "The coldest is the least. Which is furthest left?",
+   "kind": "choice",
+   "options": [
+    "−3°C",
+    "−9°C",
+    "0°C",
+    "4°C"
+   ],
+   "answer": "−9°C"
   }
  ],
  "activities": [
   {
    "title": "Temperature detective",
-   "instructions": "Imagine these overnight low temperatures were recorded on one winter night: Charlotte Pass −8°C, Thredbo −5°C, Canberra −2°C, Hobart 3°C, Sydney 9°C. Use the table to answer the tasks below on paper. Draw a number line from −10 to 10 first if it helps.",
    "offline": false,
+   "instructions": "These overnight low temperatures were recorded on one winter night: Charlotte Pass −8°C, Thredbo −5°C, Canberra −2°C, Hobart 3°C, Sydney 9°C. Use the number line to help.",
+   "visual": {
+    "type": "number_line",
+    "min": -10,
+    "max": 10,
+    "step": 1,
+    "points": [
+     {
+      "at": -8,
+      "label": "Charlotte Pass"
+     },
+     {
+      "at": -5,
+      "label": "Thredbo"
+     },
+     {
+      "at": -2,
+      "label": "Canberra"
+     },
+     {
+      "at": 3,
+      "label": "Hobart"
+     },
+     {
+      "at": 9,
+      "label": "Sydney"
+     }
+    ],
+    "caption": "Overnight low temperatures (°C)."
+   },
    "tasks": [
     {
-     "prompt": "Write the five places in order from coldest to warmest.",
-     "answer": "Charlotte Pass (−8), Thredbo (−5), Canberra (−2), Hobart (3), Sydney (9)."
+     "prompt": "Put the places in order from coldest to warmest.",
+     "kind": "order",
+     "options": [
+      "Charlotte Pass (−8°C)",
+      "Thredbo (−5°C)",
+      "Canberra (−2°C)",
+      "Hobart (3°C)",
+      "Sydney (9°C)"
+     ],
+     "answer": "Charlotte Pass, Thredbo, Canberra, Hobart, Sydney."
     },
     {
-     "prompt": "Which places were below freezing (below 0°C)?",
-     "answer": "Charlotte Pass, Thredbo and Canberra."
+     "prompt": "How many of these places were below freezing (below 0°C)?",
+     "answer": "3 (Charlotte Pass, Thredbo and Canberra).",
+     "hint": "Which temperatures are negative?"
     },
     {
-     "prompt": "By the next morning Canberra warmed by 6 degrees. What was its temperature? (Calculate −2 + 6.)",
-     "answer": "4°C"
+     "prompt": "By the next morning Canberra warmed by 6 degrees. What was its temperature in °C? (Calculate −2 + 6.)",
+     "answer": "4 (°C)",
+     "hint": "Start at −2 and move 6 steps right."
     },
     {
-     "prompt": "Hobart then cooled by 5 degrees from 3°C. What was its temperature? (Calculate 3 − 5.)",
-     "answer": "−2°C"
+     "prompt": "Hobart then cooled by 5 degrees from 3°C. What was its temperature in °C? (Calculate 3 − 5.)",
+     "answer": "-2 (°C)",
+     "hint": "Move 5 steps left from 3. You cross zero."
     },
     {
-     "prompt": "How many degrees warmer is Sydney than Charlotte Pass? Count the steps on your number line.",
-     "answer": "17 degrees (8 steps to zero and 9 more)."
+     "prompt": "How many degrees warmer is Sydney than Charlotte Pass?",
+     "answer": "17 (8 steps to zero and 9 more).",
+     "hint": "Count the steps from −8 to 0, then from 0 to 9."
     }
    ]
   },
   {
-   "title": "Draw and jump on a number line",
-   "instructions": "Use a ruler to draw a number line on paper from −10 to 10, with equal spaces and every integer labelled. Complete each task using your line.",
-   "offline": true,
+   "title": "Jump on the number line",
+   "offline": false,
+   "instructions": "Use the number line to answer each question. Start with the picture, then check with a calculation.",
+   "visual": {
+    "type": "number_line",
+    "min": -10,
+    "max": 10,
+    "step": 1,
+    "points": [
+     {
+      "at": -8,
+      "label": "−8"
+     },
+     {
+      "at": 2,
+      "label": "2"
+     }
+    ],
+    "caption": "Two starting points to practise from."
+   },
    "tasks": [
     {
-     "prompt": "Mark and label −7, 4, −2 and 9.",
-     "answer": "Each point sits at the correct step from zero; negatives are left of zero."
-    },
-    {
-     "prompt": "List two pairs of opposites from the numbers you marked and from their opposites.",
-     "answer": "For example 4 and −4, −7 and 7, 9 and −9, −2 and 2."
+     "prompt": "The opposite of 4 is ___ and the opposite of −7 is ___.",
+     "kind": "blank",
+     "answer": "-4|7"
     },
     {
      "prompt": "Start at −8 and jump 11 steps right. Where do you land?",
-     "answer": "3"
+     "answer": "3",
+     "hint": "Jump 8 to reach zero, then 3 more."
     },
     {
      "prompt": "Start at 2 and jump 9 steps left. Where do you land?",
-     "answer": "−7"
+     "answer": "-7",
+     "hint": "Jump 2 to reach zero, then 7 more to the left."
+    },
+    {
+     "prompt": "Match each pair to the true statement.",
+     "kind": "match",
+     "pairs": [
+      {
+       "left": "−2 and 6",
+       "right": "−2 is less than 6"
+      },
+      {
+       "left": "−9 and −4",
+       "right": "−9 is less than −4"
+      },
+      {
+       "left": "0 and −5",
+       "right": "0 is greater than −5"
+      }
+     ],
+     "answer": "-2<6; -9<-4; 0>-5."
+    },
+    {
+     "prompt": "In your own words, explain why −9 is less than −4.",
+     "kind": "long",
+     "answer": "−9 is further left on the number line than −4, so it is the smaller number. As a temperature, −9°C is colder than −4°C."
     }
    ]
   },
   {
    "title": "Money story",
-   "instructions": "Maya starts with a balance of $0. Calculate her balance after each event, drawing a number line for each step if you need to.",
    "offline": false,
+   "instructions": "Maya starts with a balance of $0. Work out her balance after each event. A negative balance means she owes money.",
    "tasks": [
     {
-     "prompt": "She spends $25 on a game.",
-     "answer": "−$25"
+     "prompt": "She spends $25 on a game. What is her balance in dollars?",
+     "answer": "-25 (she owes $25).",
+     "hint": "Spending moves the balance left."
     },
     {
-     "prompt": "She earns $40 for mowing lawns.",
-     "answer": "$15"
+     "prompt": "She earns $40 for mowing lawns. What is her balance in dollars?",
+     "answer": "15",
+     "hint": "Start at −25 and move 40 right."
     },
     {
-     "prompt": "She buys lunch for $18.",
-     "answer": "−$3"
+     "prompt": "She buys lunch for $18. What is her balance in dollars?",
+     "answer": "-3",
+     "hint": "15 − 18 crosses zero."
     },
     {
-     "prompt": "Her allowance of $10 arrives. Was she ever in debt, and when?",
-     "answer": "Her balance is $7. Yes: after the game (−$25) and after lunch (−$3)."
+     "prompt": "Her allowance of $10 arrives. What is her balance in dollars?",
+     "answer": "7"
+    },
+    {
+     "prompt": "Was Maya ever in debt? When?",
+     "kind": "long",
+     "answer": "Yes: after the game (−$25) and after lunch (−$3), because her balance was below zero."
     }
    ]
   }
@@ -341,5 +540,27 @@
  "answer_key": "Guided practice: 1) (a) −12 (b) 6 (c) −50  2) −5  3) −10, −7, −2, 0, 3, 5  4) 12 and 12  5) 3  6) −9 and −9 m.\nTemperature detective: order −8, −5, −2, 3, 9; below freezing Charlotte Pass, Thredbo, Canberra; Canberra 4°C; Hobart −2°C; difference 17.\nNumber line task: −8 + 11 = 3; 2 − 9 = −7.\nMoney story: −$25, $15, −$3, $7; in debt after the game and after lunch.\nQuestions: 1) three situations  2) −11, −8, −3, 0, 5  3) number line or temperature reasoning  4) 3 and −7  5) Sam moved the wrong way; −1  6) level 3.\nQuiz: 1) −10°C  2) −6 < −2  3) −14  4) 3  5) −6  6) 11.",
  "offline_alternative": "All the learning can be done on paper with a ruler. The only on-screen parts are the quiz and handing in.",
  "parent_notes": "Reference example (not AI output) showing the depth a Side-Quest lesson should reach for an independent secondary lesson.",
- "teaching_plan": "Concept: negative integers, their order, opposites and adding or subtracting a positive number using a number line. Prior knowledge: whole-number arithmetic and reading number lines or thermometers. Progression: (1) what negative numbers mean in real situations; (2) place them on a number line; (3) compare and order them, correcting the belief that a bigger digit means a bigger number; (4) opposites and absolute value as distance from zero; (5) add and subtract a positive number by moving right or left, crossing zero in two moves; (6) apply it to temperature and money. Likely misconceptions: −9 > −2, adding digits and keeping the sign, zero being negative, absolute value being negative. Assessment: ordering, explanation, calculation across zero, spot-the-mistake, real-world problem and a short quiz."
+ "teaching_plan": "Concept: negative integers, their order, opposites and adding or subtracting a positive number using a number line. Prior knowledge: whole-number arithmetic and reading number lines or thermometers. Progression: (1) what negative numbers mean in real situations; (2) place them on a number line; (3) compare and order them, correcting the belief that a bigger digit means a bigger number; (4) opposites and absolute value as distance from zero; (5) add and subtract a positive number by moving right or left, crossing zero in two moves; (6) apply it to temperature and money. Likely misconceptions: −9 > −2, adding digits and keeping the sign, zero being negative, absolute value being negative. Assessment: ordering, explanation, calculation across zero, spot-the-mistake, real-world problem and a short quiz.",
+ "key_words": [
+  {
+   "word": "integer",
+   "meaning": "A whole number that can be positive, negative or zero, like −3, 0 or 8."
+  },
+  {
+   "word": "negative number",
+   "meaning": "A number less than zero. It sits to the left of zero on a number line."
+  },
+  {
+   "word": "opposite",
+   "meaning": "The number the same distance from zero on the other side. The opposite of 5 is −5."
+  },
+  {
+   "word": "absolute value",
+   "meaning": "How far a number is from zero, ignoring direction. |−7| = 7."
+  },
+  {
+   "word": "number line",
+   "meaning": "A straight line where numbers are placed in order, with zero in the middle."
+  }
+ ]
 }

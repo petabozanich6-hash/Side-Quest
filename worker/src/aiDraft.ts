@@ -6,6 +6,7 @@
 import * as lb from "./lessonBuilder";
 import type { Result } from "./lessonBuilder";
 import { cleanPrefs, resolveRequest, stageFor } from "./aiRequest";
+import { cleanItemKind, cleanVisual, cleanKeyWords, estimateMinutes } from "./items";
 import type { StudentInfo } from "./aiRequest";
 import { REFERENCE_INDEPENDENT, REFERENCE_PARENT_GUIDED } from "./data/referenceLessons";
 
@@ -44,14 +45,16 @@ export type Spec = { topic: string; area: string; year: string; goal: string; mi
 /** How much a lesson of this length should contain. */
 export function sizeFor(minutes: number) {
   const n = Math.max(1, Math.round(minutes / 15));
+  const long = minutes >= 45;
   return {
-    sections: Math.min(7, Math.max(3, n + 1)),
-    workedExamples: minutes >= 45 ? 3 : 2,
-    guided: minutes >= 45 ? 6 : 4,
-    activities: minutes >= 45 ? 3 : 2,
-    questions: minutes >= 45 ? 6 : 4,
-    quiz: minutes >= 45 ? 6 : 4,
-    minTeachingWords: Math.round(minutes * 5),
+    sections: Math.min(8, Math.max(3, n + 2)),
+    workedExamples: long ? 4 : minutes >= 25 ? 3 : 2,
+    guided: long ? 8 : 5,
+    activities: long ? 3 : 2,
+    tasksPerActivity: long ? 5 : 4,
+    questions: long ? 6 : 4,
+    quiz: long ? 8 : 5,
+    minTeachingWords: Math.round(minutes * 9),
   };
 }
 
@@ -77,6 +80,8 @@ function systemPrompt() {
     "Teach in this progression: introduce the concept with familiar language and a concrete example; explicitly teach how it works and why; model it with complete worked examples; guide practice through increasingly challenging tasks (hints available); give independent application tasks; check understanding with questions that match exactly what was taught; consolidate the key knowledge and correct likely misunderstandings.",
     "Depth means developing understanding step by step, not repeating yourself and not padding. Every paragraph must teach something new. Do not restate the same idea in different words.",
     "Never write 'complete the worksheet', 'use the handout', 'watch a video', 'visit a website', 'research the topic' or 'discuss what you learned' unless you give everything needed: write the actual questions inside the activity's 'tasks', the actual text in 'texts', or the actual prompts and background knowledge. If something is not provided in the lesson, do not mention it. Use only household items, paper and pencils. No links or web addresses. No curriculum codes. No filler activities: each activity must have a clear educational purpose, be understandable to the student, contain everything needed to begin, connect to the learning goal, and produce evidence of learning.",
+    "The child completes the lesson ON SCREEN inside the app: reading, watching worked examples, typing answers, ordering, matching and choosing options. Everything an activity needs (the questions, the passage, the data, the table) must be written into the lesson. Hands-on or off-screen activities are only for subjects where the real thing matters (science investigations, art, cooking, PE) and are optional extras: they must still include on-screen tasks for predictions, observations, results and reflection, so the learning is recorded in the app. Never tell the child to use paper, a notebook, a printed sheet, a textbook or another website for ordinary academic work.",
+    "Teach thoroughly. Each explanation section is 120 to 220 words, covers ONE new idea, defines vocabulary where it first appears, uses a concrete example, and says why it works. A lesson of N minutes must contain about N minutes of real work for a child, counted honestly: do not stretch thin content. If the topic is too big for the time, narrow it and teach the narrower scope properly.",
     "Only state facts you are certain are true. Check every calculation. Use Australian English spelling and Australian contexts and measurements. Do not talk down to older students.",
     "Respond with ONE valid JSON object and nothing else (no markdown, no commentary). Write the keys in the order given.",
   ].join("\n");
@@ -90,12 +95,13 @@ const SCHEMA = [
   ' "prior_knowledge":[2-4 strings: what the child should already know],',
   ' "objectives":[2-4 strings starting "I can ..."],',
   ' "introduction":string (a hook of 3-6 sentences: a concrete scenario or question that makes the learning feel needed and says what will be learned),',
-  ' "sections":[{"heading":string,"body":string}] genuine developed explanations that build on each other (new idea in each one; define new vocabulary where it first appears; use concrete examples),',
-  ' "worked_examples":[{"title":string,"problem":string,"steps":[each step one full sentence showing one move with the actual numbers or words, including WHY],"answer":string}] progressing from easy to harder, fully worked,',
-  ' "guided_practice":[{"prompt":string,"hint":string,"answer":string}] increasingly challenging, similar to the worked examples; the hint nudges without giving the answer; the answer is complete and correct,',
+  ' "key_words":[{"word":string,"meaning":string}] 3-8 vocabulary words the lesson needs, in child-friendly language,',
+  ' "sections":[{"heading":string,"body":string,"visual":optional}] genuine developed explanations that build on each other (new idea in each one; define new vocabulary where it first appears; use concrete examples). A visual is optional and is data only, never drawing code: {"type":"number_line","min":number,"max":number,"step":number,"points":[{"at":number,"label":string}],"jumps":[{"from":number,"to":number,"label":string}],"caption":string} or {"type":"place_value","number":0-9999,"caption":string} or {"type":"table","headers":[strings],"rows":[[strings]],"caption":string}. Use a visual where a picture truly helps (number lines for integers and fractions, place value for whole numbers, tables for comparing facts),',
+  ' "worked_examples":[{"title":string,"problem":string,"steps":[each step one full sentence showing one move with the actual numbers or words, including WHY],"answer":string,"visual":optional (same format as sections)}] progressing from easy to harder, fully worked,',
+  ' "guided_practice":[ITEM] increasingly challenging, similar to the worked examples; the hint nudges without giving the answer; the answer is complete and correct. ITEM = {"prompt":string,"hint":string,"answer":string,"kind":optional}. When the answer is a number, START the answer with that number, then optionally explain in brackets, e.g. "57 (30 + 20 = 50; 2 + 5 = 7; 50 + 7 = 57)". kind is "number" (answer is one number), "text" (a short answer), "choice" (add "options":[2-5 strings]; answer is exactly one of them), "blank" (the prompt contains ___ for each blank; answer lists them in order separated by |), "order" (add "options":[3-6 items listed in the CORRECT order; the app shuffles them]; answer is the sequence in words), "match" (add "pairs":[{"left":string,"right":string}] 3-5 pairs; answer is a short summary), or "long" (an extended written response; answer is a model response). Mix kinds sensibly: use number for calculations, choice/order/match for concepts and vocabulary, long for explanations,',
   ' "misconceptions":[{"mistake":string,"fix":string}] 2-4 likely misunderstandings and exactly how to correct each,',
   ' "texts":[optional: {"title":string,"kind":"text"|"source"|"data","content":string}] full original reading passages, source accounts or data tables that the lesson uses,',
-  ' "activities":[{"title":string,"instructions":string (clear numbered steps),"offline":boolean,"tasks":[{"prompt":string,"answer":string}] (the actual questions or steps the student works through; at least 3 for a worksheet-style activity)}] independent application of what was taught,',
+  ' "activities":[{"title":string,"instructions":string (clear numbered steps),"offline":boolean,"visual":optional (same format as sections),"tasks":[ITEM (same format as guided practice, "hint" optional)] (the actual questions or steps the student works through on screen)}] independent application of what was taught. Non-practical activities have at least 4 tasks (5 or more for lessons of 45+ minutes). Off-screen activities (offline true) have tasks recording a prediction, observations, results and a reflection,',
   ' "questions":[{"prompt":string,"type":"short"|"long","answer_key":string}] written questions that assess exactly what was taught; answer_key is a complete correct answer or marking guidance,',
   ' "quiz":[{"question":string,"options":[3 or 4 plausible strings],"correct_index":number (zero-based),"explanation":string}] multiple choice that tests what was taught; vary which option is correct,',
   ' "consolidation":string (a wrap-up that revisits the essential knowledge and corrects the likely misunderstandings),',
@@ -209,14 +215,21 @@ const randInt = (n: number) => { const a = new Uint32Array(1); crypto.getRandomV
 
 /** Turn whatever the model returned into the shape the lesson builder accepts. Drops malformed items instead of failing. */
 export function normaliseDraft(p: any, spec: Spec) {
-  const sections = arr(p.sections, 12).map((s) => ({ heading: str(s?.heading, 200), body: str(s?.body ?? s?.text, 12000) })).filter((s) => s.body);
+  const sections = arr(p.sections, 12).map((s) => ({ heading: str(s?.heading, 200), body: str(s?.body ?? s?.text, 12000), ...(cleanVisual(s?.visual) ? { visual: cleanVisual(s?.visual) } : {}) })).filter((s) => s.body);
   const worked_examples = arr(p.worked_examples, 8).map((w) => ({
     title: str(w?.title, 200), problem: str(w?.problem, 1500), steps: strs(w?.steps, 15, 800), answer: str(w?.answer, 800),
+    ...(cleanVisual(w?.visual) ? { visual: cleanVisual(w?.visual) } : {}),
   })).filter((w) => w.problem);
-  const guided_practice = arr(p.guided_practice, 15).map((g) => ({ prompt: str(g?.prompt ?? g?.question, 1500), hint: str(g?.hint, 800), answer: str(g?.answer, 1500) })).filter((g) => g.prompt);
+  const guided_practice = arr(p.guided_practice, 20).map((g) => {
+    const prompt = str(g?.prompt ?? g?.question, 1500), answer = str(g?.answer, 1500);
+    return { prompt, hint: str(g?.hint, 800), answer, ...cleanItemKind(g, prompt, answer) };
+  }).filter((g) => g.prompt);
   const activities = arr(p.activities, 12).map((a) => ({
-    title: str(a?.title, 200), instructions: str(a?.instructions, 4000), offline: a?.offline === true,
-    tasks: arr(a?.tasks, 30).map((t) => ({ prompt: str(t?.prompt ?? t, 1500), answer: str(t?.answer, 1500) })).filter((t) => t.prompt),
+    title: str(a?.title, 200), instructions: str(a?.instructions, 4000), offline: a?.offline === true, ...(cleanVisual(a?.visual) ? { visual: cleanVisual(a?.visual) } : {}),
+    tasks: arr(a?.tasks, 30).map((t) => {
+      const prompt = str(t?.prompt ?? t, 1500), answer = str(t?.answer, 1500);
+      return { prompt, hint: str(t?.hint, 800), answer, ...cleanItemKind(t, prompt, answer) };
+    }).filter((t) => t.prompt),
   })).filter((a) => a.title);
   const questions = arr(p.questions, 15).map((q) => ({ prompt: str(q?.prompt ?? q?.question, 1000), type: q?.type === "long" ? "long" : "short", answer_key: str(q?.answer_key ?? q?.answer, 2000) })).filter((q) => q.prompt);
   const quiz: any[] = [];
@@ -244,6 +257,7 @@ export function normaliseDraft(p: any, spec: Spec) {
     objectives: strs(p.objectives, 6, 300),
     introduction: str(p.introduction, 4000),
     sections, worked_examples, guided_practice, activities, questions, quiz,
+    key_words: cleanKeyWords(p.key_words),
     misconceptions: arr(p.misconceptions, 8).map((m) => ({ mistake: str(m?.mistake, 600), fix: str(m?.fix, 1200) })).filter((m) => m.mistake),
     texts: arr(p.texts, 5).map((t) => ({ title: str(t?.title, 200), kind: ["text", "source", "data"].includes(t?.kind) ? t.kind : "text", content: str(t?.content, 8000) })).filter((t) => t.content),
     consolidation: str(p.consolidation, 4000),
@@ -309,6 +323,7 @@ export function arithmeticErrors(texts: string[]): string[] {
 
 const MISSING_RESOURCE = /\b(worksheets?|work sheets?|handouts?|printables?|printouts?|print(?:ed)? out|download(?:s|ed)?|website|web ?page|youtube|videos?|textbook|google|online|internet|library book|flash ?cards? (?:from|provided))\b/i;
 const PLACEHOLDER = /\[(?:insert|add|your|name|child|topic|todo|tbd|fill)[^\]]*\]|\blorem ipsum\b|\bTBD\b|\bTODO\b|\{\{|\bX{3,}\b/i;
+const OFFSCREEN = /\b(in your (?:note ?book|exercise book|workbook|book)|on (?:a )?(?:piece of )?paper|a sheet of paper|print(?:ed)? (?:it|this|the)|worksheet|textbook|look it up|search online|google|ask (?:google|siri|alexa))\b/i;
 const VAGUE = /^\s*(research|discuss|talk about|think about|complete the|do the|finish the)\b/i;
 
 export type Issue = { keys: string[]; msg: string; hard?: boolean; repair?: boolean };
@@ -337,6 +352,16 @@ export function qualityIssues(d: Draft, spec: Spec): Issue[] {
   const refText: string[] = [d.introduction, ...d.sections.map((s) => s.body), ...d.activities.filter((a) => a.tasks.length < 3).map((a) => a.instructions), ...d.questions.map((q) => q.prompt), ...d.guided_practice.map((g) => g.prompt)];
   const ref = spec.source ? undefined : refText.map((t) => MISSING_RESOURCE.exec(t)?.[0]).find(Boolean);
   if (ref) add({ keys: ["sections", "activities"], msg: `the lesson mentions "${ref}" but no such material is provided in the lesson`, repair: true });
+  const need = z.tasksPerActivity;
+  const short = d.activities.filter((a) => !a.offline && a.tasks.length < need && a.tasks.length > 0);
+  if (!d.activities.some((a) => !a.offline)) add({ keys: ["activities"], msg: "every activity is off-screen; the child needs on-screen tasks they can complete in the app", repair: true });
+  else if (short.length && minutes >= 45) add({ keys: ["activities"], msg: `activity "${short[0].title}" has only ${short[0].tasks.length} tasks; a ${minutes}-minute lesson needs at least ${need} on-screen tasks in each activity`, repair: true });
+  const bare = d.activities.find((a) => a.offline && a.tasks.length < 2);
+  if (bare) add({ keys: ["activities"], msg: `the hands-on activity "${bare.title}" needs on-screen tasks to record predictions, observations and a reflection`, repair: true });
+  const off = [...d.activities.filter((a) => !a.offline).flatMap((a) => [a.instructions, ...a.tasks.map((t) => t.prompt)]), ...d.guided_practice.map((g) => g.prompt)].map((t) => OFFSCREEN.exec(t)?.[0]).find(Boolean);
+  if (off) add({ keys: ["activities", "guided_practice"], msg: `a task sends the child off-screen ("${off}"); ordinary academic work must be completed on screen`, repair: true });
+  const est = estimateMinutes(d);
+  if (minutes >= 30 && est < minutes * 0.7) add({ keys: ["sections", "worked_examples", "guided_practice", "activities"], msg: `there is only about ${est} minutes of real work for a ${minutes}-minute lesson; add more teaching, worked examples and practice (not padding)`, repair: true });
   const all = [d.title, d.introduction, d.consolidation, d.parent_script, d.answer_key, ...d.sections.map((x) => x.body), ...d.activities.flatMap((a) => [a.instructions, ...a.tasks.map((t) => t.prompt)]), ...d.questions.map((q) => q.prompt)];
   const ph = all.map((t) => PLACEHOLDER.exec(t)?.[0]).find(Boolean);
   if (ph) add({ keys: ["sections", "activities", "introduction"], msg: `the draft contains unfinished placeholder text ("${ph.trim()}")`, repair: true });

@@ -1,6 +1,7 @@
 // Parent lesson builder, assignment snapshots, submissions, review and entitlement checks.
 // Plain functions over a D1-shaped database so they can be tested without the Worker runtime.
 // Every function that touches family data takes the family id from the authenticated user, never from the request body.
+import { cleanItemKind, cleanVisual, cleanKeyWords, childItem, markItem, modelAnswer, estimateMinutes } from "./items";
 import { effectivePlan, limitsFor, trialEndFrom, UPGRADE_MESSAGE } from "./entitlements";
 import type { Plan, Limits } from "./entitlements";
 
@@ -172,7 +173,8 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
     const objectives = list(b.objectives, 10, "Learning objectives").map((o, i) => text(o, 300, `Objective ${i + 1}`, true));
     const sections = list(b.sections, 20, "Teaching sections").map((s, i) => {
       const o = obj(s, `Teaching section ${i + 1}`);
-      return { heading: text(o.heading, 200, `Section ${i + 1} heading`), body: text(o.body, 20000, `Section ${i + 1} text`, true) };
+      const visual = cleanVisual(o.visual);
+      return { heading: text(o.heading, 200, `Section ${i + 1} heading`), body: text(o.body, 20000, `Section ${i + 1} text`, true), ...(visual ? { visual } : {}) };
     });
     const activities = list(b.activities, 30, "Activities").map((a, i) => {
       const o = obj(a, `Activity ${i + 1}`);
@@ -180,10 +182,13 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
         title: text(o.title, 200, `Activity ${i + 1} title`, true),
         instructions: text(o.instructions, 4000, `Activity ${i + 1} instructions`),
         offline: o.offline === true,
+        ...(cleanVisual(o.visual) ? { visual: cleanVisual(o.visual) } : {}),
         // The actual questions of a worksheet-style task, so nothing refers to material that doesn't exist.
         tasks: list(o.tasks, 30, `Activity ${i + 1} tasks`).map((t, j) => {
           const to = obj(t, `Activity ${i + 1} task ${j + 1}`);
-          return { prompt: text(to.prompt, 1500, `Activity ${i + 1} task ${j + 1}`, true), answer: text(to.answer, 1500, `Activity ${i + 1} task ${j + 1} answer`) };
+          const prompt = text(to.prompt, 1500, `Activity ${i + 1} task ${j + 1}`, true);
+          const answer = text(to.answer, 1500, `Activity ${i + 1} task ${j + 1} answer`);
+          return { prompt, hint: text(to.hint, 800, `Activity ${i + 1} task ${j + 1} hint`), answer, ...cleanItemKind(to, prompt, answer) };
         }),
       };
     });
@@ -220,15 +225,14 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
         problem: text(o.problem, 1500, `Worked example ${i + 1} problem`, true),
         steps: strList(o.steps, 15, 800, `Worked example ${i + 1} step`),
         answer: text(o.answer, 800, `Worked example ${i + 1} answer`),
+        ...(cleanVisual(o.visual) ? { visual: cleanVisual(o.visual) } : {}),
       };
     });
     const guided_practice = list(b.guided_practice, 20, "Guided practice").map((g, i) => {
       const o = obj(g, `Guided practice ${i + 1}`);
-      return {
-        prompt: text(o.prompt, 1500, `Guided practice ${i + 1}`, true),
-        hint: text(o.hint, 800, `Guided practice ${i + 1} hint`),
-        answer: text(o.answer, 1500, `Guided practice ${i + 1} answer`),
-      };
+      const prompt = text(o.prompt, 1500, `Guided practice ${i + 1}`, true);
+      const answer = text(o.answer, 1500, `Guided practice ${i + 1} answer`);
+      return { prompt, hint: text(o.hint, 800, `Guided practice ${i + 1} hint`), answer, ...cleanItemKind(o, prompt, answer) };
     });
 
     const misconceptions = list(b.misconceptions, 10, "Common mistakes").map((m, i) => {
@@ -256,7 +260,19 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
       const url = safeUrl(o.url, `Resource ${i + 1} link`);
       if (o.type === "video") {
         const embed = embedUrlFor(url);
-        if (embed) return { type: "video", title, url, embed_url: embed };
+        if (embed) {
+          const purpose = ["intro", "explain", "demo", "extension"].includes(String(o.purpose)) ? String(o.purpose) : "explain";
+          const dur = Number(o.duration_seconds);
+          return {
+            type: "video", title, url, embed_url: embed,
+            video_id: /^[A-Za-z0-9_-]{6,20}$/.test(String(o.video_id ?? "")) ? String(o.video_id) : (/embed\/([A-Za-z0-9_-]+)/.exec(embed)?.[1] ?? ""),
+            channel: text(o.channel, 120, `Resource ${i + 1} channel`), description: text(o.description, 300, `Resource ${i + 1} description`),
+            duration_seconds: Number.isFinite(dur) && dur > 0 && dur < 14400 ? Math.round(dur) : null,
+            thumbnail: /^https:\/\/i\.ytimg\.com\/vi\/[A-Za-z0-9_-]+\/[a-z0-9]+\.jpg$/.test(String(o.thumbnail ?? "")) ? String(o.thumbnail) : "",
+            purpose, concept: text(o.concept, 300, `Resource ${i + 1} concept`), after: ["intro", "teaching", "examples", "practice", "extension"].includes(String(o.after)) ? String(o.after) : purpose === "intro" ? "intro" : purpose === "extension" ? "extension" : "teaching",
+            prompt: text(o.prompt, 400, `Resource ${i + 1} question`), source: o.source === "parent" ? "parent" : "youtube", verified: o.verified === true,
+          };
+        }
       }
       return { type: "link", title, url };
     });
@@ -282,6 +298,8 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
       why_it_matters: text(b.why_it_matters, 2000, "Why it matters"),
       prior_knowledge: strList(b.prior_knowledge, 10, 300, "Prior knowledge"),
       misconceptions,
+      key_words: cleanKeyWords(b.key_words),
+      estimated_minutes: estimateMinutes({ sections, texts, worked_examples, guided_practice, activities, questions, quiz }),
       teaching_questions,
       texts,
       consolidation: text(b.consolidation, 4000, "Wrap-up"),
@@ -349,8 +367,8 @@ export function childSafeLesson(l: any) {
   for (const k of ["answer_key", "parent_notes", "parent_check", "explicit_teaching", "curriculum_refs", "parent_script", "support", "evidence_suggestions", "teaching_plan"]) delete copy[k];
   delete copy.teaching_questions; // parent-only: what to ask and what to expect
   delete copy.ai_flags;
-  if (Array.isArray(copy.activities)) copy.activities = copy.activities.map((a: any) => ({ ...a, tasks: Array.isArray(a?.tasks) ? a.tasks.map((t: any) => ({ prompt: t.prompt })) : a?.tasks }));
-  if (Array.isArray(copy.guided_practice)) copy.guided_practice = copy.guided_practice.map((g: any) => ({ prompt: g.prompt, hint: g.hint }));
+  if (Array.isArray(copy.activities)) copy.activities = copy.activities.map((a: any, i: number) => ({ ...a, tasks: Array.isArray(a?.tasks) ? a.tasks.map((t: any, j: number) => childItem(t, `t${i}-${j}`)) : a?.tasks }));
+  if (Array.isArray(copy.guided_practice)) copy.guided_practice = copy.guided_practice.map((g: any, i: number) => childItem(g, `g${i}`));
   if (Array.isArray(copy.questions)) copy.questions = copy.questions.map((q: any) => ({ prompt: q.prompt, type: q.type }));
   // Quiz correct answers stay on the server. The child's browser sends answers to the quiz-check route to be marked.
   if (Array.isArray(copy.quiz)) {
@@ -564,6 +582,36 @@ export async function checkQuiz(
     .bind(newId(), user.family_id, a.lesson_id, user.id, a.id, score, total, JSON.stringify(results.map((r) => ({ question_index: r.question_index, is_correct: r.is_correct }))), nowIso(now))
     .run();
   return { ok: true, score, total, needed, passed: score >= needed, attempt, results };
+}
+
+/**
+ * Instant feedback on practice (guided practice and activity tasks). This is NOT graded: it never affects the quiz,
+ * hand-in, XP or the parent's review. The browser never holds the answers; it asks here after the child has a go.
+ */
+export async function checkPractice(
+  db: DB,
+  user: { id: string; family_id: string },
+  assignmentId: unknown,
+  body: { part?: unknown; i?: unknown; j?: unknown; answer?: unknown; reveal?: unknown; attempt?: unknown }
+): Promise<Result<{ result: "correct" | "incorrect" | "recorded"; feedback: string; partial?: string; reveal?: string }>> {
+  const { a, lesson } = await assignmentForChild(db, user, assignmentId);
+  if (!a) return fail(404, "Assignment not found");
+  if (DONE_STATUSES.includes(a.status)) return fail(409, "This lesson has already been finished.", "ALREADY_DONE");
+  const i = Number(body.i), j = Number(body.j) || 0;
+  const item: any = body.part === "guided" ? lesson?.guided_practice?.[i] : body.part === "task" ? lesson?.activities?.[i]?.tasks?.[j] : null;
+  if (!item) return fail(404, "That question wasn't found.");
+  const given = Array.isArray(body.answer) ? body.answer.map((x) => String(x).slice(0, 300)).slice(0, 10) : String(body.answer ?? "").slice(0, 3000);
+  const m = markItem(item, given);
+  const attempt = Math.max(1, Math.min(9, Number(body.attempt) || 1));
+  const wantReveal = body.reveal === true || (m.result === "incorrect" && attempt >= 3) || m.result === "recorded";
+  let feedback = "";
+  if (m.result === "correct") feedback = "Correct! Well done.";
+  else if (m.result === "recorded") feedback = "Your answer is saved. Compare it with the model answer below and see what you could add or fix.";
+  else {
+    feedback = `Not quite yet.${m.partial ? ` ${m.partial.charAt(0).toUpperCase()}${m.partial.slice(1)}.` : ""}`;
+    feedback += item.hint ? ` Hint: ${item.hint}` : " Look back at the worked examples and try again.";
+  }
+  return { ok: true, result: m.result, feedback, partial: m.partial, ...(wantReveal || m.result === "correct" ? { reveal: modelAnswer(item) } : {}) };
 }
 
 export async function quizPassed(db: DB, user: { id: string }, a: any, lesson: any): Promise<boolean | null> {

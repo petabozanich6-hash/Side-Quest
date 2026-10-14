@@ -620,3 +620,80 @@ test("leak detector: numbers match whole values only", () => {
   assert.equal(hp.leaksAnswer("the answer is -7", ["-7"]), true);
   assert.equal(hp.leaksAnswer("a half is bigger", ["A half"]), true);
 });
+
+// ---------------------------------------------------------------- interactive practice: kinds, marking, privacy
+import * as it from "../src/items.ts";
+
+test("practice marking: numbers, text, choice, blanks, order and match", () => {
+  const num = { prompt: "x", answer: "57 (30 + 20 = 50; 2 + 5 = 7; 50 + 7 = 57)." };
+  assert.equal(it.markItem(num, "57").result, "correct");
+  assert.equal(it.markItem(num, "the answer is 57").result, "correct");
+  assert.equal(it.markItem(num, "75").result, "incorrect");
+  assert.equal(it.markItem({ answer: "199 (100 + 90 + 9)" }, "199").result, "correct");
+  assert.equal(it.markItem({ answer: "-7 (°C)" }, "−7").result, "correct");
+  assert.equal(it.markItem({ answer: "1/2", kind: "number" }, "0.5").result, "correct");
+  assert.equal(it.markItem({ kind: "number", answer: "1,200" }, "1200").result, "correct");
+  assert.equal(it.markItem({ answer: "Bed A", kind: "choice", options: ["Bed A", "Bed B"] }, "bed a").result, "correct");
+  assert.equal(it.markItem({ answer: "Bed A", kind: "choice", options: ["Bed A", "Bed B"] }, "Bed B").result, "incorrect");
+  const blank = { kind: "blank", answer: "50|11" };
+  assert.equal(it.markItem(blank, "50|11").result, "correct");
+  assert.deepEqual(it.markItem(blank, "50|12"), { result: "incorrect", partial: "1 of 2 blanks are right" });
+  assert.equal(it.markItem({ kind: "blank", answer: "-4|7" }, "−4|7").result, "correct");
+  const ord = { kind: "order", options: ["a", "b", "c", "d"] };
+  assert.equal(it.markItem(ord, ["a", "b", "c", "d"]).result, "correct");
+  assert.equal(it.markItem(ord, ["a", "c", "b", "d"]).partial, "2 of 4 are in the right place");
+  const mt = { kind: "match", pairs: [{ left: "x", right: "1" }, { left: "y", right: "2" }, { left: "z", right: "3" }] };
+  assert.equal(it.markItem(mt, ["1", "2", "3"]).result, "correct");
+  assert.equal(it.markItem(mt, ["2", "1", "3"]).partial, "1 of 3 matches are right");
+  assert.equal(it.markItem({ kind: "long", answer: "model" }, "anything").result, "recorded");
+  assert.equal(it.markItem({ answer: "Charlotte Pass was the coldest of all five places on that night, at minus eight degrees" }, "cold").result, "recorded"); // long model answers are compared by the child, not auto-marked
+  assert.equal(it.markItem({ answer: "a half" }, "A half is bigger").result, "correct");
+  assert.equal(it.markItem({ answer: "a half" }, "").result, "incorrect");
+});
+
+test("kinds are cleaned: broken interactive items fall back to plain text; visuals are data only", () => {
+  assert.deepEqual(it.cleanItemKind({ kind: "choice", options: ["a"] }, "p", "a"), { kind: "text" });
+  assert.deepEqual(it.cleanItemKind({ kind: "blank" }, "no blanks here", "x"), {});
+  assert.deepEqual(it.cleanItemKind({ kind: "order", options: ["a", "b"] }, "p", ""), { kind: "text" });
+  assert.deepEqual(it.cleanItemKind({}, "p", "62 (50 + 12)"), { kind: "number" });
+  assert.equal(it.cleanVisual({ type: "number_line", min: 5, max: 1 }), undefined);
+  assert.equal(it.cleanVisual({ type: "svg", markup: "<script>" }), undefined);
+  const nl = it.cleanVisual({ type: "number_line", min: -10, max: 10, step: 1, points: [{ at: -3, label: "x" }, { at: 99, label: "off" }], jumps: [{ from: 0, to: 4 }] });
+  assert.equal(nl.points.length, 1); assert.equal(nl.jumps.length, 1);
+  assert.equal(it.cleanVisual({ type: "place_value", number: 47 }).number, 47);
+  assert.equal(it.cleanVisual({ type: "place_value", number: 123456 }), undefined);
+});
+
+test("practice: lessons keep interactive items; the child never gets answers or the correct order; feedback is checked on the server", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const kid = child(db, fam);
+  const les = await lb.createLesson(db, fam, { ...Y7, status: "ready" }, NOW);
+  assert.ok(les.ok, JSON.stringify(les));
+  const ord = les.lesson.guided_practice.find((g) => g.kind === "order");
+  assert.deepEqual(ord.options, ["−10", "−7", "−2", "0", "3", "5"]); // the parent copy keeps the correct order
+  assert.ok(les.lesson.sections[1].visual && les.lesson.key_words.length === 5);
+  const asg = (await lb.assignLesson(db, fam, { student_id: kid, lesson_id: les.lesson.id }, NOW)).assignment;
+  const u = { id: kid, family_id: fam };
+  const safe = lb.childSafeLesson((await lb.assignmentForChildForTest?.(db, u, asg.id))?.lesson ?? lb.assignmentLesson(db.raw.prepare("SELECT * FROM assignments WHERE id=?").get(asg.id), null));
+  const json = JSON.stringify(safe);
+  assert.ok(!JSON.stringify([safe.guided_practice, safe.activities]).includes('"answer"'), "child practice has an answer field");
+  assert.ok(!json.includes("-12|6|-50") && !json.includes("(8 steps to zero"));
+  const cOrd = safe.guided_practice.find((g) => g.kind === "order");
+  assert.notDeepEqual(cOrd.options, ord.options); // shuffled
+  assert.deepEqual([...cOrd.options].sort(), [...ord.options].sort());
+  const cMatch = safe.activities[1].tasks.find((t) => t.kind === "match");
+  assert.ok(cMatch.lefts.length === 3 && cMatch.rights.length === 3 && !cMatch.pairs);
+  // server-side checking
+  const idx = (k) => les.lesson.guided_practice.findIndex((g) => g.kind === k);
+  const right = await lb.checkPractice(db, u, asg.id, { part: "guided", i: idx("order"), answer: ord.options });
+  assert.equal(right.result, "correct");
+  const wrong = await lb.checkPractice(db, u, asg.id, { part: "guided", i: 4, answer: "99", attempt: 1 });
+  assert.equal(wrong.result, "incorrect"); assert.equal(wrong.reveal, undefined); assert.match(wrong.feedback, /Hint:/);
+  const third = await lb.checkPractice(db, u, asg.id, { part: "guided", i: 4, answer: "99", attempt: 3 });
+  assert.match(third.reveal, /3 \(6 steps/);
+  const task = await lb.checkPractice(db, u, asg.id, { part: "task", i: 0, j: 2, answer: "4" });
+  assert.equal(task.result, "correct");
+  assert.equal((await lb.checkPractice(db, u, asg.id, { part: "task", i: 9, j: 0, answer: "4" })).status, 404);
+  assert.equal((await lb.checkPractice(db, { id: "someone-else", family_id: fam }, asg.id, { part: "guided", i: 0, answer: "x" })).status, 404);
+});

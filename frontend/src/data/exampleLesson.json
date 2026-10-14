@@ -14,7 +14,12 @@
  "sections": [
   {
    "heading": "Tens and ones: how numbers are built",
-   "body": "Every two-digit number is made of tens and ones. Think of beans packed into little cups, with exactly 10 beans in each full cup. The number 47 means 4 full cups of ten and 7 loose beans left over: 4 tens and 7 ones, which is 40 + 7. The number 36 is 3 full cups and 6 loose beans: 3 tens and 6 ones, or 30 + 6. The digit on the left tells you how many tens, and the digit on the right tells you how many ones. This is called place value, and it is the secret behind adding quickly. When we know that 47 is really 40 and 7, we can pull numbers apart and put them back together without losing anything. Try it: how many tens and ones are in 52? (5 tens and 2 ones, so 50 + 2.)"
+   "body": "Every two-digit number is made of tens and ones. Think of beans packed into little cups, with exactly 10 beans in each full cup. The number 47 means 4 full cups of ten and 7 loose beans left over: 4 tens and 7 ones, which is 40 + 7. The number 36 is 3 full cups and 6 loose beans: 3 tens and 6 ones, or 30 + 6. The digit on the left tells you how many tens, and the digit on the right tells you how many ones. This is called place value, and it is the secret behind adding quickly. When we know that 47 is really 40 and 7, we can pull numbers apart and put them back together without losing anything. Try it: how many tens and ones are in 52? (5 tens and 2 ones, so 50 + 2.)",
+   "visual": {
+    "type": "place_value",
+    "number": 47,
+    "caption": "47 is 4 tens (the long rods) and 7 ones (the small cubes)."
+   }
   },
   {
    "heading": "Adding tens and ones separately",
@@ -26,7 +31,7 @@
   },
   {
    "heading": "Writing it down: the column method",
-   "body": "Once you understand regrouping, you can write the same idea in columns, which is quicker on paper. Write the bigger digits lined up: tens under tens and ones under ones. For 47 + 36, start with the ones column, because that is where regrouping happens. 7 + 6 = 13. Write the 3 in the ones column of the answer and carry the 1 ten by writing a small 1 above the tens column. Now add the tens column: 4 + 3 + the 1 you carried = 8. Write 8 in the tens column. The answer is 83, the same as before. The small 1 is not magic; it is the cup of ten you made from 13 loose beans. Always start with the ones and work to the left. Lining up the digits neatly is the most important habit for getting columns right."
+   "body": "Once you understand regrouping, you can write the same idea in columns, which is quicker. Write the bigger digits lined up: tens under tens and ones under ones. For 47 + 36, start with the ones column, because that is where regrouping happens. 7 + 6 = 13. Write the 3 in the ones column of the answer and carry the 1 ten by writing a small 1 above the tens column. Now add the tens column: 4 + 3 + the 1 you carried = 8. Write 8 in the tens column. The answer is 83, the same as before. The small 1 is not magic; it is the cup of ten you made from 13 loose beans. Always start with the ones and work to the left. Lining up the digits neatly is the most important habit for getting columns right."
   },
   {
    "heading": "Bigger numbers: adding to a three-digit number",
@@ -70,7 +75,12 @@
     "Collect everything: 100 + 70 + 10 + 3.",
     "100 + 70 + 10 = 180, and 180 + 3 = 183."
    ],
-   "answer": "There are 183 seeds in the patch."
+   "answer": "There are 183 seeds in the patch.",
+   "visual": {
+    "type": "place_value",
+    "number": 45,
+    "caption": "After regrouping, 27 + 18 makes 4 tens and 5 ones."
+   }
   }
  ],
  "guided_practice": [
@@ -90,9 +100,10 @@
    "answer": "84 (40 + 30 = 70; 6 + 8 = 14; 70 + 14 = 84)."
   },
   {
-   "prompt": "Work out 59 + 27. Write it in columns.",
+   "prompt": "Work out 59 + 27 in columns. Ones: 9 + 7 = ___, so write ___ and carry ___ ten. Tens: 5 + 2 + 1 = ___.",
    "hint": "9 + 7 = 16. Write the 6 and carry the 1 ten above the tens column.",
-   "answer": "86 (ones: 9 + 7 = 16, write 6 carry 1; tens: 5 + 2 + 1 = 8)."
+   "answer": "16|6|1|8",
+   "kind": "blank"
   },
   {
    "prompt": "A garden shop has 175 packets of seeds and gets 24 more. How many packets now?",
@@ -103,47 +114,158 @@
    "prompt": "Work out 267 + 38.",
    "hint": "7 + 8 = 15, so you will regroup. Then add the tens, then bring the hundreds down.",
    "answer": "305 (ones: 7 + 8 = 15, write 5 carry 1; tens: 6 + 3 + 1 = 10, write 0 carry 1; hundreds: 2 + 1 = 3)."
+  },
+  {
+   "prompt": "Why do we regroup when the ones add up to 10 or more?",
+   "hint": "How many ones make one ten?",
+   "kind": "choice",
+   "options": [
+    "Because 10 ones make 1 ten, and each place can only hold 0 to 9",
+    "Because the teacher says so",
+    "Because the tens are bigger than the ones",
+    "Because we should always carry a number"
+   ],
+   "answer": "Because 10 ones make 1 ten, and each place can only hold 0 to 9"
+  },
+  {
+   "prompt": "A school garden has 128 plants and plants 45 more. How many plants now?",
+   "hint": "Add the ones first: 8 + 5. Then the tens: 2 tens + 4 tens + the regrouped ten.",
+   "answer": "173 (ones: 8 + 5 = 13, write 3 carry 1; tens: 2 + 4 + 1 = 7; hundreds: 1)."
   }
  ],
  "activities": [
   {
    "title": "Bean cups: build it, add it, regroup it",
-   "instructions": "1. Count out about 60 dried beans, buttons or pebbles. Put exactly 10 in each small cup or bowl to make 'tens'.\n2. Show 27 on the table: 2 full cups and 7 loose beans.\n3. Next to it show 18: 1 full cup and 8 loose beans.\n4. Push them together. You should have 3 full cups and 15 loose beans.\n5. Count out 10 of the loose beans and put them in a new cup. How many full cups and loose beans now? (4 cups and 5 loose.)\n6. Write what you did as a number sentence: 27 + 18 = 45.\n7. Try 36 + 29 the same way and write the answer.",
    "offline": true,
+   "instructions": "A hands-on way to see regrouping. Count out about 60 dried beans, buttons or pebbles and put exactly 10 in each small cup or bowl to make 'tens'. Show 27 as 2 full cups and 7 loose beans, and 18 as 1 full cup and 8 loose beans. Push them together and swap 10 loose beans for a new cup. Then answer the questions on screen to record what you found. (If you do not have beans, skip this activity; you will not miss any of the learning.)",
    "tasks": [
     {
-     "prompt": "Make 27 and 18 with cups and loose beans, push them together and regroup. How many cups and loose beans now? Write the number sentence.",
-     "answer": "4 cups and 5 loose beans. 27 + 18 = 45."
+     "prompt": "Prediction: before you push 27 and 18 together, how many full cups and loose beans do you think you will have? Write your guess and why.",
+     "answer": "A reasonable guess such as 3 cups and 15 loose beans, because 2 + 1 = 3 tens and 7 + 8 = 15 ones.",
+     "kind": "long"
     },
     {
-     "prompt": "Do 36 + 29 the same way. Write the number sentence.",
-     "answer": "36 + 29 = 65 (6 cups and 5 loose beans after regrouping)."
+     "prompt": "After regrouping, you have ___ full cups and ___ loose beans.",
+     "answer": "4|5",
+     "kind": "blank",
+     "hint": "Swap 10 of the 15 loose beans for another cup."
+    },
+    {
+     "prompt": "Write the number sentence: 27 + 18 = ?",
+     "answer": "45",
+     "kind": "number"
+    },
+    {
+     "prompt": "Now try 36 + 29 with your beans. What is the total?",
+     "answer": "65 (6 cups and 5 loose beans after regrouping).",
+     "kind": "number"
+    },
+    {
+     "prompt": "Reflection: what did you notice when there were more than 10 loose beans? Explain in your own words.",
+     "answer": "You swap 10 loose beans for 1 full cup (regroup), so the tens go up by one and the ones go down by ten.",
+     "kind": "long"
     }
    ]
   },
   {
    "title": "Plan a vegie patch",
-   "instructions": "1. Draw three garden beds on paper and label them A, B and C.\n2. Bed A has 34 plants, Bed B has 27 plants and Bed C has 19 plants. Draw or write the numbers in each bed.\n3. First add Bed A and Bed B. Show your working with tens and ones.\n4. Then add Bed C to your answer. Show your working again.\n5. Write a full sentence: 'There are ___ plants in the garden.'",
    "offline": false,
+   "instructions": "A garden has three beds. Bed A has 34 plants, Bed B has 27 plants and Bed C has 19 plants. Work through the questions to find out how many plants the whole garden has.",
    "tasks": [
     {
-     "prompt": "Add Bed A and Bed B: 34 + 27. Show your working with tens and ones.",
-     "answer": "61 (30 + 20 = 50; 4 + 7 = 11; 50 + 11 = 61)."
+     "prompt": "Add Bed A and Bed B: 34 + 27.",
+     "answer": "61 (30 + 20 = 50; 4 + 7 = 11; 50 + 11 = 61).",
+     "hint": "Add the tens, then the ones, then join them."
     },
     {
      "prompt": "Now add Bed C to your answer: 61 + 19.",
-     "answer": "80 (60 + 10 = 70; 1 + 9 = 10; 70 + 10 = 80)."
+     "answer": "80 (60 + 10 = 70; 1 + 9 = 10; 70 + 10 = 80).",
+     "hint": "1 + 9 makes a whole ten."
+    },
+    {
+     "prompt": "Which bed has the most plants?",
+     "kind": "choice",
+     "options": [
+      "Bed A",
+      "Bed B",
+      "Bed C"
+     ],
+     "answer": "Bed A"
+    },
+    {
+     "prompt": "For 34 + 27: tens 30 + 20 = ___ and ones 4 + 7 = ___.",
+     "kind": "blank",
+     "answer": "50|11"
     },
     {
      "prompt": "Write a full sentence saying how many plants there are in the garden.",
+     "kind": "long",
      "answer": "There are 80 plants in the garden."
     }
    ]
   },
   {
-   "title": "Write your own garden problems",
-   "instructions": "1. Write two addition story problems about a garden. Use two-digit numbers, and make at least one of them need regrouping.\n2. Solve them using partitioning or the column method.\n3. Swap with your grown-up. Solve each other's problems and check the answers match.",
-   "offline": false
+   "title": "Word match and column order",
+   "offline": false,
+   "instructions": "Check that you know the language of adding and the steps of the column method.",
+   "tasks": [
+    {
+     "prompt": "Match each word to its meaning.",
+     "kind": "match",
+     "pairs": [
+      {
+       "left": "Tens",
+       "right": "Groups of ten"
+      },
+      {
+       "left": "Ones",
+       "right": "Single units"
+      },
+      {
+       "left": "Regroup",
+       "right": "Swap 10 ones for 1 ten"
+      },
+      {
+       "left": "Sum",
+       "right": "The total"
+      }
+     ],
+     "answer": "Tens/groups of ten; ones/single units; regroup/swap 10 ones for 1 ten; sum/total."
+    },
+    {
+     "prompt": "Put the steps of the column method in order.",
+     "kind": "order",
+     "options": [
+      "Line up the digits in columns",
+      "Add the ones",
+      "Regroup if the ones make 10 or more",
+      "Add the tens",
+      "Write the total"
+     ],
+     "answer": "Line up, add the ones, regroup if needed, add the tens, write the total."
+    },
+    {
+     "prompt": "A gardener has 48 tomato plants and plants 36 more. How many now?",
+     "answer": "84 (8 + 6 = 14, write 4 carry 1; 4 + 3 + 1 = 8).",
+     "hint": "Ones first: 8 + 6."
+    },
+    {
+     "prompt": "Write your own garden story problem that needs regrouping, and solve it.",
+     "kind": "long",
+     "answer": "Any problem with two two-digit numbers whose ones add to 10 or more, solved correctly."
+    },
+    {
+     "prompt": "Which of these needs regrouping?",
+     "kind": "choice",
+     "options": [
+      "23 + 14",
+      "45 + 32",
+      "38 + 27",
+      "50 + 20"
+     ],
+     "answer": "38 + 27"
+    }
+   ]
   }
  ],
  "questions": [
@@ -287,5 +409,27 @@
    "expected": "It is the ten we made from 13 loose ones: the new cup."
   }
  ],
- "teaching_plan": "Concept: adding two-digit (and simple three-digit) numbers by working with tens and ones. Prior knowledge: place value of two-digit numbers and single-digit addition facts. Progression: (1) build numbers from tens and ones with beans; (2) add tens and ones separately when no regrouping is needed; (3) meet ones that total 10 or more and regroup them as a new ten; (4) record the same idea with the column method; (5) extend to a three-digit number plus a two-digit number. Likely misconceptions: writing 13 in the ones place, forgetting the carried ten, and lining digits up by the left edge. Assessment: written questions that mirror the worked examples, a spot-the-mistake question and a short quiz."
+ "teaching_plan": "Concept: adding two-digit (and simple three-digit) numbers by working with tens and ones. Prior knowledge: place value of two-digit numbers and single-digit addition facts. Progression: (1) build numbers from tens and ones with beans; (2) add tens and ones separately when no regrouping is needed; (3) meet ones that total 10 or more and regroup them as a new ten; (4) record the same idea with the column method; (5) extend to a three-digit number plus a two-digit number. Likely misconceptions: writing 13 in the ones place, forgetting the carried ten, and lining digits up by the left edge. Assessment: written questions that mirror the worked examples, a spot-the-mistake question and a short quiz.",
+ "key_words": [
+  {
+   "word": "ones",
+   "meaning": "The single units in a number. In 47, the 7 is the ones."
+  },
+  {
+   "word": "tens",
+   "meaning": "Groups of ten. In 47, the 4 means 4 tens, which is 40."
+  },
+  {
+   "word": "partition",
+   "meaning": "To split a number into parts, like 47 = 40 + 7."
+  },
+  {
+   "word": "regroup",
+   "meaning": "To swap 10 ones for 1 ten (or 10 tens for 1 hundred) when a place has 10 or more."
+  },
+  {
+   "word": "sum",
+   "meaning": "The answer when you add numbers together."
+  }
+ ]
 }

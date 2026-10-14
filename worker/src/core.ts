@@ -395,6 +395,16 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     return r.ok ? c.json({ ok: true, saved_at: r.saved_at }) : send(c, r);
   });
 
+  app.post("/api/assignments/:id/practice-check", auth, async (c) => {
+    const u = c.get("user");
+    if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
+    const b: any = await c.req.json().catch(() => ({}));
+    const r = await lb.checkPractice(c.env.DB, u, c.req.param("id"), b);
+    if (!r.ok) return send(c, r);
+    const { ok: _ok, ...out } = r;
+    return c.json(out);
+  });
+
   app.get("/api/help/status", auth, async (c) => {
     const u = c.get("user");
     if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
