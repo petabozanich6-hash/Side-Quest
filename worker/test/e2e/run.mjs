@@ -115,6 +115,16 @@ await step("security: family isolation, sibling privacy, PIN revocation and thro
   await denied("parent B cannot change A's profile", "PUT", `/students/${a1.id}`, b, { name: "Tampered" });
   await denied("parent B cannot delete A's profile", "DELETE", `/students/${a1.id}`, b);
   await denied("parent B cannot create calendar event for A's child", "POST", "/calendar", b, { title: "Private", date: "2026-11-01", student_id: a1.id });
+  // Family-owned academic records must reject foreign student IDs and never appear in other family listings.
+  await denied("parent B cannot add reading log for A's child", "POST", "/reading-log", b, { student_id: a1.id, title: "Foreign", read_date: "2026-11-01" });
+  await denied("parent B cannot add life evidence for A's child", "POST", "/life-evidence", b, { student_id: a1.id, title: "Foreign", description: "Unauthorized" });
+  await denied("parent B cannot create learning plan for A's child", "POST", "/learning-plans", b, { student_id: a1.id, title: "Foreign", period_start: "2026-11-01", period_end: "2026-11-30" });
+  const foreignPortfolio = await api("GET", `/portfolio?student_id=${a1.id}`, b);
+  ok([403, 404].includes(foreignPortfolio.status), `foreign family portfolio returned ${foreignPortfolio.status}`);
+  const foreignReading = await api("GET", `/reading-log?student_id=${a1.id}`, b);
+  ok(foreignReading.status === 200 && Array.isArray(foreignReading.json) && foreignReading.json.length === 0, "foreign family reading records leaked");
+  const foreignEvidence = await api("GET", `/life-evidence?student_id=${a1.id}`, b);
+  ok(foreignEvidence.status === 200 && Array.isArray(foreignEvidence.json) && foreignEvidence.json.length === 0, "foreign family life evidence leaked");
   const newPin = await api("PUT", `/students/${a1.id}/pin`, a, { pin: "9876" });
   ok(newPin.status === 200, "PIN change failed");
   const oldSession = await api("GET", "/auth/me", a1.token);
