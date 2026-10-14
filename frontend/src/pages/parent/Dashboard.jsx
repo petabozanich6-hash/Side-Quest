@@ -69,7 +69,7 @@ export default function ParentDashboard() {
           { done: kids > 0, label: "Add your child", to: "/parent/children", cta: "Add a child" },
           { done: lessons > 0, label: "Create a lesson", to: "/parent/lessons/new", cta: "Build your first lesson" },
           { done: assigned > 0, label: "Assign it to your child", to: "/parent/lessons", cta: "Choose a lesson" },
-          { done: data.students.some(s => s.completed > 0), label: "Review their work", to: "#waiting", cta: "See what is waiting" },
+          { done: data.students.some(s => s.completed > 0), label: "Review their work after a lesson", to: pendingTotal ? "#waiting" : "/parent/assignments", cta: pendingTotal ? "Review submitted work" : "View assigned lessons" },
         ];
         if (steps.every(x => x.done)) return null;
         const next = steps.find(x => !x.done);
@@ -82,6 +82,7 @@ export default function ParentDashboard() {
             {next.to.startsWith("#") ? <a href={next.to} className="mt-4 inline-block rounded-full px-5 py-2.5 text-sm font-bold" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}}>{next.cta}</a>
               : <Link to={next.to} className="mt-4 inline-block rounded-full px-5 py-2.5 text-sm font-bold" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="get-started-next">{next.cta}</Link>}
             {kids > 0 && lessons === 0 && <Link to="/parent/lessons/new?example=1" className="mt-4 ml-3 inline-block text-sm font-bold underline" style={{color:"#4A5D3A"}} data-testid="try-example">Or start from an example lesson</Link>}
+            {assigned > 0 && pendingTotal === 0 && !steps[3].done && <p className="mt-3 text-xs text-stone-600">Next, ask your child to sign in using the username and PIN you set. When they finish their lesson, you can review it here.</p>}
           </section>
         );
       })()}
@@ -95,7 +96,7 @@ export default function ParentDashboard() {
       <section id="waiting" data-testid="waiting-list">
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Waiting for you</h2>
         {pendingTotal === 0 ? (
-          <div className="paper-card p-6 text-sm text-stone-600">All caught up! When your child submits work, you’ll be able to review it here. <Link to="/parent/assignments" className="font-semibold underline">View assignments</Link></div>
+          <div className="paper-card p-6 text-sm text-stone-600">{data.students.length === 0 ? <>You’ll review completed work here once your children start learning. <Link to="/parent/children" className="font-semibold underline">Add your first child</Link> to begin.</> : <>Nothing needs your review right now. Your child can sign in with their username and PIN to work on assigned lessons. <Link to="/parent/assignments" className="font-semibold underline">View assignments</Link>.</>}</div>
         ) : (
           <div className="space-y-3">
             {readingPending.map(r => (
@@ -123,7 +124,7 @@ export default function ParentDashboard() {
       <section>
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Jump in</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Quick to="/parent/lessons/make" icon={BookOpen} label="Make a lesson" desc="Describe what to teach and Side-Quest writes it, or build one yourself" tint="#C77B5B" testid="quick-create-lesson"/>
+          <Quick to="/parent/lessons/make" icon={BookOpen} label="Make a lesson" desc="Let AI draft a lesson with Family Membership, or build one yourself" tint="#C77B5B" testid="quick-create-lesson"/>
           <Quick to="/parent/children" icon={Plus} label="Add a student" desc="Set up a child with username and PIN" tint="#4A5D3A" testid="quick-add-student"/>
           <Quick to="/parent/side-quest" icon={Wand2} label="Seasonal surprises" desc="Choose the optional seasonal touches your family wants in your children’s pet rooms" tint="#D4A574" testid="quick-sidequest"/>
           <Quick to="/parent/life-learning" icon={Trees} label="Log life learning" desc="Baking, bushwalks, projects — map them to outcomes" tint="#6B8A5B" testid="quick-life"/>
