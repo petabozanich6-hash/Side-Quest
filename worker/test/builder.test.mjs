@@ -284,6 +284,35 @@ test("AI drafting: paid family gets an unreviewed AI-labelled draft with no link
   assert.equal(up.lesson.review_status, "parent_reviewed");
 });
 
+test("AI lesson drafting follows family jurisdiction without inventing non-NSW curriculum codes", async () => {
+  const db = makeDb();
+  const vic = seed(db, { plan: "ACTIVE_MONTHLY" });
+  db.raw.prepare("UPDATE families SET jurisdiction='VIC' WHERE id=?").run(vic);
+  const ai = stub();
+  const v = await aid.draftLessonWithAi(db, ai, {
+    familyId: vic, userId: "u", request: { topic: "Fractions", learning_area: "Mathematics", year_level: "Year 4" },
+  }, NOW);
+  assert.ok(v.ok, JSON.stringify(v));
+  const designPrompt = ai.calls[0][1].messages.at(-1).content;
+  assert.match(designPrompt, /Victorian Curriculum F/);
+  assert.match(designPrompt, /Mathematics/);
+  assert.match(designPrompt, /Do not|Never invent/i);
+  assert.deepEqual(v.lesson.outcome_codes, []);
+  assert.match(v.lesson.curriculum_refs.join(" "), /https:\/\/f10\.vcaa\.vic\.edu\.au/);
+  assert.doesNotMatch(v.lesson.curriculum_refs.join(" "), /curriculum\.nsw/);
+
+  const qld = seed(db, { plan: "ACTIVE_MONTHLY" });
+  db.raw.prepare("UPDATE families SET jurisdiction='QLD' WHERE id=?").run(qld);
+  const aiQ = stub();
+  const q = await aid.draftLessonWithAi(db, aiQ, {
+    familyId: qld, userId: "u", request: { topic: "Rainfall", learning_area: "Science", year_level: "Year 5" },
+  }, NOW);
+  assert.ok(q.ok, JSON.stringify(q));
+  assert.match(aiQ.calls[0][1].messages.at(-1).content, /Australian Curriculum Version 9/);
+  assert.deepEqual(q.lesson.outcome_codes, []);
+  assert.match(q.lesson.curriculum_refs.join(" "), /australiancurriculum\.edu\.au/);
+});
+
 test("AI drafting: unavailable binding, bad output and quota", async () => {
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_ANNUAL" });
