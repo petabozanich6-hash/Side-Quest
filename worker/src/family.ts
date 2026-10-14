@@ -819,6 +819,11 @@ export function registerFamily(app: App, g: Guards) {
     const student = await c.env.DB.prepare("SELECT id FROM students WHERE id = ? AND family_id = ?").bind(studentId, user.family_id).first();
     if (!student) return c.json({ detail: "Student not found" }, 404);
 
+    const optionalNumber = (value: unknown): number | null => {
+      if (value === null || value === undefined || value === "") return null;
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : null;
+    };
     const id = newId();
     await c.env.DB.prepare(
       "INSERT INTO reading_log (id, family_id, student_id, title, author, pages, pages_read, read_date, duration_minutes, source, book_type, reading_mode, comprehension_notes, favourite_part, difficulty, parent_note, logged_by, logged_role, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
@@ -828,10 +833,10 @@ export function registerFamily(app: App, g: Guards) {
       studentId,
       title,
       body.author ? String(body.author) : null,
-      body.pages === null || body.pages === "" ? null : Number(body.pages),
-      body.pages_read === null || body.pages_read === "" ? null : Number(body.pages_read),
+      optionalNumber(body.pages),
+      optionalNumber(body.pages_read),
       readDate,
-      body.duration_minutes === null || body.duration_minutes === "" ? null : Number(body.duration_minutes),
+      optionalNumber(body.duration_minutes),
       String(body.source || "home"),
       String(body.book_type || "fiction"),
       String(body.reading_mode || "independent"),
