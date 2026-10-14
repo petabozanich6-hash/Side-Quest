@@ -272,7 +272,7 @@ export function normaliseDraft(p: any, spec: Spec) {
     offline_alternative: str(p.offline_alternative, 4000),
     parent_notes: "",
     duration_minutes: Math.min(600, minutes),
-    resources: [], curriculum_refs: [],
+    resources: [], curriculum_refs: [] as string[], outcome_codes: [] as string[],
   };
 }
 
@@ -706,7 +706,7 @@ export async function draftLessonWithAi(
       if (m) { outcomes = m.suggestions; stats.calls++; stats.stages.push("outcomes"); stats.input_tokens += m.input_tokens; stats.output_tokens += m.output_tokens; }
     } catch { /* optional step: the lesson is fine without it */ }
     if (!outcomes.length) outcomes = suggestOutcomes(draft, 2).filter((o) => o.confidence === "likely");
-    (draft as any).outcome_codes = outcomes.map((o) => o.code);
+    draft.outcome_codes = outcomes.map((o) => o.code);
     draft.curriculum_refs = outcomes.map((o) => outcomeRef(o));
   }
   const created = await lb.createLesson(db, familyId, draft, now, { ai: true, flags });
