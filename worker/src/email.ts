@@ -157,51 +157,59 @@ ${divider}
 
 export function welcomeEmail(to: string, name: string): OutgoingEmail {
   const n = firstName(name);
-  const subject = "Welcome to Side-Quest Learning — your free preview is ready";
+  const subject = "Welcome to the Side-Quest family! 🐉";
   const text = `Hi ${n},
 
-Welcome to Side-Quest Learning! Your seven-day free preview starts now, with no payment card required.
+We're so glad you're here. Welcome to the Side-Quest family!
 
-Side-Quest brings your homeschool planning, lessons, children's learning activities and progress records together in one place.
+Every homeschooling family has its own way of doing things. Some days run like clockwork; others take an unexpected detour (or three). Side-Quest is here to make the planning, lessons and record-keeping a little easier, whatever your days look like.
 
-Start here:
-1. Sign in: ${SITE_URL}/login
+Your seven-day free preview is ready, with no payment card required.
+
+Here's an easy place to start:
+1. Sign in to your parent dashboard: ${SITE_URL}/login
 2. Add your child's profile.
 3. Create and assign your first lesson.
-4. Explore your child's learning dashboard and track progress.
+4. Explore the child dashboard and see how progress is recorded.
 
-Your preview includes one child, up to two lessons and two active assignments. Paid Family Membership unlocks full family access and AI lesson drafting.
+During your preview you can add one child, create up to two lessons and have two active assignments. A Family Membership unlocks more room for your family to learn, including AI lesson drafting and full portfolio access.
 
-Questions or ideas? Reply to this email or write to ${SUPPORT_EMAIL}.
+And please don't feel you need to set everything up on day one. One child, one lesson, one little win. That's a perfectly good beginning.
 
-Happy questing,
-The Side-Quest Learning team
+If you have a question, an idea or something isn't working, just reply to this email or write to ${SUPPORT_EMAIL}. We'd love to hear from you.
+
+We're glad you've joined us. Happy questing!
+Side-Quest Learning
 
 --
 You received this because a Side-Quest Learning account was created using this email address. If this wasn't you, contact ${SUPPORT_EMAIL}.`;
+
   const body = [
-    p(`Hi ${esc(n)}! Your <strong>seven-day free preview</strong> starts now. No payment card needed.`),
-    p("Side-Quest keeps your homeschool plans, lessons, child activities and learning records together, so you spend less time on admin and more time on learning."),
-    h2("Your first quest"),
+    p(`Hi ${esc(n)}, <strong>we're so glad you're here!</strong> Welcome to the Side-Quest family.`),
+    p("Every homeschooling family has its own rhythm. Some days run like clockwork; others take an unexpected detour (or three). Side-Quest is here to make planning, lessons and record-keeping a little easier, whatever your days look like."),
+    note("<strong>Your seven-day free preview is ready.</strong> No payment card required."),
+    h2("Your first little quest"),
     steps([
       "Sign in to your parent dashboard.",
       "Add your child's profile.",
       "Create and assign your first lesson.",
-      "Follow progress and keep learning evidence organised.",
+      "Explore the child dashboard and see how progress is recorded.",
     ]),
-    button("Open Side-Quest", `${SITE_URL}/login`),
-    note("<strong>Your free preview:</strong> One child, up to two lessons and two active assignments. A paid Family Membership unlocks full family access and AI lesson drafting."),
-    p(`Questions or ideas? Reply to this email or contact <a href="mailto:${SUPPORT_EMAIL}" style="color:#4A5D3A;">${SUPPORT_EMAIL}</a>.`),
-    p("Happy questing,<br/><strong>The Side-Quest Learning team</strong>"),
+    button("Let's get started", `${SITE_URL}/login`),
+    p("No need to set everything up on day one. <strong>One child, one lesson, one little win</strong> is a perfectly good beginning."),
+    note("<strong>While you're exploring:</strong> Your preview includes one child, up to two lessons and two active assignments. A Family Membership adds more room for your family, including AI lesson drafting and full portfolio access."),
+    p(`Have a question, an idea or something that isn't working? Just reply or email <a href="mailto:${SUPPORT_EMAIL}" style="color:#4A5D3A;">${SUPPORT_EMAIL}</a>. We'd love to hear from you.`),
+    p("We're glad you've joined us. Happy questing!<br/><strong>Side-Quest Learning</strong>"),
   ].join("\n");
+
   return {
     to, subject, text,
     html: layout({
-      preheader: "Your seven-day Side-Quest preview is ready. No card needed.",
-      kicker: "Your next quest starts here.",
-      heading: `Welcome to Side-Quest, ${n}!`,
+      preheader: "We're glad you're here! Your seven-day preview is ready, no card needed.",
+      kicker: "Come on in.",
+      heading: `Welcome to the family, ${n}!`,
       body,
-      reason: "This was sent because a Side-Quest Learning account was created using your email address.",
+      reason: "This email was sent because a Side-Quest Learning account was created using your address.",
     }),
   };
 }
@@ -229,40 +237,55 @@ export function membershipActivatedEmail(to: string, name: string, details: Memb
     day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Sydney",
   });
   const sandbox = !!details.testMode;
-  const subject = `${sandbox ? "[TEST] " : ""}Your Side-Quest Family Membership is active`;
+  const subject = `${sandbox ? "[TEST] " : ""}Your Side-Quest Family Membership is active!`;
+
   const text = `Hi ${n},
 
-Your Side-Quest Learning Family Membership is active!
+Great news — your Side-Quest Family Membership is active!
 
-Plan: Family Membership (${details.interval})
+We're really glad you've chosen to keep learning with us. Whether your homeschool days are carefully planned or occasionally powered by snacks and improvisation, there's a place for your family here.
+
+Here are your membership details:
+
+Membership: Family Membership (${details.interval})
 Price: ${amount} ${frequency}
 Next scheduled billing date: ${next}
 
-Your membership renews automatically at the price and frequency above until you cancel. Manage your card, view invoices or cancel in Your Plan > Manage billing: ${SITE_URL}/parent/plan
+Your membership renews automatically at the price and frequency above until you cancel.
 
-Cancelling keeps your full access until the end of the current paid period.
+You can update your payment details, view invoices or cancel any time from Your Plan > Manage billing:
+${SITE_URL}/parent/plan
+
+If you cancel, your full access continues until the end of your current paid period.
 ${sandbox ? "\nThis is a Stripe sandbox test. No real payment was taken.\n" : ""}
-Questions? Contact ${SUPPORT_EMAIL}.
+We're looking forward to all the learning adventures and little wins ahead. Thanks for being part of the Side-Quest family!
+
+Need a hand? Reply to this email or contact ${SUPPORT_EMAIL}.
 
 Happy questing,
-The Side-Quest Learning team
+Side-Quest Learning
 
 --
-This is a subscription confirmation, not a tax invoice. Stripe sends payment documents separately where configured.`;
+This is your membership confirmation, not a tax invoice. Payment documents are available separately through Stripe where configured.`;
+
   const body = [
-    p(`Hi ${esc(n)}! Your <strong>Family Membership is active</strong>. Your family's full access is ready.`),
+    p(`Hi ${esc(n)}, <strong>great news — your Family Membership is active!</strong>`),
+    p("We're really glad you've chosen to keep learning with us. Whether your homeschool days are carefully planned or occasionally powered by snacks and improvisation, there's a place for your family here."),
+    h2("Your membership at a glance"),
     note(`<strong>Membership:</strong> Family Membership (${esc(details.interval)})<br/><strong>Price:</strong> ${amount} ${esc(frequency)}<br/><strong>Next billing:</strong> ${esc(next)}`),
-    p(`Your membership renews automatically at this rate until you cancel. You can update your card, view invoices or cancel under <strong>Your Plan → Manage billing</strong>. If you cancel, access continues through the current paid period.`),
+    p(`Your membership renews automatically at the price and frequency above until you cancel. To update your payment details, view invoices or cancel, visit <strong>Your Plan → Manage billing</strong>. Cancelling keeps your full access until the end of your paid period.`),
     button("Manage your membership", `${SITE_URL}/parent/plan`),
     ...(sandbox ? [note("<strong>Stripe sandbox test:</strong> No real payment was taken.")] : []),
-    p(`Need help? Reply to this email or contact <a href="mailto:${SUPPORT_EMAIL}" style="color:#4A5D3A;">${SUPPORT_EMAIL}</a>.`),
-    p("Happy questing,<br/><strong>The Side-Quest Learning team</strong>"),
+    p("We're looking forward to all the learning adventures and little wins ahead. Thanks for being part of the Side-Quest family!"),
+    p(`Need a hand? Reply to this email or contact <a href="mailto:${SUPPORT_EMAIL}" style="color:#4A5D3A;">${SUPPORT_EMAIL}</a>.`),
+    p("Happy questing,<br/><strong>Side-Quest Learning</strong>"),
   ].join("\n");
+
   return {
     to, subject, text,
     html: layout({
-      preheader: `Your membership is active: ${amount} ${frequency}. Next billing ${next}.`,
-      kicker: "Full access unlocked.",
+      preheader: `Your membership is active! ${amount} ${frequency}; next billing ${next}.`,
+      kicker: "Here's to what's next.",
       heading: "Your membership is active!",
       body,
       reason: "You received this because your Side-Quest Family Membership was activated.",
