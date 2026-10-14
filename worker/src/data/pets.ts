@@ -9,6 +9,7 @@ export const PET_SPECIES = {
   squirrel: { label: "Squirrel", voice: "energetic, playful, upbeat" },
   rabbit: { label: "Rabbit", voice: "quick, cheerful, friendly" },
   dragon: { label: "Dragon", voice: "brave, dramatic, warm-hearted" },
+  goblin: { label: "Goblin", voice: "cheeky, clever, loyal and a little mischievous" },
 } as const;
 
 export const LEVEL_TIERS: Array<[number, string, string]> = [
@@ -48,6 +49,7 @@ export const EGG_STYLES: Record<string, { base: string; accent: string; pattern:
   squirrel: { base: "#B5651D", accent: "#F0C987", pattern: "stripes", glow: "#FFD9A0" },
   rabbit: { base: "#F2E9F0", accent: "#F7B6D2", pattern: "hearts", glow: "#FFE0EF" },
   dragon: { base: "#7B5EA7", accent: "#F2C14E", pattern: "scales", glow: "#D9C2FF" },
+  goblin: { base: "#9CB86B", accent: "#D9E8B0", pattern: "spots", glow: "#E4F2C0" },
 };
 
 export const ACCESSORIES: Record<string, { label: string; rule: string }> = {

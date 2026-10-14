@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { X } from "lucide-react";
 import { api } from "../../lib/api";
-import { Pet } from "./Botanical";
+import PetArt from "./PetArt";
 
 const BREAK_IDEAS = [
   "Stand up and stretch as high as you can, then shake out your hands.",
@@ -91,7 +91,7 @@ export default function PetCompanion({ stageKey, stageTitle }) {
     }
   };
 
-  const avatar = (size) => pet ? <Pet species={pet.species} size={size} happy /> : <span style={{ fontSize: size * 0.7 }}>\ud83c\udf31</span>;
+  const avatar = (size) => pet ? <PetArt species={pet.species} stage={pet.hatched === false ? "egg" : pet.level_name} size={size} happy /> : <span style={{ fontSize: size * 0.7 }}>\ud83c\udf31</span>;
 
   const pickTopic = (key) => { setTopic(key); setShown(1); };
   const close = () => { setOpen(false); setTopic(null); setShown(1); };

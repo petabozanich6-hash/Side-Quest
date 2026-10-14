@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
 import { Pet, Fern, Flower, Branch } from "../../components/shared/Botanical";
+import PetArt, { ART_SPECIES } from "../../components/shared/PetArt";
 import HalloweenOverlay from "../../components/shared/HalloweenOverlay";
 import SeasonalWorn from "../../components/shared/SeasonalWorn";
 import SeasonalWardrobeItems from "../../components/shared/SeasonalWardrobeItems";
@@ -318,7 +319,8 @@ export default function PetRoom() {
               style={{ filter: sick ? "grayscale(0.7)" : asleep ? "brightness(0.75)" : "none", cursor: "pointer" }}>
               {hatched && AURA[pet.level_name] && <span className={`aura ${pet.level_name === "Legend" ? "aura-ring" : ""}`} style={{ background: AURA[pet.level_name] }} aria-hidden />}
               {hatched
-                ? <Pet species={pet.species} size={200} happy={!sad && pet.happiness > 40}><SeasonalWorn /></Pet>
+                ? <PetArt species={pet.species} stage={pet.level_name} size={220} happy={!sad && pet.happiness > 40}><SeasonalWorn /></PetArt>
+                : ART_SPECIES.includes(pet.species) ? <PetArt species={pet.species} stage="egg" size={150}><SeasonalWorn layout="egg" /></PetArt>
                 : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"}><SeasonalWorn layout="egg" /></SpeciesEgg>}
               {hatched && worn.length > 0 && (
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2 flex gap-1 text-2xl" data-testid="worn-accessories">

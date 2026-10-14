@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
-import { Pet } from "../shared/Botanical";
+import PetArt from "../shared/PetArt";
 import { useChildInbox } from "./useChildInbox";
 
 const POOL = [
@@ -99,7 +99,7 @@ export default function PetWelcome({ childId, name, today = 0, overdue = 0, ahea
   return (
     <section className="paper-card p-4 flex items-center gap-4" style={cur ? { borderColor: "#C77B5B", borderWidth: 2 } : undefined} data-testid="pet-welcome">
       <button onClick={() => { if (!cur) setMsg(pick(ctx, key, msg.id)); }} className="shrink-0" aria-label={`Tap ${pet.name} for another hello`} data-testid="pet-welcome-tap">
-        <Pet species={pet.species} size={96} happy={(pet.happiness ?? 50) > 40} />
+        <PetArt species={pet.species} stage={pet.hatched === false ? "egg" : pet.level_name} size={96} happy={(pet.happiness ?? 50) > 40} />
       </button>
       <div className="flex-1 min-w-0">
         <div className="relative rounded-2xl border px-4 py-3" style={cur ? { borderColor: "#C77B5B", backgroundColor: "#FEF3C7" } : { borderColor: "#D4C8A8", backgroundColor: "#FFFFFF" }}>

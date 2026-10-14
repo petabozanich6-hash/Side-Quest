@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../lib/api";
-import { Pet, Fern } from "../../components/shared/Botanical";
+import { Fern } from "../../components/shared/Botanical";
+import PetArt from "../../components/shared/PetArt";
 import { toast } from "sonner";
 
 export default function PetPicker({ onDone }) {
@@ -36,7 +37,7 @@ export default function PetPicker({ onDone }) {
               className={`rounded-2xl p-3 border-2 transition hover:translate-y-[-2px] ${selected === s.id ? "border-moss bg-emerald-50" : "border-stone-200 bg-white"}`}
               style={selected === s.id ? {borderColor:"#4A5D3A", backgroundColor:"#F0F4E8"} : {}}
               data-testid={`pet-${s.id}`}>
-              <div className="flex justify-center"><Pet species={s.id} size={72}/></div>
+              <div className="flex justify-center"><PetArt species={s.id} stage="hatchling" size={72}/></div>
               <div className="text-center text-sm font-display font-bold mt-1" style={{color:"#2A2822"}}>{s.label}</div>
               <div className="text-center text-[10px] text-stone-500 italic">{s.voice.split(",")[0]}</div>
             </button>

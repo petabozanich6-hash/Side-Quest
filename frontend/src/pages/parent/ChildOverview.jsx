@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { ArrowLeft, Send, BookOpen, Camera, Heart } from "lucide-react";
-import { Pet } from "../../components/shared/Botanical";
+import PetArt from "../../components/shared/PetArt";
 
 const EMOJIS = ["🙌", "⭐", "🌟", "💛", "🌱", "🎉", "✨", "💪", "🦊", "📚"];
 
@@ -46,7 +46,7 @@ export default function ChildOverview() {
       <button onClick={()=>nav("/parent/children")} className="text-sm font-bold flex items-center gap-1" style={{color:"#4A5D3A"}} data-testid="back-children"><ArrowLeft size={14}/> All children</button>
 
       <header className="paper-card p-6 flex items-start gap-6">
-        {data.pet && <div className="shrink-0"><Pet species={data.pet.species} size={100}/></div>}
+        {data.pet && <div className="shrink-0"><PetArt species={data.pet.species} stage={data.pet.hatched === false ? "egg" : data.pet.level_name} size={100}/></div>}
         <div className="flex-1">
           <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>{s.name}</h1>
           <div className="text-sm text-stone-500 mt-0.5">{s.stage_name} · @{s.username}</div>
