@@ -38,6 +38,7 @@ import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
 import ChildLessonRouter from "./pages/child/ChildLessonRouter";
 import ChildPortfolio from "./pages/child/ChildPortfolio";
+import ChildLessonArchive from "./pages/child/ChildLessonArchive";
 import ChildCalendar from "./pages/child/ChildCalendar";
 import ChildAchievements from "./pages/child/ChildAchievements";
 import ChildWordHoard from "./pages/child/ChildWordHoard";
@@ -95,6 +96,7 @@ function Router() {
         <Route index element={<ChildHome />} />
         <Route path="lesson/:aid" element={<ChildLessonRouter />} />
         <Route path="portfolio" element={<ChildPortfolio />} />
+        <Route path="archive" element={<ChildLessonArchive />} />
         <Route path="calendar" element={<ChildCalendar />} />
         <Route path="achievements" element={<ChildAchievements />} />
         <Route path="word-hoard" element={<ChildWordHoard />} />

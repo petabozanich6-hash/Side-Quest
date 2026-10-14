@@ -122,8 +122,8 @@ export default function ChildHome() {
         </>
       )}
       {(data.completed || []).length > 0 && (
-        <Link to="/child/portfolio" className="block rounded-2xl border border-emerald-200 bg-emerald-50 p-4 hover:bg-emerald-100" data-testid="completed-portfolio-link">
-          <span className="font-display text-lg font-semibold text-emerald-900">Your completed quests are in My Portfolio</span>
+        <Link to="/child/archive" className="block rounded-2xl border border-emerald-200 bg-emerald-50 p-4 hover:bg-emerald-100" data-testid="completed-portfolio-link">
+          <span className="font-display text-lg font-semibold text-emerald-900">Your completed quests are in your Archive</span>
           <p className="mt-1 text-sm text-emerald-800">Visit your portfolio whenever you want to look back at your work, parent feedback and achievements.</p>
         </Link>
       )}
