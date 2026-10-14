@@ -46,6 +46,21 @@ export function registerLearning(app: App, g: Guards) {
     await db.prepare(`INSERT INTO life_evidence (${keys.join(", ")}) VALUES (${keys.map(() => "?").join(", ")})`)
       .bind(...keys.map(k => values[k])).run();
   }
+  // Keep saves compatible with existing D1 installations without altering historical data.
+  const planColumns = async (db: D1Database): Promise<Set<string>> => {
+    const { results } = await db.prepare("PRAGMA table_info(learning_plans)").all<{ name: string }>();
+    const names = new Set((results || []).map(row => row.name));
+    if (!["id", "family_id", "student_id", "title"].every(key => names.has(key))) {
+      throw new Error("learning_plans is missing its required columns");
+    }
+    return names;
+  };
+  async function insertLearningPlan(db: D1Database, plan: Record<string, unknown>) {
+    const available = await planColumns(db);
+    const keys = Object.keys(plan).filter(key => available.has(key));
+    await db.prepare(`INSERT INTO learning_plans (${keys.join(", ")}) VALUES (${keys.map(() => "?").join(", ")})`)
+      .bind(...keys.map(key => plan[key])).run();
+  }
   const planOut = (row: any) => ({
     ...row,
     interests: parseJson(row.interests, []),
@@ -382,24 +397,7 @@ export function registerLearning(app: App, g: Guards) {
       created_at,
       updated_at: created_at,
     };
-    await c.env.DB.prepare(
-      "INSERT INTO learning_plans (id, family_id, student_id, title, period_start, period_end, interests, subject_focus, teaching_approach, notes, status, ai_content, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    ).bind(
-      plan.id,
-      plan.family_id,
-      plan.student_id,
-      plan.title,
-      plan.period_start,
-      plan.period_end,
-      plan.interests,
-      plan.subject_focus,
-      plan.teaching_approach,
-      plan.notes,
-      plan.status,
-      plan.ai_content,
-      plan.created_at,
-      plan.updated_at
-    ).run();
+    await insertLearningPlan(c.env.DB, plan);
     return c.json(planOut(plan));
   });
 
@@ -433,9 +431,12 @@ export function registerLearning(app: App, g: Guards) {
     } else {
       content = await buildPlanContent(c.env.DB, planOut(planRow), studentOut(studentRow) || {}, jurisdiction);
     }
-    await c.env.DB.prepare("UPDATE learning_plans SET ai_content = ?, status = 'draft', updated_at = ? WHERE id = ? AND family_id = ?")
-      .bind(JSON.stringify(content), nowIso(), planRow.id, user.family_id)
-      .run();
+    const available = await planColumns(c.env.DB);
+    if (!available.has("ai_content")) return c.json({ detail: "This database needs the learning plan AI content column before AI writing can be saved." }, 503);
+    const changes: Record<string, unknown> = { ai_content: JSON.stringify(content), status: "draft", updated_at: nowIso() };
+    const keys = Object.keys(changes).filter(key => available.has(key));
+    await c.env.DB.prepare(`UPDATE learning_plans SET ${keys.map(key => key + " = ?").join(", ")} WHERE id = ? AND family_id = ?`)
+      .bind(...keys.map(key => changes[key]), planRow.id, user.family_id).run();
     return c.json({ ok: true, generated_by: content.generated_by, warnings });
   };
 
