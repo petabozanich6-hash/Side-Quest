@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../lib/api";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Plus, X, Sparkles, Loader2, FileCheck, Printer, Trash2 } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
@@ -93,7 +94,7 @@ export default function LearningPlans() {
   };
 
   return (
-    <div className="p-8 lg:p-10 space-y-6 relative" data-testid="learning-plans">
+    <div className="p-4 sm:p-8 lg:p-10 space-y-6 relative" data-testid="learning-plans">
       <Leaf className="absolute right-10 top-6" size={60} color="#C8893B"/>
       <Branch className="absolute left-0 bottom-10 opacity-30" size={160} color="#4A5D3A"/>
 
@@ -107,8 +108,8 @@ export default function LearningPlans() {
         </p>
       </header>
 
-      <div className="flex items-center gap-3">
-        <button onClick={()=>setOpen(true)} className="rounded-full px-5 py-2.5 text-sm font-bold flex items-center gap-2" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="add-plan"><Plus size={14}/> New plan</button>
+      <div className="flex flex-wrap items-center gap-3">
+        <button onClick={()=>setOpen(true)} disabled={students.length === 0} className="rounded-full px-5 py-2.5 text-sm font-bold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="add-plan"><Plus size={14}/> New plan</button>
         <div className="text-xs text-stone-500">{plans.length} plan{plans.length === 1 ? "" : "s"}</div>
       </div>
 
@@ -141,7 +142,9 @@ export default function LearningPlans() {
           <div className="col-span-full paper-card p-10 text-center">
             <FileCheck className="mx-auto mb-3" size={32} style={{color:"#4A5D3A"}}/>
             <p className="font-display text-lg" style={{color:"#1F3B2D"}}>No learning plans yet</p>
-            <p className="text-sm text-stone-500 mt-2 max-w-md mx-auto">Create a plan for the term or period you're preparing for. The current generator uses NSW syllabus references, so review it against your own jurisdiction's guidance.</p>
+            <p className="text-sm text-stone-500 mt-2 max-w-md mx-auto">{students.length === 0 ? "Start by adding a child. You can then make a learning plan for the period you are preparing for." : "Create a plan for the term or period you are preparing for. The current generator uses NSW syllabus references, so review it against your own jurisdiction’s guidance."}</p>
+            {students.length === 0 && <Link to="/parent/children" className="mt-4 inline-block text-sm font-bold underline" style={{color:"#4A5D3A"}} data-testid="plans-empty-add-child">Add your first child</Link>}
+            {students.length > 0 && <button type="button" onClick={() => setOpen(true)} className="mt-4 text-sm font-bold underline" style={{color:"#4A5D3A"}} data-testid="plans-empty-create">Create a learning plan</button>}
           </div>
         )}
       </div>
