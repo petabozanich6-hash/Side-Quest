@@ -128,6 +128,9 @@ export default function LessonReview() {
           {" "}Not what you meant? Use <b>Ask AI to change something</b>.
         </p>
       </div>
+      {info.generation?.calls > 0 && (
+        <p className="text-xs text-slate-500" data-testid="gen-report">Written in {info.generation.stages.filter(x => x !== "repair").length} steps ({info.generation.stages.includes("repair") ? "plus one correction" : "no corrections needed"}){info.generation.est_cost_us_cents != null ? `, an AI cost of about ${info.generation.est_cost_us_cents} US cents` : ""}.</p>
+      )}
       {lesson.ai_generated && lesson.status !== "ready" && (
         <p className="rounded-lg border border-violet-300 bg-violet-50 px-3 py-2 text-sm text-violet-900" data-testid="ai-banner">
           <b>AI-generated draft.</b> Have a read before your child sees it. It has not been checked against any curriculum, and it can make mistakes.

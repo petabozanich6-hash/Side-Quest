@@ -210,7 +210,20 @@ test("deleting an assigned lesson archives it; drafts cannot be assigned", async
 import * as aid from "../src/aiDraft.ts";
 const GARDEN = JSON.parse(readFileSync(new URL("../../frontend/src/data/exampleLesson.json", import.meta.url), "utf8"));
 const aiReply = (over = {}) => ({ response: JSON.stringify({ ...GARDEN, resources: [{ type: "link", title: "x", url: "https://evil.example" }], curriculum_refs: ["ACMNA999"], status: "ready", ...over }) });
-const stub = (fn) => { const calls = []; return { calls, run: async (...a) => { calls.push(a); return fn ? fn(...a) : aiReply(); } }; };
+// The generator now works in three requests (design, teaching, practice). This fake answers each from the garden reference.
+const STAGE1 = ["title", "teaching_plan", "why_it_matters", "prior_knowledge", "objectives", "key_words", "misconceptions"];
+const STAGE2 = ["introduction", "sections", "worked_examples", "texts", "consolidation"];
+const stagedFor = (over = {}) => (model, input) => {
+  const u = input.messages.at(-1).content;
+  const g = { ...GARDEN, resources: [{ type: "link", title: "x", url: "https://evil.example" }], curriculum_refs: ["ACMNA999"], status: "ready", ...over };
+  const pick = (ks) => Object.fromEntries(ks.filter((k) => g[k] !== undefined).map((k) => [k, g[k]]));
+  const reply = (o) => ({ response: JSON.stringify(o), usage: { prompt_tokens: 1000, completion_tokens: 2000 } });
+  if (u.includes("STAGE 1 OF 3")) return reply({ ...pick(STAGE1), concept: "c", sequence: g.sections.map((x) => ({ heading: x.heading, idea: "i", how: "h" })), worked_examples: g.worked_examples.map((w) => ({ title: w.title, problem: w.problem, skill: "s" })), practice_plan: "p" });
+  if (u.includes("STAGE 2 OF 3")) return reply(pick(STAGE2));
+  if (u.includes("STAGE 3 OF 3")) return reply(Object.fromEntries(Object.entries(g).filter(([k]) => ![...STAGE1, ...STAGE2].includes(k))));
+  return reply(g); // a repair request: the full set of keys; the matching ones are merged
+};
+const stub = (fn) => { const calls = []; return { calls, run: async (...a) => { calls.push(a); return fn ? fn(...a) : stagedFor()(...a); } }; };
 const req = (family, ai, extra = {}) => ({ familyId: family, userId: "u1", request: { topic: "Fractions", ...extra }, ...extra.opts });
 
 test("AI drafting: free preview, expired and cancelled are blocked before any AI call", async () => {
@@ -239,7 +252,9 @@ test("AI drafting: paid family gets an unreviewed AI-labelled draft with no link
   assert.equal(r.lesson.source, "ai");
   assert.deepEqual(r.lesson.resources, []);
   assert.deepEqual(r.warnings, []);
-  assert.equal(ai.calls.length, 1); // a good first reply needs no retry
+  assert.equal(ai.calls.length, 3); // design, teaching, practice: a good reply needs no retry and no repair
+  assert.deepEqual(r.generation.stages, ["design", "teaching", "practice"]);
+  assert.equal(r.generation.input_tokens, 3000); assert.ok(r.generation.est_cost_us_cents > 0);
   assert.equal(r.usage.today, 1);
   assert.equal(r.lesson.delivery, "parent_guided");
   assert.equal(r.lesson.worked_examples.length, 3);
@@ -248,10 +263,13 @@ test("AI drafting: paid family gets an unreviewed AI-labelled draft with no link
   assert.equal(q1.options[q1.correct_index], "68"); // shuffling keeps the right answer marked
   const msgs = ai.calls[0][1].messages;
   assert.equal(msgs[0].role, "system");
-  assert.equal(msgs.length, 4); // system + one reference example (user, assistant) + the real request
-  assert.match(msgs[3].content, /Topic: Fractions/);
-  assert.match(msgs[3].content, /DIFFERENT topic/);
-  assert.equal(ai.calls[0][1].max_tokens, 8000);
+  assert.equal(msgs.length, 2); // system + the request: no 6,000-token example rides along any more
+  assert.match(msgs[1].content, /Topic: Fractions/);
+  assert.match(msgs[0].content, /Never write an instruction in place of content/);
+  // each later stage is shown what the earlier ones produced, so practice matches what was actually taught
+  assert.match(ai.calls[1][1].messages[1].content, /"sequence"/);
+  assert.match(ai.calls[2][1].messages[1].content, /WHAT WAS TAUGHT[\s\S]*Part 1\./);
+  assert.deepEqual(ai.calls.map((c) => c[1].max_tokens), [2600, 6500, 7500]);
   // Editing keeps the AI label; the parent marking it ready records a parent review.
   const up = await lb.updateLesson(db, fam, r.lesson.id, { ...lesson({ title: "Edited" }), status: "ready" }, NOW);
   assert.ok(up.ok);
@@ -337,25 +355,26 @@ test("evidence notes: family-scoped, searchable, date filtered; expired preview 
 test("AI drafting: a thin reply gets one targeted repair; an unfixable one is refused, not saved", async () => {
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
-  const thin = () => ({ response: JSON.stringify({ title: "Thin", objectives: ["a"], sections: [{ heading: "H", body: "Short." }], quiz: [{ question: "q", options: ["a", "b"], correct_index: 0 }] }) });
-  const ai = stub(() => thin());
+  const thinOver = { sections: [{ heading: "H", body: "Short." }] };
+  const thin = (m, input) => (input.messages.at(-1).content.includes("reviewer found") ? stagedFor(thinOver)(m, input) : stagedFor(thinOver)(m, input));
+  const ai = stub(thin);
   const r = await aid.draftLessonWithAi(db, ai, { familyId: fam, userId: "u", request: { topic: "Fractions", duration_minutes: 60 } }, NOW);
   assert.equal(r.ok, false);
   assert.equal(r.code, "AI_FAILED");
   assert.match(r.detail, /wasn't good enough/);
-  assert.equal(ai.calls.length, 2); // draft + one repair, never more
+  assert.equal(ai.calls.length, 4); // three stages + one repair, never more
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lessons WHERE family_id = ?").get(fam).n, 0);
   assert.equal((await aid.aiUsage(db, fam, NOW)).today, 0);
   // thin first, then a repair that supplies the missing parts: kept, with only the soft flags that remain
   let n = 0;
   const ai2 = stub((model, input) => {
-    if (n++ === 0) return thin();
+    if (n++ < 3) return stagedFor(thinOver)(model, input);
     assert.match(input.messages[1].content, /reviewer found these problems/);
-    return aiReply(); // the repair returns the full set of keys; the matching ones are merged
+    return { response: aiReply().response }; // the repair returns the full set of keys; the matching ones are merged
   });
   const r2 = await aid.draftLessonWithAi(db, ai2, { familyId: fam, userId: "u", request: { topic: "Addition", duration_minutes: 60 } }, NOW);
   assert.ok(r2.ok, JSON.stringify(r2));
-  assert.equal(ai2.calls.length, 2);
+  assert.equal(ai2.calls.length, 4);
   assert.equal(r2.lesson.sections.length, 5);
   assert.deepEqual(r2.lesson.ai_flags, r2.warnings);
 });
@@ -790,4 +809,38 @@ test("approved videos are kept with the lesson, survive edit/duplicate/assignmen
   const row = db.raw.prepare("SELECT * FROM assignments WHERE id=?").get(asg.id);
   const safe = lb.childSafeLesson(lb.assignmentLesson(row, null));
   assert.equal(safe.resources[0].embed_url, "https://www.youtube-nocookie.com/embed/good_video01");
+});
+
+// ---------------------------------------------------------------- staged generation: truncation is never hidden
+test("staged generation: a cut-off stage is asked again once; if still cut off it is kept but flagged; a stage that never works fails cleanly", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const full = stagedFor();
+  const cut = (reply) => ({ response: reply.response.slice(0, Math.floor(reply.response.length * 0.8)) });
+  // teaching stage cut off once, then fine: retried (4 calls), nothing flagged
+  let n = 0;
+  const ai1 = stub((m, input) => { const r = full(m, input); return input.messages.at(-1).content.includes("STAGE 2 OF 3") && n++ === 0 ? cut(r) : r; });
+  const a = await aid.draftLessonWithAi(db, ai1, req(fam), NOW);
+  assert.ok(a.ok, JSON.stringify(a)); assert.equal(ai1.calls.length, 4);
+  assert.deepEqual(a.generation.stages, ["design", "teaching", "teaching", "practice"]);
+  assert.ok(!a.warnings.some((w) => /cut off/.test(w)));
+  assert.match(ai1.calls[2][1].messages.at(-1).content, /previous reply could not be used/);
+  // practice stage always cut off: kept (the end of it missing) but the parent is told
+  const ai2 = stub((m, input) => { const r = full(m, input); return input.messages.at(-1).content.includes("STAGE 3 OF 3") ? cut(r) : r; });
+  const b = await aid.draftLessonWithAi(db, ai2, req(fam), NOW);
+  assert.ok(b.ok, JSON.stringify(b));
+  assert.ok(b.warnings.some((w) => /practice step was cut off/.test(w)), JSON.stringify(b.warnings));
+  // a stage that returns nothing usable twice: no lesson, no allowance used
+  const before = (await aid.aiUsage(db, fam, NOW)).today;
+  const ai3 = stub((m, input) => (input.messages.at(-1).content.includes("STAGE 2 OF 3") ? { response: "I cannot" } : full(m, input)));
+  const c = await aid.draftLessonWithAi(db, ai3, req(fam), NOW);
+  assert.equal(c.code, "AI_FAILED"); assert.equal((await aid.aiUsage(db, fam, NOW)).today, before);
+});
+
+test("quality gate: instructions that stand in for teaching are caught", () => {
+  const spec = { topic: "Fractions", area: "Mathematics", year: "Year 4", goal: "", minutes: 30, delivery: "parent_guided", interests: "", needs: "", notes: "" };
+  const d = aid.normaliseDraft(JSON.parse(aiReply().response), spec);
+  assert.ok(!aid.qualityIssues(d, spec).some((i) => /instead of doing it/.test(i.msg)));
+  const bad = { ...d, sections: [{ heading: "H", body: "Explain the concept of a fraction to your child. Then demonstrate how to add them." }, ...d.sections] };
+  assert.ok(aid.qualityIssues(bad, spec).some((i) => /instead of doing it/.test(i.msg)));
 });

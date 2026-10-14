@@ -20,7 +20,7 @@ function Progress({ label }) {
     <div className="rounded-xl border border-violet-200 bg-violet-50 p-4" role="status" data-testid="make-progress">
       <p className="font-semibold text-violet-900 flex items-center gap-2"><Loader2 className="animate-spin" size={18} /> {label}</p>
       <p className="text-sm text-slate-700 mt-1">{STEPS[Math.min(STEPS.length - 1, Math.floor(sec / 18))]}</p>
-      <p className="text-xs text-slate-500 mt-1">This usually takes one to two minutes ({sec}s so far). Please keep this page open.</p>
+      <p className="text-xs text-slate-500 mt-1">This usually takes one to three minutes ({sec}s so far). Please keep this page open.</p>
     </div>
   );
 }
@@ -67,7 +67,7 @@ export default function MakeLesson() {
     try {
       const r = await api.post("/ai/lesson-draft", body());
       leaving.current = true;
-      nav(`/parent/lessons/${r.data.lesson.id}/review`, { state: { assumptions: { ...r.data.assumptions, child: child?.name }, warnings: r.data.warnings, studentId: student || undefined } });
+      nav(`/parent/lessons/${r.data.lesson.id}/review`, { state: { assumptions: { ...r.data.assumptions, child: child?.name }, warnings: r.data.warnings, generation: r.data.generation, studentId: student || undefined } });
     } catch (e) { fail(e); setBusy(""); }
   };
 
