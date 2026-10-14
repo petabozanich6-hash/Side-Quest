@@ -112,6 +112,37 @@ await step("A. new family registers through the UI", async () => {
   await shot("parent-home");
 });
 
+await step("curriculum directory covers every Australian state and territory without a location setting", async () => {
+  await page.goto(BASE + "/parent/curriculum");
+  await page.waitForSelector('[data-testid=curriculum-page]');
+  const codes = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
+  for (const code of codes) {
+    ok(await page.locator(`[data-testid=curriculum-state-${code}]`).count() === 1, `missing jurisdiction ${code}`);
+    ok(await page.locator(`[data-testid=curriculum-jump-${code}]`).count() === 1, `missing jump link ${code}`);
+    ok(await page.locator(`[data-testid=curriculum-state-${code}] [data-testid=curriculum-resource]`).count() >= 3, `not enough references for ${code}`);
+  }
+  ok(await page.locator('[data-testid=curriculum-national-resources] [data-testid=curriculum-resource]').count() >= 2, "missing national curriculum resources");
+  ok(await page.locator('select[aria-label="Jurisdiction"]').count() === 0, "jurisdiction control should be implemented in signup, not on Curriculum");
+  const content = await page.textContent('[data-testid=curriculum-page]');
+  ok(/Australian families|families all around Australia/i.test(content), "Curriculum page does not welcome Australian families");
+  await shot("curriculum-eight-jurisdictions");
+  for (const [label, width, height] of [["phone", 375, 812], ["tablet", 768, 1024]]) {
+    const ctx = await browser.newContext({ viewport: { width, height } });
+    const p = await ctx.newPage();
+    try {
+      await p.goto(BASE + "/login");
+      await p.fill('[data-testid=login-email]', email1);
+      await p.fill('[data-testid=login-password]', pw);
+      await p.click('[data-testid=login-submit]');
+      await p.waitForURL("**/parent");
+      await p.goto(BASE + "/parent/curriculum");
+      const dims = await p.evaluate(() => ({ scroll: document.documentElement.scrollWidth, viewport: window.innerWidth }));
+      ok(dims.scroll <= dims.viewport + 2, `curriculum ${label} overflows (${dims.scroll} > ${dims.viewport})`);
+      await p.screenshot({ path: `${SHOTS}/curriculum-${label}.png`, fullPage: true });
+    } finally { await ctx.close(); }
+  }
+});
+
 await step("B. parent adds a child through the UI", async () => {
   await page.goto(BASE + "/parent/children");
   await page.click('[data-testid=add-student-btn]');
