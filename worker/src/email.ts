@@ -127,7 +127,7 @@ export function layout(o: LayoutOpts) {
 
 <tr><td bgcolor="${C.forest}" style="background:${C.forest};border-radius:18px 18px 0 0;padding:26px 30px 22px;">
 <div style="font-family:${SERIF};font-size:13px;letter-spacing:3px;text-transform:uppercase;color:${C.tan};">&#128009;&nbsp; Side-Quest Learning</div>
-<div style="font-family:${SERIF};font-style:italic;font-size:26px;line-height:1.2;color:${C.tan};margin-top:14px;">${esc(o.kicker || "Welcome home.")}</div>
+<div style="font-family:${SERIF};font-style:italic;font-size:26px;line-height:1.2;color:${C.tan};margin-top:14px;">${esc(o.kicker || "Your next quest starts here.")}</div>
 </td></tr>
 <tr><td bgcolor="${C.moss}" style="background:${C.moss};font-size:0;line-height:0;height:4px;">&nbsp;</td></tr>
 
@@ -142,7 +142,7 @@ ${divider}
 </td></tr>
 
 <tr><td bgcolor="${C.forest}" style="background:${C.forest};border-radius:0 0 18px 18px;padding:18px 30px;">
-<p style="margin:0;font-family:${SERIF};font-size:12px;line-height:1.6;color:${C.sage};">Side Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
+<p style="margin:0;font-family:${SERIF};font-size:12px;line-height:1.6;color:${C.sage};">Side-Quest Learning acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
 </td></tr>
 
 </table>
