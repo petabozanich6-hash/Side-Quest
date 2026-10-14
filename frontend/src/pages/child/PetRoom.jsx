@@ -11,6 +11,7 @@ import { playSfx, setSfx, sfxOn } from "../../lib/sfx";
 import { ArrowLeft, Apple, Gamepad2, Palette, Sparkles, Loader2, Droplets } from "lucide-react";
 
 const BG_OPTIONS = [
+  { id: "cozy", label: "Cosy room", bg: "#C98B4B", image: "/pet-room/cozy-room.webp", fallback: "/pet-room/cozy-room.jpg" },
   { id: "meadow", label: "Meadow", bg: "linear-gradient(180deg, #F0FDF4 0%, #D1FAE5 100%)" },
   { id: "sunset", label: "Sunset", bg: "linear-gradient(180deg, #FEF3C7 0%, #FED7AA 100%)" },
   { id: "woodland", label: "Woodland", bg: "linear-gradient(180deg, #ECFCCB 0%, #BBF7D0 100%)" },
@@ -144,7 +145,7 @@ export default function PetRoom() {
   const nav = useNavigate();
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [bg, setBg] = useState("meadow");
+  const [bg, setBg] = useState("cozy");
   const [renaming, setRenaming] = useState(false);
   const [newName, setNewName] = useState("");
   const [reaction, setReaction] = useState(null);
@@ -254,7 +255,11 @@ export default function PetRoom() {
 
   if (!pet) return <div className="text-stone-500">Loading your room…</div>;
 
-  const bgStyle = BG_OPTIONS.find(b => b.id === bg)?.bg || BG_OPTIONS[0].bg;
+  const bgOpt = BG_OPTIONS.find(b => b.id === bg) || BG_OPTIONS[0];
+  const bgStyle = bgOpt.image
+    ? { background: `url(${bgOpt.image}) center bottom / cover no-repeat, url(${bgOpt.fallback}) center bottom / cover no-repeat, ${bgOpt.bg}` }
+    : { background: bgOpt.bg };
+  const illustrated = !!bgOpt.image;
   const hatched = pet.hatched !== undefined ? pet.hatched : pet.level_name !== "Egg";
   const status = pet.care_status || "ok";
   const asleep = status === "asleep";
@@ -293,16 +298,16 @@ export default function PetRoom() {
       )}
 
       <div className="paper-card overflow-hidden relative" data-testid="pet-stage">
-        <div ref={stageRef} className="relative h-80 flex items-end justify-center overflow-hidden" style={{ background: bgStyle }}>
+        <div ref={stageRef} className={`relative flex items-end justify-center overflow-hidden ${illustrated ? "h-[22rem] md:h-[30rem]" : "h-80"}`} style={bgStyle} data-testid="pet-scene" data-scene={bgOpt.id}>
           <button type="button" onClick={toggleSound} className="absolute right-3 top-3 z-20 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} aria-pressed={sound} data-testid="sound-toggle">{sound ? "🔊 Sounds on" : "🔇 Sounds off"}</button>
           {(quests?.room || []).length > 0 && <button type="button" onClick={() => setArranging((a) => !a)} className="absolute left-3 top-3 z-20 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} aria-pressed={arranging} data-testid="arrange-toggle">{arranging ? "✅ Done arranging" : "✋ Arrange room"}</button>}
           {fx.map((f) => <span key={f.key} className="fx absolute z-20 text-3xl" style={{ left: `${f.left}%`, bottom: "35%" }} aria-hidden>{f.emoji}</span>)}
           <HalloweenOverlay />
-          <Fern className="absolute left-4 bottom-0" size={160} color="#4A5D3A" />
-          <Fern className="absolute right-4 bottom-0" size={140} color="#6B8A5B" />
-          <Flower className="absolute left-28 bottom-6" size={28} color="#D4857A" />
-          <Flower className="absolute right-32 bottom-10" size={24} color="#C77B5B" />
-          <Branch className="absolute right-10 top-4" size={120} color="#4A5D3A" />
+          {!illustrated && <Fern className="absolute left-4 bottom-0" size={160} color="#4A5D3A" />}
+          {!illustrated && <Fern className="absolute right-4 bottom-0" size={140} color="#6B8A5B" />}
+          {!illustrated && <Flower className="absolute left-28 bottom-6" size={28} color="#D4857A" />}
+          {!illustrated && <Flower className="absolute right-32 bottom-10" size={24} color="#C77B5B" />}
+          {!illustrated && <Branch className="absolute right-10 top-4" size={120} color="#4A5D3A" />}
           {(quests?.room || []).map((id, i) => (
             <span key={id} onPointerDown={drag(id)} className={`absolute text-4xl select-none ${arranging ? "arranging" : ""}`} style={{ bottom: `${spot(id, i).y}%`, left: `${spot(id, i).x}%`, zIndex: arranging ? 15 : 5 }} data-testid={`room-${id}`} aria-hidden={!arranging}>{ROOM_EMOJI[id]}</span>
           ))}
@@ -372,7 +377,7 @@ export default function PetRoom() {
             {BG_OPTIONS.map(b => (
               <button key={b.id} onClick={() => chooseBg(b.id)}
                 className={`h-10 w-10 rounded-xl border-2 overflow-hidden ${bg === b.id ? "ring-2" : ""}`}
-                style={{ background: b.bg, borderColor: bg === b.id ? "#1F3B2D" : "#D4C8A8" }}
+                style={{ background: b.image ? `url(${b.image}) center / cover` : b.bg, borderColor: bg === b.id ? "#1F3B2D" : "#D4C8A8" }}
                 aria-label={b.label} data-testid={`bg-${b.id}`} />
             ))}
           </div>

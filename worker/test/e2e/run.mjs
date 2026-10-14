@@ -395,6 +395,9 @@ await step("Pet room shows goals, sound toggle and the shop, and sounds can be m
     await pp.goto(`${BASE}/child/room`);
     await pp.waitForSelector("[data-testid=pet-quests]", { timeout: 15000 });
     await pp.waitForSelector("[data-testid=sound-toggle]");
+    ok((await pp.getAttribute("[data-testid=pet-scene]", "data-scene")) === "cozy", "cosy room is not the default scene");
+    const img = await pp.request.get(`${BASE}/pet-room/cozy-room.webp`);
+    ok(img.status() === 200 && /image/.test(img.headers()["content-type"] || ""), "room picture not served: " + img.status());
     ok((await pp.locator("[data-testid=daily-goals] li").count()) === 3, "three goals expected");
     await pp.click("[data-testid=sound-toggle]");
     ok(/off/i.test(await pp.innerText("[data-testid=sound-toggle]")), "sound did not mute");
