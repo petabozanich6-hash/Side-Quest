@@ -68,7 +68,7 @@ export function registerLearning(app: App, g: Guards) {
 
   async function getStudent(db: D1Database, familyId: string, studentId: string) {
     return db.prepare(
-      "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, electives, subject_levels, extra FROM students WHERE id = ? AND family_id = ?"
+      "SELECT * FROM students WHERE id = ? AND family_id = ?"
     ).bind(studentId, familyId).first<any>();
   }
 
