@@ -329,9 +329,8 @@ await step("Word Hoard: practice goes See it, Hear it, Spell it, Type it, and a 
     await hp.getByRole("button", { name: /Tame a/ }).first().click();
     await hp.waitForSelector("text=1. See it");
     await hp.getByRole("button", { name: /I have seen it/ }).click();
-    const word = (await hp.locator(".font-display.text-3xl").first().innerText()).trim();
+    const word = (await hp.locator("[data-testid=practice-word]").first().innerText()).trim();
     ok(/^[a-z'-]+$/i.test(word), "word not shown in See it: " + word);
-    await hp.getByRole("button", { name: /Next: hear it|I have seen it/ }).first().isVisible().catch(() => {});
     await hp.waitForSelector("text=Listen to the word");
     await hp.getByRole("button", { name: /I said it/ }).click();
     await hp.getByRole("button", { name: /I spelled it/ }).click();

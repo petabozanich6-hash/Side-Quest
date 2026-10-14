@@ -98,7 +98,7 @@ export function WordPractice({ item, lessonId, onCorrect, onChecked }) {
 
       <div className="flex items-center gap-2">
         {showWord ? (
-          <span className="font-display text-3xl font-bold" style={{ color: "#1F3B2D" }}>
+          <span className="font-display text-3xl font-bold" style={{ color: "#1F3B2D" }} data-testid="practice-word">
             {item.word}
           </span>
         ) : (
