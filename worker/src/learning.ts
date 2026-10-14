@@ -1,5 +1,6 @@
 import { buildPlanWithAi, planAiUsage } from "./aiPlan";
-import { JURISDICTIONS as PLAN_JURISDICTIONS } from "./data/planJurisdictions";
+import { JURISDICTIONS as PLAN_JURISDICTIONS, JURISDICTION_CODES, CHECKED_ON } from "./data/planJurisdictions";
+import { setFamilyJurisdiction, normJurisdiction } from "./data/jurisdictions";
 import { analyseLifeEvidence } from "./data/lifeEvidence";
 import { FRAMEWORKS, JURISDICTION_CODES, frameworkFor, getFamilyJurisdiction, normJurisdiction, setFamilyJurisdiction, usesNswOutcomes } from "./data/jurisdictions";
 import { mapLifeEvidenceWithAi, lifeMapLimits } from "./lifeLearningAi";
@@ -318,6 +319,23 @@ export function registerLearning(app: App, g: Guards) {
       await awardPetXp(c.env.DB, record.student_id, xp, `Life learning: ${record.title || ""}`);
     }
     return c.json({ ok: true, accepted_count: accepted.length });
+  });
+
+  // Backwards-compatible planning metadata; uses the same family jurisdiction as registration and curriculum.
+  app.get("/api/family/jurisdiction", g.auth, g.parent, async (c) => {
+    const code = await getFamilyJurisdiction(c.env.DB, c.get("user").family_id);
+    const j = code ? PLAN_JURISDICTIONS[code] : null;
+    return c.json({ jurisdiction: code, name: j?.name ?? null, authority: j?.authority ?? null,
+      plan_name: j?.planName ?? null, areas: j?.areas ?? [], requirements: j?.requirements ?? [],
+      sources: j?.sources ?? [], checked_on: CHECKED_ON,
+      options: JURISDICTION_CODES.map(c=>({code:c,name:PLAN_JURISDICTIONS[c].name,authority:PLAN_JURISDICTIONS[c].authority})) });
+  });
+  app.put("/api/family/jurisdiction", g.auth, g.parent, async (c) => {
+    const body = await c.req.json().catch(()=>({})) as { jurisdiction?: string };
+    const code = normJurisdiction(body.jurisdiction);
+    if (!code) return c.json({detail:"Choose a state or territory"},400);
+    await setFamilyJurisdiction(c.env.DB,c.get("user").family_id,code);
+    return c.json({ok:true,jurisdiction:code,name:PLAN_JURISDICTIONS[code].name});
   });
 
   app.get("/api/learning-plans", g.auth, g.parent, async (c) => {
