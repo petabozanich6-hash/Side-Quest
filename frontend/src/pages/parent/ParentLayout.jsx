@@ -18,7 +18,7 @@ const nav = [
   { to: "/parent/reading-log", icon: BookOpen, label: "Reading log", testid: "nav-reading" },
   { to: "/parent/word-hoard", icon: Sparkles, label: "Word Hoard", testid: "nav-word-hoard" },
   { to: "/parent/side-quest", icon: Wand2, label: "Seasonal Surprises", testid: "nav-sidequest" },
-  { to: "/parent/evidence", icon: Camera, label: "Evidence", testid: "nav-evidence" },
+  { to: "/parent/evidence", icon: Camera, label: "Evidence Backpack", testid: "nav-evidence" },
   { to: "/parent/life-learning", icon: Trees, label: "Life learning", testid: "nav-life" },
   { to: "/parent/resources", icon: Library, label: "Resources", testid: "nav-resources" },
   { to: "/parent/calendar", icon: Calendar, label: "Calendar", testid: "nav-calendar" },
