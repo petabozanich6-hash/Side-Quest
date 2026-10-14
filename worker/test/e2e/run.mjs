@@ -245,6 +245,19 @@ await step("legacy 19,202 lessons are hidden and cannot be assigned", async () =
   ok(one.status === 404, "legacy lesson readable");
 });
 
+await step("parent can permanently delete an unassigned draft without losing other lessons", async () => {
+  const before = await api("GET", "/lessons", parentToken);
+  const draft = before.json.find(x => x.id !== lessonId && x.status === "draft");
+  ok(draft?.id, "missing unassigned draft for delete test");
+  await page.goto(BASE + "/parent/lessons");
+  await page.waitForSelector(`[data-testid=delete-${draft.id}]`);
+  page.once("dialog", d => d.accept());
+  await page.click(`[data-testid=delete-${draft.id}]`);
+  await page.waitForSelector(`[data-testid=lesson-${draft.id}]`, { state: "detached" });
+  ok((await api("GET", `/lessons/${draft.id}`, parentToken)).status === 404, "unassigned lesson was not permanently deleted");
+  ok((await api("GET", `/lessons/${lessonId}`, parentToken)).status === 200, "unrelated lesson was removed");
+});
+
 await step("E. parent assigns the lesson to the child through the UI", async () => {
   await page.goto(BASE + "/parent/lessons");
   await page.click(`[data-testid=assign-${lessonId}]`);
@@ -489,6 +502,35 @@ await step("J. XP, progress and evidence update; XP is awarded exactly once", as
   await cpage.goto(`${BASE}/child/lesson/${assignmentId}`); await cpage.waitForSelector('[data-testid=reviewed-note]');
   ok((await cpage.textContent('[data-testid=reviewed-note]')).includes("Lovely folding"), "child cannot see feedback");
   await shot("evidence");
+});
+
+await step("parent feedback and cheers disappear after child acknowledges them on the server", async () => {
+  const before = await api("GET", "/child/inbox", childToken);
+  ok(before.status === 200, "child inbox unavailable");
+  const feedback = before.json.find(x => x.kind === "feedback");
+  ok(feedback, "approved work feedback missing");
+  ok((await api("POST", "/child/inbox/seen", childToken, { id: feedback.id, kind: feedback.kind })).status === 200, "cannot acknowledge feedback");
+  const after = await api("GET", "/child/inbox", childToken);
+  ok(!after.json.some(x => x.id === feedback.id), "acknowledged feedback remains visible across devices");
+  const students = await api("GET", "/students", parentToken);
+  const created = await api("POST", "/cheers", parentToken, { student_id: students.json[0].id, message: "Excellent effort!", emoji: "⭐" });
+  ok(created.status === 200, "parent cheer could not be saved");
+  const cheer = (await api("GET", "/child/inbox", childToken)).json.find(x => x.kind === "cheer" && x.id === created.json.id);
+  ok(cheer, "new parent cheer missing");
+  ok((await api("POST", "/child/inbox/seen", childToken, { id: cheer.id, kind: "cheer" })).status === 200, "cannot acknowledge parent cheer");
+  ok(!(await api("GET", "/child/inbox", childToken)).json.some(x => x.id === cheer.id), "acknowledged cheer was not cleared");
+});
+
+await step("parent can open the child learning records from the child overview", async () => {
+  const students = await api("GET", "/students", parentToken);
+  await page.goto(BASE + `/parent/children/${students.json[0].id}`);
+  await page.waitForSelector('[data-testid=child-overview]');
+  ok(await page.locator('[data-testid=child-overview-reading-link]').isVisible(), "reading link missing");
+  ok(await page.locator('[data-testid=child-overview-evidence-link]').isVisible(), "evidence link missing");
+  await page.click('[data-testid=child-overview-evidence-link]');
+  await page.waitForURL("**/parent/evidence");
+  await page.goto(BASE + "/parent");
+  ok(await page.locator('[data-testid=quick-evidence]').isVisible(), "Parent Hub Evidence Backpack link missing");
 });
 
 await step("editing the library lesson does not change the finished assignment (snapshot)", async () => {
