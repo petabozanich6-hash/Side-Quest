@@ -1,4 +1,6 @@
 import { parseJson } from "../types";
+import { areaName, levelFor, JURISDICTIONS } from "./planJurisdictions";
+import type { Jurisdiction } from "./planJurisdictions";
 
 type PlanRow = Record<string, unknown>;
 type StudentRow = Record<string, unknown>;
@@ -336,7 +338,7 @@ async function readingSummary(db: D1Database, studentId: string, start: string, 
   }
 }
 
-function entries(student: StudentRow, plan: PlanRow): Array<[string, string, string[], string]> {
+function entries(student: StudentRow, plan: PlanRow, jur: Jurisdiction): Array<[string, string, string[], string]> {
   const stage = String((student as BuiltStudentRow).stage || "");
   const electiveSource = (student as BuiltStudentRow).electives;
   const savedCourses = Array.isArray(electiveSource)
@@ -358,15 +360,23 @@ function entries(student: StudentRow, plan: PlanRow): Array<[string, string, str
   }
 
   const focus = listify(plan.subject_focus).filter((area) => Object.prototype.hasOwnProperty.call(AREAS, area));
-  return [...new Set([...CORE_AREAS, ...focus])].map((area) => [
-    area,
+  // Outside NSW the plan uses the jurisdiction's learning areas (relabelled; the template text is shared).
+  const base = jur.code === "NSW" ? CORE_AREAS : [...CORE_AREAS, "TAS", ...(jur.areas.some((a) => /^languages/i.test(a)) ? ["Languages"] : [])];
+  return [...new Set([...base, ...focus])].map((area) => [
+    areaName(jur, area),
     area,
     AREA_MATCH[area] || [area],
     "",
   ]);
 }
 
-export async function buildPlanContent(db: D1Database, rawPlan: PlanRow, rawStudent: StudentRow) {
+/**
+ * The free (non-AI) plan template. `jur` is the family's state or territory; NSW outcome codes are only
+ * looked up for NSW families, and other jurisdictions get their own learning area names and wording.
+ */
+export async function buildPlanContent(db: D1Database, rawPlan: PlanRow, rawStudent: StudentRow, jur: Jurisdiction = JURISDICTIONS.NSW) {
+  const nsw = jur.code === "NSW";
+  const ref = nsw ? "the NSW syllabus outcomes" : "the goals set out for each learning area";
   const plan: BuiltPlanRow = {
     ...rawPlan,
     interests: listify(rawPlan.interests),
@@ -378,9 +388,9 @@ export async function buildPlanContent(db: D1Database, rawPlan: PlanRow, rawStud
   };
 
   const stage = String(student.stage || "");
-  const stageLabel = STAGE_LABEL[stage] || stage || "their stage";
+  const stageLabel = nsw ? STAGE_LABEL[stage] || stage || "their stage" : levelFor(jur, student) || "their current level";
   const year = student.year_level ? String(student.year_level) : "";
-  const yearText = year && year !== "K" ? `Year ${year}, which is ${stageLabel}` : stageLabel;
+  const yearText = !nsw ? stageLabel : year && year !== "K" ? `Year ${year}, which is ${stageLabel}` : stageLabel;
   const name = String(student.name || "the student");
   const first = name.split(/\s+/)[0] || "the student";
   const birth = student.birth_year ? Number(student.birth_year) : null;
@@ -395,15 +405,15 @@ export async function buildPlanContent(db: D1Database, rawPlan: PlanRow, rawStud
   const approach = String(plan.teaching_approach || "").trim();
   const notes = String(plan.notes || "").trim();
   const secondary = SECONDARY.has(stage);
-  const entryList = entries(student, plan);
+  const entryList = entries(student, plan, jur);
   const labels = entryList.map(([label]) => label);
   const deepenSet = new Set(plan.subject_focus as string[]);
 
   const learning_areas = [];
   for (const [label, area, words, key] of entryList) {
     const template = AREAS[area];
-    let outs = stage ? await outcomes(db, stage, words) : [];
-    if (outs.length === 0 && key) outs = stage ? await outcomes(db, stage, AREA_MATCH[area] || [area]) : [];
+    let outs = nsw && stage ? await outcomes(db, stage, words) : [];
+    if (outs.length === 0 && key && nsw) outs = stage ? await outcomes(db, stage, AREA_MATCH[area] || [area]) : [];
 
     const goals = [
       focusGoal(first, label, endText, deepenSet.has(label) || deepenSet.has(area)),
@@ -450,9 +460,9 @@ export async function buildPlanContent(db: D1Database, rawPlan: PlanRow, rawStud
   if (interests.length > 0) {
     overview +=
       `${first} is especially interested in ${interestText}. These interests are woven through the program wherever they fit, ` +
-      `because ${first} learns best when the work feels meaningful to them. Every goal remains tied to the NSW syllabus outcomes listed under each area.`;
+      `because ${first} learns best when the work feels meaningful to them. Every goal remains tied to ${ref}.`;
   } else {
-    overview += `Every goal for ${first} remains tied to the NSW syllabus outcomes listed under each area.`;
+    overview += `Every goal for ${first} remains tied to ${ref}.`;
   }
   overview +=
     `\n\nThe period is planned in three parts. In the opening weeks ${first} settles into the routine and any gaps from earlier work are identified and filled. ` +
@@ -462,7 +472,7 @@ export async function buildPlanContent(db: D1Database, rawPlan: PlanRow, rawStud
 
   const philosophy =
     `We believe ${first} learns best when the work is structured, clear and matched to where they are up to, and when it connects to real life. ` +
-    `${first}'s program is therefore organised around the NSW syllabus outcomes for their stage, taught through regular lessons and supported by ${first}'s interests, hands-on projects and experiences in the community. ` +
+    `${first}'s program is therefore organised around ${nsw ? "the NSW syllabus outcomes for their stage" : `the ${jur.name} learning areas for their level`}, taught through regular lessons and supported by ${first}'s interests, hands-on projects and experiences in the community. ` +
     (approach ? `In particular, the approach for ${first} is: ${approach}. ` : "") +
     `${first}'s parent plans the program, teaches or supervises each lesson, and keeps a record of the learning so that progress can be seen and shared.`;
 
@@ -481,7 +491,7 @@ export async function buildPlanContent(db: D1Database, rawPlan: PlanRow, rawStud
   const review =
     `${first}'s parent will review progress against the goals in this plan at the halfway point` +
     (mid ? ` (around ${mid})` : "") +
-    ` and again at the end of the period. At each review the work completed is compared with the goals, anything ${first} has found hard is re-taught, and the plan is adjusted if ${first}'s needs or interests have changed. Records are kept up to date so that they are ready to show at the registration visit.`;
+    ` and again at the end of the period. At each review the work completed is compared with the goals, anything ${first} has found hard is re-taught, and the plan is adjusted if ${first}'s needs or interests have changed. Records are kept up to date so that they are ready to show the ${jur.reviewer}.`;
 
   return {
     overview,
@@ -496,7 +506,10 @@ export async function buildPlanContent(db: D1Database, rawPlan: PlanRow, rawStud
     review_schedule: review,
     assessor_notes:
       `${readingLine}Evidence of ${first}'s learning in each area is available to look at during the visit, including the reading log, lesson results, work samples and photos. ` +
-      `This plan was prepared by ${first}'s parent using the NSW syllabus outcomes for ${stageLabel}, and reflects what ${first} is working on at present. ${first}'s parent is happy to talk through any part of it.`,
+      `This plan was prepared by ${first}'s parent ${nsw ? `using the NSW syllabus outcomes for ${stageLabel}` : `for home education in ${jur.name}`}, and reflects what ${first} is working on at present. ${first}'s parent is happy to talk through any part of it.`,
+    jurisdiction: jur.code,
+    jurisdiction_name: jur.name,
+    notes_heading: jur.notesHeading,
     generated_by: "template",
     generated_at: new Date().toISOString(),
   };
