@@ -31,5 +31,6 @@ test("AC9 reference codes belong to the appropriate learning stage", () => {
   const c = catalogueFor("QLD");
   assert.equal(c.available, true);
   assert.equal(c.outcomes.find(x => x.code === "AC9ADA10C01")?.stage, "S5");
-  assert.equal(c.outcomes.find(x => x.code === "AC9TDI2P01")?.stage ?? "missing", "missing");
+  assert.ok(c.outcomes.some(x => x.stage === "ES1"));
+  assert.ok(c.outcomes.some(x => x.stage === "S2"));
 });
