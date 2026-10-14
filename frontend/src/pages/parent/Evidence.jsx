@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../lib/api";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import ReviewModal from "../../components/parent/ReviewModal";
 
@@ -88,8 +89,8 @@ export default function EvidencePage() {
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-6" data-testid="evidence-page">
       <header>
-        <h1 className="font-display text-3xl font-bold text-slate-900">Evidence Portfolio</h1>
-        <p className="text-sm text-slate-600 mt-1">Approved work and the outcomes it shows. Work waiting for you is on the dashboard.</p>
+        <h1 className="font-display text-3xl font-bold text-slate-900">Evidence Backpack</h1>
+        <p className="text-sm text-slate-600 mt-1">A home for your family’s learning portfolio: parent-approved lessons, notes from everyday learning and progress records. Review work waiting for you on the dashboard.</p>
       </header>
 
       {students.length > 0 && (
@@ -124,7 +125,7 @@ export default function EvidencePage() {
                 </tr>
               );
             })}
-            {submissions.length === 0 && <tr><td colSpan={5} className="p-10 text-center text-sm text-slate-500">No approved work yet.</td></tr>}
+            {submissions.length === 0 && <tr><td colSpan={5} className="p-6 text-center text-sm text-slate-600">Your backpack is ready for its first learning sample. When your child submits a lesson, <Link to="/parent" className="font-semibold underline">review it in the Parent Hub</Link> to add it here. You can also record everyday learning below.</td></tr>}
           </tbody>
         </table>
       </div>
@@ -134,6 +135,7 @@ export default function EvidencePage() {
           <h2 className="font-display text-xl font-bold text-slate-900">Add evidence of your own</h2>
           <p className="text-sm text-slate-600">For learning that didn't come from a lesson: an excursion, a project, something you observed.</p>
         </div>
+        {students.length === 0 && <p className="text-sm text-slate-600">Start by <Link to="/parent/children" className="font-semibold underline">adding a child</Link>, then you can record excursions, projects and other learning moments here.</p>}
         {students.length > 0 && (
           <form onSubmit={addNote} className="grid sm:grid-cols-2 gap-3">
             <select value={form.student_id || students[0]?.id} onChange={e => setForm({ ...form, student_id: e.target.value })} className="rounded-lg border border-slate-300 px-3 py-2 text-sm" aria-label="Child" data-testid="note-child">{students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}</select>
@@ -152,7 +154,8 @@ export default function EvidencePage() {
               <button onClick={async () => { if (window.confirm("Delete this evidence?")) { await api.delete(`/evidence-notes/${n.id}`).catch(() => {}); loadNotes(); } }} className="text-xs text-rose-700 underline self-start">Delete</button>
             </li>
           ))}
-          {notes.length === 0 && <li className="text-sm text-slate-500">Nothing added yet.</li>}
+          {notes.length === 0 && <li className="text-sm text-slate-600">No extra evidence notes yet. Try recording a project, an excursion or something your child learned in everyday life using the form above.</li>}
+          {notes.length > 0 && !notes.some(n => !q || [n.title, n.notes, n.learning_area].join(" ").toLowerCase().includes(q.toLowerCase())) && <li className="text-sm text-slate-600">No notes match your search. Try another word or clear the search field.</li>}
         </ul>
       </section>
 

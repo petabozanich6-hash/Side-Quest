@@ -343,7 +343,7 @@ export default function ChildrenPage() {
           </div>
         ))}
         {students.length === 0 && (
-          <div className="col-span-full paper-card p-10 text-center text-sm text-stone-500">No students yet.</div>
+          <div className="col-span-full paper-card p-10 text-center text-sm text-stone-600">Your family’s adventure starts here. Select <strong>Add student</strong> above to create your child’s profile, then you can plan lessons and set up their separate sign-in.</div>
         )}
       </div>
 

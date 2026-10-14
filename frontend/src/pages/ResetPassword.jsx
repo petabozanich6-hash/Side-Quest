@@ -31,7 +31,7 @@ export default function ResetPassword() {
     <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
       <Flower className="absolute top-8 right-10" size={34} color="#D4857A"/>
       <div className="w-full max-w-md paper-card p-8" data-testid="reset-card">
-        <div className="flex items-center gap-2 mb-5"><Compass size={22} style={{color:"#4A5D3A"}}/><span className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>Side Quest Learning</span></div>
+        <div className="flex items-center gap-2 mb-5"><Compass size={22} style={{color:"#4A5D3A"}}/><span className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>Side-Quest Learning</span></div>
         {!token ? (
           <div data-testid="reset-missing">
             <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Link not found</h1>
@@ -59,7 +59,7 @@ export default function ResetPassword() {
             <div className="mt-5 text-xs"><Link to="/login" className="font-bold hover:underline" style={{color:"#4A5D3A"}}>Back to sign in</Link></div>
           </form>
         )}
-        <p className="mt-6 pt-4 border-t text-center text-[11px] leading-relaxed text-stone-500" style={{borderColor:"#E4DAC0"}}>Side Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
+        <p className="mt-6 pt-4 border-t text-center text-[11px] leading-relaxed text-stone-500" style={{borderColor:"#E4DAC0"}}>Side-Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
       </div>
     </div>
   );

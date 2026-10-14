@@ -28,7 +28,7 @@ export default function Login() {
       <div className="hidden lg:flex flex-col justify-between p-12 relative" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}}>
         <Fern className="absolute -right-10 top-20" size={300} color="#6B8A5B"/>
         <Fern className="absolute -left-10 bottom-10 rotate-180" size={240} color="#4A5D3A"/>
-        <div className="flex items-center gap-2 relative z-10"><Compass size={28} style={{color:"#D4A574"}}/><span className="font-display text-xl font-bold">Side Quest Learning</span></div>
+        <div className="flex items-center gap-2 relative z-10"><Compass size={28} style={{color:"#D4A574"}}/><span className="font-display text-xl font-bold">Side-Quest Learning</span></div>
         <div className="relative z-10">
           <div className="font-script text-3xl mb-2" style={{color:"#D4A574"}}>Welcome home.</div>
           <h2 className="font-display text-5xl font-bold leading-tight">The learning is where you left it.</h2>
@@ -67,7 +67,7 @@ export default function Login() {
             <Link to="/register" className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-register">Create account</Link>
             <Link to="/child-login" className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-child">Student sign in</Link>
           </div>
-          <p className="mt-6 pt-4 border-t text-center text-[11px] leading-relaxed text-stone-500" style={{borderColor:"#E4DAC0"}} data-testid="acknowledgement-of-country">Side Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
+          <p className="mt-6 pt-4 border-t text-center text-[11px] leading-relaxed text-stone-500" style={{borderColor:"#E4DAC0"}} data-testid="acknowledgement-of-country">Side-Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
         </form>
       </div>
     </div>

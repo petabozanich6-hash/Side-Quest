@@ -62,7 +62,7 @@ export default function LessonsPage() {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-3xl font-bold text-slate-900">My lessons</h1>
-          <p className="text-sm text-slate-600 mt-1">Your family's lesson library. Create a lesson once, then assign it to any child.</p>
+          <p className="text-sm text-slate-600 mt-1">Lessons your family creates and saves live here. Build one yourself or ask AI for a draft to review, then assign it to a child.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Link to="/parent/lessons/make" className="rounded-full bg-violet-700 text-white px-5 py-2.5 text-sm font-semibold flex items-center gap-1" data-testid="new-lesson-ai"><Plus size={16} /> Make a lesson for me</Link>
@@ -71,8 +71,8 @@ export default function LessonsPage() {
       </div>
 
       {plan && plan.effective_plan === "FREE_PREVIEW" && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900" data-testid="preview-banner">
-          Free preview until {new Date(plan.trial_ends_at).toLocaleDateString()}: {plan.usage.lessons} of {plan.limits.maxLessons} lessons, {plan.usage.children} of {plan.limits.maxChildren} child profile, {plan.usage.activeAssignments} of {plan.limits.maxActiveAssignments} active assignments. <Link to="/parent/plan" className="underline font-bold">See plans</Link>
+        <div className="rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700" data-testid="preview-banner">
+          Your seven-day preview ends {new Date(plan.trial_ends_at).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}. You’ve used {plan.usage.lessons} of {plan.limits.maxLessons} lessons, {plan.usage.children} of {plan.limits.maxChildren} child profiles, {plan.usage.activeAssignments} of {plan.limits.maxActiveAssignments} active assignments. <Link to="/parent/plan" className="underline font-bold">See plans</Link>
         </div>
       )}
       {plan && plan.effective_plan === "PREVIEW_EXPIRED" && (
@@ -80,10 +80,6 @@ export default function LessonsPage() {
           Your free preview has ended. Your lessons and your children's progress are all kept. A Family Membership will be needed to create and assign lessons. <Link to="/parent/plan" className="underline font-bold">See plans</Link>
         </div>
       )}
-
-      <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
-        <strong>Ready-made Side-Quest lessons: upgrade coming later.</strong> For now, build your own lessons here.
-      </div>
 
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative max-w-xl flex-1 min-w-[220px]">
@@ -123,8 +119,25 @@ export default function LessonsPage() {
           </div>
         ))}
         {!loading && shown.length === 0 && (
-          <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500" data-testid="empty-library">
-            {lessons.length ? "No lessons match your search." : showArchived ? "Nothing archived." : "You have not created a lesson yet. Create your first one, then assign it to your child."}
+          <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-6 sm:p-10 text-center text-sm text-slate-600" data-testid="empty-library">
+            {lessons.length ? (
+              <>
+                <p className="font-semibold text-slate-800">No lessons match those filters.</p>
+                <p className="mt-1">Try a different search or show all your lessons.</p>
+                <button type="button" onClick={() => { setQuery(""); setFSubject(""); setFYear(""); setFStatus(""); setFChild(""); }} className="mt-4 rounded-full border border-slate-400 bg-white px-4 py-2 text-sm font-semibold">Clear filters</button>
+              </>
+            ) : showArchived ? (
+              <><p>Nothing in the archive yet. Lessons you archive will appear here.</p><button type="button" onClick={() => setShowArchived(false)} className="mt-4 rounded-full border border-slate-400 bg-white px-4 py-2 text-sm font-semibold">Show current lessons</button></>
+            ) : (
+              <>
+                <p className="font-semibold text-slate-800">Your lesson collection starts here.</p>
+                <p className="mt-1">Create a lesson yourself, or let Side-Quest draft one for you to review.</p>
+                <div className="mt-4 flex justify-center flex-wrap gap-2">
+                  <Link to="/parent/lessons/new" className="rounded-full border border-slate-500 bg-white px-4 py-2 text-sm font-semibold">Build a lesson</Link>
+                  <Link to="/parent/lessons/make" className="rounded-full bg-violet-700 px-4 py-2 text-sm font-semibold text-white">Try the AI builder</Link>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
