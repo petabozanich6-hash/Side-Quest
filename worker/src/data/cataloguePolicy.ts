@@ -91,7 +91,16 @@ export function validateCatalogueRecord(record: CatalogueRecord): string[] {
   return errors;
 }
 
+/**
+ * Fail closed: a reusable licence is necessary but not sufficient.
+ * Only independently reviewed source AND record content may be published.
+ */
+export function canPublishRecord(record: CatalogueRecord): boolean {
+  const source = CATALOGUE_SOURCES[record.sourceId];
+  return !!source && canPublishCatalogue(record.sourceId) && validateCatalogueRecord(record).length === 0;
+}
+
 export function canPublishCatalogue(sourceId: keyof typeof CATALOGUE_SOURCES): boolean {
   const source = CATALOGUE_SOURCES[sourceId];
-  return source.reuse === "cc_by_4" && source.status === "verified";
+  return !!source && source.reuse === "cc_by_4" && source.status === "verified";
 }
