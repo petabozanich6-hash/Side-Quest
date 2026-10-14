@@ -13,6 +13,7 @@
 //   verified list (every jurisdiction except NSW today), the tracker says so instead of inventing outcomes.
 import { NSW_OUTCOMES } from "./data/curriculum";
 import { NSW_OUTCOMES_SEED_VERSION } from "./data/nsw-outcomes";
+import { AC9_OUTCOMES } from "./data/ac9-outcomes";
 import { FRAMEWORKS, getFamilyJurisdiction, yearLabel, type JurisdictionCode } from "./data/jurisdictions";
 import type { App, Guards } from "./types";
 
@@ -40,8 +41,40 @@ const NSW_CATALOGUE: Catalogue = {
   byCode: new Map(NSW_OUTCOMES.map((o) => [o.code, { code: o.code, description: "", learning_area: o.learning_area, stage: o.stage, source: o.source }])),
 };
 
-/** Verified outcome lists by jurisdiction. Add a jurisdiction here only once its official list is loaded and checked. */
-const CATALOGUES: Partial<Record<JurisdictionCode, Catalogue>> = { NSW: NSW_CATALOGUE };
+/**
+ * Australian Curriculum v9 reference catalogue (not jurisdictional compliance certification).
+ * ACARA publishes core curriculum descriptions under CC BY 4.0; sourced from
+ * the reviewed MRAC/2024/04 export. The imported list excludes Languages.
+ * States/territories can vary by implementation dates and local requirements.
+ */
+const ac9Rows: CatalogueOutcome[] = AC9_OUTCOMES.map(o => {
+  const stageNumber = o.to === 0 ? 0 : Math.ceil(o.to / 2);
+  const stage = stageNumber === 0 ? "ES1" : "S" + stageNumber;
+  return {
+    code: o.code,
+    description: o.description,
+    learning_area: o.learning_area,
+    stage,
+    source: "ACARA Australian Curriculum v9.0 content description (CC BY 4.0; MRAC/2024/04)",
+  };
+});
+const AC9_CATALOGUE: Catalogue = {
+  available: true,
+  framework: "AC9",
+  name: "Australian Curriculum v9 reference — partial, not jurisdictional compliance",
+  version: "AC9-MRAC-2024-04-partial-no-languages",
+  outcomes: ac9Rows,
+  byCode: new Map(ac9Rows.map(o => [o.code, o])),
+};
+/** AC9 is a reference list for these jurisdictions, NOT a declaration of complete official compliance. */
+const CATALOGUES: Partial<Record<JurisdictionCode, Catalogue>> = {
+  NSW: NSW_CATALOGUE,
+  QLD: AC9_CATALOGUE,
+  SA: AC9_CATALOGUE,
+  TAS: AC9_CATALOGUE,
+  ACT: AC9_CATALOGUE,
+  NT: AC9_CATALOGUE,
+};
 
 export function catalogueFor(jurisdiction: JurisdictionCode | null): Catalogue | NoCatalogue {
   if (!jurisdiction) {
