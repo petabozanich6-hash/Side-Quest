@@ -158,7 +158,7 @@ function EditDialog({ student, onClose, onSaved }) {
   });
   const sp = student.prefs || {};
   const [interests, setInterests] = useState((student.interests || []).join(", "));
-  const [prefs, setPrefs] = useState({ duration_minutes: sp.duration_minutes || "", delivery: sp.delivery || "", reading: sp.reading || "", complexity: sp.complexity || "", activity_types: (sp.activity_types || []).join(", "), support_areas: sp.support_areas || "", extension_areas: sp.extension_areas || "", equipment: sp.equipment || "", other: sp.other || "" });
+  const [prefs, setPrefs] = useState({ calendar_colour: sp.calendar_colour || "#0F766E", duration_minutes: sp.duration_minutes || "", delivery: sp.delivery || "", reading: sp.reading || "", complexity: sp.complexity || "", activity_types: (sp.activity_types || []).join(", "), support_areas: sp.support_areas || "", extension_areas: sp.extension_areas || "", equipment: sp.equipment || "", other: sp.other || "" });
   const setP = (k, v) => setPrefs(p => ({ ...p, [k]: v }));
   const [aiHelp, setAiHelp] = useState(student.ai_help !== false);
   const [helpUse, setHelpUse] = useState(null);
@@ -215,7 +215,8 @@ function EditDialog({ student, onClose, onSaved }) {
               </select>
             </F>
           </div>
-          <F label="Birth year (optional)"><input type="number" value={f.birth_year} onChange={e=>setF({...f, birth_year: e.target.value})} className="input" data-testid="e-birth"/></F>
+          <F label="Calendar colour"><input type="color" value={prefs.calendar_colour} onChange={e=>setP("calendar_colour",e.target.value)} aria-label={`Calendar colour for ${student.name}`} data-testid="edit-child-colour" className="h-10 w-20 rounded border border-stone-300"/></F>
+           <F label="Birth year (optional)"><input type="number" value={f.birth_year} onChange={e=>setF({...f, birth_year: e.target.value})} className="input" data-testid="e-birth"/></F>
           <F label="New PIN (leave blank to keep the current one)"><input type="password" minLength={4} autoComplete="new-password" value={f.pin} onChange={e=>setF({...f, pin: e.target.value})} className="input" data-testid="e-pin"/></F>
           <label className="flex items-start gap-3 rounded-xl border border-stone-300 p-3 text-sm" data-testid="help-toggle-row">
             <input type="checkbox" checked={aiHelp} onChange={e=>setAiHelp(e.target.checked)} className="mt-1 h-5 w-5" data-testid="help-toggle"/>
@@ -253,7 +254,7 @@ export default function ChildrenPage() {
   const [students, setStudents] = useState([]);
   const [open, setOpen] = useState(false);
   const [pattern, setPattern] = useState(null);
-  const [form, setForm] = useState({ name: "", username: "", pin: "", stage: "S2", year_level: "3", birth_year: "" });
+  const [form, setForm] = useState({ name: "", username: "", pin: "", stage: "S2", year_level: "3", birth_year: "", calendar_colour: "#0F766E" });
   const [electives, setElectives] = useState([]);
   const [pathway, setPathway] = useState("");
   const [creds, setCreds] = useState(null);
@@ -290,12 +291,13 @@ export default function ChildrenPage() {
         ...form, theme: stage?.theme,
         birth_year: form.birth_year ? Number(form.birth_year) : null,
         electives: chosenElectives,
+        prefs: { calendar_colour: form.calendar_colour || "#0F766E" },
       });
       // Save the PIN again so a parent can view it later. The child can already sign in if this step fails.
       try { await api.put(`/students/${created.id}/pin`, { pin: form.pin }); } catch { /* ignore */ }
       toast.success("Student added");
       setOpen(false);
-      setForm({ name: "", username: "", pin: "", stage: "S2", year_level: "3", birth_year: "" });
+      setForm({ name: "", username: "", pin: "", stage: "S2", year_level: "3", birth_year: "", calendar_colour: "#0F766E" });
       setElectives([]); setPathway("");
       load();
     } catch (err) { toast.error(err.response?.data?.detail || "Failed"); }
@@ -355,7 +357,8 @@ export default function ChildrenPage() {
           <form onClick={e=>e.stopPropagation()} onSubmit={submit} className="w-full max-w-2xl paper-card p-6 my-8" data-testid="add-student-form">
             <div className="flex items-center justify-between mb-4"><h2 className="font-display text-2xl font-bold" style={{color:"#1F3B2D"}}>Add student</h2><button type="button" onClick={() => setOpen(false)} data-testid="close-form"><X size={18}/></button></div>
             <div className="space-y-3">
-              <F label="Name"><input required value={form.name} onChange={e=>setForm({...form, name: e.target.value})} className="input" data-testid="f-name"/></F>
+              <F label="Calendar colour"><input type="color" value={form.calendar_colour} onChange={e=>setForm({...form,calendar_colour:e.target.value})} aria-label="Calendar colour for new child" data-testid="new-child-colour" className="h-10 w-20 rounded border border-stone-300"/></F>
+               <F label="Name"><input required value={form.name} onChange={e=>setForm({...form, name: e.target.value})} className="input" data-testid="f-name"/></F>
               <F label="Username (for sign in)"><input required value={form.username} onChange={e=>setForm({...form, username: e.target.value})} className="input" data-testid="f-username"/></F>
               <F label="PIN (4+ digits)"><input required type="password" minLength={4} value={form.pin} onChange={e=>setForm({...form, pin: e.target.value})} className="input" data-testid="f-pin"/></F>
               <div className="grid grid-cols-2 gap-3">

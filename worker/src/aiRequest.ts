@@ -3,7 +3,7 @@
 // anything it cannot work out is left for the model to read from the parent's own words, which are always passed on.
 /** Optional, parent-entered learning preferences. Used only to personalise lessons; never inferred, never shown to the child. */
 export type LearningPrefs = {
-  duration_minutes?: number; delivery?: "parent_guided" | "independent"; activity_types?: string[];
+  calendar_colour?: string; duration_minutes?: number; delivery?: "parent_guided" | "independent"; activity_types?: string[];
   reading?: "supported" | "typical" | "confident"; complexity?: "simpler" | "standard" | "challenging";
   support_areas?: string; extension_areas?: string; equipment?: string; other?: string;
 };
@@ -12,6 +12,7 @@ export function cleanPrefs(v: unknown): LearningPrefs {
   const o = (v && typeof v === "object" ? v : {}) as Record<string, unknown>;
   const t = (x: unknown, n: number) => (typeof x === "string" ? x.trim().slice(0, n) : "");
   const out: LearningPrefs = {};
+  if (typeof o.calendar_colour === "string" && /^#[0-9a-fA-F]{6}$/.test(o.calendar_colour)) out.calendar_colour = o.calendar_colour;
   const m = Number(o.duration_minutes);
   if (Number.isFinite(m) && m >= 10 && m <= 120) out.duration_minutes = Math.round(m);
   if (o.delivery === "parent_guided" || o.delivery === "independent") out.delivery = o.delivery;
