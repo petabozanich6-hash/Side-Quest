@@ -1,0 +1,27 @@
+name: Import AC9 curriculum
+# Downloads ACARA's machine-readable Australian Curriculum v9 and commits the generated outcome list to the
+# data/ac9-import branch for review. Run by hand from the Actions tab (or via the API).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build outcome list from ACARA MRAC
+        run: node worker/scripts/import-ac9.mjs
+      - name: Commit to data/ac9-import
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
+          git checkout -B data/ac9-import
+          git add worker/src/data/ac9-outcomes.ts
+          git commit -m "Data: Australian Curriculum v9 content descriptions (ACARA MRAC, CC BY 4.0)" || echo "No changes"
+          git push -f origin data/ac9-import
