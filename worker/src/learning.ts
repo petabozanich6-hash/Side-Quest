@@ -1,3 +1,5 @@
+import { buildPlanWithAi, planAiUsage } from "./aiPlan";
+import { JURISDICTIONS as PLAN_JURISDICTIONS } from "./data/planJurisdictions";
 import { analyseLifeEvidence } from "./data/lifeEvidence";
 import { FRAMEWORKS, JURISDICTION_CODES, frameworkFor, getFamilyJurisdiction, normJurisdiction, setFamilyJurisdiction, usesNswOutcomes } from "./data/jurisdictions";
 import { mapLifeEvidenceWithAi, lifeMapLimits } from "./lifeLearningAi";
@@ -410,17 +412,34 @@ export function registerLearning(app: App, g: Guards) {
     if (!planRow) return c.json({ detail: "Plan not found" }, 404);
     const studentRow = await getStudent(c.env.DB, user.family_id, planRow.student_id);
     if (!studentRow) return c.json({ detail: "Student not found" }, 404);
-    // The plan writer is built on the NSW syllabus and says so in the plan text, so it is only offered to NSW families.
     const place = await getFamilyJurisdiction(c.env.DB, user.family_id);
-    if (!usesNswOutcomes(place)) {
-      return c.json({ detail: `The learning plan writer currently uses the NSW syllabus, so it isn't available for ${place} yet. You can still create a plan and write it yourself.`, code: "JURISDICTION_NOT_SUPPORTED" }, 409);
+    const jurisdiction = PLAN_JURISDICTIONS[place as keyof typeof PLAN_JURISDICTIONS];
+    if (!jurisdiction) return c.json({ detail: "Choose a state or territory before generating a plan", code: "JURISDICTION_REQUIRED" }, 409);
+    const { limits } = await getEntitlement(c.env.DB, user.family_id);
+    const useAi = limits.aiGeneration && !!c.env.AI && c.req.query("mode") !== "template";
+    let content: any;
+    let warnings: string[] = [];
+    if (useAi) {
+      const r = await buildPlanWithAi(c.env.DB, c.env.AI, { familyId: user.family_id, userId: user.id, planId: planRow.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID });
+      if (!r.ok) return c.json({ detail: r.detail, code: r.code }, r.status);
+      content = r.content;
+      warnings = r.warnings;
+    } else {
+      content = await buildPlanContent(c.env.DB, planOut(planRow), studentOut(studentRow) || {}, jurisdiction);
     }
-    const content = await buildPlanContent(c.env.DB, planOut(planRow), studentOut(studentRow) || {});
     await c.env.DB.prepare("UPDATE learning_plans SET ai_content = ?, status = 'draft', updated_at = ? WHERE id = ? AND family_id = ?")
       .bind(JSON.stringify(content), nowIso(), planRow.id, user.family_id)
       .run();
-    return c.json({ ok: true });
+    return c.json({ ok: true, generated_by: content.generated_by, warnings });
   };
+
+  app.get("/api/learning-plans-ai/status", g.auth, g.parent, async (c) => {
+    const user = c.get("user");
+    const { limits } = await getEntitlement(c.env.DB, user.family_id);
+    const code = await getFamilyJurisdiction(c.env.DB, user.family_id);
+    const jurisdiction = PLAN_JURISDICTIONS[code as keyof typeof PLAN_JURISDICTIONS];
+    return c.json({ allowed: limits.aiGeneration, available: !!c.env.AI, jurisdiction: code, jurisdiction_name: jurisdiction?.name || null, usage: await planAiUsage(c.env.DB, user.family_id) });
+  });
 
   app.post("/api/learning-plans/:pid/build", g.auth, g.parent, buildHandler);
   app.post("/api/learning-plans/:pid/generate", g.auth, g.parent, buildHandler);
