@@ -183,6 +183,146 @@ test("subscription and account emails contain current terms and no obsolete pers
   assert.doesNotMatch(welcome.html, /small personal project/i);
 });
 
+
+test("owner paid-family email celebrates the membership without personal information", async () => {
+  const { newPaidFamilyOwnerEmail } = await import("../src/email.ts");
+  const email = newPaidFamilyOwnerEmail("owner@example.test", {
+    interval: "monthly", amountCents: 1300, activeFamilies: 27,
+  });
+  assert.match(email.subject, /ACHIEVEMENT UNLOCKED/i);
+  assert.match(email.text, /A\$13\.00 per month/);
+  assert.match(email.text, /27/);
+  assert.match(email.text, /goblins/i);
+  assert.match(email.html, /Your kingdom is growing/);
+  assert.doesNotMatch(email.html, /test@example\.org|credit card number|full card/i);
+});
+
+test("owner alert is delivered once per family, not again for another purchase or a renewal", async () => {
+  const { sendOwnerNewMemberAlert } = await import("../src/ownerNotifications.ts");
+  const db = makeDb();
+  seedFamily(db, "f1", "ACTIVE_MONTHLY", {
+    stripe_subscription_id: "sub_1", subscription_status: "active",
+    billing_interval: "monthly", plan_period_end: new Date(NOW.getTime() + 30 * DAY).toISOString(),
+  });
+  seedFamily(db, "f2", "ACTIVE_ANNUAL", {
+    stripe_subscription_id: "sub_other", subscription_status: "active",
+    plan_period_end: new Date(NOW.getTime() + 200 * DAY).toISOString(),
+  });
+  const emails = [];
+  const env = {
+    OWNER_NOTIFICATION_EMAIL: "owner@example.test",
+    EMAIL: { send: async (message) => { emails.push(message); return { messageId: "msg_owner" }; } },
+  };
+  const info = { familyId: "f1", subscriptionId: "sub_1", interval: "monthly", amountCents: 1300 };
+  assert.equal(await sendOwnerNewMemberAlert(db, env, "live", info, NOW), "sent");
+  assert.equal(emails.length, 1);
+  assert.match(emails[0].text, /Active paying families: 2/);
+  assert.equal(await sendOwnerNewMemberAlert(db, env, "live", info, NOW), "duplicate");
+  // Re-subscribing later must not generate another "first paid family" celebration.
+  db.raw.prepare("UPDATE families SET stripe_subscription_id='sub_2' WHERE id='f1'").run();
+  assert.equal(await sendOwnerNewMemberAlert(db, env, "live",
+    { ...info, subscriptionId: "sub_2" }, NOW), "duplicate");
+  assert.equal(emails.length, 1);
+  const row = db.raw.prepare("SELECT sent_at FROM owner_new_member_alerts WHERE family_id = ?").get("f1");
+  assert.ok(row.sent_at);
+});
+
+test("owner alert skips test mode, unconfigured recipients and unpaid or stale subscriptions", async () => {
+  const { sendOwnerNewMemberAlert } = await import("../src/ownerNotifications.ts");
+  const db = makeDb();
+  seedFamily(db, "f1", "ACTIVE_WEEKLY", {
+    stripe_subscription_id: "sub_1", subscription_status: "active",
+    plan_period_end: new Date(NOW.getTime() + 7 * DAY).toISOString(),
+  });
+  const emails = [];
+  const env = {
+    OWNER_NOTIFICATION_EMAIL: "owner@example.test",
+    EMAIL: { send: async (message) => { emails.push(message); return { messageId: "msg" }; } },
+  };
+  const info = { familyId: "f1", subscriptionId: "sub_1", interval: "weekly", amountCents: 300 };
+  assert.equal(await sendOwnerNewMemberAlert(db, env, "test", info, NOW), "disabled");
+  assert.equal(await sendOwnerNewMemberAlert(db, { ...env, OWNER_NOTIFICATION_EMAIL: "" }, "live", info, NOW), "disabled");
+  assert.equal(await sendOwnerNewMemberAlert(db, { ...env, EMAIL: undefined }, "live", info, NOW), "disabled");
+  assert.equal(await sendOwnerNewMemberAlert(db, env, "live", { ...info, subscriptionId: "sub_unknown" }, NOW), "disabled");
+  assert.equal(await sendOwnerNewMemberAlert(db, env, "live", { ...info, amountCents: 0 }, NOW), "disabled");
+  db.raw.prepare("UPDATE families SET subscription_status='past_due' WHERE id='f1'").run();
+  assert.equal(await sendOwnerNewMemberAlert(db, env, "live", info, NOW), "disabled");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) AS n FROM owner_new_member_alerts").get().n, 0);
+  assert.equal(emails.length, 0);
+});
+
+test("owner alert releases an unsuccessful claim without interrupting customer access", async () => {
+  const { sendOwnerNewMemberAlert } = await import("../src/ownerNotifications.ts");
+  const db = makeDb();
+  seedFamily(db, "f1", "ACTIVE_MONTHLY", {
+    stripe_subscription_id: "sub_1", subscription_status: "active",
+    plan_period_end: new Date(NOW.getTime() + 30 * DAY).toISOString(),
+  });
+  const info = { familyId: "f1", subscriptionId: "sub_1", interval: "monthly", amountCents: 1300 };
+  let attempted = 0;
+  const env = {
+    OWNER_NOTIFICATION_EMAIL: "owner@example.test",
+    EMAIL: { send: async () => { attempted++; if (attempted === 1) throw new Error("temporary outage"); return { messageId: "ok" }; } },
+  };
+  assert.equal(await sendOwnerNewMemberAlert(db, env, "live", info, NOW), "failed");
+  assert.equal(db.raw.prepare("SELECT sent_at FROM owner_new_member_alerts WHERE family_id = 'f1'").get().sent_at, null);
+  assert.equal(fam(db, "f1").plan, "ACTIVE_MONTHLY");
+  assert.equal(await sendOwnerNewMemberAlert(db, env, "live", info, NOW), "sent");
+  assert.equal(attempted, 2);
+});
+
+test("simultaneous owner-alert webhook deliveries claim the same family only once", async () => {
+  const { sendOwnerNewMemberAlert } = await import("../src/ownerNotifications.ts");
+  const db = makeDb();
+  seedFamily(db, "f1", "ACTIVE_ANNUAL", {
+    stripe_subscription_id: "sub_1", subscription_status: "active",
+    plan_period_end: new Date(NOW.getTime() + 365 * DAY).toISOString(),
+  });
+  let sent = 0;
+  const env = {
+    OWNER_NOTIFICATION_EMAIL: "owner@example.test",
+    EMAIL: { send: async () => { await new Promise(r => setTimeout(r, 20)); sent++; return { messageId: "sent" }; } },
+  };
+  const info = { familyId: "f1", subscriptionId: "sub_1", interval: "yearly", amountCents: 13000 };
+  const results = await Promise.all([
+    sendOwnerNewMemberAlert(db, env, "live", info, NOW),
+    sendOwnerNewMemberAlert(db, env, "live", info, NOW),
+  ]);
+  assert.deepEqual(results.sort(), ["duplicate", "sent"]);
+  assert.equal(sent, 1);
+});
+
+test("verified live paid checkout invokes owner notifier; sandbox, renewals, zero amounts and unpaid do not", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1");
+  const current = { sub_1: sub() };
+  const cfg = { ...TEST_CFG, mode: "live" }; // Isolated stub; no live Stripe credentials.
+  const session = {
+    object: "checkout.session", mode: "subscription", customer: "cus_1", subscription: "sub_1",
+    client_reference_id: "f1", metadata: { family_id: "f1" }, payment_status: "paid", amount_total: 1300,
+  };
+  let customerEmails = 0;
+  let ownerEmails = 0;
+  const notifyCustomer = async () => { customerEmails++; };
+  const notifyOwner = async (info) => { assert.equal(info.familyId, "f1"); ownerEmails++; };
+  const notify = (event) => b.handleEvent(db, cfg, event, fakeStripe(current), NOW, notifyCustomer, notifyOwner);
+  const first = ev("new_family_paid", "checkout.session.completed", session, true);
+  await notify(first);
+  await notify(first);
+  assert.equal(ownerEmails, 1, "Stripe duplicate event ignored");
+  assert.equal(customerEmails, 1);
+  await notify(ev("renewed", "invoice.paid", { object: "invoice", subscription: "sub_1" }, true));
+  await notify(ev("unpaid", "checkout.session.completed", { ...session, payment_status: "unpaid" }, true));
+  await notify(ev("free_coupon", "checkout.session.completed", { ...session, amount_total: 0 }, true));
+  await b.handleEvent(db, TEST_CFG, ev("sandbox_checkout", "checkout.session.completed", session), fakeStripe(current), NOW, notifyCustomer, notifyOwner);
+  assert.equal(ownerEmails, 1, "No owner alert for invoice renewal, unpaid or sandbox");
+  assert.equal(customerEmails, 2, "Existing customer confirmation behavior is preserved for paid and zero-dollar checkouts");
+
+  // An owner email crash must not cause another confirmation or roll back paid access.
+  await notify(ev("another_checkout", "checkout.session.completed", session, true));
+  assert.equal(ownerEmails, 2, "A separate paid checkout invokes the ledger-backed notifier, which de-duplicates by family");
+});
+
 test("out-of-order: a stale 'created/incomplete' event arriving after activation does not revoke access", async () => {
   const db = makeDb();
   seedFamily(db, "f1");
