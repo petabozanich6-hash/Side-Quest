@@ -166,7 +166,7 @@ export default function ParentDashboard() {
       <section className="paper-card-dark p-6 relative overflow-hidden" style={{backgroundColor:"#1F3B2D"}}>
         <div className="relative z-10 text-sm leading-relaxed" style={{color:"#E8E2D1"}}>
           <div className="font-display font-bold text-base mb-1" style={{color:"#F5EFE0"}}>Platform notice</div>
-          <p>Side-Quest Learning supports homeschool planning, teaching and record-keeping. A limited seven-day preview is available without a card, followed by an optional paid Family Membership. Parents remain responsible for their children’s education and their state or territory requirements. NSW syllabus outcome tracking is supported first; curriculum alignment in other states needs your own review.</p>
+          <p>Side-Quest Learning supports homeschool planning, teaching and record-keeping. A limited seven-day preview is available without a card, followed by an optional paid Family Membership. Parents remain responsible for their children’s education and their state or territory requirements. Visit Curriculum for official state and territory resources; check which outcome tools apply to your jurisdiction.</p>
         </div>
       </section>
 
