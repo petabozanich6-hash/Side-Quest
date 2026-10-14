@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { api } from "../../lib/api";
+import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
 
 /**
@@ -57,7 +57,7 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
       toast.success("Added "+count+" timetable sessions to the family calendar.");
       onDone(); onClose();
     } catch (err) {
-      toast.error("Saved "+count+" sessions. The remaining entries were not saved. "+(err.response?.data?.detail || ""));
+      toast.error("Saved "+count+" sessions. The remaining entries were not saved. "+apiErrorMessage(err));
       onDone();
       setDraft(null);
     } finally {setSaving(false);}
