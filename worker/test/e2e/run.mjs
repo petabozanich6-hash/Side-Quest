@@ -484,7 +484,9 @@ await step("J. XP, progress and evidence update; XP is awarded exactly once", as
   await cpage.goto(BASE + "/child"); await cpage.waitForSelector('[data-testid=completed-portfolio-link]');
   ok(await cpage.locator('[data-testid=completed-section]').count() === 0, "completed lessons should not stay on child home");
   await cpage.click('[data-testid=completed-portfolio-link]');
-  await cpage.waitForURL("**/child/portfolio");
+  await cpage.waitForURL("**/child/archive");
+  await cpage.waitForSelector('[data-testid=child-lesson-archive]', { state: "visible", timeout: 15000 });
+  await cpage.goto(BASE + "/child/portfolio");
   await cpage.waitForSelector('[data-testid^=port-]', { state: "visible", timeout: 15000 });
   await cpage.goto(BASE + "/child");
   await cpage.waitForSelector('[data-testid=stat-xp]');
