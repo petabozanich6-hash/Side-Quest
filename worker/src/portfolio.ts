@@ -93,7 +93,7 @@ export type AreaSummary = {
   outcomes_achieved: number;
   outcomes_working_towards: number;
 };
-export type OutcomeSummary = { code: string; description: string; learning_area: string; times: number; first: string; latest: string; status: "achieved" | "working_towards" };
+export type OutcomeSummary = { code: string; description: string; learning_area: string; times: number; first: string; latest: string; status: "achieved" | "working_towards"; mastery?: string | null; mastery_confirmed?: boolean };
 
 /** Coverage and progress by key learning area, plus every outcome evidenced (earliest and latest evidence). */
 export function summarise(entries: PortfolioEntry[], stage: string, expectedAreas?: string[]) {
@@ -247,6 +247,18 @@ export async function buildPortfolio(db: DB, familyId: string, studentId: string
   // The summary always reflects everything, so the free preview shows what the full record looks like;
   // only the detailed entries are limited to a single sample.
   const summary = summarise(entries, stage, expectedAreas);
+  // The Outcome Tracker is the record of mastery. Its status is attached so the Backpack and the tracker never disagree:
+  // a review mark ("achieved" in this work) is evidence, while "Achieved" for the outcome needs the parent's confirmation.
+  if (nsw) {
+    const rows = await db.prepare("SELECT outcome_code, status, parent_confirmed_at FROM outcome_progress WHERE family_id = ? AND student_id = ? AND framework = 'NSW'")
+      .bind(familyId, studentId).all().then((r: any) => r.results || []).catch(() => [] as any[]);
+    const byCode = new Map(rows.map((r: any) => [r.outcome_code, r]));
+    for (const o of summary.outcomes as any[]) {
+      const t: any = o.code ? byCode.get(o.code) : null;
+      o.mastery = t ? t.status : null;
+      o.mastery_confirmed = !!t?.parent_confirmed_at;
+    }
+  }
   const shown = limits.fullExports ? entries : entries.slice(-1);
   for (const e of shown as any[]) { e.files = await filesFor(db, familyId, e._file_ids, 20); }
   for (const e of entries as any[]) { delete e._file_ids; delete e._submitted; }

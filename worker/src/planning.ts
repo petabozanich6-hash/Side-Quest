@@ -2,6 +2,7 @@
 // DB-agnostic plain functions so they can be tested; the family id always comes from the authenticated user.
 import * as lb from "./lessonBuilder";
 import type { Result } from "./lessonBuilder";
+import { safely, evidenceNoteDeleted } from "./outcomeTracker";
 
 type DB = D1Database;
 const { fail } = lb;
@@ -101,5 +102,7 @@ export async function listEvidenceNotes(db: DB, familyId: string, o: { student_i
 
 export async function deleteEvidenceNote(db: DB, familyId: string, id: string): Promise<Result<{}>> {
   const r = await db.prepare("DELETE FROM evidence_notes WHERE id = ? AND family_id = ?").bind(id, familyId).run();
-  return r.meta.changes ? { ok: true } : fail(404, "Evidence not found");
+  if (!r.meta.changes) return fail(404, "Evidence not found");
+  await safely("evidence note deleted", () => evidenceNoteDeleted(db, familyId, id));
+  return { ok: true };
 }

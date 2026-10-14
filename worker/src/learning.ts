@@ -4,6 +4,7 @@ import { analyseLifeEvidence } from "./data/lifeEvidence";
 import { FRAMEWORKS, JURISDICTION_CODES, frameworkFor, getFamilyJurisdiction, normJurisdiction, setFamilyJurisdiction, usesNswOutcomes } from "./data/jurisdictions";
 import { mapLifeEvidenceWithAi, lifeMapLimits } from "./lifeLearningAi";
 import { getEntitlement } from "./lessonBuilder";
+import { safely, trackLifeEvidence } from "./outcomeTracker";
 import { buildPlanContent } from "./data/planBuilder";
 import type { App, Guards } from "./types";
 import { nowIso, parseJson, newId } from "./types";
@@ -320,6 +321,7 @@ export function registerLearning(app: App, g: Guards) {
     if (record) {
       const xp = ({ accepted: 20, demonstrated: 45, needs_more_evidence: 5 } as Record<string, number>)[String(body.status || "")] ?? 10;
       await awardPetXp(c.env.DB, record.student_id, xp, `Life learning: ${record.title || ""}`);
+      await safely("life learning review", () => trackLifeEvidence(c.env.DB, user.family_id, record.id));
     }
     return c.json({ ok: true, accepted_count: accepted.length });
   });

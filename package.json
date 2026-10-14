@@ -11,7 +11,7 @@
     "db:migrate": "wrangler d1 migrations apply DB --remote",
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
     "smoke": "node worker/test/smoke.mjs",
-    "test:worker": "node --no-warnings --import ./worker/test/register.mjs --test worker/test/builder.test.mjs worker/test/billing.test.mjs worker/test/lifeLearning.test.mjs worker/test/portfolio.test.mjs worker/test/batches.test.mjs"
+    "test:worker": "node --no-warnings --import ./worker/test/register.mjs --test worker/test/builder.test.mjs worker/test/billing.test.mjs worker/test/lifeLearning.test.mjs worker/test/portfolio.test.mjs worker/test/batches.test.mjs worker/test/outcomes.test.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"
