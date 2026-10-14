@@ -295,7 +295,7 @@ test("children and families stay separate", async () => {
   assert.deepEqual(sum.students.map((s) => s.name), ["Ana", "Ben"]);
 });
 
-test("families outside NSW see the gap, not invented outcomes; records survive a change of state", async () => {
+test("unsupported states show a gap; switching states keeps records isolated by framework", async () => {
   const db = makeDb();
   const fam = family(db, { jurisdiction: "VIC" });
   const kid = child(db, fam);
@@ -312,7 +312,10 @@ test("families outside NSW see the gap, not invented outcomes; records survive a
   const k2 = child(db, nsw);
   await ot.addEvidence(db, nsw, `u-${nsw}`, k2, RN, { level: "demonstrated", note: "x" }, D(2));
   db.raw.prepare("UPDATE families SET jurisdiction = 'QLD' WHERE id = ?").run(nsw);
-  assert.equal((await ot.trackerFor(db, nsw, k2, { now: D(3) })).available, false);
+  const qld = await ot.trackerFor(db, nsw, k2, { now: D(3) });
+  assert.equal(qld.available, true, "QLD uses the partial AC9 reference catalogue");
+  assert.equal(qld.framework.key, "AC9");
+  assert.ok(!qld.outcomes.some(x => x.code === RN), "NSW codes must not appear in the AC9 tracker");
   assert.equal(count(db, "SELECT COUNT(*) n FROM outcome_evidence WHERE student_id = ?", k2), 1);
   db.raw.prepare("UPDATE families SET jurisdiction = 'NSW' WHERE id = ?").run(nsw);
   assert.equal(statusOf(await ot.trackerFor(db, nsw, k2, { now: D(3) }), RN).evidence_count, 1);
@@ -325,9 +328,8 @@ test("curriculum wording updates don't rewrite what was recorded", async () => {
   await ot.addEvidence(db, fam, `u-${fam}`, kid, RN, { level: "practice", note: "x" }, D(2));
   db.raw.prepare("UPDATE outcome_progress SET description = 'Older wording of this outcome', catalogue_version = 'nsw-seed-v2' WHERE student_id = ?").run(kid);
   const d = await ot.outcomeDetail(db, fam, kid, RN, { now: D(3) });
-  assert.equal(d.outcome.description, "Older wording of this outcome");
-  assert.equal(d.catalogue_changed.recorded, "Older wording of this outcome");
-  assert.ok(d.catalogue_changed.current.length > 5);
+  assert.equal(d.outcome.description, RN, "Never re-publish legacy stored syllabus text");
+  assert.equal(db.raw.prepare("SELECT description FROM outcome_progress WHERE student_id = ? AND outcome_code = ?").get(kid, RN).description, "Older wording of this outcome", "Historical records remain intact");
   assert.equal(d.status, "developing");
 });
 
