@@ -1,5 +1,6 @@
 import type { App, Guards } from "./types";
 import { verifySecret } from "./auth";
+import { cancelFamilySubscriptionsForDeletion } from "./billing";
 
 // Tables that are never swept by family/student id.
 const SKIP_TABLES = new Set(["users", "families", "students", "outcomes", "app_config", "d1_migrations"]);
@@ -111,7 +112,27 @@ export function registerAccount(app: App, g: Guards) {
       return c.json({ ok: true, family_deleted: false });
     }
 
+    // A family's last parent is leaving: end ALL remaining Stripe renewals
+    // before wiping the Stripe customer/subscription references from D1.
+    const billing = await db.prepare(
+      "SELECT stripe_customer_id, stripe_subscription_id FROM families WHERE id = ?"
+    ).bind(record.family_id).first<{ stripe_customer_id: string | null; stripe_subscription_id: string | null }>();
+    if (!billing) return c.json({ detail: "Family account not found" }, 404);
+
+    let canceledSubscriptions = 0;
+    try {
+      canceledSubscriptions = await cancelFamilySubscriptionsForDeletion(
+        c.env, billing.stripe_customer_id, billing.stripe_subscription_id
+      );
+    } catch (err) {
+      console.error("Account deletion postponed: Stripe cancellation could not be verified", err);
+      return c.json({
+        detail: "We couldn't confirm that your membership billing has stopped, so nothing was deleted. Please try again or contact support@sidequestlearning.app. You can also check Your Plan > Manage billing.",
+        code: "SUBSCRIPTION_CANCELLATION_UNVERIFIED",
+      }, 503);
+    }
+
     const report = await purgeFamily(db, c.env.BUCKET, record.family_id, record.id);
-    return c.json({ ok: true, family_deleted: true, deleted: report });
+    return c.json({ ok: true, family_deleted: true, canceled_subscriptions: canceledSubscriptions, deleted: report });
   });
 }
