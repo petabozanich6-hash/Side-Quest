@@ -130,6 +130,17 @@ await step("security: family isolation, sibling privacy, PIN revocation and thro
   ok(foreignChildFile.status === 404, `foreign child downloaded A's file: ${foreignChildFile.status}`);
   const missingFile = await api("GET", `/files/${upload.id}`);
   ok(missingFile.status === 401, "unauthenticated file downloaded");
+  const childUpload = new FormData();
+  childUpload.append("file", new Blob(["child A private image"], { type: "image/png" }), "child-work.png");
+  const childUploadResponse = await fetch(BASE + "/api/files/upload", { method: "POST", headers: { authorization: `Bearer ${a1.token}` }, body: childUpload });
+  const childFile = await childUploadResponse.json().catch(() => ({}));
+  ok(childUploadResponse.status === 200 && childFile.id, "child file fixture upload failed");
+  const siblingFile = await api("GET", `/files/${childFile.id}`, a2.token);
+  ok(siblingFile.status === 404, `sibling accessed another child's upload: ${siblingFile.status}`);
+  const parentFile = await api("GET", `/files/${childFile.id}`, a);
+  ok(parentFile.status === 200, `parent cannot access own child's upload: ${parentFile.status}`);
+  const ownFile = await api("GET", `/files/${childFile.id}`, a1.token);
+  ok(ownFile.status === 200, `child cannot access own upload: ${ownFile.status}`);
   const foreignPortfolio = await api("GET", `/portfolio?student_id=${a1.id}`, b);
   ok([403, 404].includes(foreignPortfolio.status), `foreign family portfolio returned ${foreignPortfolio.status}`);
   const foreignReading = await api("GET", `/reading-log?student_id=${a1.id}`, b);
