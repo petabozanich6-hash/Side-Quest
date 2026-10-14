@@ -116,7 +116,7 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
   const makeDraft = () => {
     if (!jurisdiction?.jurisdiction) return toast.error("Set your family's state or territory before generating a timetable.");
     if (!selected.length || !days.length) return toast.error("Select at least one child and one learning day.");
-    if (!weekStart || !/^\\d{2}:\\d{2}$/.test(startTime)) return toast.error("Choose a valid week and start time.");
+    if (!weekStart || !/^\d{2}:\d{2}$/.test(startTime)) return toast.error("Choose a valid week and start time.");
     const proposed = plan.flatMap(({ child, areas }) => allocate(child, areas, days, startTime, weekStart, events));
     setDraft(proposed);
     if (!proposed.length) toast.message("No new entries proposed; matching dates or times are already scheduled.");
