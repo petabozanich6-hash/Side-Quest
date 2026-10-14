@@ -184,7 +184,7 @@ export default function Landing() {
               <div className="font-script text-3xl" style={{color:"#D4A574"}}>Meet your learning companion</div>
               <h3 className="font-display text-3xl md:text-4xl font-bold mt-1" style={{color:"#F5EFE0"}}>A pocket pet that grows with every lesson.</h3>
               <p className="mt-3 text-sm md:text-base leading-relaxed max-w-xl" style={{color:"#E8E2D1"}}>
-                Children choose a fox, owl, turtle, hedgehog, fawn, squirrel, rabbit or dragon.
+                Children choose a goblin, dragon, fox, owl or turtle, and watch it grow from an egg.
                 Submit work to earn XP. Each level unlocks a new look. When they feel stuck, their companion
                 offers kind, specific nudges — never the answer.
               </p>

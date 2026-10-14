@@ -4,10 +4,6 @@ export const PET_SPECIES = {
   fox: { label: "Fox", voice: "clever, warm, curious" },
   owl: { label: "Owl", voice: "wise, calm, patient" },
   turtle: { label: "Turtle", voice: "slow and steady, encouraging" },
-  hedgehog: { label: "Hedgehog", voice: "gentle, careful, kind" },
-  fawn: { label: "Fawn", voice: "soft, hopeful, delicate" },
-  squirrel: { label: "Squirrel", voice: "energetic, playful, upbeat" },
-  rabbit: { label: "Rabbit", voice: "quick, cheerful, friendly" },
   dragon: { label: "Dragon", voice: "brave, dramatic, warm-hearted" },
   goblin: { label: "Goblin", voice: "cheeky, clever, loyal and a little mischievous" },
 } as const;
@@ -44,10 +40,6 @@ export const EGG_STYLES: Record<string, { base: string; accent: string; pattern:
   fox: { base: "#F4A261", accent: "#FFF1E0", pattern: "zigzag", glow: "#FFD6A5" },
   owl: { base: "#A98467", accent: "#EAD7C3", pattern: "feathers", glow: "#E8D5B7" },
   turtle: { base: "#8FBF9F", accent: "#4F8A6B", pattern: "hexagons", glow: "#C7F0D8" },
-  hedgehog: { base: "#C9B8A6", accent: "#7B6A5A", pattern: "spikes", glow: "#EFE3D3" },
-  fawn: { base: "#E9C8A0", accent: "#FFFFFF", pattern: "spots", glow: "#FFF0DC" },
-  squirrel: { base: "#B5651D", accent: "#F0C987", pattern: "stripes", glow: "#FFD9A0" },
-  rabbit: { base: "#F2E9F0", accent: "#F7B6D2", pattern: "hearts", glow: "#FFE0EF" },
   dragon: { base: "#7B5EA7", accent: "#F2C14E", pattern: "scales", glow: "#D9C2FF" },
   goblin: { base: "#9CB86B", accent: "#D9E8B0", pattern: "spots", glow: "#E4F2C0" },
 };

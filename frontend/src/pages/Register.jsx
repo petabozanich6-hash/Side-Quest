@@ -55,7 +55,7 @@ export default function Register() {
             <li className="flex gap-2"><span>·</span>Each child gets a pocket pet that grows with them</li>
           </ul>
           <div className="mt-6 flex gap-3">
-            <Pet species="fox" size={64}/><Pet species="owl" size={64}/><Pet species="hedgehog" size={64}/>
+            <Pet species="fox" size={64}/><Pet species="owl" size={64}/><Pet species="turtle" size={64}/>
           </div>
         </div>
         <p className="text-xs relative z-10" style={{color:"#94A47F"}}>Parents stay in control. Children get a safe, age-appropriate space.</p>
