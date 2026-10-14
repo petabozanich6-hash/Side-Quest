@@ -572,6 +572,23 @@ export function assessmentPrompt(sp: Spec, design: any, taught: any): string {
   ].join("\n");
 }
 
+/** Models often put real line breaks inside JSON strings (long explanations) or leave trailing commas; both are harmless to repair without changing any words. */
+export function tidyJson(t: string): string {
+  let out = "", inStr = false, esc = false;
+  for (const ch of t) {
+    if (inStr) {
+      if (esc) { out += ch; esc = false; continue; }
+      if (ch === "\\") { out += ch; esc = true; continue; }
+      if (ch === '"') { inStr = false; out += ch; continue; }
+      if (ch === "\n") { out += "\\n"; continue; }
+      if (ch === "\r") continue;
+      if (ch === "\t") { out += "\\t"; continue; }
+      out += ch;
+    } else { if (ch === '"') inStr = true; out += ch; }
+  }
+  return out.replace(/,\s*([}\]])/g, "$1");
+}
+
 type StageRun = { value: any; salvaged: boolean };
 const hasKeys = (v: any, keys: string[]) => v && typeof v === "object" && keys.every((k) => v[k] !== undefined && !(Array.isArray(v[k]) && !v[k].length) && v[k] !== "");
 
@@ -581,7 +598,10 @@ export function parseReply(out: unknown): StageRun | null {
   const text = typeof t === "string" ? t : typeof t?.response === "string" ? t.response : t?.choices?.[0]?.message?.content;
   if (typeof text === "string") {
     const a = text.indexOf("{"), b = text.lastIndexOf("}");
-    if (a >= 0 && b > a) { try { const v = JSON.parse(text.slice(a, b + 1)); if (v && typeof v === "object") return { value: v, salvaged: false }; } catch { /* patch below */ } }
+    if (a >= 0 && b > a) {
+      const body = text.slice(a, b + 1);
+      for (const cand of [body, tidyJson(body)]) { try { const v = JSON.parse(cand); if (v && typeof v === "object") return { value: v, salvaged: false }; } catch { /* try the next form */ } }
+    }
     const v = salvageJson(text);
     return v && typeof v === "object" ? { value: v, salvaged: true } : null;
   }
@@ -595,7 +615,7 @@ export function generationReport(st: GenStats, model: string) {
   return { calls: st.calls, stages: st.stages, input_tokens: st.input_tokens, output_tokens: st.output_tokens, est_cost_us_cents: est };
 }
 
-export type GenStats = { calls: number; input_tokens: number; output_tokens: number; stages: string[] };
+export type GenStats = { calls: number; input_tokens: number; output_tokens: number; stages: string[]; failed?: string };
 
 /** The parent answer key is assembled from the items themselves, so it always agrees with the lesson. */
 export function buildAnswerKey(l: any): string {
@@ -607,6 +627,13 @@ export function buildAnswerKey(l: any): string {
   return out.join("\n");
 }
 
+/** Accept the usual alternative names a model uses for the same field. */
+function aliasKeys(v: any): any {
+  if (!v || typeof v !== "object" || Array.isArray(v)) return v;
+  const pairs: [string, string][] = [["body", "text"], ["body", "content"], ["body", "explanation"], ["steps", "working"], ["steps", "solution_steps"], ["answer", "final_answer"], ["problem", "question"], ["introduction", "intro"], ["consolidation", "summary"], ["consolidation", "conclusion"], ["sequence", "sections"], ["worked_examples", "examples"]];
+  for (const [to, from] of pairs) if (v[to] === undefined && v[from] !== undefined) v[to] = v[from];
+  return v;
+}
 const SMALL_POOL = 4;
 async function pool<T>(jobs: (() => Promise<T>)[], size = SMALL_POOL): Promise<T[]> {
   const out: T[] = new Array(jobs.length);
@@ -631,6 +658,7 @@ export async function generateStaged(
   const sys = { role: "system", content: stageSystem() };
   const go = async (name: string, user: string, maxTokens: number, need: string[]): Promise<any | null> => {
     let best: StageRun | null = null;
+    let lastWhy = "";
     for (let attempt = 0; attempt < 2; attempt++) {
       const raw: any = await call([sys, { role: "user", content: attempt ? `${user}\n\nYour previous reply could not be used (it was cut off or not valid JSON). Reply again with the complete JSON object, a little more concisely.` : user }], maxTokens);
       stats.calls++;
@@ -638,11 +666,14 @@ export async function generateStaged(
       stats.output_tokens += Number(raw?.usage?.completion_tokens) || 0;
       stats.stages.push(name);
       const r = parseReply(raw);
+      if (r) r.value = aliasKeys(r.value);
+      lastWhy = r ? `${name}: reply was missing ${need.filter((k) => !hasKeys(r.value, [k])).join(", ")}` : `${name}: reply was not valid JSON${raw?.usage?.completion_tokens ? ` (${raw.usage.completion_tokens} tokens)` : ""}`;
       if (r && hasKeys(r.value, need)) {
         if (!r.salvaged) return r.value;
         best = r;
       }
     }
+    if (!best) stats.failed = stats.failed || lastWhy;
     if (best) { flags.push(`The AI's reply for the ${name} step was cut off, so the end of it may be missing. Please read it through.`); return best.value; }
     return null;
   };
@@ -660,8 +691,9 @@ export async function generateStaged(
 
   const results = await pool<any>([
     ...seq.map((_, i) => () => go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])),
-    ...exs.map((_, i) => () => go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps", "answer"])),
+    ...exs.map((_, i) => () => go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps"])),
   ]);
+  results.forEach((r) => { if (r && Array.isArray(r.steps) && !r.answer) r.answer = String(r.steps[r.steps.length - 1] ?? ""); });
   const sections = results.slice(0, seq.length);
   const examples = results.slice(seq.length);
   if (sections.some((s) => !s) || examples.some((s) => !s)) return null;
@@ -775,7 +807,7 @@ export async function draftLessonWithAi(
   }
   if (!draft) {
     await mark("failed");
-    return lb.fail(502, "The AI reply couldn't be turned into a lesson. Nothing was used from your allowance; please try again.", "AI_FAILED");
+    return lb.fail(502, `The AI reply couldn't be turned into a lesson (${stats.failed || "no usable reply"}). Nothing was used from your allowance; please try again.`, "AI_FAILED");
   }
   const hard = issues.filter((i) => i.hard);
   if (hard.length) {

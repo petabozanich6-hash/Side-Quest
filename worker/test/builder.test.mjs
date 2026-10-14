@@ -899,3 +899,15 @@ test("outcomes: the model can only pick from the real list; opting out leaves no
   const safe = lb.childSafeLesson(lb.assignmentLesson(db.raw.prepare("SELECT * FROM assignments WHERE id=?").get(asg.id), null));
   assert.ok(!("outcome_codes" in safe) && !("curriculum_refs" in safe));
 });
+
+test("model replies with raw line breaks and trailing commas are repaired, and a failed step is named", async () => {
+  const bad = '{"heading":"H","body":"Para one.\n\nPara two.","visual":null,}';
+  const r = aid.parseReply({ response: bad });
+  assert.equal(r.salvaged, false); assert.match(r.value.body, /Para two/);
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const ai = stub((m, input) => (input.messages.at(-1).content.includes("STAGE 3, SECTION 2 OF") ? { response: "Sorry, I cannot do that." } : stagedFor()(m, input)));
+  const out = await aid.draftLessonWithAi(db, ai, req(fam), NOW);
+  assert.equal(out.code, "AI_FAILED");
+  assert.match(out.detail, /section 2: reply was not valid JSON/);
+});
