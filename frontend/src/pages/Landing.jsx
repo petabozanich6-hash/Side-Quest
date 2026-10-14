@@ -50,7 +50,7 @@ export default function Landing() {
           </h1>
           <p className="mt-6 text-lg leading-relaxed max-w-2xl" style={{color:"#52473A"}}>
             Homeschooling has plenty of wonderful moments — and plenty to organise. Side-Quest brings lesson planning, your children's learning and progress records into one friendly place.
-            With Family Membership, the AI Lesson Builder can draft a lesson for you to check and adjust. Children get their own learning space, with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span> along for the adventure.
+            With Family Membership, the AI Lesson Builder drafts teaching, examples, activities and questions from your topic — so you can review and adapt a starting point instead of planning from a blank page. Children get their own learning space, with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span> along for the adventure.
           </p>
 
           <div className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl" data-testid="who-is-here">
@@ -171,7 +171,7 @@ export default function Landing() {
             </div>
           ))}
         </div>
-        <p className="mt-5 text-center text-sm text-stone-600">Start with a 7-day, card-free preview. Full access includes AI lesson drafting, subject to fair-use limits. Cancel your membership any time; paid access continues through the current billing period.</p>
+        <p className="mt-5 text-center text-sm text-stone-600">Start with a 7-day, card-free preview. Family Membership supports up to 20 child profiles and includes AI lesson drafting with fair-use limits. All four billing options include the same features; cancel any time and paid access normally continues through the current billing period.</p>
         <div className="mt-6 flex justify-center"><Link to="/register" className="rounded-full px-6 py-3 font-semibold text-sm shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}}>Start your free preview</Link></div>
       </section>
 
