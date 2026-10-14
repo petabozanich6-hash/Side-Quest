@@ -3,6 +3,7 @@ import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { Plus, X, ChevronLeft, ChevronRight, CalendarPlus } from "lucide-react";
 import ScheduleModal, { isoLocal } from "../../components/parent/ScheduleModal";
+import TimetableGenerator from "../../components/parent/TimetableGenerator";
 
 const COLOURS = ["#0F766E", "#B45309", "#6D28D9", "#BE123C", "#1D4ED8", "#4D7C0F"];
 
@@ -28,6 +29,7 @@ export default function CalendarPage() {
   const [cur, setCur] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [schedOpen, setSchedOpen] = useState(false);
+  const [generatorOpen, setGeneratorOpen] = useState(false);
   const [dayOpen, setDayOpen] = useState(null);
   const [saving, setSaving] = useState(false);
   const [filter, setFilter] = useState("");
@@ -38,7 +40,7 @@ export default function CalendarPage() {
 
   const colourOf = (sid) => {
     const i = students.findIndex(s => s.id === sid);
-    return i < 0 ? "#475569" : COLOURS[i % COLOURS.length];
+    return i < 0 ? "#475569" : (students[i].prefs?.calendar_colour || COLOURS[i % COLOURS.length]);
   };
   const nameOf = (sid) => students.find(s => s.id === sid)?.name;
   const labelOf = (e) => (e.student_id && nameOf(e.student_id) ? `${nameOf(e.student_id).split(" ")[0]}: ` : "") + e.title;
@@ -94,6 +96,7 @@ export default function CalendarPage() {
             <option value="">All children</option>
             {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
+          <button onClick={()=>setGeneratorOpen(true)} className="rounded-full bg-amber-100 text-amber-950 border border-amber-300 px-4 py-2 text-sm font-semibold" data-testid="generate-timetable-btn">Generate timetable</button>
           <button onClick={()=>setSchedOpen(true)} className="rounded-full bg-teal-700 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Schedule lesson</button>
           <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
         </div>
@@ -143,6 +146,7 @@ export default function CalendarPage() {
         </div>
       </div>
 
+      {generatorOpen && <TimetableGenerator students={students} events={events} onClose={()=>setGeneratorOpen(false)} onDone={load} />}
       {schedOpen && <ScheduleModal lessons={lessons} students={students} onClose={()=>setSchedOpen(false)} onDone={load} />}
 
       {dayOpen && (
