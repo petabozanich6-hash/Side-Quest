@@ -8,7 +8,7 @@ import type { Result } from "./lessonBuilder";
 import { cleanPrefs, resolveRequest, stageFor } from "./aiRequest";
 import { matchOutcomesWithAi, suggestOutcomes, outcomeRef, OUTCOME_FRAMEWORK } from "./outcomeMatch";
 import type { OutcomeSuggestion } from "./outcomeMatch";
-import { getFamilyJurisdiction, usesNswOutcomes, outcomesNotLoadedNote } from "./data/jurisdictions";
+import { getFamilyJurisdiction, frameworkFor, areasFor, usesNswOutcomes, outcomesNotLoadedNote } from "./data/jurisdictions";
 import { cleanItemKind, cleanVisual, cleanKeyWords, estimateMinutes } from "./items";
 import type { StudentInfo } from "./aiRequest";
 import { REFERENCE_INDEPENDENT, REFERENCE_PARENT_GUIDED } from "./data/referenceLessons";
@@ -48,7 +48,7 @@ export async function aiUsage(db: DB, familyId: string, now: Date = new Date()) 
 const clip = (v: unknown, n: number) => (typeof v === "string" ? v.trim().slice(0, n) : "");
 
 export type Spec = { topic: string; area: string; year: string; goal: string; minutes: number; delivery: "parent_guided" | "independent"; interests: string; needs: string; notes: string;
-  theme?: string; profile?: string[]; source?: string; original?: string; series?: { index: number; total: number; titles: string[]; goals: string[] } };
+  theme?: string; profile?: string[]; source?: string; original?: string; curriculumContext?: string; series?: { index: number; total: number; titles: string[]; goals: string[] } };
 
 /** How much a lesson of this length should contain. */
 export function sizeFor(minutes: number) {
@@ -138,6 +138,7 @@ export function userPrompt(sp: Spec, extra = "") {
     sp.area ? `Subject: ${sp.area}` : "",
     sp.year ? `Child's year level or age: ${sp.year}` : "",
     sp.goal ? `Specific learning goal: ${sp.goal}` : "",
+    sp.curriculumContext || "",
     sp.original ? `The parent's request in their own words (the topic, theme and any other wishes in it apply): "${sp.original}"` : "",
     sp.theme ? `THEME: ${sp.theme}. Use this theme for the settings, characters and word problems or contexts so the child enjoys it, but the learning content stays the focus and must be correct and complete. Invent original characters and scenarios in the spirit of the theme; do not copy published text, stories or dialogue, and do not imply any affiliation with the franchise.` : "",
     sp.interests ? `Child's interests (use them for examples and context where natural): ${sp.interests}` : "",
@@ -448,6 +449,7 @@ function contextBlock(sp: Spec): string[] {
     sp.area ? `Subject: ${sp.area}` : "",
     sp.year ? `Child's year level or age: ${sp.year}` : "",
     sp.goal ? `Specific learning goal: ${sp.goal}` : "",
+    sp.curriculumContext || "",
     sp.original ? `The parent's request in their own words (the topic, theme and any other wishes in it apply): "${sp.original}"` : "",
     sp.theme ? `THEME: ${sp.theme}. Use it for settings, characters and word problems, but the learning content stays the focus and must be correct and complete. Invent original characters and scenarios; never copy published text and do not imply any affiliation with a franchise.` : "",
     sp.interests ? `Child's interests (use for examples where natural): ${sp.interests}` : "",
@@ -761,10 +763,21 @@ export async function draftLessonWithAi(
   if (!ai) return lb.fail(503, "AI lesson drafting is not switched on yet. You can still build lessons by hand.", "AI_UNAVAILABLE");
 
   const minutes = r.minutes;
+  const jurisdiction = await getFamilyJurisdiction(db, familyId).catch(() => null);
+  const framework = frameworkFor(jurisdiction);
+  const stage = student?.stage || stageFor(r.year);
+  const curriculumContext = framework
+    ? [
+        `FAMILY'S CHOSEN CURRICULUM: ${framework.name} (${framework.jurisdiction_name}).`,
+        `Official curriculum reference: ${framework.url}.`,
+        `Learning areas for this level: ${areasFor(framework, stage).join(", ")}.`,
+        "Use this framework to choose relevant concepts, explanations and examples for the parent's stated topic. This teaching draft is not proof of curriculum or regulatory compliance. Never invent outcome codes or claim verified alignment: confirmed outcome identifiers are added separately only when the app holds an official, verified list.",
+      ].join("\n")
+    : "";
   const spec: Spec = {
     topic: r.topic, area: r.area, year: r.year, goal: r.goal, minutes, delivery: r.delivery,
     interests: r.interests, needs: r.needs, notes: r.notes, theme: r.theme, profile: r.profile, source: source || undefined,
-    original: clip(request.request, 600) || undefined, series,
+    original: clip(request.request, 600) || undefined, curriculumContext, series,
   };
 
   const usage = await aiUsage(db, familyId, now);
@@ -824,10 +837,15 @@ export async function draftLessonWithAi(
   }
   const flags = [...stageFlags, ...issues.map((i) => i.msg)];
   draft.stage = clip(request.stage, 10) || stageFor(spec.year);
+  // Other jurisdictions have a framework reference, not fabricated codes.
+  if (framework && framework.jurisdiction !== "NSW") {
+    draft.curriculum_refs = [`${framework.name} — ${framework.url}`];
+    draft.outcome_codes = [];
+  }
   // Optional (on unless the parent turns it off): link the lesson to the outcomes it develops, picked from the real outcome list.
   let outcomes: OutcomeSuggestion[] = [];
   // Only the NSW outcome list is loaded, so families in other states and territories never get NSW codes attached.
-  if ((request as any).link_outcomes !== false && usesNswOutcomes(await getFamilyJurisdiction(db, familyId).catch(() => null))) {
+  if ((request as any).link_outcomes !== false && usesNswOutcomes(jurisdiction)) {
     try {
       const m = await matchOutcomesWithAi({ run: (mdl, input, o) => ai.run(mdl, input, o) }, draft, { model, gatewayId: opts.gatewayId });
       if (m) { outcomes = m.suggestions; stats.calls++; stats.stages.push("outcomes"); stats.input_tokens += m.input_tokens; stats.output_tokens += m.output_tokens; }
