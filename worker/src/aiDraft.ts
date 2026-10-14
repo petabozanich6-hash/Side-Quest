@@ -6,6 +6,8 @@
 import * as lb from "./lessonBuilder";
 import type { Result } from "./lessonBuilder";
 import { cleanPrefs, resolveRequest, stageFor } from "./aiRequest";
+import { matchOutcomesWithAi, suggestOutcomes, outcomeRef, OUTCOME_FRAMEWORK } from "./outcomeMatch";
+import type { OutcomeSuggestion } from "./outcomeMatch";
 import { cleanItemKind, cleanVisual, cleanKeyWords, estimateMinutes } from "./items";
 import type { StudentInfo } from "./aiRequest";
 import { REFERENCE_INDEPENDENT, REFERENCE_PARENT_GUIDED } from "./data/referenceLessons";
@@ -599,7 +601,7 @@ export async function draftLessonWithAi(
   ai: AiBinding | undefined,
   opts: { familyId: string; userId: string; model?: string; gatewayId?: string; request: AiRequest },
   now: Date = new Date()
-): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport> }>> {
+): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport>; outcomes: OutcomeSuggestion[] }>> {
   const { familyId, userId, request } = opts;
   const { limits } = await lb.getEntitlement(db, familyId, now);
   if (!limits.aiGeneration) return lb.paywall("AI lesson drafting is part of the paid plan. Your free preview includes the full manual lesson builder.");
@@ -696,13 +698,24 @@ export async function draftLessonWithAi(
   }
   const flags = [...stageFlags, ...issues.map((i) => i.msg)];
   draft.stage = clip(request.stage, 10) || stageFor(spec.year);
+  // Optional (on unless the parent turns it off): link the lesson to the outcomes it develops, picked from the real outcome list.
+  let outcomes: OutcomeSuggestion[] = [];
+  if ((request as any).link_outcomes !== false) {
+    try {
+      const m = await matchOutcomesWithAi({ run: (mdl, input, o) => ai.run(mdl, input, o) }, draft, { model, gatewayId: opts.gatewayId });
+      if (m) { outcomes = m.suggestions; stats.calls++; stats.stages.push("outcomes"); stats.input_tokens += m.input_tokens; stats.output_tokens += m.output_tokens; }
+    } catch { /* optional step: the lesson is fine without it */ }
+    if (!outcomes.length) outcomes = suggestOutcomes(draft, 2).filter((o) => o.confidence === "likely");
+    (draft as any).outcome_codes = outcomes.map((o) => o.code);
+    draft.curriculum_refs = outcomes.map((o) => outcomeRef(o));
+  }
   const created = await lb.createLesson(db, familyId, draft, now, { ai: true, flags });
   if (!created.ok) {
     await mark("failed");
     return created;
   }
   await mark("ok");
-  return { ok: true, lesson: created.lesson, usage: await aiUsage(db, familyId, now), warnings: [...extraWarnings, ...flags], model, assumptions: r.assumptions, generation: generationReport(stats, model) };
+  return { ok: true, lesson: created.lesson, usage: await aiUsage(db, familyId, now), warnings: [...extraWarnings, ...flags], model, assumptions: r.assumptions, generation: generationReport(stats, model), outcomes };
 }
 
 
@@ -856,4 +869,33 @@ export async function planSeriesWithAi(
   }
   await done("ok");
   return { ok: true, title: clip(plan?.series_title, 150) || r.topic, lessons: lessons.slice(0, count), count, minutes: r.minutes, delivery: r.delivery, assumptions: r.assumptions, usage };
+}
+
+
+// ---------------------------------------------------------------------------------------------------------------
+// "Match to curriculum outcomes" for a lesson that already exists. Paid plans get the AI pick from the real list; others get the
+// free wording match. Nothing is saved here: the parent confirms, and the lesson is then saved through the normal update.
+export const OUTCOME_LIMITS = { perDay: 40 };
+export async function matchLessonOutcomes(
+  db: DB, ai: AiBinding | undefined,
+  opts: { familyId: string; userId: string; lessonId: string; model?: string; gatewayId?: string },
+  now: Date = new Date()
+): Promise<Result<{ suggestions: OutcomeSuggestion[]; method: "ai" | "wording"; framework: string; note: string }>> {
+  const row = await db.prepare("SELECT * FROM lessons WHERE id = ? AND family_id = ?").bind(opts.lessonId, opts.familyId).first<any>();
+  if (!row) return lb.fail(404, "Lesson not found");
+  const lesson: any = lb.lessonOut(row);
+  const note = "These are suggestions based on what the lesson teaches, checked against the outcome list Side-Quest holds (currently the NSW syllabus; other states are not loaded yet). A lesson contributes to an outcome; it does not complete it. Please confirm against your own curriculum.";
+  const { limits } = await lb.getEntitlement(db, opts.familyId, now);
+  if (ai && limits.aiGeneration) {
+    const used = Number((await db.prepare("SELECT COUNT(*) n FROM ai_usage WHERE family_id = ? AND kind = 'outcome_match' AND status != 'failed' AND created_at >= ?").bind(opts.familyId, new Date(now.getTime() - 86400000).toISOString()).first<{ n: number }>())?.n ?? 0);
+    if (used < OUTCOME_LIMITS.perDay) {
+      const mark = await reserve(db, opts.familyId, opts.userId, "outcome_match", now);
+      try {
+        const m = await matchOutcomesWithAi(ai, lesson, { model: opts.model || DEFAULT_MODEL, gatewayId: opts.gatewayId });
+        if (m) { await mark("ok"); return { ok: true, suggestions: m.suggestions, method: "ai", framework: OUTCOME_FRAMEWORK, note }; }
+        await mark("failed");
+      } catch { await mark("failed"); }
+    }
+  }
+  return { ok: true, suggestions: suggestOutcomes(lesson, 3), method: "wording", framework: OUTCOME_FRAMEWORK, note };
 }

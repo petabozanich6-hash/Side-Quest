@@ -261,6 +261,14 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     return c.json(r.video);
   });
 
+  app.post("/api/lessons/:id/match-outcomes", auth, parent, async (c) => {
+    const u = c.get("user");
+    const r = await aid.matchLessonOutcomes(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, lessonId: c.req.param("id"), model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID });
+    if (!r.ok) return send(c, r);
+    const { ok: _ok, ...out } = r;
+    return c.json(out);
+  });
+
   app.post("/api/lessons/:id/apply-patch", auth, parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
     const r = await aid.applyLessonPatch(c.env.DB, c.get("user").family_id, c.req.param("id"), b.patch);

@@ -218,6 +218,7 @@ const stagedFor = (over = {}) => (model, input) => {
   const g = { ...GARDEN, resources: [{ type: "link", title: "x", url: "https://evil.example" }], curriculum_refs: ["ACMNA999"], status: "ready", ...over };
   const pick = (ks) => Object.fromEntries(ks.filter((k) => g[k] !== undefined).map((k) => [k, g[k]]));
   const reply = (o) => ({ response: JSON.stringify(o), usage: { prompt_tokens: 1000, completion_tokens: 2000 } });
+  if (input.messages[0].content.includes("match a school lesson to curriculum outcomes")) return reply({ matches: [1, 2] });
   if (u.includes("STAGE 1 OF 3")) return reply({ ...pick(STAGE1), concept: "c", sequence: g.sections.map((x) => ({ heading: x.heading, idea: "i", how: "h" })), worked_examples: g.worked_examples.map((w) => ({ title: w.title, problem: w.problem, skill: "s" })), practice_plan: "p" });
   if (u.includes("STAGE 2 OF 3")) return reply(pick(STAGE2));
   if (u.includes("STAGE 3 OF 3")) return reply(Object.fromEntries(Object.entries(g).filter(([k]) => ![...STAGE1, ...STAGE2].includes(k))));
@@ -252,13 +253,15 @@ test("AI drafting: paid family gets an unreviewed AI-labelled draft with no link
   assert.equal(r.lesson.source, "ai");
   assert.deepEqual(r.lesson.resources, []);
   assert.deepEqual(r.warnings, []);
-  assert.equal(ai.calls.length, 3); // design, teaching, practice: a good reply needs no retry and no repair
-  assert.deepEqual(r.generation.stages, ["design", "teaching", "practice"]);
-  assert.equal(r.generation.input_tokens, 3000); assert.ok(r.generation.est_cost_us_cents > 0);
+  assert.equal(ai.calls.length, 4); // design, teaching, practice, then the small outcome match
+  assert.deepEqual(r.generation.stages, ["design", "teaching", "practice", "outcomes"]);
+  assert.equal(r.generation.input_tokens, 4000); assert.ok(r.generation.est_cost_us_cents > 0);
   assert.equal(r.usage.today, 1);
   assert.equal(r.lesson.delivery, "independent"); // the standard: a lesson the child can complete alone
   assert.equal(r.lesson.worked_examples.length, 3);
-  assert.deepEqual(r.lesson.curriculum_refs, []); // invented codes are discarded
+  assert.ok(!r.lesson.curriculum_refs.join(" ").includes("ACMNA999")); // codes the model invents are discarded
+  assert.deepEqual(r.lesson.outcome_codes, ["MAe-RWN-01", "MAe-RWN-02"]); // only real outcomes picked from the list are kept
+  assert.equal(r.outcomes.length, 2);
   const q1 = r.lesson.quiz.find((q) => q.question === "What is 23 + 45?");
   assert.equal(q1.options[q1.correct_index], "68"); // shuffling keeps the right answer marked
   const msgs = ai.calls[0][1].messages;
@@ -269,7 +272,7 @@ test("AI drafting: paid family gets an unreviewed AI-labelled draft with no link
   // each later stage is shown what the earlier ones produced, so practice matches what was actually taught
   assert.match(ai.calls[1][1].messages[1].content, /"sequence"/);
   assert.match(ai.calls[2][1].messages[1].content, /WHAT WAS TAUGHT[\s\S]*Part 1\./);
-  assert.deepEqual(ai.calls.map((c) => c[1].max_tokens), [2600, 6500, 7500]);
+  assert.deepEqual(ai.calls.map((c) => c[1].max_tokens), [2600, 6500, 7500, 120]);
   // Editing keeps the AI label; the parent marking it ready records a parent review.
   const up = await lb.updateLesson(db, fam, r.lesson.id, { ...lesson({ title: "Edited" }), status: "ready" }, NOW);
   assert.ok(up.ok);
@@ -374,7 +377,7 @@ test("AI drafting: a thin reply gets one targeted repair; an unfixable one is re
   });
   const r2 = await aid.draftLessonWithAi(db, ai2, { familyId: fam, userId: "u", request: { topic: "Addition", duration_minutes: 60 } }, NOW);
   assert.ok(r2.ok, JSON.stringify(r2));
-  assert.equal(ai2.calls.length, 4);
+  assert.equal(ai2.calls.length, 5);
   assert.equal(r2.lesson.sections.length, 5);
   assert.deepEqual(r2.lesson.ai_flags, r2.warnings);
 });
@@ -821,8 +824,8 @@ test("staged generation: a cut-off stage is asked again once; if still cut off i
   let n = 0;
   const ai1 = stub((m, input) => { const r = full(m, input); return input.messages.at(-1).content.includes("STAGE 2 OF 3") && n++ === 0 ? cut(r) : r; });
   const a = await aid.draftLessonWithAi(db, ai1, req(fam), NOW);
-  assert.ok(a.ok, JSON.stringify(a)); assert.equal(ai1.calls.length, 4);
-  assert.deepEqual(a.generation.stages, ["design", "teaching", "teaching", "practice"]);
+  assert.ok(a.ok, JSON.stringify(a)); assert.equal(ai1.calls.length, 5);
+  assert.deepEqual(a.generation.stages, ["design", "teaching", "teaching", "practice", "outcomes"]);
   assert.ok(!a.warnings.some((w) => /cut off/.test(w)));
   assert.match(ai1.calls[2][1].messages.at(-1).content, /previous reply could not be used/);
   // practice stage always cut off: kept (the end of it missing) but the parent is told
@@ -856,4 +859,39 @@ test("young learners get a reading-level instruction; the lesson is told the chi
   await aid.draftLessonWithAi(db, ai, req(fam, ai, { year_level: "Year 2" }), NOW);
   assert.match(ai.calls[1][1].messages[1].content, /READING LEVEL: this is a young child/);
   assert.match(ai.calls[0][1].messages[0].content, /almost never needs an adult/);
+});
+
+test("outcomes: the model can only pick from the real list; opting out leaves none; existing lessons can be matched; free plans get the wording match; other families blocked", async () => {
+  const om = await import("../src/outcomeMatch.ts");
+  const Y7L = JSON.parse(readFileSync(new URL("../../frontend/src/data/referenceYear7Integers.json", import.meta.url), "utf8"));
+  // wording match finds the integers outcome for the Year 7 benchmark
+  assert.equal(om.suggestOutcomes({ ...Y7L, stage: undefined })[0].code, "MA4-ARI-C-01");
+  // a model that invents numbers or codes gets nothing through
+  const wild = await om.matchOutcomesWithAi({ run: async () => ({ response: '{"matches":[0,999,"ACMNA133",2,2]}' }) }, { ...Y7L }, { model: "m" });
+  assert.equal(wild.suggestions.length, 1);
+  assert.ok(om.outcomePool(Y7L).some((o) => o.code === wild.suggestions[0].code));
+  assert.equal(await om.matchOutcomesWithAi({ run: async () => ({ response: "no json here" }) }, Y7L, { model: "m" }), null);
+  // opt out at generation
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const off = await aid.draftLessonWithAi(db, stub(), { familyId: fam, userId: "u", request: { topic: "Fractions", link_outcomes: false } }, NOW);
+  assert.ok(off.ok); assert.deepEqual(off.lesson.outcome_codes, []); assert.deepEqual(off.outcomes, []);
+  // an existing lesson: paid gets the AI pick, a free plan gets the wording match
+  const lesson7 = (await lb.createLesson(db, fam, { ...Y7L, status: "ready" }, NOW)).lesson;
+  const ai = stub((m, input) => ({ response: '{"matches":[1]}' }));
+  const paid = await aid.matchLessonOutcomes(db, ai, { familyId: fam, userId: "u", lessonId: lesson7.id }, NOW);
+  assert.ok(paid.ok && paid.method === "ai" && paid.suggestions.length === 1 && /NSW/.test(paid.framework));
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM ai_usage WHERE kind='outcome_match'").get().n, 1);
+  const famFree = seed(db, { plan: "FREE_PREVIEW" });
+  const l2 = (await lb.createLesson(db, famFree, { ...Y7L, status: "ready" }, NOW)).lesson;
+  const free = await aid.matchLessonOutcomes(db, stub(), { familyId: famFree, userId: "u", lessonId: l2.id }, NOW);
+  assert.ok(free.ok && free.method === "wording" && free.suggestions[0].code === "MA4-ARI-C-01");
+  assert.equal((await aid.matchLessonOutcomes(db, ai, { familyId: famFree, userId: "u", lessonId: lesson7.id }, NOW)).status, 404);
+  // codes saved on a lesson must be real; the child never receives them
+  const saved = await lb.updateLesson(db, fam, lesson7.id, { ...lesson7, outcome_codes: ["MA4-ARI-C-01", "FAKE-99"], curriculum_refs: ["MA4-ARI-C-01: x"] }, NOW);
+  assert.deepEqual(saved.lesson.outcome_codes, ["MA4-ARI-C-01"]);
+  const kid = child(db, fam);
+  const asg = (await lb.assignLesson(db, fam, { student_id: kid, lesson_id: lesson7.id }, NOW)).assignment;
+  const safe = lb.childSafeLesson(lb.assignmentLesson(db.raw.prepare("SELECT * FROM assignments WHERE id=?").get(asg.id), null));
+  assert.ok(!("outcome_codes" in safe) && !("curriculum_refs" in safe));
 });

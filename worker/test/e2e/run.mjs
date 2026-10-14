@@ -566,6 +566,11 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   ok((await api("POST", "/resources/verify-link", pt, { url: "https://example.com/x" })).status === 400, "non-YouTube link accepted");
   ok((await api("POST", "/resources/suggest", tok, { lesson_id: les.json.id })).status === 403, "child can search videos");
   ok((await api("GET", "/resources/status", tok)).status === 403, "child read resource status");
+  // Outcome matching: free plans get the plain wording match; it is honest about which curriculum it knows; children cannot use it.
+  const mo = await api("POST", `/lessons/${les.json.id}/match-outcomes`, pt);
+  ok(mo.status === 200 && mo.json.method === "wording" && /NSW/.test(mo.json.framework) && Array.isArray(mo.json.suggestions), "outcome match: " + JSON.stringify(mo.json).slice(0, 200));
+  ok((await api("POST", `/lessons/${les.json.id}/match-outcomes`, tok)).status === 403, "child can match outcomes");
+  ok((await api("POST", `/lessons/nope/match-outcomes`, pt)).status === 404, "unknown lesson outcome match");
   await page.goto(BASE + "/parent/lessons/make");
   await page.waitForSelector("[data-testid=make-for-me]");
   await page.click("[data-testid=mk-example] >> nth=0");

@@ -6,6 +6,7 @@ import { api } from "../../lib/api";
 import ScheduleModal from "../../components/parent/ScheduleModal";
 import LessonDocument from "../../components/parent/LessonDocument";
 import VideoSuggestions from "../../components/parent/VideoSuggestions";
+import OutcomePanel from "../../components/parent/OutcomePanel";
 
 const PARTS = [["", "Whole lesson (the AI decides)"], ["sections", "The explanations"], ["worked_examples", "Worked examples"], ["guided_practice", "Practice questions"], ["activities", "Activities"], ["questions", "Written questions"], ["quiz", "The quiz"], ["introduction", "The introduction"], ["consolidation", "The wrap-up"]];
 const CHIPS = [
@@ -151,6 +152,8 @@ export default function LessonReview() {
       </div>
 
       {refine && <RefinePanel lessonId={id} onApplied={l => { setLesson(l); }} onClose={() => setRefine(false)} />}
+
+      <OutcomePanel lesson={lesson} onSaved={setLesson} />
 
       <VideoSuggestions lesson={lesson} onSaved={setLesson} auto={!!info.assumptions} />
 

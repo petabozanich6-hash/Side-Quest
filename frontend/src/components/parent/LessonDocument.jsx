@@ -22,6 +22,7 @@ export default function LessonDocument({ lesson: l, view = "parent" }) {
         {student && <p className="mt-3 text-sm">Name: <span className="inline-block w-64 border-b border-slate-500 align-bottom">&nbsp;</span> &nbsp; Date: <span className="inline-block w-32 border-b border-slate-500 align-bottom">&nbsp;</span></p>}
       </header>
 
+      {parent && list(l.curriculum_refs).length > 0 && <><H>Curriculum links</H><ul className="list-disc pl-5 text-[15px]">{list(l.curriculum_refs).map((c, i) => <li key={i}>{c}</li>)}</ul></>}
       {parent && l.teaching_plan && <><H>Teaching plan</H><Para>{l.teaching_plan}</Para></>}
       {list(l.objectives).length > 0 && <><H>Learning goals</H><ul className="list-disc pl-5 space-y-1 text-[15px]">{list(l.objectives).map((o, i) => <li key={i}>{o}</li>)}</ul></>}
       {list(l.materials).length > 0 && <><H>You will need</H><Para>{(Array.isArray(l.materials) ? l.materials : [l.materials]).join(", ")}</Para></>}

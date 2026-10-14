@@ -1,6 +1,7 @@
 // Parent lesson builder, assignment snapshots, submissions, review and entitlement checks.
 // Plain functions over a D1-shaped database so they can be tested without the Worker runtime.
 // Every function that touches family data takes the family id from the authenticated user, never from the request body.
+import { knownOutcomeCodes } from "./outcomeMatch";
 import { cleanItemKind, cleanVisual, cleanKeyWords, childItem, markItem, modelAnswer, estimateMinutes } from "./items";
 import { effectivePlan, limitsFor, trialEndFrom, UPGRADE_MESSAGE } from "./entitlements";
 import type { Plan, Limits } from "./entitlements";
@@ -283,6 +284,9 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
     }
     const curriculum_refs = list(b.curriculum_refs, 10, "Curriculum references").map((x, i) => text(x, 200, `Curriculum reference ${i + 1}`, true));
 
+    const known = knownOutcomeCodes();
+    const outcome_codes = [...new Set((Array.isArray(b.outcome_codes) ? b.outcome_codes : []).map((x: unknown) => String(x).trim()).filter((x: string) => known.has(x)))].slice(0, 8);
+
     const builder = {
       year_level,
       objectives,
@@ -293,6 +297,7 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
       resources,
       duration_minutes: duration,
       curriculum_refs,
+      outcome_codes,
       delivery,
       teaching_plan: text(b.teaching_plan, 3000, "Teaching plan"),
       why_it_matters: text(b.why_it_matters, 2000, "Why it matters"),
@@ -364,7 +369,7 @@ export function lessonOut(row: any) {
 export function childSafeLesson(l: any) {
   if (!l) return l;
   const copy: any = { ...l };
-  for (const k of ["answer_key", "parent_notes", "parent_check", "explicit_teaching", "curriculum_refs", "parent_script", "support", "evidence_suggestions", "teaching_plan"]) delete copy[k];
+  for (const k of ["answer_key", "parent_notes", "parent_check", "explicit_teaching", "curriculum_refs", "outcome_codes", "parent_script", "support", "evidence_suggestions", "teaching_plan"]) delete copy[k];
   delete copy.teaching_questions; // parent-only: what to ask and what to expect
   delete copy.ai_flags;
   if (Array.isArray(copy.activities)) copy.activities = copy.activities.map((a: any, i: number) => ({ ...a, tasks: Array.isArray(a?.tasks) ? a.tasks.map((t: any, j: number) => childItem(t, `t${i}-${j}`)) : a?.tasks }));
