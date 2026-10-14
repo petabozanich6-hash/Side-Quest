@@ -1,4 +1,7 @@
 import { analyseLifeEvidence } from "./data/lifeEvidence";
+import { FRAMEWORKS, JURISDICTION_CODES, frameworkFor, getFamilyJurisdiction, normJurisdiction, setFamilyJurisdiction } from "./data/jurisdictions";
+import { mapLifeEvidenceWithAi, lifeMapLimits } from "./lifeLearningAi";
+import { getEntitlement } from "./lessonBuilder";
 import { buildPlanContent } from "./data/planBuilder";
 import type { App, Guards } from "./types";
 import { nowIso, parseJson, newId } from "./types";
@@ -187,6 +190,29 @@ export function registerLearning(app: App, g: Guards) {
     return c.json(lifeEvidenceOut(record));
   });
 
+  // The family's state or territory decides which curriculum framework life learning is mapped to.
+  app.get("/api/jurisdictions", (c) =>
+    c.json(JURISDICTION_CODES.map((code) => {
+      const f = FRAMEWORKS[code];
+      return { code, name: f.jurisdiction_name, framework: f.name, framework_short: f.short, url: f.url, codes: f.codes };
+    }))
+  );
+
+  app.get("/api/me/jurisdiction", g.auth, g.parent, async (c) => {
+    const code = await getFamilyJurisdiction(c.env.DB, c.get("user").family_id);
+    const f = frameworkFor(code);
+    return c.json({ jurisdiction: code, framework: f ? { name: f.name, short: f.short, url: f.url, codes: f.codes, jurisdiction_name: f.jurisdiction_name } : null });
+  });
+
+  app.put("/api/me/jurisdiction", g.auth, g.parent, async (c) => {
+    const body: any = await c.req.json().catch(() => ({}));
+    const code = normJurisdiction(body.jurisdiction);
+    if (!code) return c.json({ detail: "Choose your state or territory." }, 400);
+    await setFamilyJurisdiction(c.env.DB, c.get("user").family_id, code);
+    const f = FRAMEWORKS[code];
+    return c.json({ ok: true, jurisdiction: code, framework: { name: f.name, short: f.short, url: f.url, codes: f.codes, jurisdiction_name: f.jurisdiction_name } });
+  });
+
   app.post("/api/life-evidence/analyse", g.auth, g.parent, async (c) => {
     const body: any = await c.req.json().catch(() => ({}));
     const user = c.get("user");
@@ -197,10 +223,27 @@ export function registerLearning(app: App, g: Guards) {
     const student = await getStudent(c.env.DB, user.family_id, row.student_id);
     if (!student) return c.json({ detail: "Student not found" }, 404);
 
-    const analysis = await analyseLifeEvidence(c.env.DB, {
-      ...row,
-      file_ids: parseJson(row.file_ids, []),
-    }, studentOut(student) || {});
+    const fw = frameworkFor(await getFamilyJurisdiction(c.env.DB, user.family_id));
+    if (!fw) return c.json({ detail: "Choose your state or territory first, so outcomes match your curriculum.", code: "JURISDICTION_REQUIRED" }, 409);
+
+    const evidence = { ...row, file_ids: parseJson(row.file_ids, []) };
+    const s = studentOut(student) || {};
+    const { limits } = await getEntitlement(c.env.DB, user.family_id);
+    let analysis;
+    let notice: string | undefined;
+    if (limits.aiGeneration && c.env.AI) {
+      const r = await mapLifeEvidenceWithAi(c.env.DB, c.env.AI, {
+        familyId: user.family_id, userId: user.id, framework: fw, evidence, student: s,
+        model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, limits: lifeMapLimits(c.env),
+      });
+      if (!r.ok) return c.json({ detail: r.detail, code: r.code }, r.status as 429 | 502);
+      analysis = r.analysis;
+    } else {
+      analysis = await analyseLifeEvidence(c.env.DB, evidence, s, fw);
+      notice = limits.aiGeneration
+        ? "AI mapping isn't available right now, so these are basic keyword suggestions."
+        : "These are basic keyword suggestions. AI outcome mapping for your curriculum is part of the paid plan.";
+    }
     await c.env.DB.prepare(
       "UPDATE life_evidence SET suggested_mappings = ?, ai_summary = ?, ai_activity_type = ?, ai_additional = ?, status = ?, updated_at = ? WHERE id = ? AND family_id = ?"
     ).bind(
@@ -213,7 +256,7 @@ export function registerLearning(app: App, g: Guards) {
       row.id,
       user.family_id
     ).run();
-    return c.json(analysis);
+    return c.json({ ...analysis, notice });
   });
 
   app.get("/api/life-evidence", g.auth, g.parent, async (c) => {

@@ -101,6 +101,7 @@ await step("A. new family registers through the UI", async () => {
   await page.goto(BASE + "/register");
   await page.fill('[data-testid=reg-name]', "Pat Parent");
   await page.selectOption('[data-testid=reg-label]', { index: 1 });
+  await page.selectOption('[data-testid=reg-jurisdiction]', 'NSW');
   await page.fill('[data-testid=reg-email]', email1);
   await page.fill('[data-testid=reg-password]', pw);
   await page.click('[data-testid=reg-submit]');

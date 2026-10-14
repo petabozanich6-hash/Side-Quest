@@ -28,6 +28,8 @@ export type Env = {
   HELP_PER_CHILD_DAY?: string;
   HELP_PER_FAMILY_DAY?: string;
   HELP_PER_FAMILY_MONTH?: string;
+  LIFE_MAP_PER_FAMILY_DAY?: string;
+  LIFE_MAP_PER_FAMILY_MONTH?: string;
   YOUTUBE_API_KEY?: string;
   /** Optional sender address override (defaults to no-reply@sidequestlearning.app). */
   EMAIL_FROM?: string;

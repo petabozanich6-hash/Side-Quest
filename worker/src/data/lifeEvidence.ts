@@ -1,4 +1,6 @@
 import { newId } from "../types";
+import type { Framework } from "./jurisdictions";
+import { areasFor } from "./jurisdictions";
 
 type StudentLite = { name?: string | null; stage?: string | null };
 type LifeEvidenceLite = {
@@ -17,6 +19,11 @@ export type SuggestedMapping = {
   evidence_statement: string;
   confidence: "high" | "medium" | "low";
   accepted: boolean | null;
+  /** Framework the suggestion was made against, e.g. "Victorian Curriculum 2.0". */
+  framework?: string;
+  jurisdiction?: string;
+  /** "verified" = code from a list Side-Quest holds; "none" = no code attached (described in plain words). */
+  code_status?: "verified" | "none";
 };
 
 export type LifeEvidenceAnalysis = {
@@ -24,7 +31,26 @@ export type LifeEvidenceAnalysis = {
   activity_type: string;
   mappings: SuggestedMapping[];
   additional_evidence_suggested: string;
+  /** "ai" = Workers AI mapping (paid); "basic" = free keyword suggestions. */
+  source?: "ai" | "basic";
+  framework?: { jurisdiction: string; name: string; short: string; url: string; codes: "verified" | "none" };
 };
+
+// Basic rules are written with NSW key learning area names; this maps them onto another framework's area names.
+const AREA_EQUIV: Record<string, string[]> = {
+  English: ["English"],
+  Mathematics: ["Mathematics"],
+  "Science and Technology": ["Science and Technology", "Science"],
+  HSIE: ["HSIE", "Humanities and Social Sciences", "Humanities"],
+  PDHPE: ["PDHPE", "Health and Physical Education"],
+  "Creative Arts": ["Creative Arts", "The Arts"],
+  Languages: ["Languages"],
+  TAS: ["TAS", "Technologies", "Science and Technology"],
+};
+export function areaInFramework(nswArea: string, fw: Framework, stage: string): string {
+  const allowed = areasFor(fw, stage);
+  return (AREA_EQUIV[nswArea] || [nswArea]).find((a) => allowed.includes(a)) || nswArea;
+}
 
 type Rule = {
   learning_area: string;
@@ -124,10 +150,12 @@ async function pickOutcome(
   return { description: rule?.fallback || `${learningArea} learning connected to the activity.` };
 }
 
+/** Free keyword suggestions. Codes are only attached for NSW (from the outcomes table); other frameworks get none. */
 export async function analyseLifeEvidence(
   db: D1Database,
   evidence: LifeEvidenceLite,
-  student: StudentLite
+  student: StudentLite,
+  fw?: Framework | null
 ): Promise<LifeEvidenceAnalysis> {
   const text = normalise(
     [evidence.title, evidence.description, evidence.location, evidence.parent_note].filter(Boolean).join(" ")
@@ -142,12 +170,20 @@ export async function analyseLifeEvidence(
 
   const selected = (areaScores.length ? areaScores : RULES.slice(0, 2).map((rule) => ({ rule, hits: [], score: 1 }))).slice(0, 4);
   const mappings: SuggestedMapping[] = [];
+  const seenAreas = new Set<string>();
   for (const selectedRule of selected) {
-    const outcome = await pickOutcome(db, stage, selectedRule.rule.learning_area);
+    const useCodes = !fw || fw.codes === "verified";
+    const outcome = useCodes
+      ? await pickOutcome(db, stage, selectedRule.rule.learning_area)
+      : { code: undefined, description: selectedRule.rule.fallback };
+    const area = fw ? areaInFramework(selectedRule.rule.learning_area, fw, stage) : selectedRule.rule.learning_area;
+    if (seenAreas.has(area)) continue;
+    seenAreas.add(area);
     mappings.push({
       id: newId(),
-      learning_area: selectedRule.rule.learning_area,
+      learning_area: area,
       code: outcome.code,
+      ...(fw ? { framework: fw.short, jurisdiction: fw.jurisdiction, code_status: outcome.code ? "verified" as const : "none" as const } : {}),
       description: outcome.description,
       evidence_statement: selectedRule.hits.length
         ? `${selectedRule.rule.evidence} Evidence noted: ${selectedRule.hits.slice(0, 3).join(", ")}.`
@@ -170,5 +206,7 @@ export async function analyseLifeEvidence(
       (evidence.file_ids || []).length > 0
         ? "Add a brief child reflection or a dated work sample to strengthen the record."
         : "Add a photo, a short child reflection, or a sample of any notes, calculations or finished work.",
+    source: "basic",
+    ...(fw ? { framework: { jurisdiction: fw.jurisdiction, name: fw.name, short: fw.short, url: fw.url, codes: fw.codes } } : {}),
   };
 }

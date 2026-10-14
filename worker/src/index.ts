@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { normJurisdiction, setFamilyJurisdiction } from "./data/jurisdictions";
 import { cors } from "hono/cors";
 import { sign, verify } from "hono/jwt";
 import type { MiddlewareHandler } from "hono";
@@ -120,6 +121,10 @@ app.post("/api/auth/register", async (c) => {
       "INSERT INTO users (id, family_id, email, password_hash, name, is_owner, created_at) VALUES (?, ?, ?, ?, ?, 1, ?)"
     ).bind(userId, familyId, email, await hashSecret(password), name, ts),
   ]);
+  const jurisdiction = normJurisdiction(b.jurisdiction);
+  if (jurisdiction) {
+    try { await setFamilyJurisdiction(c.env.DB, familyId, jurisdiction); } catch { /* the parent can set it later */ }
+  }
   const token = await makeToken(c.env, userId, "parent", familyId);
 
   // Welcome email: sent in the background, and never blocks or breaks sign up.
@@ -129,7 +134,7 @@ app.post("/api/auth/register", async (c) => {
   return c.json({
     token,
     user: { id: userId, email, name, family_id: familyId, role: "parent" },
-    family: { id: familyId, name: familyName },
+    family: { id: familyId, name: familyName, jurisdiction },
   });
 });
 

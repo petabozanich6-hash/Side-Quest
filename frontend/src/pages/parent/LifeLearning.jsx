@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { api, fileUrl } from "../../lib/api";
 import { toast } from "sonner";
-import { Plus, X, Sparkles, Loader2, Check, Upload, Trees, Camera, FileText } from "lucide-react";
+import { Plus, X, Sparkles, Loader2, Check, Upload, Trees, Camera, FileText, MapPin, ExternalLink } from "lucide-react";
 import { Fern, Leaf as LeafGraphic } from "../../components/shared/Botanical";
-
-const AREAS = ["English","Mathematics","Science and Technology","HSIE","PDHPE","Creative Arts","Languages","TAS"];
+import { AUSTRALIAN_JURISDICTIONS } from "../../data/australianCurriculum";
 
 const EXAMPLES = [
   { t: "Baked sourdough bread", d: "Measured flour and water using cups and grams, timed the proofing, observed how the dough changed overnight, and compared the finished loaf to the one we baked last week." },
@@ -24,10 +23,24 @@ export default function LifeLearningPage() {
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef();
   const [form, setForm] = useState({ student_id: "", title: "", description: "", duration_minutes: 60, location: "", parent_note: "" });
+  const [place, setPlace] = useState({ loaded: false, jurisdiction: null, framework: null });
+  const [picking, setPicking] = useState(false);
+
+  const loadPlace = () => api.get("/me/jurisdiction").then(r => setPlace({ loaded: true, ...r.data })).catch(() => setPlace(p => ({ ...p, loaded: true })));
+  const savePlace = async (code) => {
+    if (!code) return;
+    try {
+      const { data } = await api.put("/me/jurisdiction", { jurisdiction: code });
+      setPlace({ loaded: true, jurisdiction: data.jurisdiction, framework: data.framework });
+      setPicking(false);
+      toast.success(`Life learning will now map to the ${data.framework.name}`);
+    } catch (err) { toast.error(err.response?.data?.detail || "Couldn't save that"); }
+  };
 
   const load = () => api.get("/life-evidence").then(r => setItems(r.data));
   useEffect(() => {
     load();
+    loadPlace();
     api.get("/students").then(r => { setStudents(r.data); if (r.data[0]) setForm(f => ({...f, student_id: r.data[0].id})); });
   }, []);
 
@@ -55,7 +68,7 @@ export default function LifeLearningPage() {
   const openItem = async (id) => {
     const { data } = await api.get(`/life-evidence/${id}`);
     setActive(data);
-    setAnalysis(data.ai_mappings?.length ? { mappings: data.ai_mappings, summary: data.ai_summary, activity_type: data.ai_activity_type, additional_evidence_suggested: data.ai_additional } : null);
+    setAnalysis(data.ai_mappings?.length ? { mappings: data.ai_mappings, summary: data.ai_summary, activity_type: data.ai_activity_type, additional_evidence_suggested: data.ai_additional, saved: true } : null);
   };
 
   const analyse = async () => {
@@ -64,7 +77,10 @@ export default function LifeLearningPage() {
       const { data } = await api.post("/life-evidence/analyse", { evidence_id: active.id });
       setAnalysis(data);
       toast.success("Mapping ready — review each outcome");
-    } catch (err) { toast.error(err.response?.data?.detail || "Analysis failed"); }
+    } catch (err) {
+      if (err.response?.data?.code === "JURISDICTION_REQUIRED") setPicking(true);
+      toast.error(err.response?.data?.detail || "Analysis failed");
+    }
     finally { setAnalysing(false); }
   };
 
@@ -88,10 +104,31 @@ export default function LifeLearningPage() {
         <h1 className="font-display text-4xl font-bold" style={{color:"#1F3B2D"}}>Life Learning</h1>
         <p className="mt-2 text-sm text-stone-600 max-w-3xl leading-relaxed">
           Baking, bushwalking, animal care, building, music, budgeting — learning happens everywhere.
-          Capture what your family discovered, add a photo or note, and keep a record in your Evidence Backpack.
-          Optional AI outcome suggestions currently use NSW codes, so check them against your jurisdiction's curriculum.
+          Capture what your family discovered, add a photo or note, and AI will link it to learning outcomes from your state or territory's curriculum for you to confirm.
         </p>
       </header>
+
+      <div className="paper-card p-4 flex flex-wrap items-center gap-3" data-testid="life-jurisdiction">
+        <MapPin size={16} style={{color:"#C77B5B"}}/>
+        {place.loaded && place.framework && !picking ? (
+          <>
+            <div className="text-sm text-stone-700">
+              Mapping to <strong style={{color:"#1F3B2D"}}>{place.framework.name}</strong> ({place.framework.jurisdiction_name})
+              <a href={place.framework.url} target="_blank" rel="noreferrer" className="ml-2 inline-flex items-center gap-1 text-xs font-semibold underline" style={{color:"#4A5D3A"}}>official curriculum <ExternalLink size={11}/></a>
+            </div>
+            <button onClick={()=>setPicking(true)} className="ml-auto text-xs font-bold underline" style={{color:"#4A5D3A"}} data-testid="change-jurisdiction">Change</button>
+          </>
+        ) : place.loaded ? (
+          <>
+            <div className="text-sm text-stone-700">{place.framework ? "Change your state or territory:" : "Which state or territory are you in? Outcomes are matched to its curriculum."}</div>
+            <select defaultValue={place.jurisdiction || ""} onChange={e=>savePlace(e.target.value)} className="input" style={{width:"auto"}} data-testid="pick-jurisdiction">
+              <option value="">Choose…</option>
+              {AUSTRALIAN_JURISDICTIONS.map(j => <option key={j.code} value={j.code}>{j.name}</option>)}
+            </select>
+            {place.framework && <button onClick={()=>setPicking(false)} className="text-xs font-bold underline" style={{color:"#4A5D3A"}}>Cancel</button>}
+          </>
+        ) : <Loader2 size={14} className="animate-spin"/>}
+      </div>
 
       <div className="flex items-center gap-3">
         <button onClick={()=>setOpen(true)} className="rounded-full px-5 py-2.5 text-sm font-bold flex items-center gap-2 hover:translate-y-[-1px] transition" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="add-life"><Plus size={14}/> Log an activity</button>
@@ -208,14 +245,20 @@ export default function LifeLearningPage() {
             <section className="rounded-xl p-5" style={{backgroundColor:"#F0F4E8", border:"1px solid #94A47F"}}>
               <div className="flex items-center justify-between mb-3">
                 <div className="font-display text-lg font-bold flex items-center gap-2" style={{color:"#1F3B2D"}}><Sparkles size={16}/> AI outcome mapping</div>
-                <button onClick={analyse} disabled={analysing} className="rounded-full px-4 py-1.5 text-xs font-bold disabled:opacity-50" style={{backgroundColor:"#4A5D3A", color:"#F5EFE0"}} data-testid="analyse-life">
+                <button onClick={analyse} disabled={analysing || !place.framework} className="rounded-full px-4 py-1.5 text-xs font-bold disabled:opacity-50" style={{backgroundColor:"#4A5D3A", color:"#F5EFE0"}} data-testid="analyse-life">
                   {analysing ? <><Loader2 size={12} className="animate-spin inline mr-1"/>Mapping…</> : (analysis ? "Re-map" : "Map to outcomes")}
                 </button>
               </div>
               {!analysis ? (
-                <p className="text-sm text-stone-700">AI currently suggests matches from an existing NSW outcome list. Only accept references that are relevant to your child's educational program, and check them against your state or territory's curriculum.</p>
+                <p className="text-sm text-stone-700">
+                  {place.framework
+                    ? <>AI reads what you described and suggests links to the <strong>{place.framework.name}</strong> for your child's year level. Nothing is recorded until you accept it.</>
+                    : "Choose your state or territory above first, so suggestions match your curriculum."}
+                </p>
               ) : (
                 <>
+                  {analysis.notice && <div className="text-xs mb-3 rounded-lg px-3 py-2 bg-amber-50 border border-amber-200 text-amber-900">{analysis.notice}</div>}
+                  {analysis.framework && <div className="text-xs mb-2 text-stone-600">Matched against the <strong>{analysis.framework.name}</strong>{analysis.source === "ai" ? " by AI" : ""}.</div>}
                   <div className="text-sm mb-3"><strong>Summary:</strong> {analysis.summary}</div>
                   {analysis.activity_type && <div className="text-xs mb-3 inline-block px-2 py-0.5 rounded-full bg-white border font-mono" style={{borderColor:"#D4C8A8"}}>{analysis.activity_type}</div>}
                   <div className="space-y-2">
@@ -226,6 +269,7 @@ export default function LifeLearningPage() {
                             <div className="flex items-center gap-2 flex-wrap">
                               <span className="text-[10px] px-2 py-0.5 rounded-full font-bold" style={{backgroundColor:"#F5EFE0", color:"#1F3B2D"}}>{m.learning_area}</span>
                               {m.code && <span className="font-mono text-[10px] text-stone-500">{m.code}</span>}
+                              {!m.code && m.code_status === "none" && <span className="text-[10px] px-1.5 py-0.5 rounded-full border border-stone-300 text-stone-600" title={`Side-Quest doesn't hold the official ${m.framework || "curriculum"} code list yet, so no code is attached. Check the wording against the official curriculum.`}>{m.framework || "Outcome"} · no code attached</span>}
                               <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${m.confidence === "high" ? "bg-emerald-100 text-emerald-900" : m.confidence === "medium" ? "bg-amber-100 text-amber-900" : "bg-stone-100 text-stone-700"}`}>{m.confidence} confidence</span>
                             </div>
                             <div className="font-semibold text-sm mt-1">{m.description}</div>
@@ -240,6 +284,7 @@ export default function LifeLearningPage() {
                     ))}
                   </div>
                   {analysis.additional_evidence_suggested && <div className="mt-3 text-xs text-stone-600 italic">Add: {analysis.additional_evidence_suggested}</div>}
+                  {analysis.framework?.codes === "none" && <div className="mt-3 text-[11px] text-stone-500">Suggestions describe the learning in plain words for the {analysis.framework.name}. Official codes for your state aren't loaded in Side-Quest yet, so none are shown. Please check each against <a href={analysis.framework.url} target="_blank" rel="noreferrer" className="underline">the official curriculum</a>.</div>}
                 </>
               )}
             </section>
