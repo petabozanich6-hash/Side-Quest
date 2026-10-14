@@ -35,13 +35,18 @@ export default function ParentDashboard() {
   const [readingPending, setReadingPending] = useState([]);
   const [openId, setOpenId] = useState(null);
   const [plan, setPlan] = useState(null);
+  const [drafts, setDrafts] = useState(null);
 
   const load = () => {
     api.get("/dashboard/parent").then(r => setData(r.data));
     api.get("/submissions").then(r => setWaiting((r.data || []).filter(s => ["submitted", "awaiting_help"].includes(s.status))));
     api.get("/reading-submissions/pending").then(r => setReadingPending(r.data || [])).catch(() => setReadingPending([]));
   };
-  useEffect(() => { load(); api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {}); }, []);
+  useEffect(() => {
+    load();
+    api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {});
+    api.get("/ai/batches?open=1").then(r => setDrafts(r.data)).catch(() => setDrafts(null));
+  }, []);
   if (!data) return <div className="p-10 text-stone-500">Loading dashboard…</div>;
 
   const pendingTotal = waiting.length + readingPending.length;
@@ -91,6 +96,28 @@ export default function ParentDashboard() {
         <Stat icon={Camera} label="Pending review" value={pendingTotal} testid="stat-pending" accent="#D4A574" href="#waiting"/>
         <Stat icon={AlertTriangle} label="Awaiting help" value={data.awaiting_help} testid="stat-help" accent="#E11D48" href="#waiting"/>
       </section>
+
+      {drafts && drafts.batches.length > 0 && (() => {
+        const awaiting = drafts.totals.awaiting_review;
+        const one = drafts.batches.length === 1 ? drafts.batches[0] : null;
+        const failed = drafts.batches.reduce((n, b) => n + b.counts.failed, 0);
+        const writing = drafts.batches.reduce((n, b) => n + b.counts.pending + b.counts.generating, 0);
+        return (
+          <section className="relative z-10" data-testid="drafts-awaiting">
+            <Link to={one ? `/parent/lessons/drafts/${one.id}` : "/parent/lessons/drafts"} className="paper-card p-5 flex items-center justify-between gap-4 hover:translate-y-[-2px] transition" data-testid="drafts-awaiting-link">
+              <div>
+                <div className="font-display text-xl font-bold" style={{color:"#1F3B2D"}}><span aria-hidden="true">📚</span> Lesson Drafts Awaiting Review — <span data-testid="drafts-awaiting-count">{awaiting}</span></div>
+                <div className="text-xs text-stone-600 mt-1">
+                  {one ? one.title : `${drafts.batches.length} sets of AI lessons`}
+                  {writing > 0 && ` · ${writing} still being written`}
+                  {failed > 0 && ` · ${failed} could not be written (you can try again)`}
+                </div>
+              </div>
+              <span className="rounded-full px-4 py-2 text-xs font-bold shrink-0" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}}>Open drafts</span>
+            </Link>
+          </section>
+        );
+      })()}
 
       <section id="waiting" data-testid="waiting-list">
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Waiting for you</h2>

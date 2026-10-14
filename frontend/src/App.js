@@ -19,6 +19,7 @@ import LessonsPage from "./pages/parent/Lessons";
 import LessonBuilder from "./pages/parent/LessonBuilder";
 import MakeLesson from "./pages/parent/MakeLesson";
 import LessonReview from "./pages/parent/LessonReview";
+import LessonDrafts from "./pages/parent/LessonDrafts";
 import LessonPrint from "./pages/parent/LessonPrint";
 import UpgradePage from "./pages/parent/Upgrade";
 import AssignmentsPage from "./pages/parent/Assignments";
@@ -76,6 +77,8 @@ function Router() {
         <Route path="plan" element={<UpgradePage />} />
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="lessons/make" element={<MakeLesson />} />
+        <Route path="lessons/drafts" element={<LessonDrafts />} />
+        <Route path="lessons/drafts/:bid" element={<LessonDrafts />} />
         <Route path="lessons/new" element={<LessonBuilder />} />
         <Route path="lessons/:id/review" element={<LessonReview />} />
         <Route path="lessons/:id/edit" element={<LessonBuilder />} />
