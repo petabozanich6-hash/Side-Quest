@@ -82,9 +82,11 @@ export default function LearningPlans() {
     try {
       const payload = { ...form, interests: form.interests.split(",").map(s=>s.trim()).filter(Boolean) };
       const { data: created } = await api.post("/learning-plans", payload);
-      setOpen(false); load();
-      if (created && created.id) { await build(created.id); }
-      else { toast.success("Plan created. Press Build plan"); }
+      setOpen(false);
+      await load();
+      toast.success("Learning plan saved.");
+      // Generation is a separate operation: failure must not imply that creation failed.
+      if (created?.id) await build(created.id);
     } catch (err) { toast.error(apiErrorMessage(err)); }
   };
 

@@ -68,7 +68,7 @@ export function registerLearning(app: App, g: Guards) {
 
   async function getStudent(db: D1Database, familyId: string, studentId: string) {
     return db.prepare(
-      "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, electives, subject_levels, extra FROM students WHERE id = ? AND family_id = ?"
+      "SELECT * FROM students WHERE id = ? AND family_id = ?"
     ).bind(studentId, familyId).first<any>();
   }
 
@@ -289,18 +289,16 @@ export function registerLearning(app: App, g: Guards) {
     const user = c.get("user");
     const accepted = (Array.isArray(body.outcome_mappings) ? body.outcome_mappings : []).filter((mapping: any) => mapping?.accepted);
     const reviewed_at = nowIso();
-    await c.env.DB.prepare(
-      "UPDATE life_evidence SET accepted_mappings = ?, status = ?, parent_note = ?, reviewed_at = ?, reviewed_by = ?, updated_at = ? WHERE id = ? AND family_id = ?"
-    ).bind(
-      JSON.stringify(accepted),
-      String(body.status || "accepted"),
-      body.parent_note ? String(body.parent_note) : null,
-      reviewed_at,
-      user.id,
-      reviewed_at,
-      c.req.param("eid"),
-      user.family_id
-    ).run();
+    const columns = await evidenceColumns(c.env.DB);
+    const proposed: Record<string, unknown> = {
+      accepted_mappings: JSON.stringify(accepted),
+      status: String(body.status || "accepted"),
+      parent_note: body.parent_note ? String(body.parent_note) : null,
+      reviewed_at, reviewed_by: user.id, updated_at: reviewed_at
+    };
+    const keys = Object.keys(proposed).filter(key => columns.has(key));
+    await c.env.DB.prepare(`UPDATE life_evidence SET ${keys.map(key => key + " = ?").join(", ")} WHERE id = ? AND family_id = ?`)
+      .bind(...keys.map(key => proposed[key]), c.req.param("eid"), user.family_id).run();
     const record = await c.env.DB.prepare("SELECT * FROM life_evidence WHERE id = ? AND family_id = ?")
       .bind(c.req.param("eid"), user.family_id)
       .first<any>();
