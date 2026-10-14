@@ -25,10 +25,27 @@ export function registerLearning(app: App, g: Guards) {
   const lifeEvidenceOut = (row: any) => ({
     ...row,
     file_ids: parseJson(row.file_ids, []),
-    suggested_mappings: parseJson(row.suggested_mappings, []),
-    ai_mappings: parseJson(row.suggested_mappings, []),
+    suggested_mappings: parseJson(row.suggested_mappings ?? row.ai_mappings, []),
+    ai_mappings: parseJson(row.suggested_mappings ?? row.ai_mappings, []),
     accepted_mappings: parseJson(row.accepted_mappings, []),
   });
+  // Existing production databases may use the original life_evidence schema (ai_mappings).
+  // Never drop or rename historical evidence fields. D1 PRAGMA is read-only and cached per request.
+  const evidenceColumns = async (db: D1Database): Promise<Set<string>> => {
+    const { results } = await db.prepare("PRAGMA table_info(life_evidence)").all<{ name: string }>();
+    const names = new Set((results || []).map(row => row.name));
+    if (!names.has("id") || !names.has("family_id")) throw new Error("life_evidence schema is unavailable");
+    return names;
+  };
+  const evidenceMappingColumn = (columns: Set<string>) =>
+    columns.has("suggested_mappings") ? "suggested_mappings" : "ai_mappings";
+  async function saveLifeEvidence(db: D1Database, record: Record<string, unknown>) {
+    const columns = await evidenceColumns(db);
+    const values = { ...record, [evidenceMappingColumn(columns)]: record.suggested_mappings };
+    const keys = Object.keys(values).filter(k => columns.has(k));
+    await db.prepare(`INSERT INTO life_evidence (${keys.join(", ")}) VALUES (${keys.map(() => "?").join(", ")})`)
+      .bind(...keys.map(k => values[k])).run();
+  }
   const planOut = (row: any) => ({
     ...row,
     interests: parseJson(row.interests, []),
@@ -164,31 +181,7 @@ export function registerLearning(app: App, g: Guards) {
       updated_at: created_at,
     };
     if (!record.title || !record.description) return c.json({ detail: "title and description are required" }, 400);
-    await c.env.DB.prepare(
-      "INSERT INTO life_evidence (id, family_id, student_id, title, description, date, duration_minutes, location, file_ids, parent_note, status, suggested_mappings, accepted_mappings, ai_summary, ai_activity_type, ai_additional, created_by, reviewed_at, reviewed_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    ).bind(
-      record.id,
-      record.family_id,
-      record.student_id,
-      record.title,
-      record.description,
-      record.date,
-      record.duration_minutes,
-      record.location,
-      record.file_ids,
-      record.parent_note,
-      record.status,
-      record.suggested_mappings,
-      record.accepted_mappings,
-      record.ai_summary,
-      record.ai_activity_type,
-      record.ai_additional,
-      record.created_by,
-      record.reviewed_at,
-      record.reviewed_by,
-      record.created_at,
-      record.updated_at
-    ).run();
+    await saveLifeEvidence(c.env.DB, record);
     return c.json(lifeEvidenceOut(record));
   });
 
@@ -246,18 +239,16 @@ export function registerLearning(app: App, g: Guards) {
         ? "AI mapping isn't available right now, so these are basic keyword suggestions."
         : "These are basic keyword suggestions. AI outcome mapping for your curriculum is part of the paid plan.";
     }
-    await c.env.DB.prepare(
-      "UPDATE life_evidence SET suggested_mappings = ?, ai_summary = ?, ai_activity_type = ?, ai_additional = ?, status = ?, updated_at = ? WHERE id = ? AND family_id = ?"
-    ).bind(
-      JSON.stringify(analysis.mappings),
-      analysis.summary,
-      analysis.activity_type,
-      analysis.additional_evidence_suggested,
-      "mapping_ready",
-      nowIso(),
-      row.id,
-      user.family_id
-    ).run();
+    const columns = await evidenceColumns(c.env.DB);
+    const changes: Record<string, unknown> = {
+      [evidenceMappingColumn(columns)]: JSON.stringify(analysis.mappings),
+      ai_summary: analysis.summary, ai_activity_type: analysis.activity_type,
+      ai_additional: analysis.additional_evidence_suggested,
+      status: "mapping_ready", updated_at: nowIso()
+    };
+    const keys = Object.keys(changes).filter(k => columns.has(k));
+    await c.env.DB.prepare(`UPDATE life_evidence SET ${keys.map(k => k + " = ?").join(", ")} WHERE id = ? AND family_id = ?`)
+      .bind(...keys.map(k => changes[k]), row.id, user.family_id).run();
     return c.json({ ...analysis, notice });
   });
 
