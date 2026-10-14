@@ -133,9 +133,9 @@ await step("new parent receives clear first steps without promotional interrupti
   const savedResources = await page.locator('[data-testid^="resource-"]').count();
   ok(emptyResources || savedResources > 0, "resources page must show saved items or a helpful first action");
   await page.goto(BASE + "/parent/learning-plans");
-  ok(await page.locator('[data-testid=plans-empty-add-child]').isVisible(), "learning plans have no child onboarding link");
+  await page.waitForSelector('[data-testid=plans-empty-add-child]', { state: "visible", timeout: 10000 });
   await page.goto(BASE + "/parent/evidence");
-  ok(await page.locator('[data-testid=empty-evidence-notes]').isVisible(), "evidence notes should have a helpful empty state");
+  await page.waitForSelector('[data-testid=empty-evidence-notes]', { state: "visible", timeout: 10000 });
 });
 
 await step("parent onboarding pages fit phone, tablet and desktop", async () => {
