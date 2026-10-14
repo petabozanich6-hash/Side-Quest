@@ -1,0 +1,62 @@
+
+> frontend@0.1.0 build
+> craco build
+
+Creating an optimized production build...
+Compiled with warnings.
+
+[eslint] 
+src/components/child/PetWelcome.jsx
+  Line 87:6:  React Hook useEffect has missing dependencies: 'ctxOf' and 'key'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/child/PetRoom.jsx
+  Line 172:32:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/ChildOverview.jsx
+  Line 20:32:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/LessonBuilder.jsx
+  Line 147:163:  React Hook useEffect has a missing dependency: 'id'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 149:134:  React Hook useEffect has a missing dependency: 'f'. Either include it or remove the dependency array   react-hooks/exhaustive-deps
+
+src/pages/parent/Lessons.jsx
+  Line 30:63:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/MakeLesson.jsx
+  Line 48:6:  React Hook useEffect has a missing dependency: 'qs'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/OutcomeDetail.jsx
+  Line 181:75:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/OutcomeTracker.jsx
+  Line 65:78:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/ReadingLog.jsx
+  Line 47:32:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+File sizes after gzip:
+
+  306.64 kB  build/static/js/main.7c284d9e.js
+  11.17 kB   build/static/css/main.44d4637e.css
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
+npm notice
+npm notice New major version of npm available! 10.9.9 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

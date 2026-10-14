@@ -1,0 +1,5 @@
+install=success
+test=success
+typecheck=success
+build=success
+e2e=failure

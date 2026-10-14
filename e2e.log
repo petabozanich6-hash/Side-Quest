@@ -1,0 +1,102 @@
+──────────────┼────────┤
+│ 0053_stripe_billing.sql                      │ ✅     │
+├──────────────────────────────────────────────┼────────┤
+│ 0054_family_jurisdiction.sql                 │ ✅     │
+├──────────────────────────────────────────────┼────────┤
+│ 0055_owner_new_member_alerts.sql             │ ✅     │
+├──────────────────────────────────────────────┼────────┤
+│ 0056_lesson_batches.sql                      │ ✅     │
+├──────────────────────────────────────────────┼────────┤
+│ 0057_outcome_tracker.sql                     │ ✅     │
+└──────────────────────────────────────────────┴────────┘
+ 
+server up
+PASS landing page loads and has no NSW-only marketing
+PASS landing page remains usable on phone, tablet and desktop
+PASS A. new family registers through the UI
+PASS curriculum shows only the state chosen at sign-up, and it can be changed
+PASS B. parent adds a child through the UI
+PASS preview: a second child is refused by the server (402)
+PASS C. parent builds a lesson in the builder, previews it and saves it to the library
+PASS refreshing the builder keeps the saved lesson (persistence)
+PASS D. library shows the lesson; duplicate and edit-as-draft work
+PASS preview: a third lesson is refused by the server (402)
+PASS legacy 19,202 lessons are hidden and cannot be assigned
+PASS parent can permanently delete an unassigned draft without losing other lessons
+PASS E. parent assigns the lesson to the child through the UI
+PASS F. child signs in on a phone-sized screen and sees the dashboard
+PASS child cannot use parent controls (permissions)
+PASS G. child opens the lesson: sees real content, no answer keys anywhere in the response
+PASS child answers are saved and survive a refresh
+PASS Word Hoard: the lesson's spelling words reach the child's hoard when the lesson opens
+PASS Word Hoard: practice goes See it, Hear it, Spell it, Type it, and a right answer counts
+PASS Pet goals, shop and parent weekly summary work end to end
+PASS Pet room shows goals (no shop or decorating) and sound toggle, and sounds can be muted
+PASS cannot hand in before passing the quiz (server enforces it)
+PASS multiple-choice quiz: wrong answer fails, right answer passes (marked on the server)
+PASS H. child hands the work in
+PASS I. parent sees it waiting, reviews it (with the answer key) and approves
+PASS J. XP, progress and evidence update; XP is awarded exactly once
+PASS parent feedback and cheers disappear after child acknowledges them on the server
+PASS parent can open the child learning records from the child overview
+PASS editing the library lesson does not change the finished assignment (snapshot)
+PASS uploads: child can upload a photo, same family can read it, other families and unsafe types cannot
+PASS K. another family cannot see or touch this family's records
+PASS AI drafting: free preview is blocked by the server and the builder shows an upsell, not a fake AI
+PASS assignments page: change dates and cancel an unstarted assignment
+PASS evidence: add a parent note, search it, export CSV with a date range
+PASS rich lesson: the Year 3 garden addition lesson teaches in the child's lesson page and keeps the parent guide and answers hidden
+PASS AI lesson set: open, edit, assign, move around and refresh without losing any of the five drafts
+FAIL O. outcome tracker: QLD family sees the honest gap, not invented outcomes
+     page.waitForSelector: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator('[data-testid=tracker-unavailable]') to be visible
+
+PASS P. outcome tracker: hand-in, review and evidence update it; only the parent confirms Achieved
+PASS L. users cannot grant themselves a paid plan
+PASS M. expired preview: cannot create or assign, but nothing is lost
+PASS plan page explains the preview and that billing is not open
+PASS N. mobile layouts of the main parent pages do not overflow
+
+HTTP errors seen by browsers:
+parent 401 GET /api/auth/me
+parent 401 GET /api/auth/me
+child 401 GET /api/auth/me
+child 404 GET /api/assignments/undefined
+child 404 GET /api/assignments/undefined
+child 404 GET /api/assignments/undefined
+child 404 GET /api/assignments/undefined
+child 404 GET /api/assignments/undefined
+
+browser errors (parent): []
+browser errors (child): []
+
+41/42 steps passed
+
+--- server log tail ---
+pi/me/child-label 200 OK (16ms)
+[wrangler:info] GET /api/lessons 200 OK (37ms)
+[wrangler:info] GET /api/help-requests 200 OK (40ms)
+[wrangler:info] GET /api/students 200 OK (36ms)
+[wrangler:info] GET /api/assignments 200 OK (38ms)
+[wrangler:info] GET /api/account/plan 200 OK (52ms)
+[wrangler:info] GET /api/help-requests 200 OK (21ms)
+[wrangler:info] GET /parent/lessons/new 200 OK (5ms) `Sec-Fetch-Mode: navigate` header present - using `not_found_handling` behavior
+[wrangler:info] GET /static/js/main.7c284d9e.js 304 Not Modified (6ms)
+[wrangler:info] GET /static/css/main.44d4637e.css 304 Not Modified (8ms)
+[wrangler:info] GET /api/auth/me 200 OK (9ms)
+[wrangler:info] GET /api/me/child-label 200 OK (25ms)
+[wrangler:info] GET /api/help-requests 200 OK (25ms)
+[wrangler:info] GET /api/students 200 OK (26ms)
+[wrangler:info] GET /api/account/plan 200 OK (42ms)
+[wrangler:info] GET /api/help-requests 200 OK (21ms)
+[wrangler:info] GET /parent/children 200 OK (5ms) `Sec-Fetch-Mode: navigate` header present - using `not_found_handling` behavior
+[wrangler:info] GET /static/js/main.7c284d9e.js 304 Not Modified (6ms)
+[wrangler:info] GET /static/css/main.44d4637e.css 304 Not Modified (8ms)
+[wrangler:info] GET /api/auth/me 200 OK (11ms)
+[wrangler:info] GET /api/me/child-label 200 OK (10ms)
+[wrangler:info] GET /api/help-requests 200 OK (25ms)
+[wrangler:info] GET /api/students 200 OK (22ms)
+[wrangler:info] GET /api/help-requests 200 OK (8ms)
+[wrangler:info] GET /api/help-requests 200 OK (10ms)
+
