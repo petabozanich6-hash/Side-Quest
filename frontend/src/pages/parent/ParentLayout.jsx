@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { api } from "../../lib/api";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
+import { Compass, Crown, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
@@ -35,6 +36,13 @@ export default function ParentLayout() {
   const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  useEffect(() => {
+    let active = true;
+    setIsOwner(false);
+    api.get("/account/plan").then((res) => { if (active) setIsOwner(res.data?.effective_plan === "INTERNAL"); }).catch(() => {});
+    return () => { active = false; };
+  }, [user?.id]);
   const doLogout = async () => { await logout(); navigate("/"); };
   return (
     <div className="parent-shell flex relative">
@@ -49,7 +57,7 @@ export default function ParentLayout() {
           </div>
         </div>
         <nav className="flex-1 overflow-y-auto p-3 space-y-0.5 relative z-10">
-          {nav.map(n => (
+          {(isOwner ? [...nav, { to: "/parent/command-centre", icon: Crown, label: "Command Centre", testid: "nav-command-centre" }] : nav).map(n => (
             <NavLink key={n.to} to={n.to} end={n.end} data-testid={n.testid} onClick={() => setMenuOpen(false)}
               className={({isActive}) => `flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "" : "text-stone-700 hover:bg-white/80"}`}
               style={({isActive}) => isActive ? {backgroundColor:"#1F3B2D", color:"#F5EFE0"} : {}}>

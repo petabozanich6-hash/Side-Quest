@@ -13,6 +13,7 @@ import ChildLogin from "./pages/ChildLogin";
 import AuthCallback from "./pages/AuthCallback";
 import ParentLayout from "./pages/parent/ParentLayout";
 import ParentDashboard from "./pages/parent/Dashboard";
+import CommandCentre from "./pages/parent/CommandCentre";
 import ChildrenPage from "./pages/parent/Children";
 import CurriculumPage from "./pages/parent/Curriculum";
 import LessonsPage from "./pages/parent/Lessons";
@@ -80,6 +81,7 @@ function Router() {
         <Route path="outcomes/:sid/:code" element={<OutcomeDetailPage />} />
         <Route path="lessons" element={<LessonsPage />} />
         <Route path="plan" element={<UpgradePage />} />
+        <Route path="command-centre" element={<CommandCentre />} />
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="lessons/make" element={<MakeLesson />} />
         <Route path="lessons/drafts" element={<LessonDrafts />} />
