@@ -1,11 +1,9 @@
 name: Import Tasmania 2026 senior courses (official codes only)
+# 2026 TASC catalogue import already executed on the draft PR. Refresh manually,
+# while the checked-in catalogue and parser tests run in the ordinary CI suite.
 on:
-  pull_request:
-    paths:
-      - worker/scripts/import-tasc-2026.mjs
-      - worker/test/tasc2026.test.mjs
-      - .github/workflows/import-tasc-2026.yml
   workflow_dispatch:
+
 permissions:
   contents: write
 jobs:
