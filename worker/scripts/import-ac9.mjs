@@ -5,6 +5,7 @@
 // not used for alignment, as ACARA advises.
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { ac9Level } from "./ac9-code-level.mjs";
 
 const RELEASE = "MRAC/2024/04";
 const AREAS = {
@@ -31,9 +32,8 @@ async function extract(la) {
   for (const x of graph) {
     if (label(x) !== "Content Description") continue;
     const code = val(x, P + "statementNotation").trim();
-    const m = /^AC9[A-Z]+?(F|\d{1,2})[A-Z]/.exec(code);
-    if (!m) { console.warn(`skip ${la} ${code}: no level in code`); continue; }
-    const n = m[1] === "F" ? 0 : Number(m[1]);
+    const n = ac9Level(code);
+    if (n === null) throw new Error(`Invalid or unparseable official AC9 level: ${la} ${code}`);
     const from = BANDED.has(la) && n > 0 ? n - 1 : n;
     let strand = "", subject = "", pathway = "", p = parent(x), guard = 0;
     while (p && guard++ < 12) {
