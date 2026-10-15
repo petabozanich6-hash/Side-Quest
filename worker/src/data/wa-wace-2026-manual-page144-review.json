@@ -1,0 +1,548 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "WACE",
+  "framework_version": "2026",
+  "source_url": "https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf",
+  "source_pdf_page": 156,
+  "source_print_page": 144,
+  "verification_date": "2026-10-16",
+  "status": "source_verified_partial",
+  "scope_note": "Selected 12 subjects on page 144 of WACE Manual Appendix 3 Table 12; not a complete WA WACE catalogue, nor outcome identifiers. Manual shows ATAR Year 11 AExxx, Year 12 ATxxx and General GExxx/GTxxx. These records use only unambiguous rows.",
+  "records": [
+    {
+      "subject": "Media Production and Analysis",
+      "identifier": "MPA",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Media Production and Analysis",
+      "identifier": "AEMPA",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_year11_course"
+    },
+    {
+      "subject": "Media Production and Analysis",
+      "identifier": "ATMPA",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_examinable_course"
+    },
+    {
+      "subject": "Media Production and Analysis",
+      "identifier": "GEMPA",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year11_course"
+    },
+    {
+      "subject": "Media Production and Analysis",
+      "identifier": "GTMPA",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year12_course"
+    },
+    {
+      "subject": "Media Production and Analysis",
+      "identifier": "A1MPA",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Media Production and Analysis",
+      "identifier": "A2MPA",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Media Production and Analysis",
+      "identifier": "G1MPA",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Media Production and Analysis",
+      "identifier": "G2MPA",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Modern History",
+      "identifier": "HIM",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Modern History",
+      "identifier": "AEHIM",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_year11_course"
+    },
+    {
+      "subject": "Modern History",
+      "identifier": "ATHIM",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_examinable_course"
+    },
+    {
+      "subject": "Modern History",
+      "identifier": "GEHIM",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year11_course"
+    },
+    {
+      "subject": "Modern History",
+      "identifier": "GTHIM",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year12_course"
+    },
+    {
+      "subject": "Modern History",
+      "identifier": "A1HIM",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Modern History",
+      "identifier": "A2HIM",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Modern History",
+      "identifier": "G1HIM",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Modern History",
+      "identifier": "G2HIM",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Music",
+      "identifier": "MUS",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Music",
+      "identifier": "AEMUS",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_year11_course"
+    },
+    {
+      "subject": "Music",
+      "identifier": "ATMUS",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_examinable_course"
+    },
+    {
+      "subject": "Music",
+      "identifier": "GEMUS",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year11_course"
+    },
+    {
+      "subject": "Music",
+      "identifier": "GTMUS",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year12_course"
+    },
+    {
+      "subject": "Music",
+      "identifier": "A1MUS",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Music",
+      "identifier": "A2MUS",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Music",
+      "identifier": "G1MUS",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Music",
+      "identifier": "G2MUS",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Outdoor Education",
+      "identifier": "OED",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Outdoor Education",
+      "identifier": "AEOED",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_year11_course"
+    },
+    {
+      "subject": "Outdoor Education",
+      "identifier": "ATOED",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_examinable_course"
+    },
+    {
+      "subject": "Outdoor Education",
+      "identifier": "GEOED",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year11_course"
+    },
+    {
+      "subject": "Outdoor Education",
+      "identifier": "GTOED",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year12_course"
+    },
+    {
+      "subject": "Outdoor Education",
+      "identifier": "A1OED",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Outdoor Education",
+      "identifier": "A2OED",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Outdoor Education",
+      "identifier": "G1OED",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Outdoor Education",
+      "identifier": "G2OED",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Philosophy and Ethics",
+      "identifier": "PAE",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Philosophy and Ethics",
+      "identifier": "AEPAE",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_year11_course"
+    },
+    {
+      "subject": "Philosophy and Ethics",
+      "identifier": "ATPAE",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_examinable_course"
+    },
+    {
+      "subject": "Philosophy and Ethics",
+      "identifier": "A1PAE",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Philosophy and Ethics",
+      "identifier": "A2PAE",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Physical Education Studies",
+      "identifier": "PES",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Physical Education Studies",
+      "identifier": "AEPES",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_year11_course"
+    },
+    {
+      "subject": "Physical Education Studies",
+      "identifier": "ATPES",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_examinable_course"
+    },
+    {
+      "subject": "Physical Education Studies",
+      "identifier": "GEPES",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year11_course"
+    },
+    {
+      "subject": "Physical Education Studies",
+      "identifier": "GTPES",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year12_course"
+    },
+    {
+      "subject": "Physical Education Studies",
+      "identifier": "A1PES",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Physical Education Studies",
+      "identifier": "A2PES",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Physical Education Studies",
+      "identifier": "G1PES",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Physical Education Studies",
+      "identifier": "G2PES",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Physics",
+      "identifier": "PHY",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Physics",
+      "identifier": "AEPHY",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_year11_course"
+    },
+    {
+      "subject": "Physics",
+      "identifier": "ATPHY",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_examinable_course"
+    },
+    {
+      "subject": "Physics",
+      "identifier": "A1PHY",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Physics",
+      "identifier": "A2PHY",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Plant Production Systems",
+      "identifier": "PPS",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Plant Production Systems",
+      "identifier": "GEPPS",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year11_course"
+    },
+    {
+      "subject": "Plant Production Systems",
+      "identifier": "GTPPS",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year12_course"
+    },
+    {
+      "subject": "Plant Production Systems",
+      "identifier": "G1PPS",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Plant Production Systems",
+      "identifier": "G2PPS",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Politics and Law",
+      "identifier": "PAL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Politics and Law",
+      "identifier": "AEPAL",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_year11_course"
+    },
+    {
+      "subject": "Politics and Law",
+      "identifier": "ATPAL",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_examinable_course"
+    },
+    {
+      "subject": "Politics and Law",
+      "identifier": "A1PAL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Politics and Law",
+      "identifier": "A2PAL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Psychology",
+      "identifier": "PSY",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Psychology",
+      "identifier": "AEPSY",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_year11_course"
+    },
+    {
+      "subject": "Psychology",
+      "identifier": "ATPSY",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_examinable_course"
+    },
+    {
+      "subject": "Psychology",
+      "identifier": "GEPSY",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year11_course"
+    },
+    {
+      "subject": "Psychology",
+      "identifier": "GTPSY",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year12_course"
+    },
+    {
+      "subject": "Psychology",
+      "identifier": "A1PSY",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Psychology",
+      "identifier": "A2PSY",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Psychology",
+      "identifier": "G1PSY",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Psychology",
+      "identifier": "G2PSY",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Science in Practice",
+      "identifier": "SIP",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Science in Practice",
+      "identifier": "GESIP",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year11_course"
+    },
+    {
+      "subject": "Science in Practice",
+      "identifier": "GTSIP",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year12_course"
+    },
+    {
+      "subject": "Science in Practice",
+      "identifier": "G1SIP",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Science in Practice",
+      "identifier": "G2SIP",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "REL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "AEREL",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_year11_course"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "ATREL",
+      "identifier_kind": "course_code",
+      "course_kind": "atar_examinable_course"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "GEREL",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year11_course"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "GTREL",
+      "identifier_kind": "course_code",
+      "course_kind": "general_year12_course"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "FEREL",
+      "identifier_kind": "course_code",
+      "course_kind": "foundation_year11_course"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "A1REL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "A2REL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "G1REL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "G2REL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "F1REL",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "F2REL",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    }
+  ]
+}
