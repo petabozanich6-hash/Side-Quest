@@ -101,6 +101,83 @@ await step("iPhone: the home page's Install button opens the Add to Home Screen 
   await ctx.close();
 });
 
+// ---- the kids' app: a child's own device opens straight to the child sign-in
+const napi = async (method, path, token, body) => {
+  const r = await fetch(NODE_BASE + "/api" + path, { method, headers: { "content-type": "application/json", ...(token ? { authorization: `Bearer ${token}` } : {}) }, body: body ? JSON.stringify(body) : undefined });
+  let json = null; try { json = await r.json(); } catch { /* empty */ }
+  return { status: r.status, json };
+};
+const stamp = Date.now();
+const fam = (await napi("POST", "/auth/register", null, { email: `kids-${stamp}@example.com`, password: "Passw0rd-kids!", name: "Parent", jurisdiction: "NSW" })).json;
+const kidUser = `kidapp${stamp}`.slice(0, 16);
+await napi("POST", "/students", fam.token, { name: "Kid", username: kidUser, pin: "4321", stage: "S2" });
+await napi("POST", "/pet", (await napi("POST", "/auth/child-login", null, { username: kidUser, pin: "4321" })).json.token, { species: "fox", name: "Rusty" });
+const manifestHref = (p) => p.getAttribute('link[rel="manifest"]', "href");
+
+await step("kids' app manifest: its own app that starts at the child sign-in", async () => {
+  const r = await fetch(`${NODE_BASE}/manifest-kids.webmanifest`);
+  ok(r.status === 200 && /manifest\+json/.test(r.headers.get("content-type") || ""), "kids manifest " + r.status);
+  const m = await r.json();
+  ok(m.id === "/kids" && m.start_url === "/child-login?source=kids-app" && m.display === "standalone" && m.icons.length >= 4, "kids manifest fields " + JSON.stringify(m).slice(0, 200));
+});
+
+await step("Get the app for a child's device: kids' manifest, kids' wording and a QR link that keeps for=child", async () => {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const p = await ctx.newPage();
+  await p.goto(BASE + "/get-app");
+  ok(await manifestHref(p) === "/manifest.webmanifest", "parent page should use the parent manifest");
+  await p.click("[data-testid=get-app-switch]");
+  await p.waitForSelector("[data-testid=get-app-title]:has-text(\"child's device\")");
+  ok(await manifestHref(p) === "/manifest-kids.webmanifest", "kids page manifest " + await manifestHref(p));
+  ok((await p.textContent("[data-testid=get-app-url]")) === `${BASE}/get-app?for=child`, "kids link");
+  await p.waitForSelector("[data-testid=get-app-qr-image]");
+  await p.screenshot({ path: `${SHOTS}/kids-desktop.png`, fullPage: true });
+  await p.goto(BASE + "/child-login");
+  ok(await manifestHref(p) === "/manifest-kids.webmanifest", "child sign-in installs the kids' app");
+  await ctx.close();
+});
+
+await step("kids' app on a child's phone: opens at the child sign-in, goes to their quests, and sign-out returns to sign-in", async () => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, userAgent: UA.iphone, isMobile: true, hasTouch: true });
+  const p = await ctx.newPage();
+  await p.goto(BASE + "/child-login?source=kids-app"); // what tapping the SQ Kids icon opens
+  await p.goto(BASE + "/");
+  await p.waitForURL((u) => u.pathname === "/child-login");
+  await p.fill("[data-testid=child-login-username]", kidUser);
+  await p.fill("[data-testid=child-login-pin]", "4321");
+  await p.click("[data-testid=child-login-submit]");
+  await p.waitForURL((u) => u.pathname === "/child");
+  await p.goto(BASE + "/");
+  await p.waitForURL((u) => u.pathname === "/child");
+  await p.goto(BASE + "/child-login");
+  await p.waitForURL((u) => u.pathname === "/child");
+  await p.click("[data-testid=child-logout]");
+  await p.waitForURL((u) => u.pathname === "/child-login");
+  await noOverflow(p, "kids sign-in");
+  await p.screenshot({ path: `${SHOTS}/kids-signin-phone.png`, fullPage: true });
+  await ctx.close();
+});
+
+await step("an ordinary browser is unaffected: the home page still shows the front page", async () => {
+  const ctx = await browser.newContext();
+  const p = await ctx.newPage();
+  await p.goto(BASE + "/");
+  await p.waitForSelector("[data-testid=nav-register]");
+  ok(new URL(p.url()).pathname === "/", "redirected away from the front page");
+  await ctx.close();
+});
+
+await step("the Parent Hub Children page links to setting up a child's device", async () => {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const p = await ctx.newPage();
+  await p.goto(BASE + "/");
+  await p.evaluate((t) => localStorage.setItem("sq_token", t), fam.token);
+  await p.goto(BASE + "/parent/children");
+  await p.click("[data-testid=kids-app-link]");
+  await p.waitForURL((u) => u.pathname === "/get-app" && u.search.includes("for=child"));
+  await ctx.close();
+});
+
 await step("when the network drops, a page visit shows Side-Quest's offline page (not the browser error)", async () => {
   const ctx = await browser.newContext();
   const p = await ctx.newPage();

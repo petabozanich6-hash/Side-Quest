@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Compass, Home, FolderOpen, LogOut, Heart, Award, BookOpen, Library } from "lucide-react";
 import { api } from "../../lib/api";
 import { flushOutbox, pendingCount } from "../../lib/offline";
+import { isKidsDevice } from "../../lib/pwa";
 import PetPicker from "./PetPicker";
 import PetCompanion from "../../components/shared/PetCompanion";
 import ChildInbox from "../../components/child/ChildInbox";
@@ -45,7 +46,8 @@ export default function ChildLayout() {
       const left = await pendingCount(user.id);
       if (left > 0 && !window.confirm(`You have work that hasn't been sent yet (no internet). If you sign out now it will be lost.\n\nSign out anyway?`)) return;
     }
-    await logout(); nav("/");
+    // On a child's own device (the kids' app), signing out returns to the child sign-in.
+    await logout(); nav(isKidsDevice() ? "/child-login" : "/");
   };
 
   return (

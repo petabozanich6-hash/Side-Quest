@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useKidsManifest } from "../lib/pwa";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
@@ -15,8 +16,10 @@ export default function ChildLogin() {
   const [helpOpen, setHelpOpen] = useState(false);
   const [helpUser, setHelpUser] = useState("");
   const [helpState, setHelpState] = useState("idle");
-  const { setSession } = useAuth();
+  const { setSession, user } = useAuth();
   const nav = useNavigate();
+  // Installing from this page (browser menu, Add to Home Screen) gives the kids' app, which opens here.
+  useKidsManifest(true);
 
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
@@ -50,6 +53,7 @@ export default function ChildLogin() {
     }
   };
 
+  if (user?.role === "child") return <Navigate to="/child" replace />;
   return (
     <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden" style={{backgroundColor:"#FEF5E0"}}>
       <Fern className="absolute -left-10 top-10" size={200} color="#6B8A5B"/>

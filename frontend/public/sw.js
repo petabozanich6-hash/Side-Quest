@@ -11,17 +11,18 @@
  * - Icons, pet art and other images are stale-while-revalidate.
  * Bump VERSION to clear old caches.
  */
+// v4: the kids' app (manifest-kids.webmanifest) starts at /child-login, which now opens offline too.
 // v3: offline lessons: the app shell and its code are saved so the children's area opens with no signal.
 // v2: the offline page is cached at /offline. Cloudflare redirects /offline.html -> /offline, and browsers refuse to
 // show a cached redirect for a page visit, so the old /offline.html copy never appeared.
-const VERSION = "sq-v3";
+const VERSION = "sq-v4";
 const SHELL = `${VERSION}-shell`;
 const ASSETS = `${VERSION}-assets`;
 const OFFLINE_PAGE = "/offline";
 const APP_SHELL = "/__app-shell";
-const PRECACHE = [OFFLINE_PAGE, "/icons/icon-192.png", "/manifest.webmanifest"];
+const PRECACHE = [OFFLINE_PAGE, "/icons/icon-192.png", "/manifest.webmanifest", "/manifest-kids.webmanifest"];
 // Pages that open from the saved shell when offline.
-const OFFLINE_APP = (path) => path === "/" || path === "/child" || path.startsWith("/child/") || path === "/get-app";
+const OFFLINE_APP = (path) => path === "/" || path === "/child" || path.startsWith("/child/") || path === "/child-login" || path === "/get-app";
 
 /** Saves the current index.html and the JS/CSS it loads, so the app can start with no signal. */
 async function saveAppShell() {
