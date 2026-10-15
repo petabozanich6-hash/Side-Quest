@@ -1,11 +1,9 @@
 name: Discover currently applicable Victorian VC1 language identifiers
+# VC1 language review import already executed on the draft PR. Refresh manually,
+# while the checked-in catalogue and parser tests run in the ordinary CI suite.
 on:
-  pull_request:
-    paths:
-      - worker/scripts/import-vic1-languages.mjs
-      - worker/test/vic1Languages.test.mjs
-      - .github/workflows/import-vic1-languages.yml
   workflow_dispatch:
+
 permissions:
   contents: write
 jobs:
