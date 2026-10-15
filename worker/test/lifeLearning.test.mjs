@@ -65,6 +65,7 @@ test("Other states: no codes attached, areas limited to that framework, codes st
 
 test("stripCodes removes AC9, VC2 and NSW-style codes", () => {
   assert.equal(stripCodes("Adds money (AC9M3N06) and VC2M3N01 plus MA2-RN-01."), "Adds money and plus.");
+  assert.doesNotMatch(stripCodes("Latin (ACL9LL10U03)."), /ACL9/, "Classical-language codes should be removed from uncited free text");
 });
 
 test("AI mapping is metered, records failures without charging, and enforces limits", async () => {
