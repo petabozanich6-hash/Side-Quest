@@ -169,10 +169,11 @@ const AC9_KEY_SUBJECT: [RegExp, string][] = [[/software|information|digital|comp
  */
 const LANGUAGE_NAMES = ["Arabic", "Auslan", "Chinese", "Classical Greek", "French", "German", "Hindi",
   "Indonesian", "Italian", "Japanese", "Korean", "Latin", "Modern Greek", "Spanish", "Turkish",
-  "Vietnamese", "Aboriginal Languages", "Torres Strait Islander Languages", "Classical Languages"];
+  "Vietnamese", "Aboriginal Languages", "Torres Strait Islander Languages", "Classical Languages",
+  "Framework for Aboriginal Languages and Torres Strait Islander Languages", "Framework for Classical Languages"];
 const languageSubject = (name: string) => {
   const lower = name.trim().toLowerCase();
-  return LANGUAGE_NAMES.find((x) => x.toLowerCase() === lower || lower.startsWith(x.toLowerCase() + " ")) || null;
+  return LANGUAGE_NAMES.find((x) => { const stem = x.toLowerCase(); return lower === stem || (lower.startsWith(stem) && /^[\\s(,:/-]/.test(lower.slice(stem.length))); }) || null;
 };
 const broadLanguages = (name: string) => /^(languages?|foreign languages?|language studies)$/i.test(name.trim());
 
