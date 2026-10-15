@@ -1,10 +1,8 @@
 name: Check direct WA official JSON access
 # The SCSA outline HTML index returns 403 to GitHub runners.
 # Check public direct official downloads before concluding WA is blocked.
+# Source access already tested: SCSA direct JSON returns HTTP 403. Rerun only when access changes.
 on:
-  pull_request:
-    paths:
-      - .github/workflows/probe-wa-direct.yml
   workflow_dispatch:
 
 permissions:
