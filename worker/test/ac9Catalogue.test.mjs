@@ -4,7 +4,9 @@ import { AC9_OUTCOMES } from "../src/data/ac9-outcomes.ts";
 import { catalogueFor, programFor } from "../src/outcomeTracker.ts";
 
 test("ACARA MRAC import has unique real AC9 identifiers, descriptions and valid year bands", () => {
-  assert.ok(AC9_OUTCOMES.length >= 1395, "AC9 import must not lose previously included descriptors");
+  assert.ok(AC9_OUTCOMES.length >= 2678, "Official MRAC/2024/04 import must not lose any eight-area descriptors");
+  assert.ok(AC9_OUTCOMES.filter((o) => o.learning_area === "Languages").length >= 1283, "language subjects/pathways missing");
+  assert.ok(AC9_OUTCOMES.filter((o) => o.code.startsWith("ACL9")).length >= 42, "classical languages silently omitted");
   const seen = new Set();
   for (const row of AC9_OUTCOMES) {
     assert.match(row.code, /^(?:AC9|ACL9)[A-Z0-9]+$/);
@@ -48,4 +50,15 @@ test("an AC9 language elective matches ONLY the language selected by the family"
   assert.equal(broad.includes(french), true);
   const unknown = programFor(source, { stage: "S4", year_level: "Year 8", extra: { electives: [{ name: "Polish", learning_area: "Languages" }] } });
   assert.equal(unknown.includes(japan), false, "unimported language must not silently map to another one");
+});
+
+test("selected Chinese learner pathway must not mix distinct official pathway codes", () => {
+  const catalogue = catalogueFor("QLD");
+  assert.equal(catalogue.available, true);
+  const second = catalogue.outcomes.find((o) => o.subject === "Chinese" && o.to === 8 && o.pathway?.includes("Second-Language"));
+  const background = catalogue.outcomes.find((o) => o.subject === "Chinese" && o.to === 8 && o.pathway?.includes("Background-Language"));
+  assert.ok(second && background, "the official import must retain separate Chinese pathway metadata");
+  const plan = programFor(catalogue, { stage: "S4", year_level: "Year 8", extra: { electives: [{ name: "Chinese (Second Language Learner)", learning_area: "Languages" }] } });
+  assert.equal(plan.includes(second), true);
+  assert.equal(plan.includes(background), false, "a different learner pathway cannot be silently assigned");
 });
