@@ -8,6 +8,7 @@ export const SUBJECT_INDEX="https://www.sace.sa.edu.au/teaching/subjects";
 const ORIGIN="https://www.sace.sa.edu.au";
 const clean=(s)=>String(s??"").replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,"")
   .replace(/<[^>]+>/g," ").replace(/&(?:amp|nbsp|lt|gt|quot);/g,m=>({"&amp;":"&","&nbsp;":" ","&lt;":"<","&gt;":">","&quot;":'"'})[m])
+  .replace(/&#x([0-9a-f]+);/gi,(_,n)=>String.fromCodePoint(parseInt(n,16)))
   .replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n))).replace(/\s+/g," ").trim();
 const OFFICIAL_CODE=/^[12][A-Z0-9]{3}(?:05|10|20)$/;
 
@@ -21,7 +22,14 @@ export function discoverSaceSubjectPages(html){
     if(!match)continue;
     const name=clean(a[2]);
     if(!name || name.length>100 || /^(?:overview|subject codes|resources|assessment|dates|notices|teaching|studying|syllabus)$/i.test(name))continue;
-    const key=ORIGIN+"/web/"+match[1].toLowerCase();
+    const rawSlug = match[1].toLowerCase();
+    // AIF/EIF and Visual Arts variants share official code tables.
+    // VET and special provisions are not individual subjects.
+    if (["vet","vocational-education-and-training","special-provisions"].includes(rawSlug)) continue;
+    const alias = { "activating-identities-and-futures":"identities-and-futures",
+      "exploring-identities-and-futures":"identities-and-futures",
+      "visual-arts-art":"visual-arts","visual-arts-design":"visual-arts" };
+    const key=ORIGIN+"/web/"+(alias[rawSlug] || rawSlug);
     if(!subjects.has(key))subjects.set(key,{name,official_url:key,status:"official_subject_listing"});
   }
   return [...subjects.values()].sort((a,b)=>a.name.localeCompare(b.name));
