@@ -7,9 +7,6 @@ import * as bat from "./lessonBatches";
 import * as help from "./aiHelp";
 import * as res from "./resources";
 import * as pl from "./planning";
-import { planAutoQuest } from "./autoQuest";
-import { catalogueFor } from "./outcomeTracker";
-import { getFamilyJurisdiction } from "./data/jurisdictions";
 import { buildPortfolio } from "./portfolio";
 import { billingSummary } from "./billing";
 
@@ -528,53 +525,6 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     await c.env.DB.prepare("UPDATE resources SET approved = 1, status = 'parent_approved' WHERE id = ? AND family_id = ?")
       .bind(c.req.param("id"), c.get("user").family_id).run();
     return c.json({ ok: true });
-  });
-
-  // ---------- Auto-Quest (read-only, family-scoped preview; no generation or assignment) ----------
-  app.get("/api/auto-quest/preview", auth, parent, async (c) => {
-    const fid = c.get("user").family_id;
-    const sid = c.req.query("student_id") || "";
-    const from = c.req.query("from") || "";
-    const to = c.req.query("to") || "";
-    if (!sid || !/^\\d{4}-\\d{2}-\\d{2}$/.test(from) || !/^\\d{4}-\\d{2}-\\d{2}$/.test(to) || from > to) {
-      return c.json({ detail: "Choose a child and valid start/end dates." }, 400);
-    }
-    const start = Date.parse(from + "T00:00:00Z"), end = Date.parse(to + "T00:00:00Z");
-    if (!Number.isFinite(start) || !Number.isFinite(end) || end - start > 35 * 86400000) {
-      return c.json({ detail: "Choose a date range of up to five weeks." }, 400);
-    }
-    const child = await c.env.DB.prepare("SELECT id FROM students WHERE id = ? AND family_id = ?").bind(sid, fid).first();
-    if (!child) return c.json({ detail: "Child not found." }, 404);
-    const [events, assignments, lessons, jurisdiction] = await Promise.all([
-      c.env.DB.prepare("SELECT id, student_id, date, title, event_type, linked_assignment_id FROM calendar_events WHERE family_id = ? AND student_id = ? AND date >= ? AND date <= ? ORDER BY date ASC LIMIT 250").bind(fid, sid, from, to).all<any>(),
-      c.env.DB.prepare("SELECT id, student_id, lesson_id, scheduled_date, status FROM assignments WHERE family_id = ? AND student_id = ? LIMIT 500").bind(fid, sid).all<any>(),
-      lb.listLessons(c.env.DB, fid),
-      getFamilyJurisdiction(c.env.DB, fid),
-    ]);
-    const catalogue = catalogueFor(jurisdiction);
-    let progress: { code: string; status: string }[] = [];
-    if (catalogue.available) {
-      try {
-        const rows = await c.env.DB.prepare("SELECT outcome_code AS code, status FROM outcome_progress WHERE family_id = ? AND student_id = ? AND framework = ?").bind(fid, sid, catalogue.framework).all<any>();
-        progress = rows.results;
-      } catch {
-        // If the tracker migration has not been applied yet, never assume mastery;
-        // instead prevent automated selection until the tracker is available.
-        return c.json({ detail: "Outcome tracker is not ready. Please review your learning plan first." }, 503);
-      }
-    }
-    const decisions = planAutoQuest({
-      studentId: sid,
-      slots: events.results,
-      lessons,
-      assignments: assignments.results,
-      progress,
-      catalogueAvailable: catalogue.available,
-      allowedOutcomeCodes: catalogue.available ? catalogue.outcomes.map(o => o.code) : [],
-    });
-    return c.json({ student_id: sid, from, to, jurisdiction, catalogue_available: catalogue.available,
-      note: catalogue.available ? "Planning preview only. Review every lesson and curriculum mapping before assignment." : catalogue.note,
-      decisions, counts: Object.fromEntries(["already_assigned", "reuse_draft", "needs_parent_plan", "needs_generation"].map(action => [action, decisions.filter(d => d.action === action).length])) });
   });
 
   // ---------- Calendar ----------

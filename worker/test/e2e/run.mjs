@@ -1059,6 +1059,49 @@ await step("P. outcome tracker: hand-in, review and evidence update it; only the
   await ctx.close();
 });
 
+await step("Q. Auto-Quest: plan the week from the timetable, approve a reused lesson, and it is assigned on that day", async () => {
+  const em = `autoquest-${stamp}@example.com`;
+  const reg = await api("POST", "/auth/register", null, { name: "Quest Fam", email: em, password: pw, jurisdiction: "NSW" });
+  ok(reg.status === 200, "register " + reg.status);
+  const pt = reg.json.token;
+  const fam = JSON.parse(Buffer.from(pt.split(".")[1], "base64url").toString()).family_id;
+  sql(`UPDATE families SET plan='ACTIVE_MONTHLY' WHERE id='${fam}';`);
+  const ch = await api("POST", "/students", pt, { name: "Quinn", username: `aq${stamp}`.slice(0, 14), pin: "2468", stage: "S2" });
+  ok(ch.status === 200, "child " + ch.status);
+  const codes = (await api("GET", "/curriculum/outcomes?stage=S2&learning_area=Mathematics", pt)).json.map((o) => o.code);
+  ok(codes.length > 1, "no S2 maths codes");
+  const les = await api("POST", "/lessons", pt, { title: "Quest place value", learning_area: "Mathematics", stage: "S2", status: "ready", outcome_codes: [codes[0]], sections: [{ heading: "Tens", body: "Tens and ones." }] });
+  ok(les.status === 200 && les.json.outcome_codes.includes(codes[0]), "lesson");
+  const d = new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10);
+  const ev = await api("POST", "/calendar", pt, { title: "Mathematics", date: d, student_id: ch.json.id, event_type: "lesson", start_time: "09:00", duration_minutes: 40 });
+  ok(ev.status === 200, "slot " + ev.status);
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const qp = await ctx.newPage();
+  watch("autoquest", qp);
+  await qp.goto(BASE + "/login");
+  await qp.fill('[data-testid=login-email]', em); await qp.fill('[data-testid=login-password]', pw);
+  await qp.click('[data-testid=login-submit]'); await qp.waitForURL("**/parent");
+  await qp.goto(BASE + "/parent/calendar");
+  await qp.click("[data-testid=autoquest-open-btn]");
+  await qp.click("[data-testid=autoquest-preview]");
+  await qp.waitForSelector("[data-testid=autoquest-decisions] li");
+  const li = qp.locator("[data-testid=autoquest-decisions] li").first();
+  ok((await li.getAttribute("data-action")) === "reuse_draft", "saved lesson not reused: " + (await li.getAttribute("data-action")));
+  ok((await li.textContent()).includes(codes[0]), "verified code not shown");
+  await shot("autoquest-plan", qp);
+  await li.locator("[data-testid=aq-approve]").click();
+  await qp.waitForSelector('[data-testid=autoquest-decisions] li[data-status="assigned"]');
+  const asg = (await api("GET", `/assignments?student_id=${ch.json.id}`, pt)).json;
+  ok(asg.length === 1 && asg[0].lesson_id === les.json.id && asg[0].scheduled_date === d, "assignment " + JSON.stringify(asg).slice(0, 200));
+  // Planning again never duplicates, and a child can't use Auto-Quest.
+  const again = await api("POST", "/auto-quest/plan", pt, { student_id: ch.json.id, from: d, to: d });
+  ok(again.json.proposals.length === 1 && again.json.proposals[0].status === "assigned", "re-plan changed a decision");
+  const ct = (await api("POST", "/auth/child-login", null, { username: `aq${stamp}`.slice(0, 14), pin: "2468" })).json.token;
+  ok((await api("POST", "/auto-quest/plan", ct, { student_id: ch.json.id, from: d, to: d })).status === 403, "child reached Auto-Quest");
+  ok((await api("POST", "/auto-quest/plan", parentToken, { student_id: ch.json.id, from: d, to: d })).status === 404, "another family planned for this child");
+  await ctx.close();
+});
+
 await step("L. users cannot grant themselves a paid plan", async () => {
   const r = await api("PUT", "/account/plan", parentToken, { plan: "ACTIVE_MONTHLY" });
   ok(r.status === 404 || r.status === 405, "plan update route exists: " + r.status);
