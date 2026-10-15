@@ -1,0 +1,592 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "WACE",
+  "framework_version": "2026",
+  "source_url": "https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf",
+  "source_pdf_page": 153,
+  "source_print_page": 141,
+  "verification_date": "2026-10-16",
+  "status": "source_verified_partial",
+  "scope_note": "2026 WACE Manual Appendix 3 Table 12 printed page 141; Design General pathway code suffixes DESD/DESG/DESP/DEST reproduced as printed; course and unit codes are not outcomes.",
+  "records": [
+    {
+      "subject": "Drama",
+      "identifier": "DRA",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Drama",
+      "identifier": "AEDRA",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Drama",
+      "identifier": "ATDRA",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Drama",
+      "identifier": "GEDRA",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Drama",
+      "identifier": "GTDRA",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Drama",
+      "identifier": "A1DRA",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Drama",
+      "identifier": "A2DRA",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Drama",
+      "identifier": "G1DRA",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Drama",
+      "identifier": "G2DRA",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Earth and Environmental Science",
+      "identifier": "EES",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Earth and Environmental Science",
+      "identifier": "AEEES",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Earth and Environmental Science",
+      "identifier": "ATEES",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Earth and Environmental Science",
+      "identifier": "A1EES",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Earth and Environmental Science",
+      "identifier": "A2EES",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Economics",
+      "identifier": "ECO",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Economics",
+      "identifier": "AEECO",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Economics",
+      "identifier": "ATECO",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Economics",
+      "identifier": "A1ECO",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Economics",
+      "identifier": "A2ECO",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Engineering Studies",
+      "identifier": "EST",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Engineering Studies",
+      "identifier": "AEEST",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Engineering Studies",
+      "identifier": "ATEST",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Engineering Studies",
+      "identifier": "GEEST",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Engineering Studies",
+      "identifier": "GTEST",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Engineering Studies",
+      "identifier": "A1EST",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Engineering Studies",
+      "identifier": "A2EST",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Engineering Studies",
+      "identifier": "G1EST",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Engineering Studies",
+      "identifier": "G2EST",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "English",
+      "identifier": "ENG",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "English",
+      "identifier": "AEENG",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "English",
+      "identifier": "ATENG",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "English",
+      "identifier": "GEENG",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "English",
+      "identifier": "GTENG",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "English",
+      "identifier": "FEENG",
+      "identifier_kind": "course_code",
+      "course_kind": "Foundation_Year11"
+    },
+    {
+      "subject": "English",
+      "identifier": "FTENG",
+      "identifier_kind": "course_code",
+      "course_kind": "Foundation_Year12"
+    },
+    {
+      "subject": "English",
+      "identifier": "A1ENG",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "English",
+      "identifier": "A2ENG",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "English",
+      "identifier": "G1ENG",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "English",
+      "identifier": "G2ENG",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "English",
+      "identifier": "F1ENG",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    },
+    {
+      "subject": "English",
+      "identifier": "F2ENG",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "ELD",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "AEELD",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "ATELD",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "GEELD",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "GTELD",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "FEELD",
+      "identifier_kind": "course_code",
+      "course_kind": "Foundation_Year11"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "FTELD",
+      "identifier_kind": "course_code",
+      "course_kind": "Foundation_Year12"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "A1ELD",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "A2ELD",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "G1ELD",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "G2ELD",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "F1ELD",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    },
+    {
+      "subject": "English as an Additional Language or Dialect",
+      "identifier": "F2ELD",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "FST",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "AEFST",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "ATFST",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "GEFST",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "GTFST",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "A1FST",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "A2FST",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "G1FST",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "G2FST",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "French: Background Language",
+      "identifier": "FBL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "French: Background Language",
+      "identifier": "AEFBL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "French: Background Language",
+      "identifier": "ATFBL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "French: Background Language",
+      "identifier": "A1FBL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "French: Background Language",
+      "identifier": "A2FBL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "French: Second Language",
+      "identifier": "FSL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "French: Second Language",
+      "identifier": "AEFSL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "French: Second Language",
+      "identifier": "ATFSL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "French: Second Language",
+      "identifier": "GEFSL",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "French: Second Language",
+      "identifier": "GTFSL",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "French: Second Language",
+      "identifier": "A1FSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "French: Second Language",
+      "identifier": "A2FSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "French: Second Language",
+      "identifier": "G1FSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "French: Second Language",
+      "identifier": "G2FSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Design",
+      "identifier": "DES",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Design",
+      "identifier": "AEDES",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Design",
+      "identifier": "ATDES",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Design",
+      "identifier": "A1DES",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Design",
+      "identifier": "A2DES",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Design (Dimensional pathway)",
+      "identifier": "GEDESD",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Design (Dimensional pathway)",
+      "identifier": "GTDESD",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Design (Dimensional pathway)",
+      "identifier": "G1DESD",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Design (Dimensional pathway)",
+      "identifier": "G2DESD",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Design (Graphic pathway)",
+      "identifier": "GEDESG",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Design (Graphic pathway)",
+      "identifier": "GTDESG",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Design (Graphic pathway)",
+      "identifier": "G1DESG",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Design (Graphic pathway)",
+      "identifier": "G2DESG",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Design (Photography pathway)",
+      "identifier": "GEDESP",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Design (Photography pathway)",
+      "identifier": "GTDESP",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Design (Photography pathway)",
+      "identifier": "G1DESP",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Design (Photography pathway)",
+      "identifier": "G2DESP",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Design (Technical pathway)",
+      "identifier": "GEDEST",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Design (Technical pathway)",
+      "identifier": "GTDEST",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Design (Technical pathway)",
+      "identifier": "G1DEST",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Design (Technical pathway)",
+      "identifier": "G2DEST",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    }
+  ]
+}
