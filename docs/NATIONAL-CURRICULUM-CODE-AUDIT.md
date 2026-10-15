@@ -2,6 +2,18 @@
 
 **Status: inventory and implementation design; NOT a completed dataset.** Do not describe Side-Quest as having all codes until automated coverage checks pass. This audit intentionally does not invent identifiers.
 
+## Verified senior curriculum source imports (16 October 2026)
+
+Senior COURSE/SUBJECT identifiers are **not** learning-outcome/content-description identifiers. Do not place them into `outcome_progress` / mastery codes merely because they exist.
+
+- **Tasmania, TASC 2026:** the full current-year official A–Z list declares **164 courses**; the source parser independently recovered **164** (0 failures, 164 distinct IDs), broken down as Preliminary 32, Level 1 20, Level 2 60, Level 3 48, Level 4 4. Codes, real course titles, levels, TCE credits and official source URLs are held in `worker/src/data/tasc-2026-course-codes.json`. These are source-confirmed **senior course IDs**. View through the family-jurisdiction-bound read-only `GET /api/curriculum/senior-courses` and TAS Curriculum Compass search. Future years require re-verification. Source: https://www.tasc.tas.gov.au/students/courses/a-z/.
+- **South Australia and Northern Territory (SACE/NTCET):** official SACE subject listing and **all 91/91 parsed code-table pages** provided **427 distinct codes** (Stage 1: 234; Stage 2: 193; **62 Modified Subject variants**, failures 0). Data kept as `worker/src/data/sace-2026-subject-review.json` with exact official page URLs; `seniorCatalogueFor("SA"|"NT")` provides **subject-and-credit codes**, not outcomes, and labels the catalogue **partial** pending VET/external national continuers/NT-specific verification. Both jurisdictions use read-only family-scoped API and Curriculum Compass search. Source: https://www.sace.sa.edu.au/teaching/subjects.
+- **ACT BSSS 2026:** the official source `ACT_BSSS_Course_Register_2026.pdf` says **113 unique courses** within 11 frameworks, including A/T/M/V/H classifications. These are publicly presented as named courses and classification codes, **not individual numbered outcomes**. Review-only PDF parser and regression tests committed, but the direct official PDF gave HTTP **403** to GitHub Actions. No ACT senior codes were added; do not silently invent identifiers. Official source: https://www.bsss.act.edu.au/act_senior_secondary_system/curriculum/act_bsss_curriculum_and_course_register.
+- **Queensland QCE:** senior General, Applied, Short Courses and electives have an official QCAA listing. `worker/scripts/import-qcaa-senior.mjs` and parser fixtures exist, but GitHub-hosted source access was HTTP **403**; no verified QCE senior course listing was added.
+- **Western Australia WACE:** state curriculum JSON importer exists but both source index and direct JSON assets were HTTP **403** to hosted jobs. State-specific K–10 and WACE cannot be claimed complete.
+
+**No merge, production deployment, child evidence rewrite or unauthorised fetch workaround.** When official sites block automated downloads, use a legitimate authority-provided export/manual-download source and validate it before exposing records as complete.
+
 ## Victorian curriculum source-backed code catalogue (16 October 2026)
 
 **Built and connected on this draft branch** — not merged, not live:
