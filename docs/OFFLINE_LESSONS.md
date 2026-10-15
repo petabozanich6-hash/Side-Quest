@@ -40,3 +40,15 @@ the app was added from instead; adding it from the child sign-in page avoids tha
 One device shared by parent and child: if the kids' link opens inside the Side-Quest app already installed (usual on
 Android), the page offers "Open to my child's sign-in on this device" instead of a second app. The parent still signs in
 from "Are you a parent? Sign in here", and Get the app → "Open to the front page again" switches it back.
+
+## SQ Kids at its own address (kids.sidequestlearning.app)
+For a truly separate kids' app (own icon, own sign-in, own saved lessons; a parent signed in to Side-Quest and a child
+signed in to SQ Kids on one phone), SQ Kids is served from **kids.sidequestlearning.app**: the same Worker, API and
+database, attached as a second custom domain. On that address the page uses the kids' manifest, opens to the child
+sign-in, and every parent page (/login, /register, /parent…) shows "This is SQ Kids" with a link to the main site.
+The main site's kids' setup (/get-app?for=child, Parent Hub → Children) checks whether the kids' address answers
+(/api/health) and, if it does, sends families there; if not, it falls back to the same-address kids' app above.
+
+Setup (once, Cloudflare dashboard): Workers & Pages → side-quest → Settings → Domains & Routes → Add → Custom domain →
+`kids.sidequestlearning.app` → Add domain. Cloudflare creates the DNS record and certificate. No code change or
+`wrangler.jsonc` change is needed (keep routes out of wrangler.jsonc so deploys never detach the dashboard domains).

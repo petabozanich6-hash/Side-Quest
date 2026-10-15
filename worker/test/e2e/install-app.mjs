@@ -11,6 +11,8 @@ const CONFIG = "wrangler.app-e2e.jsonc";
 const PORT = 8789;
 const BASE = `http://localhost:${PORT}`;
 const NODE_BASE = `http://127.0.0.1:${PORT}`;
+// The kids' app's own address (kids.sidequestlearning.app in production). Chrome sends *.localhost to this machine.
+const KIDS = `http://kids.localhost:${PORT}`;
 const SHOTS = resolve(ROOT, "e2e-shots/install-app");
 const { chromium } = await import(process.env.PW_PATH || "playwright");
 
@@ -127,9 +129,9 @@ await step("Get the app for a child's device: kids' manifest, kids' wording and 
   await p.goto(BASE + "/get-app");
   ok(await manifestHref(p) === "/manifest.webmanifest", "parent page should use the parent manifest");
   await p.click("[data-testid=get-app-switch]");
-  await p.waitForSelector("[data-testid=get-app-title]:has-text(\"child's device\")");
-  ok(await manifestHref(p) === "/manifest-kids.webmanifest", "kids page manifest " + await manifestHref(p));
-  ok((await p.textContent("[data-testid=get-app-url]")) === `${BASE}/get-app?for=child`, "kids link");
+  // The kids' address answers, so the kids' setup points there: SQ Kids is its own app.
+  await p.waitForSelector("[data-testid=get-app-title]:has-text(\"Set up SQ Kids\")");
+  ok((await p.textContent("[data-testid=get-app-url]")) === `${KIDS}/get-app`, "kids link " + await p.textContent("[data-testid=get-app-url]"));
   await p.waitForSelector("[data-testid=get-app-qr-image]");
   await p.screenshot({ path: `${SHOTS}/kids-desktop.png`, fullPage: true });
   await p.goto(BASE + "/child-login");
@@ -167,9 +169,11 @@ await step("one shared device: inside the installed app, the kids' link offers t
   });
   const p = await ctx.newPage();
   await p.goto(BASE + "/get-app?for=child&source=qr");
-  await p.waitForSelector("[data-testid=get-app-shared-device]");
+  await p.waitForSelector("[data-testid=open-kids-setup]");
+  ok(await p.getAttribute("[data-testid=open-kids-setup]", "href") === `${KIDS}/get-app`, "Open SQ Kids setup goes to the kids' address");
   ok(await p.locator("[data-testid=get-app-installed]").count() === 0, "dead-end 'already installed' message shown");
   await p.screenshot({ path: `${SHOTS}/shared-device.png`, fullPage: true });
+  await p.click("text=make this Side-Quest app open to the child sign-in instead");
   await p.click("[data-testid=use-for-child]");
   await p.waitForURL((u) => u.pathname === "/child-login");
   await p.goto(BASE + "/?source=app"); // reopening the app from its icon
@@ -181,6 +185,63 @@ await step("one shared device: inside the installed app, the kids' link offers t
   await p.click("[data-testid=use-for-parent]");
   await p.goto(BASE + "/");
   ok(new URL(p.url()).pathname === "/", "still forwarded to the child sign-in after switching back");
+  await ctx.close();
+});
+
+await step("SQ Kids address: opens to the child sign-in, installs the kids' app and has no parent pages", async () => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, userAgent: UA.iphone, isMobile: true, hasTouch: true });
+  const p = await ctx.newPage();
+  await p.goto(KIDS + "/");
+  await p.waitForURL((u) => u.pathname === "/child-login");
+  ok(await manifestHref(p) === "/manifest-kids.webmanifest", "SQ Kids manifest " + await manifestHref(p));
+  ok(/SQ Kids/.test(await p.title()), "title " + await p.title());
+  ok(await p.getAttribute("text=Open Side-Quest for grown-ups", "href") === `http://localhost:${PORT}/login`, "grown-ups link goes to the main site");
+  for (const path of ["/login", "/register", "/parent", "/parent/children"]) {
+    await p.goto(KIDS + path);
+    await p.waitForSelector("[data-testid=kids-only]");
+  }
+  await p.goto(KIDS + "/get-app");
+  await p.waitForSelector("[data-testid=get-app-title]:has-text(\"Set up SQ Kids\")");
+  await p.waitForSelector("[data-testid=get-app-ios]");
+  ok(/SQ Kids opens from its own icon/.test(await p.textContent("[data-testid=get-app-ios]")), "steps name the wrong app");
+  ok(await p.getAttribute("[data-testid=get-app-switch]", "href") === `http://localhost:${PORT}/get-app`, "grown-ups link should go to the main site");
+  await noOverflow(p, "SQ Kids get-app");
+  await p.screenshot({ path: `${SHOTS}/sq-kids-get-app-phone.png`, fullPage: true });
+  await ctx.close();
+});
+
+await step("one phone, two apps: the parent stays signed in to Side-Quest while the child signs in to SQ Kids", async () => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, userAgent: UA.android, isMobile: true, hasTouch: true });
+  const p = await ctx.newPage();
+  await p.goto(BASE + "/");
+  await p.evaluate((t) => localStorage.setItem("sq_token", t), fam.token);
+  await p.goto(BASE + "/parent");
+  await p.waitForSelector("[data-testid=parent-sidebar]", { state: "attached" });
+  const k = await ctx.newPage();
+  await k.goto(KIDS + "/child-login");
+  await k.fill("[data-testid=child-login-username]", kidUser);
+  await k.fill("[data-testid=child-login-pin]", "4321");
+  await k.click("[data-testid=child-login-submit]");
+  await k.waitForURL((u) => u.pathname === "/child");
+  await p.reload();
+  await p.waitForSelector("[data-testid=parent-sidebar]", { state: "attached" });
+  ok(await p.evaluate(() => localStorage.getItem("sq_token")) === fam.token, "the parent's sign-in was replaced");
+  await k.click("[data-testid=child-logout]");
+  await k.waitForURL((u) => u.pathname === "/child-login");
+  await p.reload();
+  await p.waitForSelector("[data-testid=parent-sidebar]", { state: "attached" });
+  await ctx.close();
+});
+
+await step("before the kids' address is set up, the kids' option keeps working on the main site", async () => {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  await ctx.route(/kids\.localhost/, (r) => r.abort());
+  const p = await ctx.newPage();
+  await p.goto(BASE + "/get-app?for=child");
+  await p.waitForSelector("[data-testid=get-app-title]:has-text(\"Set up Side-Quest on your child's device\")");
+  await p.waitForTimeout(1500);
+  ok((await p.textContent("[data-testid=get-app-url]")) === `${BASE}/get-app?for=child`, "fallback link " + await p.textContent("[data-testid=get-app-url]"));
+  ok(await manifestHref(p) === "/manifest-kids.webmanifest", "fallback installs the kids' app from the main site");
   await ctx.close();
 });
 

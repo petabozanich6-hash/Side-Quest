@@ -4,13 +4,13 @@ import { Download, Share, PlusSquare, Smartphone, X, MoreVertical } from "lucide
 import { deviceKind, isIosOtherBrowser, useInstallPrompt } from "../../lib/pwa";
 
 /** Add to Home Screen steps for iPhone and iPad (Safari has no install prompt). */
-export function IosSteps() {
+export function IosSteps({ app = "Side-Quest" }) {
   return (
     <>
       <ol className="space-y-3 text-sm text-stone-700">
         <li className="flex gap-2"><span className="font-bold">1.</span><span>In Safari, tap the Share button <Share size={14} className="inline -mt-0.5" /> (at the bottom of the screen on iPhone, at the top on iPad).</span></li>
         <li className="flex gap-2"><span className="font-bold">2.</span><span>Scroll and tap <strong>Add to Home Screen</strong> <PlusSquare size={14} className="inline -mt-0.5" />.</span></li>
-        <li className="flex gap-2"><span className="font-bold">3.</span><span>Tap <strong>Add</strong>. Side-Quest opens from its own icon, full screen.</span></li>
+        <li className="flex gap-2"><span className="font-bold">3.</span><span>Tap <strong>Add</strong>. {app} opens from its own icon, full screen.</span></li>
       </ol>
       {isIosOtherBrowser() && <p className="mt-3 text-xs text-stone-500" data-testid="ios-other-browser">Using Chrome or another browser on an iPhone? Open this page in Safari first, or use that browser's Share menu if it shows Add to Home Screen.</p>}
     </>
@@ -18,12 +18,12 @@ export function IosSteps() {
 }
 
 /** Steps for Android when the browser hasn't offered its own install prompt. */
-export function AndroidSteps() {
+export function AndroidSteps({ app = "Side-Quest" }) {
   return (
     <ol className="space-y-3 text-sm text-stone-700">
       <li className="flex gap-2"><span className="font-bold">1.</span><span>In Chrome, tap the menu <MoreVertical size={14} className="inline -mt-0.5" /> at the top right.</span></li>
       <li className="flex gap-2"><span className="font-bold">2.</span><span>Tap <strong>Install app</strong> (or <strong>Add to Home screen</strong>).</span></li>
-      <li className="flex gap-2"><span className="font-bold">3.</span><span>Tap <strong>Install</strong>. Side-Quest appears with your other apps.</span></li>
+      <li className="flex gap-2"><span className="font-bold">3.</span><span>Tap <strong>Install</strong>. {app} appears with your other apps.</span></li>
     </ol>
   );
 }
