@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Fern, Branch, Leaf, Flower, Pet } from "../components/shared/Botanical";
+import InstallApp from "../components/shared/InstallApp";
 import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass, ArrowRight } from "lucide-react";
 
 const Feature = ({ icon: Icon, title, desc, tint = "#6B8A5B" }) => (
@@ -35,6 +36,7 @@ export default function Landing() {
             <Link to="/child-login" className="rounded-full px-3 sm:px-5 py-2.5 text-sm font-bold hover:translate-y-[-1px] transition shadow-sm" data-testid="nav-child-login" style={{backgroundColor:"#C77B5B", color:"#FFF9EE"}}>Student sign in</Link>
             <Link to="/login" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-login" style={{color:"#52473A"}}>Parent sign in</Link>
             <Link to="/register" className="rounded-full px-3 sm:px-5 py-2.5 text-sm font-semibold hover:translate-y-[-1px] transition shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="nav-register">Start free preview</Link>
+            <InstallApp variant="nav" />
           </nav>
         </div>
       </header>

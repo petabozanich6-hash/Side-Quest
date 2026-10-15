@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try { await api.post("/auth/logout"); } catch {}
+    try { navigator.serviceWorker?.controller?.postMessage("CLEAR_CACHES"); } catch {}
     localStorage.removeItem("sq_token");
     setUser(null);
   };

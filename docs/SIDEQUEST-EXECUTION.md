@@ -45,6 +45,13 @@ Claude builds and integrates; the owner tests by hand; ChatGPT may prepare small
 | P | Production hardening | NOT STARTED | Password reset, account deletion, legal pages flagged for owner/legal review. |
 | AI | Paid-only AI lesson drafting | IMPLEMENTED, tests passing locally | See below. |
 
+## Installable app (PWA, 14 Oct 2026)
+
+- `frontend/public/manifest.webmanifest`, icons in `frontend/public/icons/` (compass mark, forest #1F3B2D / cream; maskable versions keep the mark in the safe zone), `offline.html`, and `sw.js` registered from `src/lib/pwa.js` in production builds only.
+- Service worker rules: `/api/*` is never cached (private, always live); pages are network-first (deploys show on next open, offline page when there is no connection); hashed `/static/*` files cache-first; images stale-while-revalidate. Bump `VERSION` in `sw.js` to clear device caches. `public/_headers` stops `sw.js` and the manifest being cached by the CDN.
+- "Install the app" button (`components/shared/InstallApp.jsx`) in the parent sidebar and landing nav: the browser prompt on Android/Chrome/Edge, Add to Home Screen steps on iPhone/iPad; hidden once installed.
+- Not in the app stores. A Google Play listing can later wrap this PWA as a Trusted Web Activity; the Apple App Store needs a native wrapper and tends to reject plain website wrappers.
+
 ## AI lesson drafting (paid plans only)
 
 - Route `POST /api/ai/lesson-draft`, status `GET /api/ai/status`. Code: `worker/src/aiDraft.ts`. UI: "Draft with AI" panel in the builder (free users see an upgrade note, no fake AI).
