@@ -1,0 +1,49 @@
+name: Discover official NSW syllabus and outcome identifier candidates
+# NSW extraction is REVIEW ONLY. Never use candidates as verified tracker data
+# until every syllabus/version/stage is checked against NESA's source.
+on:
+  pull_request:
+    paths:
+      - worker/scripts/import-nesa-review.mjs
+      - worker/test/nesaImport.test.mjs
+      - .github/workflows/import-nesa.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Test syllabus inventory and official-code extraction against fixtures
+        run: node --test worker/test/nesaImport.test.mjs
+      - name: Fetch official NESA current, forthcoming and legacy syllabuses
+        run: node worker/scripts/import-nesa-review.mjs
+      - name: Preserve machine-readable source audit for manual review
+        uses: actions/upload-artifact@v4
+        with:
+          name: nesa-syllabus-and-outcome-candidates
+          path: worker/src/data/nesa-review-import.json
+          retention-days: 30
+      - name: Commit review-only data to the unmerged PR
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
+          git add worker/src/data/nesa-review-import.json
+          if git diff --cached --quiet; then
+            echo "No inventory differences"
+          else
+            git commit -m "Data(review only): inventory NSW NESA syllabuses and outcome candidates"
+            git push origin "HEAD:$TARGET_BRANCH"
+          fi
