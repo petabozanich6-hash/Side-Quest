@@ -1,4 +1,5 @@
 import { NSW_OUTCOMES_SEED } from "./nsw-outcomes";
+import { NESA_2026_DIRECT_OUTCOME_CODES } from "./nesa-current-2026";
 import { SOURCE, STAGE2_MATHS_OUTCOMES, VERIFIED, WORKING_MATHEMATICALLY } from "./nsw-stage2-maths";
 
 export type CurriculumOutcome = {
@@ -147,3 +148,22 @@ export const NSW_OUTCOMES: CurriculumOutcome[] = [
     source: SOURCE,
   })),
 ];
+
+// Extend the existing verified-code browse catalogue with current official NESA
+// outcomes from the source-controlled, version-labelled import. This remains a
+// PARTIAL catalogue: legacy seed records stay intact, and newly available codes
+// carry no copied syllabus wording. No existing child's evidence IDs are rewritten.
+const NSW_EXISTING_CODES = new Set(NSW_OUTCOMES.map((o) => o.code));
+for (const row of NESA_2026_DIRECT_OUTCOME_CODES) {
+  if (NSW_EXISTING_CODES.has(row.code)) continue; // including shared MAO-WM-01
+  NSW_EXISTING_CODES.add(row.code);
+  NSW_OUTCOMES.push({
+    id: row.code,
+    code: row.code,
+    stage: row.stage,
+    learning_area: row.learning_area,
+    description: "",
+    source: row.source,
+  });
+}
+
