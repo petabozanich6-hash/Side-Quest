@@ -306,7 +306,7 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
   const subjectOf = (o: CatalogueOutcome) => {
     if (!atLevel(o)) return null;
     // EAL content is only assigned to a family explicitly studying EAL.
-    if(vic && o.stage.startsWith("EAL-") && !matchers.some(m=>m.test(o)))return null;
+    if(vic && o.stage.startsWith("EAL-") && !matchers.some((m: { test: (outcome: CatalogueOutcome) => boolean }) => m.test(o)))return null;
     if (!matchers.length) return o.learning_area;
     return matchers.find((m: { test: (o: CatalogueOutcome) => boolean }) => m.test(o))?.name || null;
   };
