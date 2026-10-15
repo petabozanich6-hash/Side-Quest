@@ -38,6 +38,19 @@ export const PRICES: Record<Mode, Partial<Record<Interval, PriceInfo>>> = {
   live: {},
 };
 
+const LIVE_PRICE_VARS = {
+  weekly: "STRIPE_LIVE_PRICE_WEEKLY",
+  fortnightly: "STRIPE_LIVE_PRICE_FORTNIGHTLY",
+  monthly: "STRIPE_LIVE_PRICE_MONTHLY",
+  yearly: "STRIPE_LIVE_PRICE_YEARLY",
+} as const;
+const LIVE_PRICE_DETAILS: Record<Interval, Omit<PriceInfo, "interval" | "price">> = {
+  weekly: { amount_cents: 300, label: "Weekly", every: "per week" },
+  fortnightly: { amount_cents: 600, label: "Fortnightly", every: "every 2 weeks" },
+  monthly: { amount_cents: 1300, label: "Monthly", every: "per month" },
+  yearly: { amount_cents: 13000, label: "Yearly", every: "per year" },
+};
+
 export const PLAN_FOR_INTERVAL: Record<Interval, Plan> = {
   weekly: "ACTIVE_WEEKLY",
   fortnightly: "ACTIVE_FORTNIGHTLY",
@@ -51,13 +64,24 @@ export type BillingConfig =
   | { ok: true; mode: Mode; key: string; prices: Partial<Record<Interval, PriceInfo>> }
   | { ok: false; reason: string };
 
-export function billingConfig(env: Pick<Env, "STRIPE_SECRET_KEY" | "STRIPE_LIVE_ENABLED">): BillingConfig {
+export function billingConfig(env: Pick<Env, "STRIPE_SECRET_KEY" | "STRIPE_LIVE_ENABLED" | "STRIPE_LIVE_PRICE_WEEKLY" | "STRIPE_LIVE_PRICE_FORTNIGHTLY" | "STRIPE_LIVE_PRICE_MONTHLY" | "STRIPE_LIVE_PRICE_YEARLY">): BillingConfig {
   const key = env.STRIPE_SECRET_KEY || "";
   if (!key) return { ok: false, reason: "STRIPE_SECRET_KEY is not set" };
   const mode: Mode | null = /^(sk|rk)_test_/.test(key) ? "test" : /^(sk|rk)_live_/.test(key) ? "live" : null;
   if (!mode) return { ok: false, reason: "STRIPE_SECRET_KEY is not a Stripe secret or restricted key" };
   if (mode === "live" && env.STRIPE_LIVE_ENABLED !== "true") return { ok: false, reason: "Live Stripe key present but live payments are not enabled" };
-  const prices = PRICES[mode];
+  // Live prices are configured per environment, never copied from sandbox.
+  // Reject partial configurations so a customer cannot pay for an unmapped plan.
+  const prices: Partial<Record<Interval, PriceInfo>> = mode === "live"
+    ? Object.fromEntries(INTERVALS.map((interval) => {
+        const id = env[LIVE_PRICE_VARS[interval]];
+        if (!id || !/^price_[A-Za-z0-9]+$/.test(id)) return [interval, null];
+        return [interval, { ...LIVE_PRICE_DETAILS[interval], interval, price: id }];
+      }).filter(([, value]) => value !== null)) as Partial<Record<Interval, PriceInfo>>
+    : PRICES.test;
+  if (mode === "live" && (INTERVALS.some((i) => !prices[i]) || new Set(INTERVALS.map((i) => prices[i]?.price)).size !== 4)) {
+    return { ok: false, reason: "Live Stripe prices must be configured for all four intervals with distinct price IDs" };
+  }
   if (!Object.keys(prices).length) return { ok: false, reason: `No ${mode} prices are configured` };
   return { ok: true, mode, key, prices };
 }
