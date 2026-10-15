@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import QRCode from "qrcode";
 import { Check, Copy, Download } from "lucide-react";
-import { deviceKind, isKidsDevice, isKidsHost, kidsHostReachable, kidsOrigin, parentOrigin, setKidsDevice, useInstallPrompt, useKidsManifest } from "../lib/pwa";
+import { deviceKind, isKidsDevice, isKidsHost, kidsOrigin, parentOrigin, separateKidsApp, setKidsDevice, useInstallPrompt, useKidsManifest } from "../lib/pwa";
 import { AndroidSteps, IosSteps } from "../components/shared/InstallApp";
 
 const GREEN = "#1F3B2D";
@@ -20,8 +20,8 @@ export default function GetApp() {
   const onKidsHost = isKidsHost();
   const kids = params.get("for") === "child" || onKidsHost;
   useKidsManifest(kids);
-  const [kidsLive, setKidsLive] = useState(false);
-  useEffect(() => { if (kids && !onKidsHost) kidsHostReachable().then(setKidsLive); }, [kids, onKidsHost]);
+  // SQ Kids has its own address here: the kids' setup always sends families there.
+  const kidsLive = kids && separateKidsApp();
   // SQ Kids as its own app: installed from the kids' address.
   const separate = onKidsHost || kidsLive;
   const prompt = useInstallPrompt();
@@ -75,13 +75,6 @@ export default function GetApp() {
             <h2 className="font-display text-xl font-bold" style={{ color: GREEN }}>Install SQ Kids</h2>
             <p className="text-sm text-stone-700">Tap below. It opens the SQ Kids page{installed ? " in your browser" : ""}, with the steps to add it to this {kind === "ios" ? "iPhone or iPad" : "device"}.</p>
             <a href={link} target={installed ? "_blank" : undefined} rel="noopener" className="block w-full text-center rounded-xl px-4 py-3 font-semibold text-white" style={{ backgroundColor: "#4A5D3A" }} data-testid="open-kids-setup">Open SQ Kids setup</a>
-            {installed && (
-              <details className="text-sm text-stone-700">
-                <summary className="cursor-pointer font-semibold">Or: make this Side-Quest app open to the child sign-in instead</summary>
-                <p className="mt-2">One app for everyone: it opens to your child's sign-in, and you sign in from "Are you a parent? Sign in here".</p>
-                <button type="button" onClick={() => { setKidsDevice(true); navigate("/child-login", { replace: true }); }} className="mt-2 rounded-xl px-4 py-2 text-sm font-semibold border bg-white" style={{ color: GREEN, borderColor: "#D4C8A8" }} data-testid="use-for-child">Open to my child's sign-in</button>
-              </details>
-            )}
           </section>
         ) : installed && kids ? (
           // Opened inside the Side-Quest app already on this device (common on Android, where links open the installed

@@ -136,39 +136,35 @@ await step("Get the app for a child's device: kids' manifest, kids' wording and 
   const p = await ctx.newPage();
   await p.goto(BASE + "/get-app");
   ok(await manifestHref(p) === "/manifest.webmanifest", "parent page should use the parent manifest");
+  // The parent page is the parent app's page: not SQ Kids wording, and its link is the parent site.
+  await p.waitForSelector("[data-testid=get-app-title]:has-text(\"Get the Side-Quest app\")");
+  ok((await p.textContent("[data-testid=get-app-url]")) === `${BASE}/get-app`, "parent link " + await p.textContent("[data-testid=get-app-url]"));
   await p.click("[data-testid=get-app-switch]");
   // The kids' address answers, so the kids' setup points there: SQ Kids is its own app.
   await p.waitForSelector("[data-testid=get-app-title]:has-text(\"Set up SQ Kids\")");
   ok((await p.textContent("[data-testid=get-app-url]")) === `${KIDS}/get-app`, "kids link " + await p.textContent("[data-testid=get-app-url]"));
   await p.waitForSelector("[data-testid=get-app-qr-image]");
   await p.screenshot({ path: `${SHOTS}/kids-desktop.png`, fullPage: true });
+  // On the parent site the child sign-in no longer installs a kids' app (SQ Kids has its own address).
   await p.goto(BASE + "/child-login");
-  ok(await manifestHref(p) === "/manifest-kids.webmanifest", "child sign-in installs the kids' app");
+  ok(await manifestHref(p) === "/manifest.webmanifest", "child sign-in on the parent site must not install a kids' app");
   await ctx.close();
 });
 
-await step("kids' app on a child's phone: opens at the child sign-in, goes to their quests, and sign-out returns to sign-in", async () => {
+await step("parent app: an old kids' marker on the phone is cleared and the app opens to the parent sign-in", async () => {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, userAgent: UA.iphone, isMobile: true, hasTouch: true });
   const p = await ctx.newPage();
-  await p.goto(BASE + "/child-login?source=kids-app"); // what tapping the SQ Kids icon opens
   await p.goto(BASE + "/");
-  await p.waitForURL((u) => u.pathname === "/child-login");
-  await p.fill("[data-testid=child-login-username]", kidUser);
-  await p.fill("[data-testid=child-login-pin]", "4321");
-  await p.click("[data-testid=child-login-submit]");
-  await p.waitForURL((u) => u.pathname === "/child");
-  await p.goto(BASE + "/");
-  await p.waitForURL((u) => u.pathname === "/child");
-  await p.goto(BASE + "/child-login");
-  await p.waitForURL((u) => u.pathname === "/child");
-  await p.click("[data-testid=child-logout]");
-  await p.waitForURL((u) => u.pathname === "/child-login");
-  await noOverflow(p, "kids sign-in");
-  await p.screenshot({ path: `${SHOTS}/kids-signin-phone.png`, fullPage: true });
+  // What earlier testing left behind: the same-address kids' app marker.
+  await p.evaluate(() => localStorage.setItem("sq_kids_device", "1"));
+  await p.goto(BASE + "/?source=app"); // tapping the Side-Quest (parent) icon
+  await p.waitForURL((u) => u.pathname === "/login");
+  ok(await p.evaluate(() => localStorage.getItem("sq_kids_device")) === null, "old marker kept");
+  await p.goto(BASE + "/?source=kids-app"); // even an old kids' start link can't turn the parent site into the kids' app
+  ok(new URL(p.url()).pathname === "/", "parent site redirected to a child sign-in");
   await ctx.close();
 });
-
-await step("one shared device: inside the installed app, the kids' link offers to open to the child sign-in, reversibly", async () => {
+await step("inside the installed parent app, the kids' link sends families to SQ Kids (no dead end, no mixing)", async () => {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, userAgent: UA.android, isMobile: true, hasTouch: true });
   // Pretend this page runs inside the installed Side-Quest app (what Android does when the QR code is scanned).
   await ctx.addInitScript(() => {
@@ -180,22 +176,10 @@ await step("one shared device: inside the installed app, the kids' link offers t
   await p.waitForSelector("[data-testid=open-kids-setup]");
   ok(await p.getAttribute("[data-testid=open-kids-setup]", "href") === `${KIDS}/get-app`, "Open SQ Kids setup goes to the kids' address");
   ok(await p.locator("[data-testid=get-app-installed]").count() === 0, "dead-end 'already installed' message shown");
+  ok(await p.locator("[data-testid=use-for-child]").count() === 0, "the parent app can still be turned into a child app");
   await p.screenshot({ path: `${SHOTS}/shared-device.png`, fullPage: true });
-  await p.click("text=make this Side-Quest app open to the child sign-in instead");
-  await p.click("[data-testid=use-for-child]");
-  await p.waitForURL((u) => u.pathname === "/child-login");
-  await p.goto(BASE + "/?source=app"); // reopening the app from its icon
-  await p.waitForURL((u) => u.pathname === "/child-login");
-  await p.click("text=Sign in here"); // the parent can still get in
-  await p.waitForURL((u) => u.pathname === "/login");
-  await p.goto(BASE + "/get-app");
-  await p.waitForSelector("[data-testid=kids-device-on]");
-  await p.click("[data-testid=use-for-parent]");
-  await p.goto(BASE + "/");
-  ok(new URL(p.url()).pathname === "/", "still forwarded to the child sign-in after switching back");
   await ctx.close();
 });
-
 await step("SQ Kids address: opens to the child sign-in, installs the kids' app and has no parent pages", async () => {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, userAgent: UA.iphone, isMobile: true, hasTouch: true });
   const p = await ctx.newPage();
@@ -239,18 +223,6 @@ await step("one phone, two apps: the parent stays signed in to Side-Quest while 
   await k.waitForURL((u) => u.pathname === "/child-login");
   await p.reload();
   await p.waitForSelector("[data-testid=parent-sidebar]", { state: "attached" });
-  await ctx.close();
-});
-
-await step("before the kids' address is set up, the kids' option keeps working on the main site", async () => {
-  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
-  await ctx.route(/kids\.localhost/, (r) => r.abort());
-  const p = await ctx.newPage();
-  await p.goto(BASE + "/get-app?for=child");
-  await p.waitForSelector("[data-testid=get-app-title]:has-text(\"Set up Side-Quest on your child's device\")");
-  await p.waitForTimeout(1500);
-  ok((await p.textContent("[data-testid=get-app-url]")) === `${BASE}/get-app?for=child`, "fallback link " + await p.textContent("[data-testid=get-app-url]"));
-  ok(await manifestHref(p) === "/manifest-kids.webmanifest", "fallback installs the kids' app from the main site");
   await ctx.close();
 });
 

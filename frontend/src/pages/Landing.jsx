@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { isKidsDevice, isStandalone } from "../lib/pwa";
+import { isKidsDevice, isKidsHost, isStandalone } from "../lib/pwa";
 import { Fern, Branch, Leaf, Flower, Pet } from "../components/shared/Botanical";
 import InstallApp from "../components/shared/InstallApp";
 import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass, ArrowRight } from "lucide-react";
@@ -17,10 +17,14 @@ const Feature = ({ icon: Icon, title, desc, tint = "#6B8A5B" }) => (
 );
 
 export default function Landing() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   // Opened from the home-screen icon while signed in: go straight to the quests or the Parent Hub (works offline too).
   const fromApp = isStandalone() || new URLSearchParams(window.location.search).get("source") === "app";
+  // Opened as an app: wait until we know who is signed in (offline this comes from the device) before choosing a page.
+  if (fromApp && loading) return <div className="min-h-screen grid place-items-center text-stone-500">Loading…</div>;
   if (fromApp && user) return <Navigate to={user.role === "child" ? "/child" : "/parent"} replace />;
+  // The parent app (Side-Quest) opens to the parent sign-in; SQ Kids opens to the child sign-in (below).
+  if (fromApp && !user && !isKidsDevice() && !isKidsHost()) return <Navigate to="/login" replace />;
   // A child's own device (the kids' app): straight to their quests, or to the child sign-in.
   if (isKidsDevice()) return <Navigate to={user?.role === "child" ? "/child" : "/child-login"} replace />;
   return (
