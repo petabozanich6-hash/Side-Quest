@@ -37,3 +37,4 @@ ci-logs/
 backup-*.sql
 backups/
 *.sqlite
+wrangler.timetable-e2e.jsonc

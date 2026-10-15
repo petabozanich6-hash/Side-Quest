@@ -48,7 +48,11 @@ export default function CalendarPage() {
     return i < 0 ? "#475569" : (students[i].prefs?.calendar_colour || COLOURS[i % COLOURS.length]);
   };
   const nameOf = (sid) => students.find(s => s.id === sid)?.name;
-  const labelOf = (e) => (e.student_id && nameOf(e.student_id) ? `${nameOf(e.student_id).split(" ")[0]}: ` : "") + e.title;
+  // Timetable slots show their subject plus the lesson in them, or "(free)" while empty.
+  const isSlot = (e) => e.event_type === "timetable" || (e.event_type === "lesson" && /^Suggested by Side-Quest/.test(e.notes || ""));
+  const freeSlot = (e) => isSlot(e) && !e.linked_assignment_id && !e.linked_lesson_id;
+  const labelOf = (e) => (e.student_id && nameOf(e.student_id) ? `${nameOf(e.student_id).split(" ")[0]}: ` : "")
+    + (e.start_time && isSlot(e) ? `${e.start_time} ` : "") + e.title + (e.lesson_title ? ` · ${e.lesson_title}` : freeSlot(e) ? " (free)" : "");
 
   const month = cur.getMonth(), year = cur.getFullYear();
   const weeks = monthMatrix(year, month);
@@ -116,7 +120,7 @@ export default function CalendarPage() {
             {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
           <button onClick={()=>setAutoQuestOpen(true)} className="rounded-full bg-emerald-100 text-emerald-950 border border-emerald-300 px-4 py-2 text-sm font-semibold" data-testid="autoquest-open-btn">⚔️ Auto-Quest</button>
-          <button onClick={()=>setGeneratorOpen(true)} className="rounded-full bg-amber-100 text-amber-950 border border-amber-300 px-4 py-2 text-sm font-semibold" data-testid="generate-timetable-btn">Generate timetable</button>
+          <button onClick={()=>setGeneratorOpen(true)} className="rounded-full bg-amber-100 text-amber-950 border border-amber-300 px-4 py-2 text-sm font-semibold" data-testid="generate-timetable-btn">Weekly timetable</button>
           <button onClick={()=>setSchedOpen(true)} className="rounded-full bg-teal-700 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Schedule lesson</button>
           <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
         </div>
@@ -154,7 +158,7 @@ export default function CalendarPage() {
                     <div className={`text-xs ${isToday ? "font-bold text-teal-700" : ""}`}><button type="button" onClick={()=>setDayOpen(iso)} aria-label={`View and edit ${iso}`} className="rounded p-1 hover:bg-teal-50">{dt.getDate()}</button></div>
                     <div className="mt-1 space-y-0.5">
                       {dayEvents.slice(0,3).map(e => (
-                        <button type="button" key={e.id} title={`${nameOf(e.student_id) || "Whole family"}: ${e.title}`} className="block w-full text-left truncate text-[10px] rounded px-1.5 py-0.5 text-white" style={{backgroundColor: colourOf(e.student_id)}} onClick={()=>setEditing(e)} data-testid={`edit-cal-${e.id}`}>{labelOf(e)}</button>
+                        <button type="button" key={e.id} title={`${nameOf(e.student_id) || "Whole family"}: ${labelOf(e)}`} className="block w-full text-left truncate text-[10px] rounded px-1.5 py-0.5 text-white" style={{backgroundColor: colourOf(e.student_id), opacity: freeSlot(e) ? 0.55 : 1}} onClick={()=>setEditing(e)} data-testid={`edit-cal-${e.id}`} data-slot={isSlot(e) ? (freeSlot(e) ? "free" : "filled") : undefined}>{labelOf(e)}</button>
                       ))}
                       {dayEvents.length > 3 && <button type="button" onClick={()=>setDayOpen(iso)} className="text-[10px] text-teal-700 font-semibold underline" data-testid={`more-${iso}`}>+{dayEvents.length - 3} more</button>}
                     </div>

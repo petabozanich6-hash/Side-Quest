@@ -85,7 +85,7 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
   const lessonArea = (l: QuestLesson) => areaOf(String(l.learning_area || l.title || ""));
 
   return input.slots
-    .filter((slot) => slot.student_id === input.studentId && (!slot.event_type || slot.event_type === "lesson"))
+    .filter((slot) => slot.student_id === input.studentId && (!slot.event_type || slot.event_type === "lesson" || slot.event_type === "timetable"))
     .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id))
     .map((slot): QuestDecision => {
       const area = areaOf(slot.title);
