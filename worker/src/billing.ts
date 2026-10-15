@@ -448,15 +448,30 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
 
     try {
       let customer: string | null = fam.stripe_customer_id;
+      if (customer && cfg.mode === "live") {
+        // A production family may retain a sandbox customer id after switching Stripe modes.
+        // Confirm it exists in this live account before reusing it; other Stripe errors fail closed.
+        try {
+          const existing = await stripeCall(cfg.key, "GET", `customers/${encodeURIComponent(customer)}`, {}, { fetchImpl });
+          if (existing?.deleted || (existing?.metadata?.family_id && existing.metadata.family_id !== u.family_id)) {
+            throw new Error("Stripe customer is deleted or belongs to a different family");
+          }
+        } catch (err) {
+          if (!(err instanceof StripeError) || err.status !== 404) throw err;
+          customer = null;
+        }
+      }
       if (!customer) {
         const parentRow = await c.env.DB.prepare("SELECT email, name FROM users WHERE id = ?").bind(u.id).first<{ email: string; name: string }>();
         const created = await stripeCall(cfg.key, "POST", "customers", {
           email: parentRow?.email,
           name: parentRow?.name,
           metadata: { family_id: u.family_id },
-        }, { idempotencyKey: `sq-customer-${u.family_id}`, fetchImpl });
-        // Only the first writer wins, so two quick clicks cannot leave the family with two customers.
-        await c.env.DB.prepare("UPDATE families SET stripe_customer_id = ? WHERE id = ? AND stripe_customer_id IS NULL").bind(created.id, u.family_id).run();
+        }, { idempotencyKey: `sq-customer-${cfg.mode}-${u.family_id}`, fetchImpl });
+        // Atomic compare-and-swap protects concurrent checkout attempts and other family records.
+        // Only replace a stale id when Stripe confirmed it does not exist in live mode.
+        await c.env.DB.prepare("UPDATE families SET stripe_customer_id = ? WHERE id = ? AND (stripe_customer_id IS ? OR stripe_customer_id = ?)")
+          .bind(created.id, u.family_id, fam.stripe_customer_id, fam.stripe_customer_id).run();
         const again = await c.env.DB.prepare("SELECT stripe_customer_id FROM families WHERE id = ?").bind(u.family_id).first<{ stripe_customer_id: string }>();
         customer = again?.stripe_customer_id || created.id;
       }

@@ -464,6 +464,35 @@ test("checkout: server picks price, family and redirect; client values are ignor
   assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }, { STRIPE_SECRET_KEY: "" }))).status, 503);
 });
 
+test("live checkout replaces a confirmed stale sandbox customer, preserving family data", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1", "FREE_PREVIEW", { stripe_customer_id: "cus_sandbox_old" });
+  db.raw.prepare("INSERT INTO users (id,family_id,email,name,created_at) VALUES ('u1','f1','p@example.com','P',?)").run(NOW.toISOString());
+  const calls = [];
+  const fetchStripe = async (url, init) => {
+    calls.push({ url, init });
+    if (url.endsWith("/customers/cus_sandbox_old")) return new Response(JSON.stringify({ error: { message: "No such customer" } }), { status: 404 });
+    if (url.endsWith("/customers")) return new Response(JSON.stringify({ id: "cus_live_new" }));
+    if (url.endsWith("/checkout/sessions")) return new Response(JSON.stringify({ id: "cs_live_1", url: "https://checkout.stripe.com/c/pay/cs_live_1" }));
+    throw Error("unexpected Stripe request " + url);
+  };
+  const h = routes(fetchStripe);
+  const result = await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }, { STRIPE_SECRET_KEY: "sk_live_dummy", STRIPE_LIVE_ENABLED: "true" }));
+  assert.equal(result.status, 200);
+  assert.equal(fam(db, "f1").stripe_customer_id, "cus_live_new");
+  assert.equal(fam(db, "f1").plan, "FREE_PREVIEW");
+  assert.match(calls.find((c) => c.url.endsWith("/checkout/sessions")).init.body, /customer=cus_live_new/);
+});
+
+test("live checkout fails closed on Stripe permission/server errors without replacing customer", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1", "FREE_PREVIEW", { stripe_customer_id: "cus_existing" });
+  const h = routes(async () => new Response(JSON.stringify({ error: { message: "Service unavailable" } }), { status: 503 }));
+  const res = await h["/api/billing/checkout"](ctx(db, { interval: "monthly" }, { STRIPE_SECRET_KEY: "sk_live_dummy", STRIPE_LIVE_ENABLED: "true" }));
+  assert.equal(res.status, 502);
+  assert.equal(fam(db, "f1").stripe_customer_id, "cus_existing");
+});
+
 test("webhook route rejects unsigned requests", async () => {
   const db = makeDb();
   const h = routes(async () => new Response("{}"));
