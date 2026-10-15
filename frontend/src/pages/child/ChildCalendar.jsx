@@ -110,7 +110,7 @@ export default function ChildCalendar() {
                     const body = (
                       <div className="flex items-center justify-between gap-3">
                         <div>
-                          <div className="font-medium text-sm">{e.title}</div>
+                          <div className="font-medium text-sm">{e.title}{e.lesson_title ? `: ${e.lesson_title}` : ""}</div>
                           <div className="text-xs opacity-60 flex items-center gap-1 mt-0.5"><Clock size={11}/> {e.duration_minutes || 30} min</div>
                         </div>
                         {badgeFor(e, a, key)}
