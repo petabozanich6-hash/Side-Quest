@@ -2,6 +2,24 @@
 
 **Status: inventory and implementation design; NOT a completed dataset.** Do not describe Side-Quest as having all codes until automated coverage checks pass. This audit intentionally does not invent identifiers.
 
+## Victorian curriculum source-backed code catalogue (16 October 2026)
+
+**Built and connected on this draft branch** — not merged, not live:
+
+- **2,927 distinct Victorian Curriculum F–10 v2 identifiers** discovered from all 15 official VCAA level pages, then mapped against **53 subject / capability / language-sequence source pages**, with **0 unmapped codes** and **43 identifiers legitimately referenced in more than one subject/sequence context**. All VCAA source URLs and 2026 applicable-version warnings are retained.
+- **796 distinct official VCAA v1 English as an Additional Language content-description identifiers**, separately extracted and level-tagged: Pathway A 161, B 318 and C 317. The 2026 VCAA timeline confirms EAL continues to use v1 at this time.
+- **3,723 unique VCAA code identifiers** compiled to `worker/src/data/vic-source-ids.ts`. Each retains code, official URL, version, subject(s), pathway(s) and source level(s), without reproducing syllabus wording.
+- `catalogueFor("VIC")` now returns a **partial, source-backed VCAA catalogue**, separate from NSW NESA codes and ACARA v9. `programFor` filters selected subjects, language pathways and exact EAL progression levels. Ordinary English children must not receive EAL outcomes; generic "Languages" does not mean all 18 language electives.
+- In 2026, **Version 1.0 remains required** for several Phase 3/4 Languages (including Arabic, Latin, Classical Greek and Turkish); published VC2 identifiers for these subjects are **not added to a child's default program**. Their missing VC1 counterparts still need a full official source import. VC2 transition flags do not certify school-sector implementation dates.
+- Victorian lesson manual code linking is now enabled with a VCAA lookup link; **automated lesson-code matching remains NSW-only** until independently tested. The Outcome Tracker is source-backed but is **not complete Victorian curriculum certification**.
+- Missing: V1 Phase 3/4 Languages, other transitional V1 A–D materials, senior VCE/VCE VM/VET, unverified Level 10A availability, and all other jurisdiction-wide completeness manifests. Do not claim everything is loaded.
+
+Source authority: https://www.vcaa.vic.edu.au/curriculum/foundation-10-version-2/victorian-curriculum-f-10-version-20 . Official code search https://f10.vcaa.vic.edu.au/download-curriculum .
+
+### Western Australia blocker confirmed with direct downloads
+
+SCSA officially lists downloadable subject-by-subject JSON, including Noongar, Chinese, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Tamil and Years 7–10 languages. GitHub Actions received **HTTP 403** for both the outline index and directly requested official English/Chinese JSON assets. The WA importer and its fixture tests remain available; an authorised direct-file provision (for example a human-downloaded source import) is needed before we can correctly ingest WA state identifiers. All WA code claims remain unavailable.
+
 ## Verified import progress (16 October 2026)
 
 - **ACARA MRAC/2024/04: 2,678 content descriptions imported and committed on this draft branch**, compared with 1,395 in main.
