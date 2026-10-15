@@ -2,11 +2,22 @@
 
 **Status: inventory and implementation design; NOT a completed dataset.** Do not describe Side-Quest as having all codes until automated coverage checks pass. This audit intentionally does not invent identifiers.
 
-## Confirmed gaps in main
+## Verified import progress (16 October 2026)
+
+- **ACARA MRAC/2024/04: 2,678 content descriptions imported and committed on this draft branch**, compared with 1,395 in main.
+- Includes all eight F–10 learning areas and **1,283 Languages identifiers**, covering 18 identified subjects/frameworks/pathways including 42 `ACL9` classical-language codes.
+- Automated GitHub Actions fetched the official source, checked source-area presence, duplicate IDs, F–10 bands and regression tests. Imported into `worker/src/data/ac9-outcomes.ts`; the existing Outcome Tracker reads this shared file automatically.
+- Specific language electives and Chinese first/background/second-language pathways are tested so outcomes from unrelated languages and pathways are not silently mixed.
+- **NSW remains a partial seed of 137 identifiers**. Victoria and WA require state-specific imports, and every senior-secondary authority still needs a course/outcome inventory.
+- **These 2,678 entries are verified *national curriculum content-description identifiers*, not separate complete curriculum catalogues for five states.**
+- Victoria's 2026 effective provision includes a mix of VC2 and VC1 in certain languages and EAL subjects; import both with separate effective dates, not a fabricated single VC2 catalogue. Official references: https://www.vcaa.vic.edu.au/curriculum/foundation-10-version-2/victorian-curriculum-f-10-version-20 and https://f10.vcaa.vic.edu.au/download-curriculum (official CSV download selector).
+- WA's curriculum publishes applicable versions and some transitional 2027 Languages material: https://k10outline.scsa.wa.edu.au/. Do not substitute national content codes without verifying WA adoption and any state-specific identifiers.
+
+## Confirmed gaps in main (historical baseline)
 
 - `worker/src/data/jurisdictions.ts` advertises only NSW as `codes: "verified"`; VIC, QLD, WA, SA, TAS, ACT, NT are `none`.
 - `worker/src/data/nsw-outcomes.ts` is an existing seed, **not evidence of complete syllabus coverage**.
-- `worker/scripts/import-ac9.mjs` imports content descriptions for ENG, MAT, SCI, HASS, HPE, ART, TEC and deliberately omits Languages. Correct the omission and check all subjects/strands.
+- Main previously omitted Languages; this draft PR now imports all eight areas, retaining official language pathways and both `AC9` and `ACL9` identifiers.
 - `worker/src/data/curriculum.ts` defines internal course identifiers (for example ENG-S4 and MAT-S4); these must never be represented as official learning-outcome identifiers.
 - `docs/OUTCOME-TRACKER.md` describes mastery's curriculum-catalogue dependency and notes the prior Australian Curriculum import branch; deployment status needs fresh verification.
 
