@@ -65,5 +65,9 @@ const header=[
 "export type VicCurriculumIdentifier = {code:string;learning_area:string;learning_areas:string[];subject:string;subjects:string[];pathway:string|null;pathways:string[];levels:string[];from:number|null;to:number|null;stage:string|null;source:string;source_url:string;source_urls:string[];curriculum_version:string;description:string;status:string;shared_between_contexts:boolean};",
 "export const VIC_SOURCE_VERIFIED_IDS: VicCurriculumIdentifier[] = "
 ].join("\n");
-writeFileSync(file("vic-source-ids.ts"),header+JSON.stringify(rows)+";\n");
+// The 3,723 object literal elements overwhelm TypeScript's union inference
+// (TS2590). Encode the verified rows as a string and parse at runtime instead.
+writeFileSync(file("vic-source-ids.ts"),header+
+  "(() => { const sourceJson: string = "+JSON.stringify(JSON.stringify(rows))+
+  "; return JSON.parse(sourceJson) as VicCurriculumIdentifier[]; })();\n");
 console.log("Built VCAA source-verified code reference: "+JSON.stringify({total:rows.length,vc2:vc2.summary.classified_candidates,v1_eal:eal.summary.unique_identifiers,shared_v2:vc2.summary.ambiguous_codes,excluded_v1_phase3_current:rows.filter(x=>x.status==="PUBLISHED_V2_BUT_V1_APPLIES_2026").length,missing:errors.length}));
