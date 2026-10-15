@@ -453,3 +453,59 @@ test("lessons keep only codes from the family's own catalogue (AC9 states can li
   const t = await ot.trackerFor(db, qld, kid, { now: D(2) });
   assert.equal(statusOf(t, "AC9M3N01").status, "developing", "QLD lesson evidence reaches the tracker");
 });
+
+// ---------------------------------------------------------------- the child's program comes from their profile
+function kidWith(db, fam, { stage, year, electives, subject_levels } = {}) {
+  const id = `prog${++n}`;
+  const extra = JSON.stringify({ electives: electives || [], subject_levels: subject_levels || {} });
+  db.raw.prepare("INSERT INTO students (id,family_id,name,username,pin_hash,stage,year_level,created_at,extra) VALUES (?,?,?,?,?,?,?,?,?)").run(id, fam, "Sam", `sam${id}`, "x", stage, year, NOW.toISOString(), extra);
+  return id;
+}
+const course = (name, learning_area) => ({ code: name.toUpperCase().slice(0, 6), name, learning_area });
+const areasOf = (t) => [...new Set(t.outcomes.filter((o) => o.in_stage).map((o) => o.learning_area))].sort();
+
+test("Years 7-12: the tracker covers only the courses chosen when the child was added", async () => {
+  const db = makeDb();
+  const fam = family(db);
+  const sid = kidWith(db, fam, { stage: "S5", year: "9", electives: [course("English", "English"), course("Mathematics", "Mathematics"), course("Science", "Science"), course("History", "HSIE")] });
+  const t = await ot.trackerFor(db, fam, sid, { now: NOW });
+  assert.deepEqual(areasOf(t), ["English", "HSIE", "Mathematics", "Science"], "no Creative Arts, PDHPE or TAS outcomes the child isn't studying");
+  assert.equal(t.program.level, "Year 9");
+  assert.deepEqual(t.program.courses.map((c) => c.name), ["English", "Mathematics", "Science", "History"]);
+  assert.ok(t.areas.every((a) => ["English", "HSIE", "Mathematics", "Science"].includes(a.learning_area)), "headline counts follow the program");
+  // Evidence outside the program is kept and shown, flagged as outside it.
+  const ca = ot.catalogueFor("NSW").outcomes.find((o) => o.stage === "S5" && o.learning_area === "Creative Arts").code;
+  assert.ok((await ot.addEvidence(db, fam, `u-${fam}`, sid, ca, { level: "practice", note: "Band practice" }, NOW)).ok);
+  const t2 = await ot.trackerFor(db, fam, sid, { now: NOW });
+  const o = t2.outcomes.find((x) => x.code === ca);
+  assert.ok(o && o.in_stage === false && o.evidence_count === 1);
+});
+
+test("AC9 follows the child's year (not the two-year stage) and chosen subjects; primary covers every area", async () => {
+  const db = makeDb();
+  const fam = family(db, { jurisdiction: "QLD" });
+  const y3 = kidWith(db, fam, { stage: "S2", year: "3" });
+  const t3 = await ot.trackerFor(db, fam, y3, { now: NOW });
+  const cat = ot.catalogueFor("QLD");
+  const inProg = t3.outcomes.filter((o) => o.in_stage).map((o) => cat.byCode.get(o.code));
+  assert.ok(inProg.length > 20 && inProg.every((o) => o.from <= 3 && o.to >= 3), "Year 3 child gets Year 3 content only");
+  assert.ok(!t3.outcomes.some((o) => o.code === "AC9M4N01"), "no Year 4 maths for a Year 3 child");
+  assert.equal(t3.program.areas, null, "primary: every learning area");
+  assert.ok(areasOf(t3).includes("The Arts") && areasOf(t3).includes("Humanities and Social Sciences"));
+
+  const y9 = kidWith(db, fam, { stage: "S5", year: "9", electives: [course("English", "English"), course("Music", "Creative Arts"), course("History", "HSIE"), course("Food Technology", "Technology")] });
+  const t9 = await ot.trackerFor(db, fam, y9, { now: NOW });
+  const subjects = new Set(t9.outcomes.filter((o) => o.in_stage).map((o) => cat.byCode.get(o.code).subject));
+  assert.deepEqual([...subjects].sort(), ["Design and Technologies", "English", "History 7-10", "Music"], "only the chosen subjects within each area");
+});
+
+test("a per-subject level on the profile moves just that subject", async () => {
+  const db = makeDb();
+  const fam = family(db);
+  const sid = kidWith(db, fam, { stage: "S2", year: "3", subject_levels: { Mathematics: "S3" } });
+  const t = await ot.trackerFor(db, fam, sid, { now: NOW });
+  const nsw = ot.catalogueFor("NSW");
+  const prog = t.outcomes.filter((o) => o.in_stage).map((o) => nsw.byCode.get(o.code));
+  assert.ok(prog.filter((o) => o.learning_area === "Mathematics").every((o) => o.stage === "S3"));
+  assert.ok(prog.filter((o) => o.learning_area === "English").every((o) => o.stage === "S2"));
+});

@@ -16,7 +16,7 @@
  */
 import * as lb from "./lessonBuilder";
 import * as aid from "./aiDraft";
-import { catalogueFor, trackerFor, DEFAULT_RULES, type Catalogue } from "./outcomeTracker";
+import { catalogueFor, trackerFor, programFor, DEFAULT_RULES, type Catalogue } from "./outcomeTracker";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
 import { normArea } from "./outcomeMatch";
 import type { App, Guards } from "./types";
@@ -119,6 +119,9 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
         const again = pool.filter((c) => !inFlight.has(c) && ["introduced", "developing"].includes(status(c)) && (plannedTimes.get(c) || 0) < 2);
         if (again.length) { purpose = "consolidate"; codes = again.slice(0, 1); }
       }
+      if (!purpose && input.outcomes && !input.outcomes.some((o) => normalize(o.learning_area) === normalize(area))) {
+        return { ...base, action: "needs_parent_plan", reason: `${area} isn't one of the subjects on this child's profile at their level, so Auto-Quest won't pick outcomes for it. Add the subject on the Children page, or plan this session yourself.`, eligibleOutcomeCodes: [] };
+      }
       if (!purpose) {
         return { ...base, action: "needs_parent_plan", reason: pool.length ? "Every outcome for this area is already planned or being taught. Choose an extension, a project or a free day." : "No outstanding verified outcomes for this area at this level. Offer an extension, project or revision of your choice.", eligibleOutcomeCodes: [] };
       }
@@ -216,7 +219,7 @@ async function checkRange(db: DB, familyId: string, q: { student_id?: unknown; f
   const sid = String(q.student_id || ""), from = String(q.from || ""), to = String(q.to || "");
   if (!sid || !DAY.test(from) || !DAY.test(to) || from > to) return bad(400, "Choose a child and valid start and end dates.");
   if (Date.parse(to) - Date.parse(from) > 35 * 86400000) return bad(400, "Choose a date range of up to five weeks.");
-  const child = await db.prepare("SELECT id, stage, year_level FROM students WHERE id = ? AND family_id = ?").bind(sid, familyId).first();
+  const child = await db.prepare("SELECT id, stage, year_level, extra FROM students WHERE id = ? AND family_id = ?").bind(sid, familyId).first();
   if (!child) return bad(404, "Child not found.");
   return { ok: true as const, sid, from, to, child };
 }
@@ -241,7 +244,9 @@ export async function planRange(db: DB, familyId: string, q: { student_id?: unkn
     const t: any = await trackerFor(db, familyId, sid, { now });
     if (!t?.available) return bad(503, "The Outcome Tracker isn't ready yet. Please try again shortly.");
     progress = t.outcomes.map((o: any) => ({ code: o.code, status: o.status, last_evidence_on: o.last_evidence_on, gaps: o.gaps }));
-    outcomes = cat.outcomes.filter((o) => o.stage === child.stage).map((o) => ({ code: o.code, learning_area: o.learning_area }));
+    // Only what the child is covering: their year level and the subjects chosen on their profile.
+    const program = programFor(cat, child);
+    outcomes = cat.outcomes.filter(program.includes).map((o) => ({ code: o.code, learning_area: o.learning_area }));
     areaOf = areaMatcher(cat, String(child.stage || ""));
   }
   const decisions = planAutoQuest({

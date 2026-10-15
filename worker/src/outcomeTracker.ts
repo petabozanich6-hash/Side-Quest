@@ -21,7 +21,7 @@ type DB = any;
 
 // ---------------------------------------------------------------- catalogue (which outcomes exist)
 
-export type CatalogueOutcome = { code: string; description: string; learning_area: string; stage: string; source: string };
+export type CatalogueOutcome = { code: string; description: string; learning_area: string; stage: string; source: string; subject?: string; from?: number; to?: number };
 export type Catalogue = {
   available: true;
   framework: string; // key stored on every record, e.g. "NSW"
@@ -55,6 +55,9 @@ const ac9Rows: CatalogueOutcome[] = AC9_OUTCOMES.map(o => {
     description: "",
     learning_area: o.learning_area,
     stage,
+    subject: o.subject,
+    from: o.from,
+    to: o.to,
     source: "ACARA Australian Curriculum v9.0 content description (CC BY 4.0; MRAC/2024/04)",
   };
 });
@@ -95,6 +98,92 @@ export function catalogueFor(jurisdiction: JurisdictionCode | null): Catalogue |
 const ALL_KNOWN = new Map<string, { framework: string; outcome: CatalogueOutcome }>();
 for (const cat of Object.values(CATALOGUES)) for (const o of cat!.outcomes) ALL_KNOWN.set(o.code, { framework: cat!.framework, outcome: o });
 const knownCode = (code: unknown) => ALL_KNOWN.get(String(code ?? "").trim()) || null;
+
+// ---------------------------------------------------------------- the child's program (what they will cover)
+
+/**
+ * Which catalogue outcomes a child is covering, from what the parent set on the child's profile:
+ * - level: the year level (AC9 content descriptions are per year or band, so a Year 3 child isn't given Year 4
+ *   content), else the stage; a per-subject level in `subject_levels` overrides it for that learning area;
+ * - subjects: for Years 7-12 the courses chosen when the child was added (compulsory core, HSIE pathway, electives).
+ *   Only their learning areas count, narrowed to the matching AC9 subject (e.g. Music, History) where there is one.
+ *   Primary-age children, and children with no courses saved, cover every learning area for their level.
+ * Outcomes outside the program are never hidden when they have evidence; they're listed as "other outcomes".
+ */
+export type Program = {
+  level: string;
+  stage: string;
+  year: number | null;
+  areas: string[] | null; // null = every learning area
+  courses: { name: string; learning_area: string }[];
+  includes: (o: CatalogueOutcome) => boolean;
+};
+
+const yearOf = (y: unknown): number | null => {
+  const s = String(y ?? "").trim();
+  if (!s) return null;
+  if (/^(k|kindy|kinder|kindergarten|foundation|prep|reception|transition|pre-?primary)$/i.test(s)) return 0;
+  const m = /(\d{1,2})/.exec(s);
+  return m ? Number(m[1]) : null;
+};
+const STAGE_YEARS: Record<string, [number, number]> = { ES1: [0, 0], S1: [1, 2], S2: [3, 4], S3: [5, 6], S4: [7, 8], S5: [9, 10], S6: [11, 12] };
+const stageOfYear = (y: number) => Object.entries(STAGE_YEARS).find(([, [a, b]]) => y >= a && y <= b)?.[0] || "";
+
+// Course learning areas (as saved on the child) -> catalogue learning areas.
+const NSW_AREA: Record<string, string> = { Technology: "TAS", Technologies: "TAS" };
+const AC9_AREA: Record<string, string> = {
+  English: "English", Mathematics: "Mathematics", Science: "Science", HSIE: "Humanities and Social Sciences",
+  PDHPE: "Health and Physical Education", "Creative Arts": "The Arts", TAS: "Technologies", Technology: "Technologies", Technologies: "Technologies",
+};
+// Course names -> AC9 subjects, where one exists. Anything else covers its whole learning area.
+const AC9_SUBJECTS: [RegExp, string[]][] = [
+  [/histor/i, ["History 7-10"]], [/geograph/i, ["Geography 7-10"]], [/commerce|business|econom/i, ["Economics and Business 7-10"]],
+  [/civic/i, ["Civics and Citizenship 7-10"]], [/music/i, ["Music"]], [/drama/i, ["Drama"]], [/dance/i, ["Dance"]],
+  [/visual art/i, ["Visual Arts"]], [/media/i, ["Media Arts"]],
+  [/software|information|digital|computing|coding/i, ["Digital Technologies"]],
+  [/food|textile|design|industrial|agricultur|graphic|engineer/i, ["Design and Technologies"]],
+];
+
+export function programFor(cat: Catalogue, student: { stage?: string | null; year_level?: string | null; extra?: unknown }): Program {
+  const extra = json<any>(student.extra, {}) || {};
+  const stage = String(student.stage || "");
+  const year = yearOf(student.year_level);
+  const levels: Record<string, string> = extra.subject_levels && typeof extra.subject_levels === "object" ? extra.subject_levels : {};
+  const courses = (Array.isArray(extra.electives) ? extra.electives : [])
+    .filter((c: any) => c && typeof c === "object" && (c.name || c.learning_area))
+    .map((c: any) => ({ name: clip(c.name, 120), learning_area: clip(c.learning_area, 80) }));
+  const ac9 = cat.framework === "AC9";
+  const toArea = (a: string) => (ac9 ? AC9_AREA[a] || a : NSW_AREA[a] || a);
+  // Area -> AC9 subjects chosen (empty set = the whole area).
+  const areaSubjects = new Map<string, Set<string>>();
+  for (const c of courses) {
+    const area = toArea(c.learning_area);
+    if (!areaSubjects.has(area)) areaSubjects.set(area, new Set());
+    const subs = ac9 ? AC9_SUBJECTS.find(([re]) => re.test(c.name))?.[1] : undefined;
+    // A broad course ("Technology", "HSIE") opens the whole area; once whole, it stays whole.
+    const set = areaSubjects.get(area)!;
+    if (!subs) set.add("*"); else if (!set.has("*")) for (const s of subs) set.add(s);
+  }
+  const areas = courses.length ? [...areaSubjects.keys()] : null;
+  const levelFor = (area: string) => {
+    const l = levels[area];
+    if (!l) return { stage, year };
+    const y = yearOf(l);
+    return STAGE_YEARS[l] ? { stage: l, year: null } : y != null ? { stage: stageOfYear(y), year: y } : { stage, year };
+  };
+  const includes = (o: CatalogueOutcome) => {
+    if (areas) {
+      const subs = areaSubjects.get(o.learning_area);
+      if (!subs) return false;
+      if (!subs.has("*") && o.subject && !subs.has(o.subject)) return false;
+    }
+    const lv = levelFor(o.learning_area);
+    if (ac9 && lv.year != null && o.from != null && o.to != null) return lv.year >= o.from && lv.year <= o.to;
+    return o.stage === lv.stage;
+  };
+  const yl = yearLabel(student.year_level, stage);
+  return { level: yl || stage, stage, year, areas, courses, includes };
+}
 
 // ---------------------------------------------------------------- mastery rules
 
@@ -582,8 +671,10 @@ export async function trackerFor(db: DB, familyId: string, studentId: string, o:
   const evByCode = new Map<string, EvidenceRow[]>();
   for (const e of (ev || []) as any[]) { const l = evByCode.get(e.outcome_code) || []; l.push(e); evByCode.set(e.outcome_code, l); }
 
-  // The child's stage, plus any outcome they already have records for (working above or below stage).
-  const codes = new Set<string>(cat.outcomes.filter((x) => x.stage === student.stage).map((x) => x.code));
+  // The child's program (year level and chosen subjects from their profile), plus any outcome they already have
+  // records for (working above or below level, or outside their chosen subjects).
+  const program = programFor(cat, student);
+  const codes = new Set<string>(cat.outcomes.filter(program.includes).map((x) => x.code));
   for (const c of byCode.keys()) codes.add(c);
   const outcomes = [...codes].map((code) => {
     const k = cat.byCode.get(code);
@@ -595,7 +686,8 @@ export async function trackerFor(db: DB, familyId: string, studentId: string, o:
       description: code,
       learning_area: p?.learning_area || k?.learning_area || "Other",
       stage: p?.stage || k?.stage || "",
-      in_stage: (p?.stage || k?.stage) === student.stage,
+      // "in_stage" kept for older clients: it means "in the child's program" (level and chosen subjects).
+      in_stage: k ? program.includes(k) : false,
       status: e.status,
       computed_status: e.computed,
       reason: e.reason,
@@ -608,8 +700,9 @@ export async function trackerFor(db: DB, familyId: string, studentId: string, o:
     };
   }).sort((a, b) => a.learning_area.localeCompare(b.learning_area) || a.code.localeCompare(b.code));
 
+  // Headline counts cover the child's program only; outcomes outside it are still listed with their evidence.
   const areas = new Map<string, any>();
-  for (const x of outcomes) {
+  for (const x of outcomes.filter((o) => o.in_stage)) {
     const a = areas.get(x.learning_area) || { learning_area: x.learning_area, total: 0, counts: Object.fromEntries(STATUSES.map((s) => [s, 0])), awaiting_confirmation: 0 };
     a.total++; a.counts[x.status]++;
     if (x.gaps.includes("awaiting_confirmation")) a.awaiting_confirmation++;
@@ -620,6 +713,7 @@ export async function trackerFor(db: DB, familyId: string, studentId: string, o:
   return {
     ...base, available: true as const,
     framework: { key: cat.framework, name: cat.name, version: cat.version },
+    program: { level: program.level, areas: program.areas, courses: program.courses, source: "child_profile" },
     note: "Statuses follow Side-Quest's evidence guidelines, not official curriculum-authority thresholds. Only you can mark an outcome Achieved.",
     areas: [...areas.values()],
     outcomes,

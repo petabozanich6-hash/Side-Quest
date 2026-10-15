@@ -165,6 +165,19 @@ function EditDialog({ student, onClose, onSaved }) {
   useEffect(() => { api.get("/ai/help-usage").then(r => setHelpUse(r.data)).catch(() => {}); }, []);
   const [busy, setBusy] = useState(false);
   const stage = STAGES.find(s => s.code === f.stage);
+  // Subjects (Years 7-12): what the Outcome Tracker and Auto-Quest follow for this child.
+  const [courses, setCourses] = useState(Array.isArray(student.electives) ? student.electives : []);
+  const [options, setOptions] = useState([]);
+  const [adding, setAdding] = useState("");
+  const secondary = ["S4", "S5", "S6"].includes(f.stage);
+  useEffect(() => {
+    if (!secondary) { setOptions([]); return; }
+    api.get(`/curriculum/pattern/${f.stage}`).then(r => {
+      const p = applyPattern(f.stage, r.data || {});
+      setOptions([...(p.compulsory || []), ...(p.pathways || []), ...(p.electives || [])]);
+    }).catch(() => setOptions([]));
+  }, [f.stage, secondary]);
+  const addable = options.filter(o => !courses.some(c => norm(c.name) === norm(o.name)));
 
   const changeStage = (code) => {
     const st = STAGES.find(s => s.code === code);
@@ -185,6 +198,8 @@ function EditDialog({ student, onClose, onSaved }) {
         ai_help: aiHelp,
         interests: interests.split(",").map(x => x.trim()).filter(Boolean).slice(0, 12),
         prefs: { ...prefs, duration_minutes: prefs.duration_minutes ? Number(prefs.duration_minutes) : undefined, activity_types: prefs.activity_types.split(",").map(x => x.trim()).filter(Boolean) },
+        // Primary years cover every learning area, so no course list is kept for them.
+        electives: secondary ? courses : [],
       });
       if (f.pin) await api.put(`/students/${student.id}/pin`, { pin: f.pin });
       toast.success("Saved");
@@ -242,7 +257,31 @@ function EditDialog({ student, onClose, onSaved }) {
               <F label="Anything else"><input value={prefs.other} onChange={e=>setP("other", e.target.value)} className="input" placeholder="e.g. prefers short activities"/></F>
             </div>
           </details>
-          {f.stage !== student.stage && <p className="text-xs text-stone-500">Changing the stage doesn't change the subjects already chosen for this child.</p>}
+          {secondary ? (
+            <div className="rounded-xl border border-stone-300 p-3 space-y-2" data-testid="edit-subjects">
+              <div className="text-xs font-semibold text-stone-700">Subjects this year</div>
+              <p className="text-[11px] text-stone-500">The Outcome Tracker, Auto-Quest and the printable record follow these subjects.</p>
+              <div className="flex flex-wrap gap-1.5">
+                {courses.length === 0 && <span className="text-xs text-stone-500">None saved, so every learning area is tracked.</span>}
+                {courses.map(c => (
+                  <span key={c.code || c.name} className="inline-flex items-center gap-1 rounded-full border border-stone-300 bg-white px-2 py-0.5 text-xs" data-testid={`subject-${c.name}`}>
+                    {c.name}<button type="button" aria-label={`Remove ${c.name}`} onClick={() => setCourses(cs => cs.filter(x => x !== c))}><X size={12}/></button>
+                  </span>
+                ))}
+              </div>
+              {addable.length > 0 && (
+                <div className="flex gap-2">
+                  <select value={adding} onChange={e => setAdding(e.target.value)} className="input" aria-label="Add a subject" data-testid="subject-add-select">
+                    <option value="">Add a subject…</option>
+                    {addable.map(o => <option key={o.code} value={o.code}>{o.name}</option>)}
+                  </select>
+                  <button type="button" disabled={!adding} onClick={() => { const o = options.find(x => x.code === adding); if (o) setCourses(cs => [...cs, { code: o.code, name: o.name, learning_area: o.learning_area, ...(o.units ? { units: o.units } : {}) }]); setAdding(""); }} className="rounded-full border border-stone-400 px-3 text-xs font-semibold disabled:opacity-50" data-testid="subject-add">Add</button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-xs text-stone-500">Primary years: every learning area for this year level is tracked.</p>
+          )}
         </div>
         <button disabled={busy} className="mt-5 w-full rounded-full py-3 text-sm font-bold disabled:opacity-50" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="edit-save">{busy ? "Saving…" : "Save changes"}</button>
       </form>

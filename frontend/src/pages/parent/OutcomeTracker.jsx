@@ -89,9 +89,16 @@ export default function OutcomeTracker() {
         <div className="font-script text-2xl" style={{ color: "#C77B5B" }}>The learning trail</div>
         <h1 className="font-display text-3xl sm:text-4xl font-bold flex items-center gap-3" style={{ color: "#1F3B2D" }}><MapIcon size={28} aria-hidden="true" /> Outcome tracker</h1>
         <p className="text-sm text-stone-600 max-w-3xl leading-relaxed">
-          Every curriculum outcome for your child's stage, and how far along the trail they are. It updates itself from reviewed lesson work, quizzes,
+          The curriculum outcomes your child is covering, and how far along the trail they are. It updates itself from reviewed lesson work, quizzes,
           life learning and your own observations. Finishing a lesson never marks an outcome Achieved: only you can, once the evidence is there.
         </p>
+        {data?.available && data.program && (
+          <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-950" data-testid="tracker-program">
+            Following {data.student?.name}'s profile: <strong>{data.program.level}</strong>
+            {data.program.areas ? <> · {data.program.courses.map((c) => c.name).join(", ")}</> : <> · all learning areas</>}.{" "}
+            <Link to="/parent/children" className="font-semibold underline">Change level or subjects</Link>
+          </p>
+        )}
         {data?.framework?.key === "AC9" && <div className="rounded-xl border border-stone-300 bg-stone-50 p-3 text-xs leading-relaxed" data-testid="ac9-attribution">
           <strong>Australian Curriculum v9 reference — partial coverage.</strong> Includes 1,395 content descriptions across seven learning areas; Languages and achievement standards are not loaded. This is a planning reference, not a declaration that your state or territory's homeschool requirements are met. Check your local authority's current implementation.
           <span className="block mt-2">© Australian Curriculum, Assessment and Reporting Authority (ACARA) 2010 to present, unless otherwise indicated. Downloaded from the <a className="underline" href="https://www.australiancurriculum.edu.au/" target="_blank" rel="noopener noreferrer">Australian Curriculum website</a> (accessed 14 October 2026). Modified to remove markup and organise records by school stage. Licensed under <a className="underline" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>. ACARA does not endorse or approve Side-Quest.</span>
@@ -168,7 +175,7 @@ export default function OutcomeTracker() {
                 <option value="">Any gap</option>
                 {GAP_FILTERS.map((g) => <option key={g} value={g}>{GAPS[g]}{data.gaps[g] ? ` (${data.gaps[g]})` : ""}</option>)}
               </select>
-              {otherCount > 0 && <label className="text-xs text-stone-600 flex items-center gap-1.5 pb-2"><input type="checkbox" checked={showOther} onChange={(e) => setShowOther(e.target.checked)} /> Include {otherCount} from other stages</label>}
+              {otherCount > 0 && <label className="text-xs text-stone-600 flex items-center gap-1.5 pb-2"><input type="checkbox" checked={showOther} onChange={(e) => setShowOther(e.target.checked)} /> Include {otherCount} outside this program (other levels or subjects, with evidence)</label>}
             </div>
 
             <ul className="paper-card divide-y divide-stone-200" data-testid="tracker-list">
