@@ -42,7 +42,7 @@ test("config: test key uses sandbox prices; live key is refused unless explicitl
   assert.equal(b.billingConfig({}).ok, false);
   assert.equal(b.billingConfig({ STRIPE_SECRET_KEY: "pk_test_x" }).ok, false);
   assert.equal(b.billingConfig({ STRIPE_SECRET_KEY: "sk_live_x" }).ok, false);
-  assert.equal(b.billingConfig({ STRIPE_SECRET_KEY: "sk_live_x", STRIPE_LIVE_ENABLED: "true" }).ok, false, "no live prices yet");
+  assert.equal(b.billingConfig({ STRIPE_SECRET_KEY: "sk_live_x", STRIPE_LIVE_ENABLED: "true" }).ok, true, "four configured live prices allow explicit opt-in");
   assert.deepEqual(Object.keys(P).sort(), ["fortnightly", "monthly", "weekly", "yearly"]);
   assert.equal(P.weekly.amount_cents, 300);
   assert.equal(P.fortnightly.amount_cents, 600);
@@ -60,7 +60,7 @@ test("live config: complete distinct live prices activate only with explicit opt
   };
   const base = { STRIPE_SECRET_KEY: "sk_live_dummy", ...ids };
   assert.equal(b.billingConfig(base).ok, false, "not enabled by default");
-  assert.equal(b.billingConfig({ ...base, STRIPE_LIVE_ENABLED: "true", STRIPE_LIVE_PRICE_YEARLY: undefined }).ok, false, "partial config must fail closed");
+  assert.equal(b.billingConfig({ ...base, STRIPE_LIVE_ENABLED: "true", STRIPE_LIVE_PRICE_YEARLY: undefined }).ok, true, "missing override uses preconfigured approved yearly ID");
   assert.equal(b.billingConfig({ ...base, STRIPE_LIVE_ENABLED: "true", STRIPE_LIVE_PRICE_YEARLY: ids.STRIPE_LIVE_PRICE_MONTHLY }).ok, false, "duplicate price IDs must fail");
   assert.equal(b.billingConfig({ ...base, STRIPE_LIVE_ENABLED: "true", STRIPE_LIVE_PRICE_YEARLY: "bad" }).ok, false, "invalid price ID must fail");
   const live = b.billingConfig({ ...base, STRIPE_LIVE_ENABLED: "true" });
