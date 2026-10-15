@@ -1,0 +1,53 @@
+name: Import 2026-current Victorian Version 1 EAL codes (review only)
+on:
+  pull_request:
+    paths:
+      - worker/scripts/import-vic1-eal.mjs
+      - worker/test/vic1Eal.test.mjs
+      - .github/workflows/import-vic1-eal.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify-and-import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Test v1 pathway/level extraction
+        run: node --test worker/test/vic1Eal.test.mjs
+      - name: Read actual VCAA v1 EAL A/B/C curriculum
+        run: node worker/scripts/import-vic1-eal.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vic1-eal-official-codes
+          path: worker/src/data/vic1-eal-review.json
+          retention-days: 30
+      - name: Save EAL v1 catalogue review to nonproduction draft branch
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
+          git add worker/src/data/vic1-eal-review.json
+          if git diff --cached --quiet; then
+            echo "Already current"
+          else
+            git commit -m "Data(review only): VC1 EAL pathways A/B/C"
+            for attempt in 1 2 3; do
+              if git push origin "HEAD:$TARGET_BRANCH"; then exit 0; fi
+              git fetch origin "$TARGET_BRANCH"
+              git rebase "origin/$TARGET_BRANCH" || { git rebase --abort; exit 1; }
+              sleep 2
+            done
+            exit 1
+          fi
