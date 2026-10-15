@@ -43,9 +43,16 @@ test("Curriculum code index is authenticated, paginated and bound to the actual 
   const q=await h.req("/curriculum/identifiers?limit=2&jurisdiction=VIC",qld);
   assert.equal(q.data.framework,"AC9");
   assert.ok(q.data.identifiers.every(x=>x.code.startsWith("AC9")||x.code.startsWith("ACL9")));
+  const legacyVic=await h.req("/curriculum/outcomes?stage=S2&learning_area=Science",vic);
+  assert.ok(legacyVic.data.every(x=>x.code.startsWith("VC2")), "old outcomes API must never return NSW codes to Victoria");
+  const legacyQld=await h.req("/curriculum/outcomes?stage=S2&learning_area=Mathematics",qld);
+  assert.ok(legacyQld.data.some(x=>x.code.startsWith("AC9M")));
+  assert.ok(legacyQld.data.every(x=>x.code.startsWith("AC9")||x.code.startsWith("ACL9")));
+  assert.equal((await h.req("/curriculum/outcomes",null)).status,401, "outcome list requires family identity");
   const blocked=await h.req("/curriculum/identifiers",wa);
   assert.equal(blocked.data.available,false);
   assert.deepEqual(blocked.data.identifiers,[]);
+  assert.deepEqual((await h.req("/curriculum/outcomes",wa)).data,[], "WA missing source is not filled with NSW outcomes");
 });
 
 test("Official senior course IDs cannot be used as outcomes or queried across state accounts",async()=>{
