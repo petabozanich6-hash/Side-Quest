@@ -1,0 +1,506 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "WACE",
+  "framework_version": "2026",
+  "source_url": "https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf",
+  "source_pdf_page": 151,
+  "source_print_page": 139,
+  "verification_date": "2026-10-16",
+  "status": "source_verified_partial",
+  "scope_note": "Table 12 official WACE Manual page 139 only. 12 subject rows, not complete WACE. Course, subject and unit identifiers, not outcome identifiers.",
+  "records": [
+    {
+      "subject": "Aboriginal and Intercultural Studies",
+      "identifier": "AIS",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Aboriginal and Intercultural Studies",
+      "identifier": "AEAIS",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Aboriginal and Intercultural Studies",
+      "identifier": "ATAIS",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Aboriginal and Intercultural Studies",
+      "identifier": "GEAIS",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Aboriginal and Intercultural Studies",
+      "identifier": "GTAIS",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Aboriginal and Intercultural Studies",
+      "identifier": "A1AIS",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Aboriginal and Intercultural Studies",
+      "identifier": "A2AIS",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Aboriginal and Intercultural Studies",
+      "identifier": "G1AIS",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Aboriginal and Intercultural Studies",
+      "identifier": "G2AIS",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Aboriginal Languages of Western Australia",
+      "identifier": "ABL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Aboriginal Languages of Western Australia",
+      "identifier": "GEABL",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Aboriginal Languages of Western Australia",
+      "identifier": "GTABL",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Aboriginal Languages of Western Australia",
+      "identifier": "G1ABL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Aboriginal Languages of Western Australia",
+      "identifier": "G2ABL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Accounting and Finance",
+      "identifier": "ACF",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Accounting and Finance",
+      "identifier": "AEACF",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Accounting and Finance",
+      "identifier": "ATACF",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Accounting and Finance",
+      "identifier": "GEACF",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Accounting and Finance",
+      "identifier": "GTACF",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Accounting and Finance",
+      "identifier": "A1ACF",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Accounting and Finance",
+      "identifier": "A2ACF",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Accounting and Finance",
+      "identifier": "G1ACF",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Accounting and Finance",
+      "identifier": "G2ACF",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Agribusiness",
+      "identifier": "AGB",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Agribusiness",
+      "identifier": "AEAGB",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Agribusiness",
+      "identifier": "ATAGB",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Agribusiness",
+      "identifier": "A1AGB",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Agribusiness",
+      "identifier": "A2AGB",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Agricultural Science and Technology",
+      "identifier": "AST",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Agricultural Science and Technology",
+      "identifier": "AEAST",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Agricultural Science and Technology",
+      "identifier": "ATAST",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Agricultural Science and Technology",
+      "identifier": "A1AST",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Agricultural Science and Technology",
+      "identifier": "A2AST",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Ancient History",
+      "identifier": "HIA",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Ancient History",
+      "identifier": "AEHIA",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Ancient History",
+      "identifier": "ATHIA",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Ancient History",
+      "identifier": "GEHIA",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Ancient History",
+      "identifier": "GTHIA",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Ancient History",
+      "identifier": "A1HIA",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Ancient History",
+      "identifier": "A2HIA",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Ancient History",
+      "identifier": "G1HIA",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Ancient History",
+      "identifier": "G2HIA",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Animal Production Systems",
+      "identifier": "APS",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Animal Production Systems",
+      "identifier": "GEAPS",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Animal Production Systems",
+      "identifier": "GTAPS",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Animal Production Systems",
+      "identifier": "G1APS",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Animal Production Systems",
+      "identifier": "G2APS",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "AIT",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "AEAIT",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "ATAIT",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "GEAIT",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "GTAIT",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "FEAIT",
+      "identifier_kind": "course_code",
+      "course_kind": "Foundation_Year11"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "FTAIT",
+      "identifier_kind": "course_code",
+      "course_kind": "Foundation_Year12"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "A1AIT",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "A2AIT",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "G1AIT",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "G2AIT",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "F1AIT",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    },
+    {
+      "subject": "Applied Information Technology",
+      "identifier": "F2AIT",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    },
+    {
+      "subject": "Automotive Engineering and Technology",
+      "identifier": "AET",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Automotive Engineering and Technology",
+      "identifier": "GEAET",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Automotive Engineering and Technology",
+      "identifier": "GTAET",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Automotive Engineering and Technology",
+      "identifier": "G1AET",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Automotive Engineering and Technology",
+      "identifier": "G2AET",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Aviation",
+      "identifier": "AVN",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Aviation",
+      "identifier": "AEAVN",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Aviation",
+      "identifier": "ATAVN",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Aviation",
+      "identifier": "GEAVN",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Aviation",
+      "identifier": "GTAVN",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Aviation",
+      "identifier": "A1AVN",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Aviation",
+      "identifier": "A2AVN",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Aviation",
+      "identifier": "G1AVN",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Aviation",
+      "identifier": "G2AVN",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Biology",
+      "identifier": "BLY",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Biology",
+      "identifier": "AEBLY",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Biology",
+      "identifier": "ATBLY",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Biology",
+      "identifier": "A1BLY",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Biology",
+      "identifier": "A2BLY",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Building and Construction",
+      "identifier": "BCN",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Building and Construction",
+      "identifier": "GEBCN",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Building and Construction",
+      "identifier": "GTBCN",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Building and Construction",
+      "identifier": "G1BCN",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Building and Construction",
+      "identifier": "G2BCN",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    }
+  ]
+}
