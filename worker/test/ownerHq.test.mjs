@@ -287,6 +287,19 @@ test("privacy: customer list and detail carry metadata and counts only, never ch
   assert.equal((await h.req("/admin/customers/does-not-exist", { token: owner.token })).status, 404);
 });
 
+test("customer detail works on the production users table, which has no oauth_provider column", async () => {
+  const { h, owner } = await ownerSetup();
+  const parent = await h.register("prod-shape@example.com");
+  h.db.raw.exec("ALTER TABLE users DROP COLUMN oauth_provider");
+  await stepUp(h, owner);
+  const r = await h.req(`/admin/customers/${parent.familyId}`, { token: owner.token });
+  assert.equal(r.status, 200, JSON.stringify(r.json));
+  assert.equal(r.json.parents[0].sign_in, "password");
+  assert.equal((await h.req("/admin/customers", { token: owner.token })).status, 200);
+  assert.equal((await h.req("/admin/overview", { token: owner.token })).status, 200);
+  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM app_errors").get().n, 0);
+});
+
 // ------------------------------------------------------- customer actions
 
 test("suspend / restore / sign out everywhere: confirmed, reasoned, enforced on every sign-in path, audited", async () => {

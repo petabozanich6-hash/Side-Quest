@@ -203,8 +203,9 @@ export async function customerDetail(db: D1Database, familyId: string, now = new
      FROM families f LEFT JOIN family_admin_state s ON s.family_id = f.id WHERE f.id = ?`,
   ).bind(familyId).first<any>();
   if (!f) return null;
+  // Only columns production really has: its users table has no oauth_provider (see ownerHq.test.mjs).
   const { results: parents } = await db.prepare(
-    `SELECT u.id, u.email, u.created_at, CASE WHEN u.password_hash IS NULL THEN 'google' ELSE COALESCE(u.oauth_provider, 'password') END AS sign_in,
+    `SELECT u.id, u.email, u.created_at, CASE WHEN u.password_hash IS NULL THEN 'google' ELSE 'password' END AS sign_in,
             (u.id = ?) AS primary_parent,
             EXISTS (SELECT 1 FROM user_roles r WHERE r.user_id = u.id AND r.revoked_at IS NULL) AS has_admin_role
      FROM users u WHERE u.family_id = ? ORDER BY u.created_at`,
