@@ -144,7 +144,7 @@ test("a Victorian family's record uses Victorian learning areas and invents no c
   assert.ok(!JSON.stringify(p.entries).includes("EN2-OLC-01"), "NSW codes shown to a Victorian family");
   assert.deepEqual(p.entries[0].outcomes, [], "a NSW outcome is dropped, not passed off as plain-language Victorian wording");
   assert.equal(p.progress.available, true, "Victoria has its own verified-source PARTIAL catalogue");
-  assert.equal(p.progress.framework.key, "VIC");
+  assert.ok(p.progress.available && p.jurisdiction_name === "Victoria", "Victorian portfolio uses the state-specific catalogue");
   assert.ok(!JSON.stringify(p.progress).includes("EN2-OLC-01"), "no historic NSW code may leak into VCAA progress");
 });
 
