@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import QRCode from "qrcode";
 import { Check, Copy, Download } from "lucide-react";
-import { deviceKind, useInstallPrompt, useKidsManifest } from "../lib/pwa";
+import { deviceKind, isKidsDevice, setKidsDevice, useInstallPrompt, useKidsManifest } from "../lib/pwa";
 import { AndroidSteps, IosSteps } from "../components/shared/InstallApp";
 
 const GREEN = "#1F3B2D";
@@ -23,6 +23,8 @@ export default function GetApp() {
   const { install, installed } = prompt;
   const [kind] = useState(deviceKind);
   const [qr, setQr] = useState("");
+  const navigate = useNavigate();
+  const [kidsDevice, setKidsDeviceState] = useState(isKidsDevice);
   const [copied, setCopied] = useState(false);
   const link = `${window.location.origin}/get-app${kids ? "?for=child" : ""}`;
 
@@ -43,16 +45,40 @@ export default function GetApp() {
           <img src="/icons/icon-192.png" alt="" className="h-14 w-14 rounded-2xl shadow-sm" />
           <div className="min-w-0">
             <h1 className="font-display text-2xl sm:text-3xl font-bold" style={{ color: GREEN }} data-testid="get-app-title">{kids ? "Set up Side-Quest on your child's device" : "Get the Side-Quest app"}</h1>
-            <p className="text-sm text-stone-600">{kids
+            <p className="text-sm text-stone-600">{kids && installed
+              ? "Your child can use the Side-Quest app that's already here."
+              : kids
               ? "Install this on your child's phone or tablet. The app (\"SQ Kids\") opens straight to their own sign-in with their username and PIN, so they never see the parent pages."
               : "Free to install. No app store needed: it adds itself to your home screen and opens full screen, like any other app."}</p>
           </div>
         </div>
 
-        {installed ? (
-          <div className="paper-card p-5" data-testid="get-app-installed">
+        {installed && kids ? (
+          // Opened inside the Side-Quest app already on this device (common on Android, where links open the installed
+          // app): one device shared by parent and child doesn't need a second app; this one can open to the child sign-in.
+          <section className="paper-card p-5 sm:p-6 space-y-3" data-testid="get-app-shared-device">
+            <h2 className="font-display text-xl font-bold" style={{ color: GREEN }}>Side-Quest is already on this device</h2>
+            <p className="text-sm text-stone-700">If your child uses this device, you don't need a second app. Make this one open to <strong>your child's sign-in</strong> (username and PIN) instead of the front page.</p>
+            <p className="text-sm text-stone-700">You can still sign in as the parent: tap <strong>"Are you a parent? Sign in here"</strong> at the bottom of the child sign-in.</p>
+            <button type="button" onClick={() => { setKidsDevice(true); navigate("/child-login", { replace: true }); }} className="w-full rounded-xl px-4 py-3 font-semibold text-white" style={{ backgroundColor: "#4A5D3A" }} data-testid="use-for-child">
+              Open to my child's sign-in on this device
+            </button>
+            <p className="text-xs text-stone-500">Want a separate "SQ Kids" icon instead? Copy this link and open it in Safari or Chrome (not in the app), then follow the steps: <code className="break-all">{link}</code> <button type="button" onClick={copy} className="underline font-semibold">{copied ? "Copied" : "Copy"}</button></p>
+          </section>
+        ) : installed ? (
+          <div className="paper-card p-5 space-y-3" data-testid="get-app-installed">
             <p className="font-semibold" style={{ color: GREEN }}>You're already using the Side-Quest app on this device.</p>
-            <Link to="/" className="mt-3 inline-block text-sm font-semibold underline" style={{ color: "#4A5D3A" }}>Open Side-Quest</Link>
+            {kidsDevice ? (
+              <>
+                <p className="text-sm text-stone-700" data-testid="kids-device-on">On this device the app opens to the child sign-in.</p>
+                <button type="button" onClick={() => { setKidsDevice(false); setKidsDeviceState(false); }} className="rounded-xl px-4 py-2 text-sm font-semibold border bg-white" style={{ color: GREEN, borderColor: "#D4C8A8" }} data-testid="use-for-parent">
+                  Open to the front page again
+                </button>
+              </>
+            ) : (
+              <p className="text-sm text-stone-700">Does your child use this device too? <Link to="/get-app?for=child" className="font-semibold underline" style={{ color: "#4A5D3A" }}>Make it open to their sign-in</Link>.</p>
+            )}
+            <Link to="/" className="inline-block text-sm font-semibold underline" style={{ color: "#4A5D3A" }}>Open Side-Quest</Link>
           </div>
         ) : kind === "desktop" ? (
           <>

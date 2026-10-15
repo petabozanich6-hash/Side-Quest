@@ -158,6 +158,32 @@ await step("kids' app on a child's phone: opens at the child sign-in, goes to th
   await ctx.close();
 });
 
+await step("one shared device: inside the installed app, the kids' link offers to open to the child sign-in, reversibly", async () => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, userAgent: UA.android, isMobile: true, hasTouch: true });
+  // Pretend this page runs inside the installed Side-Quest app (what Android does when the QR code is scanned).
+  await ctx.addInitScript(() => {
+    const real = window.matchMedia.bind(window);
+    window.matchMedia = (q) => (q.includes("display-mode: standalone") ? { matches: true, media: q, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {} } : real(q));
+  });
+  const p = await ctx.newPage();
+  await p.goto(BASE + "/get-app?for=child&source=qr");
+  await p.waitForSelector("[data-testid=get-app-shared-device]");
+  ok(await p.locator("[data-testid=get-app-installed]").count() === 0, "dead-end 'already installed' message shown");
+  await p.screenshot({ path: `${SHOTS}/shared-device.png`, fullPage: true });
+  await p.click("[data-testid=use-for-child]");
+  await p.waitForURL((u) => u.pathname === "/child-login");
+  await p.goto(BASE + "/?source=app"); // reopening the app from its icon
+  await p.waitForURL((u) => u.pathname === "/child-login");
+  await p.click("text=Sign in here"); // the parent can still get in
+  await p.waitForURL((u) => u.pathname === "/login");
+  await p.goto(BASE + "/get-app");
+  await p.waitForSelector("[data-testid=kids-device-on]");
+  await p.click("[data-testid=use-for-parent]");
+  await p.goto(BASE + "/");
+  ok(new URL(p.url()).pathname === "/", "still forwarded to the child sign-in after switching back");
+  await ctx.close();
+});
+
 await step("an ordinary browser is unaffected: the home page still shows the front page", async () => {
   const ctx = await browser.newContext();
   const p = await ctx.newPage();
