@@ -18341,14 +18341,14 @@
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Computing Applications Stage 6 (CEC) (2012)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes"
-    },
-    {
       "syllabus": "Dance Life Skills 11–12 (2025)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-life-skills-11-12-2025/outcomes",
       "reason": "No outcome identifiers extracted"
+    },
+    {
+      "syllabus": "Computing Applications Stage 6 (CEC) (2012)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes"
     },
     {
       "syllabus": "Drama Life Skills 11–12 (2025)",
@@ -18366,11 +18366,6 @@
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Exploring Early Childhood Stage 6 (CEC) (2007)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes"
-    },
-    {
       "syllabus": "Geography Life Skills 11–12 (2022)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes",
       "reason": "No outcome identifiers extracted"
@@ -18379,6 +18374,11 @@
       "syllabus": "Health and Movement Science Life Skills 11–12 (2023)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/health-and-movement-science-life-skills-11-12-2023/outcomes",
       "reason": "No outcome identifiers extracted"
+    },
+    {
+      "syllabus": "Exploring Early Childhood Stage 6 (CEC) (2007)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes"
     },
     {
       "syllabus": "Law and the Community Life Skills 11–12 (2025)",
