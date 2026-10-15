@@ -28,3 +28,8 @@ lesson-excellence/.work/
 wrangler.e2e.jsonc
 e2e-shots/
 ci-logs/
+
+# Database backups contain family data: never commit them
+backup-*.sql
+backups/
+*.sqlite
