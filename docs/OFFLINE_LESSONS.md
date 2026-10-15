@@ -29,3 +29,10 @@ and any lesson the child hasn't opened their home page for while online.
 - `frontend/public/sw.js` (v3): saves the app shell and built files; with no signal `/`, `/child…` and `/get-app` open
   from the shell, other pages show the offline page.
 - Test: `worker/test/e2e/offline-lessons.mjs` (stops the server to simulate no signal).
+
+## Kids' app (a child's own device)
+Parent Hub → **Children** → "Set up Side-Quest on your child's own phone or tablet" (or `/get-app?for=child`) installs
+**SQ Kids** (`manifest-kids.webmanifest`, its own app id). Its icon opens straight to the child sign-in
+(`/child-login?source=kids-app`); on that device the front page forwards to the child sign-in, and signing out returns
+there. Installing from the child sign-in page also gives the kids' app. Older iPhones (before iOS 16.4) may open the page
+the app was added from instead; adding it from the child sign-in page avoids that.

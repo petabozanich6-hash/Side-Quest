@@ -19,6 +19,34 @@ export const isIosOtherBrowser = () => isIos() && /CriOS|FxiOS|EdgiOS|OPiOS/i.te
 /** "ios" | "android" | "desktop": which install steps to show. */
 export const deviceKind = () => (isIos() ? "ios" : isAndroid() ? "android" : "desktop");
 
+// ---------------------------------------------------------------- kids' app
+// A second installable app for a child's own device ("Side-Quest Kids", manifest-kids.webmanifest). It opens straight
+// to the child sign-in, and signing out returns there. The device remembers it is a kids' device once the app has been
+// opened from its icon (start_url carries ?source=kids-app). Installed iPhone apps keep their own storage, so the flag
+// is set inside the installed app itself.
+const KIDS_FLAG = "sq_kids_device";
+export function rememberKidsDevice() {
+  try {
+    const p = new URLSearchParams(window.location.search);
+    if (p.get("source") === "kids-app") localStorage.setItem(KIDS_FLAG, "1");
+  } catch { /* storage blocked */ }
+}
+export const isKidsDevice = () => { try { return localStorage.getItem(KIDS_FLAG) === "1"; } catch { return false; } };
+
+/** Points the page's manifest at the kids' app while `kids` is true, so installing from here gives the kids' app. */
+export function useKidsManifest(kids) {
+  useEffect(() => {
+    const link = document.querySelector('link[rel="manifest"]');
+    if (!link || !kids) return undefined;
+    const before = link.getAttribute("href");
+    link.setAttribute("href", "/manifest-kids.webmanifest");
+    const title = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+    const beforeTitle = title?.getAttribute("content");
+    title?.setAttribute("content", "SQ Kids");
+    return () => { link.setAttribute("href", before); if (title && beforeTitle) title.setAttribute("content", beforeTitle); };
+  }, [kids]);
+}
+
 export function registerServiceWorker() {
   if (typeof window === "undefined") return;
   window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferred = e; notify(); });

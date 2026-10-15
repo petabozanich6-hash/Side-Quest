@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { isStandalone } from "../lib/pwa";
+import { isKidsDevice, isStandalone } from "../lib/pwa";
 import { Fern, Branch, Leaf, Flower, Pet } from "../components/shared/Botanical";
 import InstallApp from "../components/shared/InstallApp";
 import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass, ArrowRight } from "lucide-react";
@@ -21,6 +21,8 @@ export default function Landing() {
   // Opened from the home-screen icon while signed in: go straight to the quests or the Parent Hub (works offline too).
   const fromApp = isStandalone() || new URLSearchParams(window.location.search).get("source") === "app";
   if (fromApp && user) return <Navigate to={user.role === "child" ? "/child" : "/parent"} replace />;
+  // A child's own device (the kids' app): straight to their quests, or to the child sign-in.
+  if (isKidsDevice()) return <Navigate to={user?.role === "child" ? "/child" : "/child-login"} replace />;
   return (
     <div className="min-h-screen relative overflow-x-hidden">
       {/* Decorative botanicals */}

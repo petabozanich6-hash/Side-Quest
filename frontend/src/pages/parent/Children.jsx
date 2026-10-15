@@ -359,6 +359,11 @@ export default function ChildrenPage() {
         </div>
         <button onClick={() => setOpen(true)} className="rounded-full px-4 py-2 text-sm font-bold flex items-center gap-1.5" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="add-student-btn"><Plus size={14}/> Add student</button>
       </div>
+      <Link to="/get-app?for=child" className="flex items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 hover:shadow-sm" style={{border:"1px solid #D4C8A8"}} data-testid="kids-app-link">
+        <span><span className="block text-sm font-bold" style={{color:"#1F3B2D"}}>📱 Set up Side-Quest on your child's own phone or tablet</span>
+          <span className="block text-xs text-stone-500">Installs the kids' app, which opens straight to their sign-in (username and PIN).</span></span>
+        <span aria-hidden className="text-stone-400">›</span>
+      </Link>
 
       <HelpRequests students={students} onView={setCreds} />
 

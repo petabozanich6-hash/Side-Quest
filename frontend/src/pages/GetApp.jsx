@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import QRCode from "qrcode";
 import { Check, Copy, Download } from "lucide-react";
-import { deviceKind, useInstallPrompt } from "../lib/pwa";
+import { deviceKind, useInstallPrompt, useKidsManifest } from "../lib/pwa";
 import { AndroidSteps, IosSteps } from "../components/shared/InstallApp";
 
 const GREEN = "#1F3B2D";
@@ -11,19 +11,26 @@ const GREEN = "#1F3B2D";
  * Public "Get the app" page (/get-app). Side-Quest is an installable web app (PWA): no app store needed.
  * - Phone or tablet: the right install steps for that device (or the browser's own Install button).
  * - Computer: a QR code that opens this same page on the phone, plus a link to copy or send.
+ * - ?for=child: the kids' app for a child's own device, which opens straight to the child sign-in.
  */
 export default function GetApp() {
-  const { canInstall, install, installed } = useInstallPrompt();
+  const [params] = useSearchParams();
+  const kids = params.get("for") === "child";
+  useKidsManifest(kids);
+  const prompt = useInstallPrompt();
+  // The browser's one-tap install prompt was prepared for the parent app, so the kids' app uses the menu steps instead.
+  const canInstall = prompt.canInstall && !kids;
+  const { install, installed } = prompt;
   const [kind] = useState(deviceKind);
   const [qr, setQr] = useState("");
   const [copied, setCopied] = useState(false);
-  const link = `${window.location.origin}/get-app`;
+  const link = `${window.location.origin}/get-app${kids ? "?for=child" : ""}`;
 
   useEffect(() => {
     if (kind !== "desktop") return;
-    QRCode.toDataURL(`${link}?source=qr`, { width: 480, margin: 1, errorCorrectionLevel: "M", color: { dark: GREEN, light: "#FFFFFF" } })
+    QRCode.toDataURL(`${link}${kids ? "&" : "?"}source=qr`, { width: 480, margin: 1, errorCorrectionLevel: "M", color: { dark: GREEN, light: "#FFFFFF" } })
       .then(setQr).catch(() => setQr(""));
-  }, [kind, link]);
+  }, [kind, link, kids]);
 
   const copy = async () => {
     try { await navigator.clipboard.writeText(link); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* the link is shown to copy by hand */ }
@@ -35,8 +42,10 @@ export default function GetApp() {
         <div className="flex items-center gap-3">
           <img src="/icons/icon-192.png" alt="" className="h-14 w-14 rounded-2xl shadow-sm" />
           <div className="min-w-0">
-            <h1 className="font-display text-2xl sm:text-3xl font-bold" style={{ color: GREEN }}>Get the Side-Quest app</h1>
-            <p className="text-sm text-stone-600">Free to install. No app store needed: it adds itself to your home screen and opens full screen, like any other app.</p>
+            <h1 className="font-display text-2xl sm:text-3xl font-bold" style={{ color: GREEN }} data-testid="get-app-title">{kids ? "Set up Side-Quest on your child's device" : "Get the Side-Quest app"}</h1>
+            <p className="text-sm text-stone-600">{kids
+              ? "Install this on your child's phone or tablet. The app (\"SQ Kids\") opens straight to their own sign-in with their username and PIN, so they never see the parent pages."
+              : "Free to install. No app store needed: it adds itself to your home screen and opens full screen, like any other app."}</p>
           </div>
         </div>
 
@@ -48,12 +57,12 @@ export default function GetApp() {
         ) : kind === "desktop" ? (
           <>
             <section className="paper-card p-5 sm:p-6 text-center" data-testid="get-app-qr">
-              <h2 className="font-display text-xl font-bold" style={{ color: GREEN }}>Scan with your phone's camera</h2>
-              <p className="text-sm text-stone-600 mt-1">Point your iPhone or Android camera at the code, tap the link that appears, then follow the steps on your phone.</p>
+              <h2 className="font-display text-xl font-bold" style={{ color: GREEN }}>{kids ? "Scan with your child's device" : "Scan with your phone's camera"}</h2>
+              <p className="text-sm text-stone-600 mt-1">Point the {kids ? "child's iPhone, iPad or Android" : "iPhone or Android"} camera at the code, tap the link that appears, then follow the steps on that device.</p>
               {qr
                 ? <img src={qr} alt={`QR code that opens ${link} on your phone`} className="mx-auto mt-4 w-56 h-56 sm:w-64 sm:h-64 rounded-xl bg-white p-2" data-testid="get-app-qr-image" />
                 : <div className="mx-auto mt-4 w-56 h-56 rounded-xl bg-white/60" aria-hidden="true" />}
-              <p className="mt-4 text-sm text-stone-600">Or open this link on your phone:</p>
+              <p className="mt-4 text-sm text-stone-600">Or open this link on {kids ? "their device" : "your phone"}:</p>
               <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
                 <code className="rounded-lg bg-white px-3 py-1.5 text-sm break-all" data-testid="get-app-url">{link}</code>
                 <button type="button" onClick={copy} className="rounded-lg px-3 py-1.5 text-sm font-semibold border bg-white" style={{ color: GREEN, borderColor: "#D4C8A8" }}>
@@ -61,7 +70,7 @@ export default function GetApp() {
                 </button>
               </div>
             </section>
-            {canInstall && (
+            {canInstall && !kids && (
               <section className="paper-card p-5">
                 <h2 className="font-display text-lg font-bold" style={{ color: GREEN }}>On this computer</h2>
                 <p className="text-sm text-stone-600 mt-1">You can also install Side-Quest here, so it opens in its own window.</p>
@@ -82,12 +91,23 @@ export default function GetApp() {
               </>
             ) : (
               <>
-                <h2 className="font-display text-xl font-bold mb-4" style={{ color: GREEN }}>{kind === "ios" ? "Add to your Home Screen" : "Install on this phone"}</h2>
+                <h2 className="font-display text-xl font-bold mb-4" style={{ color: GREEN }}>{kind === "ios" ? "Add to the Home Screen" : "Install on this device"}</h2>
                 {kind === "ios" ? <IosSteps /> : <AndroidSteps />}
               </>
             )}
           </section>
         )}
+
+        {kids && !installed && (
+          <p className="paper-card p-4 text-sm text-stone-700" data-testid="get-app-kids-note">
+            After installing, open <strong>SQ Kids</strong> from the home screen and sign your child in once. Their quests are then saved for offline use too.
+          </p>
+        )}
+        <p className="text-center text-sm">
+          {kids
+            ? <Link to="/get-app" className="font-semibold underline" style={{ color: "#4A5D3A" }} data-testid="get-app-switch">Installing on your own phone instead?</Link>
+            : <Link to="/get-app?for=child" className="font-semibold underline" style={{ color: "#4A5D3A" }} data-testid="get-app-switch">Setting up your child's own device? Get the kids' version</Link>}
+        </p>
 
         <details className="paper-card p-5">
           <summary className="cursor-pointer font-semibold" style={{ color: GREEN }}>Steps for other devices</summary>
