@@ -121,6 +121,14 @@ await step("kids' app manifest: its own app that starts at the child sign-in", a
   ok(r.status === 200 && /manifest\+json/.test(r.headers.get("content-type") || ""), "kids manifest " + r.status);
   const m = await r.json();
   ok(m.id === "/kids" && m.start_url === "/child-login?source=kids-app" && m.display === "standalone" && m.icons.length >= 4, "kids manifest fields " + JSON.stringify(m).slice(0, 200));
+  // Its own icon (the fox), not the parent app's compass, and every size loads.
+  ok(m.icons.every((i) => /\/icons\/kids-/.test(i.src)) && m.icons.some((i) => i.purpose === "maskable") && m.icons.some((i) => i.sizes === "512x512"), "kids icons " + JSON.stringify(m.icons));
+  for (const src of [...m.icons.map((i) => i.src), "/icons/kids-apple-touch-icon.png", "/icons/kids-favicon-32.png"]) {
+    const r2 = await fetch(NODE_BASE + src);
+    ok(r2.status === 200 && /image\/png/.test(r2.headers.get("content-type") || ""), `${src} ${r2.status}`);
+  }
+  const parent = await (await fetch(`${NODE_BASE}/manifest.webmanifest`)).json();
+  ok(parent.icons.every((i) => !/kids-/.test(i.src)), "the parent app must keep its own icon");
 });
 
 await step("Get the app for a child's device: kids' manifest, kids' wording and a QR link that keeps for=child", async () => {
@@ -195,6 +203,7 @@ await step("SQ Kids address: opens to the child sign-in, installs the kids' app 
   await p.waitForURL((u) => u.pathname === "/child-login");
   ok(await manifestHref(p) === "/manifest-kids.webmanifest", "SQ Kids manifest " + await manifestHref(p));
   ok(/SQ Kids/.test(await p.title()), "title " + await p.title());
+  ok(await p.getAttribute('link[rel="apple-touch-icon"]', "href") === "/icons/kids-apple-touch-icon.png", "iPhone home-screen icon should be the fox");
   ok(await p.getAttribute("text=Open Side-Quest for grown-ups", "href") === `http://localhost:${PORT}/login`, "grown-ups link goes to the main site");
   for (const path of ["/login", "/register", "/parent", "/parent/children"]) {
     await p.goto(KIDS + path);
