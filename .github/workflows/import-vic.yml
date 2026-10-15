@@ -53,5 +53,16 @@ jobs:
             echo "No candidate changes"
           else
             git commit -m "Data(review only): candidate VCAA v2 curriculum identifiers"
-            git push origin "HEAD:$TARGET_BRANCH"
+            for attempt in 1 2 3; do
+              if git push origin "HEAD:$TARGET_BRANCH"; then
+                echo "Saved classified VC2 data on draft PR"
+                exit 0
+              fi
+              echo "Another importer updated the draft; rebasing safely (attempt $attempt)"
+              git fetch origin "$TARGET_BRANCH"
+              git rebase "origin/$TARGET_BRANCH" || { git rebase --abort; exit 1; }
+              sleep 2
+            done
+            echo "Failed to push after safe retries" >&2
+            exit 1
           fi
