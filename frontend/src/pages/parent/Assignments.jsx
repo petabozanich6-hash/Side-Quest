@@ -45,7 +45,17 @@ export default function AssignmentsPage() {
         <select className={sel} value={show} onChange={e => setShow(e.target.value)} aria-label="Show" data-testid="asg-show"><option value="open">Not finished</option><option value="done">Completed</option><option value="all">All</option></select>
       </div>
       {loading ? <p className="text-sm text-slate-500">Loading…</p> : shown.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-600">Nothing here yet. Open <Link to="/parent/lessons" className="underline font-semibold">My lessons</Link> and press Assign.</div>
+        <div className="rounded-xl border border-dashed border-slate-300 p-5 sm:p-8 text-center text-sm text-slate-600" data-testid="assignments-empty">
+          {rows.length === 0 ? (
+            students.length === 0 ? (
+              <><h2 className="text-base font-semibold text-slate-900">Start by adding a child</h2><p className="mt-2">Once your child has a profile, you can create a lesson and assign it to their learning space.</p><Link to="/parent/children" className="mt-4 inline-block font-semibold underline">Add your first child</Link></>
+            ) : (
+              <><h2 className="text-base font-semibold text-slate-900">Nothing assigned yet</h2><p className="mt-2">Open My lessons, choose a saved lesson and select Assign to send it to your child's dashboard.</p><Link to="/parent/lessons" className="mt-4 inline-block font-semibold underline">Choose a lesson to assign</Link></>
+            )
+          ) : (
+            <><h2 className="text-base font-semibold text-slate-900">No assignments match these filters</h2><p className="mt-2">You have assignments saved, but none match the selected child and status.</p><button type="button" onClick={() => { setChild(""); setShow("all"); }} className="mt-4 font-semibold underline" data-testid="assignments-clear-filters">Show all assignments</button></>
+          )}
+        </div>
       ) : (
         <div className="space-y-3">
           {shown.map(a => {

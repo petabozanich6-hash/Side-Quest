@@ -182,7 +182,7 @@ export default function EvidencePage() {
                 </tr>
               );
             })}
-            {submissions.length === 0 && <tr><td colSpan={5} className="p-6 text-center text-sm text-slate-600">Your backpack is ready for its first learning sample. When your child submits a lesson, <Link to="/parent" className="font-semibold underline">review it in the Parent Hub</Link> to add it here. You can also record everyday learning below.</td></tr>}
+            {submissions.length === 0 && <tr><td colSpan={5} className="p-6 text-center text-sm text-slate-600">No parent-reviewed lesson submissions yet. When your child submits a lesson, <Link to="/parent" className="font-semibold underline">review it in the Parent Hub</Link> to add it here. You can also record everyday learning below.</td></tr>}
           </tbody>
         </table>
       </div>
@@ -204,6 +204,8 @@ export default function EvidencePage() {
           </form>
         )}
         <input type="search" value={q} onChange={e => setQ(e.target.value)} placeholder="Search your evidence…" aria-label="Search evidence" className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" data-testid="evidence-search" />
+        {notes.length === 0 && <p className="text-sm text-slate-600" data-testid="empty-evidence-notes">No everyday learning notes saved yet. You can record an excursion, a project or something your child learned using the form above.</p>}
+        {notes.length > 0 && notes.filter(n => !q || [n.title, n.notes, n.learning_area].join(" ").toLowerCase().includes(q.toLowerCase())).length === 0 && <p className="text-sm text-slate-600" data-testid="empty-evidence-search">No notes match that search. Try a different word or clear the search box.</p>}
         <ul className="space-y-2">
           {notes.filter(n => !q || [n.title, n.notes, n.learning_area].join(" ").toLowerCase().includes(q.toLowerCase())).map(n => (
             <li key={n.id} className="rounded-lg border border-slate-200 p-3 text-sm flex justify-between gap-3" data-testid={`note-${n.id}`}>
