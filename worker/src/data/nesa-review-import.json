@@ -17484,14 +17484,14 @@
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Dance Life Skills 11–12 (2025)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-life-skills-11-12-2025/outcomes",
-      "reason": "No outcome identifiers extracted"
-    },
-    {
       "syllabus": "Computing Applications Stage 6 (CEC) (2012)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes",
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes"
+    },
+    {
+      "syllabus": "Dance Life Skills 11–12 (2025)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-life-skills-11-12-2025/outcomes",
+      "reason": "No outcome identifiers extracted"
     },
     {
       "syllabus": "Drama Life Skills 11–12 (2025)",
@@ -17504,14 +17504,14 @@
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Exploring Early Childhood Stage 6 (CEC) (2007)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes"
-    },
-    {
       "syllabus": "English Life Skills 11–12 (2024)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/english/english-life-skills-11-12-2024/outcomes",
       "reason": "No outcome identifiers extracted"
+    },
+    {
+      "syllabus": "Exploring Early Childhood Stage 6 (CEC) (2007)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes"
     },
     {
       "syllabus": "Geography Life Skills 11–12 (2022)",
@@ -17554,24 +17554,24 @@
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/mathematics/numeracy-stage-6-cec-2021/outcomes"
     },
     {
-      "syllabus": "Photography, Video and Digital Imaging Stage 6 (CEC) (2000)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-video-and-digital-imaging-stage-6-cec-2000/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-video-and-digital-imaging-stage-6-cec-2000/outcomes"
-    },
-    {
       "syllabus": "Physical World Science Life Skills 11–12 (2025)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/science/physical-world-science-life-skills-11-12-2025/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Visual Design Stage 6 (CEC) (2000)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/visual-design-stage-6-cec-2000/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/visual-design-stage-6-cec-2000/outcomes"
+      "syllabus": "Photography, Video and Digital Imaging Stage 6 (CEC) (2000)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-video-and-digital-imaging-stage-6-cec-2000/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-video-and-digital-imaging-stage-6-cec-2000/outcomes"
     },
     {
       "syllabus": "Sport, Lifestyle and Recreation Studies Stage 6 (CEC) (2007)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes",
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes"
+    },
+    {
+      "syllabus": "Visual Design Stage 6 (CEC) (2000)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/visual-design-stage-6-cec-2000/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/visual-design-stage-6-cec-2000/outcomes"
     },
     {
       "syllabus": "Work Studies Stage 6 (CEC) (2012)",
