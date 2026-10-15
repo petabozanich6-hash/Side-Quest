@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { makeDb } from "./fakeD1.mjs";
 import { trialEndFrom } from "../src/entitlements.ts";
 import * as ap from "../src/aiPlan.ts";
-import { getJurisdiction, setJurisdiction } from "../src/jurisdiction.ts";
+import { getFamilyJurisdiction as getJurisdiction, setFamilyJurisdiction } from "../src/data/jurisdictions.ts";
 import { JURISDICTIONS, asJurisdiction, planAreas, levelFor, areaName } from "../src/data/planJurisdictions.ts";
 import { buildPlanContent } from "../src/data/planBuilder.ts";
 
@@ -61,13 +61,11 @@ function stubAi({ code = null, dropArea = null, frame = true, throws = false } =
 }
 const build = (db, fam, pid, ai) => ap.buildPlanWithAi(db, ai, { familyId: fam, userId: "u", planId: pid }, NOW);
 
-test("migration 0054 adds jurisdiction; reads and writes tolerate a database without it", async () => {
+test("jurisdiction reads and writes work on a database without migration 0054 (the column is added at runtime)", async () => {
   const old = makeDb("0054");
   old.raw.prepare("INSERT INTO families (id,name,owner_id,created_at) VALUES ('a','A','u','2026-01-01')").run();
   assert.equal(await getJurisdiction(old, "a"), null);
-  assert.equal(await setJurisdiction(old, "a", "QLD"), false);
-  old.raw.exec(readFileSync(new URL("../migrations/0054_family_jurisdiction.sql", import.meta.url), "utf8"));
-  assert.equal(await setJurisdiction(old, "a", "QLD"), true);
+  await setFamilyJurisdiction(old, "a", "QLD");
   assert.equal(await getJurisdiction(old, "a"), "QLD");
   assert.equal(asJurisdiction(" tas "), "TAS");
   assert.equal(asJurisdiction("NZ"), null);

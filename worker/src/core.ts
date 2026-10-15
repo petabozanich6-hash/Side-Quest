@@ -1,3 +1,4 @@
+import { publicMapping } from "./syllabusText";
 import type { Hono, MiddlewareHandler } from "hono";
 import { applySpelling } from "./data/spelling";
 import * as lb from "./lessonBuilder";
@@ -58,7 +59,7 @@ function subOut(r: any) {
     ...r,
     needs_help: !!r.needs_help,
     file_ids: parseJson(r.file_ids, []),
-    outcome_mappings: parseJson(r.outcome_mappings, []),
+    outcome_mappings: (parseJson(r.outcome_mappings, []) as any[]).map(publicMapping),
   };
 }
 const resOut = (r: any) => ({ ...r, approved: !!r.approved, shared: !!r.shared });
@@ -252,7 +253,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const r = await aid.matchLessonOutcomes(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, lessonId: c.req.param("id"), model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID });
     if (!r.ok) return send(c, r);
     const { ok: _ok, ...out } = r;
-    return c.json(out);
+    return c.json({ ...out, suggestions: (out.suggestions || []).map(publicMapping) });
   });
 
   app.post("/api/lessons/:id/apply-patch", auth, parent, async (c) => {
@@ -541,6 +542,19 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   app.post("/api/calendar", auth, parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
     if (!b.title || !b.date) return c.json({ detail: "Title and date are required" }, 400);
+    if (b.student_id) {
+      const student = await c.env.DB.prepare("SELECT id FROM students WHERE id = ? AND family_id = ?")
+        .bind(String(b.student_id), c.get("user").family_id).first();
+      if (!student) return c.json({ detail: "Student not found" }, 404);
+    }
+    if (b.linked_lesson_id) {
+      const lesson = await c.env.DB.prepare("SELECT id FROM lessons WHERE id = ? AND (family_id = ? OR family_id IS NULL)").bind(String(b.linked_lesson_id), c.get("user").family_id).first();
+      if (!lesson) return c.json({ detail: "Lesson not found" }, 404);
+    }
+    if (b.linked_assignment_id) {
+      const assignment = await c.env.DB.prepare("SELECT id FROM assignments WHERE id = ? AND family_id = ?").bind(String(b.linked_assignment_id), c.get("user").family_id).first();
+      if (!assignment) return c.json({ detail: "Assignment not found" }, 404);
+    }
     const id = newId();
     await c.env.DB.prepare(
       "INSERT INTO calendar_events (id, family_id, student_id, title, date, start_time, duration_minutes, event_type, linked_lesson_id, linked_assignment_id, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"

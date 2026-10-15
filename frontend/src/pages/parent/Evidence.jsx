@@ -90,15 +90,27 @@ function VisitPrep({ students, range, setRange, bump }) {
       {s && (
         <div className="overflow-x-auto" data-testid="visit-coverage">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs uppercase tracking-wider text-slate-500"><tr><th className="p-2">Learning area</th><th className="p-2">Entries</th><th className="p-2">Outcomes achieved</th><th className="p-2">Working towards</th></tr></thead>
+            <thead className="bg-slate-50 text-left text-xs uppercase tracking-wider text-slate-500"><tr><th className="p-2">Learning area</th><th className="p-2">Entries</th><th className="p-2">Understanding shown</th><th className="p-2">Practised</th></tr></thead>
             <tbody>{s.areas.map((a) => (
               <tr key={a.learning_area} className="border-t border-slate-100">
                 <td className="p-2">{a.learning_area}</td>
                 <td className={`p-2 ${a.expected && !a.entries ? "text-amber-700 font-semibold" : ""}`}>{a.entries || (a.expected ? "None yet" : 0)}</td>
-                <td className="p-2">{a.outcomes_achieved || "—"}</td><td className="p-2">{a.outcomes_working_towards || "—"}</td>
+                <td className="p-2">{a.outcomes_shown || "—"}</td><td className="p-2">{a.outcomes_working_towards || "—"}</td>
               </tr>))}</tbody>
           </table>
-          {data?.jurisdiction === "NSW" && <p className="text-xs text-slate-600 mt-2" data-testid="visit-tracker-link">"Achieved" in this table means you marked it shown in a piece of work. For each outcome's overall status, the evidence behind it and your confirmations, open the <Link to={`/parent/outcomes/${sid}`} className="font-semibold underline">Outcome tracker</Link>.</p>}
+          {data?.progress?.available && (
+            <div className="mt-3 rounded-lg border border-slate-200 p-3" data-testid="visit-progress">
+              <p className="text-xs font-semibold text-slate-700">Outcome Tracker snapshot (all time, as at today) · {data.progress.totals.total} outcomes for this year level</p>
+              <div className="mt-2 flex h-3 w-full overflow-hidden rounded-full bg-slate-100" aria-hidden="true">
+                {["achieved", "demonstrated", "developing", "introduced"].map((k, i) => (
+                  <div key={k} style={{ width: `${(100 * (data.progress.totals.counts[k] || 0)) / Math.max(1, data.progress.totals.total)}%`, backgroundColor: ["#1F3B2D", "#4A7C59", "#9DBF9E", "#D9E5D6"][i] }} />
+                ))}
+              </div>
+              <p className="mt-1 text-xs text-slate-600">{["achieved", "demonstrated", "developing", "introduced", "not_started"].map(k => `${data.progress.status_labels[k]}: ${data.progress.totals.counts[k] || 0}`).join(" · ")}</p>
+            </div>
+          )}
+          {data?.progress && !data.progress.available && <p className="text-xs text-slate-600 mt-2" data-testid="visit-progress-unavailable">{data.progress.note}</p>}
+          {data?.progress?.available && <p className="text-xs text-slate-600 mt-2" data-testid="visit-tracker-link">"Understanding shown" counts pieces of work in this period where you judged the outcome shown. Each outcome's overall status (Demonstrated, or Achieved once you confirm it) comes from the <Link to={`/parent/outcomes/${sid}`} className="font-semibold underline">Outcome tracker</Link>.</p>}
           {s.not_yet_evidenced.length > 0 && <p className="text-xs text-amber-800 mt-2" data-testid="visit-gaps">No evidence yet for {s.not_yet_evidenced.join(", ")} in this period. Add a work sample or an observation below, or explain how these are covered in your summary.</p>}
         </div>
       )}
@@ -170,7 +182,7 @@ export default function EvidencePage() {
                 </tr>
               );
             })}
-            {submissions.length === 0 && <tr><td colSpan={5} className="p-6 text-center text-sm text-slate-600">Your backpack is ready for its first learning sample. When your child submits a lesson, <Link to="/parent" className="font-semibold underline">review it in the Parent Hub</Link> to add it here. You can also record everyday learning below.</td></tr>}
+            {submissions.length === 0 && <tr><td colSpan={5} className="p-6 text-center text-sm text-slate-600">No parent-reviewed lesson submissions yet. When your child submits a lesson, <Link to="/parent" className="font-semibold underline">review it in the Parent Hub</Link> to add it here. You can also record everyday learning below.</td></tr>}
           </tbody>
         </table>
       </div>
@@ -192,6 +204,8 @@ export default function EvidencePage() {
           </form>
         )}
         <input type="search" value={q} onChange={e => setQ(e.target.value)} placeholder="Search your evidence…" aria-label="Search evidence" className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" data-testid="evidence-search" />
+        {notes.length === 0 && <p className="text-sm text-slate-600" data-testid="empty-evidence-notes">No everyday learning notes saved yet. You can record an excursion, a project or something your child learned using the form above.</p>}
+        {notes.length > 0 && notes.filter(n => !q || [n.title, n.notes, n.learning_area].join(" ").toLowerCase().includes(q.toLowerCase())).length === 0 && <p className="text-sm text-slate-600" data-testid="empty-evidence-search">No notes match that search. Try a different word or clear the search box.</p>}
         <ul className="space-y-2">
           {notes.filter(n => !q || [n.title, n.notes, n.learning_area].join(" ").toLowerCase().includes(q.toLowerCase())).map(n => (
             <li key={n.id} className="rounded-lg border border-slate-200 p-3 text-sm flex justify-between gap-3" data-testid={`note-${n.id}`}>

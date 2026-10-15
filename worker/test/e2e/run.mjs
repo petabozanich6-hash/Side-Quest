@@ -44,7 +44,7 @@ const sql = (q) => { const r = wr(["d1", "execute", "DB", "--local", "--command"
 const server = spawn("npx", ["wrangler", "dev", "--config", "wrangler.e2e.jsonc", "--local", "--persist-to", STATE, "--port", String(PORT), "--ip", "127.0.0.1"], { cwd: ROOT, stdio: ["ignore", "pipe", "pipe"] });
 let slog = "";
 server.stdout.on("data", (d) => (slog += d)); server.stderr.on("data", (d) => (slog += d));
-const stop = () => { try { server.kill("SIGTERM"); } catch {} };
+const stop = () => { try { writeFileSync(`${SHOTS}/server.log`, slog.slice(-400000)); } catch {} try { server.kill("SIGTERM"); } catch {} };
 process.on("exit", stop);
 for (let i = 0; i < 90; i++) {
   try { const r = await fetch(`${BASE}/api/health`); if (r.ok) break; } catch {}
@@ -74,6 +74,113 @@ page.on("pageerror", (e) => pageErrors.push(String(e).slice(0, 300)));
 
 let parentToken, lessonId, assignmentId, childToken, submissionId, xp0 = 0;
 
+
+// ---- Multi-family and sibling isolation regression tests (real Worker + real D1)
+await step("security: family isolation, sibling privacy, PIN revocation and throttling", async () => {
+  const tag = Date.now().toString(36);
+  async function family(n) {
+    const r = await api("POST", "/auth/register", null, {
+      email: `security-${n}-${tag}@example.com`, name: `Parent ${n}`,
+      password: "SecurityPass123!", jurisdiction: "NSW"
+    });
+    ok(r.status === 200 && r.json?.token, `registration ${n}: ${r.status}`);
+    return r.json.token;
+  }
+  async function child(parent, name) {
+    const username = `sec${name.toLowerCase()}${tag}`;
+    const r = await api("POST", "/students", parent, { name, username, pin: "7392", stage: "S2" });
+    // Trial families can add only one child; seed the second sibling directly in this isolated test DB.
+    if (r.status === 402 && name === "Bravo") {
+      const siblingId = crypto.randomUUID();
+      sql(`INSERT INTO students (id, family_id, name, username, pin_hash, birth_year, stage, year_level, theme, interests, notes, created_at, extra, credential_version)
+        SELECT '${siblingId}', family_id, 'Bravo', '${username}', pin_hash, birth_year, stage, year_level, theme, interests, notes, created_at, extra, 0 FROM students WHERE username = 'sec alpha-placeholder'`.replace("sec alpha-placeholder", `secalpha${tag}`));
+      r.status = 200; r.json = { id: siblingId };
+    }
+    ok(r.status === 200 && r.json?.id, `create ${name}: ${r.status}`);
+    const login = await api("POST", "/auth/child-login", null, { username, pin: "7392" });
+    ok(login.status === 200 && login.json?.token, `login ${name}: ${login.status}`);
+    return { id: r.json.id, username, token: login.json.token };
+  }
+  const a = await family("a"), b = await family("b");
+  const a1 = await child(a, "Alpha"), a2 = await child(a, "Bravo"), b1 = await child(b, "Charlie");
+  const collision = await api("POST", "/students", b, { name: "Wrong family", username: a1.username, pin: "7392", stage: "S2" });
+  ok(collision.status === 400 || collision.status === 409, `duplicate username unexpectedly accepted: ${collision.status}`);
+  const samePinOtherFamily = await api("POST", "/auth/child-login", null, { username: b1.username, pin: "7392" });
+  ok(samePinOtherFamily.status === 200 && samePinOtherFamily.json?.student?.id === b1.id,
+    "identical PINs did not resolve to their own unique child accounts");
+
+  async function denied(label, method, path, token, body) {
+    const r = await api(method, path, token, body);
+    ok([403, 404].includes(r.status), `${label} unexpectedly returned ${r.status}`);
+  }
+  await denied("parent B cannot view A's child", "GET", `/students/${a1.id}`, b);
+  await denied("parent B cannot view A's overview", "GET", `/students/${a1.id}/overview`, b);
+  await denied("child B cannot view A's child", "GET", `/students/${a1.id}`, b1.token);
+  await denied("child A cannot view sibling", "GET", `/students/${a2.id}`, a1.token);
+  await denied("parent B cannot change A's PIN", "PUT", `/students/${a1.id}/pin`, b, { pin: "2222" });
+  await denied("parent B cannot change A's profile", "PUT", `/students/${a1.id}`, b, { name: "Tampered" });
+  await denied("parent B cannot delete A's profile", "DELETE", `/students/${a1.id}`, b);
+  await denied("parent B cannot create calendar event for A's child", "POST", "/calendar", b, { title: "Private", date: "2026-11-01", student_id: a1.id });
+  // Family-owned academic records must reject foreign student IDs and never appear in other family listings.
+  await denied("parent B cannot add reading log for A's child", "POST", "/reading-log", b, { student_id: a1.id, title: "Foreign", read_date: "2026-11-01" });
+  await denied("parent B cannot add life evidence for A's child", "POST", "/life-evidence", b, { student_id: a1.id, title: "Foreign", description: "Unauthorized" });
+  await denied("parent B cannot create learning plan for A's child", "POST", "/learning-plans", b, { student_id: a1.id, title: "Foreign", period_start: "2026-11-01", period_end: "2026-11-30" });
+  const fd = new FormData();
+  fd.append("file", new Blob(["family A private file"], { type: "image/png" }), "private.png");
+  const uploadResponse = await fetch(BASE + "/api/files/upload", { method: "POST", headers: { authorization: `Bearer ${a}` }, body: fd });
+  const upload = await uploadResponse.json().catch(() => ({}));
+  ok(uploadResponse.status === 200 && upload.id, `test file upload failed: ${uploadResponse.status}`);
+  const foreignFile = await api("GET", `/files/${upload.id}`, b);
+  ok(foreignFile.status === 404, `foreign family downloaded A's file: ${foreignFile.status}`);
+  const foreignChildFile = await api("GET", `/files/${upload.id}`, b1.token);
+  ok(foreignChildFile.status === 404, `foreign child downloaded A's file: ${foreignChildFile.status}`);
+  const missingFile = await api("GET", `/files/${upload.id}`);
+  ok(missingFile.status === 401, "unauthenticated file downloaded");
+  const childUpload = new FormData();
+  childUpload.append("file", new Blob(["child A private image"], { type: "image/png" }), "child-work.png");
+  const childUploadResponse = await fetch(BASE + "/api/files/upload", { method: "POST", headers: { authorization: `Bearer ${a1.token}` }, body: childUpload });
+  const childFile = await childUploadResponse.json().catch(() => ({}));
+  ok(childUploadResponse.status === 200 && childFile.id, "child file fixture upload failed");
+  const siblingFile = await api("GET", `/files/${childFile.id}`, a2.token);
+  ok(siblingFile.status === 200, `same-family file access unexpectedly blocked: ${siblingFile.status}`);
+  const parentFile = await api("GET", `/files/${childFile.id}`, a);
+  ok(parentFile.status === 200, `parent cannot access own child's upload: ${parentFile.status}`);
+  const ownFile = await api("GET", `/files/${childFile.id}`, a1.token);
+  ok(ownFile.status === 200, `child cannot access own upload: ${ownFile.status}`);
+  const foreignPortfolio = await api("GET", `/portfolio?student_id=${a1.id}`, b);
+  ok([403, 404].includes(foreignPortfolio.status), `foreign family portfolio returned ${foreignPortfolio.status}`);
+  const foreignReading = await api("GET", `/reading-log?student_id=${a1.id}`, b);
+  ok(foreignReading.status === 200 && Array.isArray(foreignReading.json) && foreignReading.json.length === 0, "foreign family reading records leaked");
+  const foreignEvidence = await api("GET", `/life-evidence?student_id=${a1.id}`, b);
+  ok(foreignEvidence.status === 200 && Array.isArray(foreignEvidence.json) && foreignEvidence.json.length === 0, "foreign family life evidence leaked");
+  const newPin = await api("PUT", `/students/${a1.id}/pin`, a, { pin: "9876" });
+  ok(newPin.status === 200, "PIN change failed");
+  const oldSession = await api("GET", "/auth/me", a1.token);
+  ok(oldSession.status === 401, `old child token still valid: ${oldSession.status}`);
+  const oldPin = await api("POST", "/auth/child-login", null, { username: a1.username, pin: "7392" });
+  ok(oldPin.status === 401, "old PIN still valid");
+  const relogin = await api("POST", "/auth/child-login", null, { username: a1.username, pin: "9876" });
+  ok(relogin.status === 200, "new PIN login failed");
+  const profileUpdate = await api("PUT", `/students/${a2.id}`, a, { pin: "6677" });
+  ok(profileUpdate.status === 200, "profile PIN edit failed");
+  const siblingOld = await api("GET", "/auth/me", a2.token);
+  ok(siblingOld.status === 401, "old token survived profile PIN edit");
+  for (let i = 0; i < 8; i++) {
+    await api("POST", "/auth/child-login", null, { username: `guess${tag}`, pin: "0000" });
+  }
+  const blocked = await api("POST", "/auth/child-login", null, { username: `guess${tag}`, pin: "0000" });
+  ok(blocked.status === 429, `guessing not throttled: ${blocked.status}`);
+  // Only failures count: a child signing in again and again on a shared device is never locked out.
+  for (let i = 0; i < 10; i++) {
+    const again = await api("POST", "/auth/child-login", null, { username: a1.username, pin: "9876" });
+    ok(again.status === 200, `successful child sign-in #${i + 1} was throttled: ${again.status}`);
+  }
+  // Parent password guessing is throttled too, without locking out other parents.
+  for (let i = 0; i < 8; i++) await api("POST", "/auth/login", null, { email: `nobody-${tag}@example.com`, password: "wrong-password" });
+  const parentBlocked = await api("POST", "/auth/login", null, { email: `nobody-${tag}@example.com`, password: "wrong-password" });
+  ok(parentBlocked.status === 429, `parent guessing not throttled: ${parentBlocked.status}`);
+});
+
 await step("landing page loads and has no NSW-only marketing", async () => {
   await page.goto(BASE + "/"); await page.waitForLoadState("networkidle");
   const t = await page.textContent("body");
@@ -97,6 +204,20 @@ await step("landing page remains usable on phone, tablet and desktop", async () 
   }
 });
 
+await step("installable app: manifest, icons, service worker and offline page are served", async () => {
+  const m = await fetch(BASE + "/manifest.webmanifest");
+  ok(m.status === 200, "manifest " + m.status);
+  const man = await m.json();
+  ok(man.name === "Side-Quest Learning" && man.display === "standalone" && man.icons.some((i) => i.sizes === "512x512"), "manifest fields");
+  for (const path of ["/sw.js", "/offline.html", "/icons/icon-192.png", "/icons/maskable-512.png", "/icons/apple-touch-icon.png"]) {
+    const r = await fetch(BASE + path);
+    ok(r.status === 200, path + " " + r.status);
+    if (path.endsWith(".js")) ok(/javascript/.test(r.headers.get("content-type") || ""), "sw.js content type " + r.headers.get("content-type"));
+  }
+  await page.goto(BASE + "/");
+  ok(await page.locator('link[rel=manifest]').count() === 1, "manifest link missing from the page");
+});
+
 await step("A. new family registers through the UI", async () => {
   await page.goto(BASE + "/register");
   await page.fill('[data-testid=reg-name]', "Pat Parent");
@@ -111,6 +232,60 @@ await step("A. new family registers through the UI", async () => {
   ok(plan.json.effective_plan === "FREE_PREVIEW", "not on free preview: " + JSON.stringify(plan.json));
   ok(plan.json.billing && plan.json.billing.enabled === false, "billing off without Stripe secrets: " + JSON.stringify(plan.json.billing));
   await shot("parent-home");
+});
+
+await step("public homepage explains the full product and honest membership pricing", async () => {
+  await page.goto(BASE + "/");
+  const t = await page.textContent("body");
+  for (const expected of ["across Australia", "AI Lesson Builder", "Evidence Backpack", "Parent", "pocket pet", "$3", "$6", "$13", "$130", "seven days free"]) {
+    ok(t.toLowerCase().includes(expected.toLowerCase()), `homepage does not explain ${expected}`);
+  }
+  ok(!/ready-made lesson library|prewritten lesson library|NSW-only homeschooling platform/i.test(t), "outdated marketing claim");
+});
+
+await step("new parent receives clear first steps without promotional interruption", async () => {
+  await page.goto(BASE + "/parent");
+  await page.waitForSelector('[data-testid=get-started]');
+  ok(await page.locator('[data-testid=empty-students]').isVisible(), "new parent missing child guidance");
+  await page.goto(BASE + "/parent/assignments");
+  ok((await page.locator('[data-testid=assignments-empty]').innerText()).includes("adding a child"), "assignments empty state has no next action");
+  await page.goto(BASE + "/parent/resources");
+  await page.waitForLoadState("networkidle");
+  const emptyResources = await page.locator('[data-testid=resources-empty-add]').isVisible();
+  const savedResources = await page.locator('[data-testid^="resource-"]').count();
+  ok(emptyResources || savedResources > 0, "resources page must show saved items or a helpful first action");
+  await page.goto(BASE + "/parent/learning-plans");
+  await page.waitForSelector('[data-testid=plans-empty-add-child]', { state: "visible", timeout: 10000 });
+  await page.goto(BASE + "/parent/evidence");
+  await page.waitForSelector('[data-testid=empty-evidence-notes]', { state: "visible", timeout: 10000 });
+});
+
+await step("parent onboarding pages fit phone, tablet and desktop", async () => {
+  for (const [label, width, height] of [["phone", 375, 812], ["tablet", 768, 1024], ["desktop", 1440, 900]]) {
+    const context = await browser.newContext({ viewport: { width, height } });
+    const p = await context.newPage();
+    try {
+      await p.goto(BASE + "/login");
+      await p.fill('[data-testid=login-email]', email1);
+      await p.fill('[data-testid=login-password]', pw);
+      await p.click('[data-testid=login-submit]');
+      await p.waitForURL("**/parent");
+      for (const [name, route, selector] of [
+        ["hub", "/parent", "[data-testid=parent-dashboard]"],
+        ["assignments", "/parent/assignments", "[data-testid=assignments-page]"],
+        ["resources", "/parent/resources", "[data-testid=resources-page]"],
+        ["learning-plans", "/parent/learning-plans", "[data-testid=learning-plans]"],
+        ["evidence", "/parent/evidence", "[data-testid=evidence-page]"],
+        ["membership", "/parent/plan", "[data-testid=upgrade-page]"],
+      ]) {
+        await p.goto(BASE + route);
+        await p.waitForSelector(selector);
+        const dims = await p.evaluate(() => ({ scroll: document.documentElement.scrollWidth, viewport: window.innerWidth }));
+        ok(dims.scroll <= dims.viewport + 2, `${name} ${label} overflows horizontally (${dims.scroll} > ${dims.viewport})`);
+        if (label !== "desktop" || name === "membership") await p.screenshot({ path: `${SHOTS}/launch-${name}-${label}.png`, fullPage: true });
+      }
+    } finally { await context.close(); }
+  }
 });
 
 await step("curriculum shows only the state chosen at sign-up, and it can be changed", async () => {
@@ -949,6 +1124,49 @@ await step("P. outcome tracker: hand-in, review and evidence update it; only the
   const h = await tp.textContent("[data-testid=history]");
   ok(h.includes("Confirmed as Achieved by you") && h.includes("Demonstrated"), "history: " + h.slice(0, 300));
   await noOverflow(tp, "/parent/outcomes detail");
+  await ctx.close();
+});
+
+await step("Q. Auto-Quest: plan the week from the timetable, approve a reused lesson, and it is assigned on that day", async () => {
+  const em = `autoquest-${stamp}@example.com`;
+  const reg = await api("POST", "/auth/register", null, { name: "Quest Fam", email: em, password: pw, jurisdiction: "NSW" });
+  ok(reg.status === 200, "register " + reg.status);
+  const pt = reg.json.token;
+  const fam = JSON.parse(Buffer.from(pt.split(".")[1], "base64url").toString()).family_id;
+  sql(`UPDATE families SET plan='ACTIVE_MONTHLY' WHERE id='${fam}';`);
+  const ch = await api("POST", "/students", pt, { name: "Quinn", username: `aq${stamp}`.slice(0, 14), pin: "2468", stage: "S2" });
+  ok(ch.status === 200, "child " + ch.status);
+  const codes = (await api("GET", "/curriculum/outcomes?stage=S2&learning_area=Mathematics", pt)).json.map((o) => o.code);
+  ok(codes.length > 1, "no S2 maths codes");
+  const les = await api("POST", "/lessons", pt, { title: "Quest place value", learning_area: "Mathematics", stage: "S2", status: "ready", outcome_codes: [codes[0]], sections: [{ heading: "Tens", body: "Tens and ones." }] });
+  ok(les.status === 200 && les.json.outcome_codes.includes(codes[0]), "lesson");
+  const d = new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10);
+  const ev = await api("POST", "/calendar", pt, { title: "Mathematics", date: d, student_id: ch.json.id, event_type: "lesson", start_time: "09:00", duration_minutes: 40 });
+  ok(ev.status === 200, "slot " + ev.status);
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const qp = await ctx.newPage();
+  watch("autoquest", qp);
+  await qp.goto(BASE + "/login");
+  await qp.fill('[data-testid=login-email]', em); await qp.fill('[data-testid=login-password]', pw);
+  await qp.click('[data-testid=login-submit]'); await qp.waitForURL("**/parent");
+  await qp.goto(BASE + "/parent/calendar");
+  await qp.click("[data-testid=autoquest-open-btn]");
+  await qp.click("[data-testid=autoquest-preview]");
+  await qp.waitForSelector("[data-testid=autoquest-decisions] li");
+  const li = qp.locator("[data-testid=autoquest-decisions] li").first();
+  ok((await li.getAttribute("data-action")) === "reuse_draft", "saved lesson not reused: " + (await li.getAttribute("data-action")));
+  ok((await li.textContent()).includes(codes[0]), "verified code not shown");
+  await shot("autoquest-plan", qp);
+  await li.locator("[data-testid=aq-approve]").click();
+  await qp.waitForSelector('[data-testid=autoquest-decisions] li[data-status="assigned"]');
+  const asg = (await api("GET", `/assignments?student_id=${ch.json.id}`, pt)).json;
+  ok(asg.length === 1 && asg[0].lesson_id === les.json.id && asg[0].scheduled_date === d, "assignment " + JSON.stringify(asg).slice(0, 200));
+  // Planning again never duplicates, and a child can't use Auto-Quest.
+  const again = await api("POST", "/auto-quest/plan", pt, { student_id: ch.json.id, from: d, to: d });
+  ok(again.json.proposals.length === 1 && again.json.proposals[0].status === "assigned", "re-plan changed a decision");
+  const ct = (await api("POST", "/auth/child-login", null, { username: `aq${stamp}`.slice(0, 14), pin: "2468" })).json.token;
+  ok((await api("POST", "/auto-quest/plan", ct, { student_id: ch.json.id, from: d, to: d })).status === 403, "child reached Auto-Quest");
+  ok((await api("POST", "/auto-quest/plan", parentToken, { student_id: ch.json.id, from: d, to: d })).status === 404, "another family planned for this child");
   await ctx.close();
 });
 

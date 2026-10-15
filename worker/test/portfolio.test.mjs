@@ -19,19 +19,23 @@ function lessonWork(db, fam, id, reviewed, mappings, area = "English", codes = [
     .run(`sub${id}`, fam, `a${id}`, `s-${fam}`, "l1", `My answer ${id}`, "demonstrated", "Well done", "Try longer texts", JSON.stringify(mappings), reviewed, reviewed);
 }
 
-test("outcomeFrom fills in syllabus wording and status", () => {
-  const o = outcomeFrom({ code: "EN2-OLC-01", accepted: true }, "S2");
-  assert.equal(o.learning_area, "English");
-  assert.equal(o.status, "achieved");
-  assert.ok(o.description.length > 10);
+test("outcomeFrom gives the code and the parent's judgement, never syllabus wording or legacy 'achieved'", () => {
+  const legacy = outcomeFrom({ code: "EN2-OLC-01", accepted: true }, "S2");
+  assert.equal(legacy.learning_area, "English");
+  assert.equal(legacy.status, "working_towards", "an old accepted:true approval is practice, not understanding shown");
+  assert.equal(legacy.description, "", "NESA wording is not republished");
+  const stored = outcomeFrom({ code: "EN2-OLC-01", description: "Communicates effectively by using interpersonal conventions and language to extend and elaborate ideas for social and learning interactions", mark: "shown" }, "S2");
+  assert.equal(stored.status, "shown");
+  assert.equal(stored.description, "", "wording stored on an old record is not sent back out");
   assert.equal(outcomeFrom({ code: "EN2-OLC-01", accepted: false }, "S2").status, "working_towards");
+  assert.equal(outcomeFrom({ learning_area: "Science", description: "Observed living things" }, "S2").description, "Observed living things", "a parent's own words are kept");
   assert.equal(outcomeFrom({}, "S2"), null);
 });
 
 test("full record: every source, chronological, outcomes, coverage gaps", async () => {
   const db = makeDb();
   family(db, "f1", "ACTIVE_MONTHLY");
-  lessonWork(db, "f1", 2, "2026-09-20T01:00:00Z", [{ code: "EN2-OLC-01", accepted: true }], "English", ["EN2-VOCAB-01"]);
+  lessonWork(db, "f1", 2, "2026-09-20T01:00:00Z", [{ code: "EN2-OLC-01", accepted: true, mark: "shown" }], "English", ["EN2-VOCAB-01"]);
   lessonWork(db, "f1", 1, "2026-08-02T01:00:00Z", [{ code: "EN2-OLC-01", accepted: false }]);
   db.raw.prepare("INSERT INTO life_evidence (id,family_id,student_id,title,description,date,duration_minutes,status,accepted_mappings,created_at) VALUES (?,?,?,?,?,?,?,?,?,?)")
     .run("le1", "f1", "s-f1", "Bushwalk", "Identified plants", "2026-09-01", 90, "accepted", JSON.stringify([{ learning_area: "Science and Technology", description: "Observed living things", accepted: true }]), T);
@@ -55,7 +59,19 @@ test("full record: every source, chronological, outcomes, coverage gaps", async 
   assert.equal(olc.times, 2);
   assert.equal(olc.first, "2026-08-02");
   assert.equal(olc.latest, "2026-09-20");
-  assert.equal(olc.status, "achieved", "progress from working towards to achieved");
+  assert.equal(olc.status, "shown", "progress from working towards to understanding shown");
+  assert.equal(olc.description, "");
+  assert.equal(olc.mastery, "developing", "one piece of shown work is not Demonstrated (needs two days), and never Achieved");
+  assert.ok(!JSON.stringify(p).includes("interpersonal conventions"), "no NESA wording anywhere in the record");
+
+  // All-time tracker snapshot for the printable record.
+  assert.equal(p.progress.available, true);
+  assert.equal(p.progress.as_at, "2026-10-14");
+  const engP = p.progress.areas.find((a) => a.learning_area === "English");
+  assert.ok(engP.total > 2 && engP.counts.developing >= 1 && engP.counts.achieved === 0);
+  assert.equal(p.progress.totals.counts.achieved, 0, "nothing is Achieved without a parent confirmation");
+  assert.ok(p.progress.needs_evidence.some((n) => n.code === "EN2-OLC-01"));
+  assert.equal(p.curriculum_source.url, "https://curriculum.nsw.edu.au/");
 
   const eng = p.summary.areas.find((a) => a.learning_area === "English");
   assert.equal(eng.entries, 2);
@@ -126,7 +142,9 @@ test("a Victorian family's record uses Victorian learning areas and invents no c
   assert.equal(p.student.stage_name, "");
   assert.equal(p.jurisdiction_name, "Victoria");
   assert.ok(!JSON.stringify(p.entries).includes("EN2-OLC-01"), "NSW codes shown to a Victorian family");
-  assert.ok(p.entries[0].outcomes[0].description.length > 10, "plain-language outcome kept");
+  assert.deepEqual(p.entries[0].outcomes, [], "a NSW outcome is dropped, not passed off as plain-language Victorian wording");
+  assert.equal(p.progress.available, false, "no verified Victorian catalogue: the record says so instead of inventing coverage");
+  assert.match(p.progress.note, /does not hold a verified outcome list/);
 });
 
 test("a family that hasn't chosen a state gets the Australian Curriculum, not NSW", async () => {
@@ -139,4 +157,18 @@ test("a family that hasn't chosen a state gets the Australian Curriculum, not NS
   assert.equal(p.entries[0].learning_area, "Health and Physical Education");
   assert.ok(p.expected_areas.includes("The Arts") && !p.expected_areas.includes("HSIE"));
   assert.ok(!JSON.stringify(p).includes("EN2-OLC-01"));
+});
+
+test("a Queensland family's record keeps verified AC9 codes, drops NSW codes and never prints content descriptions", async () => {
+  const db = makeDb();
+  family(db, "fq", "ACTIVE_MONTHLY", "QLD");
+  lessonWork(db, "fq", 11, "2026-09-03T01:00:00Z", [{ code: "AC9M3N01", mark: "shown" }, { code: "MA2-RN-01", mark: "shown" }], "Mathematics", ["AC9M3N01", "MA2-RN-01"]);
+  const p = await buildPortfolio(db, "fq", "s-fq", { now: NOW });
+  const codes = p.entries[0].outcomes.map((o) => o.code);
+  assert.deepEqual(codes, ["AC9M3N01"], "only the family's own framework codes appear");
+  assert.equal(p.entries[0].outcomes[0].description, "");
+  assert.equal(p.progress.available, true);
+  assert.match(p.progress.framework, /Australian Curriculum v9/);
+  assert.equal(p.summary.outcomes.find((o) => o.code === "AC9M3N01").mastery, "developing");
+  assert.ok(!JSON.stringify(p).includes("MA2-RN-01"));
 });

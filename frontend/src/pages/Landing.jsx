@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Fern, Branch, Leaf, Flower, Pet } from "../components/shared/Botanical";
+import InstallApp from "../components/shared/InstallApp";
 import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass, ArrowRight } from "lucide-react";
 
 const Feature = ({ icon: Icon, title, desc, tint = "#6B8A5B" }) => (
@@ -35,6 +36,7 @@ export default function Landing() {
             <Link to="/child-login" className="rounded-full px-3 sm:px-5 py-2.5 text-sm font-bold hover:translate-y-[-1px] transition shadow-sm" data-testid="nav-child-login" style={{backgroundColor:"#C77B5B", color:"#FFF9EE"}}>Student sign in</Link>
             <Link to="/login" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-login" style={{color:"#52473A"}}>Parent sign in</Link>
             <Link to="/register" className="rounded-full px-3 sm:px-5 py-2.5 text-sm font-semibold hover:translate-y-[-1px] transition shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="nav-register">Start free preview</Link>
+            <InstallApp variant="nav" />
           </nav>
         </div>
       </header>
@@ -51,7 +53,7 @@ export default function Landing() {
           </h1>
           <p className="mt-6 text-lg leading-relaxed max-w-2xl" style={{color:"#52473A"}}>
             Homeschooling has plenty of wonderful moments — and plenty to organise. Side-Quest brings lesson planning, your children's learning and progress records into one friendly place.
-            With Family Membership, the AI Lesson Builder can draft a lesson for you to check and adjust. Children get their own learning space, with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span> along for the adventure.
+            With Family Membership, the AI Lesson Builder drafts teaching, examples, activities and questions from your topic — so you can review and adapt a starting point instead of planning from a blank page. Children get their own learning space, with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span> along for the adventure.
           </p>
 
           <div className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl" data-testid="who-is-here">
@@ -172,7 +174,7 @@ export default function Landing() {
             </div>
           ))}
         </div>
-        <p className="mt-5 text-center text-sm text-stone-600">Start with a 7-day, card-free preview. Full access includes AI lesson drafting, subject to fair-use limits. Cancel your membership any time; paid access continues through the current billing period.</p>
+        <p className="mt-5 text-center text-sm text-stone-600">Start with a 7-day, card-free preview. Family Membership supports up to 20 child profiles and includes AI lesson drafting with fair-use limits. All four billing options include the same features; cancel any time and paid access normally continues through the current billing period.</p>
         <div className="mt-6 flex justify-center"><Link to="/register" className="rounded-full px-6 py-3 font-semibold text-sm shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}}>Start your free preview</Link></div>
       </section>
 

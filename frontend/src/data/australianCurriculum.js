@@ -144,3 +144,6 @@ export const jurisdictionFor = (code) => AUSTRALIAN_JURISDICTIONS.find((j) => j.
 
 /** NSW syllabus outcomes are the only verified outcome list loaded. Never assumed for a family that hasn't chosen. */
 export const usesNswOutcomes = (code) => code === "NSW";
+// States and territories whose outcome codes Side-Quest can verify (NSW syllabus; AC9 reference list elsewhere).
+// Victoria and WA have no verified list yet. The server enforces this; this only decides what the UI offers.
+export const hasVerifiedCodes = (code) => ["NSW", "QLD", "SA", "TAS", "ACT", "NT"].includes(code);

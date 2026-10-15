@@ -1,9 +1,11 @@
 // Parent lesson builder, assignment snapshots, submissions, review and entitlement checks.
 // Plain functions over a D1-shaped database so they can be tested without the Worker runtime.
 // Every function that touches family data takes the family id from the authenticated user, never from the request body.
+import { publicLesson } from "./syllabusText";
 import { recordPetEvent } from "./data/petQuests";
 import { knownOutcomeCodes } from "./outcomeMatch";
-import { safely, trackSubmission, trackAssignmentQuiz } from "./outcomeTracker";
+import { safely, trackSubmission, trackAssignmentQuiz, catalogueFor } from "./outcomeTracker";
+import { getFamilyJurisdiction } from "./data/jurisdictions";
 import { cleanItemKind, cleanVisual, cleanKeyWords, childItem, markItem, modelAnswer, estimateMinutes } from "./items";
 import { effectivePlan, limitsFor, trialEndFrom, UPGRADE_MESSAGE } from "./entitlements";
 import type { Plan, Limits } from "./entitlements";
@@ -370,7 +372,7 @@ export function toLessonData(c: CleanLesson): Record<string, unknown> {
 export function lessonOut(row: any) {
   if (!row) return null;
   const { data, ...cols } = row;
-  return { ...parseJson<Record<string, unknown>>(data, {}), ...cols };
+  return publicLesson({ ...parseJson<Record<string, unknown>>(data, {}), ...cols });
 }
 
 /** Remove everything a child must not see (answer keys, parent notes, curriculum notes). */
@@ -396,7 +398,7 @@ export function childSafeLesson(l: any) {
 /** The lesson as the assignment saw it. Older assignments without a snapshot fall back to the live lesson. */
 export function assignmentLesson(a: any, liveRow: any) {
   const snap = parseJson<any>(a?.lesson_snapshot, null);
-  return snap ?? lessonOut(liveRow);
+  return snap ? publicLesson(snap) : lessonOut(liveRow);
 }
 
 // ---------------------------------------------------------------- lessons
@@ -434,9 +436,17 @@ export async function listLessons(db: DB, familyId: string, opts: { archived?: b
 
 export const AI_FLAGS = { source: "ai", ai_generated: true, review_status: "ai_draft_needs_review" };
 
+/** Keeps only outcome codes from the family's own verified catalogue: the server decides, never the client. */
+export async function familyOutcomeCodes(db: DB, familyId: string, codes: string[]): Promise<string[]> {
+  if (!codes.length) return codes;
+  const cat = catalogueFor(await getFamilyJurisdiction(db, familyId).catch(() => null));
+  return cat.available ? codes.filter((c) => cat.byCode.has(c)) : [];
+}
+
 export async function createLesson(db: DB, familyId: string, input: unknown, now: Date = new Date(), opts: { ai?: boolean; flags?: string[] } = {}): Promise<Result<{ lesson: any }>> {
   const clean = sanitizeLessonInput(input);
   if (!clean.ok) return clean;
+  clean.value.builder.outcome_codes = await familyOutcomeCodes(db, familyId, (clean.value.builder.outcome_codes as string[]) || []);
   const { limits } = await getEntitlement(db, familyId, now);
   if (!limits.canCreate) return paywall("Your free preview has ended. Your lessons and progress are kept; upgrade to keep creating lessons.");
   if ((await countLessons(db, familyId)) >= limits.maxLessons) {
@@ -461,6 +471,7 @@ export async function updateLesson(db: DB, familyId: string, id: string, input: 
   if (row.archived_at) return fail(409, "This lesson is archived. Restore it before editing.", "ARCHIVED");
   const clean = sanitizeLessonInput(input);
   if (!clean.ok) return clean;
+  clean.value.builder.outcome_codes = await familyOutcomeCodes(db, familyId, (clean.value.builder.outcome_codes as string[]) || []);
   const { limits } = await getEntitlement(db, familyId, now);
   if (!limits.canCreate) return paywall("Your free preview has ended. Your lessons are kept; upgrade to keep editing.");
   const bad = await checkFiles(db, familyId, clean.value.file_ids);

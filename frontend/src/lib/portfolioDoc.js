@@ -25,15 +25,52 @@ const CSS = `
   .lines { border-bottom: 1px solid #999; height: 24px; } .sig td { border: none; padding: 18px 6px 0 0; } .sig .line { border-bottom: 1px solid #111; height: 22px; }
   .banner { background: #fff7e0; border: 1px solid #e6c96b; padding: 8px; font-size: 12px; margin: 8px 0; }
   .pb { break-before: page; }
+  .bar { display: flex; height: 10px; width: 100%; border: 1px solid #999; border-radius: 2px; overflow: hidden; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .bar span { display: block; height: 100%; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .s-achieved { background: #1f3b2d; } .s-demonstrated { background: #4a7c59; } .s-developing { background: #9dbf9e; } .s-introduced { background: #d9e5d6; }
+  .key span { display: inline-block; width: 10px; height: 10px; border: 1px solid #777; margin: 0 3px 0 10px; vertical-align: middle; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .num { text-align: right; white-space: nowrap; }
   @media print { body { margin: 0; } .noprint { display: none; } }
 `;
 
-// Outcome Tracker statuses (NSW families). "Achieved" here always means the parent confirmed it in the tracker.
+// Outcome Tracker statuses. "Achieved" here always means the parent confirmed it in the tracker.
 const MASTERY = { not_started: "Not started", introduced: "Introduced", developing: "Developing", demonstrated: "Demonstrated", achieved: "Achieved (parent confirmed)" };
+const BAR_ORDER = ["achieved", "demonstrated", "developing", "introduced"];
+const GAP_TEXT = { limited_evidence: "limited evidence", not_revisited: "not revisited", needs_consolidation: "needs consolidation", confirmed_evidence_changed: "evidence changed since confirmed" };
+// Per piece of work: what the parent judged at review. Older records may say "achieved", which meant the same thing.
+const shownIn = (o) => o.status === "shown" || o.status === "achieved";
 
 function outcomeTags(outcomes) {
   if (!outcomes?.length) return "";
-  return `<div>${outcomes.map((o) => `<span class="tag ${o.status === "achieved" ? "ach" : "wt"}" title="${esc(o.description)}">${esc(o.code || o.description.slice(0, 40))} · ${o.status === "achieved" ? "achieved" : "working towards"}</span>`).join("")}</div>`;
+  return `<div>${outcomes.map((o) => `<span class="tag ${shownIn(o) ? "ach" : "wt"}">${esc(o.code || o.description.slice(0, 60))} · ${shownIn(o) ? "understanding shown" : "practised"}</span>`).join("")}</div>`;
+}
+
+function bar(counts, total) {
+  if (!total) return '<div class="bar"></div>';
+  return `<div class="bar">${BAR_ORDER.map((k) => (counts[k] ? `<span class="s-${k}" style="width:${(100 * counts[k]) / total}%"></span>` : "")).join("")}</div>`;
+}
+
+/** All-time Outcome Tracker snapshot: distribution by status, per learning area, and where more evidence is needed. */
+function progressSection(p) {
+  const pr = p.progress;
+  if (!pr) return "";
+  if (!pr.available) return `<p class="banner">${esc(pr.note || "The Outcome Tracker is not available for this curriculum.")}</p>`;
+  const t = pr.totals;
+  const key = `<p class="key muted">${BAR_ORDER.map((k) => `<span class="s-${k}"></span>${esc(MASTERY[k])}`).join("")}<span></span>Not started</p>`;
+  const rows = pr.areas.map((a) => `<tr><td>${esc(a.learning_area)}</td><td class="num">${a.total}</td>${["introduced", "developing", "demonstrated", "achieved"].map((k) => `<td class="num">${a.counts[k] || 0}</td>`).join("")}<td class="num">${a.total - a.with_evidence}</td><td style="width:22%">${bar(a.counts, a.total)}</td></tr>`).join("");
+  const needs = pr.needs_evidence || [];
+  const needsByArea = new Map();
+  for (const n of needs) { if (!needsByArea.has(n.learning_area)) needsByArea.set(n.learning_area, []); needsByArea.get(n.learning_area).push(n); }
+  return `
+  <p class="muted">All-time snapshot as at ${fmt(pr.as_at)}, for the outcomes of ${esc(p.student.name)}'s year level in the ${esc(pr.framework || p.framework)}. Unlike the dated entries later in this record, it is not limited to the reporting period. Statuses follow Side-Quest's evidence guidelines (two pieces of reviewed work showing understanding on separate days, or one comprehensive assessment, for Demonstrated); only the parent can confirm Achieved. These are not official curriculum-authority standards.</p>
+  <table><tr><th>Overall</th><th class="num">Outcomes</th><th class="num">Introduced</th><th class="num">Developing</th><th class="num">Demonstrated</th><th class="num">Achieved</th><th class="num">No evidence yet</th><th>Distribution</th></tr>
+    <tr><td><strong>All learning areas</strong></td><td class="num">${t.total}</td>${["introduced", "developing", "demonstrated", "achieved"].map((k) => `<td class="num"><strong>${t.counts[k] || 0}</strong></td>`).join("")}<td class="num">${t.total - t.with_evidence}</td><td>${bar(t.counts, t.total)}</td></tr>
+    ${rows}</table>
+  ${key}
+  ${t.awaiting_confirmation ? `<p class="muted">${t.awaiting_confirmation} outcome${t.awaiting_confirmation === 1 ? " meets" : "s meet"} the Demonstrated guideline and ${t.awaiting_confirmation === 1 ? "is" : "are"} awaiting the parent's confirmation.</p>` : ""}
+  ${pr.beyond_stage ? `<p class="muted">Evidence is also recorded against ${pr.beyond_stage} outcome${pr.beyond_stage === 1 ? "" : "s"} from another year level (working above or below level).</p>` : ""}
+  <h3>Areas needing further evidence</h3>
+  ${needs.length ? `<table><tr><th style="width:28%">Learning area</th><th>Outcome codes (status · reason)</th></tr>${[...needsByArea.entries()].map(([area, list]) => `<tr><td>${esc(area)}</td><td>${list.map((n) => `${esc(n.code)} (${esc(MASTERY[n.status] || n.status)} · ${n.gaps.map((g) => esc(GAP_TEXT[g] || g)).join(", ")})`).join("; ")}</td></tr>`).join("")}</table>` : '<p class="muted">No outcome with evidence is flagged as needing more evidence.</p>'}`;
 }
 
 function entryHtml(e, images) {
@@ -44,7 +81,7 @@ function entryHtml(e, images) {
     <div class="head"><div class="title">${esc(e.title)}</div><div class="muted">${fmt(e.date)}</div></div>
     <div class="muted">${esc([KIND[e.kind], e.subject && e.subject !== e.learning_area ? e.subject : "", e.year_level, e.result, e.duration_minutes ? `${e.duration_minutes} min` : "", e.location].filter(Boolean).join(" · "))}</div>
     ${outcomeTags(e.outcomes)}
-    ${(e.outcomes || []).length ? `<div class="muted" style="margin-top:4px">${e.outcomes.map((o) => `${esc(o.code)}${o.code ? ": " : ""}${esc(o.description)}`).join("<br>")}</div>` : ""}
+    ${(e.outcomes || []).some((o) => !o.code && o.description) ? `<div class="muted" style="margin-top:4px">${e.outcomes.filter((o) => !o.code && o.description).map((o) => esc(o.description)).join("<br>")}</div>` : ""}
     ${block(e.kind === "lesson" ? "Child's work" : e.kind === "life" ? "What happened" : e.kind === "reading" ? "Reading details" : "Parent's notes", e.work)}
     ${block("Child's reflection", e.reflection)}
     ${block("Parent annotation", e.parent_comment)}
@@ -66,13 +103,14 @@ export function portfolioHtml(p, extra = {}) {
     <td>${esc(a.learning_area)}${a.expected ? "" : ' <span class="muted">(additional)</span>'}</td>
     <td>${a.entries || (a.expected ? '<span class="gap">None recorded</span>' : "0")}</td>
     <td>${a.first ? `${fmt(a.first)} – ${fmt(a.latest)}` : "—"}</td>
-    <td>${a.outcomes_achieved || "—"}</td><td>${a.outcomes_working_towards || "—"}</td><td>${hours(a.minutes) || "—"}</td></tr>`).join("");
+    <td>${esc(Object.entries(a.by_kind || {}).map(([k, n]) => `${n} ${(KIND[k] || k).toLowerCase()}`).join(", ")) || "—"}</td>
+    <td class="num">${(a.outcomes_shown ?? a.outcomes_achieved ?? 0) || "—"}</td><td class="num">${a.outcomes_working_towards || "—"}</td><td>${hours(a.minutes) || "—"}</td></tr>`).join("");
 
   const byArea = new Map();
   for (const o of s.outcomes) { if (!byArea.has(o.learning_area)) byArea.set(o.learning_area, []); byArea.get(o.learning_area).push(o); }
   const outcomeTables = [...byArea.entries()].map(([area, list]) => `<h3>${esc(area)}</h3>
-    <table><tr><th style="width:15%">Outcome</th><th>Description</th><th style="width:13%">Status</th><th style="width:8%">Samples</th><th style="width:22%">Evidence dated</th></tr>
-    ${list.map((o) => `<tr><td>${esc(o.code) || "—"}</td><td>${esc(o.description)}</td><td>${o.mastery ? MASTERY[o.mastery] || "Working towards" : o.status === "achieved" ? "Achieved" : "Working towards"}</td><td>${o.times}</td><td>${o.first === o.latest ? fmt(o.first) : `${fmt(o.first)} – ${fmt(o.latest)}`}</td></tr>`).join("")}</table>`).join("");
+    <table><tr><th style="width:20%">Outcome code</th><th style="width:24%">In this period</th><th style="width:24%">Overall status (all time)</th><th style="width:10%" class="num">Samples</th><th>Evidence dated</th></tr>
+    ${list.map((o) => `<tr><td>${esc(o.code) || esc(o.description) || "—"}</td><td>${shownIn(o) ? "Understanding shown" : "Practised"}</td><td>${o.mastery ? esc(MASTERY[o.mastery] || o.mastery) : o.code ? "—" : "Not tracked (no official code)"}</td><td class="num">${o.times}</td><td>${o.first === o.latest ? fmt(o.first) : `${fmt(o.first)} – ${fmt(o.latest)}`}</td></tr>`).join("")}</table>`).join("");
 
   const groups = new Map();
   for (const e of p.entries || []) { if (!groups.has(e.learning_area)) groups.set(e.learning_area, []); groups.get(e.learning_area).push(e); }
@@ -95,43 +133,46 @@ export function portfolioHtml(p, extra = {}) {
     <tr><td>State or territory</td><td>${esc(p.jurisdiction_name) || "Not set"}</td></tr>
     <tr><td>Period covered</td><td>${period}</td></tr>
     <tr><td>Record kept by</td><td>${esc(p.parent_name) || "—"}</td></tr>
-    <tr><td>Curriculum reference</td><td>${esc(p.framework)}</td></tr>
+    <tr><td>Curriculum reference</td><td>${esc(p.framework)}${p.curriculum_source?.url ? `<br><span class="muted">Official outcome wording: ${esc(p.curriculum_source.url)}</span>` : ""}</td></tr>
     <tr><td>Entries</td><td>${p.total} dated ${p.total === 1 ? "entry" : "entries"} (lesson work, life learning, parent observations and reading records)</td></tr>
     <tr><td>Generated</td><td>${fmt(p.generated_at)}</td></tr>
   </table>
   ${p.limited ? `<div class="banner">Free preview: the summary covers all ${p.total} entries but only one work sample is shown in full. A Family Membership prints the complete record.</div>` : ""}
-  <p class="muted">How to read this record: every entry is dated and was reviewed by the parent. Work is annotated with the ${ow} outcomes it gives evidence for, marked <em>achieved</em> where the parent judged the outcome demonstrated, or <em>working towards</em> where it is still developing. Work samples are grouped by learning area and listed earliest first, so progress over time can be followed.</p>
+  <p class="muted">How to read this record: section 1 is an all-time snapshot of curriculum progress from the Outcome Tracker. Sections 2 to 5 cover only the reporting period above: every entry is dated and was reviewed by the parent, and work is annotated with the official ${ow} outcome codes it gives evidence for, marked <em>understanding shown</em> where the parent judged it so, or <em>practised</em>. Outcome codes are shown without their wording; the full wording is published by the curriculum authority. Work samples are grouped by learning area and listed earliest first, so progress over time can be followed.</p>
 
-  <h2>1. Summary of progress by learning area</h2>
-  <table><tr><th>Learning area</th><th>Entries</th><th>Evidence dated</th><th>Outcomes achieved</th><th>Working towards</th><th>Time recorded</th></tr>${areaRows}</table>
-  ${gaps.length ? `<p class="gap">No evidence recorded in this period for: ${gaps.map(esc).join(", ")}. Add work samples or parent observations for these areas before your review, or note in section 2 how they are being covered.</p>` : `<p class="muted">Every required learning area has at least one entry in this period.</p>`}
+  <h2>1. Curriculum progress (all-time snapshot)</h2>
+  ${progressSection(p)}
 
-  <h2>2. Parent's summary of progress</h2>
+  <h2>2. Evidence in this reporting period, by learning area</h2>
+  <table><tr><th>Learning area</th><th>Entries</th><th>Evidence dated</th><th>Kinds of evidence</th><th class="num">Outcomes shown</th><th class="num">Practised</th><th>Time recorded</th></tr>${areaRows}</table>
+  ${gaps.length ? `<p class="gap">No evidence recorded in this period for: ${gaps.map(esc).join(", ")}. Add work samples or parent observations for these areas before your review, or note in section 3 how they are being covered.</p>` : `<p class="muted">Every required learning area has at least one entry in this period.</p>`}
+
+  <h2>3. Parent's summary of progress</h2>
   ${parentBox("Progress made during this period", extra.summary)}
   ${parentBox("Areas of strength or advancement", extra.advancement)}
   ${parentBox("Areas needing further attention and how they will be addressed", extra.attention)}
 
-  <h2>3. ${ow === "syllabus" ? "Syllabus" : "Curriculum"} outcomes evidenced</h2>
-  ${outcomeTables || '<p class="muted">No ${ow} outcomes have been linked yet. When reviewing work, tick the outcomes the work shows so they appear here.</p>'}
+  <h2>4. ${ow === "syllabus" ? "Syllabus" : "Curriculum"} outcomes evidenced in this period</h2>
+  ${outcomeTables || `<p class="muted">No ${ow} outcomes have been linked to work in this period yet. When reviewing work, judge each outcome so it appears here.</p>`}
 
-  <h2 class="pb">4. Learning progression: dated work samples</h2>
+  <h2 class="pb">5. Learning progression: dated work samples</h2>
   ${progression || "<p>No approved work or observations yet.</p>"}
 
-  <h2>5. Parent declaration</h2>
+  <h2>6. Parent declaration</h2>
   <p>I declare that this record is an accurate account of the learning undertaken by ${esc(p.student.name)} during the period shown, and that the work samples were completed by ${esc(p.student.name)}.</p>
   <table class="sig"><tr><td style="width:55%">Name<div class="line">${esc(p.parent_name)}</div></td><td>Date<div class="line"></div></td></tr><tr><td colspan="2">Signature<div class="line"></div></td></tr></table>
 
-  <p style="margin-top:28px;font-size:11px;color:#666">This is a record of learning kept by the parent. It is not an official assessment, and Side Quest does not provide legal or compliance advice. Check your own state or territory's home education requirements.</p>
+  <p style="margin-top:28px;font-size:11px;color:#666">This is a record of learning kept by the parent. It is not an official assessment. Side-Quest does not certify that any home education registration or curriculum requirement is met and does not provide legal or compliance advice. Check your own state or territory's home education requirements.</p>
   </body></html>`;
 }
 
 const csvCell = (v) => { let t = String(v ?? "").replace(/\r?\n/g, " "); if (/^[=+\-@\t]/.test(t)) t = "'" + t; return `"${t.replace(/"/g, '""')}"`; };
 export function portfolioCsv(p) {
-  const head = ["Type", "Date", "Title", "Learning area", "Subject", "Year level", "Result", "Outcomes achieved", "Outcomes working towards", "Work", "Reflection", "Parent comment", "Next step", "Minutes"];
+  const head = ["Type", "Date", "Title", "Learning area", "Subject", "Year level", "Result", "Outcomes: understanding shown", "Outcomes: practised", "Work", "Reflection", "Parent comment", "Next step", "Minutes"];
   const lines = [head.map(csvCell).join(",")];
   for (const e of p.entries || []) {
-    const codes = (st) => e.outcomes.filter((o) => o.status === st).map((o) => o.code || o.description).join("; ");
-    lines.push([KIND[e.kind], e.date, e.title, e.learning_area, e.subject, e.year_level, e.result, codes("achieved"), codes("working_towards"), e.work, e.reflection, e.parent_comment, e.next_step, e.duration_minutes ?? ""].map(csvCell).join(","));
+    const codes = (shown) => e.outcomes.filter((o) => shownIn(o) === shown).map((o) => o.code || o.description).join("; ");
+    lines.push([KIND[e.kind], e.date, e.title, e.learning_area, e.subject, e.year_level, e.result, codes(true), codes(false), e.work, e.reflection, e.parent_comment, e.next_step, e.duration_minutes ?? ""].map(csvCell).join(","));
   }
   return lines.join("\r\n");
 }

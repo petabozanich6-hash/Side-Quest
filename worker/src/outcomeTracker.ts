@@ -368,15 +368,16 @@ const originOf = (l: any) => (l?.source === "ai" || l?.ai_generated ? "ai" : "ma
  * Per-outcome judgement saved with a lesson review. New reviews send `mark` ("shown" | "practising" | "not_yet") and
  * `support`; older reviews only sent `accepted`. The review status still decides the overall outcome of the work.
  */
-export function levelFromReview(status: string, m: any): { level: Level; consolidate: boolean } {
-  if (status === "needs_revision") return { level: "participation", consolidate: true };
-  if (status === "needs_more_practice") return { level: "practice", consolidate: true };
-  if (status === "submitted" || status === "awaiting_help") return { level: "participation", consolidate: false };
+export function levelFromReview(status: string, m: any): { level: Level; consolidate: boolean; comprehensive: boolean } {
+  if (status === "needs_revision") return { level: "participation", consolidate: true, comprehensive: false };
+  if (status === "needs_more_practice") return { level: "practice", consolidate: true, comprehensive: false };
+  if (status === "submitted" || status === "awaiting_help") return { level: "participation", consolidate: false, comprehensive: false };
   // Approval, including legacy accepted=true mappings, is practice unless the parent explicitly marks "shown".
   const mark = String(m?.mark || "");
-  if (mark === "shown") return { level: "demonstrated", consolidate: false };
-  if (mark === "not_yet") return { level: "practice", consolidate: true };
-  return { level: "practice", consolidate: false }; // completed and approved, outcome not judged
+  // A comprehensive assessment only counts when the parent ALSO judged understanding shown on approved work.
+  if (mark === "shown") return { level: "demonstrated", consolidate: false, comprehensive: m?.comprehensive === true };
+  if (mark === "not_yet") return { level: "practice", consolidate: true, comprehensive: false };
+  return { level: "practice", consolidate: false, comprehensive: false }; // completed and approved, outcome not judged
 }
 
 /** Lesson work: one contribution per outcome the lesson was written for, refreshed on hand-in and on every review. */
@@ -394,8 +395,11 @@ export async function trackSubmission(db: DB, familyId: string, submissionId: st
   }
   const mappings = json<any[]>(s.outcome_mappings, []);
   const codes = new Set<string>();
+  // Only codes from the family's own verified catalogue are recorded (the server decides, not the client).
+  const famCat = await frameworkForFamily(db, familyId);
   for (const c of [...(Array.isArray(lesson.outcome_codes) ? lesson.outcome_codes : []), ...mappings.map((m: any) => m?.code)]) {
-    if (knownCode(c)) codes.add(String(c).trim());
+    const k = knownCode(c);
+    if (k && famCat && k.framework === famCat.framework) codes.add(String(c).trim());
   }
   const keep = new Set<string>();
   const baseSupport: Support = s.needs_help ? "significant" : SUPPORT_FROM_ASSIGNMENT[String(a?.support_level || "green")] || "independent";
@@ -403,12 +407,12 @@ export async function trackSubmission(db: DB, familyId: string, submissionId: st
   for (const code of codes) {
     const k = knownCode(code)!;
     const m = mappings.find((x: any) => String(x?.code || "").trim() === code);
-    const { level, consolidate } = levelFromReview(String(s.status), m);
+    const { level, consolidate, comprehensive } = levelFromReview(String(s.status), m);
     const support = asSupport(m?.support) || baseSupport;
     const what = level === "demonstrated" ? "Understanding shown" : level === "practice" ? (consolidate ? "Practised; needs more practice" : "Practised") : reviewed ? "Returned for another try" : "Handed in, waiting for your review";
     await upsertEvidence(db, familyId, s.student_id, {
       framework: k.framework, code, source_type: "lesson_review", source_id: s.id, lesson_id: s.lesson_id, assignment_id: s.assignment_id,
-      origin: originOf(lesson), level, support, consolidate, summary: `${lesson.title || "Lesson"}: ${what}`,
+      origin: originOf(lesson), level, support, consolidate, comprehensive, summary: `${lesson.title || "Lesson"}: ${what}${comprehensive ? " (comprehensive assessment)" : ""}`,
       note: s.parent_feedback || null, file_ids: json<string[]>(s.file_ids, []), occurred_on: day(s.reviewed_at) || day(s.submitted_at) || ts.slice(0, 10),
       created_by: s.reviewed_by || null,
     }, ts, touched);
@@ -433,9 +437,10 @@ export async function trackAssignmentQuiz(db: DB, familyId: string, assignmentId
   if (best && qs.length) {
     const needed = Math.ceil(qs.length * (Number(lesson.pass_mark) || 0.9) - 1e-9);
     const passed = Number(best.score) >= needed;
+    const famCat = await frameworkForFamily(db, familyId);
     for (const code of Array.isArray(lesson.outcome_codes) ? lesson.outcome_codes : []) {
       const k = knownCode(code);
-      if (!k) continue;
+      if (!k || !famCat || k.framework !== famCat.framework) continue;
       await upsertEvidence(db, familyId, a.student_id, {
         framework: k.framework, code: k.outcome.code, source_type: "quiz", source_id: a.id, lesson_id: a.lesson_id, assignment_id: a.id,
         origin: originOf(lesson), level: passed ? "practice" : "participation", support: SUPPORT_FROM_ASSIGNMENT[String(a.support_level || "green")] || "independent",
@@ -464,9 +469,10 @@ export async function trackLifeEvidence(db: DB, familyId: string, lifeId: string
   const keep = new Set<string>();
   const judged = r ? LIFE_LEVEL[String(r.status)] : null;
   if (r && judged) {
+    const famCat = await frameworkForFamily(db, familyId);
     for (const m of json<any[]>(r.accepted_mappings, [])) {
       const k = knownCode(m?.code);
-      if (!k) continue; // plain-language mappings (no verified code) stay in the Evidence Backpack only
+      if (!k || !famCat || k.framework !== famCat.framework) continue; // plain-language mappings (no verified code) stay in the Evidence Backpack only
       await upsertEvidence(db, familyId, r.student_id, {
         framework: k.framework, code: k.outcome.code, source_type: "life_learning", source_id: r.id, origin: "life",
         level: judged.level, support: asSupport(m?.support), consolidate: judged.consolidate,

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../lib/api";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Plus, ExternalLink, Check, X, ShieldAlert } from "lucide-react";
 
@@ -31,11 +32,11 @@ export default function ResourcesPage() {
   const approve = async (id) => { await api.put(`/resources/${id}/approve`); toast.success("Approved"); load(); };
 
   return (
-    <div className="p-8 lg:p-10 space-y-6" data-testid="resources-page">
-      <div className="flex items-end justify-between">
+    <div className="p-4 sm:p-8 lg:p-10 space-y-6" data-testid="resources-page">
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-bold text-slate-900">Resource Library</h1>
-          <p className="text-sm text-slate-600 mt-1 max-w-2xl">Free to access does not mean free to copy. Check licence and attribution before downloading, adapting or republishing.</p>
+          <p className="text-sm text-slate-600 mt-1 max-w-2xl">Keep useful websites, videos and other learning links in one place, ready for future lessons. Check licences and attribution before copying, adapting or republishing someone else’s work.</p>
         </div>
         <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-resource-btn"><Plus size={14}/> Add resource</button>
       </div>
@@ -57,7 +58,7 @@ export default function ResourcesPage() {
             </div>
           </div>
         ))}
-        {resources.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-10 text-center text-sm text-slate-500">No resources yet.</div>}
+        {resources.length === 0 && <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-6 sm:p-10 text-center text-sm text-slate-600" data-testid="empty-resources"><h2 className="font-display text-lg font-semibold text-slate-900">Your saved resources will appear here</h2><p className="mt-2">Found a useful website or video? Select Add resource to save its link for later. For official state and territory resources, visit the <Link to="/parent/curriculum" className="underline font-semibold">Curriculum hub</Link>.</p><button onClick={() => setOpen(true)} type="button" className="mt-4 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-testid="resources-empty-add">Add your first resource</button></div>}
       </div>
 
       {open && (

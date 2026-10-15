@@ -1,0 +1,24 @@
+{
+  "id": "/",
+  "name": "Side-Quest Learning",
+  "short_name": "Side-Quest",
+  "description": "Homeschool planning, lessons and learning records for Australian families.",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F5EFE0",
+  "theme_color": "#1F3B2D",
+  "lang": "en-AU",
+  "categories": ["education", "kids", "productivity"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Parent sign in", "short_name": "Parent", "url": "/login?source=app", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Child sign in", "short_name": "Child", "url": "/child-login?source=app", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

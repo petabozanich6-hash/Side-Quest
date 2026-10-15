@@ -1,6 +1,7 @@
 // Suggests which curriculum outcomes a lesson contributes to. This is a plain wording match against the outcome list the app
 // holds (no AI call, no cost). It is a SUGGESTION for the parent to confirm: it never claims a lesson "covers" an outcome.
 // Today the outcome list is the NSW syllabus. Other states and territories are not loaded yet, so nothing here is presented as national.
+import { AC9_OUTCOMES } from "./data/ac9-outcomes";
 import { NSW_OUTCOMES } from "./data/curriculum";
 import { stageFor } from "./aiRequest";
 
@@ -66,8 +67,12 @@ export function suggestOutcomes(lesson: any, limit = 3): OutcomeSuggestion[] {
   }));
 }
 
-export const outcomeRef = (o: { code: string; description: string }) => `${o.code}: ${o.description}`.slice(0, 200);
-export const knownOutcomeCodes = () => new Set(NSW_OUTCOMES.map((o) => o.code));
+// Lessons reference outcomes by code only; the wording lives with the curriculum authority (see syllabusText.ts).
+export const outcomeRef = (o: { code: string; description?: string }) => o.code;
+// Every verified code Side-Quest holds (NSW syllabus outcomes and AC9 content descriptions). Which of these a family may
+// use is decided per family by its state or territory (see lessonBuilder.familyOutcomeCodes).
+const ALL_CODES = new Set<string>([...NSW_OUTCOMES.map((o) => o.code), ...AC9_OUTCOMES.map((o) => o.code)]);
+export const knownOutcomeCodes = () => ALL_CODES;
 
 export function outcomePool(lesson: any) {
   const stage = lesson?.stage || stageFor(String(lesson?.year_level || ""));

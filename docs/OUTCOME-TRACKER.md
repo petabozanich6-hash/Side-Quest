@@ -109,3 +109,19 @@ Gaps flagged per outcome: not introduced, introduced but not revisited (one occa
 ## Tests
 
 `worker/test/outcomes.test.mjs` (12 tests, real migrations on SQLite) covers the full journey (five lessons, hand-ins, mixed support, reviews, linked evidence, confirmation, new evidence with history kept), manual vs AI origin, life learning, duplicates and resyncs, deleted / excluded / moved evidence, multiple children and families, non-NSW families and moving interstate, curriculum wording updates, documented adjustments, the pure rules, hook failure safety, and runtime-vs-migration schema parity. The browser end-to-end run (`worker/test/e2e/run.mjs`, steps O and P) checks the QLD gap message, the API flow, the tracker pages and confirming through the UI.
+
+## Curriculum sources, licences and coverage (reviewed 15 October 2026)
+
+Side-Quest displays **official outcome codes only**. Outcome wording stays with the curriculum authority; the API strips
+catalogued wording from every response (`worker/src/syllabusText.ts`), and lessons reference outcomes by code.
+
+| Jurisdiction | Catalogue used | Source and licence | Status |
+| --- | --- | --- | --- |
+| NSW | NESA syllabus outcome codes (`nsw-outcomes.ts`) | NESA — limited non-commercial permissions for registered home-schooling parents; commercial republication of syllabus text needs NESA permission (https://www.nsw.gov.au/education-and-training/nesa/copyright) | Codes only; seed not certified complete |
+| QLD, SA, TAS, ACT, NT | ACARA Australian Curriculum v9 content descriptions, MRAC/2024/04 (`ac9-outcomes.ts`, ~1,395 records) | CC BY 4.0 with attribution (https://www.australiancurriculum.edu.au/copyright-and-terms-of-use/) | Partial reference: excludes Languages and achievement standards; not state-specific implementation |
+| VIC | none | VCAA Victorian Curriculum F–10 v2.0 is CC BY-NC; commercial use needs permission (https://f10.vcaa.vic.edu.au/copyright-statement) | Tracker unavailable; the app says so |
+| WA | none | SCSA terms to be confirmed (https://k10outline.scsa.wa.edu.au/) | Tracker unavailable; the app says so |
+
+The server enforces the family's jurisdiction everywhere codes are accepted (lessons, reviews, quizzes, life learning,
+Auto-Quest): codes from another framework are dropped, never relabelled. Nothing in Side-Quest certifies compliance
+with any state's home education registration requirements.
