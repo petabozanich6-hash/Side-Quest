@@ -27,7 +27,7 @@ for (const [name, rows] of [["AC9", ac9], ["NSW", nsw]]) {
   if (rows.some((x) => !x.code || typeof x.code !== "string")) failures.push(name + " has empty or malformed codes");
 }
 for (const row of ac9) {
-  if (!/^AC9[A-Z0-9]+$/.test(row.code)) failures.push("Invalid AC9 identifier: " + row.code);
+  if (!/^(?:AC9|ACL9)[A-Z0-9]+$/.test(row.code)) failures.push("Invalid AC9 identifier: " + row.code);
   if (!Number.isInteger(row.from) || !Number.isInteger(row.to) || row.from < 0 || row.to > 10 || row.from > row.to) failures.push("Invalid year band: " + row.code);
 }
 const strict = process.argv.includes("--require-all-eight");
