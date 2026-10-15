@@ -7,6 +7,16 @@ test("Discover official SACE subject and language elective pages",()=>{
    '<a href="/web/chinese-continuers">Chinese (continuers)</a><a href="/teaching/subjects">Subjects</a><a href="https://example.org/web/fake">Fake</a>';
   assert.deepEqual(discoverSaceSubjectPages(html).map(x=>x.name),["Biology","Chinese (continuers)","Modified Subjects"]);
   assert.ok(discoverSaceSubjectPages(html).every(x=>x.official_url.startsWith("https://www.sace.sa.edu.au/web/")));
+  const shared='<a href="/studying/subjects/activating-identities-and-futures">Activating Identities and Futures</a>'+
+    '<a href="/studying/subjects/exploring-identities-and-futures">Exploring Identities and Futures</a>'+
+    '<a href="/studying/subjects/visual-arts-art">Visual Arts Art</a>'+
+    '<a href="/studying/subjects/visual-arts-design">Visual Arts Design</a>'+
+    '<a href="/studying/subjects/vet">VET</a>';
+  const resolved=discoverSaceSubjectPages(shared);
+  assert.deepEqual(resolved.map(x=>x.official_url),[
+    "https://www.sace.sa.edu.au/web/identities-and-futures",
+    "https://www.sace.sa.edu.au/web/visual-arts",
+  ]);
 });
 
 test("SACE Stage 1 and 2 codes retain 10/20 credit variants and source provenance",()=>{
