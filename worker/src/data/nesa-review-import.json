@@ -17469,28 +17469,18 @@
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Ceramics Stage 6 (CEC) (2000)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/ceramics-stage-6-cec-2000/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/ceramics-stage-6-cec-2000/outcomes"
-    },
-    {
       "syllabus": "Chemical World Science Life Skills 11–12 (2025)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/science/chemical-world-science-life-skills-11-12-2025/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Computing Applications Stage 6 (CEC) (2012)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes"
+      "syllabus": "Ceramics Stage 6 (CEC) (2000)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/ceramics-stage-6-cec-2000/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/ceramics-stage-6-cec-2000/outcomes"
     },
     {
       "syllabus": "Computing Technology Life Skills 11–12 (2022)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-technology-life-skills-11-12-2022/outcomes",
-      "reason": "No outcome identifiers extracted"
-    },
-    {
-      "syllabus": "Drama Life Skills 11–12 (2025)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
@@ -17499,13 +17489,18 @@
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Earth and Environmental Science Life Skills 11–12 (2025)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-life-skills-11-12-2025/outcomes",
+      "syllabus": "Computing Applications Stage 6 (CEC) (2012)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes"
+    },
+    {
+      "syllabus": "Drama Life Skills 11–12 (2025)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "English Life Skills 11–12 (2024)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/english/english-life-skills-11-12-2024/outcomes",
+      "syllabus": "Earth and Environmental Science Life Skills 11–12 (2025)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-life-skills-11-12-2025/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
@@ -17514,13 +17509,18 @@
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes"
     },
     {
-      "syllabus": "Health and Movement Science Life Skills 11–12 (2023)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/health-and-movement-science-life-skills-11-12-2023/outcomes",
+      "syllabus": "English Life Skills 11–12 (2024)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/english/english-life-skills-11-12-2024/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
       "syllabus": "Geography Life Skills 11–12 (2022)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes",
+      "reason": "No outcome identifiers extracted"
+    },
+    {
+      "syllabus": "Health and Movement Science Life Skills 11–12 (2023)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/health-and-movement-science-life-skills-11-12-2023/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
@@ -17534,13 +17534,18 @@
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/marine-studies-stage-6-cec-2012/outcomes"
     },
     {
+      "syllabus": "Mathematics Life Skills 11–12 (2024)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-life-skills-11-12-2024/outcomes",
+      "reason": "No outcome identifiers extracted"
+    },
+    {
       "syllabus": "Modern History Life Skills 11–12 (2024)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/modern-history-ls-11-12-2024/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Mathematics Life Skills 11–12 (2024)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-life-skills-11-12-2024/outcomes",
+      "syllabus": "Music Life Skills 11–12 (2025)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
@@ -17549,19 +17554,9 @@
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/mathematics/numeracy-stage-6-cec-2021/outcomes"
     },
     {
-      "syllabus": "Music Life Skills 11–12 (2025)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
-      "reason": "No outcome identifiers extracted"
-    },
-    {
       "syllabus": "Photography, Video and Digital Imaging Stage 6 (CEC) (2000)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-video-and-digital-imaging-stage-6-cec-2000/outcomes",
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-video-and-digital-imaging-stage-6-cec-2000/outcomes"
-    },
-    {
-      "syllabus": "Sport, Lifestyle and Recreation Studies Stage 6 (CEC) (2007)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes"
     },
     {
       "syllabus": "Physical World Science Life Skills 11–12 (2025)",
@@ -17572,6 +17567,11 @@
       "syllabus": "Visual Design Stage 6 (CEC) (2000)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/visual-design-stage-6-cec-2000/outcomes",
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/visual-design-stage-6-cec-2000/outcomes"
+    },
+    {
+      "syllabus": "Sport, Lifestyle and Recreation Studies Stage 6 (CEC) (2007)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes"
     },
     {
       "syllabus": "Work Studies Stage 6 (CEC) (2012)",
