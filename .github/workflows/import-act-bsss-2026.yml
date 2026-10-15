@@ -1,11 +1,9 @@
 name: Import ACT 2026 official BSSS course register
+# ACT official PDF returns HTTP 403 to GitHub-hosted runners; source import requires authorised access.
+# Parser's pure unit tests are still executed separately. Refresh only when available.
 on:
-  pull_request:
-    paths:
-      - worker/scripts/import-act-bsss-2026.py
-      - worker/test/actBsss2026.test.py
-      - .github/workflows/import-act-bsss-2026.yml
   workflow_dispatch:
+
 permissions:
   contents: write
 jobs:
