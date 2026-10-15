@@ -1,6 +1,7 @@
 // Parent lesson builder, assignment snapshots, submissions, review and entitlement checks.
 // Plain functions over a D1-shaped database so they can be tested without the Worker runtime.
 // Every function that touches family data takes the family id from the authenticated user, never from the request body.
+import { publicLesson } from "./syllabusText";
 import { recordPetEvent } from "./data/petQuests";
 import { knownOutcomeCodes } from "./outcomeMatch";
 import { safely, trackSubmission, trackAssignmentQuiz } from "./outcomeTracker";
@@ -370,7 +371,7 @@ export function toLessonData(c: CleanLesson): Record<string, unknown> {
 export function lessonOut(row: any) {
   if (!row) return null;
   const { data, ...cols } = row;
-  return { ...parseJson<Record<string, unknown>>(data, {}), ...cols };
+  return publicLesson({ ...parseJson<Record<string, unknown>>(data, {}), ...cols });
 }
 
 /** Remove everything a child must not see (answer keys, parent notes, curriculum notes). */
@@ -396,7 +397,7 @@ export function childSafeLesson(l: any) {
 /** The lesson as the assignment saw it. Older assignments without a snapshot fall back to the live lesson. */
 export function assignmentLesson(a: any, liveRow: any) {
   const snap = parseJson<any>(a?.lesson_snapshot, null);
-  return snap ?? lessonOut(liveRow);
+  return snap ? publicLesson(snap) : lessonOut(liveRow);
 }
 
 // ---------------------------------------------------------------- lessons

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 import { Target, Plus, X } from "lucide-react";
 import { api } from "../../lib/api";
@@ -8,7 +8,6 @@ import { usesNswOutcomes } from "../../data/australianCurriculum";
 // Curriculum outcomes this lesson contributes to. Suggestions are picked from the outcome list Side-Quest holds
 // (today the NSW syllabus) and are always the parent's call. A lesson contributes to an outcome; it never "completes" one.
 export default function OutcomePanel({ lesson, onSaved }) {
-  const [names, setNames] = useState({});
   const [sugg, setSugg] = useState(null);
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
@@ -16,12 +15,11 @@ export default function OutcomePanel({ lesson, onSaved }) {
   const { user } = useAuth();
   const nsw = usesNswOutcomes(user?.jurisdiction);
 
-  useEffect(() => { api.get("/curriculum/outcomes").then(r => setNames(Object.fromEntries((r.data || []).map(o => [o.code, o.description])))).catch(() => {}); }, []);
-
-  const save = async (next, extra = {}) => {
+  // Outcomes are referenced by official code only; the wording stays with the curriculum authority.
+  const save = async (next) => {
     const old = new Set(codes);
-    const kept = (lesson.curriculum_refs || []).filter(x => !old.has(String(x).split(":")[0]));
-    const refs = [...next.map(c => `${c}: ${names[c] || extra[c] || ""}`.slice(0, 200)), ...kept].slice(0, 10);
+    const kept = (lesson.curriculum_refs || []).filter(x => !old.has(String(x).split(":")[0].trim()));
+    const refs = [...next, ...kept].slice(0, 10);
     setBusy(true);
     try { const { data } = await api.put(`/lessons/${lesson.id}`, { ...lesson, outcome_codes: next, curriculum_refs: refs }); onSaved(data); return true; }
     catch (e) { toast.error(e.response?.data?.detail || "Could not save the outcomes"); return false; }
@@ -43,7 +41,7 @@ export default function OutcomePanel({ lesson, onSaved }) {
       {nsw && codes.length === 0 && !sugg && <p className="text-sm text-slate-600" data-testid="outcome-none">This lesson is not linked to any outcome yet. Press <b>Match to outcomes</b> and Side-Quest will suggest the closest ones for you to confirm.</p>}
       {codes.map(c => (
         <div key={c} className="flex items-start justify-between gap-3 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2 text-sm" data-testid="outcome-linked">
-          <span><b>{c}</b> {names[c] ? `— ${names[c]}` : ""}</span>
+          <span><b className="font-mono">{c}</b></span>
           <button type="button" disabled={busy} onClick={() => save(codes.filter(x => x !== c))} aria-label={`Remove ${c}`} className="shrink-0 text-slate-600 hover:text-rose-700" data-testid="outcome-remove"><X size={16} /></button>
         </div>
       ))}
@@ -52,8 +50,8 @@ export default function OutcomePanel({ lesson, onSaved }) {
           <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Suggested</p>
           {sugg.map(o => (
             <div key={o.code} className="flex items-start justify-between gap-3 rounded-lg border border-slate-300 px-3 py-2 text-sm">
-              <span><b>{o.code}</b> — {o.description}<span className="block text-xs text-slate-500">{o.confidence === "likely" ? "Best match" : "Possible match"} · {o.source}</span></span>
-              <button type="button" disabled={busy || codes.includes(o.code)} onClick={async () => { if (await save([...codes, o.code], { [o.code]: o.description })) setSugg(s => s.filter(x => x.code !== o.code)); }} className="shrink-0 rounded-full bg-emerald-700 text-white px-3 py-1 text-xs font-semibold disabled:opacity-50" data-testid="outcome-add"><Plus size={12} className="inline -mt-0.5" /> Link</button>
+              <span><b className="font-mono">{o.code}</b> <span className="text-slate-600">· {o.learning_area}</span><span className="block text-xs text-slate-500">{o.confidence === "likely" ? "Best match" : "Possible match"} · {o.source}</span></span>
+              <button type="button" disabled={busy || codes.includes(o.code)} onClick={async () => { if (await save([...codes, o.code])) setSugg(s => s.filter(x => x.code !== o.code)); }} className="shrink-0 rounded-full bg-emerald-700 text-white px-3 py-1 text-xs font-semibold disabled:opacity-50" data-testid="outcome-add"><Plus size={12} className="inline -mt-0.5" /> Link</button>
             </div>
           ))}
         </div>

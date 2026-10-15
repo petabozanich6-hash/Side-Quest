@@ -1,3 +1,4 @@
+import { publicMapping } from "./syllabusText";
 import type { Hono, MiddlewareHandler } from "hono";
 import { applySpelling } from "./data/spelling";
 import * as lb from "./lessonBuilder";
@@ -58,7 +59,7 @@ function subOut(r: any) {
     ...r,
     needs_help: !!r.needs_help,
     file_ids: parseJson(r.file_ids, []),
-    outcome_mappings: parseJson(r.outcome_mappings, []),
+    outcome_mappings: (parseJson(r.outcome_mappings, []) as any[]).map(publicMapping),
   };
 }
 const resOut = (r: any) => ({ ...r, approved: !!r.approved, shared: !!r.shared });
@@ -252,7 +253,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const r = await aid.matchLessonOutcomes(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, lessonId: c.req.param("id"), model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID });
     if (!r.ok) return send(c, r);
     const { ok: _ok, ...out } = r;
-    return c.json(out);
+    return c.json({ ...out, suggestions: (out.suggestions || []).map(publicMapping) });
   });
 
   app.post("/api/lessons/:id/apply-patch", auth, parent, async (c) => {

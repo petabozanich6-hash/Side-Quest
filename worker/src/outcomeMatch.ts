@@ -66,7 +66,8 @@ export function suggestOutcomes(lesson: any, limit = 3): OutcomeSuggestion[] {
   }));
 }
 
-export const outcomeRef = (o: { code: string; description: string }) => `${o.code}: ${o.description}`.slice(0, 200);
+// Lessons reference outcomes by code only; the wording lives with the curriculum authority (see syllabusText.ts).
+export const outcomeRef = (o: { code: string; description?: string }) => o.code;
 export const knownOutcomeCodes = () => new Set(NSW_OUTCOMES.map((o) => o.code));
 
 export function outcomePool(lesson: any) {

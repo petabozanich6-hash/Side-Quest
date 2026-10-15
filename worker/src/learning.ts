@@ -1,3 +1,4 @@
+import { publicMapping, scrubWording } from "./syllabusText";
 import { buildPlanWithAi, planAiUsage } from "./aiPlan";
 import { JURISDICTIONS as PLAN_JURISDICTIONS, CHECKED_ON } from "./data/planJurisdictions";
 import { analyseLifeEvidence } from "./data/lifeEvidence";
@@ -26,9 +27,9 @@ export function registerLearning(app: App, g: Guards) {
   const lifeEvidenceOut = (row: any) => ({
     ...row,
     file_ids: parseJson(row.file_ids, []),
-    suggested_mappings: parseJson(row.suggested_mappings ?? row.ai_mappings, []),
-    ai_mappings: parseJson(row.suggested_mappings ?? row.ai_mappings, []),
-    accepted_mappings: parseJson(row.accepted_mappings, []),
+    suggested_mappings: jsonArray(row.suggested_mappings ?? row.ai_mappings).map(publicMapping),
+    ai_mappings: jsonArray(row.suggested_mappings ?? row.ai_mappings).map(publicMapping),
+    accepted_mappings: jsonArray(row.accepted_mappings).map(publicMapping),
   });
   // Existing production databases may use the original life_evidence schema (ai_mappings).
   // Never drop or rename historical evidence fields. D1 PRAGMA is read-only and cached per request.
@@ -66,7 +67,7 @@ export function registerLearning(app: App, g: Guards) {
     ...row,
     interests: parseJson(row.interests, []),
     subject_focus: parseJson(row.subject_focus, []),
-    ai_content: parseJson(row.ai_content, null),
+    ai_content: scrubWording(parseJson(row.ai_content, null)),
   });
   const studentOut = (row: any) => {
     if (!row) return null;
@@ -265,7 +266,7 @@ export function registerLearning(app: App, g: Guards) {
     const keys = Object.keys(changes).filter(k => columns.has(k));
     await c.env.DB.prepare(`UPDATE life_evidence SET ${keys.map(k => k + " = ?").join(", ")} WHERE id = ? AND family_id = ?`)
       .bind(...keys.map(k => changes[k]), row.id, user.family_id).run();
-    return c.json({ ...analysis, notice });
+    return c.json({ ...analysis, mappings: (analysis.mappings || []).map(publicMapping), notice });
   });
 
   app.get("/api/life-evidence", g.auth, g.parent, async (c) => {

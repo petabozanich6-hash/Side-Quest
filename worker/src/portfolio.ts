@@ -9,7 +9,10 @@ import * as lb from "./lessonBuilder";
 import * as pl from "./planning";
 import { NSW_OUTCOMES } from "./data/curriculum";
 import { normArea } from "./outcomeMatch";
+import { AC9_OUTCOMES } from "./data/ac9-outcomes";
 import { frameworkFor, areasFor, getFamilyJurisdiction, yearLabel, FRAMEWORKS, type Framework } from "./data/jurisdictions";
+import { catalogueFor, trackerFor, STATUSES, STATUS_LABELS, GAP_LABELS } from "./outcomeTracker";
+import { publicOutcomeDescription } from "./syllabusText";
 
 type DB = any;
 
@@ -26,9 +29,17 @@ export const KLAS_BY_STAGE: Record<string, string[]> = {
 
 const STAGE_NAMES: Record<string, string> = { ES1: "Early Stage 1", S1: "Stage 1", S2: "Stage 2", S3: "Stage 3", S4: "Stage 4", S5: "Stage 5", S6: "Stage 6" };
 
-const outcomeByCode = new Map(NSW_OUTCOMES.map((o: any) => [o.code, o]));
+const outcomeByCode = new Map<string, { learning_area: string }>([
+  ...NSW_OUTCOMES.map((o: any) => [o.code, o] as [string, any]),
+  ...AC9_OUTCOMES.map((o) => [o.code, o] as [string, any]),
+]);
 
-export type PortfolioOutcome = { code: string; description: string; learning_area: string; status: "achieved" | "working_towards" };
+/**
+ * What one piece of work shows for one outcome, as the parent judged it at review:
+ * "shown" = the parent marked understanding shown; "working_towards" = practised, returned or not judged.
+ * This is per piece of work. Whether the OUTCOME is Demonstrated or Achieved comes from the Outcome Tracker.
+ */
+export type PortfolioOutcome = { code: string; description: string; learning_area: string; status: "shown" | "working_towards" };
 export type PortfolioFile = { id: string; name: string; content_type: string };
 export type PortfolioEntry = {
   id: string;
@@ -52,15 +63,18 @@ export type PortfolioEntry = {
 const day = (s: unknown) => (typeof s === "string" ? s.slice(0, 10) : "");
 const json = <T,>(s: unknown, d: T): T => { try { return typeof s === "string" ? JSON.parse(s) : (s as T) ?? d; } catch { return d; } };
 
-/** Turns a mapping saved by a parent review into a portfolio outcome, filling in the syllabus wording. */
-export function outcomeFrom(m: any, stage: string): PortfolioOutcome | null {
+/**
+ * Turns a mapping saved by a parent review into a portfolio outcome. Official outcome wording is never included
+ * (codes only; the reader follows the curriculum authority link). Only an explicit "shown" judgement counts as
+ * understanding shown: an old mapping that just says accepted: true was approval, which is practice.
+ */
+export function outcomeFrom(m: any, stage: string, shown: boolean = m?.mark === "shown"): PortfolioOutcome | null {
   const code = String(m?.code || "").trim();
   const known: any = code ? outcomeByCode.get(code) : null;
-  const description = String(known?.description || m?.description || "").trim();
+  const description = publicOutcomeDescription(code, String(m?.description || "").trim()).trim();
   if (!code && !description) return null;
-  const achieved = m?.accepted === true || m?.status === "achieved";
   const area = known?.learning_area || normArea(String(m?.learning_area || ""), stage) || String(m?.learning_area || "") || "Other";
-  return { code, description, learning_area: area, status: achieved ? "achieved" : "working_towards" };
+  return { code, description, learning_area: area, status: shown ? "shown" : "working_towards" };
 }
 
 // NSW key learning area -> the nearest learning area in another state's framework.
@@ -90,22 +104,26 @@ export type AreaSummary = {
   first: string | null;
   latest: string | null;
   minutes: number;
-  outcomes_achieved: number;
+  /** Outcomes with work in this period where the parent marked understanding shown at least once. */
+  outcomes_shown: number;
   outcomes_working_towards: number;
+  /** Evidence in this period by kind (lesson work, life learning, parent notes, reading records). */
+  by_kind: Record<string, number>;
 };
-export type OutcomeSummary = { code: string; description: string; learning_area: string; times: number; first: string; latest: string; status: "achieved" | "working_towards"; mastery?: string | null; mastery_confirmed?: boolean };
+export type OutcomeSummary = { code: string; description: string; learning_area: string; times: number; first: string; latest: string; status: "shown" | "working_towards"; mastery?: string | null; mastery_confirmed?: boolean };
 
 /** Coverage and progress by key learning area, plus every outcome evidenced (earliest and latest evidence). */
 export function summarise(entries: PortfolioEntry[], stage: string, expectedAreas?: string[]) {
   const expected = expectedAreas || KLAS_BY_STAGE[stage] || KLAS_BY_STAGE.S2;
   const areas = new Map<string, AreaSummary>();
-  const blank = (a: string): AreaSummary => ({ learning_area: a, expected: expected.includes(a), entries: 0, first: null, latest: null, minutes: 0, outcomes_achieved: 0, outcomes_working_towards: 0 });
+  const blank = (a: string): AreaSummary => ({ learning_area: a, expected: expected.includes(a), entries: 0, first: null, latest: null, minutes: 0, outcomes_shown: 0, outcomes_working_towards: 0, by_kind: {} });
   for (const a of expected) areas.set(a, blank(a));
   const outcomes = new Map<string, OutcomeSummary>();
   for (const e of entries) {
     const a = areas.get(e.learning_area) || blank(e.learning_area);
     areas.set(e.learning_area, a);
     a.entries++;
+    if (e.kind) a.by_kind[e.kind] = (a.by_kind[e.kind] || 0) + 1;
     if (e.date) { if (!a.first || e.date < a.first) a.first = e.date; if (!a.latest || e.date > a.latest) a.latest = e.date; }
     a.minutes += e.duration_minutes || 0;
     for (const o of e.outcomes) {
@@ -116,13 +134,13 @@ export function summarise(entries: PortfolioEntry[], stage: string, expectedArea
         cur.times++;
         if (e.date && e.date < cur.first) cur.first = e.date;
         if (e.date && e.date >= cur.latest) { cur.latest = e.date; }
-        if (o.status === "achieved") cur.status = "achieved";
+        if (o.status === "shown") cur.status = "shown";
       }
     }
   }
   for (const o of outcomes.values()) {
     const a = areas.get(o.learning_area);
-    if (a) o.status === "achieved" ? a.outcomes_achieved++ : a.outcomes_working_towards++;
+    if (a) o.status === "shown" ? a.outcomes_shown++ : a.outcomes_working_towards++;
   }
   const areaList = [...areas.values()].sort((x, y) => Number(y.expected) - Number(x.expected) || (expected.indexOf(x.learning_area) - expected.indexOf(y.learning_area)) || x.learning_area.localeCompare(y.learning_area));
   const outcomeList = [...outcomes.values()].sort((x, y) => x.learning_area.localeCompare(y.learning_area) || x.code.localeCompare(y.code));
@@ -186,7 +204,8 @@ export async function buildPortfolio(db: DB, familyId: string, studentId: string
     "SELECT * FROM life_evidence WHERE family_id = ? AND student_id = ? AND status IN ('accepted','demonstrated') AND (? = '' OR date >= ?) AND (? = '' OR date <= ?) ORDER BY date ASC LIMIT 500"
   ).bind(familyId, studentId, from, from, to, to).all().then((r: any) => r.results || []).catch(() => [] as any[]);
   for (const r of lifeRows) {
-    const outcomes = json<any[]>(r.accepted_mappings, []).map((m) => outcomeFrom({ ...m, accepted: true }, stage)).filter(Boolean) as PortfolioOutcome[];
+    // Life learning: the parent's review of the whole activity decides (demonstrated = understanding shown).
+    const outcomes = json<any[]>(r.accepted_mappings, []).map((m) => outcomeFrom(m, stage, r.status === "demonstrated")).filter(Boolean) as PortfolioOutcome[];
     entries.push({
       id: r.id, kind: "life", date: day(r.date), title: r.title || "Life learning",
       learning_area: klaFor(outcomes[0]?.learning_area || "", outcomes, stage), subject: "", year_level: "",
@@ -235,12 +254,16 @@ export async function buildPortfolio(db: DB, familyId: string, studentId: string
     });
   }
 
-  if (!nsw) for (const e of entries) {
-    e.learning_area = toFrameworkArea(e.learning_area === "Other" ? e.subject : e.learning_area, fw, stage);
+  // Only codes from the family's own verified catalogue are shown (a NSW code means nothing to a Queensland reviewer,
+  // and an AC9 code isn't a NSW syllabus outcome). Other codes are dropped, never relabelled; plain-language notes stay.
+  const cat = catalogueFor(jurisdiction);
+  for (const e of entries) {
+    if (!nsw) e.learning_area = toFrameworkArea(e.learning_area === "Other" ? e.subject : e.learning_area, fw, stage);
     for (const o of e.outcomes) {
-      o.learning_area = toFrameworkArea(o.learning_area, fw, stage);
-      o.code = ""; // NSW codes mean nothing to another state's reviewer; the plain-language wording stays.
+      if (!nsw) o.learning_area = toFrameworkArea(o.learning_area, fw, stage);
+      if (o.code && !(cat.available && cat.byCode.has(o.code))) o.code = "";
     }
+    e.outcomes = e.outcomes.filter((o) => o.code || o.description);
   }
   entries.sort((a, b) => a.date.localeCompare(b.date) || a.title.localeCompare(b.title));
   const total = entries.length;
@@ -249,16 +272,17 @@ export async function buildPortfolio(db: DB, familyId: string, studentId: string
   const summary = summarise(entries, stage, expectedAreas);
   // The Outcome Tracker is the record of mastery. Its status is attached so the Backpack and the tracker never disagree:
   // a review mark ("achieved" in this work) is evidence, while "Achieved" for the outcome needs the parent's confirmation.
-  if (nsw) {
-    const rows = await db.prepare("SELECT outcome_code, status, parent_confirmed_at FROM outcome_progress WHERE family_id = ? AND student_id = ? AND framework = 'NSW'")
-      .bind(familyId, studentId).all().then((r: any) => r.results || []).catch(() => [] as any[]);
-    const byCode = new Map(rows.map((r: any) => [r.outcome_code, r]));
-    for (const o of summary.outcomes as any[]) {
-      const t: any = o.code ? byCode.get(o.code) : null;
-      o.mastery = t ? t.status : null;
-      o.mastery_confirmed = !!t?.parent_confirmed_at;
+  // The all-time snapshot (as at today) comes straight from the tracker, which keeps itself up to date from reviews.
+  const tracker: any = await trackerFor(db, familyId, studentId, { now: o.now }).catch(() => null);
+  if (tracker?.available) {
+    const byCode = new Map<string, any>(tracker.outcomes.map((x: any) => [x.code, x]));
+    for (const so of summary.outcomes as any[]) {
+      const t: any = so.code ? byCode.get(so.code) : null;
+      so.mastery = t ? t.status : null;
+      so.mastery_confirmed = !!t?.parent_confirmed_at;
     }
   }
+  const progress = progressSnapshot(tracker, nsw ? null : fw, stage, o.now || new Date());
   const shown = limits.fullExports ? entries : entries.slice(-1);
   for (const e of shown as any[]) { e.files = await filesFor(db, familyId, e._file_ids, 20); }
   for (const e of entries as any[]) { delete e._file_ids; delete e._submitted; }
@@ -272,6 +296,8 @@ export async function buildPortfolio(db: DB, familyId: string, studentId: string
     jurisdiction: jurisdiction || null,
     jurisdiction_name: jurisdiction ? fw.jurisdiction_name : null,
     framework: nsw ? "NSW syllabuses (NESA)" : fw.name,
+    curriculum_source: jurisdiction ? { name: nsw ? "NSW Curriculum (NESA)" : fw.name, url: fw.url } : null,
+    progress,
     from: from || null, to: to || null,
     first_entry: dates[0] || null, last_entry: dates[dates.length - 1] || null,
     expected_areas: expectedAreas,
@@ -280,5 +306,46 @@ export async function buildPortfolio(db: DB, familyId: string, studentId: string
     total,
     limited: !limits.fullExports && total > shown.length,
     generated_at: (o.now || new Date()).toISOString(),
+  };
+}
+
+const NEEDS_EVIDENCE_GAPS = ["limited_evidence", "not_revisited", "needs_consolidation", "confirmed_evidence_changed"];
+
+/**
+ * Outcome Tracker snapshot for the printable record: per learning area, how many of the child's stage outcomes are at
+ * each status, and where more evidence is needed. All-time and as at the date generated, unlike the dated entries,
+ * which cover only the reporting period. Codes only, never outcome wording.
+ */
+export function progressSnapshot(tracker: any, fw: Framework | null, stage: string, now: Date) {
+  const as_at = now.toISOString().slice(0, 10);
+  if (!tracker) return { available: false, as_at, note: "The Outcome Tracker could not be read.", areas: [], totals: null, needs_evidence: [], beyond_stage: 0 };
+  if (!tracker.available) return { available: false, as_at, note: tracker.note, framework: tracker.framework?.name || null, areas: [], totals: null, needs_evidence: [], beyond_stage: 0 };
+  const zero = () => Object.fromEntries(STATUSES.map((s) => [s, 0])) as Record<string, number>;
+  const areas = new Map<string, { learning_area: string; total: number; counts: Record<string, number>; with_evidence: number; awaiting_confirmation: number }>();
+  const totals = { total: 0, counts: zero(), with_evidence: 0, awaiting_confirmation: 0 };
+  const needs: { code: string; learning_area: string; status: string; gaps: string[] }[] = [];
+  let beyond = 0;
+  for (const x of tracker.outcomes as any[]) {
+    if (!x.in_stage) { if (x.evidence_count > 0) beyond++; continue; }
+    const area = fw ? toFrameworkArea(x.learning_area, fw, stage) : x.learning_area;
+    const a = areas.get(area) || { learning_area: area, total: 0, counts: zero(), with_evidence: 0, awaiting_confirmation: 0 };
+    a.total++; a.counts[x.status]++; totals.total++; totals.counts[x.status]++;
+    if (x.evidence_count > 0) { a.with_evidence++; totals.with_evidence++; }
+    if (x.gaps.includes("awaiting_confirmation")) { a.awaiting_confirmation++; totals.awaiting_confirmation++; }
+    areas.set(area, a);
+    const g = (x.gaps as string[]).filter((k) => NEEDS_EVIDENCE_GAPS.includes(k));
+    if (x.evidence_count > 0 && g.length && x.status !== "achieved") needs.push({ code: x.code, learning_area: area, status: x.status, gaps: g });
+  }
+  return {
+    available: true,
+    as_at,
+    framework: tracker.framework?.name || null,
+    note: tracker.note,
+    status_labels: STATUS_LABELS,
+    gap_labels: GAP_LABELS,
+    areas: [...areas.values()].sort((x, y) => x.learning_area.localeCompare(y.learning_area)),
+    totals,
+    needs_evidence: needs.sort((x, y) => x.learning_area.localeCompare(y.learning_area) || x.code.localeCompare(y.code)).slice(0, 200),
+    beyond_stage: beyond,
   };
 }

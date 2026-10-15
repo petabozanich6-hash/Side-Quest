@@ -104,7 +104,7 @@ export function parseReply(raw: unknown, fw: Framework, student: Student, pool: 
       if (seen.has(o.code)) continue;
       seen.add(o.code);
       out.push({
-        id: newId(), learning_area: o.learning_area, code: o.code, description: o.description,
+        id: newId(), learning_area: o.learning_area, code: o.code, description: "",
         evidence_statement: stripCodes(clip(m?.evidence, 400)) || "Shown in the activity described.",
         confidence: CONF(m?.confidence), accepted: null,
         framework: fw.short, jurisdiction: fw.jurisdiction, code_status: "verified",

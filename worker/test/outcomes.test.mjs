@@ -53,10 +53,15 @@ const statusOf = (t, code) => t.outcomes.find((o) => o.code === code);
 const count = (db, sql, ...b) => db.raw.prepare(sql).get(...b).n;
 
 test("approval alone cannot count as demonstrated understanding", () => {
-  assert.deepEqual(ot.levelFromReview("accepted", { code: RN, accepted: true }), { level: "practice", consolidate: false });
-  assert.deepEqual(ot.levelFromReview("demonstrated", { code: RN, accepted: true }), { level: "practice", consolidate: false });
-  assert.deepEqual(ot.levelFromReview("demonstrated", { code: RN, mark: "shown" }), { level: "demonstrated", consolidate: false });
-  assert.deepEqual(ot.levelFromReview("needs_revision", { code: RN, mark: "shown" }), { level: "participation", consolidate: true });
+  assert.deepEqual(ot.levelFromReview("accepted", { code: RN, accepted: true }), { level: "practice", consolidate: false, comprehensive: false });
+  assert.deepEqual(ot.levelFromReview("demonstrated", { code: RN, accepted: true }), { level: "practice", consolidate: false, comprehensive: false });
+  assert.deepEqual(ot.levelFromReview("demonstrated", { code: RN, mark: "shown" }), { level: "demonstrated", consolidate: false, comprehensive: false });
+  assert.deepEqual(ot.levelFromReview("needs_revision", { code: RN, mark: "shown" }), { level: "participation", consolidate: true, comprehensive: false });
+  // A comprehensive assessment needs "shown" on approved work; it can't ride on approval, practice or returned work.
+  assert.deepEqual(ot.levelFromReview("demonstrated", { code: RN, mark: "shown", comprehensive: true }), { level: "demonstrated", consolidate: false, comprehensive: true });
+  assert.equal(ot.levelFromReview("demonstrated", { code: RN, comprehensive: true, accepted: true }).comprehensive, false);
+  assert.equal(ot.levelFromReview("demonstrated", { code: RN, mark: "practising", comprehensive: true }).comprehensive, false);
+  assert.equal(ot.levelFromReview("needs_revision", { code: RN, mark: "shown", comprehensive: true }).comprehensive, false);
 });
 
 test("full journey: five lessons, hand-ins, reviews with support, parent confirmation and preserved history", async () => {
@@ -402,7 +407,31 @@ test("schema: runtime creation matches migration 0057, and the Backpack shows tr
   await review(migrated, fam, w.sub, 2, "demonstrated", [{ code: RN, mark: "shown", accepted: true }]);
   const p = await buildPortfolio(migrated, fam, kid, { now: D(3) });
   const o = p.summary.outcomes.find((x) => x.code === RN);
-  assert.equal(o.status, "achieved", "the review mark is still shown on the work");
+  assert.equal(o.status, "shown", "the review mark (understanding shown) is still shown on the work");
   assert.equal(o.mastery, "developing", "but the outcome itself is not Achieved until the parent confirms");
   assert.equal(o.mastery_confirmed, false);
+});
+
+test("one reviewed comprehensive assessment reaches Demonstrated; it still needs the parent to confirm Achieved", async () => {
+  const db = makeDb();
+  const fam = family(db);
+  const kid = child(db, fam);
+  const l = await makeLesson(db, fam, "Place value test", [RN, AR]);
+  const w = await doLesson(db, fam, kid, l, 1);
+  await review(db, fam, w.sub, 1, "demonstrated", [{ code: RN, mark: "shown", comprehensive: true }, { code: AR, mark: "practising", comprehensive: true }]);
+  const t = await ot.trackerFor(db, fam, kid, { now: D(2) });
+  assert.equal(statusOf(t, RN).status, "demonstrated", "comprehensive + shown");
+  assert.equal(statusOf(t, AR).status, "developing", "comprehensive without 'shown' is just practice");
+  assert.equal(t.outcomes.filter((o) => o.status === "achieved").length, 0);
+});
+
+test("review mappings can only add codes from the family's own framework", async () => {
+  const db = makeDb();
+  const fam = family(db); // NSW
+  const kid = child(db, fam);
+  const l = await makeLesson(db, fam, "Mixed codes", [RN]);
+  const w = await doLesson(db, fam, kid, l, 1);
+  await review(db, fam, w.sub, 1, "demonstrated", [{ code: RN, mark: "shown" }, { code: "AC9M3N01", mark: "shown" }, { code: "INVENTED-01", mark: "shown" }]);
+  const codes = db.raw.prepare("SELECT DISTINCT outcome_code c FROM outcome_evidence WHERE student_id = ?").all(kid).map((r) => r.c);
+  assert.deepEqual(codes, [RN], "AC9 and invented codes never become evidence for a NSW family");
 });
