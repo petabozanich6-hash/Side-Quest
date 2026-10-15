@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../lib/api";
+import { clearNotices, isNetworkError, notices, onOfflineChange, saveDashboard, savedDashboard, savedLessonIds, syncSavedLessons } from "../../lib/offline";
 import { useAuth } from "../../context/AuthContext";
 import PetWelcome from "../../components/child/PetWelcome";
 import { Clock, ChevronRight, Sparkles, CalendarDays } from "lucide-react";
@@ -8,7 +9,7 @@ import { Clock, ChevronRight, Sparkles, CalendarDays } from "lucide-react";
 const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 const niceDate = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short" }); };
 
-function TaskCard({ a, planned, early }) {
+function TaskCard({ a, planned, early, ready }) {
   return (
     <Link to={`/child/lesson/${a.id}`} className="block rounded-2xl bg-white border border-slate-200 p-5 hover:border-slate-400 transition group" data-testid={`task-${a.id}`}>
       <div className="flex items-start justify-between gap-4">
@@ -21,6 +22,7 @@ function TaskCard({ a, planned, early }) {
             {planned && <span className="font-semibold">Planned for {planned}</span>}
             {a.support_level === "red" && <span className="pill pill-needs-help">Wait for adult</span>}
             {a.support_level === "yellow" && <span className="pill pill-submitted">Ask if stuck</span>}
+            {ready && <span className="rounded-full bg-sky-50 border border-sky-200 px-2 py-0.5 text-sky-900 font-semibold" data-testid="ready-offline">✓ Ready offline</span>}
           </div>
         </div>
         <div className="flex items-center gap-1 text-slate-400 group-hover:text-slate-700">
@@ -32,11 +34,11 @@ function TaskCard({ a, planned, early }) {
   );
 }
 
-const Group = ({ title, hint, items, plannedOf, early }) => items.length === 0 ? null : (
+const Group = ({ title, hint, items, plannedOf, early, ready }) => items.length === 0 ? null : (
   <section>
     <h2 className="font-display text-lg font-semibold">{title}</h2>
     {hint && <p className="text-sm opacity-70 mt-0.5">{hint}</p>}
-    <div className="space-y-3 mt-3">{items.map(a => <TaskCard key={a.id} a={a} planned={plannedOf ? plannedOf(a) : null} early={early} />)}</div>
+    <div className="space-y-3 mt-3">{items.map(a => <TaskCard key={a.id} a={a} planned={plannedOf ? plannedOf(a) : null} early={early} ready={ready?.has(a.id)} />)}</div>
   </section>
 );
 
@@ -45,14 +47,40 @@ export default function ChildHome() {
   const [data, setData] = useState(null);
   const [events, setEvents] = useState([]);
   const [eventsReady, setEventsReady] = useState(false);
+  const [offline, setOffline] = useState(false);
+  const [ready, setReady] = useState(new Set());
+  const [news, setNews] = useState([]);
   useEffect(() => {
-    api.get("/dashboard/child").then(r => setData(r.data));
+    if (!user?.id) return undefined;
+    const refresh = () => { savedLessonIds(user.id).then(setReady); notices(user.id).then(setNews); };
+    refresh();
+    return onOfflineChange(refresh);
+  }, [user?.id]);
+  const [reloads, setReloads] = useState(0);
+  useEffect(() => {
+    const again = () => setReloads((n) => n + 1);
+    window.addEventListener("sq-offline-sent", again);
+    return () => window.removeEventListener("sq-offline-sent", again);
+  }, []);
+  useEffect(() => {
+    // Online: show the live list and save the open lessons on this device. Offline: the list saved last time.
+    api.get("/dashboard/child").then(r => {
+      setData(r.data); setOffline(false);
+      saveDashboard(user?.id, r.data);
+      syncSavedLessons(user?.id, r.data.today || []);
+    }).catch(async (e) => {
+      const saved = isNetworkError(e) ? await savedDashboard(user?.id) : null;
+      setOffline(isNetworkError(e));
+      setData(saved || { today: [], completed: [], waiting: [], xp: 0 });
+    });
     api.get("/calendar", { params: user?.id ? { student_id: user.id } : {} })
       .then(r => setEvents((r.data || []).filter(e => e.linked_lesson_id && !(e.student_id && user?.id && e.student_id !== user.id))))
       .catch(() => {})
       .finally(() => setEventsReady(true));
-  }, [user?.id]);
+  }, [user?.id, reloads]);
   if (!data) return <div className="text-slate-500">Loading…</div>;
+  // Offline, only lessons saved on this device can be opened.
+  const visible = (list) => (offline ? (list || []).filter((a) => ready.has(a.id)) : list || []);
 
   const greeting = user?.theme === "early" ? "Hi" : user?.theme === "senior" ? "Welcome back" : "Hey";
   const headingSize = user?.theme === "early" ? "text-4xl" : "text-3xl";
@@ -66,7 +94,7 @@ export default function ChildHome() {
   const nextDate = {};
   events.filter(e => e.date > today).forEach(e => { if (!nextDate[e.linked_lesson_id] || e.date < nextDate[e.linked_lesson_id]) nextDate[e.linked_lesson_id] = e.date; });
 
-  const tasks = data.today || [];
+  const tasks = visible(data.today);
   const scheduledToday = tasks.filter(a => todayIds.has(lessonOf(a)));
   const catchUp = tasks.filter(a => !todayIds.has(lessonOf(a)) && overdueIds.has(lessonOf(a)));
   const workAhead = tasks
@@ -76,6 +104,17 @@ export default function ChildHome() {
 
   return (
     <div className="space-y-6 animate-in" data-testid="child-home">
+      {offline && (
+        <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900" data-testid="offline-home">
+          <strong>📶 You're offline.</strong> The quests below are saved on this device, so you can still do them. Your work is sent automatically when you're back online.
+        </div>
+      )}
+      {news.length > 0 && (
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900 space-y-1" data-testid="offline-news">
+          {news.map((n, i) => <p key={i}>{n.kind === "handed_in" ? "✅ " : "⚠️ "}{n.text}</p>)}
+          <button type="button" className="underline font-semibold" onClick={() => clearNotices(user?.id)}>OK</button>
+        </div>
+      )}
       <section className="flex items-start justify-between gap-4">
         <div>
           <h1 className={`font-display ${headingSize} font-bold`}>{greeting}, {user?.name}!</h1>
@@ -115,10 +154,10 @@ export default function ChildHome() {
               <p className="text-sm opacity-70 mt-1">{(catchUp.length + workAhead.length + anytime.length) > 0 ? "You can still pick something from below if you feel like it." : "Enjoy your day!"}</p>
             </div>
           )}
-          <Group title="Today's quests" items={scheduledToday} />
-          <Group title="Catch up" hint="These were planned for an earlier day." items={catchUp} />
-          <Group title="Work ahead" hint="Planned for a later day, but you can start any of these now." items={workAhead} plannedOf={(a) => niceDate(nextDate[lessonOf(a)])} early />
-          <Group title="Anytime" hint="No set day. Do them whenever you like." items={anytime} />
+          <Group title="Today's quests" items={scheduledToday} ready={ready} />
+          <Group title="Catch up" hint="These were planned for an earlier day." items={catchUp} ready={ready} />
+          <Group title="Work ahead" hint="Planned for a later day, but you can start any of these now." items={workAhead} plannedOf={(a) => niceDate(nextDate[lessonOf(a)])} early ready={ready} />
+          <Group title="Anytime" hint="No set day. Do them whenever you like." items={anytime} ready={ready} />
         </>
       )}
       {(data.completed || []).length > 0 && (

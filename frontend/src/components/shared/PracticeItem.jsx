@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { api } from "../../lib/api";
+import { isNetworkError } from "../../lib/offline";
 
 const border = { borderColor: "#D4C8A8" };
 const area = "w-full rounded-lg border px-3 py-2 text-base bg-white";
@@ -25,7 +26,7 @@ export default function PracticeItem({ item, part, i, j, value, onChange, state,
       const attempt = attempts + 1;
       const { data } = await api.post(`/assignments/${assignmentId}/practice-check`, { part, i, j, answer: value ?? "", reveal: !!reveal, attempt });
       onState({ fb: data, attempts: attempt });
-    } catch (e) { setErr(e.response?.data?.detail || "Could not check that just now. Your answer is still saved."); }
+    } catch (e) { setErr(isNetworkError(e) ? "No internet right now, so this can't be checked. Your answer is saved; keep going!" : e.response?.data?.detail || "Could not check that just now. Your answer is still saved."); }
     finally { setBusy(false); }
   };
 

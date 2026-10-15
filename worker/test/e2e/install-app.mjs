@@ -112,7 +112,7 @@ await step("when the network drops, a page visit shows Side-Quest's offline page
   // stop the server, exactly what a phone with no signal sees.
   server.kill("SIGTERM");
   for (let i = 0; i < 30; i++) { try { await fetch(`${NODE_BASE}/api/health`); await new Promise((r) => setTimeout(r, 500)); } catch { break; } }
-  await p.goto(BASE + "/get-app").catch(() => {});
+  await p.goto(BASE + "/parent").catch(() => {});
   ok(/You're offline/.test(await p.textContent("body")), "offline page not shown: " + (await p.textContent("body")).slice(0, 120));
   await p.screenshot({ path: `${SHOTS}/offline.png` });
   await ctx.close();

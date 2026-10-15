@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { api } from "../../lib/api";
+import { isNetworkError, queueDraft, queueQuiz, queueSubmission, queuedQuiz, rememberDraft } from "../../lib/offline";
 import QuestQuiz from "../../components/shared/QuestQuiz";
 import PracticeItem from "../../components/shared/PracticeItem";
 import LessonVisual from "../../components/shared/LessonVisual";
@@ -155,7 +156,7 @@ function ReadAloud({ text }) {
 }
 
 // Plays a lesson built by a parent, one screen at a time: learn, see it worked, try it, do it, show it, hand it in.
-export default function ParentLessonPlayer({ assignment, onChanged, preview = false }) {
+export default function ParentLessonPlayer({ assignment, onChanged, preview = false, offline = false }) {
   const a = assignment;
   const l = a.lesson || {};
   const sections = l.sections || [];
@@ -185,7 +186,10 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const hoard = (listed || derive()).map((w) => ({ word: String(w?.word ?? w ?? "").trim(), hint: w?.hint || "" })).filter((w) => /^[A-Za-z][A-Za-z'-]{2,}$/.test(w.word)).slice(0, 12);
   const hasQuiz = quiz.some((q) => q.type !== "short_answer" && Array.isArray(q.options));
 
-  const locked = ["submitted", "accepted", "demonstrated", "completed"].includes(a.status);
+  // "waiting_to_send": handed in with no signal; it is sent automatically when the device is back online.
+  const waitingToSend = a.status === "waiting_to_send";
+  const locked = waitingToSend || ["submitted", "accepted", "demonstrated", "completed"].includes(a.status);
+  const childId = a.student_id;
   const last = (a.submissions || [])[0];
   const d0 = a.draft || {};
 
@@ -198,6 +202,16 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const [watch, setWatch] = useState(d0.watch || {});
   const [step, setStep] = useState(Number.isInteger(d0.step) ? d0.step : 0);
   const [needsHelp, setNeedsHelp] = useState(false);
+  const [quizQueued, setQuizQueued] = useState(false);
+  const [online, setOnline] = useState(!offline && (typeof navigator === "undefined" || navigator.onLine));
+  useEffect(() => {
+    if (preview) return undefined;
+    queuedQuiz(childId, a.id).then((q) => setQuizQueued(!!q)).catch(() => {});
+    const up = () => setOnline(true), down = () => setOnline(false);
+    window.addEventListener("online", up); window.addEventListener("offline", down);
+    return () => { window.removeEventListener("online", up); window.removeEventListener("offline", down); };
+    // eslint-disable-next-line
+  }, []);
   const [quizOk, setQuizOk] = useState(a.quiz_passed === true);
   const passedBefore = useRef(a.quiz_passed === true);
   const [saved, setSaved] = useState("");
@@ -275,11 +289,21 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
 
   const saveNow = async (silent) => {
     if (preview) return;
+    const draft = { answers, checks, reflection, guided: gp, tasks: tv, fbs, watch, step: cur };
     try {
-      await api.put(`/assignments/${a.id}/draft`, { answers, checks, reflection, guided: gp, tasks: tv, fbs, watch, step: cur });
+      await api.put(`/assignments/${a.id}/draft`, draft);
+      rememberDraft(childId, a.id, draft);
       setSaved("Saved");
       if (!silent) toast.success("Your work is saved");
     } catch (e) {
+      if (isNetworkError(e)) {
+        // No signal: the work is kept on this device and sent when the device is back online.
+        await queueDraft(childId, a.id, draft);
+        setOnline(false);
+        setSaved("Saved on this device");
+        if (!silent) toast.success("Saved on this device. It will be sent when you're back online.");
+        return;
+      }
       setSaved("");
       if (!silent) toast.error(e.response?.data?.detail || "Could not save");
     }
@@ -295,7 +319,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   }, [answers, checks, reflection, gp, tv, fbs, watch, cur]);
 
   const unanswered = questions.filter((_, i) => !(answers[i] || "").trim()).length;
-  const needsQuiz = hasQuiz && !quizOk;
+  const needsQuiz = hasQuiz && !quizOk && !quizQueued;
   const canSubmit = needsHelp || (!needsQuiz && unanswered === 0);
 
   const submit = async (forceHelp) => {
@@ -308,11 +332,19 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
     Object.entries(watch).forEach(([k, v]) => { if (filled(v) && videos[k]) lines.push(`After the video "${videos[k].title}": ${shown(v)}`); });
     const didIt = activities.filter((_, i) => checks[i]).map((x) => x.title);
     if (activities.length) lines.push(`Activities done: ${didIt.length ? didIt.join(", ") : "none ticked"}`);
+    const body = { assignment_id: a.id, response_text: lines.join("\n\n"), reflection: reflection.trim() || null, file_ids: files.map((f) => f.id), needs_help: forceHelp === true || needsHelp };
     try {
-      await api.post("/submissions", { assignment_id: a.id, response_text: lines.join("\n\n"), reflection: reflection.trim() || null, file_ids: files.map((f) => f.id), needs_help: forceHelp === true || needsHelp });
+      await api.post("/submissions", body);
       toast.success(forceHelp === true || needsHelp ? "Sent to your grown-up" : "Handed in! Your grown-up will take a look.");
       onChanged && onChanged();
     } catch (e) {
+      if (isNetworkError(e)) {
+        await queueDraft(childId, a.id, { answers, checks, reflection, guided: gp, tasks: tv, fbs, watch, step: cur });
+        await queueSubmission(childId, a.id, body);
+        toast.success("All done! It will be handed in as soon as you're back online.");
+        onChanged && onChanged();
+        return;
+      }
       toast.error(e.response?.data?.detail || "Could not hand in. Please try again.");
     } finally { setBusy(false); }
   };
@@ -428,7 +460,8 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
         {passedBefore.current ? <p className="font-bold text-green-800" data-testid="quiz-passed">Quiz passed. Nice work!</p>
           : preview ? <ol className="list-decimal pl-5 space-y-2 text-sm">{quiz.map((q, i) => <li key={i}><b>{q.question}</b><ul className="list-disc pl-5 text-stone-600">{(q.options || []).map((o, j) => <li key={j}>{o}</li>)}</ul></li>)}</ol>
           : locked ? <p className="text-sm text-stone-600">The quiz is closed.</p>
-          : <QuestQuiz quiz={quiz} passMark={l.pass_mark || 0.7} assignmentId={a.id} onResult={(r) => setQuizOk(!!r?.passed)} help={(qi) => S({ part: "quiz", i: qi })} />}
+          : <QuestQuiz quiz={quiz} passMark={l.pass_mark || 0.7} assignmentId={a.id} onResult={(r) => setQuizOk(!!r?.passed)} help={(qi) => S({ part: "quiz", i: qi })}
+              queued={quizQueued} onOffline={async (ans) => { await queueQuiz(childId, a.id, ans); setQuizQueued(true); setOnline(false); }} />}
       </div>
     );
     // hand in
@@ -441,7 +474,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
       guided.length > 0 && ["Practice questions", `${gDone} of ${guided.length} answered`, gDone === guided.length],
       aTasks > 0 && ["Activity tasks", `${aDone} of ${aTasks} answered`, aDone === aTasks],
       questions.length > 0 && ["Show what you know", `${qDone} of ${questions.length} answered`, unanswered === 0],
-      hasQuiz && ["Quest check", quizOk ? "Passed" : "Not passed yet", quizOk],
+      hasQuiz && ["Quest check", quizOk ? "Passed" : quizQueued ? "Answered; marked when you're back online" : "Not passed yet", quizOk || quizQueued],
     ].filter(Boolean);
     const summary = rows.length > 0 && (
       <div className="rounded-xl border bg-white p-4" style={border} data-testid="progress-summary">
@@ -454,8 +487,8 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
       <div className="space-y-4" data-testid="lesson-complete">
         <div className="rounded-2xl border-2 p-5 text-center" style={{ borderColor: "#4A5D3A", background: "#F3F6EC" }}>
           <p className="text-4xl" aria-hidden>🎉</p>
-          <p className="font-display text-2xl font-semibold" style={INK}>{["accepted", "demonstrated", "completed"].includes(a.status) ? "Quest complete!" : "Handed in. Great work!"}</p>
-          <p className="text-base mt-1">{["accepted", "demonstrated", "completed"].includes(a.status) ? "Your grown-up has looked at your work." : "Your grown-up will look at your work soon. When they accept it, your pet earns XP."}</p>
+          <p className="font-display text-2xl font-semibold" style={INK}>{["accepted", "demonstrated", "completed"].includes(a.status) ? "Quest complete!" : waitingToSend ? "All done. Great work!" : "Handed in. Great work!"}</p>
+          <p className="text-base mt-1">{["accepted", "demonstrated", "completed"].includes(a.status) ? "Your grown-up has looked at your work." : waitingToSend ? "It will be handed in automatically as soon as this device is back online." : "Your grown-up will look at your work soon. When they accept it, your pet earns XP."}</p>
         </div>
         {summary}
         {last?.reflection && <p className="text-sm text-stone-700"><b>Your note:</b> {last.reflection}</p>}
@@ -506,6 +539,13 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
           {last.next_step && <div className="mt-1">Next step: {last.next_step}</div>}
         </div>
       )}
+      {!online && !preview && (
+        <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900" data-testid="offline-lesson">
+          <strong>📶 No internet right now.</strong> You can keep going: your work saves on this device and is sent when you're back online.
+          Checking answers, the "I'm stuck" helper, videos and photos need the internet.
+        </div>
+      )}
+      {waitingToSend && <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900" data-testid="waiting-to-send">Ready to hand in. It will be sent automatically when you're back online.</div>}
       {a.status === "submitted" && <div className="rounded-2xl border border-emerald-300 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="handed-in">You handed this in. Your grown-up will look at it soon.</div>}
       {["accepted", "demonstrated", "completed"].includes(a.status) && (
         <div className="rounded-2xl border border-emerald-300 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="reviewed-note">

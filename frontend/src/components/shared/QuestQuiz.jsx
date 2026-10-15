@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { api } from "../../lib/api";
+import { isNetworkError } from "../../lib/offline";
 
-export default function QuestQuiz({ quiz = [], passMark = 0.9, assignmentId, onResult, shortAnswers = {}, onShortAnswers = () => {}, help = null }) {
+export default function QuestQuiz({ quiz = [], passMark = 0.9, assignmentId, onResult, shortAnswers = {}, onShortAnswers = () => {}, help = null, onOffline = null, queued = false }) {
   const questions = quiz.filter((q) => q.type !== "short_answer");
   const [answers, setAnswers] = useState({});
   const [checked, setChecked] = useState(false);
@@ -24,14 +25,15 @@ export default function QuestQuiz({ quiz = [], passMark = 0.9, assignmentId, onR
   const check = async () => {
     setBusy(true);
     setError("");
+    const payload = questions.map((q, i) => (q.options || [])[answers[i]] ?? null);
     try {
-      const { data } = await api.post(`/assignments/${assignmentId}/quiz-check`, {
-        answers: questions.map((q, i) => (q.options || [])[answers[i]] ?? null),
-      });
+      const { data } = await api.post(`/assignments/${assignmentId}/quiz-check`, { answers: payload });
       setServer(data);
       setChecked(true);
       onResult?.({ score: data.score, total: data.total, needed: data.needed, passed: data.passed, attempt: data.attempt, percent: Math.round((data.score / data.total) * 100) });
     } catch (e) {
+      // No signal: keep the answers on this device; they are marked as soon as the device is back online.
+      if (onOffline && isNetworkError(e)) { await onOffline(payload); return; }
       setError(e.response?.data?.detail || "Could not check your answers. Please try again.");
     } finally {
       setBusy(false);
@@ -48,6 +50,11 @@ export default function QuestQuiz({ quiz = [], passMark = 0.9, assignmentId, onR
 
   return (
     <div data-testid="quest-quiz">
+      {queued && (
+        <p className="mb-4 rounded-xl border border-sky-200 bg-sky-50 p-3 text-sm text-sky-900" data-testid="quiz-queued">
+          📶 Your answers are saved on this device. Your Quest check will be marked as soon as you're back online. You can hand in now.
+        </p>
+      )}
       <p className="text-sm text-stone-600 mb-4">
         Answer all {quiz.length} questions. You need {needed} out of {total} multiple-choice answers (
         {Math.round(passMark * 100)}%) to clear this part of the quest. You can

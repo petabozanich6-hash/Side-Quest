@@ -1,5 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { isStandalone } from "../lib/pwa";
 import { Fern, Branch, Leaf, Flower, Pet } from "../components/shared/Botanical";
 import InstallApp from "../components/shared/InstallApp";
 import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass, ArrowRight } from "lucide-react";
@@ -15,6 +17,10 @@ const Feature = ({ icon: Icon, title, desc, tint = "#6B8A5B" }) => (
 );
 
 export default function Landing() {
+  const { user } = useAuth();
+  // Opened from the home-screen icon while signed in: go straight to the quests or the Parent Hub (works offline too).
+  const fromApp = isStandalone() || new URLSearchParams(window.location.search).get("source") === "app";
+  if (fromApp && user) return <Navigate to={user.role === "child" ? "/child" : "/parent"} replace />;
   return (
     <div className="min-h-screen relative overflow-x-hidden">
       {/* Decorative botanicals */}
