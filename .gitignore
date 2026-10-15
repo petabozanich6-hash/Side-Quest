@@ -28,6 +28,7 @@ lesson-excellence/.work/
 wrangler.e2e.jsonc
 wrangler.hq-e2e.jsonc
 wrangler.app-e2e.jsonc
+wrangler.offline-e2e.jsonc
 e2e-shots/
 ci-logs/
 

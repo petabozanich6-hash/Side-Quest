@@ -3,6 +3,7 @@ import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Compass, Home, FolderOpen, LogOut, Heart, Award, BookOpen, Library } from "lucide-react";
 import { api } from "../../lib/api";
+import { flushOutbox, pendingCount } from "../../lib/offline";
 import PetPicker from "./PetPicker";
 import PetCompanion from "../../components/shared/PetCompanion";
 import ChildInbox from "../../components/child/ChildInbox";
@@ -26,9 +27,26 @@ export default function ChildLayout() {
     api.get("/pet").then(r => { setNeedsPet(!!r.data.needs_pet); setChecked(true); }).catch(()=>setChecked(true));
   }, []);
 
+  // Work done offline is sent when the app opens and whenever the device comes back online.
+  useEffect(() => {
+    if (!user?.id) return undefined;
+    const send = () => { if (navigator.onLine) flushOutbox(user.id); };
+    send();
+    window.addEventListener("online", send);
+    return () => window.removeEventListener("online", send);
+  }, [user?.id]);
+
   if (checked && needsPet) return <PetPicker onDone={()=>setNeedsPet(false)}/>;
 
-  const doLogout = async () => { await logout(); nav("/"); };
+  const doLogout = async () => {
+    // Signing out deletes this device's saved lessons, so check nothing is still waiting to be sent.
+    if (user?.id) {
+      if (navigator.onLine) await flushOutbox(user.id);
+      const left = await pendingCount(user.id);
+      if (left > 0 && !window.confirm(`You have work that hasn't been sent yet (no internet). If you sign out now it will be lost.\n\nSign out anyway?`)) return;
+    }
+    await logout(); nav("/");
+  };
 
   return (
     <div className={`min-h-screen ${theme.shell}`} data-testid="child-shell" data-theme={user?.theme}>
