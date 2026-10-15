@@ -4,7 +4,9 @@
 // Honesty rules:
 // - NSW: the model may only PICK from the verified NSW outcome list for the child's stage. Any number not in the
 //   list is dropped, so a code is never invented.
-// - Other jurisdictions: Side-Quest does not hold their official code lists yet. The model describes the learning
+// - Victorian/WA state-specific lists are not loaded. Five other jurisdictions can browse official ACARA v9
+//   reference codes in the Outcome Tracker, but this AI evidence path still describes learning in plain words.
+//   It does NOT certify state curriculum compliance. The model describes the learning
 //   against that framework's learning areas in plain words, and no code is attached. Anything that looks like a
 //   curriculum code in the reply is stripped.
 // - Every suggestion starts unaccepted. The parent confirms or rejects each one.
@@ -32,8 +34,8 @@ const CONF = (v: unknown): SuggestedMapping["confidence"] => (v === "high" || v 
 /** Strip anything that looks like a curriculum code (AC9MFN01, VC2M3N01, MA2-RN-01 ...) from free text. */
 export function stripCodes(s: string): string {
   return s
-    .replace(/\(\s*(?:AC9|VC2|AC|VC)[A-Z0-9]{3,}\s*\)/g, "")
-    .replace(/\b(?:AC9|VC2)[A-Z0-9]{3,}\b/g, "")
+    .replace(/\(\s*(?:AC9|ACL9|VC2|AC|VC)[A-Z0-9]{3,}\s*\)/g, "")
+    .replace(/\b(?:AC9|ACL9|VC2)[A-Z0-9]{3,}\b/g, "")
     .replace(/\b[A-Z]{2,4}[a-z]?\d?-[A-Z0-9]{1,5}-\d{2}[A-Z]?\b/g, "")
     .replace(/\s{2,}/g, " ")
     .replace(/\s+([.,;])/g, "$1")
