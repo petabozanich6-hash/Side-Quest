@@ -333,7 +333,8 @@ test("curriculum wording updates don't rewrite what was recorded", async () => {
   await ot.addEvidence(db, fam, `u-${fam}`, kid, RN, { level: "practice", note: "x" }, D(2));
   db.raw.prepare("UPDATE outcome_progress SET description = 'Older wording of this outcome', catalogue_version = 'nsw-seed-v2' WHERE student_id = ?").run(kid);
   const d = await ot.outcomeDetail(db, fam, kid, RN, { now: D(3) });
-  assert.equal(d.outcome.description, RN, "Never re-publish legacy stored syllabus text");
+  assert.equal(d.outcome.description, "", "Never re-publish legacy stored syllabus text");
+  assert.ok(!JSON.stringify(d).includes("Older wording of this outcome"));
   assert.equal(db.raw.prepare("SELECT description FROM outcome_progress WHERE student_id = ? AND outcome_code = ?").get(kid, RN).description, "Older wording of this outcome", "Historical records remain intact");
   assert.equal(d.status, "developing");
 });
@@ -464,6 +465,22 @@ function kidWith(db, fam, { stage, year, electives, subject_levels } = {}) {
 const course = (name, learning_area) => ({ code: name.toUpperCase().slice(0, 6), name, learning_area });
 const areasOf = (t) => [...new Set(t.outcomes.filter((o) => o.in_stage).map((o) => o.learning_area))].sort();
 
+test("Mason's case: Year 7 with History, Languages and Technology gets cards for those subjects, Languages flagged as not held", async () => {
+  const db = makeDb();
+  const fam = family(db);
+  const sid = kidWith(db, fam, { stage: "S4", year: "7", electives: [course("English", "English"), course("Mathematics", "Mathematics"), course("Science", "Science"), course("History", "HSIE"), course("Languages (100 hours over Years 7-8)", "Languages"), course("Technology", "Technology")] });
+  const t = await ot.trackerFor(db, fam, sid, { now: NOW });
+  assert.deepEqual(t.areas.map((a) => a.subject), ["English", "Mathematics", "Science", "History", "Languages (100 hours over Years 7-8)", "Technology"]);
+  const hist = t.areas.find((a) => a.subject === "History");
+  assert.equal(hist.total, 2, "HT4-1 and HT4-2 only");
+  assert.ok(!t.outcomes.some((o) => o.code === "GE4-1"), "no Geography outcome for a History student");
+  const lang = t.areas.find((a) => a.subject.startsWith("Languages"));
+  assert.equal(lang.total, 0); assert.equal(lang.unsupported, true); assert.match(lang.note, /doesn't hold verified/);
+  assert.equal(t.areas.find((a) => a.subject === "Technology").total, 1);
+  const tm = t.outcomes.find((o) => o.code === "TM4-1");
+  assert.equal(tm.subject, "Technology"); assert.equal(tm.level_label, "Stage 4"); assert.match(tm.source_title, /Technology Mandatory/);
+});
+
 test("Years 7-12: the tracker covers only the courses chosen when the child was added", async () => {
   const db = makeDb();
   const fam = family(db);
@@ -472,7 +489,9 @@ test("Years 7-12: the tracker covers only the courses chosen when the child was 
   assert.deepEqual(areasOf(t), ["English", "HSIE", "Mathematics", "Science"], "no Creative Arts, PDHPE or TAS outcomes the child isn't studying");
   assert.equal(t.program.level, "Year 9");
   assert.deepEqual(t.program.courses.map((c) => c.name), ["English", "Mathematics", "Science", "History"]);
-  assert.ok(t.areas.every((a) => ["English", "HSIE", "Mathematics", "Science"].includes(a.learning_area)), "headline counts follow the program");
+  assert.deepEqual(t.areas.map((a) => a.subject), ["English", "Mathematics", "Science", "History"], "cards are the child's own subjects, in the order chosen");
+  assert.ok(t.outcomes.filter((o) => o.in_stage && o.learning_area === "HSIE").every((o) => o.code.startsWith("HT")), "History, not Geography");
+  assert.ok(t.outcomes.every((o) => o.description === "" && o.source_title && o.official_url.startsWith("https://")), "rows show source and link, never the code twice");
   // Evidence outside the program is kept and shown, flagged as outside it.
   const ca = ot.catalogueFor("NSW").outcomes.find((o) => o.stage === "S5" && o.learning_area === "Creative Arts").code;
   assert.ok((await ot.addEvidence(db, fam, `u-${fam}`, sid, ca, { level: "practice", note: "Band practice" }, NOW)).ok);
@@ -508,4 +527,13 @@ test("a per-subject level on the profile moves just that subject", async () => {
   const prog = t.outcomes.filter((o) => o.in_stage).map((o) => nsw.byCode.get(o.code));
   assert.ok(prog.filter((o) => o.learning_area === "Mathematics").every((o) => o.stage === "S3"));
   assert.ok(prog.filter((o) => o.learning_area === "English").every((o) => o.stage === "S2"));
+});
+
+test("a chosen subject is never filled with another subject's outcomes", async () => {
+  const db = makeDb();
+  const fam = family(db);
+  const sid = kidWith(db, fam, { stage: "S5", year: "9", electives: [course("Music", "Creative Arts"), course("Geography", "HSIE")] });
+  const t = await ot.trackerFor(db, fam, sid, { now: NOW });
+  assert.equal(t.areas.find((a) => a.subject === "Music").unsupported, true, "no Music outcomes held, so no Visual Arts stand-in");
+  assert.deepEqual(t.outcomes.filter((o) => o.in_stage).map((o) => o.code), ["GE5-1"]);
 });

@@ -67,6 +67,7 @@ function progressSection(p) {
     <tr><td><strong>All learning areas</strong></td><td class="num">${t.total}</td>${["introduced", "developing", "demonstrated", "achieved"].map((k) => `<td class="num"><strong>${t.counts[k] || 0}</strong></td>`).join("")}<td class="num">${t.total - t.with_evidence}</td><td>${bar(t.counts, t.total)}</td></tr>
     ${rows}</table>
   ${key}
+  ${(pr.unsupported || []).length ? `<p class="muted">Not tracked (no verified outcome list held by Side-Quest): ${pr.unsupported.map(esc).join(", ")}. Evidence for these subjects still appears in the dated entries below.</p>` : ""}
   ${t.awaiting_confirmation ? `<p class="muted">${t.awaiting_confirmation} outcome${t.awaiting_confirmation === 1 ? " meets" : "s meet"} the Demonstrated guideline and ${t.awaiting_confirmation === 1 ? "is" : "are"} awaiting the parent's confirmation.</p>` : ""}
   ${pr.beyond_stage ? `<p class="muted">Evidence is also recorded against ${pr.beyond_stage} outcome${pr.beyond_stage === 1 ? "" : "s"} outside this program (another year level or subject).</p>` : ""}
   <h3>Areas needing further evidence</h3>

@@ -11,7 +11,7 @@
 // - A parent's confirmation is never removed automatically. If its evidence later changes, it is flagged instead.
 // - Outcomes come only from a verified catalogue for the family's state or territory. Where Side-Quest has no
 //   verified list (every jurisdiction except NSW today), the tracker says so instead of inventing outcomes.
-import { NSW_OUTCOMES } from "./data/curriculum";
+import { NSW_OUTCOMES, NSW_LA_LINKS, NSW_SOURCE_LINKS } from "./data/curriculum";
 import { NSW_OUTCOMES_SEED_VERSION } from "./data/nsw-outcomes";
 import { AC9_OUTCOMES } from "./data/ac9-outcomes";
 import { FRAMEWORKS, getFamilyJurisdiction, yearLabel, type JurisdictionCode } from "./data/jurisdictions";
@@ -21,7 +21,7 @@ type DB = any;
 
 // ---------------------------------------------------------------- catalogue (which outcomes exist)
 
-export type CatalogueOutcome = { code: string; description: string; learning_area: string; stage: string; source: string; subject?: string; from?: number; to?: number };
+export type CatalogueOutcome = { code: string; description: string; learning_area: string; stage: string; source: string; subject?: string; strand?: string; from?: number; to?: number };
 export type Catalogue = {
   available: true;
   framework: string; // key stored on every record, e.g. "NSW"
@@ -31,6 +31,23 @@ export type Catalogue = {
   byCode: Map<string, CatalogueOutcome>;
 };
 export type NoCatalogue = { available: false; framework: string | null; name: string | null; note: string };
+
+const STAGE_LABEL: Record<string, string> = { ES1: "Early Stage 1", S1: "Stage 1", S2: "Stage 2", S3: "Stage 3", S4: "Stage 4", S5: "Stage 5", S6: "Stage 6" };
+const AC9_URL = "https://v9.australiancurriculum.edu.au/";
+
+/**
+ * Context shown beside an outcome code instead of its (copyright) wording: the syllabus or subject it comes from, its
+ * strand and level, and where to read the official wording. All structural facts, never outcome text.
+ */
+export function outcomeInfo(o: CatalogueOutcome | undefined | null) {
+  if (!o) return { source_title: "", strand: "", level_label: "", official_url: "" };
+  if (o.from != null) {
+    const level = o.from === o.to ? (o.from === 0 ? "Foundation" : `Year ${o.from}`) : `Years ${o.from === 0 ? "F" : o.from}–${o.to}`;
+    return { source_title: `Australian Curriculum v9 · ${String(o.subject || o.learning_area).replace(/ (F-6|7-10)$/, "")}`, strand: (o as any).strand || "", level_label: level, official_url: AC9_URL };
+  }
+  const url = (NSW_LA_LINKS as Record<string, string>)[o.learning_area] || (NSW_SOURCE_LINKS as Record<string, { url: string }>)[o.stage]?.url || "https://curriculum.nsw.edu.au/";
+  return { source_title: o.source || "NSW syllabus (NESA)", strand: "", level_label: STAGE_LABEL[o.stage] || o.stage, official_url: url };
+}
 
 const NSW_CATALOGUE: Catalogue = {
   available: true,
@@ -56,6 +73,7 @@ const ac9Rows: CatalogueOutcome[] = AC9_OUTCOMES.map(o => {
     learning_area: o.learning_area,
     stage,
     subject: o.subject,
+    strand: o.strand,
     from: o.from,
     to: o.to,
     source: "ACARA Australian Curriculum v9.0 content description (CC BY 4.0; MRAC/2024/04)",
@@ -117,6 +135,10 @@ export type Program = {
   areas: string[] | null; // null = every learning area
   courses: { name: string; learning_area: string }[];
   includes: (o: CatalogueOutcome) => boolean;
+  /** The child's subject an outcome belongs to (a chosen course's name, or the learning area for primary). */
+  subjectOf: (o: CatalogueOutcome) => string | null;
+  /** Subjects in the order the parent chose them (learning areas for primary). */
+  subjects: string[];
 };
 
 const yearOf = (y: unknown): number | null => {
@@ -135,15 +157,11 @@ const AC9_AREA: Record<string, string> = {
   English: "English", Mathematics: "Mathematics", Science: "Science", HSIE: "Humanities and Social Sciences",
   PDHPE: "Health and Physical Education", "Creative Arts": "The Arts", TAS: "Technologies", Technology: "Technologies", Technologies: "Technologies",
 };
-// Course names -> AC9 subjects, where one exists. Anything else covers its whole learning area.
-const AC9_SUBJECTS: [RegExp, string[]][] = [
-  [/histor/i, ["History 7-10"]], [/geograph/i, ["Geography 7-10"]], [/commerce|business|econom/i, ["Economics and Business 7-10"]],
-  [/civic/i, ["Civics and Citizenship 7-10"]], [/music/i, ["Music"]], [/drama/i, ["Drama"]], [/dance/i, ["Dance"]],
-  [/visual art/i, ["Visual Arts"]], [/media/i, ["Media Arts"]],
-  [/software|information|digital|computing|coding/i, ["Digital Technologies"]],
-  [/food|textile|design|industrial|agricultur|graphic|engineer/i, ["Design and Technologies"]],
-];
-
+// A course name that names a specific subject is narrowed to it: AC9 by subject, NSW by the syllabus the outcome
+// comes from. A broad course name ("Technology", "HSIE") covers its whole learning area.
+const SUBJECT_KEYS: RegExp[] = [/histor/i, /geograph/i, /commerce|business|econom/i, /civic/i, /aboriginal/i, /music/i, /drama/i, /dance/i,
+  /visual art/i, /media/i, /software|information|digital|computing|coding/i, /food|textile|design|industrial|agricultur|graphic|engineer/i, /physical activity|sport/i];
+const AC9_KEY_SUBJECT: [RegExp, string][] = [[/software|information|digital|computing|coding/i, "digital technologies"], [/food|textile|design|industrial|agricultur|graphic|engineer/i, "design and technologies"]];
 export function programFor(cat: Catalogue, student: { stage?: string | null; year_level?: string | null; extra?: unknown }): Program {
   const extra = json<any>(student.extra, {}) || {};
   const stage = String(student.stage || "");
@@ -154,35 +172,40 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
     .map((c: any) => ({ name: clip(c.name, 120), learning_area: clip(c.learning_area, 80) }));
   const ac9 = cat.framework === "AC9";
   const toArea = (a: string) => (ac9 ? AC9_AREA[a] || a : NSW_AREA[a] || a);
-  // Area -> AC9 subjects chosen (empty set = the whole area).
-  const areaSubjects = new Map<string, Set<string>>();
-  for (const c of courses) {
-    const area = toArea(c.learning_area);
-    if (!areaSubjects.has(area)) areaSubjects.set(area, new Set());
-    const subs = ac9 ? AC9_SUBJECTS.find(([re]) => re.test(c.name))?.[1] : undefined;
-    // A broad course ("Technology", "HSIE") opens the whole area; once whole, it stays whole.
-    const set = areaSubjects.get(area)!;
-    if (!subs) set.add("*"); else if (!set.has("*")) for (const s of subs) set.add(s);
-  }
-  const areas = courses.length ? [...areaSubjects.keys()] : null;
   const levelFor = (area: string) => {
     const l = levels[area];
     if (!l) return { stage, year };
     const y = yearOf(l);
     return STAGE_YEARS[l] ? { stage: l, year: null } : y != null ? { stage: stageOfYear(y), year: y } : { stage, year };
   };
-  const includes = (o: CatalogueOutcome) => {
-    if (areas) {
-      const subs = areaSubjects.get(o.learning_area);
-      if (!subs) return false;
-      if (!subs.has("*") && o.subject && !subs.has(o.subject)) return false;
-    }
+  const atLevel = (o: CatalogueOutcome) => {
     const lv = levelFor(o.learning_area);
     if (ac9 && lv.year != null && o.from != null && o.to != null) return lv.year >= o.from && lv.year <= o.to;
     return o.stage === lv.stage;
   };
+  // What an outcome's own subject text is: AC9 subject ("History 7-10"), NSW syllabus ("NSW History 7-10 Syllabus").
+  const subjectText = (o: CatalogueOutcome) => (ac9 ? o.subject || "" : o.source || "");
+  const matchers = courses.map((c: { name: string; learning_area: string }) => {
+    const area = toArea(c.learning_area);
+    // Several keywords ("Creative Arts (Visual Arts + Music)") or none = the whole area.
+    const keys = SUBJECT_KEYS.filter((re) => re.test(c.name));
+    const key = keys.length === 1 ? keys[0] : null;
+    const ac9Name = ac9 && key ? AC9_KEY_SUBJECT.find(([re]) => re.test(c.name))?.[1] : undefined;
+    return {
+      name: c.name,
+      test: (o: CatalogueOutcome) => o.learning_area === area && (!key || (ac9Name ? subjectText(o).toLowerCase() === ac9Name : key.test(subjectText(o)))),
+    };
+  });
+  const subjectOf = (o: CatalogueOutcome) => {
+    if (!atLevel(o)) return null;
+    if (!matchers.length) return o.learning_area;
+    return matchers.find((m: { test: (o: CatalogueOutcome) => boolean }) => m.test(o))?.name || null;
+  };
+  const includes = (o: CatalogueOutcome) => subjectOf(o) != null;
+  const areas = courses.length ? [...new Set<string>(courses.map((c: { learning_area: string }) => toArea(c.learning_area)))] : null;
+  const subjects = courses.length ? courses.map((c: { name: string }) => c.name) : [...new Set(cat.outcomes.filter(atLevel).map((o) => o.learning_area))];
   const yl = yearLabel(student.year_level, stage);
-  return { level: yl || stage, stage, year, areas, courses, includes };
+  return { level: yl || stage, stage, year, areas, courses, includes, subjectOf, subjects };
 }
 
 // ---------------------------------------------------------------- mastery rules
@@ -638,7 +661,7 @@ const LIFE_IDEAS: Record<string, string> = {
 export function suggestionsFor(o: { code: string; description: string; learning_area: string }, gaps: GapKind[], student: { id: string; year_level?: string | null; stage?: string | null }) {
   if (!gaps.some((g) => ["not_introduced", "not_revisited", "limited_evidence", "needs_consolidation"].includes(g))) return [];
   const year = yearLabel(student.year_level, student.stage) || "my child's";
-  const prompt = `Create a ${year} ${o.learning_area} lesson that helps my child: ${o.description}`;
+  const prompt = `Create a ${year} ${o.learning_area} lesson that helps my child work towards curriculum outcome ${o.code}${o.description ? `: ${o.description}` : ""}`;
   return [
     { kind: "ai_lesson", label: "Draft a lesson with AI", detail: "Paid plans. You review it before your child sees it.", to: `/parent/lessons/make?student=${encodeURIComponent(student.id)}&prompt=${encodeURIComponent(prompt.slice(0, 600))}` },
     { kind: "manual_lesson", label: "Build a lesson yourself", detail: "Starts a new lesson already linked to this outcome.", to: `/parent/lessons/new?outcome=${encodeURIComponent(o.code)}` },
@@ -676,6 +699,8 @@ export async function trackerFor(db: DB, familyId: string, studentId: string, o:
   const program = programFor(cat, student);
   const codes = new Set<string>(cat.outcomes.filter(program.includes).map((x) => x.code));
   for (const c of byCode.keys()) codes.add(c);
+  // Rows follow the same order as the subject cards; outcomes outside the program come last.
+  const subjectRank = (o: { subject: string | null }) => { const i = o.subject ? program.subjects.indexOf(o.subject) : -1; return i < 0 ? 999 : i; };
   const outcomes = [...codes].map((code) => {
     const k = cat.byCode.get(code);
     const p = byCode.get(code);
@@ -683,7 +708,10 @@ export async function trackerFor(db: DB, familyId: string, studentId: string, o:
     const e = evaluate(evByCode.get(code) || [], rules, { confirmed: !!p?.parent_confirmed_at, now });
     return {
       code,
-      description: code,
+      // Official wording isn't republished: the row shows the code with its source, strand and level, and a link.
+      description: "",
+      ...outcomeInfo(k),
+      subject: (k && program.subjectOf(k)) || null,
       learning_area: p?.learning_area || k?.learning_area || "Other",
       stage: p?.stage || k?.stage || "",
       // "in_stage" kept for older clients: it means "in the child's program" (level and chosen subjects).
@@ -698,15 +726,22 @@ export async function trackerFor(db: DB, familyId: string, studentId: string, o:
       gaps: e.gaps,
       catalogue_changed: !!(p?.catalogue_version && p.catalogue_version !== cat.version),
     };
-  }).sort((a, b) => a.learning_area.localeCompare(b.learning_area) || a.code.localeCompare(b.code));
+  }).sort((a, b) => subjectRank(a) - subjectRank(b) || a.learning_area.localeCompare(b.learning_area) || a.code.localeCompare(b.code));
 
-  // Headline counts cover the child's program only; outcomes outside it are still listed with their evidence.
-  const areas = new Map<string, any>();
+  // Headline cards follow the child's own subjects, in the order chosen (learning areas for primary). A chosen subject
+  // with no verified outcomes still gets a card saying so. Outcomes outside the program are listed, not counted.
+  const blankCard = (name: string) => ({ learning_area: name, subject: name, total: 0, counts: Object.fromEntries(STATUSES.map((s) => [s, 0])), awaiting_confirmation: 0, unsupported: false });
+  const areas = new Map<string, any>(program.subjects.map((s) => [s, blankCard(s)]));
   for (const x of outcomes.filter((o) => o.in_stage)) {
-    const a = areas.get(x.learning_area) || { learning_area: x.learning_area, total: 0, counts: Object.fromEntries(STATUSES.map((s) => [s, 0])), awaiting_confirmation: 0 };
+    const key = x.subject || x.learning_area;
+    const a = areas.get(key) || blankCard(key);
     a.total++; a.counts[x.status]++;
     if (x.gaps.includes("awaiting_confirmation")) a.awaiting_confirmation++;
-    areas.set(x.learning_area, a);
+    areas.set(key, a);
+  }
+  for (const a of areas.values()) if (!a.total) {
+    a.unsupported = true;
+    a.note = `Side-Quest doesn't hold verified ${cat.framework === "NSW" ? "NSW syllabus" : "Australian Curriculum"} outcomes for ${a.subject} at this level yet, so it isn't tracked here. Lessons, life learning and notes for it are still kept in the Evidence Backpack.`;
   }
   const gaps: Record<string, number> = {};
   for (const x of outcomes) for (const g of x.gaps) gaps[g] = (gaps[g] || 0) + 1;
@@ -766,7 +801,7 @@ export async function outcomeDetail(db: DB, familyId: string, studentId: string,
   // Learning plans that list this outcome are shown as planned, never as evidence.
   const plans = await db.prepare("SELECT id, title, period_start, period_end, ai_content FROM learning_plans WHERE family_id = ? AND student_id = ?").bind(familyId, studentId).all().then((r: any) => r.results || []).catch(() => []);
   const planned = plans.filter((pl: any) => JSON.stringify(json<any>(pl.ai_content, {})).includes(`"${code}"`)).map((pl: any) => ({ id: pl.id, title: pl.title, period_start: pl.period_start, period_end: pl.period_end }));
-  const outcome = { code, description: code, learning_area: area, stage: p?.stage || k?.stage || "", source: k?.source || "" };
+  const outcome = { code, description: "", learning_area: area, stage: p?.stage || k?.stage || "", source: k?.source || "", ...outcomeInfo(k) };
   return {
     available: true as const,
     student: { id: student.id, name: student.name },

@@ -321,13 +321,15 @@ export function progressSnapshot(tracker: any, fw: Framework | null, stage: stri
   if (!tracker) return { available: false, as_at, note: "The Outcome Tracker could not be read.", areas: [], totals: null, needs_evidence: [], beyond_stage: 0 };
   if (!tracker.available) return { available: false, as_at, note: tracker.note, framework: tracker.framework?.name || null, areas: [], totals: null, needs_evidence: [], beyond_stage: 0 };
   const zero = () => Object.fromEntries(STATUSES.map((s) => [s, 0])) as Record<string, number>;
+  const cardOrder: string[] = (tracker.areas || []).map((a: any) => a.subject || a.learning_area);
+  const order = (name: string) => { const i = cardOrder.indexOf(name); return i < 0 ? 999 : i; };
   const areas = new Map<string, { learning_area: string; total: number; counts: Record<string, number>; with_evidence: number; awaiting_confirmation: number }>();
   const totals = { total: 0, counts: zero(), with_evidence: 0, awaiting_confirmation: 0 };
   const needs: { code: string; learning_area: string; status: string; gaps: string[] }[] = [];
   let beyond = 0;
   for (const x of tracker.outcomes as any[]) {
     if (!x.in_stage) { if (x.evidence_count > 0) beyond++; continue; }
-    const area = fw ? toFrameworkArea(x.learning_area, fw, stage) : x.learning_area;
+    const area = x.subject || (fw ? toFrameworkArea(x.learning_area, fw, stage) : x.learning_area);
     const a = areas.get(area) || { learning_area: area, total: 0, counts: zero(), with_evidence: 0, awaiting_confirmation: 0 };
     a.total++; a.counts[x.status]++; totals.total++; totals.counts[x.status]++;
     if (x.evidence_count > 0) { a.with_evidence++; totals.with_evidence++; }
@@ -336,15 +338,19 @@ export function progressSnapshot(tracker: any, fw: Framework | null, stage: stri
     const g = (x.gaps as string[]).filter((k) => NEEDS_EVIDENCE_GAPS.includes(k));
     if (x.evidence_count > 0 && g.length && x.status !== "achieved") needs.push({ code: x.code, learning_area: area, status: x.status, gaps: g });
   }
+  // Chosen subjects with no verified outcomes are listed so the record shows the limitation, not silence.
+  const unsupported = (tracker.areas || []).filter((a: any) => a.unsupported).map((a: any) => a.subject);
   return {
     available: true,
+    unsupported,
     as_at,
     framework: tracker.framework?.name || null,
     program: tracker.program || null,
     note: tracker.note,
     status_labels: STATUS_LABELS,
     gap_labels: GAP_LABELS,
-    areas: [...areas.values()].sort((x, y) => x.learning_area.localeCompare(y.learning_area)),
+    // Same order as the tracker's cards (the child's subjects as chosen).
+    areas: [...areas.values()].sort((x, y) => order(x.learning_area) - order(y.learning_area) || x.learning_area.localeCompare(y.learning_area)),
     totals,
     needs_evidence: needs.sort((x, y) => x.learning_area.localeCompare(y.learning_area) || x.code.localeCompare(y.code)).slice(0, 200),
     beyond_stage: beyond,
