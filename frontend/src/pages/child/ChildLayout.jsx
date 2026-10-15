@@ -40,7 +40,9 @@ export default function ChildLayout() {
   if (checked && needsPet) return <PetPicker onDone={()=>setNeedsPet(false)}/>;
 
   const doLogout = async () => {
-    // Signing out deletes this device's saved lessons, so check nothing is still waiting to be sent.
+    // On a child's own device (the kids' app) signing out keeps their saved quests and unsent work for next time.
+    if (isKidsDevice()) { await logout({ keepOffline: true }); nav("/child-login"); return; }
+    // Elsewhere signing out deletes this device's saved lessons, so check nothing is still waiting to be sent.
     if (user?.id) {
       if (navigator.onLine) await flushOutbox(user.id);
       const left = await pendingCount(user.id);

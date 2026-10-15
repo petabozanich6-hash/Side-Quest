@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { isKidsHost, parentOrigin, useKidsManifest } from "../lib/pwa";
+import { isKidsDevice, isKidsHost, parentOrigin, useKidsManifest } from "../lib/pwa";
+import { clearOffline, isNetworkError } from "../lib/offline";
+import { forgetOfflineChild, forgetOfflineProfiles, offlineProfileCount, offlineSignIn, rememberChildForOffline } from "../lib/offlineSignIn";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
@@ -17,6 +19,7 @@ export default function ChildLogin() {
   const [helpUser, setHelpUser] = useState("");
   const [helpState, setHelpState] = useState("idle");
   const { setSession, user } = useAuth();
+  const [saved, setSaved] = useState(offlineProfileCount);
   const nav = useNavigate();
   // Installing from this page (browser menu, Add to Home Screen) gives the kids' app, which opens here.
   useKidsManifest(true);
@@ -26,9 +29,25 @@ export default function ChildLogin() {
     try {
       const { data } = await api.post("/auth/child-login", { username, pin });
       try { localStorage.setItem(LAST_USER_KEY, username.trim().toLowerCase()); } catch { /* ignore */ }
-      setSession(data.token, { ...data.student, role: "child" });
+      // On a child's own device, remember them so they can sign in with no signal next time.
+      // Offline sign-in is a Family Membership feature.
+      if (isKidsDevice() && data.offline_allowed) await rememberChildForOffline(username, pin, data.token, { ...data.student, username: username.trim().toLowerCase() });
+      else forgetOfflineChild(username);
+      setSession(data.token, { ...data.student, username: username.trim().toLowerCase(), role: "child" });
       toast.success(`Hi ${data.student.name}!`); nav("/child");
-    } catch (err) { toast.error(err.response?.data?.detail || "Can't sign in"); }
+    } catch (err) {
+      // No signal on a kids' device: check the PIN against the sign-in saved on this device.
+      if (isNetworkError(err) && isKidsDevice()) {
+        const r = await offlineSignIn(username, pin);
+        if (r.token) {
+          setSession(r.token, { ...r.user, username: username.trim().toLowerCase(), offline: true });
+          toast.success(`Hi ${r.user.name}! You're offline, so your saved quests are ready.`);
+          nav("/child");
+        } else toast.error(r.error);
+        return;
+      }
+      toast.error(err.response?.data?.detail || (isNetworkError(err) ? "You're offline. Connect to the internet to sign in." : "Can't sign in"));
+    }
     finally { setLoading(false); }
   };
 
@@ -51,6 +70,14 @@ export default function ChildLogin() {
       toast.error(err.response?.data?.detail || "That didn't send. Try again?");
       setHelpState("idle");
     }
+  };
+
+  const forgetDevice = async () => {
+    if (!window.confirm("Forget every child saved on this device? Their saved quests and any work not yet sent will be deleted from this device. Children can sign in again with internet.")) return;
+    forgetOfflineProfiles();
+    await clearOffline();
+    setSaved(0);
+    toast.success("This device no longer remembers any children.");
   };
 
   if (user?.role === "child") return <Navigate to="/child" replace />;
@@ -104,6 +131,12 @@ export default function ChildLogin() {
         <p className="mt-6 text-center text-xs text-stone-500">Are you a parent? {isKidsHost()
           ? <a href={`${parentOrigin()}/login`} className="font-bold" style={{color:"#4A5D3A"}}>Open Side-Quest for grown-ups</a>
           : <Link to="/login" className="font-bold" style={{color:"#4A5D3A"}}>Sign in here</Link>}</p>
+        {isKidsDevice() && saved > 0 && (
+          <p className="mt-2 text-center text-xs text-stone-500">
+            {saved === 1 ? "1 child is" : `${saved} children are`} saved on this device for signing in offline.{" "}
+            <button type="button" onClick={forgetDevice} className="underline font-semibold" style={{color:"#4A5D3A"}} data-testid="forget-device">Forget children saved on this device</button>
+          </p>
+        )}
         <p className="mt-5 pt-4 border-t text-center text-[11px] leading-relaxed text-stone-500" style={{borderColor:"#E4DAC0"}} data-testid="acknowledgement-of-country">Side-Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
       </form>
       )}

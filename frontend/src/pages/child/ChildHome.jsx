@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../lib/api";
-import { clearNotices, isNetworkError, notices, onOfflineChange, saveDashboard, savedDashboard, savedLessonIds, syncSavedLessons } from "../../lib/offline";
+import { clearNotices, dropSavedLessons, isNetworkError, notices, onOfflineChange, saveDashboard, savedDashboard, savedLessonIds, syncSavedLessons } from "../../lib/offline";
+import { forgetOfflineChild } from "../../lib/offlineSignIn";
 import { useAuth } from "../../context/AuthContext";
 import PetWelcome from "../../components/child/PetWelcome";
 import { Clock, ChevronRight, Sparkles, CalendarDays } from "lucide-react";
@@ -66,8 +67,14 @@ export default function ChildHome() {
     // Online: show the live list and save the open lessons on this device. Offline: the list saved last time.
     api.get("/dashboard/child").then(r => {
       setData(r.data); setOffline(false);
-      saveDashboard(user?.id, r.data);
-      syncSavedLessons(user?.id, r.data.today || []);
+      // Offline lessons are a Family Membership feature: only then are quests saved on the device.
+      if (r.data.offline_allowed) {
+        saveDashboard(user?.id, r.data);
+        syncSavedLessons(user?.id, r.data.today || []);
+      } else {
+        dropSavedLessons(user?.id);
+        if (user?.username) forgetOfflineChild(user.username);
+      }
     }).catch(async (e) => {
       const saved = isNetworkError(e) ? await savedDashboard(user?.id) : null;
       setOffline(isNetworkError(e));
@@ -77,7 +84,7 @@ export default function ChildHome() {
       .then(r => setEvents((r.data || []).filter(e => e.linked_lesson_id && !(e.student_id && user?.id && e.student_id !== user.id))))
       .catch(() => {})
       .finally(() => setEventsReady(true));
-  }, [user?.id, reloads]);
+  }, [user?.id, user?.username, reloads]);
   if (!data) return <div className="text-slate-500">Loading…</div>;
   // Offline, only lessons saved on this device can be opened.
   const visible = (list) => (offline ? (list || []).filter((a) => ready.has(a.id)) : list || []);

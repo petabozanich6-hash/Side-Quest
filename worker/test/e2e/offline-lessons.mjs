@@ -63,6 +63,9 @@ const api = async (method, path, token, body) => {
 const stamp = Date.now();
 const parent = (await api("POST", "/auth/register", null, { email: `offline-${stamp}@example.com`, password: "Passw0rd-offline!", name: "Parent", jurisdiction: "NSW" })).json;
 const pt = parent.token;
+// Offline lessons are a Family Membership feature: make this family a paying member (local test database only).
+const paid = wr(["d1", "execute", "DB", "--local", "--command", `UPDATE families SET plan = 'ACTIVE_MONTHLY', plan_period_end = '${new Date(Date.now() + 20 * 86400000).toISOString()}' WHERE id = '${parent.user.family_id}'`]);
+ok(paid.status === 0, "could not set the plan: " + (paid.stderr || "").slice(-300));
 const username = `kid${stamp}`.slice(0, 16);
 const kid = (await api("POST", "/students", pt, { name: "Kid", username, pin: "4321", stage: "S2" })).json;
 const lesson = (title) => ({
@@ -157,6 +160,8 @@ await step("back online: the work is sent and marked automatically; a failed que
   await up();
   await page.goto(BASE + "/child");
   await page.waitForSelector("[data-testid=offline-news]", { timeout: 20000 });
+  // Both lessons are sent one after the other; wait for both messages.
+  await page.waitForFunction(() => { const t = document.querySelector("[data-testid=offline-news]")?.textContent || ""; return /has been handed in/.test(t) && /needs another go/.test(t); }, null, { timeout: 20000 }).catch(() => {});
   const news = await page.textContent("[data-testid=offline-news]");
   ok(/Place value on the plane" has been handed in/.test(news), "hand-in not reported: " + news);
   ok(/needs another go/.test(news), "quiz retry not reported: " + news);

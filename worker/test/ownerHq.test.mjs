@@ -480,3 +480,29 @@ test("owner promotion: checks, masked output and guarded one-time SQL", () => {
   assert.equal(audit[0].action, "owner.promote");
   assert.equal(audit[0].actor_user_id, null);
 });
+
+// ------------------------------------------------------------ offline lessons are a paid feature
+
+test("offline lessons: only Family Membership (and complimentary) families get offline_allowed", async () => {
+  const h = harness();
+  const parent = await h.register("offline-plan@example.com");
+  await h.addChild(parent, "offkid");
+  const check = async () => {
+    const login = await h.req("/auth/child-login", { method: "POST", admin: false, body: { username: "offkid", pin: "4321" } });
+    const dash = await h.req("/dashboard/child", { token: login.json.token });
+    assert.equal(dash.status, 200);
+    assert.equal(login.json.offline_allowed, dash.json.offline_allowed, "sign-in and home page must agree");
+    return login.json.offline_allowed;
+  };
+  assert.equal(await check(), false, "free preview");
+  const setPlan = (plan, end) => h.db.raw.prepare("UPDATE families SET plan = ?, plan_period_end = ? WHERE id = ?").run(plan, end, parent.familyId);
+  setPlan("ACTIVE_MONTHLY", new Date(Date.now() + 20 * 86400000).toISOString());
+  assert.equal(await check(), true, "paying member");
+  setPlan("INTERNAL", null);
+  assert.equal(await check(), true, "complimentary");
+  setPlan("CANCELLED", new Date(Date.now() - 86400000).toISOString());
+  assert.equal(await check(), false, "membership ended");
+  setPlan("FREE_PREVIEW", null);
+  h.db.raw.prepare("UPDATE families SET trial_ends_at = ? WHERE id = ?").run(new Date(Date.now() - 86400000).toISOString(), parent.familyId);
+  assert.equal(await check(), false, "preview ended");
+});

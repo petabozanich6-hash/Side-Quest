@@ -99,6 +99,18 @@ export async function syncSavedLessons(childId, tasks) {
   changed();
 }
 
+/**
+ * Offline lessons are a Family Membership feature. When the family isn't (or is no longer) paying, the device lets go
+ * of this child's saved lessons and home page. Work still waiting to be sent stays, so nothing the child did is lost.
+ */
+export async function dropSavedLessons(childId) {
+  if (!childId) return;
+  const pending = await pendingAssignmentIds(childId);
+  for (const [key, v] of await entries("lessons", `${childId}:`)) if (!pending.has(v.id)) await del("lessons", key);
+  await del("meta", `${childId}:dashboard`);
+  changed();
+}
+
 export async function saveDashboard(childId, data) { if (childId) await put("meta", `${childId}:dashboard`, data); }
 export async function savedDashboard(childId) { return get("meta", `${childId}:dashboard`); }
 
