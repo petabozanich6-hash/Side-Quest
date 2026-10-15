@@ -55,6 +55,8 @@ export type Env = {
   STRIPE_LIVE_PRICE_YEARLY?: string;
   /** Optional https origin used for Stripe redirect URLs (defaults to the request origin). */
   APP_URL?: string;
+  /** Extra origins (comma-separated) allowed to make Owner HQ changes, e.g. the private staging workers.dev URL. */
+  ADMIN_ORIGINS?: string;
 };
 export type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
 export type Vars = { user: AuthUser };
