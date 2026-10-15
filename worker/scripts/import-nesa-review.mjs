@@ -49,6 +49,19 @@ export function extractIndex(html, stage, url) {
   return rows;
 }
 
+/** A syllabus can only be called stage-covered when all expected stages appear.
+ * Do not confuse this structural check with verified TOTAL outcome completeness.
+ */
+export function expectedStages(title) {
+  const t = String(title).replace(/\s/g,"");
+  if (/11[-–]12|Stage6/i.test(t)) return ["S6"];
+  if (/K[-–]10/i.test(t)) return ["ES1","S1","S2","S3","S4","S5"];
+  if (/K[-–]6/i.test(t)) return ["ES1","S1","S2","S3"];
+  if (/7[-–]10/i.test(t)) return ["S4","S5"];
+  if (/7[-–]8/i.test(t)) return ["S4"];
+  return [];
+}
+
 const CODE = /^([A-Z]{2,9}[A-Z0-9]*-(?:[A-Z0-9]{1,10}-)?\d{1,3}[A-Z]?)(?=\s|$)/;
 /** Only assign a stage if the published identifier encodes it.
  * NESA's HTML often prints several stage tabs before the outcome codes,
@@ -131,10 +144,20 @@ async function main() {
       try {
         const codes = extractCodes(await get(row.outcomes_url), row.outcomes_url, row.title);
         row.candidate_code_count = codes.length;
+        row.expected_stages = expectedStages(row.title);
+        row.stages_found = [...new Set(codes.map(c=>c.stage_hint).filter(Boolean))];
+        row.missing_stages = row.expected_stages.filter(stage => !row.stages_found.includes(stage));
+        row.stage_coverage = row.expected_stages.length
+          ? (row.missing_stages.length ? "PARTIAL_STAGE_COVERAGE" : "STAGES_PRESENT_NOT_COUNT_CERTIFIED")
+          : "NO_STAGE_MANIFEST";
+
         for (const c of codes) candidates.push({ ...c, syllabus_title: row.title, syllabus_path: row.syllabus_path, version_year: row.version_year, listed_as: row.listed_as, source_stages: row.source_stages });
         if (!codes.length) failures.push({ syllabus: row.title, url: row.outcomes_url, reason: "No outcome identifiers extracted" });
       } catch(e) {
         row.candidate_code_count = 0;
+        row.expected_stages = expectedStages(row.title);
+        row.missing_stages = row.expected_stages;
+        row.stage_coverage = "SOURCE_FAILED_OR_NO_CODES";
         failures.push({ syllabus: row.title, url: row.outcomes_url, reason: String(e).slice(0,200) });
       }
       if ((index+1)%20===0) console.log("Inspected official outcome pages: " + (index+1) + "/" + eligible.length);
@@ -143,7 +166,7 @@ async function main() {
   candidates.sort((a,b) => (a.syllabus_path+a.code).localeCompare(b.syllabus_path+b.code));
 
   const output = { source:"NESA official NSW Curriculum stage listings", extraction_date:new Date().toISOString().slice(0,10), complete:false, inventories:inventory, candidates, failures,
-    summary:{ syllabus_versions:inventory.length, direct_outcomes_pages:eligible.length, candidate_outcomes:candidates.length, pages_with_no_codes_or_error:failures.length, senior:inventory.filter(x=>x.source_stages.includes("senior")).length } };
+    summary:{ syllabus_versions:inventory.length, direct_outcomes_pages:eligible.length, candidate_outcomes:candidates.length, pages_with_no_codes_or_error:failures.length, missing_stage_syllabus_versions:inventory.filter(x=>x.missing_stages?.length).length, senior:inventory.filter(x=>x.source_stages.includes("senior")).length } };
   const file = fileURLToPath(new URL("../src/data/nesa-review-import.json", import.meta.url));
   writeFileSync(file,JSON.stringify(output,null,2)+"\n");
   console.log("NESA SOURCE AUDIT: "+JSON.stringify(output.summary));
