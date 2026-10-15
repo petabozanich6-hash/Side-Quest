@@ -7,7 +7,7 @@ test("ACARA MRAC import has unique real AC9 identifiers, descriptions and valid 
   assert.ok(AC9_OUTCOMES.length >= 1395, "AC9 import must not lose previously included descriptors");
   const seen = new Set();
   for (const row of AC9_OUTCOMES) {
-    assert.match(row.code, /^AC9[A-Z0-9]+$/);
+    assert.match(row.code, /^(?:AC9|ACL9)[A-Z0-9]+$/);
     assert.ok(row.description?.trim());
     assert.ok(Number.isInteger(row.from) && Number.isInteger(row.to) && row.from >= 0 && row.to <= 10 && row.from <= row.to);
     assert.ok(!seen.has(row.code), "duplicate: " + row.code);
