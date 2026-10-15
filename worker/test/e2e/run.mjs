@@ -1190,6 +1190,14 @@ await step("R. the Outcome Tracker follows the child's level and subjects from t
   await rp.goto(BASE + `/parent/outcomes/${ch.json.id}`);
   const banner = await (await rp.waitForSelector("[data-testid=tracker-program]")).textContent();
   ok(banner.includes("Year 9") && banner.includes("History"), "program banner: " + banner);
+  await rp.waitForSelector("[data-testid=area-History]");
+  ok(await rp.locator("[data-testid=area-HSIE]").count() === 0, "a learning-area card shown instead of the child's subject");
+  const firstRow = rp.locator("[data-testid=tracker-list] li").first();
+  const rowText = await firstRow.innerText();
+  const code = rowText.split(/\s/)[0];
+  ok(/Syllabus|Australian Curriculum/.test(rowText) && rowText.includes("Read the official wording"), "row lacks source or link: " + rowText.slice(0, 160));
+  ok(rowText.split(code).length - 1 <= 2, "code shown more than in the row and its link");
+  await shot("tracker-subject-cards", rp);
   await rp.goto(BASE + "/parent/children");
   await rp.click(`[data-testid=edit-${ch.json.id}]`);
   await rp.waitForSelector("[data-testid=edit-subjects]");
@@ -1198,7 +1206,10 @@ await step("R. the Outcome Tracker follows the child's level and subjects from t
   await rp.click("[data-testid=edit-save]");
   await rp.waitForSelector("[data-testid=edit-dialog]", { state: "detached" });
   t = await api("GET", `/outcomes/students/${ch.json.id}`, pt);
-  ok(areas() === "Creative Arts,English,HSIE,Mathematics,Science", "after adding Music: " + areas());
+  // The only Stage 5 Creative Arts outcome held is Visual Arts, so Music is shown as not tracked, not as Visual Arts.
+  ok(areas() === "English,HSIE,Mathematics,Science", "after adding Music: " + areas());
+  ok(t.json.areas.map((a) => a.subject).join(",") === "English,Mathematics,Science,History,Music", "cards after adding Music: " + t.json.areas.map((a) => a.subject));
+  ok(t.json.areas.find((a) => a.subject === "Music").unsupported === true, "Music should be flagged as not tracked");
   await ctx.close();
 });
 

@@ -192,9 +192,13 @@ export default function OutcomeDetail() {
       {back}
       <header className="paper-card p-5 sm:p-6 space-y-3">
         <div className="flex flex-wrap items-center gap-2 text-xs text-stone-500">
-          <span className="font-mono font-bold text-stone-700">{d.outcome.code}</span><span>· {d.outcome.learning_area}</span><span>· {d.student.name}</span>
+          <span>{d.outcome.learning_area}</span><span>· {d.student.name}</span>
         </div>
-        <h1 className="font-display text-2xl sm:text-3xl font-bold leading-snug" style={{ color: "#1F3B2D" }}>{d.outcome.description}</h1>
+        <h1 className="font-display text-2xl sm:text-3xl font-bold leading-snug" style={{ color: "#1F3B2D" }}>{d.outcome.code}</h1>
+        <p className="text-sm text-stone-700" data-testid="detail-source">
+          {[d.outcome.source_title, d.outcome.strand, d.outcome.level_label].filter(Boolean).join(" · ")}
+          {d.outcome.official_url && <> · <a href={d.outcome.official_url} target="_blank" rel="noopener noreferrer" className="font-semibold underline text-emerald-900">Read the official wording ↗</a></>}
+        </p>
         <div className="flex flex-wrap items-center gap-3">
           <StatusBadge status={d.status} size="lg" testid="detail-status" />
           {d.status === "achieved" && d.computed_status !== "demonstrated" && <span className="text-xs text-stone-500">Evidence currently: {STATUS[d.computed_status].label}</span>}
@@ -202,9 +206,9 @@ export default function OutcomeDetail() {
         <p className="text-sm text-stone-700" data-testid="detail-reason">{d.reason}</p>
         {d.last_change_reason && d.last_change_reason !== d.reason && <p className="text-xs text-stone-500">Last change: {d.last_change_reason}</p>}
         {d.catalogue_changed && (
-          <p className="rounded-lg bg-sky-50 border border-sky-200 p-2 text-xs text-sky-900" data-testid="catalogue-changed">The curriculum wording has been updated since this was recorded. Recorded: “{d.catalogue_changed.recorded}”. Current: “{d.catalogue_changed.current}”.</p>
+          <p className="rounded-lg bg-sky-50 border border-sky-200 p-2 text-xs text-sky-900" data-testid="catalogue-changed">The curriculum catalogue has been updated since this was recorded (recorded with {d.catalogue_changed.recorded_version}, now {d.catalogue_changed.current_version}). Check the official wording if anything changed.</p>
         )}
-        {d.outcome.source && <p className="text-[11px] text-stone-500">{d.outcome.source} · {d.framework.name}</p>}
+        <p className="text-[11px] text-stone-500">{d.framework.name}</p>
       </header>
 
       <div className="grid lg:grid-cols-3 gap-4">

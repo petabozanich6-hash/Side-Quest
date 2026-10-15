@@ -70,10 +70,10 @@ export default function OutcomeTracker() {
     if (!data?.outcomes) return [];
     const term = q.trim().toLowerCase();
     return data.outcomes.filter((o) => (showOther || o.in_stage)
-      && (!area || o.learning_area === area)
+      && (!area || (o.subject || o.learning_area) === area)
       && (!status || o.status === status)
       && (!gap || o.gaps.includes(gap))
-      && (!term || o.code.toLowerCase().includes(term) || o.description.toLowerCase().includes(term)));
+      && (!term || [o.code, o.subject, o.learning_area, o.source_title, o.strand].join(" ").toLowerCase().includes(term)));
   }, [data, area, status, gap, q, showOther]);
 
   if (students && students.length === 0) {
@@ -132,11 +132,20 @@ export default function OutcomeTracker() {
         <>
           <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3" data-testid="tracker-areas">
             {data.areas.map((a) => (
+              a.unsupported ? (
+                <div key={a.learning_area} className="paper-card p-4 text-left border-dashed" data-testid={`area-${a.learning_area}`} data-unsupported="true">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-display font-bold" style={{ color: "#1F3B2D" }}>{a.learning_area}</span>
+                    <span className="text-xs text-stone-500">Not tracked</span>
+                  </div>
+                  <p className="mt-2 text-xs text-stone-600">{a.note}</p>
+                </div>
+              ) : (
               <button key={a.learning_area} type="button" onClick={() => setArea(area === a.learning_area ? "" : a.learning_area)}
                 className={`paper-card p-4 text-left transition hover:-translate-y-0.5 ${area === a.learning_area ? "ring-2 ring-emerald-800" : ""}`} data-testid={`area-${a.learning_area}`} aria-pressed={area === a.learning_area}>
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-display font-bold" style={{ color: "#1F3B2D" }}>{a.learning_area}</span>
-                  <span className="text-xs text-stone-500">{a.total} outcomes</span>
+                  <span className="text-xs text-stone-500">{a.total} outcome{a.total === 1 ? "" : "s"}</span>
                 </div>
                 <div className="mt-2"><StatusBar counts={a.counts} total={a.total} /></div>
                 <div className="mt-2 text-xs text-stone-600">
@@ -144,6 +153,7 @@ export default function OutcomeTracker() {
                   {a.awaiting_confirmation > 0 && <span className="block font-semibold text-emerald-800">{a.awaiting_confirmation} ready for your confirmation</span>}
                 </div>
               </button>
+              )
             ))}
           </section>
 
@@ -165,7 +175,7 @@ export default function OutcomeTracker() {
               </label>
               <select value={area} onChange={(e) => setArea(e.target.value)} className="rounded-full border border-stone-300 bg-white px-3 py-2 text-sm" aria-label="Subject" data-testid="filter-area">
                 <option value="">All subjects</option>
-                {data.areas.map((a) => <option key={a.learning_area} value={a.learning_area}>{a.learning_area}</option>)}
+                {data.areas.filter((a) => !a.unsupported).map((a) => <option key={a.learning_area} value={a.learning_area}>{a.learning_area}</option>)}
               </select>
               <select value={status} onChange={(e) => setStatus(e.target.value)} className="rounded-full border border-stone-300 bg-white px-3 py-2 text-sm" aria-label="Status" data-testid="filter-status">
                 <option value="">Any status</option>
@@ -186,9 +196,11 @@ export default function OutcomeTracker() {
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="font-mono text-xs font-bold text-stone-700">{o.code}</span>
-                        <span className="text-[11px] text-stone-500">{o.learning_area}{!o.in_stage ? ` · ${o.stage}` : ""}</span>
+                        <span className="text-[11px] text-stone-500">{o.subject || o.learning_area}{o.level_label ? ` · ${o.level_label}` : ""}{!o.in_stage ? " · outside this program" : ""}</span>
                       </div>
-                      <p className="text-sm text-stone-800 mt-0.5">{o.description}</p>
+                      <p className="text-sm text-stone-700 mt-0.5" data-testid={`outcome-source-${o.code}`}>
+                        {[o.source_title, o.strand].filter(Boolean).join(" · ")}
+                      </p>
                       <p className="text-xs text-stone-500 mt-1">
                         {o.evidence_count ? `${o.evidence_count} piece${o.evidence_count === 1 ? "" : "s"} of evidence · latest ${o.last_evidence_on}` : "No evidence yet"}
                         {o.gaps.filter((g) => g !== "not_introduced").map((g) => <span key={g} className="ml-2 inline-block rounded-full bg-amber-50 border border-amber-200 px-2 text-amber-900">{GAPS[g]}</span>)}
@@ -196,6 +208,7 @@ export default function OutcomeTracker() {
                     </div>
                     <div className="flex items-center gap-2 shrink-0"><StatusBadge status={o.status} testid={`status-${o.code}`} /><ChevronRight size={16} className="text-stone-400" aria-hidden="true" /></div>
                   </Link>
+                  {o.official_url && <a href={o.official_url} target="_blank" rel="noopener noreferrer" className="block px-4 pb-3 -mt-2 text-xs font-semibold underline text-emerald-900" data-testid={`official-${o.code}`}>Read the official wording for {o.code} ↗</a>}
                 </li>
               ))}
             </ul>
