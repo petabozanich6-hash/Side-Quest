@@ -10,14 +10,24 @@ const phase3=["Arabic","Classical Greek","Framework for Classical Languages","Hi
 const phase4=["Auslan","Chinese","Victorian Aboriginal Languages"];
 const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const items=[];
-for(const name of [...phase3,...phase4]){
- const prefix=BASE+"/languages/"+slug(name)+"/curriculum/";
- const sequences=["Classical Greek","Framework for Classical Languages","Latin"].includes(name)
-   ? ["7-10"]
-   : ["f-10","7-10"];
- for(const sequence of sequences) items.push({language:name,phase:phase3.includes(name)?3:4,sequence,
-   url:prefix+sequence+"?layout=1",kind:"vc1_languages_code_candidate"});
+for(const name of phase3){
+  // The old VCAA /curriculum/f-10 view renders BOTH F–10 and 7–10
+  // sequences on one page, including Classical Greek and Latin (7–10 only).
+  items.push({language:name,phase:3,sequence:"mixed",learner_pathway:null,
+    url:BASE+"/languages/"+slug(name)+"/curriculum/f-10?layout=1",
+    kind:"vc1_languages_code_candidate"});
 }
+for(const learner of ["first-language-learner","second-language-learner"])
+  items.push({language:"Auslan",phase:4,sequence:"mixed",learner_pathway:learner,
+    url:BASE+"/languages/auslan/"+learner+"/curriculum/f-10?layout=1",
+    kind:"vc1_languages_code_candidate"});
+for(const learner of ["background-language-learner","first-language-learner"])
+  items.push({language:"Chinese",phase:4,sequence:"mixed",learner_pathway:learner,
+    url:BASE+"/languages/chinese/"+learner+"/curriculum/f-10?layout=1",
+    kind:"vc1_languages_code_candidate"});
+items.push({language:"Victorian Aboriginal Languages",phase:4,sequence:"mixed",learner_pathway:null,
+  url:BASE+"/languages/victorian-aboriginal-languages/curriculum/f-10?layout=1",
+  kind:"vc1_languages_code_candidate"});
 export const SOURCES=items;
 const CODE=/\bVC[A-Z]{2,9}\d{2,4}\b/g;
 function clean(s){return String(s).replace(/&amp;/g,"&").replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n))).replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim()}
@@ -27,16 +37,16 @@ export function extractLegacyCodes(html,source){
   const sections=body.replace(/<\/(?:h[1-6]|p|li|div|section|td)>/gi,"\n")
     .replace(/<[^>]+>/g," ").split(/\n/).map(clean);
   const map=new Map();
-  let band=null;
+  let band=null, sequence="unresolved";
   for(const line of sections){
     const matches=[...line.matchAll(/(?:Foundation\s+to\s+Level\s*2|Levels?\s*(?:3\s+and\s+4|5\s+and\s+6|7\s+and\s+8|9\s+and\s+10|7\s+to\s+10))\s+Content\s+Descriptions/gi)];
     if(matches.length)band=matches[0][0].replace(/\s+Content\s+Descriptions$/i,"");
     else if(/^.*Achievement\s+standards?\s*$/i.test(line))band=null;
     for(const code of line.match(CODE)||[]){
       const val={code,learning_area:"Languages",subject:source.language,
-        source_url:source.url,phase:source.phase,sequence:source.sequence,
+        source_url:source.url,phase:source.phase,sequence,learner_pathway:source.learner_pathway,
         version:"VC1",band_hint:band,kind:"vc1_content_description_candidate",
-        status:"direct_official_page_candidate_not_count_verified"};
+        status:sequence==="unresolved"?"sequence_unresolved_review":"direct_official_page_candidate_not_count_verified"};
       if(!map.has(code))map.set(code,val);
       else if(!map.get(code).band_hint && band)map.get(code).band_hint=band;
     }
