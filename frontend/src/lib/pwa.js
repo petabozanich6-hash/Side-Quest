@@ -60,11 +60,29 @@ export function kidsHostReachable() {
   }
   return kidsLive;
 }
-/** On the kids' address, the page installs the kids' app (before React starts). */
+/** The SQ Kids look: manifest, iPhone home-screen icon, browser-tab icon and title. Returns an undo function. */
+function applyKidsHead() {
+  const set = (sel, attr, value) => {
+    const el = document.querySelector(sel);
+    if (!el) return () => {};
+    const before = el.getAttribute(attr);
+    el.setAttribute(attr, value);
+    return () => { if (before !== null) el.setAttribute(attr, before); };
+  };
+  const undo = [
+    set('link[rel="manifest"]', "href", "/manifest-kids.webmanifest"),
+    set('link[rel="apple-touch-icon"]', "href", "/icons/kids-apple-touch-icon.png"),
+    set('link[rel="icon"][type="image/png"]', "href", "/icons/kids-favicon-32.png"),
+    set('meta[name="apple-mobile-web-app-title"]', "content", "SQ Kids"),
+    set('meta[name="theme-color"]', "content", "#C77B5B"),
+  ];
+  return () => undo.forEach((fn) => fn());
+}
+
+/** On the kids' address, the page installs the kids' app with its own icon (before React starts). */
 export function applyKidsHostManifest() {
   if (!isKidsHost()) return;
-  document.querySelector('link[rel="manifest"]')?.setAttribute("href", "/manifest-kids.webmanifest");
-  document.querySelector('meta[name="apple-mobile-web-app-title"]')?.setAttribute("content", "SQ Kids");
+  applyKidsHead();
   document.title = "SQ Kids | Side-Quest Learning";
 }
 export function rememberKidsDevice() {
@@ -82,12 +100,7 @@ export function useKidsManifest(kids) {
   useEffect(() => {
     const link = document.querySelector('link[rel="manifest"]');
     if (!link || !kids || isKidsHost()) return undefined;
-    const before = link.getAttribute("href");
-    link.setAttribute("href", "/manifest-kids.webmanifest");
-    const title = document.querySelector('meta[name="apple-mobile-web-app-title"]');
-    const beforeTitle = title?.getAttribute("content");
-    title?.setAttribute("content", "SQ Kids");
-    return () => { link.setAttribute("href", before); if (title && beforeTitle) title.setAttribute("content", beforeTitle); };
+    return applyKidsHead();
   }, [kids]);
 }
 
