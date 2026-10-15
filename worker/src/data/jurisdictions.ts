@@ -1,7 +1,7 @@
 // Which curriculum framework applies to a family, by the state or territory the parent chose.
-// Only NSW has a verified outcome-code list loaded in Side-Quest. For every other jurisdiction, AI mappings are
-// described against that framework's learning areas WITHOUT a code: a code is never shown unless it came from a
-// verified list we hold. Add a verified list here (and set codes: "verified") when one is loaded.
+// NSW holds a NESA syllabus outcome seed. Five other jurisdictions can use the verified ACARA v9
+// content-description REFERENCE catalogue; this is not a certification of local compliance.
+// VIC now has a source-backed VC2 plus 2026-current VC1 EAL reference; several other VC1 languages and senior courses remain missing.\n// WA still requires an accessible state-specific official catalogue. Never invent identifiers.
 
 export type JurisdictionCode = "NSW" | "VIC" | "QLD" | "WA" | "SA" | "TAS" | "ACT" | "NT";
 
@@ -11,8 +11,8 @@ export type Framework = {
   name: string;
   short: string;
   url: string;
-  /** "verified": codes come from a list Side-Quest holds. "none": no codes are attached. */
-  codes: "verified" | "none";
+  /** "verified": state outcome seed; "reference": verified but PARTIAL national or state source catalogue, not compliance certification; "none": unavailable. */
+  codes: "verified" | "reference" | "none";
   /** How this framework groups year levels ("stage" for NSW, "year" elsewhere). */
   level_kind: "stage" | "year";
   learning_areas: { primary: string[]; secondary: string[] };
@@ -32,7 +32,7 @@ export const FRAMEWORKS: Record<JurisdictionCode, Framework> = {
   },
   VIC: {
     jurisdiction: "VIC", jurisdiction_name: "Victoria", name: "Victorian Curriculum F–10 Version 2.0", short: "Victorian Curriculum 2.0",
-    url: "https://f10.vcaa.vic.edu.au/", codes: "none", level_kind: "year",
+    url: "https://f10.vcaa.vic.edu.au/", codes: "reference", level_kind: "year",
     learning_areas: {
       primary: ["English", "Mathematics", "Science", "Humanities", "Health and Physical Education", "The Arts", "Technologies", "Languages"],
       secondary: ["English", "Mathematics", "Science", "Humanities", "Health and Physical Education", "The Arts", "Technologies", "Languages"],
@@ -43,11 +43,11 @@ export const FRAMEWORKS: Record<JurisdictionCode, Framework> = {
     url: "https://k10outline.scsa.wa.edu.au/", codes: "none", level_kind: "year",
     learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS },
   },
-  QLD: { jurisdiction: "QLD", jurisdiction_name: "Queensland", ...AC9, codes: "none", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
-  SA: { jurisdiction: "SA", jurisdiction_name: "South Australia", ...AC9, codes: "none", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
-  TAS: { jurisdiction: "TAS", jurisdiction_name: "Tasmania", ...AC9, codes: "none", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
-  ACT: { jurisdiction: "ACT", jurisdiction_name: "Australian Capital Territory", ...AC9, codes: "none", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
-  NT: { jurisdiction: "NT", jurisdiction_name: "Northern Territory", ...AC9, codes: "none", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
+  QLD: { jurisdiction: "QLD", jurisdiction_name: "Queensland", ...AC9, codes: "reference", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
+  SA: { jurisdiction: "SA", jurisdiction_name: "South Australia", ...AC9, codes: "reference", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
+  TAS: { jurisdiction: "TAS", jurisdiction_name: "Tasmania", ...AC9, codes: "reference", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
+  ACT: { jurisdiction: "ACT", jurisdiction_name: "Australian Capital Territory", ...AC9, codes: "reference", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
+  NT: { jurisdiction: "NT", jurisdiction_name: "Northern Territory", ...AC9, codes: "reference", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
 };
 
 export const JURISDICTION_CODES = Object.keys(FRAMEWORKS) as JurisdictionCode[];

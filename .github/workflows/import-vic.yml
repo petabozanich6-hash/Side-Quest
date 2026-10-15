@@ -1,0 +1,64 @@
+name: Discover official Victorian curriculum version 2 identifiers
+# Source-code-only review. State curriculum Version 1 remains necessary for
+# EAL/selected languages, A-D and transition years. No tracker publication.
+# A complete official page import is now committed for review. Refresh on demand
+# to avoid repeated large VCAA downloads, avoid cross-state PR push conflicts.
+# Unit/source-shape tests run in ordinary CI.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  source-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Test official VCAA identifier extraction
+        run: node --test worker/test/vicImport.test.mjs worker/test/vicSubjects.test.mjs
+      - name: Index official VCAA curriculum v2 level pages
+        run: node worker/scripts/import-vic-review.mjs
+      - name: Classify code candidates against each official subject and language-sequence page
+        run: node worker/scripts/import-vic-subjects.mjs
+      - name: Attach source-linked review candidates
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vic-vc2-source-review
+          path: |
+            worker/src/data/vic-review-import.json
+            worker/src/data/vic-subject-review.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Commit review data to the unmerged PR branch only
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
+          git add worker/src/data/vic-review-import.json worker/src/data/vic-subject-review.json
+          if git diff --cached --quiet; then
+            echo "No candidate changes"
+          else
+            git commit -m "Data(review only): candidate VCAA v2 curriculum identifiers"
+            for attempt in 1 2 3; do
+              if git push origin "HEAD:$TARGET_BRANCH"; then
+                echo "Saved classified VC2 data on draft PR"
+                exit 0
+              fi
+              echo "Another importer updated the draft; rebasing safely (attempt $attempt)"
+              git fetch origin "$TARGET_BRANCH"
+              git rebase "origin/$TARGET_BRANCH" || { git rebase --abort; exit 1; }
+              sleep 2
+            done
+            echo "Failed to push after safe retries" >&2
+            exit 1
+          fi

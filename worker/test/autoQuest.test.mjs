@@ -236,10 +236,10 @@ test("family isolation and unsupported curricula", async () => {
 
   const vic = family(db, { jurisdiction: "VIC" }); const sv = kid(db, vic); slot(db, vic, sv, 1, "Mathematics");
   const rv = await plan(db, vic, sv);
-  assert.equal(rv.catalogue_available, false);
-  assert.equal(rv.proposals[0].action, "needs_parent_plan");
-  assert.deepEqual(rv.proposals[0].outcome_codes, []);
-  assert.match(rv.note, /verified outcome list/);
+  assert.equal(rv.catalogue_available, true, "VCAA now has a source-backed partial reference catalogue");
+  assert.ok(rv.proposals.length>0);
+  assert.ok(rv.proposals[0].outcome_codes.every((code) => /^VC2/.test(code)),
+    "Victorian Auto-Quest must only use verified VC2 mathematics codes, never NSW or AC9");
 
   const qld = family(db, { jurisdiction: "QLD" }); const sq = kid(db, qld); slot(db, qld, sq, 1, "Maths");
   const rq = await plan(db, qld, sq);

@@ -1,0 +1,47 @@
+name: Discover Western Australian official curriculum identifiers
+# Explicitly review-only: curriculum JSON releases span several years;
+# no live mappings until applicable version and achievement bands are verified.
+on:
+  # Official SCSA denies GitHub runner access with HTTP 403. Keep this importer
+  # manual/on-demand until authorised downloads or hosting access are arranged.
+  # Parser/fixture tests still run in normal CI via package.json.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  state-source-import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check SCSA JSON extraction and language identification
+        run: node --test worker/test/waImport.test.mjs
+      - name: Download and index official WA P–10 curriculum JSON
+        run: node worker/scripts/import-wa-review.mjs
+      - name: Archive source provenance and review candidates
+        uses: actions/upload-artifact@v4
+        with:
+          name: wa-curriculum-identifier-candidates
+          path: worker/src/data/wa-review-import.json
+          retention-days: 30
+      - name: Commit source candidates only to unmerged review branch
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
+          git add worker/src/data/wa-review-import.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Data(review only): SCSA state curriculum content identifiers"
+            git push origin "HEAD:$TARGET_BRANCH"
+          fi

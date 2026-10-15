@@ -1048,7 +1048,7 @@ await step("AI lesson set: open, edit, assign, move around and refresh without l
   await pctx.close();
 });
 
-await step("O. outcome tracker: VIC family sees the honest gap, not invented outcomes", async () => {
+await step("O. outcome tracker: VIC family sees actual source-backed VCAA codes and no NSW outcomes", async () => {
   // Use a separate VIC family: the primary e2e account was deliberately switched back to NSW earlier.
   // Otherwise this test asks a NSW family's tracker to show the VIC-only unavailable message.
   const email = `outcomes-vic-${stamp}@example.com`;
@@ -1067,9 +1067,12 @@ await step("O. outcome tracker: VIC family sees the honest gap, not invented out
     await qpage.click('[data-testid=login-submit]');
     await qpage.waitForURL("**/parent", { timeout: 20000 });
     await qpage.goto(BASE + `/parent/outcomes/${child.json.id}`);
-    await qpage.waitForSelector("[data-testid=tracker-unavailable]", { timeout: 15000 });
-    ok(/verified outcome list/.test(await qpage.textContent("[data-testid=tracker-unavailable]")), "gap not explained");
-    ok(await qpage.locator("[data-testid=tracker-list]").count() === 0, "outcomes listed for a curriculum Side-Quest doesn't hold");
+    await qpage.waitForSelector("[data-testid=vic-curriculum-attribution]", { timeout: 15000 });
+    await qpage.waitForSelector("[data-testid=tracker-areas]", { timeout: 15000 });
+    ok(/partial/i.test(await qpage.textContent("[data-testid=vic-curriculum-attribution]")), "VCAA edition/coverage warning is missing");
+    const view = await qpage.locator("[data-testid=tracker-list]").innerText();
+    ok(!/\bMA2-RN-01\b|\bEN2-OLC-01\b/.test(view), "NSW identifiers shown to Victorian family");
+    ok(await qpage.locator("[data-testid=tracker-unavailable]").count() === 0, "VIC should no longer be an unavailable catalogue");
   } finally {
     await qctx.close();
   }
@@ -1206,10 +1209,15 @@ await step("R. the Outcome Tracker follows the child's level and subjects from t
   await rp.click("[data-testid=edit-save]");
   await rp.waitForSelector("[data-testid=edit-dialog]", { state: "detached" });
   t = await api("GET", `/outcomes/students/${ch.json.id}`, pt);
-  // The only Stage 5 Creative Arts outcome held is Visual Arts, so Music is shown as not tracked, not as Visual Arts.
-  ok(areas() === "English,HSIE,Mathematics,Science", "after adding Music: " + areas());
+  // NESA's expanded catalogue now includes actual Music outcomes. If Music is
+  // source-backed, use Music codes — never Visual Arts codes as substitutes.
+  ok(["English","HSIE","Mathematics","Science"].every((area)=>areas().includes(area)), "after adding Music: " + areas());
   ok(t.json.areas.map((a) => a.subject).join(",") === "English,Mathematics,Science,History,Music", "cards after adding Music: " + t.json.areas.map((a) => a.subject));
-  ok(t.json.areas.find((a) => a.subject === "Music").unsupported === true, "Music should be flagged as not tracked");
+  const musicCard=t.json.areas.find((a) => a.subject === "Music");
+  ok(Boolean(musicCard), "selected Music elective missing its own card");
+  const musicMapped=t.json.outcomes.filter((row)=>row.in_stage && row.subject === "Music");
+  ok(musicMapped.every((row)=>/Music/i.test(row.source_title||"") && !/Visual Arts/i.test(row.source_title||"")),
+     "Music mistakenly receives Visual Arts outcomes");
   await ctx.close();
 });
 

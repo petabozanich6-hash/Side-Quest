@@ -100,9 +100,15 @@ export default function OutcomeTracker() {
           </p>
         )}
         {data?.framework?.key === "AC9" && <div className="rounded-xl border border-stone-300 bg-stone-50 p-3 text-xs leading-relaxed" data-testid="ac9-attribution">
-          <strong>Australian Curriculum v9 reference — partial coverage.</strong> Includes 1,395 content descriptions across seven learning areas; Languages and achievement standards are not loaded. This is a planning reference, not a declaration that your state or territory's homeschool requirements are met. Check your local authority's current implementation.
+          <strong>Australian Curriculum v9 reference — partial coverage.</strong> Includes 2,678 content-description codes across all eight learning areas, including Languages and classical-language pathways. Senior syllabuses, state-specific variations and achievement standards are not fully loaded. This is a planning reference, not a declaration that your state or territory's homeschool requirements are met. Check your local authority's current implementation.
           <span className="block mt-2">© Australian Curriculum, Assessment and Reporting Authority (ACARA) 2010 to present, unless otherwise indicated. Downloaded from the <a className="underline" href="https://www.australiancurriculum.edu.au/" target="_blank" rel="noopener noreferrer">Australian Curriculum website</a> (accessed 14 October 2026). Modified to remove markup and organise records by school stage. Licensed under <a className="underline" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>. ACARA does not endorse or approve Side-Quest.</span>
         </div>}
+        {data?.framework?.key === "VIC" && <div className="rounded-xl border border-stone-300 bg-stone-50 p-3 text-xs leading-relaxed" data-testid="vic-curriculum-attribution">
+          <strong>Victorian Curriculum — partial source-backed reference.</strong> Side-Quest includes 2,927 VCAA v2 identifiers and 796 2026-applicable Version 1 EAL identifiers. Other Version 1 Languages, VCE/VCE VM and VET catalogues are not yet complete. Use your learner’s subject and pathway, and check the current edition on the <a className="underline" href="https://f10.vcaa.vic.edu.au/" target="_blank" rel="noopener noreferrer">VCAA curriculum website</a>. Source codes are not proof of registration compliance.
+        </div>}
+        {data?.framework?.key === "NSW" && <p className="rounded-xl border border-stone-300 bg-stone-50 p-3 text-xs text-stone-700" data-testid="nsw-curriculum-coverage">
+          NSW NESA outcome coverage is still partial, especially older and senior syllabuses and Life Skills. Always check the applicable syllabus version before claiming a complete mapping.
+        </p>}
         <div className="flex flex-wrap items-center gap-3 pt-1">
           {(students || []).length > 1 && (
             <select value={sid || ""} onChange={(e) => nav(`/parent/outcomes/${e.target.value}`)} className="rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-semibold" data-testid="tracker-child" aria-label="Child">

@@ -19,7 +19,7 @@ export type Jurisdiction = {
   curriculum: string;
   /** Whether a curriculum is mandatory for the plan. */
   curriculumRequired: boolean;
-  /** Whether Side-Quest holds an outcome list for this jurisdiction (only NSW today). Codes are never invented. */
+  /** Whether the AI learning-plan writer supports jurisdictional outcome IDs.\n   * The Outcome Tracker independently offers AC9 and partial VCAA references; a false value here\n   * is NOT an assertion that the whole application has no verified identifiers. */
   outcomeCodes: boolean;
   /** Name for the first year of school. */
   foundationYear: string;

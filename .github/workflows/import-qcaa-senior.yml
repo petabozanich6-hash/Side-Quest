@@ -1,0 +1,44 @@
+name: Discover Queensland senior subject and elective catalogue
+# GitHub-hosted runners receive HTTP 403 for QCAA pages; parser fixtures
+# still run in ordinary CI, but bulk data import requires authorised access.
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate all-type QCAA course listing and official edition parser
+        run: node --test worker/test/qcaaSenior.test.mjs
+      - name: Fetch official QCAA A-Z General Applied Short Course catalogue
+        run: node worker/scripts/import-qcaa-senior.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qcaa-all-senior-courses
+          path: worker/src/data/qcaa-senior-review.json
+          retention-days: 30
+      - name: Save official Queensland senior inventory on nonproduction draft PR
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
+          git add worker/src/data/qcaa-senior-review.json
+          if git diff --cached --quiet; then echo "Unchanged"; exit 0; fi
+          git commit -m "Data(review only): QCAA senior General, Applied and Short Course inventory"
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:$TARGET_BRANCH"; then exit 0; fi
+            git fetch origin "$TARGET_BRANCH"
+            git rebase "origin/$TARGET_BRANCH" || { git rebase --abort; exit 1; }
+            sleep 2
+          done
+          exit 1

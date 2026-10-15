@@ -20,7 +20,9 @@ test("jurisdiction codes normalise and every state has a framework", () => {
   assert.equal(normJurisdiction("NZ"), null);
   assert.equal(Object.keys(FRAMEWORKS).length, 8);
   assert.equal(frameworkFor("NSW").codes, "verified");
-  for (const j of ["VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"]) assert.equal(frameworkFor(j).codes, "none", j);
+  assert.equal(frameworkFor("WA").codes, "none");
+  assert.equal(frameworkFor("VIC").codes, "reference");
+  for (const j of ["QLD", "SA", "TAS", "ACT", "NT"]) assert.equal(frameworkFor(j).codes, "reference", j);
 });
 
 test("family jurisdiction is stored and read back", async () => {
@@ -64,6 +66,7 @@ test("Other states: no codes attached, areas limited to that framework, codes st
 
 test("stripCodes removes AC9, VC2 and NSW-style codes", () => {
   assert.equal(stripCodes("Adds money (AC9M3N06) and VC2M3N01 plus MA2-RN-01."), "Adds money and plus.");
+  assert.doesNotMatch(stripCodes("Latin (ACL9LL10U03)."), /ACL9/, "Classical-language codes should be removed from uncited free text");
 });
 
 test("AI mapping is metered, records failures without charging, and enforces limits", async () => {

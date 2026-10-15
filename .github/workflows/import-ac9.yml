@@ -1,6 +1,9 @@
-name: Import AC9 curriculum
-# Downloads ACARA's machine-readable Australian Curriculum v9 and commits the generated outcome list to the
-# data/ac9-import branch for review. Run by hand from the Actions tab (or via the API).
+name: Import and verify AC9 curriculum
+# Verifies all eight learning areas from the official ACARA MRAC export on PRs.
+# Manual runs publish an unmerged review branch; never deploy or overwrite data.
+# Explicit refresh only. The checked-in curriculum data and parser regressions
+# are validated by the regular CI suite; prevent unnecessary repeated downloads
+# and simultaneous bot pushes that conflict with other state imports.
 on:
   workflow_dispatch:
 
@@ -8,20 +11,60 @@ permissions:
   contents: write
 
 jobs:
-  import:
+  import-and-audit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # For same-repository PRs, keep the checkout on the real PR branch
+          # so verified data can be committed there without touching main.
+          ref: ${{ github.head_ref || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Build outcome list from ACARA MRAC
+      - name: Download all eight ACARA v9 learning areas, including Languages
         run: node worker/scripts/import-ac9.mjs
-      - name: Commit to data/ac9-import
+      - name: Require real IDs from every learning area and check for duplicates
+        env:
+          CURRICULUM_REPORT_PATH: curriculum-coverage-report.json
+        run: node worker/scripts/audit-catalogue.mjs --require-all-eight
+      - name: Test the generated catalogue and language elective filtering
+        run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/ac9Catalogue.test.mjs worker/test/ac9CodeLevel.test.mjs
+      - name: Attach generated data and audit for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: ac9-catalogue-and-coverage
+          path: |
+            worker/src/data/ac9-outcomes.ts
+            curriculum-coverage-report.json
+          retention-days: 14
+      - name: Commit verified ACARA identifiers onto this unmerged review PR
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
-          git checkout -B data/ac9-import
           git add worker/src/data/ac9-outcomes.ts
-          git commit -m "Data: Australian Curriculum v9 content descriptions (ACARA MRAC, CC BY 4.0)" || echo "No changes"
-          git push -f origin data/ac9-import
+          if git diff --cached --quiet; then
+            echo "Already up to date"
+          else
+            git commit -m "Data: verified ACARA v9 descriptors, all learning areas and languages"
+            git push origin "HEAD:$TARGET_BRANCH"
+          fi
+      - name: Publish a fresh unmerged review branch (manual runs only)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          REVIEW_BRANCH: data/ac9-import-${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$REVIEW_BRANCH"
+          git add worker/src/data/ac9-outcomes.ts
+          if git diff --cached --quiet; then
+            echo "No changes from checked-in catalogue"
+            exit 0
+          fi
+          git commit -m "Data: all eight ACARA v9 learning areas including Languages"
+          git push origin "$REVIEW_BRANCH"
+          echo "Review the generated branch before merging: $REVIEW_BRANCH"

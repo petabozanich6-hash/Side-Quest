@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { BookOpen, Compass, ExternalLink, FileCheck, MapPinned, ShieldCheck } from "lucide-react";
@@ -89,10 +90,74 @@ function JurisdictionSection({ place }) {
   );
 }
 
+
+/** TASC uses accredited course identifiers, which are NOT individual outcomes. */
+/** Senior course/subject codes are separate from outcome/mastery identifiers. */
+function SeniorCodeFinder({ jurisdiction }) {
+  const tasc = jurisdiction === "TAS";
+  const [courses, setCourses] = useState([]);
+  const [status, setStatus] = useState("loading");
+  const [source, setSource] = useState(tasc ? "https://www.tasc.tas.gov.au/students/courses/a-z/" : "https://www.sace.sa.edu.au/teaching/subjects");
+  const [note, setNote] = useState("");
+  const [query, setQuery] = useState("");
+  useEffect(() => {
+    let cancelled = false;
+    setStatus("loading");
+    api.get("/curriculum/senior-courses").then(({ data }) => {
+      if (cancelled) return;
+      setCourses(data.available && Array.isArray(data.courses) ? data.courses : []);
+      setNote(data.note || "");
+      if(data.source_url) setSource(data.source_url);
+      setStatus(data.available ? "ready" : "unavailable");
+    }).catch(() => { if (!cancelled) setStatus("error"); });
+    return () => { cancelled = true; };
+  }, [jurisdiction]);
+  const term = query.trim().toLowerCase();
+  const found = courses.filter(x => !term || x.title.toLowerCase().includes(term) || x.code.toLowerCase().includes(term));
+  const label = tasc ? "course" : "subject";
+  return (
+    <section aria-labelledby="senior-code-heading" className="paper-card p-4 sm:p-6 space-y-3" data-testid="senior-code-catalogue">
+      <div className="flex items-center gap-2"><BookOpen size={19} className="text-emerald-800" aria-hidden="true" />
+        <h2 id="senior-code-heading" className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>
+          {tasc ? "2026 Tasmania senior course codes" : "SACE / NTCET senior subject codes"}
+        </h2>
+      </div>
+      <p className="text-sm text-stone-700">
+        {tasc ? "Browse current TASC-accredited subjects, including electives, Languages and Preliminary courses."
+          : "Browse official SACE Stage 1 and Stage 2 codes, including electives, language variants and Modified Subjects. This reference also helps NT families using NTCET."}
+        {" "}<strong>These identify {label}s, not individual learning outcomes.</strong> They never automatically mark learning as achieved.
+      </p>
+      {status === "loading" && <p className="text-sm text-stone-600">Loading official identifiers…</p>}
+      {status === "error" && <p className="text-sm text-rose-700">Could not load the catalogue. Check the <a className="underline" href={source} target="_blank" rel="noopener noreferrer">official authority</a>.</p>}
+      {status === "unavailable" && <p className="text-sm text-stone-700">This source-backed catalogue is not yet available for your family's selected jurisdiction.</p>}
+      {status === "ready" && <>
+        <label htmlFor="senior-code-search" className="block text-sm font-semibold">Find a subject or official code</label>
+        <input id="senior-code-search" type="search" value={query} onChange={e => setQuery(e.target.value)}
+          placeholder={tasc ? "e.g. Japanese, Accounting or ACC315116" : "e.g. Biology, Modified or 2BGY20"}
+          className="w-full max-w-md rounded-xl border border-stone-300 bg-white p-2.5 text-sm" />
+        <p className="text-xs text-stone-600">Showing {Math.min(found.length,40)} of {found.length} matches · {courses.length} verified authority identifiers</p>
+        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2" data-testid="senior-codes">
+          {found.slice(0,40).map(item => <li key={item.code} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
+            <a href={item.source_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-emerald-900 underline">{item.title}</a>
+            <div className="text-xs text-stone-600 mt-1"><code className="font-mono">{item.code}</code>
+              {" · "}{tasc ? "Level " + item.level + " · " + item.tce_credit_points + " TCE credits"
+                : item.level + " · " + item.credits + " SACE credits"}
+            </div>
+          </li>)}
+        </ul>
+        {!found.length && <p className="text-sm text-stone-600">No matching subjects.</p>}
+        {note && <p className="text-xs leading-relaxed text-stone-600">{note}</p>}
+        <p className="text-xs text-stone-600">Source: <a className="underline" href={source} target="_blank" rel="noopener noreferrer">{tasc ? "TASC official current-year courses" : "SACE Board subject codes"}</a>. Always confirm the applicable syllabus and registration requirements.</p>
+      </>}
+    </section>
+  );
+}
+
 export default function Curriculum() {
   const { user } = useAuth();
   const place = jurisdictionFor(user?.jurisdiction);
   const nsw = usesNswOutcomes(user?.jurisdiction);
+  const vic = user?.jurisdiction === "VIC";
   return (
     <div className="p-4 sm:p-6 lg:p-10 space-y-9 max-w-7xl mx-auto" data-testid="curriculum-page">
       <header className="space-y-4">
@@ -111,6 +176,8 @@ export default function Curriculum() {
 
       {place && <JurisdictionSection place={place} />}
 
+      {place && ["TAS", "SA", "NT"].includes(place.code) && <SeniorCodeFinder jurisdiction={place.code} />}
+
       <section className="paper-card p-4 sm:p-6 border-l-4" style={{ borderLeftColor: "#4A5D3A" }} aria-labelledby="mapping-heading">
         <div className="flex items-center gap-2 mb-2">
           <ShieldCheck size={20} className="text-emerald-800 shrink-0" aria-hidden="true" />
@@ -123,7 +190,11 @@ export default function Curriculum() {
         <p className="mt-3 text-sm leading-relaxed text-stone-600" data-testid="curriculum-outcome-note">
           {nsw
             ? "Automatic outcome suggestions and the learning plan writer use the NSW syllabus outcome list. They are suggestions for you to check, not official confirmation."
-            : `Side-Quest doesn't hold the ${place ? place.code : "local"} outcome list yet, so automatic outcome suggestions and the learning plan writer are switched off for your family rather than showing NSW outcomes that don't apply. Record outcomes yourself from your official curriculum above.`}
+            : vic
+              ? "Side-Quest now holds source-backed Victorian curriculum code references (F–10 v2 and v1 EAL), and these can be linked to records. The catalogue remains partial, and automatic AI lesson matching is not yet enabled for Victoria."
+              : place?.code === "WA"
+                ? "Western Australia's official state curriculum downloads are not yet imported, so automatic outcome suggestions are off rather than showing incorrect interstate codes."
+                : "Side-Quest holds verified Australian Curriculum v9 content-description reference codes for this jurisdiction, but automatic lesson matching and the learning-plan writer are not yet connected to them. Check your jurisdiction's implementation rules."}
         </p>
       </section>
 
