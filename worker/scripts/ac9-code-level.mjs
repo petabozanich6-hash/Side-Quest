@@ -5,6 +5,7 @@
  */
 export function ac9Level(code) {
   if (typeof code !== "string" || !/^(?:AC9|ACL9)[A-Z0-9]+$/.test(code)) return null;
-  const match = code.match(/(F|10|[1-9])(?=[A-Z]{0,4}\d{2,3}$)/);
+  const matches = [...code.matchAll(/(F|10|[1-9])(?=[A-Z]{0,4}\d{2,3}$)/g)];
+  const match = matches.at(-1); // Subject-prefix digits (including AC9 and pathways) are not levels.
   return match ? match[1] === "F" ? 0 : Number(match[1]) : null;
 }
