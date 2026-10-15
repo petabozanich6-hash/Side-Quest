@@ -47,6 +47,8 @@ export default function AutoQuestPreview({ students, onClose, onChanged }) {
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState(null);
+  // The family's children may still be loading when the panel opens: pick the first one once they arrive.
+  useEffect(() => { if (!studentId && students[0]?.id) setStudentId(students[0].id); }, [students, studentId]);
 
   // Show proposals already saved for this range (drafts and decisions are kept between visits).
   const load = useCallback(async () => {
