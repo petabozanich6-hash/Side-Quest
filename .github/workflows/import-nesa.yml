@@ -1,13 +1,10 @@
 name: Discover official NSW syllabus and outcome identifier candidates
 # NSW extraction is REVIEW ONLY. Never use candidates as verified tracker data
 # until every syllabus/version/stage is checked against NESA's source.
+# Explicit refresh only. The checked-in curriculum data and parser regressions
+# are validated by the regular CI suite; prevent unnecessary repeated downloads
+# and simultaneous bot pushes that conflict with other state imports.
 on:
-  pull_request:
-    paths:
-      - worker/scripts/import-nesa-review.mjs
-      - worker/scripts/build-nesa-current.mjs
-      - worker/test/nesaImport.test.mjs
-      - .github/workflows/import-nesa.yml
   workflow_dispatch:
 
 permissions:
