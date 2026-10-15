@@ -20,6 +20,11 @@ const list=[
 const languages=["Arabic","Chinese","Classical Greek","Framework for Classical Languages","French","German","Hindi","Indonesian","Italian","Japanese","Korean","Latin","Modern Greek","Non-Roman Alphabet Languages","Roman Alphabet Languages","Spanish","Turkish","Vietnamese"];
 for(const name of languages){
   const prefix="/learning-areas/languages/"+slug(name);
+  if(name==="Chinese") {
+    list.push(["Languages",name,prefix+"/second-language-learner-f-10-sequence","F–10 second-language learner"]);
+    list.push(["Languages",name,prefix+"/second-language-learner-7-10-sequence","7–10 second-language learner"]);
+    continue;
+  }
   if(["Classical Greek","Framework for Classical Languages","Latin"].includes(name))
     list.push(["Languages",name,prefix+"/curriculum","classical"]);
   else{
