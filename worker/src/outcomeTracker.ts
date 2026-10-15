@@ -206,6 +206,12 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
     const keys = SUBJECT_KEYS.filter((re) => re.test(c.name));
     const key = keys.length === 1 ? keys[0] : null;
     const ac9Name = ac9 && key ? AC9_KEY_SUBJECT.find(([re]) => re.test(c.name))?.[1] : undefined;
+    // Stage 6 course choices are specific syllabuses: English Advanced must not
+    // silently include English Standard, and Extension 1/2 are distinct courses.
+    // Only restrict names with an exact known NESA course specialization.
+    const seniorCourse = !ac9 && stage === "S6"
+      ? /^(English\s+(?:Advanced|Standard|Studies|EAL\/?D|Extension)|Mathematics\s+(?:Advanced|Standard|Extension\s*[12]))\b/i.exec(c.name)?.[1]
+      : undefined;
     const normalised = (v: string) => v.toLowerCase().replace(/[^a-z0-9]+/g, "");
     const languagePathwayHints = ac9 && area === "Languages" ? ["firstlanguage", "secondlanguage", "backgroundlanguage", "f10sequence", "710sequence"].filter((hint) => normalised(c.name).includes(hint)) : [];
     const language = ac9 && area === "Languages" ? languageSubject(c.name) : null;
@@ -217,6 +223,10 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
         if (area === "Languages" && ac9) {
           if (namedLanguageUnmapped) return false;
           return (!language || subjectText(o).toLowerCase().includes(language.toLowerCase())) && languagePathwayHints.every((hint) => normalised(subjectText(o) + " " + String(o.pathway || "")).includes(hint));
+        }
+        if (seniorCourse) {
+          const norm = (v: string) => v.toLowerCase().replace(/[^a-z0-9]/g, "");
+          return norm(subjectText(o)).includes(norm(seniorCourse));
         }
         return !key || (ac9Name ? subjectText(o).toLowerCase() === ac9Name : key.test(subjectText(o)));
       },
