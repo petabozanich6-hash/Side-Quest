@@ -17,7 +17,7 @@ export function discoverSaceSubjectPages(html){
   for (const a of html.matchAll(anchors)){
     let url;try{url=new URL(a[1].replace(/&amp;/g,"&"),SUBJECT_INDEX)}catch{continue}
     if(!["www.sace.sa.edu.au","sace.sa.edu.au"].includes(url.hostname))continue;
-    const match=/^\/(?:en-US\/)?web\/([a-z0-9-]+)(?:\/overview)?\/?$/i.exec(url.pathname);
+    const match=/^\/(?:en-US\/)?(?:web|studying\/subjects)\/([a-z0-9-]+)(?:\/overview)?\/?$/i.exec(url.pathname);
     if(!match)continue;
     const name=clean(a[2]);
     if(!name || name.length>100 || /^(?:overview|subject codes|resources|assessment|dates|notices|teaching|studying|syllabus)$/i.test(name))continue;
