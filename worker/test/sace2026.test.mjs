@@ -3,9 +3,10 @@ import assert from "node:assert/strict";
 import { discoverSaceSubjectPages, extractSaceSubjectCodes } from "../scripts/import-sace-2026.mjs";
 
 test("Discover official SACE subject and language elective pages",()=>{
-  const html='<a href="/web/biology">Biology</a><a href="https://www.sace.sa.edu.au/web/modified-subjects">Modified Subjects</a>'+
+  const html='<a href="/studying/subjects/biology">Biology</a><a href="https://www.sace.sa.edu.au/web/modified-subjects">Modified Subjects</a>'+
    '<a href="/web/chinese-continuers">Chinese (continuers)</a><a href="/teaching/subjects">Subjects</a><a href="https://example.org/web/fake">Fake</a>';
   assert.deepEqual(discoverSaceSubjectPages(html).map(x=>x.name),["Biology","Chinese (continuers)","Modified Subjects"]);
+  assert.ok(discoverSaceSubjectPages(html).every(x=>x.official_url.startsWith("https://www.sace.sa.edu.au/web/")));
 });
 
 test("SACE Stage 1 and 2 codes retain 10/20 credit variants and source provenance",()=>{
