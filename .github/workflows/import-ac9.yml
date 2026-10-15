@@ -21,6 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # For same-repository PRs, keep the checkout on the real PR branch
+          # so verified data can be committed there without touching main.
+          ref: ${{ github.head_ref || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -40,6 +44,20 @@ jobs:
             worker/src/data/ac9-outcomes.ts
             curriculum-coverage-report.json
           retention-days: 14
+      - name: Commit verified ACARA identifiers onto this unmerged review PR
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
+          git add worker/src/data/ac9-outcomes.ts
+          if git diff --cached --quiet; then
+            echo "Already up to date"
+          else
+            git commit -m "Data: verified ACARA v9 descriptors, all learning areas and languages"
+            git push origin "HEAD:$TARGET_BRANCH"
+          fi
       - name: Publish a fresh unmerged review branch (manual runs only)
         if: github.event_name == 'workflow_dispatch'
         env:
