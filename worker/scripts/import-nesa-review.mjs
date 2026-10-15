@@ -50,6 +50,17 @@ export function extractIndex(html, stage, url) {
 }
 
 const CODE = /^([A-Z]{2,9}[A-Z0-9]*-(?:[A-Z0-9]{1,10}-)?\d{1,3}[A-Z]?)(?=\s|$)/;
+/** Only assign a stage if the published identifier encodes it.
+ * NESA's HTML often prints several stage tabs before the outcome codes,
+ * so "nearest preceding Stage 2" would incorrectly classify all outcomes as S2.
+ */
+export function inferStageFromCode(code) {
+  const legacyOrNew = /^[A-Z]{2,6}?([eE1-5])-/i.exec(code);
+  if (legacyOrNew) return /^[eE]$/.test(legacyOrNew[1]) ? "ES1" : "S" + legacyOrNew[1];
+  if (/(?:11|12)-/.test(code)) return "S6";
+  return null;
+}
+
 export function extractCodes(html, source) {
   // Discard scripts/style: hidden framework payloads may contain navigation links
   // rather than the selected syllabus's outcome list.
@@ -70,7 +81,7 @@ export function extractCodes(html, source) {
     const match = CODE.exec(line);
     if (!match || seen.has(match[1])) continue;
     seen.add(match[1]);
-    codes.push({ code: match[1], stage_hint: stage, official_outcomes_url: source, identifier_kind: "nesa_syllabus_outcome", status: "extracted_pending_completeness_check" });
+    codes.push({ code: match[1], stage_hint: inferStageFromCode(match[1]), page_stage_context: stage, official_outcomes_url: source, identifier_kind: "nesa_syllabus_outcome", status: "extracted_pending_completeness_check" });
   }
   return codes;
 }
