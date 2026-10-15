@@ -71,7 +71,7 @@ const NSW_CATALOGUE: Catalogue = {
 /**
  * Australian Curriculum v9 reference catalogue (not jurisdictional compliance certification).
  * ACARA publishes core curriculum descriptions under CC BY 4.0; sourced from
- * the reviewed MRAC/2024/04 export. The imported list excludes Languages.
+ * the reviewed MRAC/2024/04 export, INCLUDING all Languages and pathways.
  * States/territories can vary by implementation dates and local requirements.
  */
 const ac9Rows: CatalogueOutcome[] = AC9_OUTCOMES.map(o => {
