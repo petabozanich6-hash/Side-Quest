@@ -33,8 +33,9 @@ export function extractQceSyllabuses(html,base=INDEX) {
 }
 export function extractQceEdition(html){
   const plain=clean(html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,"").replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,""));
-  const heading=/^.{0,120}?\b(General|Applied|Short Course)\s+senior syllabus\b/i.exec(plain);
-  const category=heading?.[1]||null;
+  const h1=/<h1\b[^>]*>([\s\S]*?)<\/h1>/i.exec(html)?.[1]||"";
+  const name=clean(h1);
+  const category=/\b(General|Applied|Short Course)\s+senior syllabus\b/i.exec(name)?.[1]||null;
   const editions=[];
   const m=plain.matchAll(/(?:General|Applied|Short Course)\s+senior syllabus\s+(20\d{2})/ig);
   for(const x of m){const year=Number(x[1]);if(!editions.includes(year))editions.push(year)}
