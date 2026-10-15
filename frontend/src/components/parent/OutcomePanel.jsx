@@ -14,6 +14,7 @@ export default function OutcomePanel({ lesson, onSaved }) {
   const codes = lesson.outcome_codes || [];
   const { user } = useAuth();
   const nsw = usesNswOutcomes(user?.jurisdiction);
+  const vic = user?.jurisdiction === "VIC";
   const verified = hasVerifiedCodes(user?.jurisdiction);
   const [manual, setManual] = useState("");
   const addManual = async () => {
@@ -72,12 +73,16 @@ export default function OutcomePanel({ lesson, onSaved }) {
           ))}
         </div>
       )}
-      <p className="text-xs text-slate-500" data-testid="outcome-note">{!nsw ? `Side-Quest doesn't hold the ${user?.jurisdiction} curriculum outcome list yet, so outcome matching is off for your family rather than suggesting NSW outcomes that don't apply. Record outcomes from your own curriculum in the lesson's curriculum references.` : note || "Suggestions come from the outcome list Side-Quest holds, which is currently the NSW syllabus (other states and territories are not loaded yet). A lesson contributes to an outcome; it does not complete it. Please check against your own state or territory's requirements."} Linked outcomes appear when you review your child's work.</p>
+      <p className="text-xs text-slate-500" data-testid="outcome-note">{vic
+        ? "Side-Quest has a partial VCAA code catalogue (VC2 and current VC1 EAL). You can link verified source codes below. Automatic lesson outcome matching is not yet enabled for Victoria. Check the subject, pathway and curriculum edition with VCAA."
+        : !nsw
+          ? "Side-Quest offers an Australian Curriculum v9 reference catalogue, but automatic lesson matching is not yet enabled for this state or territory. Please check locally applicable requirements."
+          : note || "NSW outcome suggestions come from the NESA code catalogue held by Side-Quest; it remains partial. A lesson contributes to an outcome, but does not automatically complete it."} Linked outcomes appear when you review your child's work.</p>
       {verified && (
         <div className="flex flex-wrap items-center gap-2" data-testid="outcome-manual">
-          <input value={manual} onChange={e => setManual(e.target.value.toUpperCase().replace(/\s+/g, ""))} placeholder={nsw ? "e.g. MA2-RN-01" : "e.g. AC9M3N01"} aria-label="Outcome code" className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-mono w-44" data-testid="outcome-manual-code" />
+          <input value={manual} onChange={e => setManual(e.target.value.toUpperCase().replace(/\s+/g, ""))} placeholder={nsw ? "e.g. MA2-RN-01" : vic ? "e.g. VC2S2U01" : "e.g. AC9M3N01"} aria-label="Outcome code" className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-mono w-44" data-testid="outcome-manual-code" />
           <button type="button" disabled={busy || !manual.trim()} onClick={addManual} className="rounded-full border border-slate-900 px-3 py-1.5 text-sm font-semibold disabled:opacity-50" data-testid="outcome-manual-add">Link code</button>
-          <a href={nsw ? "https://curriculum.nsw.edu.au/" : "https://v9.australiancurriculum.edu.au/"} target="_blank" rel="noopener noreferrer" className="text-xs underline text-slate-600">Look up codes and wording</a>
+          <a href={nsw ? "https://curriculum.nsw.edu.au/" : vic ? "https://f10.vcaa.vic.edu.au/" : "https://v9.australiancurriculum.edu.au/"} target="_blank" rel="noopener noreferrer" className="text-xs underline text-slate-600">Look up codes and wording</a>
         </div>
       )}
       {!verified && <p className="text-xs text-slate-600" data-testid="outcome-unavailable">Side-Quest doesn't hold a verified outcome list for your state or territory yet, so no codes are attached. Your lessons and evidence are still recorded.</p>}
