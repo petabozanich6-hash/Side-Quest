@@ -22,7 +22,7 @@ type DB = any;
 
 // ---------------------------------------------------------------- catalogue (which outcomes exist)
 
-export type CatalogueOutcome = { code: string; description: string; learning_area: string; stage: string; source: string; subject?: string; subjects?: string[]; strand?: string; pathway?: string; pathways?: string[]; levels?: string[]; status?: string; official_url?: string; from?: number; to?: number };
+export type CatalogueOutcome = { code: string; description: string; learning_area: string; learning_areas?: string[]; stage: string; source: string; subject?: string; subjects?: string[]; strand?: string; pathway?: string; pathways?: string[]; levels?: string[]; status?: string; official_url?: string; from?: number; to?: number };
 export type Catalogue = {
   available: true;
   framework: string; // key stored on every record, e.g. "NSW"
@@ -107,7 +107,7 @@ const AC9_CATALOGUE: Catalogue = {
  */
 const vicRows: CatalogueOutcome[] = VIC_SOURCE_VERIFIED_IDS.map((o) => ({
   code: o.code, description: "", learning_area: o.learning_area,
-  stage: o.stage || "", source: o.source, subject: o.subject,
+  stage: o.stage || "", source: o.source, subject: o.subject, learning_areas:o.learning_areas,
   subjects: o.subjects, pathway: o.pathway || undefined,
   pathways: o.pathways, levels: o.levels, status: o.status,
   official_url: o.source_url,
@@ -273,7 +273,7 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
     return {
       name: c.name,
       test: (o: CatalogueOutcome) => {
-        if (o.learning_area !== area) return false;
+        if (vic ? !(o.learning_areas?.length ? o.learning_areas : [o.learning_area]).includes(area) : o.learning_area !== area) return false;
         if (vic) {
           const text = (v: string) => v.toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
           const name=text(c.name), areaName=text(area);
