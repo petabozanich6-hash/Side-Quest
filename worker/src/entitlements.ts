@@ -29,6 +29,8 @@ export type Limits = {
   canAssign: boolean;
   aiGeneration: boolean;
   fullExports: boolean;
+  /** Timetable generator and lessons filling timetable slots automatically. */
+  timetable: boolean;
 };
 
 export const TRIAL_DAYS = 7;
@@ -39,9 +41,9 @@ export const PAST_DUE_GRACE_DAYS = 7;
 
 // One place to change preview/paid limits. Paid caps are fair-use safeguards, not product limits.
 export const LIMITS: Record<"PREVIEW" | "EXPIRED" | "PAID", Limits> = {
-  PREVIEW: { maxChildren: 1, maxLessons: 2, maxActiveAssignments: 2, canCreate: true, canAssign: true, aiGeneration: false, fullExports: false },
-  EXPIRED: { maxChildren: 0, maxLessons: 0, maxActiveAssignments: 0, canCreate: false, canAssign: false, aiGeneration: false, fullExports: false },
-  PAID: { maxChildren: 20, maxLessons: 5000, maxActiveAssignments: 5000, canCreate: true, canAssign: true, aiGeneration: true, fullExports: true },
+  PREVIEW: { maxChildren: 1, maxLessons: 2, maxActiveAssignments: 2, canCreate: true, canAssign: true, aiGeneration: false, fullExports: false, timetable: false },
+  EXPIRED: { maxChildren: 0, maxLessons: 0, maxActiveAssignments: 0, canCreate: false, canAssign: false, aiGeneration: false, fullExports: false, timetable: false },
+  PAID: { maxChildren: 20, maxLessons: 5000, maxActiveAssignments: 5000, canCreate: true, canAssign: true, aiGeneration: true, fullExports: true, timetable: true },
 };
 
 const DAY_MS = 86400000;

@@ -18,6 +18,7 @@ import { registerHelpRequests } from "./helpRequests";
 import { registerBilling } from "./billing";
 import { registerOutcomes } from "./outcomeTracker";
 import { registerAutoQuest } from "./autoQuest";
+import { registerTimetable } from "./timetable";
 import { createAdminRoutes } from "./adminRoutes";
 import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
@@ -232,6 +233,7 @@ registerHelpRequests(app, guards);
 registerBilling(app, guards);
 registerOutcomes(app, guards);
 registerAutoQuest(app, guards);
+registerTimetable(app, guards);
 app.route("/api/admin", createAdminRoutes());
 
 // Unhandled errors: record the method, route pattern and error class only (no ids, bodies or messages).

@@ -3,6 +3,7 @@
 import * as lb from "./lessonBuilder";
 import type { Result } from "./lessonBuilder";
 import { safely, evidenceNoteDeleted } from "./outcomeTracker";
+import { SLOT_SQL, emptySlotsFor } from "./timetable";
 
 type DB = D1Database;
 const { fail } = lb;
@@ -54,7 +55,9 @@ export async function reassignAssignment(db: DB, familyId: string, id: string, s
   const dup = await db.prepare("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ? AND status NOT IN ('accepted','demonstrated','completed')").bind(familyId, s.id, a.lesson_id).first<{ n: number }>();
   if (Number(dup?.n ?? 0) > 0) return fail(409, "That child already has this lesson assigned.", "ALREADY_ASSIGNED");
   await db.prepare("UPDATE assignments SET student_id = ? WHERE id = ? AND family_id = ?").bind(s.id, id, familyId).run();
-  await db.prepare("UPDATE calendar_events SET student_id = ? WHERE linked_assignment_id = ? AND family_id = ?").bind(s.id, id, familyId).run();
+  // Timetable slots belong to the first child's timetable: empty them. Other planner entries move with the lesson.
+  await emptySlotsFor(db, familyId, id);
+  await db.prepare(`UPDATE calendar_events SET student_id = ? WHERE linked_assignment_id = ? AND family_id = ? AND NOT ${SLOT_SQL}`).bind(s.id, id, familyId).run();
   return { ok: true, assignment: await ownAssignment(db, familyId, id).then((r: any) => { delete r.lesson_snapshot; delete r.draft; return r; }) };
 }
 
@@ -63,7 +66,9 @@ export async function cancelAssignment(db: DB, familyId: string, id: string): Pr
   const a = await ownAssignment(db, familyId, id);
   if (!a) return fail(404, "Assignment not found");
   if (await hasProgress(db, a)) return fail(409, "This child has already started it. Their work is kept, so it can't be cancelled.", "STARTED");
-  await db.prepare("DELETE FROM calendar_events WHERE linked_assignment_id = ? AND family_id = ?").bind(id, familyId).run();
+  // Timetable slots are emptied, never deleted; other planner entries for this lesson go.
+  await emptySlotsFor(db, familyId, id);
+  await db.prepare(`DELETE FROM calendar_events WHERE linked_assignment_id = ? AND family_id = ? AND NOT ${SLOT_SQL}`).bind(id, familyId).run();
   await db.prepare("DELETE FROM assignments WHERE id = ? AND family_id = ?").bind(id, familyId).run();
   return { ok: true };
 }
