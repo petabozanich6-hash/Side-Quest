@@ -318,14 +318,19 @@ export function registerFamily(app: App, g: Guards) {
     c.json(NSW_SECONDARY_PATTERN[c.req.param("stage") as keyof typeof NSW_SECONDARY_PATTERN] ?? { compulsory: [], electives: [] })
   );
 
-  app.get("/api/curriculum/outcomes", (c) => {
+  // Backwards-compatible array response, but now ALWAYS from the signed-in
+  // family's framework; never expose NSW codes by default to interstate users.
+  app.get("/api/curriculum/outcomes", g.auth, g.parent, async (c) => {
+    const jurisdiction = await getFamilyJurisdiction(c.env.DB, c.get("user").family_id);
+    const catalogue = catalogueFor(jurisdiction);
+    if (!catalogue.available) return c.json([]);
     const stage = c.req.query("stage");
     const learningArea = c.req.query("learning_area");
-    // Codes only: Side-Quest links to NESA for the outcome wording rather than republishing it.
-    return c.json(
-      NSW_OUTCOMES.filter((item) => (!stage || item.stage === stage) && (!learningArea || item.learning_area === learningArea))
-        .map((item) => ({ code: item.code, stage: item.stage, learning_area: item.learning_area, source: item.source, description: "" }))
-    );
+    return c.json(catalogue.outcomes
+      .filter(o => (!stage || o.stage === stage) &&
+        (!learningArea || (o.learning_areas?.length ? o.learning_areas : [o.learning_area]).includes(learningArea)))
+      .map(o=>({ code:o.code, stage:o.stage, learning_area:o.learning_area,
+        source:o.source, description:"", official_url:outcomeInfo(o).official_url })));
   });
 
   // Version-aware code-only reference index for parent review. The jurisdiction
