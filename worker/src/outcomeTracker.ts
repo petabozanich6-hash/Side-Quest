@@ -21,7 +21,7 @@ type DB = any;
 
 // ---------------------------------------------------------------- catalogue (which outcomes exist)
 
-export type CatalogueOutcome = { code: string; description: string; learning_area: string; stage: string; source: string; subject?: string; strand?: string; from?: number; to?: number };
+export type CatalogueOutcome = { code: string; description: string; learning_area: string; stage: string; source: string; subject?: string; strand?: string; pathway?: string; from?: number; to?: number };
 export type Catalogue = {
   available: true;
   framework: string; // key stored on every record, e.g. "NSW"
@@ -74,6 +74,7 @@ const ac9Rows: CatalogueOutcome[] = AC9_OUTCOMES.map(o => {
     stage,
     subject: o.subject,
     strand: o.strand,
+    pathway: o.pathway,
     from: o.from,
     to: o.to,
     source: "ACARA Australian Curriculum v9.0 content description (CC BY 4.0; MRAC/2024/04)",
@@ -83,7 +84,7 @@ const AC9_CATALOGUE: Catalogue = {
   available: true,
   framework: "AC9",
   name: "Australian Curriculum v9 reference — partial, not jurisdictional compliance",
-  version: "AC9-MRAC-2024-04-partial-no-languages",
+  version: "AC9-MRAC-2024-04-all-eight-F10-reference",
   outcomes: ac9Rows,
   byCode: new Map(ac9Rows.map(o => [o.code, o])),
 };
