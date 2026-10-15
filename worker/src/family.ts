@@ -3,6 +3,7 @@ import { trialEndFrom } from "./entitlements";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
 
 import { hashSecret } from "./auth";
+import { encryptPin } from "./studentCredentials";
 import {
   NSW_LA_LINKS,
   NSW_LEARNING_AREAS,
@@ -202,7 +203,7 @@ async function getAuthUserFromToken(env: Env, token: string): Promise<AuthUser |
   if (!payload?.sub || (payload.role !== "parent" && payload.role !== "child")) return null;
   const table = payload.role === "parent" ? "users" : "students";
   const row = await env.DB.prepare(`SELECT id, family_id, name${payload.role === "child" ? ", credential_version" : ""} FROM ${table} WHERE id = ?`).bind(payload.sub).first<AuthUser & { credential_version?: number }>();
-  if (!row || (payload.role === "child" && (typeof payload.cv !== "number" || row.credential_version !== payload.cv))) return null;
+  if (!row || (payload.role === "child" && Number(payload.cv ?? 0) !== Number(row.credential_version ?? 0))) return null;
   return { ...row, role: payload.role };
 }
 
@@ -324,8 +325,10 @@ export function registerFamily(app: App, g: Guards) {
   app.get("/api/curriculum/outcomes", (c) => {
     const stage = c.req.query("stage");
     const learningArea = c.req.query("learning_area");
+    // Codes only: Side-Quest links to NESA for the outcome wording rather than republishing it.
     return c.json(
       NSW_OUTCOMES.filter((item) => (!stage || item.stage === stage) && (!learningArea || item.learning_area === learningArea))
+        .map((item) => ({ code: item.code, stage: item.stage, learning_area: item.learning_area, source: item.source, description: "" }))
     );
   });
 
@@ -502,6 +505,8 @@ export function registerFamily(app: App, g: Guards) {
       if (pin.length < 4 || pin.length > 32) return c.json({ detail: "PIN must contain 4–32 characters" }, 400);
       updates.pin_hash = await hashSecret(pin);
       updates.credential_version = Number(existing.credential_version ?? 0) + 1;
+      // Keep the parent-viewable copy of the PIN in step (the column is optional on older databases).
+      if ("pin_enc" in existing) updates.pin_enc = await encryptPin(c.env, sid, pin);
     }
     if ("stage" in body && !("theme" in body)) updates.theme = guessTheme(nextStage);
     if ("name" in updates && !String(updates.name || "").trim()) return c.json({ detail: "Name is required" }, 400);
