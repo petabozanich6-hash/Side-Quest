@@ -20,7 +20,8 @@ test("jurisdiction codes normalise and every state has a framework", () => {
   assert.equal(normJurisdiction("NZ"), null);
   assert.equal(Object.keys(FRAMEWORKS).length, 8);
   assert.equal(frameworkFor("NSW").codes, "verified");
-  for (const j of ["VIC", "WA"]) assert.equal(frameworkFor(j).codes, "none", j);
+  assert.equal(frameworkFor("WA").codes, "none");
+  assert.equal(frameworkFor("VIC").codes, "reference");
   for (const j of ["QLD", "SA", "TAS", "ACT", "NT"]) assert.equal(frameworkFor(j).codes, "reference", j);
 });
 
