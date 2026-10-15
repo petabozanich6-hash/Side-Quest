@@ -18,7 +18,26 @@
         "primary",
         "secondary"
       ],
-      "candidate_code_count": 15
+      "candidate_code_count": 15,
+      "expected_stages": [
+        "ES1",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "ES1",
+        "S1",
+        "S2"
+      ],
+      "missing_stages": [
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Aboriginal Languages Stage 6 (CEC) (2015)",
@@ -81,7 +100,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 10
+      "candidate_code_count": 10,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Aboriginal Studies Life Skills Stage 6 (2010)",
@@ -142,7 +171,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 14
+      "candidate_code_count": 14,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Agriculture Life Skills 11–12 (2026)",
@@ -158,7 +195,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Agriculture Life Skills Stage 6 (2010)",
@@ -204,7 +249,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 8
+      "candidate_code_count": 8,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Ancient History 11–12 (2024)",
@@ -220,7 +275,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 15
+      "candidate_code_count": 15,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Ancient History Life Skills 11–12 (2024)",
@@ -236,7 +299,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Ancient History Life Skills Stage 6 (2017)",
@@ -282,7 +353,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Arabic Continuers Stage 6 (2009)",
@@ -344,7 +425,26 @@
         "primary",
         "secondary"
       ],
-      "candidate_code_count": 12
+      "candidate_code_count": 12,
+      "expected_stages": [
+        "ES1",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "ES1",
+        "S1",
+        "S2"
+      ],
+      "missing_stages": [
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Automotive 11–12 (VET)",
@@ -375,7 +475,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 21
+      "candidate_code_count": 21,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Biology Life Skills 11–12 (2025)",
@@ -391,7 +499,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Biology Stage 6 (2017)",
@@ -467,7 +583,14 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "SOURCE_FAILED_OR_NO_CODES"
     },
     {
       "title": "Chemical World Science Life Skills 11–12 (2025)",
@@ -483,7 +606,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Chemical World Science Life Skills Stage 6 (2017)",
@@ -514,7 +645,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 21
+      "candidate_code_count": 21,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Chemistry Stage 6 (2017)",
@@ -545,7 +684,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 7
+      "candidate_code_count": 7,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Child Studies 7–10 (CEC) (2019)",
@@ -727,7 +876,26 @@
         "primary",
         "secondary"
       ],
-      "candidate_code_count": 7
+      "candidate_code_count": 7,
+      "expected_stages": [
+        "ES1",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "ES1",
+        "S1",
+        "S2"
+      ],
+      "missing_stages": [
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Commerce 7–10 (2019)",
@@ -758,7 +926,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Communication Technology 7–10 (2025)",
@@ -774,7 +952,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 10
+      "candidate_code_count": 10,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Community and Family Studies Life Skills Stage 6 (2013)",
@@ -820,7 +1008,14 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "SOURCE_FAILED_OR_NO_CODES"
     },
     {
       "title": "Computing Technology 7–10 (2022)",
@@ -836,7 +1031,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 11
+      "candidate_code_count": 11,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Computing Technology Life Skills 11–12 (2022)",
@@ -852,7 +1057,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Construction 11–12 (VET)",
@@ -898,7 +1111,22 @@
       "source_stages": [
         "primary"
       ],
-      "candidate_code_count": 12
+      "candidate_code_count": 12,
+      "expected_stages": [
+        "ES1",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "stages_found": [
+        "ES1",
+        "S1",
+        "S2"
+      ],
+      "missing_stages": [
+        "S3"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Creative Arts Life Skills Stage 6",
@@ -944,7 +1172,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 21
+      "candidate_code_count": 21,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Dance 7–10 (2003)",
@@ -975,7 +1211,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Dance Life Skills 11–12 (2025)",
@@ -991,7 +1237,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Dance Life Skills Stage 6 (2009)",
@@ -1082,7 +1336,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 10
+      "candidate_code_count": 10,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Drama 11–12 (2025)",
@@ -1098,7 +1362,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 18
+      "candidate_code_count": 18,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Drama 7–10 (2003)",
@@ -1129,7 +1401,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Drama Life Skills 11–12 (2025)",
@@ -1145,7 +1427,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Drama Life Skills Stage 6 (2009)",
@@ -1206,7 +1496,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 21
+      "candidate_code_count": 21,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Earth and Environmental Science Life Skills 11–12 (2025)",
@@ -1222,7 +1520,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Earth and Environmental Science Stage 6 (2017)",
@@ -1268,7 +1574,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 20
+      "candidate_code_count": 20,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Economics Stage 6 (2009)",
@@ -1329,7 +1643,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "English Advanced 11–12 (2024)",
@@ -1345,7 +1669,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 12
+      "candidate_code_count": 12,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "English Advanced Stage 6 (2017)",
@@ -1376,7 +1708,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 12
+      "candidate_code_count": 12,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "English EAL/D Stage 6 (2017)",
@@ -1407,7 +1747,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 18
+      "candidate_code_count": 18,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "English Extension Stage 6 (2017)",
@@ -1439,7 +1787,26 @@
         "primary",
         "secondary"
       ],
-      "candidate_code_count": 31
+      "candidate_code_count": 31,
+      "expected_stages": [
+        "ES1",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "ES1",
+        "S1",
+        "S2"
+      ],
+      "missing_stages": [
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "English Life Skills 11–12 (2024)",
@@ -1455,7 +1822,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "English Life Skills Stage 6 (2017)",
@@ -1486,7 +1861,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 12
+      "candidate_code_count": 12,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "English Standard Stage 6 (2017)",
@@ -1517,7 +1900,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 10
+      "candidate_code_count": 10,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "English Studies Stage 6 (2017)",
@@ -1548,7 +1939,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 22
+      "candidate_code_count": 22,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Entertainment Industry 11–12 (VET)",
@@ -1579,7 +1978,14 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "SOURCE_FAILED_OR_NO_CODES"
     },
     {
       "title": "Filipino Continuers Stage 6 (2023)",
@@ -1640,7 +2046,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 8
+      "candidate_code_count": 8,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Food Technology Life Skills Stage 6 (2010)",
@@ -1731,7 +2147,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 18
+      "candidate_code_count": 18,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Geography 7–10 (2024)",
@@ -1748,7 +2172,17 @@
         "primary",
         "secondary"
       ],
-      "candidate_code_count": 14
+      "candidate_code_count": 14,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Geography Elective 7–10 (2019)",
@@ -1779,7 +2213,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Geography K–10 (2015)",
@@ -1811,7 +2255,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "German Beginners Stage 6 (2009)",
@@ -1887,7 +2339,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 20
+      "candidate_code_count": 20,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Health and Movement Science Life Skills 11–12 (2023)",
@@ -1903,7 +2363,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Hindi Continuers Stage 6 (2023)",
@@ -1935,7 +2403,17 @@
         "primary",
         "secondary"
       ],
-      "candidate_code_count": 16
+      "candidate_code_count": 16,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "History Elective 7–10 (2019)",
@@ -1966,7 +2444,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 7
+      "candidate_code_count": 7,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "History Extension 11–12 (2024)",
@@ -1982,7 +2470,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 4
+      "candidate_code_count": 4,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "History Extension Stage 6 (2017)",
@@ -2060,7 +2556,22 @@
         "primary",
         "secondary"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "ES1",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "stages_found": [
+        "ES1",
+        "S1",
+        "S2"
+      ],
+      "missing_stages": [
+        "S3"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Human Society and Its Environment Life Skills Stage 6",
@@ -2166,7 +2677,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 10
+      "candidate_code_count": 10,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Industrial Technology Life Skills Stage 6 (2010)",
@@ -2467,7 +2988,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Legal Studies 11–12 (2025)",
@@ -2483,7 +3012,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 16
+      "candidate_code_count": 16,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Legal Studies Stage 6 (2009)",
@@ -2559,7 +3096,14 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "SOURCE_FAILED_OR_NO_CODES"
     },
     {
       "title": "Mathematics Advanced 11–12 (2024)",
@@ -2575,7 +3119,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 19
+      "candidate_code_count": 19,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Mathematics Advanced Stage 6 (2017)",
@@ -2606,7 +3158,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 12
+      "candidate_code_count": 12,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Mathematics Extension 1 Stage 6 (2017)",
@@ -2637,7 +3197,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 6
+      "candidate_code_count": 6,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Mathematics Extension 2 Stage 6 (2017)",
@@ -2669,7 +3237,26 @@
         "primary",
         "secondary"
       ],
-      "candidate_code_count": 53
+      "candidate_code_count": 53,
+      "expected_stages": [
+        "ES1",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "ES1",
+        "S1",
+        "S2"
+      ],
+      "missing_stages": [
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Mathematics Life Skills 11–12 (2024)",
@@ -2685,7 +3272,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Mathematics Life Skills Stage 6 (2017)",
@@ -2716,7 +3311,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Mathematics Standard Stage 6 (2017)",
@@ -2807,7 +3410,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 15
+      "candidate_code_count": 15,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Modern History Life Skills 11–12 (2024)",
@@ -2823,7 +3434,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Modern History Life Skills Stage 6 (2017)",
@@ -2870,7 +3489,26 @@
         "primary",
         "secondary"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "ES1",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "ES1",
+        "S1",
+        "S2"
+      ],
+      "missing_stages": [
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Music 1 11–12 (2025)",
@@ -2886,7 +3524,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 12
+      "candidate_code_count": 12,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Music 1 Stage 6 (2009)",
@@ -2917,7 +3563,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 12
+      "candidate_code_count": 12,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Music 2 Stage 6 (2009)",
@@ -2963,7 +3617,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Music Extension 11–12 (2025)",
@@ -2979,7 +3643,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 8
+      "candidate_code_count": 8,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Music Extension Stage 6 (2009)",
@@ -3010,7 +3682,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Music Life Skills Stage 6 (2009)",
@@ -3041,7 +3721,14 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "SOURCE_FAILED_OR_NO_CODES"
     },
     {
       "title": "Persian Continuers Stage 6 (2023)",
@@ -3073,7 +3760,17 @@
         "primary",
         "secondary"
       ],
-      "candidate_code_count": 16
+      "candidate_code_count": 16,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Personal Development, Health and Physical Education K–10 (2018)",
@@ -3106,7 +3803,22 @@
         "primary",
         "secondary"
       ],
-      "candidate_code_count": 13
+      "candidate_code_count": 13,
+      "expected_stages": [
+        "ES1",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "stages_found": [
+        "ES1",
+        "S1",
+        "S2"
+      ],
+      "missing_stages": [
+        "S3"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Photographic and Digital Media 7–10 (2004)",
@@ -3137,7 +3849,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 7
+      "candidate_code_count": 7,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Photography, Video and Digital Imaging Stage 6 (CEC) (2000)",
@@ -3153,7 +3875,14 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "SOURCE_FAILED_OR_NO_CODES"
     },
     {
       "title": "Physical Activity and Sports Science 7–10 (2025)",
@@ -3169,7 +3898,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Physical Activity and Sports Studies 7–10 (CEC) (2019)",
@@ -3200,7 +3939,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Physical World Science Life Skills Stage 6 (2017)",
@@ -3231,7 +3978,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 21
+      "candidate_code_count": 21,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Physics Stage 6 (2017)",
@@ -3367,7 +4122,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 35
+      "candidate_code_count": 35,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Science and Technology K–6 (2017)",
@@ -3398,7 +4163,22 @@
       "source_stages": [
         "primary"
       ],
-      "candidate_code_count": 12
+      "candidate_code_count": 12,
+      "expected_stages": [
+        "ES1",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "stages_found": [
+        "ES1",
+        "S1",
+        "S2"
+      ],
+      "missing_stages": [
+        "S3"
+      ],
+      "stage_coverage": "PARTIAL_STAGE_COVERAGE"
     },
     {
       "title": "Science Extension Stage 6 (2017)",
@@ -3474,7 +4254,15 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 18
+      "candidate_code_count": 18,
+      "expected_stages": [
+        "S6"
+      ],
+      "stages_found": [
+        "S6"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Spanish Beginners Stage 6 (2009)",
@@ -3535,7 +4323,14 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "SOURCE_FAILED_OR_NO_CODES"
     },
     {
       "title": "Studies of Religion I Life Skills Stage 6 (2010)",
@@ -3641,7 +4436,15 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 8
+      "candidate_code_count": 8,
+      "expected_stages": [
+        "S4"
+      ],
+      "stages_found": [
+        "S4"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Technology Life Skills Stage 6",
@@ -3732,7 +4535,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 8
+      "candidate_code_count": 8,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Tourism, Travel and Events 11–12 (VET)",
@@ -3793,7 +4606,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 7
+      "candidate_code_count": 7,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Visual Arts 7–10 (2003)",
@@ -3824,7 +4647,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 12
+      "candidate_code_count": 12,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Visual Arts Life Skills Stage 6 (2009)",
@@ -3885,7 +4718,14 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "SOURCE_FAILED_OR_NO_CODES"
     },
     {
       "title": "Vocational Education and Training (VET) Board endorsed courses Stage 5",
@@ -3961,7 +4801,17 @@
       "source_stages": [
         "secondary"
       ],
-      "candidate_code_count": 9
+      "candidate_code_count": 9,
+      "expected_stages": [
+        "S4",
+        "S5"
+      ],
+      "stages_found": [
+        "S4",
+        "S5"
+      ],
+      "missing_stages": [],
+      "stage_coverage": "STAGES_PRESENT_NOT_COUNT_CERTIFIED"
     },
     {
       "title": "Work Studies Stage 6 (CEC) (2012)",
@@ -3977,7 +4827,14 @@
       "source_stages": [
         "senior"
       ],
-      "candidate_code_count": 0
+      "candidate_code_count": 0,
+      "expected_stages": [
+        "S6"
+      ],
+      "missing_stages": [
+        "S6"
+      ],
+      "stage_coverage": "SOURCE_FAILED_OR_NO_CODES"
     }
   ],
   "candidates": [
@@ -17454,11 +18311,6 @@
   ],
   "failures": [
     {
-      "syllabus": "Ancient History Life Skills 11–12 (2024)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes",
-      "reason": "No outcome identifiers extracted"
-    },
-    {
       "syllabus": "Agriculture Life Skills 11–12 (2026)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/tas/agriculture-life-skills-11-12-2026/outcomes",
       "reason": "No outcome identifiers extracted"
@@ -17479,14 +18331,14 @@
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/ceramics-stage-6-cec-2000/outcomes"
     },
     {
-      "syllabus": "Computing Technology Life Skills 11–12 (2022)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-technology-life-skills-11-12-2022/outcomes",
+      "syllabus": "Ancient History Life Skills 11–12 (2024)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Computing Applications Stage 6 (CEC) (2012)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes"
+      "syllabus": "Computing Technology Life Skills 11–12 (2022)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-technology-life-skills-11-12-2022/outcomes",
+      "reason": "No outcome identifiers extracted"
     },
     {
       "syllabus": "Dance Life Skills 11–12 (2025)",
@@ -17504,14 +18356,19 @@
       "reason": "No outcome identifiers extracted"
     },
     {
+      "syllabus": "Computing Applications Stage 6 (CEC) (2012)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes"
+    },
+    {
       "syllabus": "English Life Skills 11–12 (2024)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/english/english-life-skills-11-12-2024/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Exploring Early Childhood Stage 6 (CEC) (2007)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes"
+      "syllabus": "Geography Life Skills 11–12 (2022)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes",
+      "reason": "No outcome identifiers extracted"
     },
     {
       "syllabus": "Health and Movement Science Life Skills 11–12 (2023)",
@@ -17519,9 +18376,9 @@
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Geography Life Skills 11–12 (2022)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes",
-      "reason": "No outcome identifiers extracted"
+      "syllabus": "Exploring Early Childhood Stage 6 (CEC) (2007)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes"
     },
     {
       "syllabus": "Law and the Community Life Skills 11–12 (2025)",
@@ -17534,13 +18391,13 @@
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/marine-studies-stage-6-cec-2012/outcomes"
     },
     {
-      "syllabus": "Mathematics Life Skills 11–12 (2024)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-life-skills-11-12-2024/outcomes",
+      "syllabus": "Modern History Life Skills 11–12 (2024)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/modern-history-ls-11-12-2024/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Modern History Life Skills 11–12 (2024)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/modern-history-ls-11-12-2024/outcomes",
+      "syllabus": "Mathematics Life Skills 11–12 (2024)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-life-skills-11-12-2024/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
@@ -17554,14 +18411,19 @@
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/mathematics/numeracy-stage-6-cec-2021/outcomes"
     },
     {
+      "syllabus": "Physical World Science Life Skills 11–12 (2025)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/physical-world-science-life-skills-11-12-2025/outcomes",
+      "reason": "No outcome identifiers extracted"
+    },
+    {
       "syllabus": "Photography, Video and Digital Imaging Stage 6 (CEC) (2000)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-video-and-digital-imaging-stage-6-cec-2000/outcomes",
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-video-and-digital-imaging-stage-6-cec-2000/outcomes"
     },
     {
-      "syllabus": "Physical World Science Life Skills 11–12 (2025)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/science/physical-world-science-life-skills-11-12-2025/outcomes",
-      "reason": "No outcome identifiers extracted"
+      "syllabus": "Sport, Lifestyle and Recreation Studies Stage 6 (CEC) (2007)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes"
     },
     {
       "syllabus": "Visual Design Stage 6 (CEC) (2000)",
@@ -17572,11 +18434,6 @@
       "syllabus": "Work Studies Stage 6 (CEC) (2012)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-studies-stage-6-cec-2012/outcomes",
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/hsie/work-studies-stage-6-cec-2012/outcomes"
-    },
-    {
-      "syllabus": "Sport, Lifestyle and Recreation Studies Stage 6 (CEC) (2007)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes"
     }
   ],
   "summary": {
@@ -17584,6 +18441,7 @@
     "direct_outcomes_pages": 90,
     "candidate_outcomes": 885,
     "pages_with_no_codes_or_error": 25,
+    "missing_stage_syllabus_versions": 35,
     "senior": 193
   }
 }
