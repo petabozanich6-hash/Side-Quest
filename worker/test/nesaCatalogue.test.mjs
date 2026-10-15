@@ -21,5 +21,6 @@ test("NSW 11–12 English electives stay on the right school stage", () => {
   assert.match(cat.version,/PARTIAL/);
   const year11=programFor(cat,{stage:"S6",year_level:"Year 11",extra:{electives:[{name:"English Advanced",learning_area:"English"}]}});
   assert.ok(year11.includes(cat.byCode.get("EAV-11-01")));
+  assert.equal(year11.includes(cat.byCode.get("EST-11-01")), false, "English Standard outcomes must not appear for an Advanced-only student");
   assert.equal(year11.includes(cat.byCode.get("CT4-ADJ-01")),false);
 });
