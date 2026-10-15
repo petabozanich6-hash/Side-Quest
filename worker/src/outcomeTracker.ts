@@ -162,6 +162,19 @@ const AC9_AREA: Record<string, string> = {
 const SUBJECT_KEYS: RegExp[] = [/histor/i, /geograph/i, /commerce|business|econom/i, /civic/i, /aboriginal/i, /music/i, /drama/i, /dance/i,
   /visual art/i, /media/i, /software|information|digital|computing|coding/i, /food|textile|design|industrial|agricultur|graphic|engineer/i, /physical activity|sport/i];
 const AC9_KEY_SUBJECT: [RegExp, string][] = [[/software|information|digital|computing|coding/i, "digital technologies"], [/food|textile|design|industrial|agricultur|graphic|engineer/i, "design and technologies"]];
+/** AC9 Languages are distinct subjects/pathways: a child's chosen language must not silently match every language.
+ * A broad "Languages" course can intentionally cover the area; a named subject must match its official subject.
+ * Unknown named languages return no outcomes until their verified source identifiers are imported.
+ */
+const LANGUAGE_NAMES = ["Arabic", "Auslan", "Chinese", "Classical Greek", "French", "German", "Hindi",
+  "Indonesian", "Italian", "Japanese", "Korean", "Latin", "Modern Greek", "Spanish", "Turkish",
+  "Vietnamese", "Aboriginal Languages", "Torres Strait Islander Languages", "Classical Languages"];
+const languageSubject = (name: string) => {
+  const lower = name.trim().toLowerCase();
+  return LANGUAGE_NAMES.find((x) => x.toLowerCase() === lower || lower.startsWith(x.toLowerCase() + " ")) || null;
+};
+const broadLanguages = (name: string) => /^(languages?|foreign languages?|language studies)$/i.test(name.trim());
+
 export function programFor(cat: Catalogue, student: { stage?: string | null; year_level?: string | null; extra?: unknown }): Program {
   const extra = json<any>(student.extra, {}) || {};
   const stage = String(student.stage || "");
@@ -191,9 +204,18 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
     const keys = SUBJECT_KEYS.filter((re) => re.test(c.name));
     const key = keys.length === 1 ? keys[0] : null;
     const ac9Name = ac9 && key ? AC9_KEY_SUBJECT.find(([re]) => re.test(c.name))?.[1] : undefined;
+    const language = ac9 && area === "Languages" ? languageSubject(c.name) : null;
+    const namedLanguageUnmapped = ac9 && area === "Languages" && !language && !broadLanguages(c.name);
     return {
       name: c.name,
-      test: (o: CatalogueOutcome) => o.learning_area === area && (!key || (ac9Name ? subjectText(o).toLowerCase() === ac9Name : key.test(subjectText(o)))),
+      test: (o: CatalogueOutcome) => {
+        if (o.learning_area !== area) return false;
+        if (area === "Languages" && ac9) {
+          if (namedLanguageUnmapped) return false;
+          return !language || subjectText(o).toLowerCase().includes(language.toLowerCase());
+        }
+        return !key || (ac9Name ? subjectText(o).toLowerCase() === ac9Name : key.test(subjectText(o)));
+      },
     };
   });
   const subjectOf = (o: CatalogueOutcome) => {
