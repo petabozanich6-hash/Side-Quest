@@ -5,6 +5,8 @@ on:
   pull_request:
     paths:
       - worker/scripts/import-ac9.mjs
+      - worker/scripts/ac9-code-level.mjs
+      - worker/test/ac9CodeLevel.test.mjs
       - worker/scripts/audit-catalogue.mjs
       - worker/src/data/ac9-outcomes.ts
       - worker/test/ac9Catalogue.test.mjs
@@ -29,7 +31,7 @@ jobs:
           CURRICULUM_REPORT_PATH: curriculum-coverage-report.json
         run: node worker/scripts/audit-catalogue.mjs --require-all-eight
       - name: Test the generated catalogue and language elective filtering
-        run: node --experimental-strip-types --test worker/test/ac9Catalogue.test.mjs
+        run: node --experimental-strip-types --test worker/test/ac9Catalogue.test.mjs worker/test/ac9CodeLevel.test.mjs
       - name: Attach generated data and audit for review
         uses: actions/upload-artifact@v4
         with:
