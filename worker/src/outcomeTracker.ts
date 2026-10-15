@@ -173,7 +173,7 @@ const LANGUAGE_NAMES = ["Arabic", "Auslan", "Chinese", "Classical Greek", "Frenc
   "Framework for Aboriginal Languages and Torres Strait Islander Languages", "Framework for Classical Languages"];
 const languageSubject = (name: string) => {
   const lower = name.trim().toLowerCase();
-  return LANGUAGE_NAMES.find((x) => { const stem = x.toLowerCase(); return lower === stem || (lower.startsWith(stem) && /^[\\s(,:/-]/.test(lower.slice(stem.length))); }) || null;
+  return LANGUAGE_NAMES.find((x) => { const stem = x.toLowerCase(); return lower === stem || (lower.startsWith(stem) && " (,:/-".includes(lower.charAt(stem.length))); }) || null;
 };
 const broadLanguages = (name: string) => /^(languages?|foreign languages?|language studies)$/i.test(name.trim());
 
