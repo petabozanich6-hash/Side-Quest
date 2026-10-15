@@ -1,5 +1,11 @@
 # Offline lessons (children)
 
+**Family Membership feature.** Only families on a paid plan (or the complimentary INTERNAL plan) get offline lessons and
+offline sign-in: the server reports `offline_allowed` (entitlements `limits.offlineLessons`) on child sign-in and on the
+child's home page. For free-preview or lapsed families nothing is saved on the device; when a membership ends, the
+device drops the child's saved lessons and offline sign-in the next time it's online. Work already waiting to be sent is
+always kept and sent, whatever the plan.
+
 Children can do their assigned lessons with no internet (in the car, on a plane), in the installed app or the browser.
 
 ## How it works for a child
@@ -52,3 +58,13 @@ The main site's kids' setup (/get-app?for=child, Parent Hub → Children) checks
 Setup (once, Cloudflare dashboard): Workers & Pages → side-quest → Settings → Domains & Routes → Add → Custom domain →
 `kids.sidequestlearning.app` → Add domain. Cloudflare creates the DNS record and certificate. No code change or
 `wrangler.jsonc` change is needed (keep routes out of wrangler.jsonc so deploys never detach the dashboard domains).
+
+## Signing in offline (SQ Kids / kids' devices)
+On a kids' device, a successful online child sign-in also saves that child's token on the device encrypted with a key
+derived from their username + PIN (PBKDF2-SHA-256, 200,000 rounds → AES-GCM; `src/lib/offlineSignIn.js`). With no
+signal the same username and PIN decrypt it locally; a wrong PIN fails (5 wrong tries → wait a minute). No PIN or token
+is stored in clear. Signing out of SQ Kids keeps the child's saved quests and unsent work (sent next time they sign in);
+"Forget children saved on this device" on the SQ Kids sign-in deletes every saved child, quest and unsent work.
+Back online, the server checks the token as usual: if the PIN was changed or the family was signed out everywhere, the
+device's saved sign-in for that child is forgotten. Up to 6 children per device. The parent site is unchanged
+(sign-out wipes everything; no offline sign-in).

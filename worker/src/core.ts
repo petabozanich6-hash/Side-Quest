@@ -140,7 +140,10 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     }
     const pet = await db.prepare("SELECT xp FROM pets WHERE student_id = ?").bind(u.id).first<{ xp: number }>().catch(() => null);
     for (const a of pending) delete a.draft;
+    // Offline lessons (saved on the child's device) are a Family Membership feature.
+    const offlineAllowed = (await lb.getEntitlement(db, u.family_id)).limits.offlineLessons;
     return c.json({
+      offline_allowed: offlineAllowed,
       student: { ...studentOut(student), role: "child" },
       completed,
       waiting,

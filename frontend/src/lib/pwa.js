@@ -47,19 +47,12 @@ export function parentOrigin() {
   const { protocol, hostname, port } = window.location;
   return `${protocol}//${hostname.replace(/^kids\./i, "")}${port ? ":" + port : ""}`;
 }
-/** True when the kids' address is set up and answering (so links can send families there). */
-let kidsLive = null;
-export function kidsHostReachable() {
-  const origin = kidsOrigin();
-  if (!origin || isKidsHost()) return Promise.resolve(false);
-  if (!kidsLive) {
-    kidsLive = Promise.race([
-      fetch(`${origin}/api/health`, { mode: "cors", cache: "no-store" }).then((r) => r.ok).catch(() => false),
-      new Promise((resolve) => setTimeout(() => resolve(false), 4000)),
-    ]);
-  }
-  return kidsLive;
-}
+/**
+ * True on the parent site of an address that has a separate SQ Kids (sidequestlearning.app, and localhost for tests).
+ * There the two apps never mix: the parent app always opens as the parent app. Elsewhere (staging) the older
+ * same-address kids' app is still offered.
+ */
+export const separateKidsApp = () => !isKidsHost() && !!kidsOrigin();
 /** The SQ Kids look: manifest, iPhone home-screen icon, browser-tab icon and title. Returns an undo function. */
 function applyKidsHead() {
   const set = (sel, attr, value) => {
@@ -87,19 +80,27 @@ export function applyKidsHostManifest() {
 }
 export function rememberKidsDevice() {
   try {
+    // Where SQ Kids has its own address, the parent site is only ever the parent app: forget any old marker left by
+    // the earlier same-address kids' app or the "open to my child's sign-in" option (it made the parent app open to
+    // the child sign-in).
+    if (separateKidsApp()) { localStorage.removeItem(KIDS_FLAG); return; }
     const p = new URLSearchParams(window.location.search);
     if (p.get("source") === "kids-app") localStorage.setItem(KIDS_FLAG, "1");
   } catch { /* storage blocked */ }
 }
 /** One device shared by parent and child: make this app open to the child sign-in (or back to the front page). */
 export function setKidsDevice(on) { try { if (on) localStorage.setItem(KIDS_FLAG, "1"); else localStorage.removeItem(KIDS_FLAG); } catch { /* storage blocked */ } }
-export const isKidsDevice = () => { if (isKidsHost()) return true; try { return localStorage.getItem(KIDS_FLAG) === "1"; } catch { return false; } };
+export const isKidsDevice = () => {
+  if (isKidsHost()) return true;
+  if (separateKidsApp()) return false; // the parent site, where SQ Kids lives at its own address
+  try { return localStorage.getItem(KIDS_FLAG) === "1"; } catch { return false; }
+};
 
 /** Points the page's manifest at the kids' app while `kids` is true, so installing from here gives the kids' app. */
 export function useKidsManifest(kids) {
   useEffect(() => {
     const link = document.querySelector('link[rel="manifest"]');
-    if (!link || !kids || isKidsHost()) return undefined;
+    if (!link || !kids || isKidsHost() || separateKidsApp()) return undefined;
     return applyKidsHead();
   }, [kids]);
 }

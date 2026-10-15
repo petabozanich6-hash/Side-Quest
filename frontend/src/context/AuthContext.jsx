@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { api } from "../lib/api";
 import { clearOffline, isNetworkError } from "../lib/offline";
+import { forgetOfflineChild } from "../lib/offlineSignIn";
 
 // The last signed-in user, so the installed app still opens (for offline lessons) when there is no signal.
 // Only name/role/ids/theme: no tokens, emails or children's work.
 const USER_CACHE = "sq_user_cache";
-const rememberUser = (u) => { try { if (u) localStorage.setItem(USER_CACHE, JSON.stringify({ id: u.id, name: u.name, role: u.role, family_id: u.family_id, theme: u.theme })); else localStorage.removeItem(USER_CACHE); } catch {} };
+const rememberUser = (u) => { try { if (u) localStorage.setItem(USER_CACHE, JSON.stringify({ id: u.id, name: u.name, role: u.role, family_id: u.family_id, theme: u.theme, username: u.role === "child" ? u.username : undefined })); else localStorage.removeItem(USER_CACHE); } catch {} };
 const cachedUser = () => { try { return JSON.parse(localStorage.getItem(USER_CACHE) || "null"); } catch { return null; } };
 
 const AuthContext = createContext(null);
@@ -27,7 +28,12 @@ export const AuthProvider = ({ children }) => {
       // No signal: keep the session (the token is still on this device) so saved lessons can be used offline.
       const cached = isNetworkError(e) && localStorage.getItem("sq_token") ? cachedUser() : null;
       if (cached) { setUser({ ...cached, offline: true }); }
-      else { localStorage.removeItem("sq_token"); rememberUser(null); setUser(null); }
+      else {
+        // The server turned this sign-in down (PIN changed, signed out everywhere): its offline sign-in goes too.
+        const was = cachedUser();
+        if (e?.response?.status === 401 && was?.role === "child" && was.username) forgetOfflineChild(was.username);
+        localStorage.removeItem("sq_token"); rememberUser(null); setUser(null);
+      }
     } finally { setLoading(false); }
   }, []);
 
@@ -39,13 +45,14 @@ export const AuthProvider = ({ children }) => {
     rememberUser(u);
   };
 
-  const logout = async () => {
+  // keepOffline: on a child's own device (the kids' app) their saved quests and unsent work stay for next time.
+  const logout = async ({ keepOffline = false } = {}) => {
     try { await api.post("/auth/logout"); } catch {}
     try { navigator.serviceWorker?.controller?.postMessage("CLEAR_CACHES"); } catch {}
     localStorage.removeItem("sq_token");
     rememberUser(null);
-    // Offline lessons and any unsent work on this device are deleted on sign-out.
-    await clearOffline();
+    // Elsewhere, offline lessons and any unsent work on this device are deleted on sign-out.
+    if (!keepOffline) await clearOffline();
     setUser(null);
   };
 

@@ -6,7 +6,7 @@ import { hashSecret, verifySecret } from "./auth";
 import { loginBlocked, recordLoginFailure, clearLoginFailures, ensureAuthSchema } from "./loginThrottle";
 import { registerCore } from "./core";
 import { trialEndFrom } from "./entitlements";
-import { checkCanAddChild } from "./lessonBuilder";
+import { checkCanAddChild, getEntitlement } from "./lessonBuilder";
 import { registerFamily, studentOut, studentExtraFromBody, STUDENT_SELECT } from "./family";
 import { registerLearning } from "./learning";
 import { registerPets } from "./pets";
@@ -179,7 +179,9 @@ app.post("/api/auth/child-login", async (c) => {
   if (await suspended(c.env.DB, s.family_id)) return c.json({ detail: SUSPENDED_MESSAGE, code: "ACCOUNT_SUSPENDED" }, 403);
   const token = await makeToken(c.env, s.id, "child", s.family_id);
   const { pin_hash, pin_enc, ...safe } = s;
-  return c.json({ token, student: { ...safe, interests: JSON.parse(s.interests || "[]"), role: "child" } });
+  // Offline sign-in on the child's device is a Family Membership feature.
+  const offlineAllowed = await getEntitlement(c.env.DB, s.family_id).then((e) => e.limits.offlineLessons).catch(() => false);
+  return c.json({ token, offline_allowed: offlineAllowed, student: { ...safe, interests: JSON.parse(s.interests || "[]"), role: "child" } });
 });
 
 app.get("/api/auth/me", requireAuth, async (c) => {
