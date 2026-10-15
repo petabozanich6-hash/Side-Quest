@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - worker/scripts/import-nesa-review.mjs
+      - worker/scripts/build-nesa-current.mjs
       - worker/test/nesaImport.test.mjs
       - .github/workflows/import-nesa.yml
   workflow_dispatch:
@@ -27,11 +28,15 @@ jobs:
         run: node --test worker/test/nesaImport.test.mjs
       - name: Fetch official NESA current, forthcoming and legacy syllabuses
         run: node worker/scripts/import-nesa-review.mjs
+      - name: Generate code-only current NSW subset with syllabus-version provenance
+        run: node worker/scripts/build-nesa-current.mjs
       - name: Preserve machine-readable source audit for manual review
         uses: actions/upload-artifact@v4
         with:
           name: nesa-syllabus-and-outcome-candidates
-          path: worker/src/data/nesa-review-import.json
+          path: |
+            worker/src/data/nesa-review-import.json
+            worker/src/data/nesa-current-2026.ts
           retention-days: 30
       - name: Commit review-only data to the unmerged PR
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
@@ -40,7 +45,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
-          git add worker/src/data/nesa-review-import.json
+          git add worker/src/data/nesa-review-import.json worker/src/data/nesa-current-2026.ts
           if git diff --cached --quiet; then
             echo "No inventory differences"
           else
