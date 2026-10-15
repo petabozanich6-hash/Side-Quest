@@ -124,6 +124,7 @@ export default function UpgradePage() {
             {row("Full portfolio export", ["1 sample entry", "Full"])}
             {row("AI lesson drafting", ["No", "10 drafts/day, 60/month"])}
             {row("AI lesson changes", ["No", "20/day, 120/month"])}
+            {row("Weekly timetable (assigned lessons fill its slots)", ["No", "Yes"])}
           </tbody>
         </table>
       </div>
