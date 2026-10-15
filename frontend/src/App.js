@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import ChildLogin from "./pages/ChildLogin";
+import GetApp from "./pages/GetApp";
 import AuthCallback from "./pages/AuthCallback";
 import ParentLayout from "./pages/parent/ParentLayout";
 import ParentDashboard from "./pages/parent/Dashboard";
@@ -77,6 +78,7 @@ function Router() {
       <Route path="/child-login" element={<ChildLogin />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/legal/:slug" element={<LegalPage publicView />} />
+      <Route path="/get-app" element={<GetApp />} />
       <Route path="/print/lesson/:id" element={<Guard role="parent"><LessonPrint /></Guard>} />
       <Route path="/parent" element={<Guard role="parent"><ParentLayout /></Guard>}>
         <Route index element={<ParentDashboard />} />

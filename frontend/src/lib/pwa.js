@@ -13,6 +13,12 @@ export const isIos = () =>
   typeof navigator !== "undefined" &&
   (/iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1));
 
+export const isAndroid = () => typeof navigator !== "undefined" && /android/i.test(navigator.userAgent);
+/** iPhone/iPad browsers other than Safari (Chrome, Firefox, Edge on iOS), where Add to Home Screen may be missing. */
+export const isIosOtherBrowser = () => isIos() && /CriOS|FxiOS|EdgiOS|OPiOS/i.test(navigator.userAgent);
+/** "ios" | "android" | "desktop": which install steps to show. */
+export const deviceKind = () => (isIos() ? "ios" : isAndroid() ? "android" : "desktop");
+
 export function registerServiceWorker() {
   if (typeof window === "undefined") return;
   window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferred = e; notify(); });
