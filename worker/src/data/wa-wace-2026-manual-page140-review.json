@@ -1,0 +1,395 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "WACE",
+  "framework_version": "2026",
+  "source_url": "https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf",
+  "source_pdf_page": 152,
+  "source_print_page": 140,
+  "verification_date": "2026-10-16",
+  "status": "source_verified_partial",
+  "scope_note": "WACE Manual Appendix 3 Table 12 page 140, nine subjects. Source-listed codes only. Not learning outcome identifiers.",
+  "records": [
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "BME",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "AEBME",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "ATBME",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "GEBME",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "GTBME",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "A1BME",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "A2BME",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "G1BME",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "G2BME",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Career and Enterprise",
+      "identifier": "CAE",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Career and Enterprise",
+      "identifier": "FECAE",
+      "identifier_kind": "course_code",
+      "course_kind": "Foundation_Year11"
+    },
+    {
+      "subject": "Career and Enterprise",
+      "identifier": "FTCAE",
+      "identifier_kind": "course_code",
+      "course_kind": "Foundation_Year12"
+    },
+    {
+      "subject": "Career and Enterprise",
+      "identifier": "F1CAE",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    },
+    {
+      "subject": "Career and Enterprise",
+      "identifier": "F2CAE",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    },
+    {
+      "subject": "Careers and Employability",
+      "identifier": "CEM",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Careers and Employability",
+      "identifier": "GECEM",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Careers and Employability",
+      "identifier": "GTCEM",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Careers and Employability",
+      "identifier": "G1CEM",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Careers and Employability",
+      "identifier": "G2CEM",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Chemistry",
+      "identifier": "CHE",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Chemistry",
+      "identifier": "AECHE",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Chemistry",
+      "identifier": "ATCHE",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Chemistry",
+      "identifier": "GECHE",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Chemistry",
+      "identifier": "GTCHE",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Chemistry",
+      "identifier": "A1CHE",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Chemistry",
+      "identifier": "A2CHE",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Chemistry",
+      "identifier": "G1CHE",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Chemistry",
+      "identifier": "G2CHE",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Children, Family and the Community",
+      "identifier": "CFC",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Children, Family and the Community",
+      "identifier": "GECFC",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Children, Family and the Community",
+      "identifier": "GTCFC",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Children, Family and the Community",
+      "identifier": "G1CFC",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Children, Family and the Community",
+      "identifier": "G2CFC",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Chinese: First Language",
+      "identifier": "CFL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Chinese: First Language",
+      "identifier": "AECFL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Chinese: First Language",
+      "identifier": "ATCFL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Chinese: First Language",
+      "identifier": "A1CFL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Chinese: First Language",
+      "identifier": "A2CFL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Chinese: Second Language",
+      "identifier": "CSL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Chinese: Second Language",
+      "identifier": "AECSL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Chinese: Second Language",
+      "identifier": "ATCSL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Chinese: Second Language",
+      "identifier": "GECSL",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Chinese: Second Language",
+      "identifier": "GTCSL",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Chinese: Second Language",
+      "identifier": "A1CSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Chinese: Second Language",
+      "identifier": "A2CSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Chinese: Second Language",
+      "identifier": "G1CSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Chinese: Second Language",
+      "identifier": "G2CSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Computer Science",
+      "identifier": "CSC",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Computer Science",
+      "identifier": "AECSC",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Computer Science",
+      "identifier": "ATCSC",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Computer Science",
+      "identifier": "GECSC",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Computer Science",
+      "identifier": "GTCSC",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Computer Science",
+      "identifier": "A1CSC",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Computer Science",
+      "identifier": "A2CSC",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Computer Science",
+      "identifier": "G1CSC",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Computer Science",
+      "identifier": "G2CSC",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Dance",
+      "identifier": "DAN",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Dance",
+      "identifier": "AEDAN",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year11"
+    },
+    {
+      "subject": "Dance",
+      "identifier": "ATDAN",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_Year12_examinable"
+    },
+    {
+      "subject": "Dance",
+      "identifier": "GEDAN",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year11"
+    },
+    {
+      "subject": "Dance",
+      "identifier": "GTDAN",
+      "identifier_kind": "course_code",
+      "course_kind": "General_Year12"
+    },
+    {
+      "subject": "Dance",
+      "identifier": "A1DAN",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Dance",
+      "identifier": "A2DAN",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Dance",
+      "identifier": "G1DAN",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Dance",
+      "identifier": "G2DAN",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    }
+  ]
+}
