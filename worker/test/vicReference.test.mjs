@@ -66,3 +66,14 @@ test("VCAA published VC2 Arabic does not silently replace its still-current 2026
   const plan=programFor(cat,{stage:"S4",year_level:"Year 8",extra:{electives:[{name:"Arabic",learning_area:"Languages"}]}});
   assert.equal(plan.includes(published),false);
 });
+
+test("shared VCAA content may be mapped through either official subject context",()=>{
+  const cat=catalogueFor("VIC");
+  const fixture={code:"VC2TEST-CONTEXT-01",description:"",learning_area:"The Arts",
+    learning_areas:["The Arts","Capabilities"],subjects:["Dance","Ethical Capability"],
+    subject:"Dance",levels:["8"],stage:"S4",source:"VCAA test fixture",status:"V2_REFERENCE_SUBJECT_VERIFIED"};
+  const ethical=programFor(cat,{stage:"S4",year_level:"Year 8",extra:{electives:[{name:"Ethical Capability",learning_area:"Capabilities"}]}});
+  assert.equal(ethical.includes(fixture),true);
+  const arts=programFor(cat,{stage:"S4",year_level:"Year 8",extra:{electives:[{name:"Dance",learning_area:"The Arts"}]}});
+  assert.equal(arts.includes(fixture),true);
+});
