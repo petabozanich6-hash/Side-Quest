@@ -51,6 +51,26 @@ test("config: test key uses sandbox prices; live key is refused unless explicitl
   assert.equal(b.intervalForPrice(P, "price_unknown"), null);
 });
 
+test("live config: complete distinct live prices activate only with explicit opt-in", () => {
+  const ids = {
+    STRIPE_LIVE_PRICE_WEEKLY: "price_liveWeekly1",
+    STRIPE_LIVE_PRICE_FORTNIGHTLY: "price_liveFortnight1",
+    STRIPE_LIVE_PRICE_MONTHLY: "price_liveMonthly1",
+    STRIPE_LIVE_PRICE_YEARLY: "price_liveYearly1",
+  };
+  const base = { STRIPE_SECRET_KEY: "sk_live_dummy", ...ids };
+  assert.equal(b.billingConfig(base).ok, false, "not enabled by default");
+  assert.equal(b.billingConfig({ ...base, STRIPE_LIVE_ENABLED: "true", STRIPE_LIVE_PRICE_YEARLY: undefined }).ok, false, "partial config must fail closed");
+  assert.equal(b.billingConfig({ ...base, STRIPE_LIVE_ENABLED: "true", STRIPE_LIVE_PRICE_YEARLY: ids.STRIPE_LIVE_PRICE_MONTHLY }).ok, false, "duplicate price IDs must fail");
+  assert.equal(b.billingConfig({ ...base, STRIPE_LIVE_ENABLED: "true", STRIPE_LIVE_PRICE_YEARLY: "bad" }).ok, false, "invalid price ID must fail");
+  const live = b.billingConfig({ ...base, STRIPE_LIVE_ENABLED: "true" });
+  assert.equal(live.ok, true);
+  assert.equal(live.mode, "live");
+  assert.equal(live.prices.monthly.price, ids.STRIPE_LIVE_PRICE_MONTHLY);
+  assert.equal(live.prices.monthly.amount_cents, 1300);
+  assert.deepEqual(Object.keys(live.prices).sort(), [...b.INTERVALS].sort());
+});
+
 test("signature: valid accepted; tampered, wrong secret, stale or missing rejected", async () => {
   const body = JSON.stringify({ id: "evt_1" });
   const t = S(NOW);
