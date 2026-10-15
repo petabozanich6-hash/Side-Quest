@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { extractIndex, extractCodes } from "../scripts/import-nesa-review.mjs";
+import { extractIndex, extractCodes, inferStageFromCode } from "../scripts/import-nesa-review.mjs";
 
 test("NESA inventory keeps current, future, legacy and life-skills versions separate", () => {
   const url = "https://curriculum.nsw.edu.au/stages/secondary";
@@ -31,9 +31,19 @@ test("NESA parser extracts displayed official candidates, dedupes and keeps stag
   assert.deepEqual(rows.map(x => x.code), ["ENE-PRINT-01", "EN2-CWT-01", "MAO-WM-01"]);
   assert.equal(rows[0].stage_hint, "ES1");
   assert.equal(rows[1].stage_hint, "S2");
+  assert.equal(rows[2].stage_hint, null, "MAO-WM applies across stages and must not be mislabelled");
   assert.ok(rows.every(x => x.official_outcomes_url === src));
 });
 
 test("No outcome codes are invented for an unpublished/in-development syllabus", () => {
   assert.deepEqual(extractCodes("<h2>Outcomes</h2><p>In development</p>", "https://curriculum.nsw.edu.au/test"), []);
+});
+
+test("NSW year and stage are derived from published identifiers, not the most recent UI tab", () => {
+  assert.equal(inferStageFromCode("ENE-PRINT-01"), "ES1");
+  assert.equal(inferStageFromCode("EN2-CWT-01"), "S2");
+  assert.equal(inferStageFromCode("CA1-DAN-01"), "S1");
+  assert.equal(inferStageFromCode("MA4-INT-C-01"), "S4");
+  assert.equal(inferStageFromCode("MAO-WM-01"), null);
+  assert.equal(inferStageFromCode("UNCLEAR-NAME-01"), null);
 });
