@@ -92,43 +92,62 @@ function JurisdictionSection({ place }) {
 
 
 /** TASC uses accredited course identifiers, which are NOT individual outcomes. */
-function TascCourseFinder() {
+/** Senior course/subject codes are separate from outcome/mastery identifiers. */
+function SeniorCodeFinder({ jurisdiction }) {
+  const tasc = jurisdiction === "TAS";
   const [courses, setCourses] = useState([]);
   const [status, setStatus] = useState("loading");
+  const [source, setSource] = useState(tasc ? "https://www.tasc.tas.gov.au/students/courses/a-z/" : "https://www.sace.sa.edu.au/teaching/subjects");
+  const [note, setNote] = useState("");
   const [query, setQuery] = useState("");
   useEffect(() => {
     let cancelled = false;
+    setStatus("loading");
     api.get("/curriculum/senior-courses").then(({ data }) => {
       if (cancelled) return;
       setCourses(data.available && Array.isArray(data.courses) ? data.courses : []);
+      setNote(data.note || "");
+      if(data.source_url) setSource(data.source_url);
       setStatus(data.available ? "ready" : "unavailable");
-    }).catch(() => { if(!cancelled) setStatus("error"); });
+    }).catch(() => { if (!cancelled) setStatus("error"); });
     return () => { cancelled = true; };
-  }, []);
-  const term=query.trim().toLowerCase();
-  const found=courses.filter(x=>!term || x.title.toLowerCase().includes(term) || x.code.toLowerCase().includes(term));
+  }, [jurisdiction]);
+  const term = query.trim().toLowerCase();
+  const found = courses.filter(x => !term || x.title.toLowerCase().includes(term) || x.code.toLowerCase().includes(term));
+  const label = tasc ? "course" : "subject";
   return (
-    <section aria-labelledby="tasc-heading" className="paper-card p-4 sm:p-6 space-y-3" data-testid="tasc-senior-course-catalogue">
+    <section aria-labelledby="senior-code-heading" className="paper-card p-4 sm:p-6 space-y-3" data-testid="senior-code-catalogue">
       <div className="flex items-center gap-2"><BookOpen size={19} className="text-emerald-800" aria-hidden="true" />
-        <h2 id="tasc-heading" className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>2026 Tasmania senior course codes</h2>
+        <h2 id="senior-code-heading" className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>
+          {tasc ? "2026 Tasmania senior course codes" : "SACE / NTCET senior subject codes"}
+        </h2>
       </div>
-      <p className="text-sm text-stone-700">Browse the current TASC-accredited senior subjects, including electives, Languages and Preliminary courses. <strong>These identify courses, not individual learning outcomes.</strong> They do not automatically mark any outcome as achieved.</p>
-      {status==="loading" && <p className="text-sm text-stone-600">Loading official course identifiers…</p>}
-      {status==="error" && <p className="text-sm text-rose-700">Could not load course identifiers. Check the <a className="underline" href="https://www.tasc.tas.gov.au/students/courses/a-z/" target="_blank" rel="noopener noreferrer">official TASC course list</a>.</p>}
-      {status==="unavailable" && <p className="text-sm text-stone-700">The 2026 course-code catalogue is not available for this account yet.</p>}
-      {status==="ready" && <>
-        <label htmlFor="tasc-catalogue-search" className="block text-sm font-semibold">Find a senior subject or course code</label>
-        <input id="tasc-catalogue-search" type="search" value={query} onChange={e=>setQuery(e.target.value)}
-          placeholder="e.g. Japanese, Biology or ACC315116" className="w-full max-w-md rounded-xl border border-stone-300 bg-white p-2.5 text-sm" />
-        <p className="text-xs text-stone-600">Showing {Math.min(found.length,40)} of {found.length} matches · {courses.length} verified 2026 course identifiers</p>
-        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2" data-testid="tasc-courses">
-          {found.slice(0,40).map(course=><li key={course.code} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
-            <a href={course.source_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-emerald-900 underline">{course.title}</a>
-            <div className="text-xs text-stone-600 mt-1"><code className="font-mono">{course.code}</code> · Level {course.level} · {course.tce_credit_points} TCE credits</div>
+      <p className="text-sm text-stone-700">
+        {tasc ? "Browse current TASC-accredited subjects, including electives, Languages and Preliminary courses."
+          : "Browse official SACE Stage 1 and Stage 2 codes, including electives, language variants and Modified Subjects. This reference also helps NT families using NTCET."}
+        {" "}<strong>These identify {label}s, not individual learning outcomes.</strong> They never automatically mark learning as achieved.
+      </p>
+      {status === "loading" && <p className="text-sm text-stone-600">Loading official identifiers…</p>}
+      {status === "error" && <p className="text-sm text-rose-700">Could not load the catalogue. Check the <a className="underline" href={source} target="_blank" rel="noopener noreferrer">official authority</a>.</p>}
+      {status === "unavailable" && <p className="text-sm text-stone-700">This source-backed catalogue is not yet available for your family's selected jurisdiction.</p>}
+      {status === "ready" && <>
+        <label htmlFor="senior-code-search" className="block text-sm font-semibold">Find a subject or official code</label>
+        <input id="senior-code-search" type="search" value={query} onChange={e => setQuery(e.target.value)}
+          placeholder={tasc ? "e.g. Japanese, Accounting or ACC315116" : "e.g. Biology, Modified or 2BGY20"}
+          className="w-full max-w-md rounded-xl border border-stone-300 bg-white p-2.5 text-sm" />
+        <p className="text-xs text-stone-600">Showing {Math.min(found.length,40)} of {found.length} matches · {courses.length} verified authority identifiers</p>
+        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2" data-testid="senior-codes">
+          {found.slice(0,40).map(item => <li key={item.code} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
+            <a href={item.source_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-emerald-900 underline">{item.title}</a>
+            <div className="text-xs text-stone-600 mt-1"><code className="font-mono">{item.code}</code>
+              {" · "}{tasc ? "Level " + item.level + " · " + item.tce_credit_points + " TCE credits"
+                : item.level + " · " + item.credits + " SACE credits"}
+            </div>
           </li>)}
         </ul>
-        {!found.length && <p className="text-sm text-stone-600">No courses match that search.</p>}
-        <p className="text-xs text-stone-600">Verified against the <a className="underline" href="https://www.tasc.tas.gov.au/students/courses/a-z/" target="_blank" rel="noopener noreferrer">TASC current-year course list</a>. Re-check the official catalogue for 2027 or later.</p>
+        {!found.length && <p className="text-sm text-stone-600">No matching subjects.</p>}
+        {note && <p className="text-xs leading-relaxed text-stone-600">{note}</p>}
+        <p className="text-xs text-stone-600">Source: <a className="underline" href={source} target="_blank" rel="noopener noreferrer">{tasc ? "TASC official current-year courses" : "SACE Board subject codes"}</a>. Always confirm the applicable syllabus and registration requirements.</p>
       </>}
     </section>
   );
@@ -157,7 +176,7 @@ export default function Curriculum() {
 
       {place && <JurisdictionSection place={place} />}
 
-      {place?.code === "TAS" && <TascCourseFinder />}
+      {place && ["TAS", "SA", "NT"].includes(place.code) && <SeniorCodeFinder jurisdiction={place.code} />}
 
       <section className="paper-card p-4 sm:p-6 border-l-4" style={{ borderLeftColor: "#4A5D3A" }} aria-labelledby="mapping-heading">
         <div className="flex items-center gap-2 mb-2">
