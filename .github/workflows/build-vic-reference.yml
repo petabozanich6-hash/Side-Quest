@@ -1,10 +1,7 @@
 name: Build source-backed Victorian code reference
+# The generated source data is now on the review branch. Refresh manually;
+# routine CI tests the checked-in code and fixtures without repeated huge downloads.
 on:
-  pull_request:
-    paths:
-      - worker/scripts/build-vic-reference.mjs
-      - worker/test/vicReference.test.mjs
-      - .github/workflows/build-vic-reference.yml
   workflow_dispatch:
 
 permissions:
