@@ -1,10 +1,7 @@
 name: Import 2026-current Victorian Version 1 EAL codes (review only)
+# The generated source data is now on the review branch. Refresh manually;
+# routine CI tests the checked-in code and fixtures without repeated huge downloads.
 on:
-  pull_request:
-    paths:
-      - worker/scripts/import-vic1-eal.mjs
-      - worker/test/vic1Eal.test.mjs
-      - .github/workflows/import-vic1-eal.yml
   workflow_dispatch:
 
 permissions:
