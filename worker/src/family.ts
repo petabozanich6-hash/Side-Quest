@@ -2,6 +2,7 @@ import { authenticateToken, familyState, issueToken, SUSPENDED_MESSAGE } from ".
 import { loadPlatformSettings } from "./platformSettings";
 import { trialEndFrom } from "./entitlements";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
+import { seniorCatalogueFor } from "./data/seniorCatalogue";
 
 import { hashSecret } from "./auth";
 import { encryptPin } from "./studentCredentials";
@@ -324,6 +325,18 @@ export function registerFamily(app: App, g: Guards) {
       NSW_OUTCOMES.filter((item) => (!stage || item.stage === stage) && (!learningArea || item.learning_area === learningArea))
         .map((item) => ({ code: item.code, stage: item.stage, learning_area: item.learning_area, source: item.source, description: "" }))
     );
+  });
+
+  // Source-backed SENIOR COURSE identifiers only: these are not outcomes and
+  // must never be counted toward mastery evidence by the Outcome Tracker.
+  // Family jurisdiction is resolved server-side, preventing a mismatched state
+  // catalogue being attributed to the wrong child.
+  app.get("/api/curriculum/senior-courses", g.auth, g.parent, async (c) => {
+    const jurisdiction = await getFamilyJurisdiction(c.env.DB, c.get("user").family_id);
+    const cat = jurisdiction ? seniorCatalogueFor(jurisdiction) : null;
+    if (!cat) return c.json({ jurisdiction, available: false,
+      note: "There is not yet a complete source-verified senior course-code catalogue for this jurisdiction. Check your official curriculum authority." });
+    return c.json({ ...cat, available: true });
   });
 
   app.get("/api/calendar/ics", g.auth, g.parent, async (c) => {
