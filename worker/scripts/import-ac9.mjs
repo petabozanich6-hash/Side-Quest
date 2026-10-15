@@ -60,7 +60,7 @@ all.sort((a, b) => a.code.localeCompare(b.code));
 if (all.length < 1000) throw new Error(`Only ${all.length} content descriptions found; refusing to write a partial list.`);
 const seen = new Set();
 for (const row of all) {
-  if (!/^AC9[A-Z0-9]+$/.test(row.code) || seen.has(row.code)) throw new Error(`Duplicate/invalid official identifier: ${row.code}`);
+  if (!/^(?:AC9|ACL9)[A-Z0-9]+$/.test(row.code) || seen.has(row.code)) throw new Error(`Duplicate/invalid official identifier: ${row.code}`);
   seen.add(row.code);
 }
 // Fail instead of silently omitting any whole learning area (especially Languages).
