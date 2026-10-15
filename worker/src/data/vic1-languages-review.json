@@ -16272,6 +16272,15 @@
       "code_count": 119
     },
     {
+      "language": "Latin",
+      "phase": 3,
+      "sequence": "mixed",
+      "learner_pathway": null,
+      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/latin/curriculum/f-10?layout=1",
+      "kind": "vc1_languages_code_candidate",
+      "code_count": 30
+    },
+    {
       "language": "Hindi",
       "phase": 3,
       "sequence": "mixed",
@@ -16290,13 +16299,13 @@
       "code_count": 119
     },
     {
-      "language": "Latin",
+      "language": "Turkish",
       "phase": 3,
       "sequence": "mixed",
       "learner_pathway": null,
-      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/latin/curriculum/f-10?layout=1",
+      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/turkish/curriculum/f-10?layout=1",
       "kind": "vc1_languages_code_candidate",
-      "code_count": 30
+      "code_count": 119
     },
     {
       "language": "Roman Alphabet Languages",
@@ -16317,15 +16326,6 @@
       "code_count": 119
     },
     {
-      "language": "Turkish",
-      "phase": 3,
-      "sequence": "mixed",
-      "learner_pathway": null,
-      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/turkish/curriculum/f-10?layout=1",
-      "kind": "vc1_languages_code_candidate",
-      "code_count": 119
-    },
-    {
       "language": "Auslan",
       "phase": 4,
       "sequence": "mixed",
@@ -16333,15 +16333,6 @@
       "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/auslan/first-language-learner/curriculum/f-10?layout=1",
       "kind": "vc1_languages_code_candidate",
       "code_count": 126
-    },
-    {
-      "language": "Chinese",
-      "phase": 4,
-      "sequence": "mixed",
-      "learner_pathway": "background-language-learner",
-      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/chinese/background-language-learner/curriculum/f-10?layout=1",
-      "kind": "vc1_languages_code_candidate",
-      "code_count": 112
     },
     {
       "language": "Auslan",
@@ -16356,10 +16347,10 @@
       "language": "Chinese",
       "phase": 4,
       "sequence": "mixed",
-      "learner_pathway": "first-language-learner",
-      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/chinese/first-language-learner/curriculum/f-10?layout=1",
+      "learner_pathway": "background-language-learner",
+      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/chinese/background-language-learner/curriculum/f-10?layout=1",
       "kind": "vc1_languages_code_candidate",
-      "code_count": 38
+      "code_count": 112
     },
     {
       "language": "Victorian Aboriginal Languages",
@@ -16369,6 +16360,15 @@
       "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/victorian-aboriginal-languages/curriculum/f-10?layout=1",
       "kind": "vc1_languages_code_candidate",
       "code_count": 66
+    },
+    {
+      "language": "Chinese",
+      "phase": 4,
+      "sequence": "mixed",
+      "learner_pathway": "first-language-learner",
+      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/chinese/first-language-learner/curriculum/f-10?layout=1",
+      "kind": "vc1_languages_code_candidate",
+      "code_count": 38
     }
   ],
   "failures": [
