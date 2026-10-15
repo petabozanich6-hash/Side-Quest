@@ -108,15 +108,27 @@ async function main() {
   if (inventory.length < 50) throw new Error("Only " + inventory.length + " NSW syllabus links found. Refuse partial manifest.");
   const candidates = []; const failures = [];
   const eligible = inventory.filter(x => x.outcomes_url);
-  for (const [index,row] of eligible.entries()) {
-    try {
-      const codes = extractCodes(await get(row.outcomes_url), row.outcomes_url);
-      row.candidate_code_count = codes.length;
-      for (const c of codes) candidates.push({ ...c, syllabus_title: row.title, syllabus_path: row.syllabus_path, version_year: row.version_year, listed_as: row.listed_as, source_stages: row.source_stages });
-      if (!codes.length) failures.push({ syllabus: row.title, url: row.outcomes_url, reason: "No outcome identifiers extracted" });
-    } catch(e) { row.candidate_code_count = 0; failures.push({ syllabus: row.title, url: row.outcomes_url, reason: String(e).slice(0,200) }); }
-    if ((index+1)%20===0) console.log("Inspected official outcome pages: " + (index+1) + "/" + eligible.length);
-  }
+  let nextIndex = 0;
+  // Limit concurrency and retain each source's failure; an inaccessible page
+  // must never be quietly mistaken for a syllabus with no outcomes.
+  await Promise.all(Array.from({ length: Math.min(4, eligible.length) }, async () => {
+    while (nextIndex < eligible.length) {
+      const index = nextIndex++;
+      const row = eligible[index];
+      try {
+        const codes = extractCodes(await get(row.outcomes_url), row.outcomes_url);
+        row.candidate_code_count = codes.length;
+        for (const c of codes) candidates.push({ ...c, syllabus_title: row.title, syllabus_path: row.syllabus_path, version_year: row.version_year, listed_as: row.listed_as, source_stages: row.source_stages });
+        if (!codes.length) failures.push({ syllabus: row.title, url: row.outcomes_url, reason: "No outcome identifiers extracted" });
+      } catch(e) {
+        row.candidate_code_count = 0;
+        failures.push({ syllabus: row.title, url: row.outcomes_url, reason: String(e).slice(0,200) });
+      }
+      if ((index+1)%20===0) console.log("Inspected official outcome pages: " + (index+1) + "/" + eligible.length);
+    }
+  }));
+  candidates.sort((a,b) => (a.syllabus_path+a.code).localeCompare(b.syllabus_path+b.code));
+
   const output = { source:"NESA official NSW Curriculum stage listings", extraction_date:new Date().toISOString().slice(0,10), complete:false, inventories:inventory, candidates, failures,
     summary:{ syllabus_versions:inventory.length, direct_outcomes_pages:eligible.length, candidate_outcomes:candidates.length, pages_with_no_codes_or_error:failures.length, senior:inventory.filter(x=>x.source_stages.includes("senior")).length } };
   const file = fileURLToPath(new URL("../src/data/nesa-review-import.json", import.meta.url));
