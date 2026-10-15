@@ -13,6 +13,12 @@
 - Victoria's 2026 effective provision includes a mix of VC2 and VC1 in certain languages and EAL subjects; import both with separate effective dates, not a fabricated single VC2 catalogue. Official references: https://www.vcaa.vic.edu.au/curriculum/foundation-10-version-2/victorian-curriculum-f-10-version-20 and https://f10.vcaa.vic.edu.au/download-curriculum (official CSV download selector).
 - WA's curriculum publishes applicable versions and some transitional 2027 Languages material: https://k10outline.scsa.wa.edu.au/. Do not substitute national content codes without verifying WA adoption and any state-specific identifiers.
 
+### NSW NESA accuracy issue found
+
+The current NSW seed uses identifiers such as `ENe-OLC-01` and omits official English 2022 outcomes including `ENE-PRINT-01` and `ENE-REFLU-01`. The [NESA English K–10 Syllabus (2022) outcomes page](https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes) uses uppercase `ENE-OLC-01`. Some seed entries are old syllabus codes or legacy stage notation. The existing 137-code NSW seed is **not** a complete or uniformly current NESA release.
+
+**Do not blindly rewrite saved child outcome evidence IDs:** new NESA editions and old code forms need source-edition-scoped identifiers plus explicit reviewed aliases/migrations. A case-normalisation pass must not equate unrelated code systems. Build a complete official syllabus index and per-version NESA outcomes import first, including Life Skills and senior extensions/electives; verify expected counts against authority syllabus pages.
+
 ## Confirmed gaps in main (historical baseline)
 
 - `worker/src/data/jurisdictions.ts` advertises only NSW as `codes: "verified"`; VIC, QLD, WA, SA, TAS, ACT, NT are `none`.
