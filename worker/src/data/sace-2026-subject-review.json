@@ -19,9 +19,9 @@
     },
     {
       "name": "Activating Identities and Futures",
-      "official_url": "https://www.sace.sa.edu.au/web/activating-identities-and-futures",
+      "official_url": "https://www.sace.sa.edu.au/web/identities-and-futures",
       "status": "official_subject_listing",
-      "code_count": 0
+      "code_count": 4
     },
     {
       "name": "Agricultural Production",
@@ -66,19 +66,19 @@
       "code_count": 3
     },
     {
-      "name": "Australian Languages &#x2014; Additional Language",
+      "name": "Australian Languages — Additional Language",
       "official_url": "https://www.sace.sa.edu.au/web/australian-languages-additional-language",
       "status": "official_subject_listing",
       "code_count": 2
     },
     {
-      "name": "Australian Languages &#x2014; First Language",
+      "name": "Australian Languages — First Language",
       "official_url": "https://www.sace.sa.edu.au/web/australian-languages-first-language",
       "status": "official_subject_listing",
       "code_count": 2
     },
     {
-      "name": "Australian Languages &#x2014; Revival Language",
+      "name": "Australian Languages — Revival Language",
       "official_url": "https://www.sace.sa.edu.au/web/australian-languages-revival-language",
       "status": "official_subject_listing",
       "code_count": 2
@@ -214,12 +214,6 @@
       "official_url": "https://www.sace.sa.edu.au/web/essential-mathematics",
       "status": "official_subject_listing",
       "code_count": 3
-    },
-    {
-      "name": "Exploring Identities and Futures (EIF)",
-      "official_url": "https://www.sace.sa.edu.au/web/exploring-identities-and-futures",
-      "status": "official_subject_listing",
-      "code_count": 0
     },
     {
       "name": "Food and Hospitality",
@@ -420,13 +414,13 @@
       "code_count": 1
     },
     {
-      "name": "Music Performance &#x2013; Ensemble",
+      "name": "Music Performance – Ensemble",
       "official_url": "https://www.sace.sa.edu.au/web/music-performance-ensemble",
       "status": "official_subject_listing",
       "code_count": 1
     },
     {
-      "name": "Music Performance &#x2013; Solo",
+      "name": "Music Performance – Solo",
       "official_url": "https://www.sace.sa.edu.au/web/music-performance-solo",
       "status": "official_subject_listing",
       "code_count": 1
@@ -510,12 +504,6 @@
       "code_count": 3
     },
     {
-      "name": "Special provisions",
-      "official_url": "https://www.sace.sa.edu.au/web/special-provisions",
-      "status": "official_subject_listing",
-      "code_count": 0
-    },
-    {
       "name": "Specialist Mathematics",
       "official_url": "https://www.sace.sa.edu.au/web/specialist-mathematics",
       "status": "official_subject_listing",
@@ -546,22 +534,10 @@
       "code_count": 3
     },
     {
-      "name": "Visual Arts &#x2014; Art",
-      "official_url": "https://www.sace.sa.edu.au/web/visual-arts-art",
+      "name": "Visual Arts — Art",
+      "official_url": "https://www.sace.sa.edu.au/web/visual-arts",
       "status": "official_subject_listing",
-      "code_count": 0
-    },
-    {
-      "name": "Visual Arts &#x2014; Design",
-      "official_url": "https://www.sace.sa.edu.au/web/visual-arts-design",
-      "status": "official_subject_listing",
-      "code_count": 0
-    },
-    {
-      "name": "Vocational Education and Training (VET)",
-      "official_url": "https://www.sace.sa.edu.au/web/vet",
-      "status": "official_subject_listing",
-      "code_count": 0
+      "code_count": 8
     },
     {
       "name": "Women's Studies",
@@ -651,7 +627,7 @@
     },
     {
       "code": "1ADL10",
-      "subject": "Australian Languages &#x2014; Additional Language",
+      "subject": "Australian Languages — Additional Language",
       "stage": 1,
       "credits": 10,
       "identifier_kind": "senior_subject_code",
@@ -705,7 +681,7 @@
     },
     {
       "code": "1AFL10",
-      "subject": "Australian Languages &#x2014; First Language",
+      "subject": "Australian Languages — First Language",
       "stage": 1,
       "credits": 10,
       "identifier_kind": "senior_subject_code",
@@ -831,7 +807,7 @@
     },
     {
       "code": "1ARL10",
-      "subject": "Australian Languages &#x2014; Revival Language",
+      "subject": "Australian Languages — Revival Language",
       "stage": 1,
       "credits": 10,
       "identifier_kind": "senior_subject_code",
@@ -1785,20 +1761,39 @@
     },
     {
       "code": "1EFM10",
-      "subject": "Exploring Identities and Futures: Modified",
+      "subject": "Activating Identities and Futures",
       "stage": 1,
       "credits": 10,
       "identifier_kind": "senior_subject_code",
       "authority": "SACE Board of South Australia",
-      "source_url": "https://www.sace.sa.edu.au/web/modified-subjects",
+      "source_url": "https://www.sace.sa.edu.au/web/identities-and-futures",
       "jurisdictions": [
         "SA",
         "NT"
       ],
-      "syllabus_variant": "modified",
+      "syllabus_variant": null,
       "status": "official_subject_codes_table",
       "source_urls": [
+        "https://www.sace.sa.edu.au/web/identities-and-futures",
         "https://www.sace.sa.edu.au/web/modified-subjects"
+      ]
+    },
+    {
+      "code": "1EIF10",
+      "subject": "Activating Identities and Futures",
+      "stage": 1,
+      "credits": 10,
+      "identifier_kind": "senior_subject_code",
+      "authority": "SACE Board of South Australia",
+      "source_url": "https://www.sace.sa.edu.au/web/identities-and-futures",
+      "jurisdictions": [
+        "SA",
+        "NT"
+      ],
+      "syllabus_variant": null,
+      "status": "official_subject_codes_table",
+      "source_urls": [
+        "https://www.sace.sa.edu.au/web/identities-and-futures"
       ]
     },
     {
@@ -4556,6 +4551,78 @@
       ]
     },
     {
+      "code": "1VAA10",
+      "subject": "Visual Arts — Art",
+      "stage": 1,
+      "credits": 10,
+      "identifier_kind": "senior_subject_code",
+      "authority": "SACE Board of South Australia",
+      "source_url": "https://www.sace.sa.edu.au/web/visual-arts",
+      "jurisdictions": [
+        "SA",
+        "NT"
+      ],
+      "syllabus_variant": null,
+      "status": "official_subject_codes_table",
+      "source_urls": [
+        "https://www.sace.sa.edu.au/web/visual-arts"
+      ]
+    },
+    {
+      "code": "1VAA20",
+      "subject": "Visual Arts — Art",
+      "stage": 1,
+      "credits": 20,
+      "identifier_kind": "senior_subject_code",
+      "authority": "SACE Board of South Australia",
+      "source_url": "https://www.sace.sa.edu.au/web/visual-arts",
+      "jurisdictions": [
+        "SA",
+        "NT"
+      ],
+      "syllabus_variant": null,
+      "status": "official_subject_codes_table",
+      "source_urls": [
+        "https://www.sace.sa.edu.au/web/visual-arts"
+      ]
+    },
+    {
+      "code": "1VAD10",
+      "subject": "Visual Arts — Design",
+      "stage": 1,
+      "credits": 10,
+      "identifier_kind": "senior_subject_code",
+      "authority": "SACE Board of South Australia",
+      "source_url": "https://www.sace.sa.edu.au/web/visual-arts",
+      "jurisdictions": [
+        "SA",
+        "NT"
+      ],
+      "syllabus_variant": null,
+      "status": "official_subject_codes_table",
+      "source_urls": [
+        "https://www.sace.sa.edu.au/web/visual-arts"
+      ]
+    },
+    {
+      "code": "1VAD20",
+      "subject": "Visual Arts — Design",
+      "stage": 1,
+      "credits": 20,
+      "identifier_kind": "senior_subject_code",
+      "authority": "SACE Board of South Australia",
+      "source_url": "https://www.sace.sa.edu.au/web/visual-arts",
+      "jurisdictions": [
+        "SA",
+        "NT"
+      ],
+      "syllabus_variant": null,
+      "status": "official_subject_codes_table",
+      "source_urls": [
+        "https://www.sace.sa.edu.au/web/visual-arts"
+      ]
+    },
+    {
       "code": "1VNC10",
       "subject": "Vietnamese (continuers)",
       "stage": 1,
@@ -4773,7 +4840,7 @@
     },
     {
       "code": "2ADL20",
-      "subject": "Australian Languages &#x2014; Additional Language",
+      "subject": "Australian Languages — Additional Language",
       "stage": 2,
       "credits": 20,
       "identifier_kind": "senior_subject_code",
@@ -4809,7 +4876,7 @@
     },
     {
       "code": "2AFL20",
-      "subject": "Australian Languages &#x2014; First Language",
+      "subject": "Australian Languages — First Language",
       "stage": 2,
       "credits": 20,
       "identifier_kind": "senior_subject_code",
@@ -4827,19 +4894,20 @@
     },
     {
       "code": "2AFM10",
-      "subject": "Activating Identities and Futures: Modified",
+      "subject": "Activating Identities and Futures",
       "stage": 2,
       "credits": 10,
       "identifier_kind": "senior_subject_code",
       "authority": "SACE Board of South Australia",
-      "source_url": "https://www.sace.sa.edu.au/web/modified-subjects",
+      "source_url": "https://www.sace.sa.edu.au/web/identities-and-futures",
       "jurisdictions": [
         "SA",
         "NT"
       ],
-      "syllabus_variant": "modified",
+      "syllabus_variant": null,
       "status": "official_subject_codes_table",
       "source_urls": [
+        "https://www.sace.sa.edu.au/web/identities-and-futures",
         "https://www.sace.sa.edu.au/web/modified-subjects"
       ]
     },
@@ -4880,6 +4948,24 @@
       ]
     },
     {
+      "code": "2AIF10",
+      "subject": "Activating Identities and Futures",
+      "stage": 2,
+      "credits": 10,
+      "identifier_kind": "senior_subject_code",
+      "authority": "SACE Board of South Australia",
+      "source_url": "https://www.sace.sa.edu.au/web/identities-and-futures",
+      "jurisdictions": [
+        "SA",
+        "NT"
+      ],
+      "syllabus_variant": null,
+      "status": "official_subject_codes_table",
+      "source_urls": [
+        "https://www.sace.sa.edu.au/web/identities-and-futures"
+      ]
+    },
+    {
       "code": "2ANT20",
       "subject": "Ancient Studies",
       "stage": 2,
@@ -4917,7 +5003,7 @@
     },
     {
       "code": "2ARL20",
-      "subject": "Australian Languages &#x2014; Revival Language",
+      "subject": "Australian Languages — Revival Language",
       "stage": 2,
       "credits": 20,
       "identifier_kind": "senior_subject_code",
@@ -6825,7 +6911,7 @@
     },
     {
       "code": "2MEB10",
-      "subject": "Music Performance &#x2013; Ensemble",
+      "subject": "Music Performance – Ensemble",
       "stage": 2,
       "credits": 10,
       "identifier_kind": "senior_subject_code",
@@ -7095,7 +7181,7 @@
     },
     {
       "code": "2MSO10",
-      "subject": "Music Performance &#x2013; Solo",
+      "subject": "Music Performance – Solo",
       "stage": 2,
       "credits": 10,
       "identifier_kind": "senior_subject_code",
@@ -7940,6 +8026,78 @@
       ]
     },
     {
+      "code": "2VAA10",
+      "subject": "Visual Arts — Art",
+      "stage": 2,
+      "credits": 10,
+      "identifier_kind": "senior_subject_code",
+      "authority": "SACE Board of South Australia",
+      "source_url": "https://www.sace.sa.edu.au/web/visual-arts",
+      "jurisdictions": [
+        "SA",
+        "NT"
+      ],
+      "syllabus_variant": null,
+      "status": "official_subject_codes_table",
+      "source_urls": [
+        "https://www.sace.sa.edu.au/web/visual-arts"
+      ]
+    },
+    {
+      "code": "2VAA20",
+      "subject": "Visual Arts — Art",
+      "stage": 2,
+      "credits": 20,
+      "identifier_kind": "senior_subject_code",
+      "authority": "SACE Board of South Australia",
+      "source_url": "https://www.sace.sa.edu.au/web/visual-arts",
+      "jurisdictions": [
+        "SA",
+        "NT"
+      ],
+      "syllabus_variant": null,
+      "status": "official_subject_codes_table",
+      "source_urls": [
+        "https://www.sace.sa.edu.au/web/visual-arts"
+      ]
+    },
+    {
+      "code": "2VAD10",
+      "subject": "Visual Arts — Design",
+      "stage": 2,
+      "credits": 10,
+      "identifier_kind": "senior_subject_code",
+      "authority": "SACE Board of South Australia",
+      "source_url": "https://www.sace.sa.edu.au/web/visual-arts",
+      "jurisdictions": [
+        "SA",
+        "NT"
+      ],
+      "syllabus_variant": null,
+      "status": "official_subject_codes_table",
+      "source_urls": [
+        "https://www.sace.sa.edu.au/web/visual-arts"
+      ]
+    },
+    {
+      "code": "2VAD20",
+      "subject": "Visual Arts — Design",
+      "stage": 2,
+      "credits": 20,
+      "identifier_kind": "senior_subject_code",
+      "authority": "SACE Board of South Australia",
+      "source_url": "https://www.sace.sa.edu.au/web/visual-arts",
+      "jurisdictions": [
+        "SA",
+        "NT"
+      ],
+      "syllabus_variant": null,
+      "status": "official_subject_codes_table",
+      "source_urls": [
+        "https://www.sace.sa.edu.au/web/visual-arts"
+      ]
+    },
+    {
       "code": "2VNC20",
       "subject": "Vietnamese (continuers)",
       "stage": 2,
@@ -8084,46 +8242,15 @@
       ]
     }
   ],
-  "failures": [
-    {
-      "name": "Activating Identities and Futures",
-      "url": "https://www.sace.sa.edu.au/web/activating-identities-and-futures",
-      "reason": "Error: HTTP 404 https://www.sace.sa.edu.au/web/activating-identities-and-futures"
-    },
-    {
-      "name": "Exploring Identities and Futures (EIF)",
-      "url": "https://www.sace.sa.edu.au/web/exploring-identities-and-futures",
-      "reason": "Error: HTTP 404 https://www.sace.sa.edu.au/web/exploring-identities-and-futures"
-    },
-    {
-      "name": "Special provisions",
-      "url": "https://www.sace.sa.edu.au/web/special-provisions",
-      "reason": "No authoritative code table parsed"
-    },
-    {
-      "name": "Visual Arts &#x2014; Design",
-      "url": "https://www.sace.sa.edu.au/web/visual-arts-design",
-      "reason": "Error: HTTP 404 https://www.sace.sa.edu.au/web/visual-arts-design"
-    },
-    {
-      "name": "Visual Arts &#x2014; Art",
-      "url": "https://www.sace.sa.edu.au/web/visual-arts-art",
-      "reason": "Error: HTTP 404 https://www.sace.sa.edu.au/web/visual-arts-art"
-    },
-    {
-      "name": "Vocational Education and Training (VET)",
-      "url": "https://www.sace.sa.edu.au/web/vet",
-      "reason": "No authoritative code table parsed"
-    }
-  ],
+  "failures": [],
   "conflicts": [],
   "summary": {
-    "listed_subject_pages": 95,
-    "pages_with_codes": 89,
-    "distinct_subject_codes": 417,
-    "modified_codes": 64,
-    "stage1": 229,
-    "stage2": 188,
-    "failed_or_code_less_pages": 6
+    "listed_subject_pages": 91,
+    "pages_with_codes": 91,
+    "distinct_subject_codes": 427,
+    "modified_codes": 62,
+    "stage1": 234,
+    "stage2": 193,
+    "failed_or_code_less_pages": 0
   }
 }
