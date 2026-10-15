@@ -35,7 +35,12 @@ export const PRICES: Record<Mode, Partial<Record<Interval, PriceInfo>>> = {
     monthly: { interval: "monthly", price: "price_1UQFZoISyxgEBX5FIRNQLlb3", amount_cents: 1300, label: "Monthly", every: "per month" },
     yearly: { interval: "yearly", price: "price_1UQFXwISyxgEBX5F7t6pkZRz", amount_cents: 13000, label: "Yearly", every: "per year" },
   },
-  live: {},
+  live: {
+    weekly: { interval: "weekly", price: "price_1UQG5VIAnqYz3EmMwqZiCUVK", amount_cents: 300, label: "Weekly", every: "per week" },
+    fortnightly: { interval: "fortnightly", price: "price_1UQG5UIAnqYz3EmMUvMor7ax", amount_cents: 600, label: "Fortnightly", every: "every 2 weeks" },
+    monthly: { interval: "monthly", price: "price_1UQG5UIAnqYz3EmMa9hgvcQh", amount_cents: 1300, label: "Monthly", every: "per month" },
+    yearly: { interval: "yearly", price: "price_1UQG5UIAnqYz3EmMUlcFevXz", amount_cents: 13000, label: "Yearly", every: "per year" },
+  },
 };
 
 const LIVE_PRICE_VARS = {
@@ -74,7 +79,7 @@ export function billingConfig(env: Pick<Env, "STRIPE_SECRET_KEY" | "STRIPE_LIVE_
   // Reject partial configurations so a customer cannot pay for an unmapped plan.
   const prices: Partial<Record<Interval, PriceInfo>> = mode === "live"
     ? Object.fromEntries(INTERVALS.map((interval) => {
-        const id = env[LIVE_PRICE_VARS[interval]];
+        const id = env[LIVE_PRICE_VARS[interval]] || PRICES.live[interval]?.price;
         if (!id || !/^price_[A-Za-z0-9]+$/.test(id)) return [interval, null];
         return [interval, { ...LIVE_PRICE_DETAILS[interval], interval, price: id }];
       }).filter(([, value]) => value !== null)) as Partial<Record<Interval, PriceInfo>>
