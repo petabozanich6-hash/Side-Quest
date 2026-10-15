@@ -18,6 +18,7 @@ function tsArray(name,decl){
 }
 const datasets=[
   {name:'ac9-outcomes.ts',decl:'AC9_OUTCOMES',authority:'ACARA',kind:'content_description',jurisdictions:['NSW','VIC','QLD','WA','SA','TAS','ACT','NT'],status:'verified_national_reference_not_automatically_state_adopted'},
+  {name:'vic-source-ids.ts',decl:'VIC_SOURCE_VERIFIED_IDS',authority:'VCAA',kind:'content_description',jurisdictions:['VIC'],status:'verified_partial_versioned_reference'},
   {name:'nesa-current-2026.ts',decl:'NESA_2026_DIRECT_OUTCOME_CODES',authority:'NESA',kind:'syllabus_outcome',jurisdictions:['NSW'],status:'verified_partial_current_list'},
   {name:'tasc-2026-course-codes.json',field:'courses',authority:'TASC',kind:'senior_course_code',jurisdictions:['TAS'],status:'verified_current_2026_accredited_course_list'},
   {name:'sace-2026-subject-review.json',field:'subject_codes',authority:'SACE',kind:'senior_subject_code',jurisdictions:['SA','NT'],status:'verified_partial_subject_table'},
@@ -43,4 +44,4 @@ for(const d of datasets){
     total++;
   }
 }
-console.error('Exported '+total+' raw records. VIC code catalogue is compiled from a separate generated TS module; do not call this output exhaustive.');
+console.error('Exported '+total+' raw records. Catalogue remains incomplete across jurisdictions and senior pathways; do not call this output exhaustive.');
