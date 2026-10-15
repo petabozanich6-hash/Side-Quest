@@ -18311,11 +18311,6 @@
   ],
   "failures": [
     {
-      "syllabus": "Agriculture Life Skills 11–12 (2026)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/agriculture-life-skills-11-12-2026/outcomes",
-      "reason": "No outcome identifiers extracted"
-    },
-    {
       "syllabus": "Ancient History Life Skills 11–12 (2024)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes",
       "reason": "No outcome identifiers extracted"
@@ -18326,8 +18321,8 @@
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Chemical World Science Life Skills 11–12 (2025)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/science/chemical-world-science-life-skills-11-12-2025/outcomes",
+      "syllabus": "Agriculture Life Skills 11–12 (2026)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/agriculture-life-skills-11-12-2026/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
@@ -18336,14 +18331,19 @@
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/ceramics-stage-6-cec-2000/outcomes"
     },
     {
-      "syllabus": "Computing Applications Stage 6 (CEC) (2012)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes"
+      "syllabus": "Chemical World Science Life Skills 11–12 (2025)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/chemical-world-science-life-skills-11-12-2025/outcomes",
+      "reason": "No outcome identifiers extracted"
     },
     {
       "syllabus": "Computing Technology Life Skills 11–12 (2022)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-technology-life-skills-11-12-2022/outcomes",
       "reason": "No outcome identifiers extracted"
+    },
+    {
+      "syllabus": "Computing Applications Stage 6 (CEC) (2012)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/computing-applications-stage-6-cec-2012/outcomes"
     },
     {
       "syllabus": "Dance Life Skills 11–12 (2025)",
@@ -18381,9 +18381,9 @@
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Marine Studies Stage 6 (CEC) (2012)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/marine-studies-stage-6-cec-2012/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/marine-studies-stage-6-cec-2012/outcomes"
+      "syllabus": "Law and the Community Life Skills 11–12 (2025)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes",
+      "reason": "No outcome identifiers extracted"
     },
     {
       "syllabus": "Mathematics Life Skills 11–12 (2024)",
@@ -18391,9 +18391,9 @@
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Law and the Community Life Skills 11–12 (2025)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes",
-      "reason": "No outcome identifiers extracted"
+      "syllabus": "Marine Studies Stage 6 (CEC) (2012)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/marine-studies-stage-6-cec-2012/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/tas/marine-studies-stage-6-cec-2012/outcomes"
     },
     {
       "syllabus": "Modern History Life Skills 11–12 (2024)",
