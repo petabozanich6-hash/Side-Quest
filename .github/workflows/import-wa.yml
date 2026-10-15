@@ -2,11 +2,9 @@ name: Discover Western Australian official curriculum identifiers
 # Explicitly review-only: curriculum JSON releases span several years;
 # no live mappings until applicable version and achievement bands are verified.
 on:
-  pull_request:
-    paths:
-      - worker/scripts/import-wa-review.mjs
-      - worker/test/waImport.test.mjs
-      - .github/workflows/import-wa.yml
+  # Official SCSA denies GitHub runner access with HTTP 403. Keep this importer
+  # manual/on-demand until authorised downloads or hosting access are arranged.
+  # Parser/fixture tests still run in normal CI via package.json.
   workflow_dispatch:
 
 permissions:
